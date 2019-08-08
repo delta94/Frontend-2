@@ -1,0 +1,46 @@
+{
+  "managementSchedule": {
+    "home": {
+      "title": "Quản trị lịch phỏng vấn cá nhân"
+    },
+    "lastModifiedDate": "Ngày sửa",
+    "messages": {
+      "get-event-success": "Tải danh sách lịch phỏng vấn thành công",
+      "get-personal-event-success": "Tải danh sách lịch cá nhân thành công",
+      "get-free-event-success": "Tải danh sách lịch có thể phỏng vấn thành công",
+      "update-event-success": "Update lịch thành công",
+      "get-interviewer-statistic-success": "Lấy thông tin báo cáo thành công",
+      "get-event-by-id-failure": "Không lấy được thông tin lịch có thể phỏng vấn",
+      "delete-interview-success": "Xóa lịch phỏng vấn thành công",
+      "delete-free-time-success": "Xóa lịch có thể phỏng vấn thành công",
+      "delete-free-time-failure": "Xóa lịch có thể phỏng vấn lỗi",
+      "update-free-time-success": "Cập nhật lịch có thể phỏng vấn thành công",
+      "update-free-time-failure": "Cập nhật lịch có thể phỏng vấn lỗi",
+      "create-free-time-success": "Thêm mới lịch có thể phỏng vấn thành công",
+      "delete-interview-failure": "Xóa lịch phỏng vấn lỗi",
+      "valid-book-schedule-interview-time": "Khung giờ phỏng vấn: 07:30 - 23:30"
+    },
+    "button": {
+      "personal-schedule": "Lịch cá nhân",
+      "interview-schedule": "Lịch phỏng vấn",
+      "schedule-view": "Schedule view",
+      "current-week": "Tuần này"
+    },
+    "interview-info": "Thống kê",
+    "count-interview": "Số ca định mức",
+    "count-booked-interview": "Số ca đã xếp lịch",
+    "count-booked-freetime": "Số ca đã đăng ký",
+    "label": {
+      "reason-cancel-booked-schedule": "1. Thầy/Cô vui lòng cho biết lý do thầy/cô muốn huỷ lịch",
+      "select-interviewers-backup": "2. Thầy/Cô vui lòng cho biết nếu thầy/cô đã liên hệ được người phỏng vấn backup:",
+      "alert-cancel-booked-schedule": "3. Thầy/Cô chịu trách nhiệm khi huỷ lịch phỏng vấn đã đặt với ứng viên theo quy định tại ",
+      "alert-cancel-booked-schedule-detail": "(Phạt 100.000 VNĐ/lần hủy không có người phỏng vấn backup)",
+      "note-cancel-book-schedule": "Ca phỏng vấn đang được TTA xếp lịch",
+      "hotline-note-cancel-book-schedule": "(Hotline liên hệ: 0912343098)",
+      "note-cancel-book-schedule-have-candidate": "Ca phỏng vấn đang được TTA tìm người phỏng vấn bổ sung. Hotline liên hệ: 0912343098.",
+      "month": "Tháng ",
+      "sunday": "CN",
+      "day": "TH"
+    }
+  }
+}

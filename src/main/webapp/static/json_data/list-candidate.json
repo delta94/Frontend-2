@@ -1,0 +1,122 @@
+[
+  {
+    "interviewSessionHistoryId": 1,
+    "date": "06/05/2019",
+    "startTime": "8:00",
+    "endTime": "8:30",
+    "candidate": {
+      "candidateId": 1,
+      "candidateName": "Trần Hạo Nam"
+    },
+    "linkCv": "https://docs.google.com",
+    "jobCode": "FISE CSKH",
+    "roundName": "PVCM",
+    "email": "Nam@gmail.com",
+    "phone": "09876567864",
+    "converter": {
+      "conveterId": 1,
+      "converterName": "TuanLQ"
+    },
+    "interviewers": [
+      {
+        "interviewerId": "1",
+        "interviewerName": "ThuyTTT13"
+      },
+      {
+        "interviewerId": "0",
+        "interviewerName": "?"
+      },
+      {
+        "interviewerId": "2",
+        "interviewerName": "?"
+      },
+      {
+        "interviewerId": "3",
+        "interviewerName": "KhanhND5"
+      }
+    ],
+    "linkPdg": "https://docs.google.com",
+    "skype": "https://skype.com",
+    "zoom": "504"
+  },
+  {
+    "interviewSessionHistoryId": 2,
+    "date": "20/05/2019",
+    "startTime": "8:00",
+    "endTime": "8:30",
+    "candidate": {
+      "candidateId": 1,
+      "candidateName": "Trần Hạo Dân"
+    },
+    "linkCv": "https://docs.google.com",
+    "jobCode": "FISE PTPM",
+    "roundName": "PVCM",
+    "email": "Nam123@gmail.com",
+    "phone": "09876567865",
+    "converter": {
+      "conveterId": 1,
+      "converterName": "Tuan"
+    },
+    "interviewers": [
+      {
+        "interviewerId": "1",
+        "interviewerName": "ThuyTTT3"
+      },
+      {
+        "interviewerId": "0",
+        "interviewerName": "Khanh"
+      },
+      {
+        "interviewerId": "2",
+        "interviewerName": "?"
+      },
+      {
+        "interviewerId": "3",
+        "interviewerName": "Khanh"
+      }
+    ],
+    "linkPdg": "https://docs.google.com",
+    "skype": "https://skype.com",
+    "zoom": "504"
+  },
+  {
+    "interviewSessionHistoryId": 3,
+    "date": "20/05/2019",
+    "startTime": "8:00",
+    "endTime": "8:30",
+    "candidate": {
+      "candidateId": 1,
+      "candidateName": "Trần Hạo Tiến"
+    },
+    "linkCv": "https://docs.google.com",
+    "jobCode": "FISE PTPM",
+    "roundName": "PVCM",
+    "email": "Nam153@gmail.com",
+    "phone": "09876567868",
+    "converter": {
+      "conveterId": 1,
+      "converterName": "Tuan"
+    },
+    "interviewers": [
+      {
+        "interviewerId": "1",
+        "interviewerName": "Test"
+      },
+      {
+        "interviewerId": "0",
+        "interviewerName": "Test01"
+      },
+      {
+        "interviewerId": "2",
+        "interviewerName": "?"
+      },
+      {
+        "interviewerId": "3",
+        "interviewerName": "Khanh1"
+      }
+    ],
+    "linkPdg": "https://docs.google.com",
+    "skype": "https://skype.com",
+    "zoom": "504"
+  }
+]

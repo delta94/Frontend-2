@@ -1,0 +1,11 @@
+{
+  "id": 1,
+  "login": "namnh@toprate.io",
+  "firstName": "Nam",
+  "lastName": "Nguyen Hoai",
+  "fullname": "Nam Nguyen Hoai",
+  "email": "namnh@toprate.io",
+  "activated": true,
+  "langKey": "vi",
+  "authorities": ["ROLE_USER", "ROLE_ADMIN"]
+}

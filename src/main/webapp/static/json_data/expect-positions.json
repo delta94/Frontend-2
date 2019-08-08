@@ -1,0 +1,4 @@
+[
+  { "id": 1, "interviewJobId": 1, "code": "PVCM", "description": "Trưởng phòng", "title": "" },
+  { "id": 2, "code": "PVVH", "interviewJobId": 1, "description": "Nhân viên", "title": "" }
+]

@@ -1,0 +1,14 @@
+{
+  "search-result": {
+    "table": {
+      "time": "Thời gian",
+      "useragent": "Trình duyệt",
+      "date": "Ngày",
+      "button": "Đóng phiên này"
+    },
+    "messages": {
+      "success": "<strong>Phiên đăng nhập đã được đóng!</strong>",
+      "error": "<strong>Có lỗi xảy ra!</strong> Không thể đóng phiên đăng nhập."
+    }
+  }
+}
