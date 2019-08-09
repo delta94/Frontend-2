@@ -79,7 +79,8 @@
       }
     },
     "field": {
-      "id": "ID"
+      "id": "ID",
+      "choose-file": "Chọn file từ máy tính"
     },
     "ribbon": {
       "dev": "Phát triển"
@@ -90,7 +91,8 @@
     "action": {
       "addblob": "Thêm nội dung",
       "addimage": "Thêm ảnh",
-      "back": "Quay lại",
+      "back": " Đóng ",
+      "upload": " Upload ",
       "cancel": "Hủy",
       "delete": "Hủy lịch",
       "edit": "Sửa",

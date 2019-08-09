@@ -108,8 +108,8 @@ module.exports = options => ({
         // If you use an API serv
         //er, in `prod` mode, you will need to enable CORS
         // (see the `jhipster.cors` common JHipster property in the `application-*.yml` configurations)
-        SERVER_API_URL: options.env === 'development' ? `'http://interview-test.topica.vn:8080/'` : `'http://interview.topica.vn:8080/'`
-        // SERVER_API_URL: `'http://103.137.4.12:8080/'`
+        // SERVER_API_URL: options.env === 'development' ? `'http://interview-test.topica.vn:8080/'` : `'http://interview.topica.vn:8080/'`
+        SERVER_API_URL: `''`
       }
     }),
     new ForkTsCheckerWebpackPlugin({ tslint: true }),
