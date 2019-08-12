@@ -57,11 +57,11 @@ class FormDropZone extends React.Component {
                             {this.state.files.map((file, index) => {
                                 if (path.extname(file.path) !== ".xls") {
                                     
-                                      return  ''
+                                      return  <label key = {index}> vui lòng chọn đúng file excel </label>
                                   
                                 } else {
                                     
-                                    return <label> {path.extname(file.path)} </label>
+                                    return <label key = {index}> {file.name} </label>
                                    
                                 }
                             }
