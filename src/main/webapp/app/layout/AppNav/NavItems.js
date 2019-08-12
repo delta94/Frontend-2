@@ -7,14 +7,7 @@ export const MainNav = [
                 label: 'User Management',
                 to: '#/admin/user-management',
             },
-            {
-                label: 'Commerce',
-                to: '#/dashboards/commerce',
-            },
-            {
-                label: 'Sales',
-                to: '#/dashboards/sales',
-            },
+          
             {
                 label: 'Minimal',
                 content: [

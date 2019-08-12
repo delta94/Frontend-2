@@ -16,7 +16,7 @@ export interface IUserManagementUpdateState {
   isNew: boolean;
 }
 
-export class UserManagementUpdate extends React.Component<IUserManagementUpdateProps, IUserManagementUpdateState> {
+export class UserCreate extends React.Component<IUserManagementUpdateProps, IUserManagementUpdateState> {
   state: IUserManagementUpdateState = {
     isNew: !this.props.match.params || !this.props.match.params.login
   };
@@ -34,14 +34,14 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
     this.props.reset();
   }
 
-  saveUser = (event, values) => {
-    if (this.state.isNew) {
-      this.props.createUser(values);
-    } else {
-      this.props.updateUser(values);
-    }
-    this.handleClose();
-  };
+  // saveUser = (event, values) => {
+  //   if (this.state.isNew) {
+  //     this.props.createUser(values);
+  //   } else {
+  //     this.props.updateUser(values);
+  //   }
+  //   this.handleClose();
+  // };
 
   handleClose = () => {
     this.props.history.push('/admin/user-management');
@@ -86,15 +86,15 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
         <div className="container">
           <Row className="justify-content-center">
             <Col md="12">
-              <Label>
+              <label className="label-table">
                 <h3>
                   <Translate contentKey="global.field.choose-file">Choose from computer</Translate>
                 </h3>
                 <FormDropZone />
-              </Label>
+              </label>
             </Col>
             <div>
-              <Button tag={Link} to="/admin/user-management/results" replace color="info">
+              <Button tag={Link} to="/admin/user-management/results-files" replace color="info">
                 &nbsp;
                 <span className="d-none d-md-inline">
                   <Translate contentKey="entity.action.upload">Upload</Translate>
@@ -123,4 +123,4 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(UserManagementUpdate);
+)(UserCreate);

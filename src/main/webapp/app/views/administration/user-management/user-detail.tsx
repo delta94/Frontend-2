@@ -29,7 +29,7 @@ export class UserManagementDetail extends React.Component<IUserManagementDetailP
             <Translate contentKey="userManagement.home.createOrEditLabel">Create</Translate>
           </h1>
         </Col>
-        <Col md="10">
+        <Col md="12">
           <Button tag={Link} to="/admin/user-management" replace color="info">
             <FontAwesomeIcon icon="arrow-left" />
             &nbsp;

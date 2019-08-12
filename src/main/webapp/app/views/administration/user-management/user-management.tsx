@@ -155,7 +155,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
                         <Translate contentKey="entity.action.view">View</Translate>
                       </span>
                     </Button>
-                    <Button tag={Link} to={`${match.url}/${user.login}/edit`} color="primary" size="sm">
+                    <Button tag={Link} to={`${match.url}/${user.login}/editaaaaa`} color="primary" size="sm">
                       <FontAwesomeIcon icon="pencil-alt" />{' '}
                       <span className="d-none d-md-inline">
                         <Translate contentKey="entity.action.edit">Edit</Translate>

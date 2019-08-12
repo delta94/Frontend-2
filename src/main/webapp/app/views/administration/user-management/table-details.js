@@ -19,7 +19,7 @@ export default class DataTableBasic extends React.Component {
     }
 
     render() { 
-        const {data} = this.state;
+        const {data} = this.state; 
 
         return (
             <Fragment>
