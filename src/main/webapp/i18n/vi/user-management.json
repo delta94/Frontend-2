@@ -15,13 +15,16 @@
     "detail": {
       "title": "Tài khoản"
     },
+    "fullName": "Họ tên",
+    "phone": "Số điện thoại",
+    "feature": "Chức năng",
     "login": "Tên đăng nhập",
     "firstName": "Tên",
     "lastName": "Họ",
     "email": "Email",
     "activated": "Kích hoạt",
     "deactivated": "Khóa",
-    "profiles": "Các quyền",
+    "profiles": "Phân loại",
     "langKey": "Ngôn ngữ",
     "createdBy": "Người tạo",
     "createdDate": "Ngày tạo",

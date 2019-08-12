@@ -62,6 +62,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
 
   render() {
     const { users, account, match, totalItems } = this.props;
+    console.log(users);
     return (
       <div>
         {/* day la trang quan ly user */}
@@ -71,55 +72,72 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
             <FontAwesomeIcon icon="plus" /> <Translate contentKey="userManagement.home.createLabel">Create a new user</Translate>
           </Link>
         </h2>
+        <div />
+
         <Table responsive striped>
           <thead>
             <tr>
-              <th className="hand" onClick={this.sort('id')}>
+              {/* <th className="hand" onClick={this.sort('id')}>
                 <Translate contentKey="global.field.id">ID</Translate>
                 <FontAwesomeIcon icon="sort" />
-              </th>
-              <th className="hand" onClick={this.sort('login')}>
-                <Translate contentKey="userManagement.login">Login</Translate>
+              </th> */}
+              <th className="hand" onClick={this.sort('fullName')}>
+                <Translate contentKey="userManagement.fullName">FullName</Translate>
                 <FontAwesomeIcon icon="sort" />
               </th>
+              <th className="hand" onClick={this.sort('phone')}>
+                <Translate contentKey="userManagement.phone">Phone</Translate>
+                <FontAwesomeIcon icon="sort" />
+              </th>
+              {/* <th className="hand" onClick={this.sort('login')}>
+                <Translate contentKey="userManagement.login">Login</Translate>
+                <FontAwesomeIcon icon="sort" />
+              </th> */}
               <th className="hand" onClick={this.sort('email')}>
                 <Translate contentKey="userManagement.email">Email</Translate>
                 <FontAwesomeIcon icon="sort" />
               </th>
               <th />
-              <th className="hand" onClick={this.sort('langKey')}>
+              {/* <th className="hand" onClick={this.sort('langKey')}>
                 <Translate contentKey="userManagement.langKey">Lang Key</Translate>
                 <FontAwesomeIcon icon="sort" />
-              </th>
+              </th> */}
               <th>
                 <Translate contentKey="userManagement.profiles">Profiles</Translate>
               </th>
-              <th className="hand" onClick={this.sort('createdDate')}>
+              {/* <th className="hand" onClick={this.sort('createdDate')}>
                 <Translate contentKey="userManagement.createdDate">Created Date</Translate>
                 <FontAwesomeIcon icon="sort" />
-              </th>
-              <th className="hand" onClick={this.sort('lastModifiedBy')}>
+              </th> */}
+              {/* <th className="hand" onClick={this.sort('lastModifiedBy')}>
                 <Translate contentKey="userManagement.lastModifiedBy">Last Modified By</Translate>
                 <FontAwesomeIcon icon="sort" />
-              </th>
-              <th id="modified-date-sort" className="hand" onClick={this.sort('lastModifiedDate')}>
+              </th> */}
+              {/* <th id="modified-date-sort" className="hand" onClick={this.sort('lastModifiedDate')}>
                 <Translate contentKey="userManagement.lastModifiedDate">Last Modified Date</Translate>
                 <FontAwesomeIcon icon="sort" />
+              </th> */}
+              <th id="modified-date-sort" className="hand">
+                <Translate contentKey="userManagement.feature">Feature</Translate>
               </th>
               <th />
             </tr>
           </thead>
+
           <tbody>
-            {users.map((user, i) => (
-              <tr id={user.login} key={`user-${i}`}>
-                <td>
-                  <Button tag={Link} to={`${match.url}/${user.login}`} color="link" size="sm">
+            {users
+              ? users.map((user, i) => (
+                  <tr id={user.fullName} key={`user-${i}`}>
+                    {/* <td>
+                  <Button tag={Link} to={`${match.url}/${user.fullName}`} color="link" size="sm">
                     {user.id}
                   </Button>
-                </td>
-                <td>{user.login}</td>
-                <td>{user.email}</td>
-                <td>
+                </td> */}
+                    <td>{user.fullName}</td>
+                    <td>{user.phone}</td>
+                    <td>{user.email}</td>
+                    <td>{user.profiles}</td>
+                    {/* <td>
                   {user.activated ? (
                     <Button color="success" onClick={this.toggleActive(user)}>
                       Activated
@@ -129,9 +147,9 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
                       Deactivated
                     </Button>
                   )}
-                </td>
-                <td>{user.langKey}</td>
-                <td>
+                </td> */}
+                    {/* <td>{user.langKey}</td> */}
+                    {/* <td>
                   {user.authorities
                     ? user.authorities.map((authority, j) => (
                         <div key={`user-auth-${i}-${j}`}>
@@ -139,21 +157,22 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
                         </div>
                       ))
                     : null}
-                </td>
-                <td>
+                </td> */}
+                    {/* <td>
                   <TextFormat value={user.createdDate} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
                 </td>
                 <td>{user.lastModifiedBy}</td>
                 <td>
                   <TextFormat value={user.lastModifiedDate} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
-                </td>
-                <td className="text-right">
-                  <div className="btn-group flex-btn-group-container">
-                    <Button tag={Link} to={`${match.url}/${user.login}`} color="info" size="sm">
+                </td> */}
+                    <td className="text-right">
+                      <div className="btn-group flex-btn-group-container">
+                        {/* <Button tag={Link} to={`${match.url}/${user.fullName}`} color="info" size="sm">
                       <FontAwesomeIcon icon="eye" />{' '}
                       <span className="d-none d-md-inline">
                         <Translate contentKey="entity.action.view">View</Translate>
                       </span>
+<<<<<<< HEAD
                     </Button>
                     <Button tag={Link} to={`${match.url}/${user.login}/editaaaaa`} color="primary" size="sm">
                       <FontAwesomeIcon icon="pencil-alt" />{' '}
@@ -177,6 +196,32 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
                 </td>
               </tr>
             ))}
+=======
+                    </Button> */}
+                        <Button tag={Link} to={`${match.url}/${user.fullName}/edit`} color="primary" size="sm">
+                          <FontAwesomeIcon icon="pencil-alt" />{' '}
+                          <span className="d-none d-md-inline">
+                            <Translate contentKey="entity.action.edit">Edit</Translate>
+                          </span>
+                        </Button>
+                        <Button
+                          tag={Link}
+                          to={`${match.url}/${user.fullName}/delete`}
+                          color="danger"
+                          size="sm"
+                          disabled={account.fullName === user.fullName}
+                        >
+                          <FontAwesomeIcon icon="trash" />{' '}
+                          <span className="d-none d-md-inline">
+                            <Translate contentKey="entity.action.delete">Delete</Translate>
+                          </span>
+                        </Button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              : ''}
+            >>>>>>> origin/Hungdv
           </tbody>
         </Table>
         <Row className="justify-content-center">

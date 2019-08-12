@@ -3,16 +3,24 @@ import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } 
 
 import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
 import { IUser, defaultValue } from 'app/common/model/user.model';
-import { USER_MANAGE_ACTION_TYPES } from  'app/constants/user-management';
-import { createUserService, deleteUserService, getRolesService, getUserService, getUsersService, updateUserService } from 'app/services/user-management';
+import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
+import {
+  createUserService,
+  deleteUserService,
+  getRolesService,
+  getUserService,
+  getUsersService,
+  updateUserService
+} from 'app/services/user-management';
 
 const apiUrl = 'api/users';
 // Actions
 export const getUsers: ICrudGetAllAction<IUser> = (page, size, sort) => {
-  debugger
+  // debugger
   return {
     type: USER_MANAGE_ACTION_TYPES.FETCH_USERS,
-    payload: getUsersService(page, size, sort)
+    // payload: getUsersService(page, size, sort)
+    payload: axios.get('./content/json_data/account.json')
   };
 };
 
