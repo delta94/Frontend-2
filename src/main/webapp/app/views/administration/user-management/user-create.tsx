@@ -1,7 +1,6 @@
 import React from 'react';
 import './user-management.scss';
 import FormDropZone from './form-dropzone';
-import ButtonUpload from './button-upload-file';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Label, Row, Col } from 'reactstrap';
@@ -49,11 +48,12 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
   };
 
   onClick = e => {
-    console.log(e);
+    return String(e);
   };
   render() {
     const isInvalid = false;
-    const { user, loading, updating, roles } = this.props;
+    const { user, loading, updating, roles, match } = this.props;
+
     return (
       <div>
         <Row>
@@ -65,7 +65,6 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
         </Row>
         <Row className="justify-content-left">
           <Col md="6">
-            <ButtonUpload onClick={this.onClick} />
             <div className="multi-row">
               <Label>
                 <h5 className="d-none d-md-inline">tải file mẫu :</h5>
@@ -94,6 +93,14 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                 <FormDropZone />
               </Label>
             </Col>
+            <div>
+              <Button tag={Link} to="/admin/user-management/results" replace color="info">
+                &nbsp;
+                <span className="d-none d-md-inline">
+                  <Translate contentKey="entity.action.upload">Upload</Translate>
+                </span>
+              </Button>
+            </div>
           </Row>
         </div>
       </div>

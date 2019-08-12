@@ -3,7 +3,7 @@ import { Switch } from 'react-router-dom';
 
 import ErrorBoundaryRoute from 'app/common/error/error-boundary-route';
 import UserManagement from './user-management';
-import UserManagementDetail from 'app/views/administration/user-management/user-management-detail';
+import UserManagementDetail from 'app/views/administration/user-management/user-detail';
 import UserManagementUpdate from 'app/views/administration/user-management/user-create';
 import UserManagementDeleteDialog from 'app/views/administration/user-management/user-management-delete-dialog';
 

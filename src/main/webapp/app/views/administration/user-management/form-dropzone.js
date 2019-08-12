@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 
 import {
     Row, Col,
@@ -8,15 +8,15 @@ import {
 import Dropzone from 'react-dropzone'
 
 class FormDropZone extends React.Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
             files: []
         }
     }
 
     onDrop(files) {
-        this.setState({files});
+        this.setState({ files });
     }
 
     onCancel() {
@@ -25,12 +25,11 @@ class FormDropZone extends React.Component {
         });
     }
 
+
     render() {
-        const files = this.state.files.map(file => (
-            <ListGroupItem key={file.name}>
-                {file.name} - {file.size} bytes
-            </ListGroupItem>
-        ))
+        var path = require('path');
+        
+
         return (
             <Fragment>
                 <Row>
@@ -40,11 +39,12 @@ class FormDropZone extends React.Component {
                                 onDrop={this.onDrop.bind(this)}
                                 onFileDialogCancel={this.onCancel.bind(this)}
                             >
-                                {({getRootProps, getInputProps}) => (
+                                {({ getRootProps, getInputProps }) => (
                                     <div {...getRootProps()}>
                                         <input {...getInputProps()} />
                                         <div className="dropzone-content">
                                             <p>Try dropping some files here, or click to select files to upload.</p>
+                                            <p>File must be excel</p>
                                         </div>
                                     </div>
                                 )}
@@ -52,9 +52,20 @@ class FormDropZone extends React.Component {
                         </div>
                     </Col>
                     <Col md="12">
-                        <b className="mb-2 d-block">Dropped Files</b>
+                      
                         <ListGroup>
-                            {files}
+                            {this.state.files.map((file, index) => {
+                                if (path.extname(file.path) !== ".xls") {
+                                    
+                                      return  ''
+                                  
+                                } else {
+                                    
+                                    return <label> {path.extname(file.path)} </label>
+                                   
+                                }
+                            }
+                            )}                          
                         </ListGroup>
                     </Col>
                 </Row>
