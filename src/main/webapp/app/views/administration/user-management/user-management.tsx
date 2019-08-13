@@ -45,7 +45,6 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
     //   }, 3000);
     const { users } = nextProps;
     if (users.length > 0) {
-      console.log(users.length);
       this.setState({
         loading: false
       });
@@ -96,7 +95,6 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
 
   render() {
     const { users, account, match, totalItems } = this.props;
-    console.log(users);
     return (
       <div>
         {/* day la trang quan ly user */}
@@ -145,18 +143,18 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
 
                     <td className="text-center">
                       <div className="btn-group flex-btn-group-container">
-                        {/* <Button tag={Link} to={`${match.url}/${user.fullName}/edit`} color="primary" size="sm">
-                          <FontAwesomeIcon icon="pencil-alt" />{' '}
-                          <span className="d-none d-md-inline">
-                            <Translate contentKey="entity.action.edit">Edit</Translate>
-                          </span>
-                        </Button>  */}
-                        <Button color="primary" size="sm" onClick={() => this.editUserManagement(user)}>
+                        <Button tag={Link} to={`${match.url}/${user.fullName}/edit`} color="primary" size="sm">
                           <FontAwesomeIcon icon="pencil-alt" />{' '}
                           <span className="d-none d-md-inline">
                             <Translate contentKey="entity.action.edit">Edit</Translate>
                           </span>
                         </Button>
+                        {/* <Button color="primary" size="sm" onClick={() => this.editUserManagement(user)}>
+                          <FontAwesomeIcon icon="pencil-alt" />{' '}
+                          <span className="d-none d-md-inline">
+                            <Translate contentKey="entity.action.edit">Edit</Translate>
+                          </span>
+                        </Button> */}
                         <Button
                           tag={Link}
                           to={`${match.url}/${user.id}/delete`}

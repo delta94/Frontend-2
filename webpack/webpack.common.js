@@ -108,7 +108,7 @@ module.exports = options => ({
         // If you use an API serv
         //er, in `prod` mode, you will need to enable CORS
         // (see the `jhipster.cors` common JHipster property in the `application-*.yml` configurations)
-        SERVER_API_URL: options.env === 'development' ? `http://5d521fdf3432e70014e6b5ae.mockapi.io/` : `http://5d521fdf3432e70014e6b5ae.mockapi.io/`
+        SERVER_API_URL: options.env === 'development' ? `'http://5d521fdf3432e70014e6b5ae.mockapi.io/'` : `'http://5d521fdf3432e70014e6b5ae.mockapi.io/'`
         // SERVER_API_URL: `''`
       }
     }),

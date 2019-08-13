@@ -2,6 +2,7 @@ import React from 'react';
 import { Switch } from 'react-router-dom';
 
 import ErrorBoundaryRoute from 'app/common/error/error-boundary-route';
+import UserManagementUpdate from './user-management-update';
 import UserManagement from './user-management';
 import UserManagementDetail from 'app/views/administration/user-management/user-detail';
 import CreateUser from 'app/views/administration/user-management/user-create';
@@ -12,6 +13,7 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute exact path={`${match.url}/new`} component={CreateUser} />
       <ErrorBoundaryRoute exact path={`${match.url}/results-files`} component={UserManagementDetail} />
       <ErrorBoundaryRoute path={match.url} component={UserManagement} />
+      <ErrorBoundaryRoute exact path={`${match.url}/edit`} component={UserManagementUpdate} />
     </Switch>
   </>
 );
