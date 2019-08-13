@@ -16,8 +16,7 @@ export interface IUser {
   fullName?: string;
   phone?: any;
   email?: string;
-  profiles?: string;
-  feature?: string;
+  profiles?: string[];
 }
 
 export const defaultValue: Readonly<IUser> = {
@@ -38,6 +37,5 @@ export const defaultValue: Readonly<IUser> = {
   fullName: '',
   phone: '',
   email: '',
-  profiles: '',
-  feature: ''
+  profiles: []
 };

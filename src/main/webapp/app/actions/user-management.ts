@@ -19,8 +19,8 @@ export const getUsers: ICrudGetAllAction<IUser> = (page, size, sort) => {
   // debugger
   return {
     type: USER_MANAGE_ACTION_TYPES.FETCH_USERS,
-    // payload: getUsersService(page, size, sort)
-    payload: axios.get('./content/json_data/account.json')
+    payload: getUsersService(page, size, sort)
+    // payload: axios.get('./content/json_data/account.json')
   };
 };
 

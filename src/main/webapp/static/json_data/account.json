@@ -1,20 +1,23 @@
 [
   {
+    "id": "1",
     "fullName": "Đồng Văn Hùng",
     "phone": "1234567890",
     "email": "hungdv@gmail.com",
     "profiles": "dev"
   },
   {
+    "id": "2",
     "fullName": "Đồng Hùng",
     "phone": "1234567890",
     "email": "hungdv@gmail.com",
     "profiles": "dev"
   },
   {
+    "id": "3",
     "fullName": "Hùng Đồng",
     "phone": "1234567890",
     "email": "hungdv@gmail.com",
-    "profiles": "dev"
+    "profiles": ["dev", "test"]
   }
 ]
