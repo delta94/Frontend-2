@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getUser, getRoles, updateUser, createUser, reset } from 'app/actions/user-management';
 import { IRootState } from 'app/reducers';
 import Dropzone from 'react-dropzone';
+import axios from 'axios';
 
 export interface IUserManagementUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ login: string }> {}
 
@@ -42,14 +43,14 @@ export class UserCreate extends React.Component<IUserManagementUpdateProps, IUse
     debugger;
     var checkFile = acceptedFiles[0].name;
     var file = checkFile.split('.')[1];
-    if (file === 'xls') {
+    if (file === 'xls' || file === 'xlsx') {
       this.setState({
         file: checkFile,
         isActive: true
       });
     } else {
       this.setState({
-        file: 'xin vui lòng chọn đúng file xls',
+        file: 'xin vui lòng chọn đúng file xls hoặc xlsx',
         isActive: false
       });
     }
@@ -86,7 +87,7 @@ export class UserCreate extends React.Component<IUserManagementUpdateProps, IUse
               <Label>
                 <h5 className="d-none d-md-inline">tải file mẫu :</h5>
               </Label>
-              <a href="#/top">File_mau_du_lieu_khach_hang.xlsx</a>
+              <a href="http://192.168.0.103:8088/v1/customer/template-import">File_mau_du_lieu_khach_hang.xlsx</a>
             </div>
           </Col>
           <Col md="6">
