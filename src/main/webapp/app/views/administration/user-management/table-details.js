@@ -88,4 +88,4 @@ export default class DataTableBasic extends React.Component {
             </Fragment>
         )
     }
-}
+} 
