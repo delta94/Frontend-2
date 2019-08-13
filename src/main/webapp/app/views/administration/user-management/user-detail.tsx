@@ -8,8 +8,6 @@ import { Button, Row, Badge, Col, Label } from 'reactstrap';
 import { Translate, TextFormat } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { APP_DATE_FORMAT } from 'app/config/constants';
-import { languages } from 'app/config/translation';
 import { getUser } from 'app/actions/user-management';
 import { IRootState } from 'app/reducers';
 

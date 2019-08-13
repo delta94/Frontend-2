@@ -3,7 +3,7 @@ import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } 
 
 import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
 import { IUser, defaultValue } from 'app/common/model/user.model';
-import { USER_MANAGE_ACTION_TYPES} from 'app/constants/user-management';
+import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
 
 const initialState = {
   loading: false,
@@ -13,6 +13,7 @@ const initialState = {
   user: defaultValue,
   updating: false,
   updateSuccess: false,
+  getNameFile: '',
   totalItems: 0
 };
 
@@ -89,6 +90,7 @@ export default (state: UserManagementState = initialState, action): UserManageme
         user: defaultValue
       };
     case USER_MANAGE_ACTION_TYPES.RESET:
+    case USER_MANAGE_ACTION_TYPES.EXPORT_FILE:
       return {
         ...initialState
       };

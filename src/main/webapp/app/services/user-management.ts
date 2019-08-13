@@ -13,6 +13,10 @@ export const getRolesService = () => {
   return axios.get(`${apiUrl}/authorities`);
 };
 
+export const getFile = () => {
+  return axios.get(`http://192.168.0.103:8088/v1/customer/template-import`);
+};
+
 export const getUserService = id => {
   const requestUrl = `${apiUrl}/${id}`;
   return axios.get<IUser>(requestUrl);

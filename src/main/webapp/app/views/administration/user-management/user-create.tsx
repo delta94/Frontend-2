@@ -1,6 +1,5 @@
 import React from 'react';
 import './user-management.scss';
-import FormDropZone from './form-dropzone';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Label, Row, Col } from 'reactstrap';
@@ -9,16 +8,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { getUser, getRoles, updateUser, createUser, reset } from 'app/actions/user-management';
 import { IRootState } from 'app/reducers';
+import Dropzone from 'react-dropzone';
 
 export interface IUserManagementUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ login: string }> {}
 
 export interface IUserManagementUpdateState {
   isNew: boolean;
+  file: string;
 }
 
 export class UserCreate extends React.Component<IUserManagementUpdateProps, IUserManagementUpdateState> {
   state: IUserManagementUpdateState = {
-    isNew: !this.props.match.params || !this.props.match.params.login
+    isNew: !this.props.match.params || !this.props.match.params.login,
+    file: ''
   };
 
   componentDidMount() {
@@ -34,14 +36,16 @@ export class UserCreate extends React.Component<IUserManagementUpdateProps, IUse
     this.props.reset();
   }
 
-  // saveUser = (event, values) => {
-  //   if (this.state.isNew) {
-  //     this.props.createUser(values);
-  //   } else {
-  //     this.props.updateUser(values);
-  //   }
-  //   this.handleClose();
-  // };
+  onDrop = (acceptedFiles, rejectedFiles) => {
+    debugger;
+    var checkFile = acceptedFiles[0].name;
+    var file = checkFile.split('.')[1];
+    if (file === 'xls') {
+      this.setState({ file: checkFile });
+    } else {
+      this.setState({ file: 'xin vui lòng chọn đúng file xls' });
+    }
+  };
 
   handleClose = () => {
     this.props.history.push('/admin/user-management');
@@ -51,9 +55,6 @@ export class UserCreate extends React.Component<IUserManagementUpdateProps, IUse
     return String(e);
   };
   render() {
-    const isInvalid = false;
-    const { user, loading, updating, roles, match } = this.props;
-
     return (
       <div>
         <Row>
@@ -90,8 +91,21 @@ export class UserCreate extends React.Component<IUserManagementUpdateProps, IUse
                 <h3>
                   <Translate contentKey="global.field.choose-file">Choose from computer</Translate>
                 </h3>
-                <FormDropZone />
+                <div className="dropzone-wrapper dropzone-wrapper-lg">
+                  <Dropzone onDrop={this.onDrop.bind(this)}>
+                    {({ getRootProps, getInputProps }) => (
+                      <div {...getRootProps()}>
+                        <input {...getInputProps()} />
+                        <div className="dropzone-content">
+                          <p>Try dropping some files here, or click to select files to upload.</p>
+                          <p>File must be excel</p>
+                        </div>
+                      </div>
+                    )}
+                  </Dropzone>
+                </div>
               </label>
+              {this.state.file}
             </Col>
             <div>
               <Button tag={Link} to="/admin/user-management/results-files" replace color="info">
