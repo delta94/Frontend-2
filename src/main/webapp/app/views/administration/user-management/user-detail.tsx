@@ -1,10 +1,9 @@
 import React from 'react';
-import TableBordered from './table-results';
 import DataTableFixedHeader from './table-details';
 import './user-management.scss';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Badge, Col, Label } from 'reactstrap';
+import { Button, Row, Badge, Col, Label, Table } from 'reactstrap';
 import { Translate, TextFormat } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -43,7 +42,21 @@ export class UserManagementDetail extends React.Component<IUserManagementDetailP
           </Button>
         </Col>
 
-        <TableBordered />
+        <Table className="mb-0" bordered>
+          <thead>
+            <tr>
+              <td>File dữ liệu</td>
+              <td>tổng 651 dòng</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row" />
+              <td> 641 dòng thành công</td>
+              <td>10 dòng không thành công</td>
+            </tr>
+          </tbody>
+        </Table>
 
         <Col md="8">
           <div className="span-line">
