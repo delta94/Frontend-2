@@ -15,12 +15,14 @@ export interface IUserManagementUpdateProps extends StateProps, DispatchProps, R
 export interface IUserManagementUpdateState {
   isNew: boolean;
   file: string;
+  isActive: boolean;
 }
 
 export class UserCreate extends React.Component<IUserManagementUpdateProps, IUserManagementUpdateState> {
   state: IUserManagementUpdateState = {
     isNew: !this.props.match.params || !this.props.match.params.login,
-    file: ''
+    file: '',
+    isActive: false
   };
 
   componentDidMount() {
@@ -41,14 +43,28 @@ export class UserCreate extends React.Component<IUserManagementUpdateProps, IUse
     var checkFile = acceptedFiles[0].name;
     var file = checkFile.split('.')[1];
     if (file === 'xls') {
-      this.setState({ file: checkFile });
+      this.setState({
+        file: checkFile,
+        isActive: true
+      });
     } else {
-      this.setState({ file: 'xin vui lòng chọn đúng file xls' });
+      this.setState({
+        file: 'xin vui lòng chọn đúng file xls',
+        isActive: false
+      });
     }
   };
 
   handleClose = () => {
     this.props.history.push('/admin/user-management');
+  };
+
+  validated = () => {
+    if (this.state.isActive) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   onClick = e => {
@@ -108,7 +124,7 @@ export class UserCreate extends React.Component<IUserManagementUpdateProps, IUse
               {this.state.file}
             </Col>
             <div>
-              <Button tag={Link} to="/admin/user-management/results-files" replace color="info">
+              <Button tag={Link} to="/admin/user-management/results-files" replace color="info" disabled={!this.validated()}>
                 &nbsp;
                 <span className="d-none d-md-inline">
                   <Translate contentKey="entity.action.upload">Upload</Translate>
