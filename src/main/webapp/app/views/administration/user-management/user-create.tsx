@@ -42,14 +42,14 @@ export class UserCreate extends React.Component<IUserManagementUpdateProps, IUse
     debugger;
     var checkFile = acceptedFiles[0].name;
     var file = checkFile.split('.')[1];
-    if (file === 'xls') {
+    if (file === 'xls' || file === 'xlsx') {
       this.setState({
         file: checkFile,
         isActive: true
       });
     } else {
       this.setState({
-        file: 'xin vui lòng chọn đúng file xls',
+        file: 'xin vui lòng chọn đúng file xls hoặc xlsx',
         isActive: false
       });
     }
