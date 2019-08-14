@@ -9,6 +9,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { downloadFileInterview, getUser, getRoles, updateUser, createUser, reset } from 'app/actions/user-management';
 import { IRootState } from 'app/reducers';
 import Dropzone from 'react-dropzone';
+import complete from './image/complete.png';
+import error from './image/error.png';
 
 export interface IUserManagementUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ login: string }> {}
 
@@ -16,13 +18,15 @@ export interface IUserManagementUpdateState {
   isNew: boolean;
   file: string;
   isActive: boolean;
+  urlImage: string;
 }
 
 export class UserCreate extends React.Component<IUserManagementUpdateProps, IUserManagementUpdateState> {
   state: IUserManagementUpdateState = {
     isNew: !this.props.match.params || !this.props.match.params.login,
     file: 'Try dropping some files here, or click to select files to upload.',
-    isActive: false
+    isActive: false,
+    urlImage: ''
   };
 
   componentDidMount() {
@@ -45,12 +49,14 @@ export class UserCreate extends React.Component<IUserManagementUpdateProps, IUse
     if (file === 'xls' || file === 'xlsx') {
       this.setState({
         file: checkFile,
-        isActive: true
+        isActive: true,
+        urlImage: complete
       });
     } else {
       this.setState({
         file: 'xin vui lòng chọn đúng file xls hoặc xlsx',
-        isActive: false
+        isActive: false,
+        urlImage: error
       });
     }
   };
@@ -82,10 +88,12 @@ export class UserCreate extends React.Component<IUserManagementUpdateProps, IUse
           <Col md="6">
             <div className="multi-row">
               <Label>
-                <h5 className="d-none d-md-inline">tải file mẫu :</h5>
+                <h5 className="d-none d-md-inline">
+                  <Translate contentKey="entity.action.reinstall">reinstall</Translate>
+                </h5>
               </Label>
               <button className="myButton" onClick={() => downloadFileInterview()}>
-                File_mau_du_lieu_khach_hang.xlsx
+                tại đây
               </button>
             </div>
           </Col>
@@ -113,7 +121,7 @@ export class UserCreate extends React.Component<IUserManagementUpdateProps, IUse
                       <div {...getRootProps()}>
                         <input {...getInputProps()} />
                         <div className="dropzone-content">
-                          <img src="C:/Users/LENOVO/Downloads/Telegram Desktop/IZZI-Platform.xlsx" className="img-responsive" alt="Image" />
+                          <img src={this.state.urlImage} style={{ width: '20%', marginBottom: '10px' }} />
 
                           <p>{this.state.file}</p>
                         </div>

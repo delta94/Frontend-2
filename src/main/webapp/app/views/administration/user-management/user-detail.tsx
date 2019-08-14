@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Badge, Col, Label, Table } from 'reactstrap';
 import { Translate, TextFormat } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { getUser } from 'app/actions/user-management';
 import { IRootState } from 'app/reducers';
@@ -23,18 +22,11 @@ export class UserManagementDetail extends React.Component<IUserManagementDetailP
       <Row>
         <Col md="8">
           <h1>
-            <Translate contentKey="userManagement.home.createOrEditLabel">Create</Translate>
+            <Translate contentKey="userManagement.home.detail-label">Deilta</Translate>
           </h1>
         </Col>
         <Col md="12">
-          <Button tag={Link} to="/admin/user-management" replace color="info">
-            <FontAwesomeIcon icon="arrow-left" />
-            &nbsp;
-            <span className="d-none d-md-inline">
-              <Translate contentKey="entity.action.back">Back</Translate>
-            </span>
-          </Button>
-          <Button tag={Link} to="/admin/user-management/new" replace color="info">
+          <Button tag={Link} to="./admin/user-management/new" replace color="info">
             &nbsp;
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.continue">Continue Upload</Translate>
@@ -42,34 +34,20 @@ export class UserManagementDetail extends React.Component<IUserManagementDetailP
           </Button>
         </Col>
 
-        <Table className="mb-0" bordered>
-          <thead>
-            <tr>
-              <td>File dữ liệu</td>
-              <td>tổng 651 dòng</td>
-            </tr>
-          </thead>
+        <Table className="mb-0" bordered style={{ background: 'antiquewhite' }}>
           <tbody>
             <tr>
-              <th scope="row" />
-              <td> 641 dòng thành công</td>
-              <td>10 dòng không thành công</td>
+              <td> Tổng số {150} bản ghi </td>
+              <td>Số bản ghi không lỗi {140}</td>
+              <td> Số bản ghi lỗi {10}</td>
             </tr>
           </tbody>
         </Table>
 
         <Col md="8">
-          <div className="span-line">
-            <Label>
-              <h4>
-                <Translate contentKey="userManagement.home.line-error">Line Error</Translate>
-              </h4>
-            </Label>
-          </div>
+          <div className="span-line" />
         </Col>
-        <Col md="4">
-          <a href="#/top">Tải kết quả đầy đủ</a>
-        </Col>
+
         <DataTableFixedHeader />
       </Row>
     );
