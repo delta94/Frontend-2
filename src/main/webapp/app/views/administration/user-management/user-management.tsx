@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Table, Row, Badge } from 'reactstrap';
-// import Loading from './../../../common/Loading/loading';
 import './user-management.scss';
 import {
   Translate,
@@ -99,7 +98,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
   render() {
     const { users, account, match, totalItems } = this.props;
     const { activePage, itemsPerPage } = this.state;
-    console.log(this.state);
+
     return (
       <div>
         {/* day la trang quan ly user */}
@@ -167,7 +166,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
                       to={`${match.url}/${user.id}/delete`}
                       color="danger"
                       size="sm"
-                      // disabled={account.fullName === user.fullName}
+                      disabled={account.fullName === user.fullName}
                     >
                       <FontAwesomeIcon icon="trash" />{' '}
                       <span className="d-none d-md-inline">

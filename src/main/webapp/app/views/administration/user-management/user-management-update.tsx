@@ -65,14 +65,6 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
               <p>Loading...</p>
             ) : (
               <AvForm onValidSubmit={this.saveUser}>
-                {/* {user.id ? (
-                  // <AvGroup>
-                  //   <Label for="id">
-                  //     <Translate contentKey="global.field.id">ID</Translate>
-                  //   </Label>
-                  //   <AvField type="text" className="form-control" name="id" required readOnly value={user.id} />
-                  // </AvGroup>
-                ) : null} */}
                 <AvGroup>
                   <Label for="fullName">
                     <Translate contentKey="userManagement.fullName">Họ tên</Translate>
@@ -119,24 +111,6 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                     value={user.phone}
                   />
                 </AvGroup>
-                {/* <AvGroup>
-                  <Label for="lastName">
-                    <Translate contentKey="userManagement.lastName">Last Name</Translate>
-                  </Label>
-                  <AvField
-                    type="text"
-                    className="form-control"
-                    name="lastName"
-                    validate={{
-                      maxLength: {
-                        value: 50,
-                        errorMessage: translate('entity.validation.maxlength', { max: 50 })
-                      }
-                    }}
-                    value={user.lastName}
-                  />
-                  <AvFeedback>This field cannot be longer than 50 characters.</AvFeedback>
-                </AvGroup> */}
                 <AvGroup>
                   <AvField
                     name="email"
@@ -167,13 +141,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                   <Label for="profiles">
                     <Translate contentKey="userManagement.profiles">Profiles</Translate>
                   </Label>
-                  <AvField
-                    name="profiles"
-                    // label={translate('global.form.profiles.label')}
-                    // placeholder={translate('global.form.profiles.placeholder')}
-                    type="profiles"
-                    value={user.profiles}
-                  />
+                  <AvField name="profiles" label={translate('global.form.profiles.label')} type="profiles" value={user.profiles} />
                 </AvGroup>
                 {/* <AvGroup check> */}
                 {/* <AvGroup>

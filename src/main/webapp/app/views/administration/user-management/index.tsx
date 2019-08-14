@@ -7,6 +7,7 @@ import UserManagement from './user-management';
 import UserManagementDetail from 'app/views/administration/user-management/user-detail';
 import CreateUser from 'app/views/administration/user-management/user-create';
 import UserManagementDeleteDialog from 'app/views/administration/user-management/user-management-delete-dialog';
+import { Route } from 'react-router-dom';
 
 const Routes = ({ match }) => (
   <>
