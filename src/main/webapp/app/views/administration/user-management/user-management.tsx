@@ -104,6 +104,13 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
         {/* day la trang quan ly user */}
         <h2 id="user-management-page-heading">
           <Translate contentKey="userManagement.home.title">Users</Translate>
+          <input
+            style={{ borderRadius: '5px', width: '100px', height: '30px', marginLeft: '20px', padding: '3px', fontSize: '15px' }}
+            className="searchUser"
+            placeholder="Tìm kiếm"
+          />
+          <FontAwesomeIcon icon="search" style={{ width: '15px', height: '15px;' }} />
+
           <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity">
             <FontAwesomeIcon icon="plus" /> <Translate contentKey="userManagement.home.createLabel">Create a new user</Translate>
           </Link>

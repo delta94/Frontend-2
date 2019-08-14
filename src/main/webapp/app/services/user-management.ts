@@ -32,6 +32,5 @@ export const deleteUserService = id => {
 };
 
 export const listUserService = (users, itemsPerPage, activePage) => {
-  debugger;
   return users.slice(itemsPerPage * activePage, itemsPerPage * activePage + itemsPerPage);
 };

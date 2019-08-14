@@ -3,7 +3,7 @@
     "home": {
       "title": "Tài khoản",
       "createLabel": "Tạo tài khoản mới",
-      "createOrEditLabel": "Tạo mới dữ liệu khách hàng",
+      "editLabel": "Cập nhật thông tin khách hàng",
       "line-error": "3 dòng không thành công đầu tiên "
     },
     "created": "Một tài khoản mới đã được tạo với định danh {{ param }}",

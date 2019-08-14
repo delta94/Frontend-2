@@ -141,7 +141,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                   <Label for="profiles">
                     <Translate contentKey="userManagement.profiles">Profiles</Translate>
                   </Label>
-                  <AvField name="profiles" label={translate('global.form.profiles.label')} type="profiles" value={user.profiles} />
+                  <AvField name="profiles" type="profiles" value={user.profiles} />
                 </AvGroup>
                 {/* <AvGroup check> */}
                 {/* <AvGroup>
