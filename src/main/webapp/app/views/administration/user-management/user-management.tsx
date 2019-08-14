@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Table, Row, Badge } from 'reactstrap';
+import { Button, Table, Row, Badge, Col } from 'reactstrap';
+import { Typeahead } from 'react-bootstrap-typeahead';
 import './user-management.scss';
 import {
   Translate,
@@ -13,6 +14,7 @@ import {
   getSortState,
   IPaginationBaseState
 } from 'react-jhipster';
+import search from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { APP_DATE_FORMAT } from 'app/config/constants';
@@ -102,99 +104,104 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
     return (
       <div>
         {/* day la trang quan ly user */}
+
         <h2 id="user-management-page-heading">
           <Translate contentKey="userManagement.home.title">Users</Translate>
-          <input
-            style={{ borderRadius: '5px', width: '100px', height: '30px', marginLeft: '20px', padding: '3px', fontSize: '15px' }}
-            className="searchUser"
-            placeholder="Tìm kiếm"
-          />
-          <FontAwesomeIcon icon="search" style={{ width: '15px', height: '15px;' }} />
 
           <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity">
             <FontAwesomeIcon icon="plus" /> <Translate contentKey="userManagement.home.createLabel">Create a new user</Translate>
           </Link>
         </h2>
         <div />
+        <div className="panel">
+          <Row>
+            <Col md="4">Tổng số {150} bản ghi</Col>
+            <Col md="4">
+              <a style={{ float: 'right' }}> Profiles</a>
+            </Col>
+            <Col md="4">
+              <input className="searchUser" placeholder="Tìm kiếm" /> <FontAwesomeIcon icon={search} />
+            </Col>
+          </Row>
+          <Table responsive striped>
+            <thead>
+              <tr className="text-center">
+                <th className="hand " onClick={this.sort('fullName')}>
+                  <Translate contentKey="userManagement.fullName">FullName</Translate>
+                  {/* <FontAwesomeIcon icon="sort" /> */}
+                </th>
+                <th className="hand" onClick={this.sort('phone')}>
+                  <Translate contentKey="userManagement.phone">Phone</Translate>
+                  {/* <FontAwesomeIcon icon="sort" /> */}
+                </th>
+                <th className="hand" onClick={this.sort('email')}>
+                  <Translate contentKey="userManagement.email">Email</Translate>
+                  {/* <FontAwesomeIcon icon="sort" /> */}
+                </th>
 
-        <Table responsive striped>
-          <thead>
-            <tr className="text-center">
-              <th className="hand " onClick={this.sort('fullName')}>
-                <Translate contentKey="userManagement.fullName">FullName</Translate>
-                <FontAwesomeIcon icon="sort" />
-              </th>
-              <th className="hand" onClick={this.sort('phone')}>
-                <Translate contentKey="userManagement.phone">Phone</Translate>
-                <FontAwesomeIcon icon="sort" />
-              </th>
-              <th className="hand" onClick={this.sort('email')}>
-                <Translate contentKey="userManagement.email">Email</Translate>
-                <FontAwesomeIcon icon="sort" />
-              </th>
+                <th>
+                  <Translate contentKey="userManagement.profiles">Profiles</Translate>
+                </th>
 
-              <th>
-                <Translate contentKey="userManagement.profiles">Profiles</Translate>
-              </th>
+                <th id="modified-date-sort" className="hand">
+                  <Translate contentKey="userManagement.feature">Feature</Translate>
+                </th>
+              </tr>
+            </thead>
 
-              <th id="modified-date-sort" className="hand">
-                <Translate contentKey="userManagement.feature">Feature</Translate>
-              </th>
-            </tr>
-          </thead>
+            <tbody>
+              {// users ?
 
-          <tbody>
-            {// users ?
+              users.map((user, i) => (
+                <tr id={user.id} key={`user-${i}`}>
+                  <td>{user.fullName}</td>
+                  <td>{user.phone}</td>
+                  <td>{user.email}</td>
+                  <td>{user.profiles}</td>
 
-            users.map((user, i) => (
-              <tr id={user.id} key={`user-${i}`}>
-                <td>{user.fullName}</td>
-                <td>{user.phone}</td>
-                <td>{user.email}</td>
-                <td>{user.profiles}</td>
+                  <td className="text-center">
+                    <div className="btn-group flex-btn-group-container">
+                      <Button tag={Link} to={`${match.url}/${user.id}/edit`} color="primary" size="sm">
+                        <FontAwesomeIcon icon="pencil-alt" />{' '}
+                        <span className="d-none d-md-inline">
+                          <Translate contentKey="entity.action.edit">Edit</Translate>
+                        </span>
+                      </Button>
 
-                <td className="text-center">
-                  <div className="btn-group flex-btn-group-container">
-                    <Button tag={Link} to={`${match.url}/${user.fullName}/edit`} color="primary" size="sm">
-                      <FontAwesomeIcon icon="pencil-alt" />{' '}
-                      <span className="d-none d-md-inline">
-                        <Translate contentKey="entity.action.edit">Edit</Translate>
-                      </span>
-                    </Button>
-
-                    {/* <Button color="primary" size="sm" onClick={() => this.editUserManagement(user)}>
+                      {/* <Button color="primary" size="sm" onClick={() => this.editUserManagement(user)}>
                           <FontAwesomeIcon icon="pencil-alt" />{' '}
                           <span className="d-none d-md-inline">
                             <Translate contentKey="entity.action.edit">Edit</Translate>
                           </span>
                         </Button> */}
-                    <Button
-                      tag={Link}
-                      to={`${match.url}/${user.id}/delete`}
-                      color="danger"
-                      size="sm"
-                      disabled={account.fullName === user.fullName}
-                    >
-                      <FontAwesomeIcon icon="trash" />{' '}
-                      <span className="d-none d-md-inline">
-                        <Translate contentKey="entity.action.delete">Delete</Translate>
-                      </span>
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-            {/* : '' */}
-          </tbody>
-        </Table>
-        <Row className="justify-content-center">
-          <JhiPagination
-            items={getPaginationItemsNumber(totalItems, itemsPerPage)}
-            activePage={activePage}
-            onSelect={this.handlePagination}
-            maxButtons={5}
-          />
-        </Row>
+                      <Button
+                        tag={Link}
+                        to={`${match.url}/${user.id}/delete`}
+                        color="danger"
+                        size="sm"
+                        disabled={account.fullName === user.fullName}
+                      >
+                        <FontAwesomeIcon icon="trash" />{' '}
+                        <span className="d-none d-md-inline">
+                          <Translate contentKey="entity.action.delete">Delete</Translate>
+                        </span>
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+              {/* : '' */}
+            </tbody>
+          </Table>
+          <Row className="justify-content-center">
+            <JhiPagination
+              items={getPaginationItemsNumber(totalItems, itemsPerPage)}
+              activePage={activePage}
+              onSelect={this.handlePagination}
+              maxButtons={5}
+            />
+          </Row>
+        </div>
       </div>
     );
   }

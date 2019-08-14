@@ -1,12 +1,14 @@
 import axios from 'axios';
 import { IUser, defaultValue } from 'app/common/model/user.model';
 
-const apiUrl = 'api/users';
+const apiUrl = 'v1/customer';
 
 export const getUsersService = (page, size, sort) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
-  // return axios.get<IUser>('http://5d521fdf3432e70014e6b5ae.mockapi.io');
-  return axios.get<IUser>('./content/json_data/account.json');
+  debugger;
+  return axios.get<IUser>(`${apiUrl}/search`);
+
+  // return axios.get<IUser>('./content/json_data/account.json');
 };
 
 export const getRolesService = () => {

@@ -2,12 +2,11 @@ import React from 'react';
 import { Switch } from 'react-router-dom';
 
 import ErrorBoundaryRoute from 'app/common/error/error-boundary-route';
-import UserManagementUpdate from 'app/views/administration/user-management/user-management-update';
+import UserManagementUpdate from 'app/views/administration/user-management/user-update';
 import UserManagement from './user-management';
 import UserManagementDetail from 'app/views/administration/user-management/user-detail';
 import CreateUser from 'app/views/administration/user-management/user-create';
-import UserManagementDeleteDialog from 'app/views/administration/user-management/user-management-delete-dialog';
-import { Route } from 'react-router-dom';
+import UserManagementDeleteDialog from 'app/views/administration/user-management/user-delete-dialog';
 
 const Routes = ({ match }) => (
   <>
@@ -15,9 +14,8 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute exact path={`${match.url}/new`} component={CreateUser} />
       <ErrorBoundaryRoute exact path={`${match.url}/results-files`} component={UserManagementDetail} />
       <ErrorBoundaryRoute exact path={match.url} component={UserManagement} />
-      {/* <ErrorBoundaryRoute exact path={`${match.url}/edit`} component={UserManagementUpdate} /> */}
       <ErrorBoundaryRoute exact path={`${match.url}/:fullName/delete`} component={UserManagementDeleteDialog} />
-      <ErrorBoundaryRoute exact path={`${match.url}/:fullName/edit`} component={UserManagementUpdate} />
+      <ErrorBoundaryRoute exact path={`${match.url}/:id/edit`} component={UserManagementUpdate} />
     </Switch>
   </>
 );

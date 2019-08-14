@@ -17,21 +17,16 @@ import {
 const apiUrl = 'api/users';
 // Actions
 export const getUsers: ICrudGetAllAction<IUser> = (page, size, sort) => {
-  // debugger
   return {
     type: USER_MANAGE_ACTION_TYPES.FETCH_USERS,
-    // payload: getUsersService(page, size, sort)
+    //  payload: getUsersService(page, size, sort)
     payload: axios.get('./content/json_data/account.json')
   };
 };
 export const paginationUser = (users, itemsPerPage, activePage) => {
   return {
     type: USER_MANAGE_ACTION_TYPES.FETCH_LIST_USER,
-    payload: axios.get('./content/json_data/account.json'),
-    Meta: {
-      itemsPerPage,
-      activePage
-    }
+    payload: axios.get('./content/json_data/account.json')
   };
 };
 export const getRoles = () => ({

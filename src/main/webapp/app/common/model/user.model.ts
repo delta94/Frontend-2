@@ -17,6 +17,11 @@ export interface IUser {
   phone?: any;
   email?: string;
   profiles?: string[];
+  // id?: string;
+  // name?:string;
+  // email?:string;
+  // mobile?:string;
+  // allType? :any[];
 }
 
 export const defaultValue: Readonly<IUser> = {
@@ -38,4 +43,9 @@ export const defaultValue: Readonly<IUser> = {
   phone: '',
   email: '',
   profiles: []
+  // id: '',
+  // name:'',
+  // email:'',
+  // mobile:'',
+  // allType:[],
 };

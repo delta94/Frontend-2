@@ -74,25 +74,24 @@ export default (state: UserManagementState = initialState, action): UserManageme
         // totalItems: action.payload.headers['x-total-count']
       };
     case SUCCESS(USER_MANAGE_ACTION_TYPES.FETCH_LIST_USER):
-      debugger;
       console.log(action);
       return {
         ...state,
         listUsers: action
       };
-    case SUCCESS(USER_MANAGE_ACTION_TYPES.FETCH_USER):
-      return {
-        ...state,
-        loading: false,
-        user: action.payload.data
-      };
+    // case SUCCESS(USER_MANAGE_ACTION_TYPES.FETCH_USER):
+    //   return {
+    //     ...state,
+    //     loading: false,
+    //     user: action.payload.data
+    //   };
     case SUCCESS(USER_MANAGE_ACTION_TYPES.CREATE_USER):
     case SUCCESS(USER_MANAGE_ACTION_TYPES.UPDATE_USER):
       return {
         ...state,
         updating: false,
-        updateSuccess: true,
-        user: action.payload.data
+        updateSuccess: true
+        // user: action.payload.data
       };
     case SUCCESS(USER_MANAGE_ACTION_TYPES.DELETE_USER):
       return {

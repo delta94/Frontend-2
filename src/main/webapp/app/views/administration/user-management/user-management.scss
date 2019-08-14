@@ -24,3 +24,44 @@
 .label-table {
   width: 100%;
 }
+.table-responsive {
+  border: 1px solid #dedede;
+  display: block;
+  width: 94%;
+  overflow-x: auto;
+  margin: 30px;
+}
+.panel {
+  border: 1px solid #dedede;
+  border-radius: 5px;
+  background-color: #ffffff;
+  width: 100%;
+}
+
+.searchUser {
+  border-radius: 5px;
+  width: 100px;
+  height: 30px;
+  margin-left: 20px;
+  padding: 3px;
+  font-size: 15px;
+}
+
+thead th,
+tbody td {
+  border-right: 1px solid #dedede;
+}
+thead th {
+  color: #545cd8;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 15px 19px -10px 19px;
+  vertical-align: middle;
+}
+.searchUser {
+  float: right;
+  width: 60%;
+}
