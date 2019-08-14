@@ -5,6 +5,6 @@ export const USER_MANAGE_ACTION_TYPES = {
   CREATE_USER: 'userManagement/CREATE_USER',
   UPDATE_USER: 'userManagement/UPDATE_USER',
   DELETE_USER: 'userManagement/DELETE_USER',
-  EXPORT_FILE: 'userManagement/EXPORT_FILE',
+  DOWNLOAD_FILE: 'userManagement/DOWNLOAD_FILE',
   RESET: 'userManagement/RESET'
 };

@@ -11,7 +11,8 @@ import {
   getUserService,
   getUsersService,
   updateUserService,
-  getFile
+  getFile,
+  downloadFile
 } from 'app/services/user-management';
 
 const apiUrl = 'api/users';
@@ -69,7 +70,16 @@ export const reset = () => ({
   type: USER_MANAGE_ACTION_TYPES.RESET
 });
 
-export const exportFile = () => ({
-  type: USER_MANAGE_ACTION_TYPES.EXPORT_FILE,
-  payload: getFile()
-});
+export const downloadFileInterview = () => {
+  return {
+    type: USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILE,
+    payload: downloadFile()
+  };
+};
+export const resetDownloadInterview = () => {
+  return {
+    type: USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILE,
+    payload: '',
+    meta: {}
+  };
+};

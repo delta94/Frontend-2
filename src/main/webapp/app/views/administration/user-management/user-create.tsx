@@ -6,10 +6,9 @@ import { Button, Label, Row, Col } from 'reactstrap';
 import { Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { getUser, getRoles, updateUser, createUser, reset } from 'app/actions/user-management';
+import { downloadFileInterview, getUser, getRoles, updateUser, createUser, reset } from 'app/actions/user-management';
 import { IRootState } from 'app/reducers';
 import Dropzone from 'react-dropzone';
-import axios from 'axios';
 
 export interface IUserManagementUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ login: string }> {}
 
@@ -22,7 +21,7 @@ export interface IUserManagementUpdateState {
 export class UserCreate extends React.Component<IUserManagementUpdateProps, IUserManagementUpdateState> {
   state: IUserManagementUpdateState = {
     isNew: !this.props.match.params || !this.props.match.params.login,
-    file: '',
+    file: 'Try dropping some files here, or click to select files to upload.',
     isActive: false
   };
 
@@ -68,10 +67,8 @@ export class UserCreate extends React.Component<IUserManagementUpdateProps, IUse
     }
   };
 
-  onClick = e => {
-    return String(e);
-  };
   render() {
+    const { downloadFileInterview } = this.props;
     return (
       <div>
         <Row>
@@ -87,7 +84,9 @@ export class UserCreate extends React.Component<IUserManagementUpdateProps, IUse
               <Label>
                 <h5 className="d-none d-md-inline">tải file mẫu :</h5>
               </Label>
-              <a href="http://192.168.0.103:8088/v1/customer/template-import">File_mau_du_lieu_khach_hang.xlsx</a>
+              <button className="myButton" onClick={() => downloadFileInterview()}>
+                File_mau_du_lieu_khach_hang.xlsx
+              </button>
             </div>
           </Col>
           <Col md="6">
@@ -114,15 +113,15 @@ export class UserCreate extends React.Component<IUserManagementUpdateProps, IUse
                       <div {...getRootProps()}>
                         <input {...getInputProps()} />
                         <div className="dropzone-content">
-                          <p>Try dropping some files here, or click to select files to upload.</p>
-                          <p>File must be excel</p>
+                          <img src="C:/Users/LENOVO/Downloads/Telegram Desktop/IZZI-Platform.xlsx" className="img-responsive" alt="Image" />
+
+                          <p>{this.state.file}</p>
                         </div>
                       </div>
                     )}
                   </Dropzone>
                 </div>
               </label>
-              {this.state.file}
             </Col>
             <div>
               <Button tag={Link} to="/admin/user-management/results-files" replace color="info" disabled={!this.validated()}>
@@ -143,10 +142,11 @@ const mapStateToProps = (storeState: IRootState) => ({
   user: storeState.userManagement.user,
   roles: storeState.userManagement.authorities,
   loading: storeState.userManagement.loading,
-  updating: storeState.userManagement.updating
+  updating: storeState.userManagement.updating,
+  dowloadTemplate: storeState.userManagement.dowloadTemplate
 });
 
-const mapDispatchToProps = { getUser, getRoles, updateUser, createUser, reset };
+const mapDispatchToProps = { downloadFileInterview, getUser, getRoles, updateUser, createUser, reset };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

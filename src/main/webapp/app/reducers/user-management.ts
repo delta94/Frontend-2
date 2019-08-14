@@ -4,16 +4,20 @@ import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } 
 import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
 import { IUser, defaultValue } from 'app/common/model/user.model';
 import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
+import { IFileList } from 'app/common/model/sucess-file';
 
 const initialState = {
   loading: false,
   errorMessage: null,
   users: [] as ReadonlyArray<IUser>,
+  listFiles: [] as ReadonlyArray<IFileList>,
   authorities: [] as any[],
   user: defaultValue,
   updating: false,
   updateSuccess: false,
   getNameFile: '',
+  dowloadTemplate: null,
+  errorTemplate: null,
   totalItems: 0
 };
 
@@ -28,6 +32,7 @@ export default (state: UserManagementState = initialState, action): UserManageme
       };
     case REQUEST(USER_MANAGE_ACTION_TYPES.FETCH_USERS):
     case REQUEST(USER_MANAGE_ACTION_TYPES.FETCH_USER):
+    case REQUEST(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILE):
       return {
         ...state,
         errorMessage: null,
@@ -49,6 +54,7 @@ export default (state: UserManagementState = initialState, action): UserManageme
     case FAILURE(USER_MANAGE_ACTION_TYPES.CREATE_USER):
     case FAILURE(USER_MANAGE_ACTION_TYPES.UPDATE_USER):
     case FAILURE(USER_MANAGE_ACTION_TYPES.DELETE_USER):
+    case FAILURE(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILE):
       return {
         ...state,
         loading: false,
@@ -89,10 +95,18 @@ export default (state: UserManagementState = initialState, action): UserManageme
         updateSuccess: true,
         user: defaultValue
       };
-    case USER_MANAGE_ACTION_TYPES.RESET:
-    case USER_MANAGE_ACTION_TYPES.EXPORT_FILE:
+    case SUCCESS(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILE):
       return {
-        ...initialState
+        ...state,
+        updating: false,
+        updateSuccess: true,
+        dowloadTemplate: action.payload.data
+      };
+    case USER_MANAGE_ACTION_TYPES.RESET:
+    case USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILE:
+      return {
+        ...initialState,
+        dowloadTemplate: null
       };
     default:
       return state;

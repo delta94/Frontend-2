@@ -34,3 +34,8 @@ export const deleteUserService = id => {
   const requestUrl = `${apiUrl}/${id}`;
   return axios.delete(requestUrl);
 };
+
+export const downloadFile = () => {
+  debugger;
+  return axios.get('v1/customer/template-import', { responseType: 'blob' });
+};
