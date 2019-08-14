@@ -10,7 +10,7 @@ import { locales, languages } from 'app/config/translation';
 import { getUser, getRoles, updateUser, createUser, reset } from 'app/actions/user-management';
 import { IRootState } from 'app/reducers';
 
-export interface IUserManagementUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ login: string }> {}
+export interface IUserManagementUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ fullName: string }> {}
 
 export interface IUserManagementUpdateState {
   isNew: boolean;
@@ -18,14 +18,14 @@ export interface IUserManagementUpdateState {
 
 export class UserManagementUpdate extends React.Component<IUserManagementUpdateProps, IUserManagementUpdateState> {
   state: IUserManagementUpdateState = {
-    isNew: !this.props.match.params || !this.props.match.params.login
+    isNew: !this.props.match.params || !this.props.match.params.fullName
   };
 
   componentDidMount() {
     if (this.state.isNew) {
       this.props.reset();
     } else {
-      this.props.getUser(this.props.match.params.login);
+      this.props.getUser(this.props.match.params.fullName);
     }
     this.props.getRoles();
   }
@@ -55,7 +55,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
         <Row className="justify-content-center">
           <Col md="8">
             <h1>
-              <Translate contentKey="userManagement.home.createOrEditLabel">Create or edit a User</Translate>
+              <Translate contentKey="userManagement.home.editLabel">Edit Infomation</Translate>
             </h1>
           </Col>
         </Row>

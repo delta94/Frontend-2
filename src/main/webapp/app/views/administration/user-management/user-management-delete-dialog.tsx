@@ -4,7 +4,6 @@ import { RouteComponentProps } from 'react-router-dom';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
 import { Translate, ICrudGetAction, ICrudDeleteAction } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import { getUser, deleteUser } from 'app/actions/user-management';
 import { IRootState } from 'app/reducers';
 

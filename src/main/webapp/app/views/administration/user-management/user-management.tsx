@@ -2,8 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Table, Row, Badge } from 'reactstrap';
-import Loading from './../../../common/Loading/loading';
-// import UserManagementUpdate from './user-management-update';
+// import Loading from './../../../common/Loading/loading';
 import './user-management.scss';
 import {
   Translate,
@@ -19,32 +18,31 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { APP_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/common/util/pagination.constants';
-import { getUsers, updateUser } from 'app/actions/user-management';
+import { getUsers, updateUser, paginationUser } from 'app/actions/user-management';
 import { IRootState } from 'app/reducers';
 
 export interface IUserManagementProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
 export class UserManagement extends React.Component<IUserManagementProps, IPaginationBaseState> {
   state: IPaginationBaseState = {
-    ...getSortState(this.props.location, ITEMS_PER_PAGE)
+    ...getSortState(this.props.location, ITEMS_PER_PAGE),
+    activePage: 1
   };
 
+  // loading page
   componentDidMount() {
     console.log('didmount');
+
     this.getUsers();
     this.setState({
       loading: true
     });
   }
   componentWillReceiveProps(nextProps) {
-    // console.log('receive[prop')
-    //   setTimeout(() => {
-    //     this.setState({
-    //       loading: false
-    //     });
-    //   }, 3000);
     const { users } = nextProps;
+    const { activePage, itemsPerPage } = this.state;
     if (users.length > 0) {
+      console.log(users);
       this.setState({
         loading: false
       });
@@ -55,6 +53,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
         });
       }, 3000);
     }
+    this.props.paginationUser(users, activePage, itemsPerPage);
   }
 
   sort = prop => () => {
@@ -72,7 +71,11 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
     this.props.history.push(`${this.props.location.pathname}?page=${this.state.activePage}&sort=${this.state.sort},${this.state.order}`);
   }
 
-  handlePagination = activePage => this.setState({ activePage }, () => this.sortUsers());
+  handlePagination = activePage => {
+    this.setState({
+      activePage
+    });
+  };
 
   getUsers = () => {
     const { activePage, itemsPerPage, sort, order } = this.state;
@@ -85,16 +88,18 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
       activated: !user.activated
     });
   };
-  loading = e => {
-    console.log('aaa' + e);
-  };
+  // loading = e => {
+  //   console.log('aaa' + e);
+  // };
 
-  editUserManagement = user => {
-    console.log(user);
-  };
+  // editUserManagement = user => {
+  //   console.log(user);
+  // };
 
   render() {
     const { users, account, match, totalItems } = this.props;
+    const { activePage, itemsPerPage } = this.state;
+    console.log(this.state);
     return (
       <div>
         {/* day la trang quan ly user */}
@@ -133,51 +138,53 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
           </thead>
 
           <tbody>
-            {users
-              ? users.map((user, i) => (
-                  <tr id={user.id} key={`user-${i}`}>
-                    <td>{user.fullName}</td>
-                    <td>{user.phone}</td>
-                    <td>{user.email}</td>
-                    <td>{user.profiles}</td>
+            {// users ?
 
-                    <td className="text-center">
-                      <div className="btn-group flex-btn-group-container">
-                        <Button tag={Link} to={`${match.url}/${user.fullName}/edit`} color="primary" size="sm">
-                          <FontAwesomeIcon icon="pencil-alt" />{' '}
-                          <span className="d-none d-md-inline">
-                            <Translate contentKey="entity.action.edit">Edit</Translate>
-                          </span>
-                        </Button>
-                        {/* <Button color="primary" size="sm" onClick={() => this.editUserManagement(user)}>
+            users.map((user, i) => (
+              <tr id={user.id} key={`user-${i}`}>
+                <td>{user.fullName}</td>
+                <td>{user.phone}</td>
+                <td>{user.email}</td>
+                <td>{user.profiles}</td>
+
+                <td className="text-center">
+                  <div className="btn-group flex-btn-group-container">
+                    <Button tag={Link} to={`${match.url}/${user.fullName}/edit`} color="primary" size="sm">
+                      <FontAwesomeIcon icon="pencil-alt" />{' '}
+                      <span className="d-none d-md-inline">
+                        <Translate contentKey="entity.action.edit">Edit</Translate>
+                      </span>
+                    </Button>
+
+                    {/* <Button color="primary" size="sm" onClick={() => this.editUserManagement(user)}>
                           <FontAwesomeIcon icon="pencil-alt" />{' '}
                           <span className="d-none d-md-inline">
                             <Translate contentKey="entity.action.edit">Edit</Translate>
                           </span>
                         </Button> */}
-                        <Button
-                          tag={Link}
-                          to={`${match.url}/${user.id}/delete`}
-                          color="danger"
-                          size="sm"
-                          disabled={account.fullName === user.fullName}
-                        >
-                          <FontAwesomeIcon icon="trash" />{' '}
-                          <span className="d-none d-md-inline">
-                            <Translate contentKey="entity.action.delete">Delete</Translate>
-                          </span>
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              : ''}
+                    <Button
+                      tag={Link}
+                      to={`${match.url}/${user.id}/delete`}
+                      color="danger"
+                      size="sm"
+                      // disabled={account.fullName === user.fullName}
+                    >
+                      <FontAwesomeIcon icon="trash" />{' '}
+                      <span className="d-none d-md-inline">
+                        <Translate contentKey="entity.action.delete">Delete</Translate>
+                      </span>
+                    </Button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+            {/* : '' */}
           </tbody>
         </Table>
         <Row className="justify-content-center">
           <JhiPagination
-            items={getPaginationItemsNumber(totalItems, this.state.itemsPerPage)}
-            activePage={this.state.activePage}
+            items={getPaginationItemsNumber(totalItems, itemsPerPage)}
+            activePage={activePage}
             onSelect={this.handlePagination}
             maxButtons={5}
           />
@@ -193,7 +200,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   account: storeState.authentication.account
 });
 
-const mapDispatchToProps = { getUsers, updateUser };
+const mapDispatchToProps = { getUsers, updateUser, paginationUser };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

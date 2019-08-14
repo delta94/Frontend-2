@@ -10,7 +10,8 @@ import {
   getRolesService,
   getUserService,
   getUsersService,
-  updateUserService
+  updateUserService,
+  listUserService
 } from 'app/services/user-management';
 
 const apiUrl = 'api/users';
@@ -19,14 +20,23 @@ export const getUsers: ICrudGetAllAction<IUser> = (page, size, sort) => {
   // debugger
   return {
     type: USER_MANAGE_ACTION_TYPES.FETCH_USERS,
-    payload: getUsersService(page, size, sort)
-    // payload: axios.get('./content/json_data/account.json')
+    // payload: getUsersService(page, size, sort)
+    payload: axios.get('./content/json_data/account.json')
   };
 };
-
+export const paginationUser = (users, itemsPerPage, activePage) => {
+  return {
+    type: USER_MANAGE_ACTION_TYPES.FETCH_LIST_USER,
+    payload: axios.get('./content/json_data/account.json'),
+    Meta: {
+      itemsPerPage,
+      activePage
+    }
+  };
+};
 export const getRoles = () => ({
   type: USER_MANAGE_ACTION_TYPES.FETCH_ROLES,
-  payload: getRolesService()
+  payload: {}
 });
 
 export const getUser: ICrudGetAction<IUser> = id => {
