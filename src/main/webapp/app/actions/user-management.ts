@@ -16,6 +16,7 @@ import {
   downloadFile,
   UploaddFile
 } from 'app/services/user-management';
+import { IFileList } from 'app/common/model/sucess-file';
 
 const apiUrl = 'api/users';
 // Actions
@@ -63,6 +64,15 @@ export const deleteUser: ICrudDeleteAction<IUser> = id => async dispatch => {
   const result = await dispatch({
     type: USER_MANAGE_ACTION_TYPES.DELETE_USER,
     payload: deleteUserService(id)
+  });
+  dispatch(getUsers());
+  return result;
+};
+export const downloadTotalResults: ICrudDeleteAction<IFileList> = file => async dispatch => {
+  const requestUrl = `${apiUrl}/${file}`;
+  const result = await dispatch({
+    type: USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILERE_SULTS,
+    payload: downloadTotalResults(file)
   });
   dispatch(getUsers());
   return result;

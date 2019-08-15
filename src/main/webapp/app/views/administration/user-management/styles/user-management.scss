@@ -45,6 +45,12 @@
 .link-result {
   float: right;
   margin-right: 10px;
+  border: none;
+  background: none;
+  text-decoration: underline;
+}
+.link-result:hover {
+  color: blue;
 }
 .label-table-detail {
   margin-bottom: -10px;

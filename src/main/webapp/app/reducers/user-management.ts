@@ -37,6 +37,7 @@ export default (state: UserManagementState = initialState, action): UserManageme
     case REQUEST(USER_MANAGE_ACTION_TYPES.FETCH_USER):
     case REQUEST(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILE):
     case REQUEST(USER_MANAGE_ACTION_TYPES.UPLOAD_FILE):
+    case REQUEST(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILERE_SULTS):
       return {
         ...state,
         errorMessage: null,
@@ -60,6 +61,7 @@ export default (state: UserManagementState = initialState, action): UserManageme
     case FAILURE(USER_MANAGE_ACTION_TYPES.DELETE_USER):
     case FAILURE(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILE):
     case FAILURE(USER_MANAGE_ACTION_TYPES.UPLOAD_FILE):
+    case FAILURE(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILERE_SULTS):
       return {
         ...state,
         loading: false,
@@ -110,12 +112,13 @@ export default (state: UserManagementState = initialState, action): UserManageme
       };
       debugger;
     case SUCCESS(USER_MANAGE_ACTION_TYPES.UPLOAD_FILE):
+    case SUCCESS(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILERE_SULTS):
       return {
         ...state,
         updating: false,
         updateSuccess: true,
         uploadScheduleSuccess: true,
-        dowloadTemplate: action.payload.data
+        listFiles: action.payload.data
       };
     case USER_MANAGE_ACTION_TYPES.RESET:
     case USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILE:

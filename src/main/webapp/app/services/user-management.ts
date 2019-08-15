@@ -34,6 +34,10 @@ export const deleteUserService = id => {
   const requestUrl = `${apiUrl}/${id}`;
   return axios.delete(requestUrl);
 };
+export const downloadFileTotalResults = file => {
+  const requestUrl = `${`v1/customer/import-result/`}/${file}`;
+  return axios.get(requestUrl);
+};
 
 export const downloadFile = () => {
   return axios.get('v1/customer/template-import');
