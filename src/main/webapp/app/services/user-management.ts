@@ -5,8 +5,8 @@ const apiUrl = 'api/users';
 
 export const getUsersService = (page, size, sort) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
-  // return axios.get<IUser>(requestUrl)
-  return axios.get<IUser>('/content/json_data/list-candidate.json');
+  return axios.get<IUser>(requestUrl);
+  //return axios.get<IUser>('/content/json_data/list-candidate.json');
 };
 
 export const getRolesService = () => {
@@ -36,6 +36,12 @@ export const deleteUserService = id => {
 };
 
 export const downloadFile = () => {
-  debugger;
   return axios.get('v1/customer/template-import');
+};
+export const UploaddFile = data => {
+  return axios.post('v1/customer/import', data, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });
 };

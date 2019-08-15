@@ -1,99 +1,98 @@
 import React from 'react';
-import './user-management.scss';
+import './styles/user-management.scss';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Label, Row, Col } from 'reactstrap';
-import { Translate } from 'react-jhipster';
+import SweetAlert from 'sweetalert-react';
+import { Button, Label, Row, Col, Modal, ModalBody } from 'reactstrap';
+import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { downloadFileInterview, getUser, getRoles, updateUser, createUser, reset } from 'app/actions/user-management';
+import { downloadFileExcel, uploadFileExcel } from 'app/actions/user-management';
 import { IRootState } from 'app/reducers';
+import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
+import { toast } from 'react-toastify';
 import Dropzone from 'react-dropzone';
-import complete from './image/complete.png';
-import error from './image/error.png';
 
 export interface IUserManagementUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ login: string }> {}
-
+//todo : sửa tên biến local
 export interface IUserManagementUpdateState {
   isNew: boolean;
-  file: string;
   isActive: boolean;
+  isComplete: boolean;
+  isError: boolean;
   urlImage: string;
+  file: string;
+  fileImport: string;
 }
 
 export class UserCreate extends React.Component<IUserManagementUpdateProps, IUserManagementUpdateState> {
   state: IUserManagementUpdateState = {
     isNew: !this.props.match.params || !this.props.match.params.login,
-    file: 'Try dropping some files here, or click to select files to upload.',
     isActive: false,
-    urlImage: ''
+    isComplete: false,
+    isError: false,
+    urlImage: '',
+    file: 'Try dropping some files here, or click to select files to upload.',
+    fileImport: ''
   };
-
-  componentDidMount() {
-    if (this.state.isNew) {
-      this.props.reset();
-    } else {
-      this.props.getUser(this.props.match.params.login);
-    }
-    this.props.getRoles();
-  }
-
-  componentWillUnmount() {
-    this.props.reset();
-  }
 
   onDrop = (acceptedFiles, rejectedFiles) => {
     debugger;
     var checkFile = acceptedFiles[0].name;
     var file = checkFile.split('.')[1];
-    if (file === 'xls' || file === 'xlsx') {
+    //todo: khong duoc hard code
+    if (file === USER_MANAGE_ACTION_TYPES.XLS || file === USER_MANAGE_ACTION_TYPES.XLSX) {
+      this.props.uploadFileExcel(acceptedFiles[0]);
+      console.log(this.props.fileList);
+
       this.setState({
-        file: checkFile,
+        fileImport: acceptedFiles[0],
         isActive: true,
-        urlImage: complete
+        isComplete: true,
+        file: checkFile
       });
     } else {
       this.setState({
-        file: 'xin vui lòng chọn đúng file xls hoặc xlsx',
+        //todo : dua vao the translate
         isActive: false,
-        urlImage: error
+        isError: true,
+        file: 'please choose file excel'
       });
     }
   };
-
-  handleClose = () => {
-    this.props.history.push('/admin/user-management');
+  onClick = () => {
+    console.log(this.state);
   };
-
   validated = () => {
+    //todo return isActive
     if (this.state.isActive) {
-      return true;
+      return this.state.isActive;
     } else {
-      return false;
+      return this.state.isActive;
     }
   };
 
   render() {
-    const { downloadFileInterview } = this.props;
+    const { downloadFileExcel, loading } = this.props;
     return (
       <div>
         <Row>
           <Col md="8">
-            <h1>
-              <Translate contentKey="userManagement.home.createOrEditLabel">Choose file from computer</Translate>
-            </h1>
+            <h5 className="d-none d-md-inline">
+              <Translate contentKey="userManagement.home.createOrEditLabel" />
+            </h5>
           </Col>
         </Row>
         <Row className="justify-content-left">
           <Col md="6">
             <div className="multi-row">
               <Label>
-                <h5 className="d-none d-md-inline">
-                  <Translate contentKey="entity.action.reinstall">reinstall</Translate>
-                </h5>
+                <Translate contentKey="entity.action.reinstall" />
               </Label>
-              <button className="myButton" onClick={() => downloadFileInterview()}>
-                tại đây
+
+              <button className="myButton" onClick={() => downloadFileExcel()}>
+                {/* them cac translate vao cac hard code*/}
+                <Translate contentKey="entity.action.at-this" />
               </button>
             </div>
           </Col>
@@ -102,7 +101,7 @@ export class UserCreate extends React.Component<IUserManagementUpdateProps, IUse
               <FontAwesomeIcon icon="arrow-left" />
               &nbsp;
               <span className="d-none d-md-inline">
-                <Translate contentKey="entity.action.back">Back</Translate>
+                <Translate contentKey="entity.action.back" />
               </span>
             </Button>
           </Col>
@@ -112,18 +111,31 @@ export class UserCreate extends React.Component<IUserManagementUpdateProps, IUse
           <Row className="justify-content-center">
             <Col md="12">
               <label className="label-table">
-                <h3>
-                  <Translate contentKey="global.field.choose-file">Choose from computer</Translate>
-                </h3>
+                <Translate contentKey="global.field.choose-file" />
+
                 <div className="dropzone-wrapper dropzone-wrapper-lg">
                   <Dropzone onDrop={this.onDrop.bind(this)}>
                     {({ getRootProps, getInputProps }) => (
                       <div {...getRootProps()}>
                         <input {...getInputProps()} />
                         <div className="dropzone-content">
-                          <img src={this.state.urlImage} style={{ width: '20%', marginBottom: '10px' }} />
-
-                          <p>{this.state.file}</p>
+                          <SweetAlert
+                            title="Good job!"
+                            confirmButtonColor=""
+                            show={this.state.isComplete}
+                            text="You clicked the button!"
+                            type="success"
+                            onConfirm={() => this.setState({ isComplete: false })}
+                          />
+                          <SweetAlert
+                            title="Please Chosse File Again"
+                            confirmButtonColor=""
+                            show={this.state.isError}
+                            text="You clicked the button!"
+                            type="error"
+                            onConfirm={() => this.setState({ isError: false })}
+                          />
+                          {this.state.file}
                         </div>
                       </div>
                     )}
@@ -131,14 +143,26 @@ export class UserCreate extends React.Component<IUserManagementUpdateProps, IUse
                 </div>
               </label>
             </Col>
+
             <div>
-              <Button tag={Link} to="/admin/user-management/results-files" replace color="info" disabled={!this.validated()}>
+              {/* sua lai phan chuyen trang */}
+              <Button
+                tag={Link}
+                to="/admin/user-management/results-files"
+                replace
+                color="info"
+                onClick={this.onClick}
+                disabled={!this.validated()}
+              >
                 &nbsp;
                 <span className="d-none d-md-inline">
-                  <Translate contentKey="entity.action.upload">Upload</Translate>
+                  <Translate contentKey="entity.action.upload" />
                 </span>
               </Button>
             </div>
+            <Modal isOpen={loading}>
+              <ModalBody>processing...</ModalBody>
+            </Modal>
           </Row>
         </div>
       </div>
@@ -151,10 +175,10 @@ const mapStateToProps = (storeState: IRootState) => ({
   roles: storeState.userManagement.authorities,
   loading: storeState.userManagement.loading,
   updating: storeState.userManagement.updating,
-  dowloadTemplate: storeState.userManagement.dowloadTemplate
+  fileList: storeState.userManagement.listFiles
 });
 
-const mapDispatchToProps = { downloadFileInterview, getUser, getRoles, updateUser, createUser, reset };
+const mapDispatchToProps = { downloadFileExcel, uploadFileExcel };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

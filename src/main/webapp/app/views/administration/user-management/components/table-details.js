@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 
 import ReactTable from "react-table";
 
-import { makeData } from './utils';
+import { makeData } from '../utils';
 
 export default class DataTableBasic extends React.Component {
     constructor(props) {
@@ -39,17 +39,12 @@ export default class DataTableBasic extends React.Component {
                     <Row>
                         <Col md="12">
                             <Card className="main-card mb-3">
-                                <Label style={{
-                                    marginBottom: '-10px',
-                                    marginTop: '5px',
-                                    marginLeft: '15px'
-                                }}>
-                                    <h4>
-                                        <Translate contentKey="userManagement.home.line-error">Line Error</Translate>
-                                        <a href="#/top" style={{ float: 'right', marginRight: '10px' }}>Tải kết quả đầy đủ</a>
-                                    </h4>
-
-                                </Label>
+                                  <div className ="label-table-detail">
+                                        <Translate contentKey="userManagement.home.line-error"></Translate>
+                                        <a href="#/top" className ="link-result"> <Translate contentKey="userManagement.home.download-result"></Translate></a>
+                                   
+                                        </div>
+                              
                                 <CardBody>
                                     <ReactTable
                                         data={data}
@@ -109,7 +104,7 @@ export default class DataTableBasic extends React.Component {
               <FontAwesomeIcon icon="arrow-left" />
               &nbsp;
               <span className="d-none d-md-inline">
-                <Translate contentKey="entity.action.back">Back</Translate>
+                <Translate contentKey="entity.action.back"></Translate>
               </span>
             </Button>
             </Col>

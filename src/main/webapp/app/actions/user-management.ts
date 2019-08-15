@@ -1,7 +1,8 @@
 import axios from 'axios';
-import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } from 'react-jhipster';
+import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction, translate } from 'react-jhipster';
 
 import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
+import { toast } from 'react-toastify';
 import { IUser, defaultValue } from 'app/common/model/user.model';
 import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
 import {
@@ -12,7 +13,8 @@ import {
   getUsersService,
   updateUserService,
   getFile,
-  downloadFile
+  downloadFile,
+  UploaddFile
 } from 'app/services/user-management';
 
 const apiUrl = 'api/users';
@@ -21,8 +23,8 @@ export const getUsers: ICrudGetAllAction<IUser> = (page, size, sort) => {
   // debugger
   return {
     type: USER_MANAGE_ACTION_TYPES.FETCH_USERS,
-    // payload: getUsersService(page, size, sort)
-    payload: axios.get('./content/json_data/account.json')
+    payload: getUsersService(page, size, sort)
+    // payload: axios.get('./content/json_data/account.json')
   };
 };
 
@@ -70,11 +72,33 @@ export const reset = () => ({
   type: USER_MANAGE_ACTION_TYPES.RESET
 });
 
-export const downloadFileInterview = () => {
+export const downloadFileExcel = () => {
+  debugger;
   return {
     type: USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILE,
     payload: downloadFile()
   };
+};
+debugger;
+export const uploadFileExcel = data => async dispatch => {
+  const formData = new FormData();
+  formData.append('files', data);
+  const result = await dispatch({
+    type: USER_MANAGE_ACTION_TYPES.UPLOAD_FILE,
+    payload: axios.post('v1/customer/import', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }),
+    meta: {
+      errorMessage: translate('bookSchedule.messages.upload-file-interview-failure')
+    }
+  });
+  if (result.action.payload.data.success) {
+    toast.info(translate('bookSchedule.messages.upload-file-interview-success'));
+  } else {
+    toast.warn(translate('bookSchedule.messages.upload-file-interview-failure-due-to-data'));
+  }
 };
 export const resetDownloadInterview = () => {
   return {

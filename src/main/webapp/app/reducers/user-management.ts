@@ -9,6 +9,8 @@ import { IFileList } from 'app/common/model/sucess-file';
 const initialState = {
   loading: false,
   errorMessage: null,
+  uploadScheduleFailure: false,
+  uploadScheduleSuccess: false,
   users: [] as ReadonlyArray<IUser>,
   listFiles: [] as ReadonlyArray<IFileList>,
   authorities: [] as any[],
@@ -24,6 +26,7 @@ const initialState = {
 export type UserManagementState = Readonly<typeof initialState>;
 
 // Reducer
+debugger;
 export default (state: UserManagementState = initialState, action): UserManagementState => {
   switch (action.type) {
     case REQUEST(USER_MANAGE_ACTION_TYPES.FETCH_ROLES):
@@ -33,6 +36,7 @@ export default (state: UserManagementState = initialState, action): UserManageme
     case REQUEST(USER_MANAGE_ACTION_TYPES.FETCH_USERS):
     case REQUEST(USER_MANAGE_ACTION_TYPES.FETCH_USER):
     case REQUEST(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILE):
+    case REQUEST(USER_MANAGE_ACTION_TYPES.UPLOAD_FILE):
       return {
         ...state,
         errorMessage: null,
@@ -55,11 +59,13 @@ export default (state: UserManagementState = initialState, action): UserManageme
     case FAILURE(USER_MANAGE_ACTION_TYPES.UPDATE_USER):
     case FAILURE(USER_MANAGE_ACTION_TYPES.DELETE_USER):
     case FAILURE(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILE):
+    case FAILURE(USER_MANAGE_ACTION_TYPES.UPLOAD_FILE):
       return {
         ...state,
         loading: false,
         updating: false,
         updateSuccess: false,
+        uploadScheduleFailure: true,
         errorMessage: action.payload
       };
     case SUCCESS(USER_MANAGE_ACTION_TYPES.FETCH_ROLES):
@@ -100,6 +106,15 @@ export default (state: UserManagementState = initialState, action): UserManageme
         ...state,
         updating: false,
         updateSuccess: true,
+        dowloadTemplate: action.payload.data
+      };
+      debugger;
+    case SUCCESS(USER_MANAGE_ACTION_TYPES.UPLOAD_FILE):
+      return {
+        ...state,
+        updating: false,
+        updateSuccess: true,
+        uploadScheduleSuccess: true,
         dowloadTemplate: action.payload.data
       };
     case USER_MANAGE_ACTION_TYPES.RESET:

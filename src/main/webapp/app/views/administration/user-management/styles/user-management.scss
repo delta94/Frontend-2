@@ -25,11 +25,29 @@
   width: 100%;
 }
 .myButton {
-  font-size: 18px;
   border: none;
   background: none;
   text-decoration: underline;
 }
 .myButton:hover {
   color: blue;
+}
+.table-mini {
+  display: flex;
+  background: antiquewhite;
+  width: 100% !important;
+  margin-bottom: 0 !important;
+  color: #212529;
+  border-collapse: collapse;
+  box-sizing: border-box;
+  font-size: 15px;
+}
+.link-result {
+  float: right;
+  margin-right: 10px;
+}
+.label-table-detail {
+  margin-bottom: -10px;
+  margin-top: 5px;
+  margin-left: 15px;
 }

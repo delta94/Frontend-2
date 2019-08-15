@@ -1,6 +1,7 @@
 import React from 'react';
-import DataTableFixedHeader from './table-details';
-import './user-management.scss';
+import DataTableFixedHeader from './components/table-details';
+//todo: bo vao thu muc rieng
+import './styles/user-management.scss';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Badge, Col, Label, Table } from 'reactstrap';
@@ -12,37 +13,35 @@ import { IRootState } from 'app/reducers';
 export interface IUserManagementDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ login: string }> {}
 
 export class UserManagementDetail extends React.Component<IUserManagementDetailProps> {
-  componentDidMount() {
-    this.props.getUser(this.props.match.params.login);
-  }
-
   render() {
     const { user } = this.props;
     return (
       <Row>
         <Col md="8">
-          <h1>
-            <Translate contentKey="userManagement.home.detail-label">Deilta</Translate>
-          </h1>
+          <h5 className="d-none d-md-inline">
+            <Translate contentKey="userManagement.home.detail-label" />
+          </h5>
         </Col>
         <Col md="12">
           <Button tag={Link} to="./new" replace color="info">
             &nbsp;
             <span className="d-none d-md-inline">
-              <Translate contentKey="entity.action.continue">Continue Upload</Translate>
+              <Translate contentKey="entity.action.continue" />
             </span>
           </Button>
         </Col>
 
-        <Table className="mb-0" bordered style={{ background: 'antiquewhite' }}>
-          <tbody>
-            <tr>
-              <td> Tổng số {150} bản ghi </td>
-              <td> {140} bản ghi không lỗi</td>
-              <td> {10} bản ghi lỗi</td>
-            </tr>
-          </tbody>
-        </Table>
+        <div className=" table-mini">
+          <Col md="4">
+            <Translate contentKey="entity.action.total-table" interpolate={{ number: '150' }} />
+          </Col>
+          <Col md="4">
+            <Translate contentKey="entity.action.table-not-error" interpolate={{ number: '150' }} />
+          </Col>
+          <Col md="4">
+            <Translate contentKey="entity.action.table-error" interpolate={{ number: '150' }} />
+          </Col>
+        </div>
 
         <Col md="8">
           <div className="span-line" />

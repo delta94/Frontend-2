@@ -6,6 +6,7 @@ import UserManagement from './user-management';
 import UserManagementDetail from 'app/views/administration/user-management/user-detail';
 import CreateUser from 'app/views/administration/user-management/user-create';
 
+//todo rename cho router
 const Routes = ({ match }) => (
   <>
     <Switch>

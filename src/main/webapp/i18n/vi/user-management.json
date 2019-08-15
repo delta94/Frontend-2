@@ -5,6 +5,7 @@
       "createLabel": "Tạo tài khoản mới",
       "createOrEditLabel": "Tạo mới dữ liệu khách hàng",
       "detail-label": "Bảng dữ liệu chi tiết",
+      "download-result": "tải kết quả đầy đủ",
       "line-error": "10 dòng không thành công đầu tiên "
     },
     "created": "Một tài khoản mới đã được tạo với định danh {{ param }}",

@@ -6,5 +6,8 @@ export const USER_MANAGE_ACTION_TYPES = {
   UPDATE_USER: 'userManagement/UPDATE_USER',
   DELETE_USER: 'userManagement/DELETE_USER',
   DOWNLOAD_FILE: 'userManagement/DOWNLOAD_FILE',
+  UPLOAD_FILE: 'userManagement/UPLOAD_FILE',
+  XLSX: 'xlsx',
+  XLS: 'xls',
   RESET: 'userManagement/RESET'
 };
