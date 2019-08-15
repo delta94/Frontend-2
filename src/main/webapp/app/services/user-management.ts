@@ -37,5 +37,5 @@ export const deleteUserService = id => {
 
 export const downloadFile = () => {
   debugger;
-  return axios.get('v1/customer/template-import', { responseType: 'blob' });
+  return axios.get('v1/customer/template-import');
 };

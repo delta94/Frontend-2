@@ -26,7 +26,7 @@ export class UserManagementDetail extends React.Component<IUserManagementDetailP
           </h1>
         </Col>
         <Col md="12">
-          <Button tag={Link} to="./admin/user-management/new" replace color="info">
+          <Button tag={Link} to="./new" replace color="info">
             &nbsp;
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.continue">Continue Upload</Translate>
@@ -38,8 +38,8 @@ export class UserManagementDetail extends React.Component<IUserManagementDetailP
           <tbody>
             <tr>
               <td> Tổng số {150} bản ghi </td>
-              <td>Số bản ghi không lỗi {140}</td>
-              <td> Số bản ghi lỗi {10}</td>
+              <td> {140} bản ghi không lỗi</td>
+              <td> {10} bản ghi lỗi</td>
             </tr>
           </tbody>
         </Table>
