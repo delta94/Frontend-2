@@ -41,9 +41,9 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
     hot: true,
     contentBase: './target/classes/static/',
     proxy: [{
-      context: [
-        '/api'
-      ],
+      // context: [
+      //   '/api'
+      // ],
       target: `http${options.tls ? 's' : ''}://localhost:9060`,
       secure: false,
       changeOrigin: options.tls
@@ -76,7 +76,8 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
           heartbeatTimeout: 60000
         }
       }
-    }, {
+    }, 
+    {
       reload: false
     }),
     new webpack.NamedModulesPlugin(),
@@ -86,7 +87,7 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
       utils.root('src/test'),
     ]),
     new WebpackNotifierPlugin({
-      title: 'Topica Taca',
+      title: 'Izzi platform',
       contentImage: path.join(__dirname, 'logo-topica.png')
     })
   ].filter(Boolean)

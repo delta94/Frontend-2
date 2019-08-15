@@ -30,16 +30,22 @@ const adminMenuItems = (
   </>
 );
 
-const swaggerItem = (
-  <MenuItem icon="book" to="/admin/docs">
-    <Translate contentKey="global.menu.admin.apidocs">API</Translate>
-  </MenuItem>
-);
+// const swaggerItem = (
+//   <MenuItem icon="book" to="/admin/docs">
+//     <Translate contentKey="global.menu.admin.apidocs">API</Translate>
+//   </MenuItem>
+// );
 
-export const AdminMenu = ({ showSwagger }) => (
+// export const AdminMenu = ({ showSwagger }) => (
+//   <NavDropdown icon="user-plus" name={translate('global.menu.admin.main')} style={{ width: '140%' }} id="admin-menu">
+//     {adminMenuItems}
+//     {showSwagger && swaggerItem}
+//   </NavDropdown>
+// );
+
+export const AdminMenu = () => (
   <NavDropdown icon="user-plus" name={translate('global.menu.admin.main')} style={{ width: '140%' }} id="admin-menu">
     {adminMenuItems}
-    {showSwagger && swaggerItem}
   </NavDropdown>
 );
 
