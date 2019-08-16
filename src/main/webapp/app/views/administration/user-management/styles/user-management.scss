@@ -1,6 +1,3 @@
-.container {
-  text-align: center;
-}
 .btn-button {
   float: right;
   margin: 12px 10px;
@@ -56,4 +53,39 @@
   margin-bottom: -10px;
   margin-top: 5px;
   margin-left: 15px;
+}
+.ModalLoading {
+  display: contents;
+  .modal-content {
+    background: none !important;
+    border: none !important;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+}
+.table-striped {
+  margin-top: 20px;
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+}
+.col-md-9 {
+  margin-top: auto;
+}
+.no-gutters {
+  background: antiquewhite;
+}
+td,
+th {
+  border: 1px solid #dddddd;
+  text-align: center;
+}
+.classHiden {
+  display: none;
+}
+.noRecord {
+  text-align: center;
+}
+.img {
+  width: 160px;
 }

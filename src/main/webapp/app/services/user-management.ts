@@ -42,6 +42,7 @@ export const downloadFileTotalResults = file => {
 export const downloadFile = () => {
   return axios.get('v1/customer/template-import');
 };
+
 export const UploaddFile = data => {
   return axios.post('v1/customer/import', data, {
     headers: {

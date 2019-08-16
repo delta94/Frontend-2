@@ -12,7 +12,7 @@ const initialState = {
   uploadScheduleFailure: false,
   uploadScheduleSuccess: false,
   users: [] as ReadonlyArray<IUser>,
-  listFiles: [] as ReadonlyArray<IFileList>,
+  listFiles: {} as IFileList,
   authorities: [] as any[],
   user: defaultValue,
   updating: false,
@@ -53,13 +53,16 @@ export default (state: UserManagementState = initialState, action): UserManageme
         updateSuccess: false,
         updating: true
       };
+    case FAILURE(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILE):
+      return {
+        ...state
+      };
     case FAILURE(USER_MANAGE_ACTION_TYPES.FETCH_USERS):
     case FAILURE(USER_MANAGE_ACTION_TYPES.FETCH_USER):
     case FAILURE(USER_MANAGE_ACTION_TYPES.FETCH_ROLES):
     case FAILURE(USER_MANAGE_ACTION_TYPES.CREATE_USER):
     case FAILURE(USER_MANAGE_ACTION_TYPES.UPDATE_USER):
     case FAILURE(USER_MANAGE_ACTION_TYPES.DELETE_USER):
-    case FAILURE(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILE):
     case FAILURE(USER_MANAGE_ACTION_TYPES.UPLOAD_FILE):
     case FAILURE(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILERE_SULTS):
       return {
@@ -110,15 +113,23 @@ export default (state: UserManagementState = initialState, action): UserManageme
         updateSuccess: true,
         dowloadTemplate: action.payload.data
       };
-      debugger;
     case SUCCESS(USER_MANAGE_ACTION_TYPES.UPLOAD_FILE):
     case SUCCESS(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILERE_SULTS):
+      console.log(action);
+      const { listErrorImport, total, success, error, fileName } = action.payload.data;
       return {
         ...state,
+        loading: false,
         updating: false,
         updateSuccess: true,
         uploadScheduleSuccess: true,
-        listFiles: action.payload.data
+        listFiles: {
+          total: total,
+          success: success,
+          error: error,
+          fileName: fileName,
+          listErrorImport: listErrorImport
+        }
       };
     case USER_MANAGE_ACTION_TYPES.RESET:
     case USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILE:

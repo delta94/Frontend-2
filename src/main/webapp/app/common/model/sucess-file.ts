@@ -11,13 +11,5 @@ export const defaultValueFile: Readonly<IFileList> = {
   success: '',
   error: '',
   fileName: '',
-  listErrorImport: [
-    {
-      name: '',
-      phone: '',
-      email: '',
-      type: '',
-      error: ''
-    }
-  ]
+  listErrorImport: []
 };

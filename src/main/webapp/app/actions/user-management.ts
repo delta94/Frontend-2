@@ -83,16 +83,17 @@ export const reset = () => ({
 });
 
 export const downloadFileExcel = () => {
-  debugger;
   return {
     type: USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILE,
-    payload: downloadFile()
+    // payload: downloadFile(),
+    payload: axios.get('v1/customer/template-import'),
+    meta: {}
   };
 };
 debugger;
 export const uploadFileExcel = data => async dispatch => {
   const formData = new FormData();
-  formData.append('files', data);
+  formData.append('file', data);
   const result = await dispatch({
     type: USER_MANAGE_ACTION_TYPES.UPLOAD_FILE,
     payload: axios.post('v1/customer/import', formData, {
@@ -105,9 +106,7 @@ export const uploadFileExcel = data => async dispatch => {
     }
   });
   if (result.action.payload.data.success) {
-    toast.info(translate('bookSchedule.messages.upload-file-interview-success'));
   } else {
-    toast.warn(translate('bookSchedule.messages.upload-file-interview-failure-due-to-data'));
   }
 };
 export const resetDownloadInterview = () => {
