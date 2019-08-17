@@ -8,7 +8,7 @@ export const getUsersService = (page, size, sort) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
   // return axios.get<IUser>(`${apiUrl}/search`);
 
-  return axios.get<IUser>(apiUrl);
+  return axios.get<IUser>(requestUrl);
 };
 
 // get typeName category
