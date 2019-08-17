@@ -7,7 +7,7 @@ import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { locales, languages } from 'app/config/translation';
-import { getUser, getRoles, updateUser, createUser, reset } from 'app/actions/user-management';
+import { getUser, getRoles, updateUser, createUser, reset, getUserCategories } from 'app/actions/user-management';
 import { IRootState } from 'app/reducers';
 import FormMultiSelectWidget from './user-categories-tag';
 
@@ -15,11 +15,13 @@ export interface IUserManagementUpdateProps extends StateProps, DispatchProps, R
 
 export interface IUserManagementUpdateState {
   isNew: boolean;
+  Category: any[];
 }
 
 export class UserManagementUpdate extends React.Component<IUserManagementUpdateProps, IUserManagementUpdateState> {
   state: IUserManagementUpdateState = {
-    isNew: !this.props.match.params || !this.props.match.params.id
+    isNew: !this.props.match.params || !this.props.match.params.id,
+    Category: []
   };
 
   // todo : hiện Modal , không chuyển trang
@@ -31,28 +33,58 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
       console.log(this.props.match.params.id);
     }
     this.props.getRoles();
+    this.props.getUserCategories('');
   }
 
   componentWillUnmount() {
     this.props.reset();
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.user.categorys) {
+      this.setState({
+        Category: nextProps.user.categorys
+      });
+    }
+  }
+
   saveUser = (event, values) => {
     if (this.state.isNew) {
       this.props.createUser(values);
     } else {
-      this.props.updateUser(values);
+      const { user } = this.props;
+      let data = {
+        id: user.id,
+        name: values.name,
+        phone: values.mobile,
+        email: values.email,
+        categorys: this.state.Category
+      };
+      this.props.updateUser(data);
     }
-    this.handleClose();
+    // this.handleClose();
   };
   // todo : không load lại trang trước , chỉ gọi hàm getUser
   handleClose = () => {
     this.props.history.push('/admin/user-management');
   };
 
+  handleCreate = name => {
+    this.props.getUserCategories(name);
+  };
+
+  handleChange = category => {
+    console.log(category);
+    this.setState({
+      Category: category
+    });
+  };
+
   render() {
     const isInvalid = false;
-    const { user, users, loading, updating, roles } = this.props;
+
+    const { user, users, loading, updating, listCategory, roles } = this.props;
+    const { Category } = this.state;
     console.log(user);
     return (
       <div>
@@ -83,10 +115,10 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                         value: true,
                         errorMessage: translate('register.messages.validate.login.required')
                       },
-                      pattern: {
-                        value: '^[_.@A-Za-z0-9-]*$',
-                        errorMessage: translate('register.messages.validate.login.pattern')
-                      },
+                      // pattern: {
+                      //   value: '^[_.@A-Za-z0-9-]*$',
+                      //   errorMessage: translate('register.messages.validate.login.pattern')
+                      // },
                       minLength: {
                         value: 1,
                         errorMessage: translate('register.messages.validate.login.minlength')
@@ -150,7 +182,12 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                   <Label for="categories">
                     <Translate contentKey="userManagement.categories" />
                   </Label>
-                  <FormMultiSelectWidget users={users} />
+                  <FormMultiSelectWidget
+                    listCategory={listCategory}
+                    defaultCate={Category}
+                    handleChange={this.handleChange}
+                    handleCreate={this.handleCreate}
+                  />
                 </AvGroup>
                 {/* <AvGroup check> */}
                 {/* <AvGroup>
@@ -183,7 +220,8 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                     ))}
                   </AvInput>
                 </AvGroup> */}
-                <Button tag={Link} to="/admin/user-management" replace color="info">
+                {/* <Button tag={Link} to="/admin/user-management" replace color="info"> */}
+                <Button replace color="info" tag={Link} to="/admin/user-management">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">
@@ -211,10 +249,11 @@ const mapStateToProps = (storeState: IRootState) => ({
   users: storeState.userManagement.users,
   roles: storeState.userManagement.authorities,
   loading: storeState.userManagement.loading,
-  updating: storeState.userManagement.updating
+  updating: storeState.userManagement.updating,
+  listCategory: storeState.userManagement.listCategory
 });
 
-const mapDispatchToProps = { getUser, getRoles, updateUser, createUser, reset };
+const mapDispatchToProps = { getUser, getRoles, updateUser, createUser, reset, getUserCategories };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

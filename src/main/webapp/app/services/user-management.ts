@@ -4,8 +4,12 @@ import { ICategory } from 'app/common/model/category.model';
 
 const apiUrl = 'v1/customer';
 
-export const getUsersService = (page, size, sort) => {
-  const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
+export const getUsersService = (page, size, sort, category?) => {
+  const urlCategory = category ? category.map(cate => '&category=' + cate.id) : '';
+  if (category) {
+    console.log(urlCategory.join(''));
+  }
+  const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}${category ? urlCategory.join('') : ''}` : ''}`;
   // return axios.get<IUser>(`${apiUrl}/search`);
 
   return axios.get<IUser>(requestUrl);
@@ -36,7 +40,9 @@ export const createUserService = user => {
 };
 
 export const updateUserService = user => {
-  return axios.put(apiUrl, user);
+  console.log(user);
+  const urlUpdate = `${apiUrl}/${user.id}/update`;
+  return axios.post(urlUpdate, user);
 };
 
 export const deleteUserService = id => {

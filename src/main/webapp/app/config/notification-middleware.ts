@@ -45,6 +45,8 @@ export default () => next => action => {
         const response = error.response;
         const data = response.data;
         if (!(response.status === 401 && (error.message === '' || (data && data.path && data.path.includes('/api/account'))))) {
+          console.log('=========================');
+          console.log(response);
           let i;
           switch (response.status) {
             // connection refused, server not reachable
@@ -82,7 +84,7 @@ export default () => next => action => {
                 // toast.error(data.errorMessage);
                 addErrorAlert(data.errorMessage, `error.response.${data.errorCode}`);
               } else {
-                addErrorAlert(data);
+                addErrorAlert(data.message);
               }
               break;
 

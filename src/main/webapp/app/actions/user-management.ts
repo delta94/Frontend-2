@@ -17,19 +17,19 @@ import {
 
 const apiUrl = 'v1/customer';
 // Actions
-export const getUsers: ICrudGetAllAction<IUser> = (page, size, sort) => {
+export const getUsers: ICrudGetAllAction<IUser> = (page, size, sort, category?) => {
   return {
     type: USER_MANAGE_ACTION_TYPES.FETCH_USERS,
-    payload: getUsersService(page, size, sort)
+    payload: getUsersService(page, size, sort, category)
     // payload: axios.get(apiUrl)
 
     // payload: axios.get('./content/json_data/account.json')
   };
 };
-export const getUserCategories = () => ({
+export const getUserCategories = (name?) => ({
   type: USER_MANAGE_ACTION_TYPES.FETCH_USER_CATEGORIES,
   // payload: axios.get('./v1/customer/category-name?textSearch')
-  payload: axios.get('./content/json_data/category.json')
+  payload: axios.get(`v1/category?type=Customer&textSearch=${name}`)
 });
 
 export const getRoles = () => ({
@@ -56,6 +56,7 @@ export const createUser: ICrudPutAction<IUser> = user => async dispatch => {
 };
 
 export const updateUser: ICrudPutAction<IUser> = user => async dispatch => {
+  console.log(user);
   const result = await dispatch({
     type: USER_MANAGE_ACTION_TYPES.UPDATE_USER,
     payload: updateUserService(user)

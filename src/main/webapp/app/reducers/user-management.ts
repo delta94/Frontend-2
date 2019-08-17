@@ -68,8 +68,6 @@ export default (state: UserManagementState = initialState, action): UserManageme
         errorMessage: action.payload
       };
     case SUCCESS(USER_MANAGE_ACTION_TYPES.FETCH_USER_CATEGORIES):
-      debugger;
-      console.log(action.payload.data);
       return {
         ...state,
         loading: false,

@@ -5,11 +5,9 @@ import { Button, Table, Row, Badge, Col } from 'reactstrap';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import './user-management.scss';
 import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
-import SweetAlerts from './user-delete';
-import UserManagementDeleteDialog from './user-delete-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
-import { getUsers, updateUser } from 'app/actions/user-management';
+import { getUsers, updateUser, getUserCategories } from 'app/actions/user-management';
 import FormMultiSelectWidget from './user-categories-tag';
 import { IRootState } from 'app/reducers';
 import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
@@ -26,6 +24,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
   componentDidMount() {
     const { activePage } = this.state;
     this.getUsers(activePage);
+    this.props.getUserCategories('');
     this.setState({
       loading: true
     });
@@ -73,20 +72,26 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
     this.getUsers(activePage);
   };
 
-  getUsers = activePage => {
+  getUsers = (activePage, category?) => {
     const { itemsPerPage, sort, order } = this.state;
-    this.props.getUsers(activePage - 1, itemsPerPage, `${sort},${order}`);
+
+    this.props.getUsers(activePage - 1, itemsPerPage, `${sort},${order}`, category);
   };
 
   toggleActive = user => () => {
-    this.props.updateUser({
-      ...user,
-      activated: !user.activated
-    });
+    this.props.updateUser(user.id);
+  };
+
+  handleCreate = name => {
+    this.props.getUserCategories(name);
+  };
+
+  handleChange = category => {
+    this.getUsers(this.state.activePage, category);
   };
 
   render() {
-    const { users, match, totalItems, totalElements } = this.props;
+    const { users, match, totalItems, totalElements, listCategory } = this.props;
     const { activePage, itemsPerPage } = this.state;
     return (
       <div>
@@ -106,12 +111,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
             </Col>
 
             <Col md="6">
-              <FormMultiSelectWidget
-                users={users.map((event, index) => {
-                  console.log(event.categories.split(','));
-                  return event.categories;
-                })}
-              />
+              <FormMultiSelectWidget handleChange={this.handleChange} handleCreate={this.handleCreate} listCategory={listCategory} />
             </Col>
             <Col md="3">
               <div className="has-search">
@@ -153,7 +153,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
               {users
                 ? users.map((user, i) => (
                     <tr id={user.id} key={`user-${i}`}>
-                      <td>1</td>
+                      <td>{i + 1}</td>
                       <td>{user.name}</td>
                       <td>{user.phone}</td>
                       <td>{user.email}</td>
@@ -215,10 +215,11 @@ const mapStateToProps = (storeState: IRootState) => ({
   users: storeState.userManagement.users,
   totalItems: storeState.userManagement.totalItems,
   account: storeState.authentication.account,
-  totalElements: storeState.userManagement.totalElements
+  totalElements: storeState.userManagement.totalElements,
+  listCategory: storeState.userManagement.listCategory
 });
 
-const mapDispatchToProps = { getUsers, updateUser };
+const mapDispatchToProps = { getUsers, updateUser, getUserCategories };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
