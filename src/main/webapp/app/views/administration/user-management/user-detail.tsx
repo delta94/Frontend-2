@@ -204,15 +204,17 @@ export class UserManagementDetail extends React.Component<IUserManagementDetailP
                 </tbody>
               </Table>
               {noRecord}
-              <Col md="12">
-                <Button tag={Link} to="/admin/user-management" replace color="info">
-                  <FontAwesomeIcon icon="arrow-left" />
-                  &nbsp;
-                  <span className="d-none d-md-inline">
-                    <Translate contentKey="entity.action.back" />
-                  </span>
-                </Button>
-              </Col>
+              <Row>
+                <Col md="12">
+                  <Button tag={Link} to="/admin/user-management" replace color="info">
+                    <FontAwesomeIcon icon="arrow-left" />
+                    &nbsp;
+                    <span className="d-none d-md-inline">
+                      <Translate contentKey="entity.action.back" />
+                    </span>
+                  </Button>
+                </Col>
+              </Row>
             </CardBody>
           </Card>
         </Loader>
