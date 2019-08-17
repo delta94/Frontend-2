@@ -41,7 +41,7 @@ export const updateUserService = user => {
 
 export const deleteUserService = id => {
   const requestUrl = `${apiUrl}/${id}/delete`;
-  return axios.delete(requestUrl);
+  return axios.post(requestUrl);
 };
 
 // phân trang client
