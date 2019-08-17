@@ -20,8 +20,8 @@ const apiUrl = 'v1/customer';
 export const getUsers: ICrudGetAllAction<IUser> = (page, size, sort) => {
   return {
     type: USER_MANAGE_ACTION_TYPES.FETCH_USERS,
-    //  payload: getUsersService(page, size, sort)
-    payload: axios.get(apiUrl)
+    payload: getUsersService(page, size, sort)
+    // payload: axios.get(apiUrl)
 
     // payload: axios.get('./content/json_data/account.json')
   };

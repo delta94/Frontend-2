@@ -106,7 +106,12 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
             </Col>
 
             <Col md="6">
-              <FormMultiSelectWidget users={users} />
+              <FormMultiSelectWidget
+                users={users.map((event, index) => {
+                  console.log(event.categories.split(','));
+                  return event.categories;
+                })}
+              />
             </Col>
             <Col md="3">
               <div className="has-search">
