@@ -86,7 +86,7 @@ export class UserManagementDetail extends React.Component<IUserManagementDetailP
                   <div className="widget-content">
                     <div className="widget-content-wrapper">
                       <div className="widget-content-right ml-0 mr-3">
-                        <div className="widget-heading text-success">{listFile.success}</div>
+                        <div className="widget-heading text-sucess">{listFile.success}</div>
                       </div>
                       <div className="widget-content-left">
                         <div className="widget-heading">
