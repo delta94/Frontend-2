@@ -60,7 +60,7 @@ export class UserCreate extends React.Component<IUserManagementUpdateProps, IUse
         //todo : dua vao the translate
         isActive: false,
         isError: true,
-        file: USER_MANAGE_ACTION_TYPES.MESSAGE_DROP_ERROR,
+        file: '',
         image: USER_MANAGE_ACTION_TYPES.IMG_ERROR
       });
     }
