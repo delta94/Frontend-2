@@ -28,9 +28,9 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
       this.props.reset();
     } else {
       this.props.getUser(this.props.match.params.id);
+      console.log(this.props.match.params.id);
     }
     this.props.getRoles();
-    console.log(this.props.match.params.id);
   }
 
   componentWillUnmount() {
@@ -52,7 +52,8 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
 
   render() {
     const isInvalid = false;
-    const { user, loading, updating, roles } = this.props;
+    const { user, users, loading, updating, roles } = this.props;
+    console.log(user);
     return (
       <div>
         <Row className="updateTitle">
@@ -149,7 +150,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                   <Label for="categories">
                     <Translate contentKey="userManagement.categories" />
                   </Label>
-                  <FormMultiSelectWidget />
+                  <FormMultiSelectWidget users={users} />
                 </AvGroup>
                 {/* <AvGroup check> */}
                 {/* <AvGroup>
@@ -207,6 +208,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
 
 const mapStateToProps = (storeState: IRootState) => ({
   user: storeState.userManagement.user,
+  users: storeState.userManagement.users,
   roles: storeState.userManagement.authorities,
   loading: storeState.userManagement.loading,
   updating: storeState.userManagement.updating

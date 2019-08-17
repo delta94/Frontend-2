@@ -15,6 +15,7 @@ const initialState = {
   user: defaultValue,
   updating: false,
   updateSuccess: false,
+  categories: defaultValue,
   listCategory: [] as ReadonlyArray<ICategory>,
   totalItems: 0,
   totalElements: 0
@@ -86,6 +87,7 @@ export default (state: UserManagementState = initialState, action): UserManageme
         ...state,
         loading: false,
         users: action.payload.data.content,
+        categories: action.payload.data.content.categories,
         totalItems: action.payload.data.content.totalItems,
         totalElements: action.payload.data.totalElements
         // totalItems: action.payload.headers['x-total-count']
@@ -96,12 +98,12 @@ export default (state: UserManagementState = initialState, action): UserManageme
     //     ...state,
     //     listUsers: action
     //   };
-    // case SUCCESS(USER_MANAGE_ACTION_TYPES.FETCH_USER):
-    //   return {
-    //     ...state,
-    //     loading: false,
-    //     user: action.payload.data
-    //   };
+    case SUCCESS(USER_MANAGE_ACTION_TYPES.FETCH_USER):
+      return {
+        ...state,
+        loading: false,
+        user: action.payload.data
+      };
     case SUCCESS(USER_MANAGE_ACTION_TYPES.CREATE_USER):
     case SUCCESS(USER_MANAGE_ACTION_TYPES.UPDATE_USER):
       return {

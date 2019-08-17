@@ -102,7 +102,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
             </Col>
 
             <Col md="6">
-              <FormMultiSelectWidget />
+              <FormMultiSelectWidget users={users} />
             </Col>
             <Col md="3">
               <div className="has-search">
@@ -148,11 +148,20 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
                       <td>{user.name}</td>
                       <td>{user.phone}</td>
                       <td>{user.email}</td>
-                      <td className="badge badge-success">{user.categories}</td>
-
+                      {/* <td className="badge badge-success">{user.categories}</td> */}
+                      <td>
+                        {user.categories.split(',').map((category, index) => {
+                          return (
+                            <span className="badge badge-success" key={index}>
+                              {' '}
+                              {category}
+                            </span>
+                          );
+                        })}
+                      </td>
                       <td className="text-center">
                         <div className="btn-group flex-btn-group-container">
-                          <Button className="buttonUpdate" tag={Link} to={`${match.url}/${user.id}/edit`} color="primary" size="sm">
+                          <Button className="buttonUpdate" tag={Link} to={`${match.url}/${user.id}/update`} color="primary" size="sm">
                             <FontAwesomeIcon icon="pencil-alt" />{' '}
                             <span className="d-none d-md-inline">
                               <Translate contentKey="entity.action.edit" />
@@ -165,7 +174,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
                             <Translate contentKey="entity.action.edit">Edit</Translate>
                           </span>
                         </Button> */}
-                          <Button tag={Link} to={`${match.url}/delete/${user.id}`} color="danger" size="sm">
+                          <Button tag={Link} to={`${match.url}/${user.id}/delete`} color="danger" size="sm">
                             <FontAwesomeIcon icon="trash" />{' '}
                             <span className="d-none d-md-inline">
                               <Translate contentKey="entity.action.delete" />

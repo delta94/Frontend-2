@@ -8,7 +8,7 @@ export const getUsersService = (page, size, sort) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
   // return axios.get<IUser>(`${apiUrl}/search`);
 
-  return axios.get<IUser>('v1/customer');
+  return axios.get<IUser>(apiUrl);
 };
 
 // get typeName category
@@ -25,6 +25,12 @@ export const getUserService = id => {
   return axios.get<IUser>(requestUrl);
 };
 
+export const getUserId = id => {
+  return {
+    id: id
+  };
+};
+
 export const createUserService = user => {
   return axios.post(apiUrl, user);
 };
@@ -34,7 +40,7 @@ export const updateUserService = user => {
 };
 
 export const deleteUserService = id => {
-  const requestUrl = `${apiUrl}/delete/${id}`;
+  const requestUrl = `${apiUrl}/${id}/delete`;
   return axios.delete(requestUrl);
 };
 
