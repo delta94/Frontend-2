@@ -1,6 +1,4 @@
 import 'react-toastify/dist/ReactToastify.css';
-// import './app.scss';
-
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Card } from 'reactstrap';

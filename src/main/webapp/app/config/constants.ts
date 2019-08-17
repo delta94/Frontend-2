@@ -1,8 +1,8 @@
-const config = {
-  VERSION: process.env.VERSION
-};
+// const config = {
+//   VERSION: process.env.VERSION
+// };
 
-export default config;
+// export default config;
 
 export const SERVER_API_URL = process.env.SERVER_API_URL;
 // export const SERVER_API_URL = 'http://103.137.4.12:8080';
