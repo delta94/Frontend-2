@@ -8,6 +8,11 @@ export const USER_MANAGE_ACTION_TYPES = {
   DOWNLOAD_FILE: 'userManagement/DOWNLOAD_FILE',
   UPLOAD_FILE: 'userManagement/UPLOAD_FILE',
   DOWNLOAD_FILERE_SULTS: 'userManagement/UPLOAD_FILERE_SULTS',
+  URL_TEMPLATE: 'http://171.244.40.91:8088/v1/customer/template-import',
+  IMG_COMPLETE: 'https://abeon-hosting.com/images/complete-png-4.png',
+  IMG_ERROR: 'https://www.freeiconspng.com/uploads/error-icon-15.png',
+  MESSAGE_DROP_DEFAUL: 'Try dropping some files here, or click to select files to upload.',
+  MESSAGE_DROP_ERROR: 'please choose file excel',
   XLSX: 'xlsx',
   XLS: 'xls',
   RESET: 'userManagement/RESET'

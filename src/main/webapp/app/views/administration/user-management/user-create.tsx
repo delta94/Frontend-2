@@ -1,12 +1,14 @@
 import React from 'react';
 import './styles/user-management.scss';
 import { connect } from 'react-redux';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps, Router, Route } from 'react-router-dom';
 import SweetAlert from 'sweetalert-react';
 import { Button, Label, Row, Col, Modal, Container, Card, CardBody, CardTitle } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import FileDownload from 'js-file-download';
+import Loader from 'react-loader-advanced';
+import { Loader as LoaderAnim } from 'react-loaders';
 
 import { downloadFileExcel, uploadFileExcel } from 'app/actions/user-management';
 import { IRootState } from 'app/reducers';
@@ -28,14 +30,14 @@ export interface IUserManagementUpdateState {
   image: string;
 }
 
-export class UserCreate extends React.Component<IUserManagementUpdateProps, IUserManagementUpdateState> {
+export class UserCreate extends React.Component<IUserManagementUpdateProps, IUserManagementUpdateState, Route> {
   state: IUserManagementUpdateState = {
     isNew: !this.props.match.params || !this.props.match.params.login,
     isActive: false,
     isComplete: false,
     isError: false,
     urlImage: '',
-    file: 'Try dropping some files here, or click to select files to upload.',
+    file: USER_MANAGE_ACTION_TYPES.MESSAGE_DROP_DEFAUL,
     fileImport: '',
     image: ''
   };
@@ -51,21 +53,23 @@ export class UserCreate extends React.Component<IUserManagementUpdateProps, IUse
         isActive: true,
         isComplete: true,
         file: checkFile,
-        image: 'https://abeon-hosting.com/images/complete-png-4.png'
+        image: USER_MANAGE_ACTION_TYPES.IMG_COMPLETE
       });
     } else {
       this.setState({
         //todo : dua vao the translate
         isActive: false,
         isError: true,
-        file: 'please choose file excel',
-        image: 'https://www.freeiconspng.com/uploads/error-icon-15.png'
+        file: USER_MANAGE_ACTION_TYPES.MESSAGE_DROP_ERROR,
+        image: USER_MANAGE_ACTION_TYPES.IMG_ERROR
       });
     }
   };
 
   onClick = async () => {
     await this.props.uploadFileExcel(this.state.fileImport);
+    this.props.history.push('/admin/user-management/results-files');
+    // window.location.href="http://localhost:9000/#/admin/user-management/results-files";
   };
 
   validated = () => {
@@ -79,106 +83,103 @@ export class UserCreate extends React.Component<IUserManagementUpdateProps, IUse
 
   render() {
     const { downloadFileExcel, loading, downloadTemplate } = this.props;
+    const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
     console.log(this.props.fileList);
     return (
       <Container fluid>
-        <Card className="main-card mb-3">
-          <CardBody>
-            <CardTitle>
-              <Translate contentKey="userManagement.home.createOrEditLabel" />
-            </CardTitle>
+        <Loader message={spinner1} show={loading} priority={1}>
+          <Card className="main-card mb-3">
+            <CardBody>
+              <CardTitle>
+                <Translate contentKey="userManagement.home.createOrEditLabel" />
+              </CardTitle>
 
-            <Row className="justify-content-left">
-              <Col md="6">
-                <div className="multi-row">
-                  <legend>
-                    <Translate contentKey="entity.action.reinstall" />
-                    <a className="myButton" href="http://171.244.40.91:8088/v1/customer/template-import">
-                      {/* them cac translate vao cac hard code*/}
-                      <Translate contentKey="entity.action.at-this" />
-                    </a>
-                  </legend>
-                </div>
-              </Col>
-              <Col md="6">
-                <Button tag={Link} to="/admin/user-management" replace color="info">
-                  <FontAwesomeIcon icon="arrow-left" />
-                  &nbsp;
-                  <span className="d-none d-md-inline">
-                    <Translate contentKey="entity.action.back" />
-                  </span>
-                </Button>
-              </Col>
-            </Row>
-
-            <div className="container">
-              <Row className="justify-content-center">
-                <Col md="12">
-                  <label className="label-table">
-                    <Translate contentKey="global.field.choose-file" />
-
-                    <div className="dropzone-wrapper dropzone-wrapper-lg">
-                      <Dropzone onDrop={this.onDrop.bind(this)}>
-                        {({ getRootProps, getInputProps }) => (
-                          <div {...getRootProps()}>
-                            <input {...getInputProps()} />
-
-                            <div className="dropzone-content">
-                              <SweetAlert
-                                title=""
-                                confirmButtonColor=""
-                                show={this.state.isComplete}
-                                type="success"
-                                onConfirm={() => this.setState({ isComplete: false })}
-                              />
-                              <SweetAlert
-                                title="Please Chosse File Again"
-                                confirmButtonColor=""
-                                show={this.state.isError}
-                                text=""
-                                type="error"
-                                onConfirm={() => this.setState({ isError: false })}
-                              />
-                              <Col md="12">
-                                {' '}
-                                <img className="img" src={this.state.image} />
-                              </Col>
-                              {this.state.file}
-                            </div>
-                          </div>
-                        )}
-                      </Dropzone>
-                    </div>
-                  </label>
+              <Row className="justify-content-left">
+                <Col md="6">
+                  <div className="multi-row">
+                    <legend>
+                      <Translate contentKey="entity.action.reinstall" />
+                      <a className="myButton" href={USER_MANAGE_ACTION_TYPES.URL_TEMPLATE}>
+                        {/* them cac translate vao cac hard code*/}
+                        <Translate contentKey="entity.action.at-this" />
+                      </a>
+                    </legend>
+                  </div>
                 </Col>
-
-                <div>
-                  {/* sua lai phan chuyen trang */}
-                  <Button
-                    tag={Link}
-                    to="/admin/user-management/results-files"
-                    replace
-                    color="info"
-                    onClick={this.onClick}
-                    disabled={!this.validated()}
-                  >
+                <Col md="6">
+                  <Button tag={Link} to="/admin/user-management" replace color="info">
+                    <FontAwesomeIcon icon="arrow-left" />
                     &nbsp;
                     <span className="d-none d-md-inline">
-                      <Translate contentKey="entity.action.upload" />
+                      <Translate contentKey="entity.action.back" />
                     </span>
                   </Button>
-                </div>
-                <div className="ModalLoading">
-                  <Modal isOpen={loading} id="create time title" className="ModalLoading" autoFocus={false}>
-                    <div>
-                      <img src="http://interview-test.topica.vn/content/images/loading.svg" alt="" />
-                    </div>
-                  </Modal>
-                </div>
+                </Col>
               </Row>
-            </div>
-          </CardBody>
-        </Card>
+
+              <div className="container">
+                <Row className="justify-content-center">
+                  <Col md="12">
+                    <label className="label-table">
+                      <Translate contentKey="global.field.choose-file" />
+
+                      <div className="dropzone-wrapper dropzone-wrapper-lg">
+                        <Dropzone onDrop={this.onDrop.bind(this)}>
+                          {({ getRootProps, getInputProps }) => (
+                            <div {...getRootProps()}>
+                              <input {...getInputProps()} />
+
+                              <div className="dropzone-content">
+                                <SweetAlert
+                                  title=""
+                                  confirmButtonColor=""
+                                  show={this.state.isComplete}
+                                  type="success"
+                                  onConfirm={() => this.setState({ isComplete: false })}
+                                />
+                                <SweetAlert
+                                  title="Please Chosse File Again"
+                                  confirmButtonColor=""
+                                  show={this.state.isError}
+                                  text=""
+                                  type="error"
+                                  onConfirm={() => this.setState({ isError: false })}
+                                />
+                                <Col md="12">
+                                  {' '}
+                                  <img className="img" src={this.state.image} />
+                                </Col>
+                                {this.state.file}
+                              </div>
+                            </div>
+                          )}
+                        </Dropzone>
+                      </div>
+                    </label>
+                  </Col>
+
+                  <div>
+                    {/* sua lai phan chuyen trang */}
+                    <Button
+                      // to="/admin/user-management/results-files"
+                      replace
+                      color="info"
+                      onClick={this.onClick}
+                      // tag={Link}
+                      disabled={!this.validated()}
+                    >
+                      &nbsp;
+                      <span className="d-none d-md-inline">
+                        <Translate contentKey="entity.action.upload" />
+                      </span>
+                    </Button>
+                  </div>
+                  <div className="ModalLoading" />
+                </Row>
+              </div>
+            </CardBody>
+          </Card>
+        </Loader>
       </Container>
     );
   }

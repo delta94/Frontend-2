@@ -35,7 +35,7 @@ export const deleteUserService = id => {
   return axios.delete(requestUrl);
 };
 export const downloadFileTotalResults = file => {
-  const requestUrl = `${`v1/customer/import-result/`}/${file}`;
+  const requestUrl = `${`v1/customer/import-result?fileName=${file}`}`;
   return axios.get(requestUrl);
 };
 
