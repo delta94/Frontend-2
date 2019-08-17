@@ -34,7 +34,7 @@
       "language": "Ngôn ngữ"
     },
     "form": {
-      "profiles.label": "Phân loại",
+      "categories.label": "Phân loại",
       "username.label": "Tên tài khoản",
       "username.placeholder": "Nhập tên tài khoản của bạn",
       "newpassword.label": "Mật khẩu mới",
@@ -60,6 +60,13 @@
         "dontmatch": "Xác nhận mật khẩu không khớp!"
       },
       "validate": {
+        "categories": {
+          "required": "Bạn phải chọn loại khách hàng"
+        },
+        "mobile": {
+          "required": "Bạn phải nhập số điện thoại",
+          "invalid": "Số điện thoại không hợp lệ."
+        },
         "newpassword": {
           "required": "Bạn phải nhập mật khẩu.",
           "minlength": "Mật khẩu phải có ít nhất 4 ký tự.",

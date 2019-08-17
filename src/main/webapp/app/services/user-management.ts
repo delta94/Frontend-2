@@ -1,14 +1,19 @@
 import axios from 'axios';
 import { IUser, defaultValue } from 'app/common/model/user.model';
+import { ICategory } from 'app/common/model/category.model';
 
 const apiUrl = 'v1/customer';
 
 export const getUsersService = (page, size, sort) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
-  debugger;
-  return axios.get<IUser>(`${apiUrl}/search`);
+  // return axios.get<IUser>(`${apiUrl}/search`);
 
-  // return axios.get<IUser>('./content/json_data/account.json');
+  return axios.get<IUser>('v1/customer');
+};
+
+// get typeName category
+export const getUserCategoriesService = () => {
+  return axios.get<ICategory>(`${apiUrl}/category-name?textSearch`);
 };
 
 export const getRolesService = () => {
@@ -29,10 +34,11 @@ export const updateUserService = user => {
 };
 
 export const deleteUserService = id => {
-  const requestUrl = `${apiUrl}/${id}`;
+  const requestUrl = `${apiUrl}/delete/${id}`;
   return axios.delete(requestUrl);
 };
 
+// phân trang client
 export const listUserService = (users, itemsPerPage, activePage) => {
   return users.slice(itemsPerPage * activePage, itemsPerPage * activePage + itemsPerPage);
 };

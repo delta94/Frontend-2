@@ -4,6 +4,7 @@ import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } 
 import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
 import { IUser, defaultValue } from 'app/common/model/user.model';
 import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
+import { ICategory } from 'app/common/model/category.model';
 
 const initialState = {
   loading: false,
@@ -14,7 +15,9 @@ const initialState = {
   user: defaultValue,
   updating: false,
   updateSuccess: false,
-  totalItems: 0
+  listCategory: [] as ReadonlyArray<ICategory>,
+  totalItems: 0,
+  totalElements: 0
 };
 
 export type UserManagementState = Readonly<typeof initialState>;
@@ -26,15 +29,18 @@ export default (state: UserManagementState = initialState, action): UserManageme
       return {
         ...state
       };
+    case REQUEST(USER_MANAGE_ACTION_TYPES.FETCH_USER_CATEGORIES):
     case REQUEST(USER_MANAGE_ACTION_TYPES.FETCH_USERS):
-    case REQUEST(USER_MANAGE_ACTION_TYPES.FETCH_LIST_USER):
+    // case REQUEST(USER_MANAGE_ACTION_TYPES.FETCH_LIST_USER):
     case REQUEST(USER_MANAGE_ACTION_TYPES.FETCH_USER):
       return {
         ...state,
         errorMessage: null,
         updateSuccess: false,
+
         loading: true,
-        totalItems: 5
+        totalItems: 0,
+        totalElements: 0
       };
     case REQUEST(USER_MANAGE_ACTION_TYPES.CREATE_USER):
     case REQUEST(USER_MANAGE_ACTION_TYPES.UPDATE_USER):
@@ -47,7 +53,8 @@ export default (state: UserManagementState = initialState, action): UserManageme
       };
     case FAILURE(USER_MANAGE_ACTION_TYPES.FETCH_USERS):
     case FAILURE(USER_MANAGE_ACTION_TYPES.FETCH_USER):
-    case FAILURE(USER_MANAGE_ACTION_TYPES.FETCH_LIST_USER):
+    case FAILURE(USER_MANAGE_ACTION_TYPES.FETCH_USER_CATEGORIES):
+    // case FAILURE(USER_MANAGE_ACTION_TYPES.FETCH_LIST_USER):
     case FAILURE(USER_MANAGE_ACTION_TYPES.FETCH_ROLES):
     case FAILURE(USER_MANAGE_ACTION_TYPES.CREATE_USER):
     case FAILURE(USER_MANAGE_ACTION_TYPES.UPDATE_USER):
@@ -59,6 +66,15 @@ export default (state: UserManagementState = initialState, action): UserManageme
         updateSuccess: false,
         errorMessage: action.payload
       };
+    case SUCCESS(USER_MANAGE_ACTION_TYPES.FETCH_USER_CATEGORIES):
+      debugger;
+      console.log(action.payload.data);
+      return {
+        ...state,
+        loading: false,
+        listCategory: action.payload.data
+      };
+
     case SUCCESS(USER_MANAGE_ACTION_TYPES.FETCH_ROLES):
       return {
         ...state,
@@ -69,16 +85,17 @@ export default (state: UserManagementState = initialState, action): UserManageme
       return {
         ...state,
         loading: false,
-        users: action.payload.data,
-        totalItems: action.payload.data.length
+        users: action.payload.data.content,
+        totalItems: action.payload.data.content.totalItems,
+        totalElements: action.payload.data.totalElements
         // totalItems: action.payload.headers['x-total-count']
       };
-    case SUCCESS(USER_MANAGE_ACTION_TYPES.FETCH_LIST_USER):
-      console.log(action);
-      return {
-        ...state,
-        listUsers: action
-      };
+    // case SUCCESS(USER_MANAGE_ACTION_TYPES.FETCH_LIST_USER):
+    //   console.log(action);
+    //   return {
+    //     ...state,
+    //     listUsers: action
+    //   };
     // case SUCCESS(USER_MANAGE_ACTION_TYPES.FETCH_USER):
     //   return {
     //     ...state,

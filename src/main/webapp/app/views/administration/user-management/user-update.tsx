@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { locales, languages } from 'app/config/translation';
 import { getUser, getRoles, updateUser, createUser, reset } from 'app/actions/user-management';
 import { IRootState } from 'app/reducers';
+import FormMultiSelectWidget from './user-categories-tag';
 
 export interface IUserManagementUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
 
@@ -21,6 +22,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
     isNew: !this.props.match.params || !this.props.match.params.id
   };
 
+  // todo : hiện Modal , không chuyển trang
   componentDidMount() {
     if (this.state.isNew) {
       this.props.reset();
@@ -43,7 +45,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
     }
     this.handleClose();
   };
-
+  // todo : không load lại trang trước , chỉ gọi hàm getUser
   handleClose = () => {
     this.props.history.push('/admin/user-management');
   };
@@ -53,27 +55,28 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
     const { user, loading, updating, roles } = this.props;
     return (
       <div>
-        <Row className="justify-content-center">
+        <Row className="updateTitle">
           <Col md="8">
             <h1>
-              <Translate contentKey="userManagement.home.editLabel">Edit Infomation</Translate>
+              <Translate contentKey="userManagement.home.editLabel" />
             </h1>
           </Col>
         </Row>
-        <Row className="justify-content-center">
-          <Col md="8">
-            {loading ? (
-              <p>Loading...</p>
-            ) : (
+        <div className="updatePanel">
+          <Row className="justify-content-center">
+            <Col md="8" className="fullNameContent">
+              {/* {loading ? (
+                <p>Loading...</p>
+              ) : ( */}
               <AvForm onValidSubmit={this.saveUser}>
                 <AvGroup>
-                  <Label for="fullName">
-                    <Translate contentKey="userManagement.fullName">Họ tên</Translate>
+                  <Label for="name">
+                    <Translate contentKey="userManagement.name" />
                   </Label>
                   <AvField
                     type="text"
                     className="form-control"
-                    name="fullName"
+                    name="name"
                     validate={{
                       required: {
                         value: true,
@@ -92,21 +95,25 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                         errorMessage: translate('register.messages.validate.login.maxlength')
                       }
                     }}
-                    value={user.fullName}
+                    value={user.name}
                   />
                 </AvGroup>
                 <AvGroup>
-                  <Label for="phone">
-                    <Translate contentKey="userManagement.phone">Phone</Translate>
+                  <Label for="mibole">
+                    <Translate contentKey="userManagement.mobile" />
                   </Label>
                   <AvField
                     type="text"
                     className="form-control"
-                    name="phone"
+                    name="mobile"
                     validate={{
                       maxLength: {
                         value: 11,
                         errorMessage: translate('entity.validation.maxlength', { max: 11 })
+                      },
+                      required: {
+                        value: true,
+                        errorMessage: translate('global.messages.validate.mobile.required')
                       }
                     }}
                     value={user.phone}
@@ -139,20 +146,20 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                   />
                 </AvGroup>
                 <AvGroup>
-                  <Label for="profiles">
-                    <Translate contentKey="userManagement.profiles">Profiles</Translate>
+                  <Label for="categories">
+                    <Translate contentKey="userManagement.categories" />
                   </Label>
-                  <AvField name="profiles" type="profiles" value={user.profiles} />
+                  <FormMultiSelectWidget />
                 </AvGroup>
                 {/* <AvGroup check> */}
                 {/* <AvGroup>
                   <Label>
-                    <AvInput type="checkbox" name="profiles" value={user.profiles} />{' '}
-                    <Translate contentKey="userManagement.profiles">Profiles</Translate>
+                    <AvInput type="checkbox" name="categories" value={user.categories} />{' '}
+                    <Translate contentKey="userManagement.categories">categories</Translate>
                   </Label>
                 </AvGroup> */}
                 {/* <AvGroup>
-                  <Label for="profiles">
+                  <Label for="categories">
                     <Translate contentKey="userManagement.langKey">Language Key</Translate>
                   </Label>
                   <AvField type="select" className="form-control" name="langKey" value={user.langKey}>
@@ -165,7 +172,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                 </AvGroup> */}
                 {/* <AvGroup>
                   <Label for="authorities">
-                    <Translate contentKey="userManagement.profiles">Language Key</Translate>
+                    <Translate contentKey="userManagement.categories">Language Key</Translate>
                   </Label>
                   <AvInput type="select" className="form-control" name="authorities" value={user.authorities} multiple>
                     {roles.map(role => (
@@ -179,19 +186,20 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">
-                    <Translate contentKey="entity.action.back">Back</Translate>
+                    <Translate contentKey="entity.action.back" />
                   </span>
                 </Button>
                 &nbsp;
                 <Button color="primary" type="submit" disabled={isInvalid || updating}>
                   <FontAwesomeIcon icon="save" />
                   &nbsp;
-                  <Translate contentKey="entity.action.save">Save</Translate>
+                  <Translate contentKey="entity.action.save" />
                 </Button>
               </AvForm>
-            )}
-          </Col>
-        </Row>
+              {/* )} */}
+            </Col>
+          </Row>
+        </div>
       </div>
     );
   }

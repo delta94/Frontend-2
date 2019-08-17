@@ -15,8 +15,8 @@
     "detail": {
       "title": "Tài khoản"
     },
-    "fullName": "Họ tên",
-    "phone": "Số điện thoại",
+    "name": "Họ tên",
+    "mobile": "Số điện thoại",
     "feature": "Chức năng",
     "login": "Tên đăng nhập",
     "firstName": "Tên",
@@ -24,7 +24,7 @@
     "email": "Email",
     "activated": "Kích hoạt",
     "deactivated": "Khóa",
-    "profiles": "Phân loại",
+    "categories": "Phân loại",
     "langKey": "Ngôn ngữ",
     "createdBy": "Người tạo",
     "createdDate": "Ngày tạo",

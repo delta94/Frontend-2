@@ -46,9 +46,15 @@
   padding: 3px;
   font-size: 15px;
 }
+.profilesTag {
+  float: right;
+  width: 100%;
+  border-radius: 3px;
+}
 
 thead th,
-tbody td {
+tbody td,
+tbody td .badge {
   border-right: 1px solid #dedede;
 }
 thead th {
@@ -56,12 +62,47 @@ thead th {
 }
 
 .row {
+  align-items: center;
   display: flex;
   flex-wrap: wrap;
-  margin: 15px 19px -10px 19px;
-  vertical-align: middle;
+  margin: 9px 19px -10px 19px;
 }
 .searchUser {
   float: right;
   width: 60%;
 }
+.updatePanel {
+  background-color: #ffffff;
+}
+.card {
+  box-shadow: none;
+}
+.has-search {
+  margin-bottom: 12px;
+}
+.totalItems {
+  margin-bottom: 10px;
+  font-size: 17px;
+}
+.badge {
+  border-right: 1px solid #dedede;
+  margin-top: 11px;
+  margin-left: 7px;
+}
+.updateTitle {
+  font-size: 2rem;
+}
+.fullNameContent {
+  margin-top: 30px;
+}
+
+.form-group label {
+  font-size: 17px;
+}
+.buttonUpdate {
+  border-radius: 3px;
+}
+// .update-category {
+//   width: 100%;
+
+// }

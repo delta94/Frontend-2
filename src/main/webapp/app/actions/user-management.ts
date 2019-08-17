@@ -11,24 +11,27 @@ import {
   getUserService,
   getUsersService,
   updateUserService,
-  listUserService
+  listUserService,
+  getUserCategoriesService
 } from 'app/services/user-management';
 
-const apiUrl = 'api/users';
+const apiUrl = 'v1/customer';
 // Actions
 export const getUsers: ICrudGetAllAction<IUser> = (page, size, sort) => {
   return {
     type: USER_MANAGE_ACTION_TYPES.FETCH_USERS,
     //  payload: getUsersService(page, size, sort)
-    payload: axios.get('./content/json_data/account.json')
+    payload: axios.get('v1/customer')
+
+    // payload: axios.get('./content/json_data/account.json')
   };
 };
-export const paginationUser = (users, itemsPerPage, activePage) => {
-  return {
-    type: USER_MANAGE_ACTION_TYPES.FETCH_LIST_USER,
-    payload: axios.get('./content/json_data/account.json')
-  };
-};
+export const getUserCategories = () => ({
+  type: USER_MANAGE_ACTION_TYPES.FETCH_USER_CATEGORIES,
+  // payload: axios.get('./v1/customer/category-name?textSearch')
+  payload: axios.get('./content/json_data/category.json')
+});
+
 export const getRoles = () => ({
   type: USER_MANAGE_ACTION_TYPES.FETCH_ROLES,
   payload: {}
@@ -42,7 +45,9 @@ export const getUser: ICrudGetAction<IUser> = id => {
 };
 
 export const createUser: ICrudPutAction<IUser> = user => async dispatch => {
+  //todo : đưa loading vào state = true
   const result = await dispatch({
+    // thành công -> set loading = false
     type: USER_MANAGE_ACTION_TYPES.CREATE_USER,
     payload: createUserService(user)
   });
@@ -60,7 +65,7 @@ export const updateUser: ICrudPutAction<IUser> = user => async dispatch => {
 };
 
 export const deleteUser: ICrudDeleteAction<IUser> = id => async dispatch => {
-  const requestUrl = `${apiUrl}/${id}`;
+  // const requestUrl = `${apiUrl}/delete/${id}`;
   const result = await dispatch({
     type: USER_MANAGE_ACTION_TYPES.DELETE_USER,
     payload: deleteUserService(id)
