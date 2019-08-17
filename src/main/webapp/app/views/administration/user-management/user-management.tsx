@@ -24,7 +24,8 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
 
   //loading page
   componentDidMount() {
-    this.getUsers();
+    const { activePage } = this.state;
+    this.getUsers(activePage);
     this.setState({
       loading: true
     });
@@ -58,19 +59,22 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
   };
 
   sortUsers() {
-    this.getUsers();
+    const { activePage } = this.state;
+    this.getUsers(activePage);
     this.props.history.push(`${this.props.location.pathname}?page=${this.state.activePage}&sort=
     ${this.state.sort},${this.state.order}`);
   }
 
   handlePagination = activePage => {
     this.setState({
+      ...this.state,
       activePage
     });
+    this.getUsers(activePage);
   };
 
-  getUsers = () => {
-    const { activePage, itemsPerPage, sort, order } = this.state;
+  getUsers = activePage => {
+    const { itemsPerPage, sort, order } = this.state;
     this.props.getUsers(activePage - 1, itemsPerPage, `${sort},${order}`);
   };
 
