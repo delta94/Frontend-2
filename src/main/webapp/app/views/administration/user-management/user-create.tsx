@@ -69,7 +69,6 @@ export class UserCreate extends React.Component<IUserManagementUpdateProps, IUse
   onClick = async () => {
     await this.props.uploadFileExcel(this.state.fileImport);
     this.props.history.push('/admin/user-management/results-files');
-    // window.location.href="http://localhost:9000/#/admin/user-management/results-files";
   };
 
   validated = () => {
@@ -138,7 +137,7 @@ export class UserCreate extends React.Component<IUserManagementUpdateProps, IUse
                                   onConfirm={() => this.setState({ isComplete: false })}
                                 />
                                 <SweetAlert
-                                  title="Please Chosse File Again"
+                                  title=""
                                   confirmButtonColor=""
                                   show={this.state.isError}
                                   text=""

@@ -37,6 +37,12 @@ export class UserManagementDetail extends React.Component<IUserManagementDetailP
       numberError = 10;
     } else {
       numberError = '';
+      noRecord = (
+        <p className="noRecord">
+          <Translate contentKey="userManagement.home.no-record" />
+        </p>
+      );
+      hiddenLink = 'classHiden';
     }
 
     const url = ' http://171.244.40.91:8088/v1/customer/import-result?fileName=' + listFile.fileName;
