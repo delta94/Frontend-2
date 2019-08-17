@@ -12,7 +12,7 @@
       "type": "Phân loại",
       "reason-error": "Lý do không thành công",
       "no-record": "Không tìm thấy record ",
-      "line-error": "{{ number }} Dòng không thành công đầu tiên "
+      "line-error": "{{ number }} bản ghi không thành công đầu tiên "
     },
     "created": "Một tài khoản mới đã được tạo với định danh {{ param }}",
     "updated": "Một tài khoản đã được cập nhật với định danh {{ param }}",
