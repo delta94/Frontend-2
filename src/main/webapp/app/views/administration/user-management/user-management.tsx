@@ -6,9 +6,11 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 import './user-management.scss';
 import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import SweetAlerts from './user-delete';
 import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
 import { getUsers, updateUser, getUserCategories } from 'app/actions/user-management';
 import FormMultiSelectWidget from './user-categories-tag';
+import FormMultiSelectWidgets from './user-categories-tags';
 import { IRootState } from 'app/reducers';
 import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
 
@@ -91,14 +93,13 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
   };
 
   render() {
-    const { users, match, totalItems, totalElements, listCategory } = this.props;
+    const { users, match, totalItems, totalElements } = this.props;
     const { activePage, itemsPerPage } = this.state;
     return (
       <div>
         {/* day la trang quan ly user */}
         <h3 id="user-management-page-heading">
           <Translate contentKey="userManagement.home.title" />
-
           <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity">
             <FontAwesomeIcon icon="plus" /> <Translate contentKey="userManagement.home.createLabel" />
           </Link>
@@ -109,9 +110,8 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
             <Col md="3">
               <div className="totalItems">Tổng số {totalElements} bản ghi</div>
             </Col>
-
             <Col md="6">
-              <FormMultiSelectWidget handleChange={this.handleChange} handleCreate={this.handleCreate} listCategory={listCategory} />
+              <FormMultiSelectWidgets handleChange={this.handleChange} />
             </Col>
             <Col md="3">
               <div className="has-search">
@@ -125,24 +125,18 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
             <thead>
               <tr className="text-center">
                 <th className="hand">#</th>
-
                 <th className="hand " onClick={this.sort('name')}>
                   <Translate contentKey="userManagement.name" />
-                  {/* <FontAwesomeIcon icon="sort" /> */}
                 </th>
                 <th className="hand" onClick={this.sort('mobile')}>
                   <Translate contentKey="userManagement.mobile" />
-                  {/* <FontAwesomeIcon icon="sort" /> */}
                 </th>
                 <th className="hand" onClick={this.sort('email')}>
                   <Translate contentKey="userManagement.email" />
-                  {/* <FontAwesomeIcon icon="sort" /> */}
                 </th>
-
                 <th>
                   <Translate contentKey="userManagement.categories" />
                 </th>
-
                 <th id="modified-date-sort" className="hand">
                   <Translate contentKey="userManagement.feature" />
                 </th>
@@ -157,7 +151,6 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
                       <td>{user.name}</td>
                       <td>{user.phone}</td>
                       <td>{user.email}</td>
-                      {/* <td className="badge badge-success">{user.categories}</td> */}
                       <td>
                         {user.categories.split(',').map((category, index) => {
                           return (
@@ -176,20 +169,12 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
                               <Translate contentKey="entity.action.edit" />
                             </span>
                           </Button>
-
-                          {/* <Button color="primary" size="sm" onClick={() => this.editUserManagement(user)}>
-                          <FontAwesomeIcon icon="pencil-alt" />{' '}
-                          <span className="d-none d-md-inline">
-                            <Translate contentKey="entity.action.edit">Edit</Translate>
-                          </span>
-                        </Button> */}
                           <Button tag={Link} to={`${match.url}/${user.id}/delete`} color="danger" size="sm">
                             <FontAwesomeIcon icon="trash" />{' '}
                             <span className="d-none d-md-inline">
                               <Translate contentKey="entity.action.delete" />
                             </span>
                           </Button>
-                          {/* <SweetAlerts /> */}
                         </div>
                       </td>
                     </tr>

@@ -7,9 +7,9 @@ import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { locales, languages } from 'app/config/translation';
-import { getUser, getRoles, updateUser, createUser, reset, getUserCategories } from 'app/actions/user-management';
+import { getUser, getRoles, updateUser, createUser, reset, getUserCategories, updateCategory } from 'app/actions/user-management';
 import { IRootState } from 'app/reducers';
-import FormMultiSelectWidget from './user-categories-tag';
+import FormMultiSelectWidgets from './user-categories-tags';
 
 export interface IUserManagementUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
 
@@ -30,7 +30,6 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
       this.props.reset();
     } else {
       this.props.getUser(this.props.match.params.id);
-      console.log(this.props.match.params.id);
     }
     this.props.getRoles();
     this.props.getUserCategories('');
@@ -58,9 +57,10 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
         name: values.name,
         phone: values.mobile,
         email: values.email,
-        categorys: this.state.Category
+        categorys: user.categorys
       };
       this.props.updateUser(data);
+      this.props.getUser(user.id);
     }
     // this.handleClose();
   };
@@ -74,10 +74,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
   };
 
   handleChange = category => {
-    console.log(category);
-    this.setState({
-      Category: category
-    });
+    this.props.updateCategory(category);
   };
 
   render() {
@@ -182,12 +179,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                   <Label for="categories">
                     <Translate contentKey="userManagement.categories" />
                   </Label>
-                  <FormMultiSelectWidget
-                    listCategory={listCategory}
-                    defaultCate={Category}
-                    handleChange={this.handleChange}
-                    handleCreate={this.handleCreate}
-                  />
+                  <FormMultiSelectWidgets defaultCate={user.categorys} handleChange={this.handleChange} />
                 </AvGroup>
                 {/* <AvGroup check> */}
                 {/* <AvGroup>
@@ -221,18 +213,18 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                   </AvInput>
                 </AvGroup> */}
                 {/* <Button tag={Link} to="/admin/user-management" replace color="info"> */}
+                <Button color="primary" type="submit" disabled={isInvalid || updating}>
+                  <FontAwesomeIcon icon="save" />
+                  &nbsp;
+                  <Translate contentKey="entity.action.save" />
+                </Button>
                 <Button replace color="info" tag={Link} to="/admin/user-management">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">
                     <Translate contentKey="entity.action.back" />
                   </span>
-                </Button>
-                &nbsp;
-                <Button color="primary" type="submit" disabled={isInvalid || updating}>
-                  <FontAwesomeIcon icon="save" />
                   &nbsp;
-                  <Translate contentKey="entity.action.save" />
                 </Button>
               </AvForm>
               {/* )} */}
@@ -253,7 +245,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   listCategory: storeState.userManagement.listCategory
 });
 
-const mapDispatchToProps = { getUser, getRoles, updateUser, createUser, reset, getUserCategories };
+const mapDispatchToProps = { getUser, getRoles, updateUser, createUser, reset, getUserCategories, updateCategory };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

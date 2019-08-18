@@ -3,6 +3,7 @@ export const USER_MANAGE_ACTION_TYPES = {
   // FETCH_LIST_USER: 'userManagement/FETCH_LIST_USER',
   FETCH_USERS: 'userManagement/FETCH_USERS',
   FETCH_USER: 'userManagement/FETCH_USER',
+  UPDATE_USER_CATEGORY: 'userManagement/UPDATE_USER_CATEGORY',
   FETCH_USER_CATEGORIES: 'userManagement/FETCH_CATEGORIES',
   CREATE_USER: 'userManagement/CREATE_USER',
   UPDATE_USER: 'userManagement/UPDATE_USER',

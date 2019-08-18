@@ -117,6 +117,14 @@ export default (state: UserManagementState = initialState, action): UserManageme
         updateSuccess: true,
         user: defaultValue
       };
+    case USER_MANAGE_ACTION_TYPES.UPDATE_USER_CATEGORY:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          categorys: action.payload.category
+        }
+      };
     case USER_MANAGE_ACTION_TYPES.RESET:
       return {
         ...initialState

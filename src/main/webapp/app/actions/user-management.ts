@@ -21,20 +21,22 @@ export const getUsers: ICrudGetAllAction<IUser> = (page, size, sort, category?) 
   return {
     type: USER_MANAGE_ACTION_TYPES.FETCH_USERS,
     payload: getUsersService(page, size, sort, category)
-    // payload: axios.get(apiUrl)
-
-    // payload: axios.get('./content/json_data/account.json')
   };
 };
+
 export const getUserCategories = (name?) => ({
   type: USER_MANAGE_ACTION_TYPES.FETCH_USER_CATEGORIES,
-  // payload: axios.get('./v1/customer/category-name?textSearch')
   payload: axios.get(`v1/category?type=Customer&textSearch=${name}`)
 });
 
 export const getRoles = () => ({
   type: USER_MANAGE_ACTION_TYPES.FETCH_ROLES,
   payload: {}
+});
+
+export const updateCategory = category => ({
+  type: USER_MANAGE_ACTION_TYPES.UPDATE_USER_CATEGORY,
+  payload: { category }
 });
 
 export const getUser: ICrudGetAction<IUser> = id => {
@@ -56,14 +58,20 @@ export const createUser: ICrudPutAction<IUser> = user => async dispatch => {
 };
 
 export const updateUser: ICrudPutAction<IUser> = user => async dispatch => {
-  console.log(user);
   const result = await dispatch({
     type: USER_MANAGE_ACTION_TYPES.UPDATE_USER,
     payload: updateUserService(user)
   });
-  dispatch(getUsers());
+  dispatch(getUser(user.id));
   return result;
 };
+
+// export const updateUser: ICrudPutAction<IUser> = user  => {
+//   return {
+//     type: USER_MANAGE_ACTION_TYPES.UPDATE_USER,
+//     payload: updateUserService(user)
+//   };
+// };
 
 export const deleteUser: ICrudDeleteAction<IUser> = id => async dispatch => {
   // const requestUrl = `${apiUrl}/delete/${id}`;
