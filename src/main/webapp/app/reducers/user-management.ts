@@ -39,9 +39,9 @@ export default (state: UserManagementState = initialState, action): UserManageme
         errorMessage: null,
         updateSuccess: false,
 
-        loading: true,
-        totalItems: 0,
-        totalElements: 0
+        loading: true
+        // totalItems: 0,
+        // totalElements: 0
       };
     case REQUEST(USER_MANAGE_ACTION_TYPES.CREATE_USER):
     case REQUEST(USER_MANAGE_ACTION_TYPES.UPDATE_USER):

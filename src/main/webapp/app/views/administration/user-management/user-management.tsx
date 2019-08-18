@@ -13,13 +13,18 @@ import { getUsers, updateUser } from 'app/actions/user-management';
 import FormMultiSelectWidget from './user-categories-tag';
 import { IRootState } from 'app/reducers';
 import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
+import ReactPaginate from 'react-paginate';
 
 export interface IUserManagementProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
+export interface IUserManagementState extends IPaginationBaseState {
+  loading: boolean;
+}
 
-export class UserManagement extends React.Component<IUserManagementProps, IPaginationBaseState> {
-  state: IPaginationBaseState = {
+export class UserManagement extends React.Component<IUserManagementProps, IUserManagementState> {
+  state: IUserManagementState = {
     ...getSortState(this.props.location, ITEMS_PER_PAGE),
-    activePage: ACTIVE_PAGE
+    activePage: ACTIVE_PAGE,
+    loading: false
   };
 
   //loading page
@@ -27,6 +32,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
     const { activePage } = this.state;
     this.getUsers(activePage);
     this.setState({
+      ...this.state,
       loading: true
     });
   }
@@ -39,11 +45,11 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
         loading: false
       });
     } else {
-      setTimeout(() => {
-        this.setState({
-          loading: false
-        });
-      }, 3000);
+      // setTimeout(() => {
+      //   this.setState({
+      //     loading: false
+      //   });
+      // }, 3000);
     }
   }
 
@@ -68,14 +74,14 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
   handlePagination = activePage => {
     this.setState({
       ...this.state,
-      activePage
+      activePage: activePage.selected
     });
-    this.getUsers(activePage);
+    this.getUsers(activePage.selected);
   };
 
   getUsers = activePage => {
     const { itemsPerPage, sort, order } = this.state;
-    this.props.getUsers(activePage - 1, itemsPerPage, `${sort},${order}`);
+    this.props.getUsers(activePage, itemsPerPage, `${sort},${order}`);
   };
 
   toggleActive = user => () => {
@@ -86,8 +92,9 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
   };
 
   render() {
-    const { users, match, totalItems, totalElements } = this.props;
+    const { users, match, totalElements, pageCount } = this.props;
     const { activePage, itemsPerPage } = this.state;
+    console.info('pageCount', pageCount);
     return (
       <div>
         {/* day la trang quan ly user */}
@@ -198,11 +205,24 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
             </tbody>
           </Table>
           <Row className="justify-content-center">
-            <JhiPagination
+            {/* <JhiPagination
               items={getPaginationItemsNumber(totalItems, itemsPerPage)}
               activePage={activePage}
               onSelect={this.handlePagination}
               maxButtons={MAX_BUTTON_COUNT}
+            /> */}
+            <ReactPaginate
+              previousLabel={'previous'}
+              nextLabel={'next'}
+              breakLabel={'...'}
+              breakClassName={'break-me'}
+              pageCount={75}
+              marginPagesDisplayed={2}
+              pageRangeDisplayed={5}
+              onPageChange={this.handlePagination}
+              containerClassName={'pagination'}
+              subContainerClassName={'pages pagination'}
+              activeClassName={'active'}
             />
           </Row>
         </div>
@@ -215,7 +235,8 @@ const mapStateToProps = (storeState: IRootState) => ({
   users: storeState.userManagement.users,
   totalItems: storeState.userManagement.totalItems,
   account: storeState.authentication.account,
-  totalElements: storeState.userManagement.totalElements
+  totalElements: storeState.userManagement.totalElements,
+  pageCount: Math.ceil(storeState.userManagement.totalElements / ITEMS_PER_PAGE)
 });
 
 const mapDispatchToProps = { getUsers, updateUser };
