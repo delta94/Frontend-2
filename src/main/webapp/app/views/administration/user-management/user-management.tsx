@@ -10,23 +10,30 @@ import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPagi
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SweetAlerts from './user-delete';
 import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
-import { getUsers, updateUser, getUserCategories } from 'app/actions/user-management';
+import { getUser, getUsers, updateUser, getUserCategories, deleteUser } from 'app/actions/user-management';
 import FormMultiSelectWidget from './user-categories-tag';
 import FormMultiSelectWidgets from './user-categories-tags';
 import { IRootState } from 'app/reducers';
 import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
 import ReactPaginate from 'react-paginate';
+import SweetAlert from 'sweetalert-react';
 
-export interface IUserManagementProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
+export interface IUserManagementProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
 export interface IUserManagementState extends IPaginationBaseState {
   loading: boolean;
+  isDelete: boolean;
+  isConfirm: boolean;
+  idUser: string;
 }
 
 export class UserManagement extends React.Component<IUserManagementProps, IUserManagementState> {
   state: IUserManagementState = {
     ...getSortState(this.props.location, ITEMS_PER_PAGE),
     activePage: ACTIVE_PAGE,
-    loading: false
+    loading: false,
+    isDelete: false,
+    isConfirm: false,
+    idUser: ''
   };
 
   //loading page
@@ -39,6 +46,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
       loading: true
     });
   }
+
   componentWillReceiveProps(nextProps) {
     const { users } = nextProps;
     const { activePage, itemsPerPage } = this.state;
@@ -106,7 +114,9 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
   render() {
     const { users, match, totalElements, pageCount } = this.props;
     const { activePage, itemsPerPage } = this.state;
+
     console.info('pageCount', pageCount);
+
     return (
       <div>
         {/* day la trang quan ly user */}
@@ -156,7 +166,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
             </thead>
 
             <tbody>
-              {users
+              {/* {users
                 ? users.map((user, i) => (
                     <tr id={user.id} key={`user-${i}`}>
                       <td>{i + 1}</td>
@@ -175,18 +185,36 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                       </td>
                       <td className="text-center">
                         <div className="btn-group flex-btn-group-container">
-                          <Button className="buttonUpdate" tag={Link} to={`${match.url}/${user.id}/update`} color="primary" size="sm">
+                          <Button className="buttonUpdate"
+                          tag={Link}
+                          to={`${match.url}/${user.id}/update`}
+                          color="primary" size="sm">
                             <FontAwesomeIcon icon="pencil-alt" />{' '}
+                          
                             <span className="d-none d-md-inline">
                               <Translate contentKey="entity.action.edit" />
                             </span>
                           </Button>
                           <Button
-                            tag={Link}
-                            //  to={`${match.url}/${user.id}/delete`}
+                            
                             color="danger"
                             size="sm"
+                            onClick = {this.onClick}
                           >
+                              <SweetAlert
+                                        title="Are you sure?"
+                                        confirmButtonColor=""
+                                        text="You will not be able to recover this imaginary file!"
+                                        show={this.state.isDelete}
+                                        showCancelButton
+                                        onConfirm={() => {this.setState({
+                                          isDelete:false,
+                                          isConfirm:true  
+                                        })
+                                      this.props.deleteUser(user.id)}}
+                                        onCancel={() => {this.setState({ isDelete:false})
+                                        
+                                        console.log(i)}}/>
                             <FontAwesomeIcon icon="trash" />{' '}
                             <span className="d-none d-md-inline">
                               <Translate contentKey="entity.action.delete" />
@@ -196,6 +224,74 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                       </td>
                     </tr>
                   ))
+                : ''} */}
+              {users
+                ? users.map((event, index, listUser) => {
+                    return (
+                      <tr id={event.id} key={`user-${index}`}>
+                        <td>{index + 1}</td>
+                        <td>{event.name}</td>
+                        <td>{event.phone}</td>
+                        <td>{event.email}</td>
+                        <td>
+                          {event.categories.split(',').map((category, index) => {
+                            return (
+                              <span className="badge badge-success" key={index}>
+                                {' '}
+                                {category}
+                              </span>
+                            );
+                          })}
+                        </td>
+                        <td className="text-center">
+                          <div className="btn-group flex-btn-group-container">
+                            <Button className="buttonUpdate" tag={Link} to={`${match.url}/${event.id}/update`} color="primary" size="sm">
+                              <FontAwesomeIcon icon="pencil-alt" />{' '}
+                              <span className="d-none d-md-inline">
+                                <Translate contentKey="entity.action.edit" />
+                              </span>
+                            </Button>
+                            <Button
+                              color="danger"
+                              size="sm"
+                              onClick={() => {
+                                this.setState({
+                                  isDelete: true
+                                });
+                                this.setState({
+                                  idUser: event.id
+                                });
+                              }}
+                            >
+                              <SweetAlert
+                                title="Are you sure?"
+                                confirmButtonColor=""
+                                text="You will not be able to recover this imaginary file!"
+                                show={this.state.isDelete}
+                                showCancelButton
+                                onConfirm={() => {
+                                  this.setState({
+                                    isDelete: false,
+                                    isConfirm: true
+                                  });
+                                  this.props.deleteUser(this.state.idUser);
+                                }}
+                                onCancel={() => {
+                                  this.setState({ isDelete: false });
+
+                                  console.log(itemsPerPage.toString);
+                                }}
+                              />
+                              <FontAwesomeIcon icon="trash" />{' '}
+                              <span className="d-none d-md-inline">
+                                <Translate contentKey="entity.action.delete" />
+                              </span>
+                            </Button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })
                 : ''}
             </tbody>
           </Table>
@@ -227,6 +323,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
 }
 
 const mapStateToProps = (storeState: IRootState) => ({
+  user: storeState.userManagement.user,
   users: storeState.userManagement.users,
   totalItems: storeState.userManagement.totalItems,
   account: storeState.authentication.account,
@@ -237,7 +334,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   pageCount: Math.ceil(storeState.userManagement.totalElements / ITEMS_PER_PAGE)
 });
 
-const mapDispatchToProps = { getUsers, updateUser, getUserCategories };
+const mapDispatchToProps = { getUsers, updateUser, getUserCategories, deleteUser, getUser };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
