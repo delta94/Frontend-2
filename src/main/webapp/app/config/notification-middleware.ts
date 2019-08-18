@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 
 const addErrorAlert = (message, key?, data?) => {
   key = key ? key : message;
-  toast.error(translate(key, data));
+  // toast.error(translate(key, data));
 };
 export default () => next => action => {
   // If not a promise, continue on
@@ -40,7 +40,7 @@ export default () => next => action => {
     })
     .catch(error => {
       if (action.meta && action.meta.errorMessage) {
-        toast.error(action.meta.errorMessage);
+        // toast.error(action.meta.errorMessage);
       } else if (error && error.response) {
         const response = error.response;
         const data = response.data;
@@ -55,6 +55,7 @@ export default () => next => action => {
               break;
 
             case 400:
+              debugger;
               const headers = Object.entries(response.headers);
               let errorHeader = null;
               let entityKey = null;
@@ -82,7 +83,7 @@ export default () => next => action => {
                 }
               } else if (data !== '' && data.errorMessage && data.errorCode) {
                 // toast.error(data.errorMessage);
-                addErrorAlert(data.errorMessage, `error.response.${data.errorCode}`);
+                // addErrorAlert(data.errorMessage, `error.response.${data.errorCode}`);
               } else {
                 addErrorAlert(data.message);
               }

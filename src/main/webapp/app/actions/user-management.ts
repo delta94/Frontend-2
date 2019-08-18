@@ -20,6 +20,7 @@ import {
   getDoSearch
 } from 'app/services/user-management';
 import { IFileList } from 'app/common/model/sucess-file';
+import { warn } from 'fullcalendar';
 
 const apiUrl = 'v1/customer';
 // Actions
@@ -134,11 +135,12 @@ export const uploadFileExcel = data => async dispatch => {
       }
     }),
     meta: {
-      errorMessage: translate('bookSchedule.messages.upload-file-interview-failure')
+      errorMessage: toast.warn(translate('bookSchedule.messages.upload-file-interview-failure-due-to-data'))
     }
   });
   if (result.action.payload.data.success) {
   } else {
+    toast.warn(translate('bookSchedule.messages.upload-file-interview-failure-due-to-data'));
   }
 };
 export const resetDownloadInterview = () => {

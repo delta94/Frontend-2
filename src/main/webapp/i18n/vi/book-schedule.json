@@ -24,7 +24,7 @@
       "run-auto-book-schedule-success": "Chạy lập lịch tự động thành công",
       "run-auto-book-schedule-failure": "Chạy lập lịch tự động không thành công",
       "upload-file-interview-success": "Import thành công",
-      "upload-file-interview-failure-due-to-data": "Import không thành công, bạn vui lòng mở file kết quả để biết chi tiết",
+      "upload-file-interview-failure-due-to-data": "Import không thành công, định dạng format file bị sai, xin kiểm tra định dạng",
       "upload-file-interview-failure": "Forbidden error",
       "add-candidate-interview-failure": "Thêm mới ứng viên thất bại",
       "update-candidate-interview-failure": "Update ứng viên thất bại",
