@@ -2,21 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Table, Row, Badge, Col } from 'reactstrap';
-import { Typeahead } from 'react-bootstrap-typeahead';
 import './user-management.scss';
-import loading from './../../../common/Loading/loading';
 
 import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './styles/user-management.scss';
 import './user-management.scss';
 
-import SweetAlerts from './user-delete';
 import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
 import { getUser, getUsers, updateUser, getUserCategories, deleteUser, getUserSearch } from 'app/actions/user-management';
-// import { getUsers, updateUser, getUserSearch } from 'app/actions/user-management';
-// >>>>>>> user-manager-pagination
-import FormMultiSelectWidget from './user-categories-tag';
 import FormMultiSelectWidgets from './user-categories-tags';
 import { IRootState } from 'app/reducers';
 import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
@@ -127,8 +121,6 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
   };
 
   handleChange = category => {
-    console.log('==================');
-    console.log(category);
     this.state.categories = '';
 
     category.map((event, index) => {
@@ -241,9 +233,9 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                                 }}
                               >
                                 <SweetAlert
-                                  title="Are you sure?"
+                                  title="Bạn muốn xoá ?"
                                   confirmButtonColor=""
-                                  text="You will not be able to recover this imaginary file!"
+                                  text="Mục đã xoá sẽ không thể khôi phục !"
                                   show={this.state.isDelete}
                                   showCancelButton
                                   onConfirm={() => {
@@ -307,14 +299,11 @@ const mapStateToProps = (storeState: IRootState) => ({
   account: storeState.authentication.account,
   totalElements: storeState.userManagement.totalElements,
   loading: storeState.userManagement.loading,
-  // <<<<<<< HEAD
   listCategory: storeState.userManagement.listCategory,
-  // =======
   pageCount: Math.ceil(storeState.userManagement.totalElements / ITEMS_PER_PAGE)
 });
 
 const mapDispatchToProps = { getUsers, updateUser, getUserCategories, deleteUser, getUser, getUserSearch };
-// const mapDispatchToProps = { getUsers, updateUser, getUserSearch };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
