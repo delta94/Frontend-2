@@ -6,7 +6,6 @@ import UserManagementUpdate from 'app/views/administration/user-management/user-
 import UserManagement from './user-management';
 import UserManagementDetail from 'app/views/administration/user-management/user-detail';
 import CreateUser from 'app/views/administration/user-management/user-create';
-import UserManagementDeleteDialog from 'app/views/administration/user-management/user-delete-dialog';
 
 //todo rename cho router
 const Routes = ({ match }) => (
@@ -15,7 +14,6 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute exact path={`${match.url}/new`} component={CreateUser} />
       <ErrorBoundaryRoute exact path={`${match.url}/results-files`} component={UserManagementDetail} />
       <ErrorBoundaryRoute exact path={match.url} component={UserManagement} />
-      <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={UserManagementDeleteDialog} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id/update`} component={UserManagementUpdate} />
     </Switch>
   </>
