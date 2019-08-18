@@ -12,7 +12,8 @@
       "type": "Phân loại",
       "reason-error": "Lý do không thành công",
       "no-record": "Không tìm thấy bản ghi phù hợp",
-      "line-error": "{{ number }} dòng không thành công đầu tiên "
+      "line-error": "{{ number }} dòng không thành công đầu tiên ",
+      "editLabel": "Cập nhật thông tin khách hàng"
     },
     "created": "Một tài khoản mới đã được tạo với định danh {{ param }}",
     "updated": "Một tài khoản đã được cập nhật với định danh {{ param }}",
@@ -23,8 +24,8 @@
     "detail": {
       "title": "Tài khoản"
     },
-    "fullName": "Họ tên",
-    "phone": "Số điện thoại",
+    "name": "Họ tên",
+    "mobile": "Số điện thoại",
     "feature": "Chức năng",
     "login": "Tên đăng nhập",
     "firstName": "Tên",
@@ -32,7 +33,7 @@
     "email": "Email",
     "activated": "Kích hoạt",
     "deactivated": "Khóa",
-    "profiles": "Phân loại",
+    "categories": "Phân loại",
     "langKey": "Ngôn ngữ",
     "createdBy": "Người tạo",
     "createdDate": "Ngày tạo",

@@ -8,6 +8,9 @@ import loading from './../../../common/Loading/loading';
 
 import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import './styles/user-management.scss';
+import './user-management.scss';
+
 import SweetAlerts from './user-delete';
 import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
 import { getUser, getUsers, updateUser, getUserCategories, deleteUser, getUserSearch } from 'app/actions/user-management';

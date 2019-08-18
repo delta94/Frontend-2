@@ -12,12 +12,17 @@ export interface IUser {
   // lastModifiedBy?: string;
   // lastModifiedDate?: Date;
   // password?: string;
-  id?: any;
-  fullName?: string;
-  phone?: any;
+  // id?: any;
+  // fullName?: string;
+  // phone?: any;
+  // email?: string;
+  // profiles?: string[];
+  id?: string;
+  name?: string;
   email?: string;
-  profiles?: string;
-  feature?: string;
+  phone?: string;
+  categories?: string;
+  categorys?: any[];
 }
 
 export const defaultValue: Readonly<IUser> = {
@@ -34,10 +39,15 @@ export const defaultValue: Readonly<IUser> = {
   // lastModifiedBy: '',
   // lastModifiedDate: null,
   // password: ''
+  // id: '',
+  // fullName: '',
+  // phone: '',
+  // email: '',
+  // profiles: []
   id: '',
-  fullName: '',
-  phone: '',
+  name: '',
   email: '',
-  profiles: '',
-  feature: ''
+  phone: '',
+  categories: '',
+  categorys: []
 };

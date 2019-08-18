@@ -15,5 +15,11 @@ export const USER_MANAGE_ACTION_TYPES = {
   MESSAGE_DROP_ERROR: 'please choose file excel',
   XLSX: 'xlsx',
   XLS: 'xls',
-  RESET: 'userManagement/RESET'
+  RESET: 'userManagement/RESET',
+  // FETCH_LIST_USER: 'userManagement/FETCH_LIST_USER',
+  FETCH_USER_CATEGORIES: 'userManagement/FETCH_CATEGORIES',
+  SORT_ASC: 'asc',
+  SORT_DESC: 'desc',
+  FETCH_SEARCH_USER: 'userManagement/FETCH_SEARCH_USER',
+  UPDATE_USER_CATEGORY: 'userManagement/UPDATE_USER_CATEGORY'
 };
