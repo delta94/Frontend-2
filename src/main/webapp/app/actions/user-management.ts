@@ -14,24 +14,38 @@ import {
   updateUserService,
   getFile,
   downloadFile,
-  UploaddFile
+  UploaddFile,
+  listUserService,
+  getUserCategoriesService,
+  getDoSearch
 } from 'app/services/user-management';
 import { IFileList } from 'app/common/model/sucess-file';
 
-const apiUrl = 'api/users';
+const apiUrl = 'v1/customer';
 // Actions
-export const getUsers: ICrudGetAllAction<IUser> = (page, size, sort) => {
-  // debugger
+export const getUsers: ICrudGetAllAction<IUser> = (page, size, sort, category?) => {
   return {
     type: USER_MANAGE_ACTION_TYPES.FETCH_USERS,
     payload: getUsersService(page, size, sort)
     // payload: axios.get('./content/json_data/account.json')
+    //     payload: getUsersService(page, size, sort, category)
+    // >>>>>>> hungdv
   };
 };
 
+export const getUserCategories = (name?) => ({
+  type: USER_MANAGE_ACTION_TYPES.FETCH_USER_CATEGORIES,
+  payload: axios.get(`v1/category?type=Customer&textSearch=${name}`)
+});
+
 export const getRoles = () => ({
   type: USER_MANAGE_ACTION_TYPES.FETCH_ROLES,
-  payload: getRolesService()
+  payload: {}
+});
+
+export const updateCategory = category => ({
+  type: USER_MANAGE_ACTION_TYPES.UPDATE_USER_CATEGORY,
+  payload: { category }
 });
 
 export const getUser: ICrudGetAction<IUser> = id => {
@@ -42,7 +56,9 @@ export const getUser: ICrudGetAction<IUser> = id => {
 };
 
 export const createUser: ICrudPutAction<IUser> = user => async dispatch => {
+  //todo : đưa loading vào state = true
   const result = await dispatch({
+    // thành công -> set loading = false
     type: USER_MANAGE_ACTION_TYPES.CREATE_USER,
     payload: createUserService(user)
   });
@@ -55,12 +71,19 @@ export const updateUser: ICrudPutAction<IUser> = user => async dispatch => {
     type: USER_MANAGE_ACTION_TYPES.UPDATE_USER,
     payload: updateUserService(user)
   });
-  dispatch(getUsers());
+  dispatch(getUser(user.id));
   return result;
 };
 
+// export const updateUser: ICrudPutAction<IUser> = user  => {
+//   return {
+//     type: USER_MANAGE_ACTION_TYPES.UPDATE_USER,
+//     payload: updateUserService(user)
+//   };
+// };
+
 export const deleteUser: ICrudDeleteAction<IUser> = id => async dispatch => {
-  const requestUrl = `${apiUrl}/${id}`;
+  // const requestUrl = `${apiUrl}/delete/${id}`;
   const result = await dispatch({
     type: USER_MANAGE_ACTION_TYPES.DELETE_USER,
     payload: deleteUserService(id)
@@ -78,6 +101,15 @@ export const downloadTotalResults: ICrudDeleteAction<IFileList> = file => async 
   return result;
 };
 
+export const getUserSearch: ICrudGetUserSearchAction<IUser> = (page, pageSize, category, textSearch) => {
+  return {
+    type: USER_MANAGE_ACTION_TYPES.FETCH_SEARCH_USER,
+    payload: getDoSearch(page, pageSize, category, textSearch)
+    // payload: axios.get(apiUrl)
+
+    // payload: axios.get('./content/json_data/account.json')
+  };
+};
 export const reset = () => ({
   type: USER_MANAGE_ACTION_TYPES.RESET
 });

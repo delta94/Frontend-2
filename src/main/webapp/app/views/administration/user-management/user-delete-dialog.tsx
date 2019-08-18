@@ -4,19 +4,18 @@ import { RouteComponentProps } from 'react-router-dom';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
 import { Translate, ICrudGetAction, ICrudDeleteAction } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import { getUser, deleteUser } from 'app/actions/user-management';
 import { IRootState } from 'app/reducers';
 
-export interface IUserManagementDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ login: string }> {}
+export interface IUserManagementDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
 
 export class UserManagementDeleteDialog extends React.Component<IUserManagementDeleteDialogProps> {
   componentDidMount() {
-    this.props.getUser(this.props.match.params.login);
+    this.props.getUser(this.props.match.params.id);
   }
-
+  //todo : hiện modal, không chuyển trang
   confirmDelete = event => {
-    this.props.deleteUser(this.props.user.login);
+    this.props.deleteUser(this.props.user.id);
     this.handleClose(event);
   };
 
@@ -30,23 +29,21 @@ export class UserManagementDeleteDialog extends React.Component<IUserManagementD
     return (
       <Modal isOpen toggle={this.handleClose}>
         <ModalHeader toggle={this.handleClose}>
-          <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
+          <Translate contentKey="entity.delete.title" />
         </ModalHeader>
         <ModalBody>
-          <Translate contentKey="userManagement.delete.question" interpolate={{ login: user.login }}>
-            Are you sure you want to delete this User?
-          </Translate>
+          <Translate contentKey="userManagement.delete.question" interpolate={{ id: user.id }} />
         </ModalBody>
         <ModalFooter>
           <Button color="secondary" onClick={this.handleClose}>
             <FontAwesomeIcon icon="ban" />
             &nbsp;
-            <Translate contentKey="entity.action.cancel">Cancel</Translate>
+            <Translate contentKey="entity.action.cancel" />
           </Button>
           <Button color="danger" onClick={this.confirmDelete}>
             <FontAwesomeIcon icon="trash" />
             &nbsp;
-            <Translate contentKey="entity.action.delete">Delete</Translate>
+            <Translate contentKey="entity.action.delete" />
           </Button>
         </ModalFooter>
       </Modal>

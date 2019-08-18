@@ -5,6 +5,7 @@ import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
 import { IUser, defaultValue } from 'app/common/model/user.model';
 import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
 import { IFileList } from 'app/common/model/sucess-file';
+import { ICategory } from 'app/common/model/category.model';
 
 const initialState = {
   loading: false,
@@ -13,6 +14,7 @@ const initialState = {
   uploadScheduleSuccess: false,
   users: [] as ReadonlyArray<IUser>,
   listFiles: {} as IFileList,
+  listUsers: [] as ReadonlyArray<IUser>,
   authorities: [] as any[],
   user: defaultValue,
   updating: false,
@@ -20,7 +22,10 @@ const initialState = {
   getNameFile: '',
   dowloadTemplate: null,
   errorTemplate: null,
-  totalItems: 0
+  totalItems: 0,
+  categories: defaultValue,
+  listCategory: [] as ReadonlyArray<ICategory>,
+  totalElements: 0
 };
 
 export type UserManagementState = Readonly<typeof initialState>;
@@ -33,7 +38,9 @@ export default (state: UserManagementState = initialState, action): UserManageme
       return {
         ...state
       };
+    case REQUEST(USER_MANAGE_ACTION_TYPES.FETCH_USER_CATEGORIES):
     case REQUEST(USER_MANAGE_ACTION_TYPES.FETCH_USERS):
+    // case REQUEST(USER_MANAGE_ACTION_TYPES.FETCH_LIST_USER):
     case REQUEST(USER_MANAGE_ACTION_TYPES.FETCH_USER):
     case REQUEST(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILE):
     case REQUEST(USER_MANAGE_ACTION_TYPES.UPLOAD_FILE):
@@ -42,7 +49,10 @@ export default (state: UserManagementState = initialState, action): UserManageme
         ...state,
         errorMessage: null,
         updateSuccess: false,
+
         loading: true
+        // totalItems: 0,
+        // totalElements: 0
       };
     case REQUEST(USER_MANAGE_ACTION_TYPES.CREATE_USER):
     case REQUEST(USER_MANAGE_ACTION_TYPES.UPDATE_USER):
@@ -59,12 +69,15 @@ export default (state: UserManagementState = initialState, action): UserManageme
       };
     case FAILURE(USER_MANAGE_ACTION_TYPES.FETCH_USERS):
     case FAILURE(USER_MANAGE_ACTION_TYPES.FETCH_USER):
+    case FAILURE(USER_MANAGE_ACTION_TYPES.FETCH_USER_CATEGORIES):
+    // case FAILURE(USER_MANAGE_ACTION_TYPES.FETCH_LIST_USER):
     case FAILURE(USER_MANAGE_ACTION_TYPES.FETCH_ROLES):
     case FAILURE(USER_MANAGE_ACTION_TYPES.CREATE_USER):
     case FAILURE(USER_MANAGE_ACTION_TYPES.UPDATE_USER):
     case FAILURE(USER_MANAGE_ACTION_TYPES.DELETE_USER):
     case FAILURE(USER_MANAGE_ACTION_TYPES.UPLOAD_FILE):
     case FAILURE(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILERE_SULTS):
+    case FAILURE(USER_MANAGE_ACTION_TYPES.FETCH_SEARCH_USER):
       return {
         ...state,
         loading: false,
@@ -73,31 +86,61 @@ export default (state: UserManagementState = initialState, action): UserManageme
         uploadScheduleFailure: true,
         errorMessage: action.payload
       };
+    case SUCCESS(USER_MANAGE_ACTION_TYPES.FETCH_USER_CATEGORIES):
+      console.log(action.payload.data);
+      return {
+        ...state,
+        loading: false,
+        listCategory: action.payload.data
+      };
+
     case SUCCESS(USER_MANAGE_ACTION_TYPES.FETCH_ROLES):
       return {
         ...state,
         authorities: action.payload.data
       };
     case SUCCESS(USER_MANAGE_ACTION_TYPES.FETCH_USERS):
+      console.log(action);
       return {
         ...state,
         loading: false,
-        users: action.payload.data,
-        totalItems: action.payload.headers['x-total-count']
+        users: action.payload.data.content,
+        categories: action.payload.data.content.categories,
+        totalItems: action.payload.data.content.totalItems,
+        totalElements: action.payload.data.totalElements
+        // totalItems: action.payload.headers['x-total-count']
       };
+    case SUCCESS(USER_MANAGE_ACTION_TYPES.FETCH_SEARCH_USER):
+      console.log(action);
+      return {
+        ...state,
+        loading: false,
+        users: action.payload.data.content,
+        // categories: action.payload.data.content.categories,
+        // totalItems: action.payload.data.content.totalItems,
+        totalElements: action.payload.data.totalElements
+        // totalItems: action.payload.headers['x-total-count']
+      };
+    // case SUCCESS(USER_MANAGE_ACTION_TYPES.FETCH_LIST_USER):
+    //   console.log(action);
+    //   return {
+    //     ...state,
+    //     listUsers: action
+    //   };
     case SUCCESS(USER_MANAGE_ACTION_TYPES.FETCH_USER):
       return {
         ...state,
         loading: false,
         user: action.payload.data
       };
+
     case SUCCESS(USER_MANAGE_ACTION_TYPES.CREATE_USER):
     case SUCCESS(USER_MANAGE_ACTION_TYPES.UPDATE_USER):
       return {
         ...state,
         updating: false,
-        updateSuccess: true,
-        user: action.payload.data
+        updateSuccess: true
+        // user: action.payload.data
       };
     case SUCCESS(USER_MANAGE_ACTION_TYPES.DELETE_USER):
       return {
@@ -129,6 +172,15 @@ export default (state: UserManagementState = initialState, action): UserManageme
           error: error,
           fileName: fileName,
           listErrorImport: listErrorImport
+        }
+      };
+
+    case USER_MANAGE_ACTION_TYPES.UPDATE_USER_CATEGORY:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          categorys: action.payload.category
         }
       };
     case USER_MANAGE_ACTION_TYPES.RESET:

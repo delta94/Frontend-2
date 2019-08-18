@@ -9,15 +9,11 @@ import { hot } from 'react-hot-loader';
 import { IRootState } from 'app/reducers';
 import { setLocale } from 'app/actions/locale';
 import { getSession } from 'app/actions/authentication';
-import Header from 'app/layout/header/header';
-import Footer from 'app/layout/footer/footer';
-import Sidebar from 'app/layout/sidebar/sidebar';
 
 import ErrorBoundary from 'app/common/error/error-boundary';
 import { hasAnyAuthority } from 'app/common/auth/private-route';
 import { AUTHORITIES } from 'app/config/constants';
 import AppRoutes from 'app/routes/routes';
-import Main from './DemoPages/Main';
 const baseHref = document
   .querySelector('base')
   .getAttribute('href')
@@ -26,13 +22,8 @@ const baseHref = document
 import cx from 'classnames';
 import ResizeDetector from 'react-resize-detector';
 // Layout
-
 import AppHeader from 'app/layout/AppHeader/';
 import AppSidebar from 'app/layout/AppSidebar/';
-import AppFooter from 'app/layout/AppFooter/';
-
-// Theme Options
-import ThemeOptions from 'app/layout/ThemeOptions/';
 
 export interface IAppProps extends StateProps, DispatchProps {}
 export interface IAppState {
