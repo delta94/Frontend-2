@@ -4,6 +4,8 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Table, Row, Badge, Col } from 'reactstrap';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import './user-management.scss';
+import loading from './../../../common/Loading/loading';
+
 import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SweetAlerts from './user-delete';
@@ -13,13 +15,18 @@ import FormMultiSelectWidget from './user-categories-tag';
 import FormMultiSelectWidgets from './user-categories-tags';
 import { IRootState } from 'app/reducers';
 import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
+import ReactPaginate from 'react-paginate';
 
 export interface IUserManagementProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
+export interface IUserManagementState extends IPaginationBaseState {
+  loading: boolean;
+}
 
-export class UserManagement extends React.Component<IUserManagementProps, IPaginationBaseState> {
-  state: IPaginationBaseState = {
+export class UserManagement extends React.Component<IUserManagementProps, IUserManagementState> {
+  state: IUserManagementState = {
     ...getSortState(this.props.location, ITEMS_PER_PAGE),
-    activePage: ACTIVE_PAGE
+    activePage: ACTIVE_PAGE,
+    loading: false
   };
 
   //loading page
@@ -28,6 +35,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
     this.getUsers(activePage);
     this.props.getUserCategories('');
     this.setState({
+      ...this.state,
       loading: true
     });
   }
@@ -40,11 +48,11 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
         loading: false
       });
     } else {
-      setTimeout(() => {
-        this.setState({
-          loading: false
-        });
-      }, 3000);
+      // setTimeout(() => {
+      //   this.setState({
+      //     loading: false
+      //   });
+      // }, 3000);
     }
   }
 
@@ -69,15 +77,18 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
   handlePagination = activePage => {
     this.setState({
       ...this.state,
-      activePage
+      activePage: activePage.selected
     });
-    this.getUsers(activePage);
+    this.getUsers(activePage.selected);
   };
 
   getUsers = (activePage, category?) => {
     const { itemsPerPage, sort, order } = this.state;
+    // <<<<<<< HEAD
 
-    this.props.getUsers(activePage - 1, itemsPerPage, `${sort},${order}`, category);
+    //     this.props.getUsers(activePage - 1, itemsPerPage, `${sort},${order}`, category);
+    // =======
+    this.props.getUsers(activePage, itemsPerPage, `${sort},${order}`, category);
   };
 
   toggleActive = user => () => {
@@ -93,8 +104,9 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
   };
 
   render() {
-    const { users, match, totalItems, totalElements } = this.props;
+    const { users, match, totalElements, pageCount } = this.props;
     const { activePage, itemsPerPage } = this.state;
+    console.info('pageCount', pageCount);
     return (
       <div>
         {/* day la trang quan ly user */}
@@ -169,7 +181,12 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
                               <Translate contentKey="entity.action.edit" />
                             </span>
                           </Button>
-                          <Button tag={Link} to={`${match.url}/${user.id}/delete`} color="danger" size="sm">
+                          <Button
+                            tag={Link}
+                            //  to={`${match.url}/${user.id}/delete`}
+                            color="danger"
+                            size="sm"
+                          >
                             <FontAwesomeIcon icon="trash" />{' '}
                             <span className="d-none d-md-inline">
                               <Translate contentKey="entity.action.delete" />
@@ -183,11 +200,24 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
             </tbody>
           </Table>
           <Row className="justify-content-center">
-            <JhiPagination
+            {/* <JhiPagination
               items={getPaginationItemsNumber(totalItems, itemsPerPage)}
               activePage={activePage}
               onSelect={this.handlePagination}
               maxButtons={MAX_BUTTON_COUNT}
+            /> */}
+            <ReactPaginate
+              previousLabel={'<'}
+              nextLabel={'>'}
+              breakLabel={'...'}
+              breakClassName={'break-me'}
+              pageCount={this.props.pageCount}
+              marginPagesDisplayed={1}
+              pageRangeDisplayed={3}
+              onPageChange={this.handlePagination}
+              containerClassName={'pagination'}
+              subContainerClassName={'pages pagination'}
+              activeClassName={'active'}
             />
           </Row>
         </div>
@@ -201,7 +231,10 @@ const mapStateToProps = (storeState: IRootState) => ({
   totalItems: storeState.userManagement.totalItems,
   account: storeState.authentication.account,
   totalElements: storeState.userManagement.totalElements,
-  listCategory: storeState.userManagement.listCategory
+  // <<<<<<< HEAD
+  listCategory: storeState.userManagement.listCategory,
+  // =======
+  pageCount: Math.ceil(storeState.userManagement.totalElements / ITEMS_PER_PAGE)
 });
 
 const mapDispatchToProps = { getUsers, updateUser, getUserCategories };

@@ -110,19 +110,16 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                     validate={{
                       required: {
                         value: true,
-                        errorMessage: translate('register.messages.validate.login.required')
+                        errorMessage: translate('global.messages.validate.name.required')
                       },
-                      // pattern: {
-                      //   value: '^[_.@A-Za-z0-9-]*$',
-                      //   errorMessage: translate('register.messages.validate.login.pattern')
-                      // },
-                      minLength: {
-                        value: 1,
-                        errorMessage: translate('register.messages.validate.login.minlength')
+                      pattern: {
+                        value: '^[@A-Za-z]*$',
+                        errorMessage: translate('global.messages.validate.name.pattern')
                       },
+
                       maxLength: {
                         value: 50,
-                        errorMessage: translate('register.messages.validate.login.maxlength')
+                        errorMessage: translate('global.messages.validate.name.maxlength')
                       }
                     }}
                     value={user.name}
@@ -144,6 +141,10 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                       required: {
                         value: true,
                         errorMessage: translate('global.messages.validate.mobile.required')
+                      },
+                      pattern: {
+                        value: '^[0-9]',
+                        errorMessage: translate('global.messages.validate.mobile.invalid')
                       }
                     }}
                     value={user.phone}
@@ -175,7 +176,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                     value={user.email}
                   />
                 </AvGroup>
-                <AvGroup>
+                <AvGroup className="rowUpdate">
                   <Label for="categories">
                     <Translate contentKey="userManagement.categories" />
                   </Label>
@@ -213,15 +214,15 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                   </AvInput>
                 </AvGroup> */}
                 {/* <Button tag={Link} to="/admin/user-management" replace color="info"> */}
-                <Button color="primary" type="submit" disabled={isInvalid || updating}>
+                <Button color="primary" type="submit" disabled={isInvalid || updating} className="save-right">
                   <FontAwesomeIcon icon="save" />
                   &nbsp;
                   <Translate contentKey="entity.action.save" />
                 </Button>
-                <Button replace color="info" tag={Link} to="/admin/user-management">
+                <Button replace color="info" tag={Link} to="/admin/user-management" className="back-left">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
-                  <span className="d-none d-md-inline">
+                  <span className="d-none d-md-inline ">
                     <Translate contentKey="entity.action.back" />
                   </span>
                   &nbsp;

@@ -83,6 +83,11 @@
           "invalid": "Email bạn nhập không hợp lệ.",
           "minlength": "Email phải có ít nhất 5 ký tự.",
           "maxlength": "Email không được vượt quá 50 ký tự."
+        },
+        "name": {
+          "required": "Bạn phải nhập tên tài khoản.",
+          "maxlength": "Họ tên không được vượt quá 50 ký tự.",
+          "pattern": "Họ tên chỉ được chứa chữ."
         }
       }
     },
