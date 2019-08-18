@@ -116,8 +116,8 @@ thead th {
   margin-bottom: 15px;
 }
 .back-left {
-  float: left;
-  margin-top: 0;
+  float: left !important;
+  margin: 0 !important;
 }
 .Toastify__toast-body {
   margin-top: 50px;
