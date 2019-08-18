@@ -134,9 +134,7 @@ export const uploadFileExcel = data => async dispatch => {
         'Content-Type': 'multipart/form-data'
       }
     }),
-    meta: {
-      errorMessage: toast.error(translate('bookSchedule.messages.upload-file-interview-failure-due-to-data'))
-    }
+    meta: {}
   });
   if (result.action.payload.data.success) {
   } else {
