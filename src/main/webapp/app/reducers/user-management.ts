@@ -60,6 +60,7 @@ export default (state: UserManagementState = initialState, action): UserManageme
     case FAILURE(USER_MANAGE_ACTION_TYPES.CREATE_USER):
     case FAILURE(USER_MANAGE_ACTION_TYPES.UPDATE_USER):
     case FAILURE(USER_MANAGE_ACTION_TYPES.DELETE_USER):
+    case FAILURE(USER_MANAGE_ACTION_TYPES.FETCH_SEARCH_USER):
       return {
         ...state,
         loading: false,
@@ -68,6 +69,7 @@ export default (state: UserManagementState = initialState, action): UserManageme
         errorMessage: action.payload
       };
     case SUCCESS(USER_MANAGE_ACTION_TYPES.FETCH_USER_CATEGORIES):
+      console.log(action.payload.data);
       return {
         ...state,
         loading: false,
@@ -87,6 +89,17 @@ export default (state: UserManagementState = initialState, action): UserManageme
         users: action.payload.data.content,
         categories: action.payload.data.content.categories,
         totalItems: action.payload.data.content.totalItems,
+        totalElements: action.payload.data.totalElements
+        // totalItems: action.payload.headers['x-total-count']
+      };
+    case SUCCESS(USER_MANAGE_ACTION_TYPES.FETCH_SEARCH_USER):
+      console.log(action);
+      return {
+        ...state,
+        loading: false,
+        users: action.payload.data.content,
+        // categories: action.payload.data.content.categories,
+        // totalItems: action.payload.data.content.totalItems,
         totalElements: action.payload.data.totalElements
         // totalItems: action.payload.headers['x-total-count']
       };

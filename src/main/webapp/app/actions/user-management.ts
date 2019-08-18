@@ -12,7 +12,8 @@ import {
   getUsersService,
   updateUserService,
   listUserService,
-  getUserCategoriesService
+  getUserCategoriesService,
+  getDoSearch
 } from 'app/services/user-management';
 
 const apiUrl = 'v1/customer';
@@ -83,6 +84,15 @@ export const deleteUser: ICrudDeleteAction<IUser> = id => async dispatch => {
   return result;
 };
 
+export const getUserSearch: ICrudGetUserSearchAction<IUser> = (page, pageSize, category, textSearch) => {
+  return {
+    type: USER_MANAGE_ACTION_TYPES.FETCH_SEARCH_USER,
+    payload: getDoSearch(page, pageSize, category, textSearch)
+    // payload: axios.get(apiUrl)
+
+    // payload: axios.get('./content/json_data/account.json')
+  };
+};
 export const reset = () => ({
   type: USER_MANAGE_ACTION_TYPES.RESET
 });
