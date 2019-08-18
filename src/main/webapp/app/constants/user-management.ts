@@ -9,5 +9,6 @@ export const USER_MANAGE_ACTION_TYPES = {
   DELETE_USER: 'userManagement/DELETE_USER',
   RESET: 'userManagement/RESET',
   SORT_ASC: 'asc',
-  SORT_DESC: 'desc'
+  SORT_DESC: 'desc',
+  FETCH_SEARCH_USER: 'userManagement/FETCH_SEARCH_USER'
 };

@@ -9,7 +9,7 @@ import SweetAlerts from './user-delete';
 import UserManagementDeleteDialog from './user-delete-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
-import { getUsers, updateUser } from 'app/actions/user-management';
+import { getUsers, updateUser, getUserSearch } from 'app/actions/user-management';
 import FormMultiSelectWidget from './user-categories-tag';
 import { IRootState } from 'app/reducers';
 import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
@@ -91,6 +91,11 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     });
   };
 
+  search = event => {
+    var txtSearch = event.target.value;
+    this.props.getUserSearch(0, 100, '', txtSearch);
+  };
+
   render() {
     const { users, match, totalElements, pageCount } = this.props;
     const { activePage, itemsPerPage } = this.state;
@@ -123,7 +128,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
             <Col md="3">
               <div className="has-search">
                 <span className=" form-control-feedback" />
-                <input type="text" className="form-control" placeholder="Tìm kiếm" />
+                <input type="text" className="form-control" onChange={this.search} placeholder="Tìm kiếm" />
               </div>
             </Col>
           </Row>
@@ -239,7 +244,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   pageCount: Math.ceil(storeState.userManagement.totalElements / ITEMS_PER_PAGE)
 });
 
-const mapDispatchToProps = { getUsers, updateUser };
+const mapDispatchToProps = { getUsers, updateUser, getUserSearch };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

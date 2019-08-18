@@ -48,3 +48,10 @@ export const deleteUserService = id => {
 export const listUserService = (users, itemsPerPage, activePage) => {
   return users.slice(itemsPerPage * activePage, itemsPerPage * activePage + itemsPerPage);
 };
+
+export const getDoSearch = (page, pageSize, category, textSearch) => {
+  const requestUrl = `${apiUrl}${`?page=${page}&pageSize=${pageSize}&category=${category}&textSearch=${textSearch}`}`;
+  // return axios.get<IUser>(`${apiUrl}/search`);
+
+  return axios.get<IUser>(requestUrl);
+};
