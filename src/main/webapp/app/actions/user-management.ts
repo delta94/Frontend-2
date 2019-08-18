@@ -28,9 +28,6 @@ export const getUsers: ICrudGetAllAction<IUser> = (page, size, sort, category?) 
   return {
     type: USER_MANAGE_ACTION_TYPES.FETCH_USERS,
     payload: getUsersService(page, size, sort)
-    // payload: axios.get('./content/json_data/account.json')
-    //     payload: getUsersService(page, size, sort, category)
-    // >>>>>>> hungdv
   };
 };
 
@@ -123,7 +120,6 @@ export const downloadFileExcel = () => {
     meta: {}
   };
 };
-debugger;
 export const uploadFileExcel = data => async dispatch => {
   const formData = new FormData();
   formData.append('file', data);

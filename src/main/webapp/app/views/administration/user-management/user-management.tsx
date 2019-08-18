@@ -138,7 +138,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
   };
 
   render() {
-    const { users, match, totalElements, pageCount, loading } = this.props;
+    const { users, match, totalElements, pageCount, loading, success, error } = this.props;
     const { activePage, itemsPerPage } = this.state;
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
 
@@ -241,7 +241,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                                   onConfirm={() => {
                                     this.setState({
                                       isDelete: false,
-                                      isConfirm: true
+                                      isConfirm: success
                                     });
                                     this.props.deleteUser(this.state.idUser);
                                   }}
@@ -250,6 +250,14 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
 
                                     console.log(itemsPerPage.toString);
                                   }}
+                                />
+                                <SweetAlert
+                                  title="Deleted"
+                                  confirmButtonColor=""
+                                  show={success}
+                                  text="Xoá thành công."
+                                  type="success"
+                                  onConfirm={() => this.setState({ isConfirm: false })}
                                 />
                                 <FontAwesomeIcon icon="trash" />{' '}
                                 <span className="d-none d-md-inline">
@@ -293,6 +301,8 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
 }
 
 const mapStateToProps = (storeState: IRootState) => ({
+  success: storeState.userManagement.showDeleteSuccessAlert,
+  error: storeState.userManagement.showDeleteErrorAlert,
   user: storeState.userManagement.user,
   users: storeState.userManagement.users,
   totalItems: storeState.userManagement.totalItems,

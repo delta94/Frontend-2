@@ -113,9 +113,14 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                         errorMessage: translate('global.messages.validate.name.required')
                       },
                       // pattern: {
-                      //   value: '^[@A-Za-z/s]*$',
+                      //   value: '^[^&amp;^&gt;^/^&lt;^\\^*^\?^%^:]$',
                       //   errorMessage: translate('global.messages.validate.name.pattern')
                       // },
+                      pattern: {
+                        value:
+                          '^[a-zA-Z]{4,}(?: [a-zA-ZAÁÀẢÃẠÂẤẦẨẪẬĂẮẰẲẴẶEÉÈẺẼẸÊẾỀỂỄỆIÍÌỈĨỊOÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢUÚÙỦŨỤƯỨỪỬỮỰYÝỲỶỸỴĐaáàảãạâấầẩẫậăắằẳẵặeéèẻẽẹêếềểễệiíìỉĩịoóòỏõọôốồổỗộơớờởỡợuúùủũụưứừửữựyýỳỷỹỵđ]+){0,5}$',
+                        errorMessage: translate('global.messages.validate.name.pattern')
+                      },
 
                       maxLength: {
                         value: 50,
