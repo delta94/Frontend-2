@@ -135,12 +135,11 @@ export const uploadFileExcel = data => async dispatch => {
       }
     }),
     meta: {
-      errorMessage: toast.warn(translate('bookSchedule.messages.upload-file-interview-failure-due-to-data'))
+      errorMessage: toast.error(translate('bookSchedule.messages.upload-file-interview-failure-due-to-data'))
     }
   });
   if (result.action.payload.data.success) {
   } else {
-    toast.warn(translate('bookSchedule.messages.upload-file-interview-failure-due-to-data'));
   }
 };
 export const resetDownloadInterview = () => {
