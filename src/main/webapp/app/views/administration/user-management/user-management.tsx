@@ -204,14 +204,15 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                           <td>{event.phone}</td>
                           <td>{event.email}</td>
                           <td>
-                            {event.categories.split(',').map((category, index) => {
-                              return (
-                                <span className="badge badge-success" key={index}>
-                                  {' '}
-                                  {category}
-                                </span>
-                              );
-                            })}
+                            {event.categories &&
+                              event.categories.split(',').map((category, index) => {
+                                return (
+                                  <span className="badge badge-success" key={index}>
+                                    {' '}
+                                    {category}
+                                  </span>
+                                );
+                              })}
                           </td>
                           <td className="text-center">
                             <div className="btn-group flex-btn-group-container">

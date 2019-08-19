@@ -28,9 +28,6 @@ export const getUsers = (page, size, category?: string, textSearch?: string) => 
   return {
     type: USER_MANAGE_ACTION_TYPES.FETCH_USERS,
     payload: getUsersService(page, size, category, textSearch)
-    // payload: axios.get('./content/json_data/account.json')
-    //     payload: getUsersService(page, size, sort, category)
-    // >>>>>>> hungdv
   };
 };
 
