@@ -48,20 +48,16 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
   }
 
   saveUser = (event, values) => {
-    if (this.state.isNew) {
-      this.props.createUser(values);
-    } else {
-      const { user } = this.props;
-      let data = {
-        id: user.id,
-        name: values.name,
-        phone: values.mobile,
-        email: values.email,
-        categorys: user.categorys
-      };
-      this.props.updateUser(data);
-      this.props.getUser(user.id);
-    }
+    const { user } = this.props;
+    let data = {
+      id: user.id,
+      name: values.name,
+      phone: values.mobile,
+      email: values.email,
+      categorys: user.categorys
+    };
+    this.props.updateUser(data);
+    this.props.getUser(user.id);
   };
   handleClose = () => {
     this.props.history.push('/admin/user-management');
@@ -107,15 +103,15 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                         value: true,
                         errorMessage: translate('global.messages.validate.name.required')
                       },
-                      // pattern: {
-                      //   value: '^[^&amp;^&gt;^/^&lt;^\\^*^\?^%^:]$',
-                      //   errorMessage: translate('global.messages.validate.name.pattern')
-                      // },
                       pattern: {
-                        value:
-                          '^[a-zA-Z]{4,}(?: [a-zA-ZAÁÀẢÃẠÂẤẦẨẪẬĂẮẰẲẴẶEÉÈẺẼẸÊẾỀỂỄỆIÍÌỈĨỊOÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢUÚÙỦŨỤƯỨỪỬỮỰYÝỲỶỸỴĐaáàảãạâấầẩẫậăắằẳẵặeéèẻẽẹêếềểễệiíìỉĩịoóòỏõọôốồổỗộơớờởỡợuúùủũụưứừửữựyýỳỷỹỵđ]+){0,5}$',
+                        value: '[^0-9!@#$&*%()-=+/,.|~`]$',
                         errorMessage: translate('global.messages.validate.name.pattern')
                       },
+                      // pattern: {
+                      //   value:
+                      //     '^[a-zA-Z]{4,}(?: [a-zA-ZAÁÀẢÃẠÂẤẦẨẪẬĂẮẰẲẴẶEÉÈẺẼẸÊẾỀỂỄỆIÍÌỈĨỊOÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢUÚÙỦŨỤƯỨỪỬỮỰYÝỲỶỸỴĐaáàảãạâấầẩẫậăắằẳẵặeéèẻẽẹêếềểễệiíìỉĩịoóòỏõọôốồổỗộơớờởỡợuúùủũụưứừửữựyýỳỷỹỵđ]+){0,5}$',
+                      //   errorMessage: translate('global.messages.validate.name.pattern')
+                      // },
 
                       maxLength: {
                         value: 50,
