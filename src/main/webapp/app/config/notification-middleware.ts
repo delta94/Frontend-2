@@ -82,11 +82,8 @@ export default () => next => action => {
                 // toast.error(data.errorMessage);
                 // addErrorAlert(data.errorMessage, `error.response.${data.errorCode}`);
               } else {
-                if (data.message === 'Biểu mẫu import không hợp lệ') {
-                  toast.error(translate('bookSchedule.messages.upload-file-interview-failure-due-to-data'));
-                } else {
-                  addErrorAlert(data.message);
-                }
+                addErrorAlert(data.message);
+                toast.error(data.message);
               }
               break;
 
