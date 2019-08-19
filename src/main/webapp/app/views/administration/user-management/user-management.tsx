@@ -57,38 +57,20 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     const { activePage, itemsPerPage, textSearch, categories } = this.state;
     this.props.getUsers(activePage, itemsPerPage, categories, textSearch);
     this.props.getUserCategories('');
-    this.setState({
-      ...this.state,
-      loading: true
-    });
   }
 
   componentWillReceiveProps(nextProps) {
-    const { users } = nextProps;
-    const { activePage, itemsPerPage } = this.state;
-    if (users.length > 0) {
-      this.setState({
-        ...this.state,
-        loading: false
-      });
-    } else {
-      // setTimeout(() => {
-      //   this.setState({
-      //     loading: false
-      //   });
-      // }, 3000);
-    }
+    // const { users } = nextProps;
+    // const { activePage, itemsPerPage } = this.state;
   }
 
   handlePagination = activePage => {
     const { itemsPerPage, textSearch, categories } = this.state;
     this.setState({
-      ...this.state,
       activePage: activePage.selected
     });
     this.props.getUsers(activePage.selected, itemsPerPage, categories, textSearch);
   };
-
   handleCreate = name => {
     this.props.getUserCategories(name);
   };
@@ -119,9 +101,9 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
 
   render() {
     const { users, match, totalElements, pageCount, loading, success, error } = this.props;
-    const { itemsPerPage, activePage, idUser, textSearch, categories } = this.state;
-    console.info('this.props.pageCount', this.props.pageCount);
+    const { itemsPerPage, activePage, idUser, textSearch, categories, isConfirm } = this.state;
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
+
     return (
       <div>
         <Loader message={spinner1} show={loading} priority={1}>
@@ -218,22 +200,20 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                                   show={this.state.isDelete}
                                   showCancelButton
                                   onConfirm={() => {
+                                    this.props.deleteUser(idUser, activePage, itemsPerPage, categories, textSearch);
                                     this.setState({
                                       isDelete: false,
                                       isConfirm: success
                                     });
-                                    this.props.deleteUser(idUser, activePage, itemsPerPage, categories, textSearch);
                                   }}
                                   onCancel={() => {
                                     this.setState({ isDelete: false });
-
-                                    console.log(itemsPerPage.toString);
                                   }}
                                 />
                                 <SweetAlert
                                   title="Deleted"
                                   confirmButtonColor=""
-                                  show={this.state.isConfirm}
+                                  show={isConfirm}
                                   text="Xoá thành công."
                                   type="success"
                                   onConfirm={() => this.setState({ isConfirm: false })}

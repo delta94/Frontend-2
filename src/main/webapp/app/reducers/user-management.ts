@@ -26,8 +26,9 @@ const initialState = {
   categories: defaultValue,
   listCategory: [] as ReadonlyArray<ICategory>,
   totalElements: 0,
-  showDeleteSuccessAlert: false,
-  showDeleteErrorAlert: false
+  showDeleteSuccessAlert: true,
+  showDeleteErrorAlert: false,
+  showUpdateSuccessAlert: true
 };
 
 export type UserManagementState = Readonly<typeof initialState>;
@@ -62,7 +63,9 @@ export default (state: UserManagementState = initialState, action): UserManageme
         ...state,
         errorMessage: null,
         updateSuccess: false,
-        updating: true
+        updating: true,
+        loading: true,
+        showDeleteSuccessAlert: false
       };
     case FAILURE(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILE):
       return {
@@ -149,6 +152,7 @@ export default (state: UserManagementState = initialState, action): UserManageme
         updating: false,
         updateSuccess: true,
         user: defaultValue,
+        loading: false,
         showDeleteSuccessAlert: true
       };
     case SUCCESS(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILE):

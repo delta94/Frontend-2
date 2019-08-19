@@ -5,6 +5,7 @@ import { Button, Label, Row, Col } from 'reactstrap';
 import { AvForm, AvGroup, AvInput, AvField, AvFeedback } from 'availity-reactstrap-validation';
 import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import SweetAlert from 'sweetalert-react';
 
 import { locales, languages } from 'app/config/translation';
 import { getUser, getRoles, updateUser, createUser, reset, getUserCategories, updateCategory } from 'app/actions/user-management';
@@ -32,7 +33,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
       this.props.getUser(this.props.match.params.id);
     }
     this.props.getRoles();
-    this.props.getUserCategories('');
+    // this.props.getUserCategories('');
   }
 
   componentWillUnmount() {
@@ -64,7 +65,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
   };
 
   handleCreate = name => {
-    this.props.getUserCategories(name);
+    // this.props.getUserCategories(name);
   };
 
   handleChange = category => {
@@ -179,11 +180,20 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                   <FormMultiSelectWidgets defaultCate={user.categorys} handleChange={this.handleChange} />
                 </AvGroup>
 
-                <Button color="primary" type="submit" disabled={isInvalid || updating} className="save-right">
+                <Button color="primary" type="submit" className="save-right">
+                  {/* <SweetAlert
+                                  title="Updated"
+                                  confirmButtonColor=""
+                                  show={this.state.isConfirm}
+                                  text="Sửa thành công"
+                                  type="success"
+                                  onConfirm={() => this.setState({ isConfirm: false })}
+                                /> */}
                   <FontAwesomeIcon icon="save" />
                   &nbsp;
                   <Translate contentKey="entity.action.save" />
                 </Button>
+
                 <Button replace color="info" tag={Link} to="/admin/user-management" className="back-left">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
