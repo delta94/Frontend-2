@@ -50,8 +50,8 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
 
   //loading page
   componentDidMount() {
-    const { activePage } = this.state;
-    this.getUsers(activePage);
+    const { activePage, itemsPerPage, textSearch, categories } = this.state;
+    this.props.getUsers(activePage, itemsPerPage, categories, textSearch);
     this.props.getUserCategories('');
     this.setState({
       ...this.state,
@@ -63,7 +63,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     const { users } = nextProps;
     const { activePage, itemsPerPage } = this.state;
     if (users.length > 0) {
-      console.log(users);
+      // console.log(users);
       this.setState({
         loading: false
       });
@@ -95,21 +95,17 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
   }
 
   handlePagination = activePage => {
-    console.log(activePage);
-    this.state.activePage = activePage.selected;
+    const { itemsPerPage, textSearch, categories } = this.state;
     this.setState({
-      ...this.state
+      ...this.state,
+      activePage: activePage.selected
     });
-    this.props.getUserSearch(this.state.activePage, this.state.itemsPerPage, this.state.categories, this.state.textSearch);
+    this.props.getUsers(activePage.selected, itemsPerPage, categories, textSearch);
   };
 
-  getUsers = (activePage, category?) => {
-    const { itemsPerPage, sort, order } = this.state;
-    // <<<<<<< HEAD
-
-    //     this.props.getUsers(activePage - 1, itemsPerPage, `${sort},${order}`, category);
-    // =======
-    this.props.getUsers(activePage, itemsPerPage, `${sort},${order}`, category);
+  getUsers = (activePage: number) => {
+    const { itemsPerPage, textSearch, categories } = this.state;
+    this.props.getUsers(activePage, itemsPerPage, categories, textSearch);
   };
 
   toggleActive = user => () => {
@@ -121,29 +117,34 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
   };
 
   handleChange = category => {
-    this.state.categories = '';
-
-    category.map((event, index) => {
-      this.state.categories = this.state.categories + event.id + ',';
+    let categorieIds = category.map((event, index) => event.id);
+    const { itemsPerPage, textSearch } = this.state;
+    this.setState({
+      ...this.state,
+      categories: categorieIds.join(),
+      activePage: 0
     });
-    this.props.getUserSearch(this.state.activePage, this.state.itemsPerPage, this.state.categories, this.state.textSearch);
+    this.props.getUsers(0, itemsPerPage, categorieIds.join(), textSearch);
   };
 
   search = event => {
     if (event.key === 'Enter') {
-      var txtSearch = event.target.value;
-      this.state.textSearch = txtSearch;
-      this.props.getUserSearch(this.state.activePage, this.state.itemsPerPage, this.state.categories, this.state.textSearch);
+      const textSearch = event.target.value;
+      const { activePage, itemsPerPage, categories } = this.state;
+      this.setState({
+        ...this.state,
+        textSearch,
+        activePage: 0
+      });
+      this.props.getUsers(0, itemsPerPage, categories, textSearch);
     }
   };
 
   render() {
     const { users, match, totalElements, pageCount, loading, success, error } = this.props;
-    const { activePage, itemsPerPage } = this.state;
+    const { itemsPerPage, activePage, idUser, textSearch, categories } = this.state;
+    console.info('this.props.pageCount', this.props.pageCount);
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
-
-    console.info('pageCount', pageCount);
-
     return (
       <div>
         <Loader message={spinner1} show={loading} priority={1}>
@@ -203,14 +204,15 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                           <td>{event.phone}</td>
                           <td>{event.email}</td>
                           <td>
-                            {event.categories.split(',').map((category, index) => {
-                              return (
-                                <span className="badge badge-success" key={index}>
-                                  {' '}
-                                  {category}
-                                </span>
-                              );
-                            })}
+                            {event.categories &&
+                              event.categories.split(',').map((category, index) => {
+                                return (
+                                  <span className="badge badge-success" key={index}>
+                                    {' '}
+                                    {category}
+                                  </span>
+                                );
+                              })}
                           </td>
                           <td className="text-center">
                             <div className="btn-group flex-btn-group-container">
@@ -243,7 +245,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                                       isDelete: false,
                                       isConfirm: success
                                     });
-                                    this.props.deleteUser(this.state.idUser);
+                                    this.props.deleteUser(idUser, activePage, itemsPerPage, categories, textSearch);
                                   }}
                                   onCancel={() => {
                                     this.setState({ isDelete: false });
@@ -273,12 +275,6 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
               </tbody>
             </Table>
             <Row className="justify-content-center">
-              {/* <JhiPagination
-              items={getPaginationItemsNumber(totalItems, itemsPerPage)}
-              activePage={activePage}
-              onSelect={this.handlePagination}
-              maxButtons={MAX_BUTTON_COUNT}
-            /> */}
               <ReactPaginate
                 previousLabel={'<'}
                 nextLabel={'>'}
@@ -291,6 +287,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                 containerClassName={'pagination'}
                 subContainerClassName={'pages pagination'}
                 activeClassName={'active'}
+                forcePage={activePage}
               />
             </Row>
           </div>
