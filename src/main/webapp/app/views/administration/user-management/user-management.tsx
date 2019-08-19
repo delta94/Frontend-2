@@ -10,7 +10,7 @@ import './styles/user-management.scss';
 import './user-management.scss';
 
 import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
-import { getUser, getUsers, updateUser, getUserCategories, deleteUser, getUserSearch } from 'app/actions/user-management';
+import { getUser, getUsers, updateUser, getUserCategories, deleteUser } from 'app/actions/user-management';
 import FormMultiSelectWidgets from './user-categories-tags';
 import { IRootState } from 'app/reducers';
 import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
@@ -20,26 +20,30 @@ import { Loader as LoaderAnim } from 'react-loaders';
 import Loader from 'react-loader-advanced';
 
 export interface IUserManagementProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
-export interface IUserManagementState extends IPaginationBaseState {
+
+export interface IUserManagementState {
   loading: boolean;
   isDelete: boolean;
   isConfirm: boolean;
   idUser: string;
   textSearch: string;
   categories: string;
+  activePage: number;
+  itemsPerPage: number;
 }
-const contentBoxStyle = {
-  backgroundColor: 'white',
-  position: 'relative',
-  padding: 20,
-  border: '1px solid lightgrey',
-  borderRadius: '5px'
-};
+
+// const contentBoxStyle = {
+//   backgroundColor: 'white',
+//   position: 'relative',
+//   padding: 20,
+//   border: '1px solid lightgrey',
+//   borderRadius: '5px'
+// };
 
 export class UserManagement extends React.Component<IUserManagementProps, IUserManagementState> {
   state: IUserManagementState = {
-    ...getSortState(this.props.location, ITEMS_PER_PAGE),
     activePage: ACTIVE_PAGE,
+    itemsPerPage: ITEMS_PER_PAGE,
     loading: false,
     isDelete: false,
     isConfirm: false,
@@ -63,8 +67,8 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     const { users } = nextProps;
     const { activePage, itemsPerPage } = this.state;
     if (users.length > 0) {
-      // console.log(users);
       this.setState({
+        ...this.state,
         loading: false
       });
     } else {
@@ -76,24 +80,6 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     }
   }
 
-  sort = prop => () => {
-    this.setState(
-      {
-        order:
-          this.state.order === USER_MANAGE_ACTION_TYPES.SORT_ASC ? USER_MANAGE_ACTION_TYPES.SORT_DESC : USER_MANAGE_ACTION_TYPES.SORT_ASC,
-        sort: prop
-      },
-      () => this.sortUsers()
-    );
-  };
-
-  sortUsers() {
-    const { activePage } = this.state;
-    this.getUsers(activePage);
-    this.props.history.push(`${this.props.location.pathname}?page=${this.state.activePage}&sort=
-    ${this.state.sort},${this.state.order}`);
-  }
-
   handlePagination = activePage => {
     const { itemsPerPage, textSearch, categories } = this.state;
     this.setState({
@@ -101,15 +87,6 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
       activePage: activePage.selected
     });
     this.props.getUsers(activePage.selected, itemsPerPage, categories, textSearch);
-  };
-
-  getUsers = (activePage: number) => {
-    const { itemsPerPage, textSearch, categories } = this.state;
-    this.props.getUsers(activePage, itemsPerPage, categories, textSearch);
-  };
-
-  toggleActive = user => () => {
-    this.props.updateUser(user.id);
   };
 
   handleCreate = name => {
@@ -176,13 +153,13 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
               <thead>
                 <tr className="text-center">
                   <th className="hand">#</th>
-                  <th className="hand " onClick={this.sort('name')}>
+                  <th className="hand ">
                     <Translate contentKey="userManagement.name" />
                   </th>
-                  <th className="hand" onClick={this.sort('mobile')}>
+                  <th className="hand">
                     <Translate contentKey="userManagement.mobile" />
                   </th>
-                  <th className="hand" onClick={this.sort('email')}>
+                  <th className="hand">
                     <Translate contentKey="userManagement.email" />
                   </th>
                   <th>
@@ -310,7 +287,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   pageCount: Math.ceil(storeState.userManagement.totalElements / ITEMS_PER_PAGE)
 });
 
-const mapDispatchToProps = { getUsers, updateUser, getUserCategories, deleteUser, getUser, getUserSearch };
+const mapDispatchToProps = { getUsers, updateUser, getUserCategories, deleteUser, getUser };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
