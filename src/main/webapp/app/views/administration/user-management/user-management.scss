@@ -25,12 +25,15 @@
   width: 100%;
 }
 .table-responsive {
-  border: 1px solid #dedede;
   display: block;
   width: 94%;
   overflow-x: auto;
   margin: 30px;
 }
+.table-striped {
+  margin-top: 0px !important;
+}
+
 .panel {
   border: 1px solid #dedede;
   border-radius: 5px;

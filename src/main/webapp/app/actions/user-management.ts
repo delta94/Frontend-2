@@ -60,7 +60,6 @@ export const createUser: ICrudPutAction<IUser> = user => async dispatch => {
     type: USER_MANAGE_ACTION_TYPES.CREATE_USER,
     payload: createUserService(user)
   });
-  dispatch(getUsers());
   return result;
 };
 
@@ -95,7 +94,6 @@ export const downloadTotalResults: ICrudDeleteAction<IFileList> = file => async 
     type: USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILERE_SULTS,
     payload: downloadTotalResults(file)
   });
-  dispatch(getUsers());
   return result;
 };
 

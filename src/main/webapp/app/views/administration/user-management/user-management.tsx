@@ -56,7 +56,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
   componentDidMount() {
     const { activePage, itemsPerPage, textSearch, categories } = this.state;
     this.props.getUsers(activePage, itemsPerPage, categories, textSearch);
-    this.props.getUserCategories('');
+    // this.props.getUserCategories('');
   }
 
   componentWillReceiveProps(nextProps) {
@@ -69,8 +69,10 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     this.setState({
       activePage: activePage.selected
     });
+
     this.props.getUsers(activePage.selected, itemsPerPage, categories, textSearch);
   };
+
   handleCreate = name => {
     this.props.getUserCategories(name);
   };
@@ -155,7 +157,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
 
               <tbody>
                 {users
-                  ? users.map((event, index, listUser) => {
+                  ? users.map((event, index, listUser?) => {
                       return (
                         <tr id={event.id} key={`user-${index}`}>
                           <td>{this.state.activePage * this.state.itemsPerPage + index + 1}</td>
@@ -186,9 +188,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                                 size="sm"
                                 onClick={() => {
                                   this.setState({
-                                    isDelete: true
-                                  });
-                                  this.setState({
+                                    isDelete: true,
                                     idUser: event.id
                                   });
                                 }}
