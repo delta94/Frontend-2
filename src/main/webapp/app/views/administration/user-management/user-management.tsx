@@ -254,7 +254,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                                 <SweetAlert
                                   title="Deleted"
                                   confirmButtonColor=""
-                                  show={success}
+                                  show={this.state.isConfirm}
                                   text="Xoá thành công."
                                   type="success"
                                   onConfirm={() => this.setState({ isConfirm: false })}
