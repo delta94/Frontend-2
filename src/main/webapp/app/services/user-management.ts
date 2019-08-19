@@ -10,14 +10,13 @@ const apiUrl = 'v1/customer';
 //   return axios.get<IUser>(requestUrl);
 //   //return axios.get<IUser>('/content/json_data/list-candidate.json');
 // =======
-export const getUsersService = (page, size, sort, category?) => {
-  const urlCategory = category ? category.map(cate => cate.id) : '';
-  if (category) {
-    console.log(urlCategory.join(','));
-  }
-  const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}&category=${category ? urlCategory.join(',') : ''}` : ''}`;
-  // return axios.get<IUser>(`${apiUrl}/search`);
-
+export const getUsersService = (page, pageSize, category?: string, textSearch?: string) => {
+  // const urlCategory = category ? category.map(cate => cate.id) : '';
+  // if (category) {
+  //   console.log(urlCategory.join(','));
+  // }
+  const requestUrl = `${apiUrl}${`?page=${page}&pageSize=${pageSize}&category=${category}&textSearch=${textSearch}`}`;
+  // const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}&category=${category ? urlCategory.join(',') : ''}` : ''}`;
   return axios.get<IUser>(requestUrl);
 };
 

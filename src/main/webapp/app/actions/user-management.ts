@@ -24,10 +24,10 @@ import { warn } from 'fullcalendar';
 
 const apiUrl = 'v1/customer';
 // Actions
-export const getUsers: ICrudGetAllAction<IUser> = (page, size, sort, category?) => {
+export const getUsers = (page, size, category?: string, textSearch?: string) => {
   return {
     type: USER_MANAGE_ACTION_TYPES.FETCH_USERS,
-    payload: getUsersService(page, size, sort)
+    payload: getUsersService(page, size, category, textSearch)
     // payload: axios.get('./content/json_data/account.json')
     //     payload: getUsersService(page, size, sort, category)
     // >>>>>>> hungdv
@@ -83,13 +83,13 @@ export const updateUser: ICrudPutAction<IUser> = user => async dispatch => {
 //   };
 // };
 
-export const deleteUser: ICrudDeleteAction<IUser> = id => async dispatch => {
+export const deleteUser = (id, page, size, category?: string, textSearch?: string) => async dispatch => {
   // const requestUrl = `${apiUrl}/delete/${id}`;
   const result = await dispatch({
     type: USER_MANAGE_ACTION_TYPES.DELETE_USER,
     payload: deleteUserService(id)
   });
-  dispatch(getUsers());
+  dispatch(getUsers(page, size, category, textSearch));
   return result;
 };
 export const downloadTotalResults: ICrudDeleteAction<IFileList> = file => async dispatch => {
@@ -102,7 +102,7 @@ export const downloadTotalResults: ICrudDeleteAction<IFileList> = file => async 
   return result;
 };
 
-export const getUserSearch: ICrudGetUserSearchAction<IUser> = (page, pageSize, category, textSearch) => {
+export const getUserSearch = (page, pageSize, category, textSearch) => {
   return {
     type: USER_MANAGE_ACTION_TYPES.FETCH_SEARCH_USER,
     payload: getDoSearch(page, pageSize, category, textSearch)
