@@ -25,13 +25,14 @@ const initialState = {
   totalItems: 0,
   categories: defaultValue,
   listCategory: [] as ReadonlyArray<ICategory>,
-  totalElements: 0
+  totalElements: 0,
+  showDeleteSuccessAlert: false,
+  showDeleteErrorAlert: false
 };
 
 export type UserManagementState = Readonly<typeof initialState>;
 
 // Reducer
-debugger;
 export default (state: UserManagementState = initialState, action): UserManagementState => {
   switch (action.type) {
     case REQUEST(USER_MANAGE_ACTION_TYPES.FETCH_ROLES):
@@ -147,7 +148,8 @@ export default (state: UserManagementState = initialState, action): UserManageme
         ...state,
         updating: false,
         updateSuccess: true,
-        user: defaultValue
+        user: defaultValue,
+        showDeleteSuccessAlert: true
       };
     case SUCCESS(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILE):
       return {

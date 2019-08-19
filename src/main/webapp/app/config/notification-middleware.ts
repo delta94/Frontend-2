@@ -45,8 +45,6 @@ export default () => next => action => {
         const response = error.response;
         const data = response.data;
         if (!(response.status === 401 && (error.message === '' || (data && data.path && data.path.includes('/api/account'))))) {
-          console.log('=========================');
-          console.log(response);
           let i;
           switch (response.status) {
             // connection refused, server not reachable
@@ -55,7 +53,6 @@ export default () => next => action => {
               break;
 
             case 400:
-              debugger;
               const headers = Object.entries(response.headers);
               let errorHeader = null;
               let entityKey = null;

@@ -62,9 +62,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
       this.props.updateUser(data);
       this.props.getUser(user.id);
     }
-    // this.handleClose();
   };
-  // todo : không load lại trang trước , chỉ gọi hàm getUser
   handleClose = () => {
     this.props.history.push('/admin/user-management');
   };
@@ -95,9 +93,6 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
         <div className="updatePanel">
           <Row className="justify-content-center">
             <Col md="8" className="fullNameContent">
-              {/* {loading ? (
-                <p>Loading...</p>
-              ) : ( */}
               <AvForm onValidSubmit={this.saveUser}>
                 <AvGroup>
                   <Label for="name">
@@ -113,9 +108,14 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                         errorMessage: translate('global.messages.validate.name.required')
                       },
                       // pattern: {
-                      //   value: '^[@A-Za-z/s]*$',
+                      //   value: '^[^&amp;^&gt;^/^&lt;^\\^*^\?^%^:]$',
                       //   errorMessage: translate('global.messages.validate.name.pattern')
                       // },
+                      pattern: {
+                        value:
+                          '^[a-zA-Z]{4,}(?: [a-zA-ZAÁÀẢÃẠÂẤẦẨẪẬĂẮẰẲẴẶEÉÈẺẼẸÊẾỀỂỄỆIÍÌỈĨỊOÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢUÚÙỦŨỤƯỨỪỬỮỰYÝỲỶỸỴĐaáàảãạâấầẩẫậăắằẳẵặeéèẻẽẹêếềểễệiíìỉĩịoóòỏõọôốồổỗộơớờởỡợuúùủũụưứừửữựyýỳỷỹỵđ]+){0,5}$',
+                        errorMessage: translate('global.messages.validate.name.pattern')
+                      },
 
                       maxLength: {
                         value: 50,
@@ -182,38 +182,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                   </Label>
                   <FormMultiSelectWidgets defaultCate={user.categorys} handleChange={this.handleChange} />
                 </AvGroup>
-                {/* <AvGroup check> */}
-                {/* <AvGroup>
-                  <Label>
-                    <AvInput type="checkbox" name="categories" value={user.categories} />{' '}
-                    <Translate contentKey="userManagement.categories">categories</Translate>
-                  </Label>
-                </AvGroup> */}
-                {/* <AvGroup>
-                  <Label for="categories">
-                    <Translate contentKey="userManagement.langKey">Language Key</Translate>
-                  </Label>
-                  <AvField type="select" className="form-control" name="langKey" value={user.langKey}>
-                    {locales.map(locale => (
-                      <option value={locale} key={locale}>
-                        {languages[locale].name}
-                      </option>
-                    ))}
-                  </AvField>
-                </AvGroup> */}
-                {/* <AvGroup>
-                  <Label for="authorities">
-                    <Translate contentKey="userManagement.categories">Language Key</Translate>
-                  </Label>
-                  <AvInput type="select" className="form-control" name="authorities" value={user.authorities} multiple>
-                    {roles.map(role => (
-                      <option value={role} key={role}>
-                        {role}
-                      </option>
-                    ))}
-                  </AvInput>
-                </AvGroup> */}
-                {/* <Button tag={Link} to="/admin/user-management" replace color="info"> */}
+
                 <Button color="primary" type="submit" disabled={isInvalid || updating} className="save-right">
                   <FontAwesomeIcon icon="save" />
                   &nbsp;
@@ -228,7 +197,6 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                   &nbsp;
                 </Button>
               </AvForm>
-              {/* )} */}
             </Col>
           </Row>
         </div>

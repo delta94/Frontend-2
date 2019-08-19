@@ -123,7 +123,6 @@ export const downloadFileExcel = () => {
     meta: {}
   };
 };
-debugger;
 export const uploadFileExcel = data => async dispatch => {
   const formData = new FormData();
   formData.append('file', data);

@@ -42,7 +42,6 @@ export class UserCreate extends React.Component<IUserManagementUpdateProps, IUse
     image: ''
   };
   onDrop = (acceptedFiles, rejectedFiles) => {
-    debugger;
     var checkFile = acceptedFiles[0].name;
     var file = checkFile.split('.')[1];
     //todo: khong duoc hard code
