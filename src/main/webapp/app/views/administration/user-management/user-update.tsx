@@ -51,6 +51,22 @@ export class UserUpdate extends React.Component<IUserUpdateProps, IUserUpdateSta
     }
   }
 
+  // saveUser = (event, values) => async dispatch => {
+  //   const { user } = this.props;
+  //   let data = {
+  //     id: user.id,
+  //     name: values.name,
+  //     phone: values.mobile,
+  //     email: values.email,
+  //     categorys: user.categorys
+  //   };
+  //   const result = await dispatch({
+  //     payload : updateUser(data)
+  //   });
+  //   dispatch (getUser(user.id));
+  //   return result;
+  // };
+
   saveUser = (event, values) => {
     const { user } = this.props;
     let data = {
