@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { IUser, defaultValue } from 'app/common/model/user.model';
 import { ICategory } from 'app/common/model/category.model';
+import { toast } from 'react-toastify';
 
 const apiUrl = 'v1/customer';
 

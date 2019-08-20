@@ -51,22 +51,6 @@ export class UserUpdate extends React.Component<IUserUpdateProps, IUserUpdateSta
     }
   }
 
-  // saveUser = (event, values) => async dispatch => {
-  //   const { user } = this.props;
-  //   let data = {
-  //     id: user.id,
-  //     name: values.name,
-  //     phone: values.mobile,
-  //     email: values.email,
-  //     categorys: user.categorys
-  //   };
-  //   const result = await dispatch({
-  //     payload : updateUser(data)
-  //   });
-  //   dispatch (getUser(user.id));
-  //   return result;
-  // };
-
   saveUser = (event, values) => {
     const { user } = this.props;
     let data = {
@@ -77,7 +61,6 @@ export class UserUpdate extends React.Component<IUserUpdateProps, IUserUpdateSta
       categorys: user.categorys
     };
     this.props.updateUser(data);
-    this.props.getUser(user.id);
   };
 
   handleClose = () => {
@@ -210,7 +193,12 @@ export class UserUpdate extends React.Component<IUserUpdateProps, IUserUpdateSta
                     show={isUpdate}
                     text="Sửa thành công"
                     type="success"
-                    onConfirm={() => this.setState({ ...this.state, isUpdate: false })}
+                    onConfirm={() =>
+                      this.setState({
+                        ...this.state,
+                        isUpdate: false
+                      })
+                    }
                   />
                   <FontAwesomeIcon icon="save" />
                   &nbsp;

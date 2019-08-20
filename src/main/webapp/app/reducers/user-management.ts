@@ -141,9 +141,12 @@ export default (state: UserManagementState = initialState, action): UserManageme
       };
 
     case SUCCESS(USER_MANAGE_ACTION_TYPES.CREATE_USER):
+
     case SUCCESS(USER_MANAGE_ACTION_TYPES.UPDATE_USER):
+      debugger;
       return {
         ...state,
+        loading: false,
         updating: false,
         updateSuccess: true,
         showUpdateSuccessAlert: true
