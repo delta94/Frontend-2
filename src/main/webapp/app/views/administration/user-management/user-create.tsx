@@ -17,9 +17,9 @@ import { toast } from 'react-toastify';
 
 import Dropzone from 'react-dropzone';
 
-export interface IUserUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ login: string }> {}
+export interface IUserCreateProps extends StateProps, DispatchProps, RouteComponentProps<{ login: string }> {}
 //todo : sửa tên biến local
-export interface IUserUpdateState {
+export interface IUserCreateState {
   isNew: boolean;
   isActive: boolean;
   isComplete: boolean;
@@ -30,8 +30,8 @@ export interface IUserUpdateState {
   image: string;
 }
 
-export class UserCreate extends React.Component<IUserUpdateProps, IUserUpdateState, Route> {
-  state: IUserUpdateState = {
+export class UserCreate extends React.Component<IUserCreateProps, IUserCreateState, Route> {
+  state: IUserCreateState = {
     isNew: !this.props.match.params || !this.props.match.params.login,
     isActive: false,
     isComplete: false,
