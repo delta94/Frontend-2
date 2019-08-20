@@ -7,7 +7,16 @@ import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SweetAlert from 'sweetalert-react';
 
-import { getUser, getRoles, updateUser, createUser, reset, getUserCategories, updateCategory } from 'app/actions/user-management';
+import {
+  getUser,
+  getRoles,
+  updateUser,
+  createUser,
+  reset,
+  getUserCategories,
+  updateCategory,
+  resetMessage
+} from 'app/actions/user-management';
 
 import { IRootState } from 'app/reducers';
 import UserCategoryTag from './user-categories-tags';
@@ -47,6 +56,13 @@ export class UserUpdate extends React.Component<IUserUpdateProps, IUserUpdateSta
       this.setState({
         ...this.state,
         Category: nextProps.user.categorys
+      });
+    }
+
+    if (nextProps.usuccess !== this.props.usuccess) {
+      this.setState({
+        ...this.state,
+        isUpdate: nextProps.usuccess
       });
     }
   }
@@ -93,6 +109,8 @@ export class UserUpdate extends React.Component<IUserUpdateProps, IUserUpdateSta
 
     const { user, users, loading, updating, listCategory, roles, usuccess } = this.props;
     let { Category, isUpdate } = this.state;
+    console.info('isUpdate', isUpdate);
+    console.info('usuccess', usuccess);
     return (
       <div>
         <Row className="updateTitle">
@@ -198,6 +216,7 @@ export class UserUpdate extends React.Component<IUserUpdateProps, IUserUpdateSta
                       ...this.state,
                       isUpdate: this.props.usuccess
                     });
+                    this.props.resetMessage();
                   }}
                 >
                   <SweetAlert
@@ -245,7 +264,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   listCategory: storeState.userManagement.listCategory
 });
 
-const mapDispatchToProps = { getUser, getRoles, updateUser, createUser, reset, getUserCategories, updateCategory };
+const mapDispatchToProps = { getUser, getRoles, updateUser, createUser, reset, getUserCategories, updateCategory, resetMessage };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

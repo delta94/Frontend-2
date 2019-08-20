@@ -142,3 +142,6 @@ export const resetDownloadInterview = () => {
     meta: {}
   };
 };
+export const resetMessage = () => ({
+  type: USER_MANAGE_ACTION_TYPES.RESET_MESSAGE
+});

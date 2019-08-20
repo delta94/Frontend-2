@@ -28,7 +28,7 @@ const initialState = {
   totalElements: 0,
   showDeleteSuccessAlert: true,
   showDeleteErrorAlert: false,
-  showUpdateSuccessAlert: true
+  showUpdateSuccessAlert: false
 };
 
 export type UserManagementState = Readonly<typeof initialState>;
@@ -201,6 +201,13 @@ export default (state: UserManagementState = initialState, action): UserManageme
       return {
         ...initialState,
         dowloadTemplate: null
+      };
+    case USER_MANAGE_ACTION_TYPES.RESET_MESSAGE:
+      return {
+        ...state,
+        showDeleteSuccessAlert: false,
+        showDeleteErrorAlert: false,
+        showUpdateSuccessAlert: false
       };
     default:
       return state;
