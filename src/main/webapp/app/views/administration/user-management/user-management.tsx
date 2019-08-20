@@ -11,7 +11,7 @@ import './user-management.scss';
 
 import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
 import { getUser, getUsers, updateUser, getUserCategories, deleteUser } from 'app/actions/user-management';
-import FormMultiSelectWidgets from './user-categories-tags';
+import UserCategoryTag from './user-categories-tags';
 import { IRootState } from 'app/reducers';
 import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
 import ReactPaginate from 'react-paginate';
@@ -22,7 +22,6 @@ import Loader from 'react-loader-advanced';
 export interface IUserManagementProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
 
 export interface IUserManagementState {
-  loading: boolean;
   isDelete: boolean;
   isConfirm: boolean;
   idUser: string;
@@ -44,7 +43,6 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
   state: IUserManagementState = {
     activePage: ACTIVE_PAGE,
     itemsPerPage: ITEMS_PER_PAGE,
-    loading: false,
     isDelete: false,
     isConfirm: false,
     idUser: '',
@@ -67,6 +65,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
   handlePagination = activePage => {
     const { itemsPerPage, textSearch, categories } = this.state;
     this.setState({
+      ...this.state,
       activePage: activePage.selected
     });
 
@@ -123,7 +122,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                 <div className="totalItems">Tổng số {totalElements} bản ghi</div>
               </Col>
               <Col md="6">
-                <FormMultiSelectWidgets handleChange={this.handleChange} />
+                <UserCategoryTag handleChange={this.handleChange} />
               </Col>
               <Col md="3">
                 <div className="has-search">
@@ -188,6 +187,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                                 size="sm"
                                 onClick={() => {
                                   this.setState({
+                                    ...this.state,
                                     isDelete: true,
                                     idUser: event.id
                                   });
@@ -199,15 +199,19 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                                   text="Mục đã xoá sẽ không thể khôi phục !"
                                   show={this.state.isDelete}
                                   showCancelButton
+                                  onCancel={() => {
+                                    this.setState({
+                                      ...this.state,
+                                      isDelete: false
+                                    });
+                                  }}
                                   onConfirm={() => {
                                     this.props.deleteUser(idUser, activePage, itemsPerPage, categories, textSearch);
                                     this.setState({
+                                      ...this.state,
                                       isDelete: false,
                                       isConfirm: success
                                     });
-                                  }}
-                                  onCancel={() => {
-                                    this.setState({ isDelete: false });
                                   }}
                                 />
                                 <SweetAlert
@@ -216,7 +220,12 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                                   show={isConfirm}
                                   text="Xoá thành công."
                                   type="success"
-                                  onConfirm={() => this.setState({ isConfirm: false })}
+                                  onConfirm={() =>
+                                    this.setState({
+                                      ...this.state,
+                                      isConfirm: false
+                                    })
+                                  }
                                 />
                                 <FontAwesomeIcon icon="trash" />{' '}
                                 <span className="d-none d-md-inline">

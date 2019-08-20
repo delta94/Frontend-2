@@ -3,7 +3,7 @@ import React from 'react';
 import ErrorBoundaryRoute from 'app/common/error/error-boundary-route';
 import UserManagement from './user-management';
 import UserManagementDeleteDialog from './user-management';
-import UserManagementUpdate from './user-management';
+import UserUpdate from './user-management';
 import Login from 'app/views/login/login';
 
 const Routes = ({ match }) => (

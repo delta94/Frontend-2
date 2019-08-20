@@ -11,14 +11,14 @@ import { Loader as LoaderAnim } from 'react-loaders';
 import { getUser } from 'app/actions/user-management';
 import { IRootState } from 'app/reducers';
 
-export interface IUserManagementDetailProps
+export interface IUserDetailProps
   extends StateProps,
     DispatchProps,
     RouteComponentProps<{
       login: string;
     }> {}
 
-export class UserManagementDetail extends React.Component<IUserManagementDetailProps> {
+export class UserDetail extends React.Component<IUserDetailProps> {
   render() {
     const { listFile, loading } = this.props;
     var hiddenLink = 'link-result';
@@ -237,4 +237,4 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(UserManagementDetail);
+)(UserDetail);

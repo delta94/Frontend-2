@@ -12,16 +12,16 @@ import { getUser, getUserCategories } from 'app/actions/user-management';
 
 library.add(faSpinner);
 
-export interface IUserManagementUpdateProps extends StateProps, DispatchProps {
+export interface IUserUpdateProps extends StateProps, DispatchProps {
   defaultCate?: any[];
   handleChange?: Function;
 }
 
-export interface IUserManagementUpdateState {
+export interface IUserUpdateState {
   isNew: boolean;
 }
 
-class FormMultiSelectWidgets extends React.Component<IUserManagementUpdateProps, IUserManagementUpdateState> {
+class UserCategoryTag extends React.Component<IUserUpdateProps, IUserUpdateState> {
   handleChange = data => {
     this.props.handleChange(data);
   };
@@ -85,4 +85,4 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(FormMultiSelectWidgets);
+)(UserCategoryTag);

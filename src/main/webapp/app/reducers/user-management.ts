@@ -65,7 +65,8 @@ export default (state: UserManagementState = initialState, action): UserManageme
         updateSuccess: false,
         updating: true,
         loading: true,
-        showDeleteSuccessAlert: false
+        showDeleteSuccessAlert: false,
+        showUpdateSuccessAlert: false
       };
     case FAILURE(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILE):
       return {
@@ -88,7 +89,8 @@ export default (state: UserManagementState = initialState, action): UserManageme
         updating: false,
         updateSuccess: false,
         uploadScheduleFailure: true,
-        errorMessage: action.payload
+        errorMessage: action.payload,
+        showUpdateSuccessAlert: false
       };
     case SUCCESS(USER_MANAGE_ACTION_TYPES.FETCH_USER_CATEGORIES):
       console.log(action.payload.data);
@@ -143,7 +145,9 @@ export default (state: UserManagementState = initialState, action): UserManageme
       return {
         ...state,
         updating: false,
-        updateSuccess: true
+        updateSuccess: true,
+        showUpdateSuccessAlert: true
+
         // user: action.payload.data
       };
     case SUCCESS(USER_MANAGE_ACTION_TYPES.DELETE_USER):

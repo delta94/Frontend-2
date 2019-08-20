@@ -17,9 +17,9 @@ import { toast } from 'react-toastify';
 
 import Dropzone from 'react-dropzone';
 
-export interface IUserManagementUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ login: string }> {}
+export interface IUserUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ login: string }> {}
 //todo : sửa tên biến local
-export interface IUserManagementUpdateState {
+export interface IUserUpdateState {
   isNew: boolean;
   isActive: boolean;
   isComplete: boolean;
@@ -30,8 +30,8 @@ export interface IUserManagementUpdateState {
   image: string;
 }
 
-export class UserCreate extends React.Component<IUserManagementUpdateProps, IUserManagementUpdateState, Route> {
-  state: IUserManagementUpdateState = {
+export class UserCreate extends React.Component<IUserUpdateProps, IUserUpdateState, Route> {
+  state: IUserUpdateState = {
     isNew: !this.props.match.params || !this.props.match.params.login,
     isActive: false,
     isComplete: false,
@@ -48,6 +48,7 @@ export class UserCreate extends React.Component<IUserManagementUpdateProps, IUse
     if (file === USER_MANAGE_ACTION_TYPES.XLS || file === USER_MANAGE_ACTION_TYPES.XLSX) {
       console.log(this.props.fileList);
       this.setState({
+        ...this.state,
         fileImport: acceptedFiles[0],
         isActive: true,
         isComplete: true,
@@ -56,6 +57,7 @@ export class UserCreate extends React.Component<IUserManagementUpdateProps, IUse
       });
     } else {
       this.setState({
+        ...this.state,
         //todo : dua vao the translate
         isActive: false,
         isError: true,
@@ -133,7 +135,12 @@ export class UserCreate extends React.Component<IUserManagementUpdateProps, IUse
                                   confirmButtonColor=""
                                   show={this.state.isComplete}
                                   type="success"
-                                  onConfirm={() => this.setState({ isComplete: false })}
+                                  onConfirm={() =>
+                                    this.setState({
+                                      ...this.state,
+                                      isComplete: false
+                                    })
+                                  }
                                 />
                                 <SweetAlert
                                   title=""
@@ -141,7 +148,12 @@ export class UserCreate extends React.Component<IUserManagementUpdateProps, IUse
                                   show={this.state.isError}
                                   text=""
                                   type="error"
-                                  onConfirm={() => this.setState({ isError: false })}
+                                  onConfirm={() =>
+                                    this.setState({
+                                      ...this.state,
+                                      isError: false
+                                    })
+                                  }
                                 />
                                 <Col md="12">
                                   {' '}

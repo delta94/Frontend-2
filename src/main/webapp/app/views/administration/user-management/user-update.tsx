@@ -7,22 +7,24 @@ import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SweetAlert from 'sweetalert-react';
 
-import { locales, languages } from 'app/config/translation';
 import { getUser, getRoles, updateUser, createUser, reset, getUserCategories, updateCategory } from 'app/actions/user-management';
+
 import { IRootState } from 'app/reducers';
-import FormMultiSelectWidgets from './user-categories-tags';
+import UserCategoryTag from './user-categories-tags';
 
-export interface IUserManagementUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
+export interface IUserUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
 
-export interface IUserManagementUpdateState {
+export interface IUserUpdateState {
   isNew: boolean;
   Category: any[];
+  isUpdate: boolean;
 }
 
-export class UserManagementUpdate extends React.Component<IUserManagementUpdateProps, IUserManagementUpdateState> {
-  state: IUserManagementUpdateState = {
+export class UserUpdate extends React.Component<IUserUpdateProps, IUserUpdateState> {
+  state: IUserUpdateState = {
     isNew: !this.props.match.params || !this.props.match.params.id,
-    Category: []
+    Category: [],
+    isUpdate: false
   };
 
   // todo : hiện Modal , không chuyển trang
@@ -43,6 +45,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
   componentWillReceiveProps(nextProps) {
     if (nextProps.user.categorys) {
       this.setState({
+        ...this.state,
         Category: nextProps.user.categorys
       });
     }
@@ -60,6 +63,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
     this.props.updateUser(data);
     this.props.getUser(user.id);
   };
+
   handleClose = () => {
     this.props.history.push('/admin/user-management');
   };
@@ -75,16 +79,15 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
   render() {
     const isInvalid = false;
 
-    const { user, users, loading, updating, listCategory, roles } = this.props;
-    const { Category } = this.state;
-    console.log(user);
+    const { user, users, loading, updating, listCategory, roles, usuccess } = this.props;
+    let { Category, isUpdate } = this.state;
     return (
       <div>
         <Row className="updateTitle">
           <Col md="8">
-            <h1>
+            <h3>
               <Translate contentKey="userManagement.home.editLabel" />
-            </h1>
+            </h3>
           </Col>
         </Row>
         <div className="updatePanel">
@@ -108,12 +111,6 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                         value: '[^0-9!@#$&*%()-=+/,.|~`]$',
                         errorMessage: translate('global.messages.validate.name.pattern')
                       },
-                      // pattern: {
-                      //   value:
-                      //     '^[a-zA-Z]{4,}(?: [a-zA-ZAÁÀẢÃẠÂẤẦẨẪẬĂẮẰẲẴẶEÉÈẺẼẸÊẾỀỂỄỆIÍÌỈĨỊOÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢUÚÙỦŨỤƯỨỪỬỮỰYÝỲỶỸỴĐaáàảãạâấầẩẫậăắằẳẵặeéèẻẽẹêếềểễệiíìỉĩịoóòỏõọôốồổỗộơớờởỡợuúùủũụưứừửữựyýỳỷỹỵđ]+){0,5}$',
-                      //   errorMessage: translate('global.messages.validate.name.pattern')
-                      // },
-
                       maxLength: {
                         value: 50,
                         errorMessage: translate('global.messages.validate.name.maxlength')
@@ -177,18 +174,28 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                   <Label for="categories">
                     <Translate contentKey="userManagement.categories" />
                   </Label>
-                  <FormMultiSelectWidgets defaultCate={user.categorys} handleChange={this.handleChange} />
+                  <UserCategoryTag defaultCate={user.categorys} handleChange={this.handleChange} />
                 </AvGroup>
 
-                <Button color="primary" type="submit" className="save-right">
-                  {/* <SweetAlert
-                                  title="Updated"
-                                  confirmButtonColor=""
-                                  show={this.state.isConfirm}
-                                  text="Sửa thành công"
-                                  type="success"
-                                  onConfirm={() => this.setState({ isConfirm: false })}
-                                /> */}
+                <Button
+                  color="primary"
+                  type="submit"
+                  className="save-right"
+                  onClick={() => {
+                    this.setState({
+                      ...this.state,
+                      isUpdate: usuccess
+                    });
+                  }}
+                >
+                  <SweetAlert
+                    title="Updated"
+                    confirmButtonColor=""
+                    show={isUpdate}
+                    text="Sửa thành công"
+                    type="success"
+                    onConfirm={() => this.setState({ ...this.state, isUpdate: false })}
+                  />
                   <FontAwesomeIcon icon="save" />
                   &nbsp;
                   <Translate contentKey="entity.action.save" />
@@ -212,6 +219,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
 }
 
 const mapStateToProps = (storeState: IRootState) => ({
+  usuccess: storeState.userManagement.showUpdateSuccessAlert,
   user: storeState.userManagement.user,
   users: storeState.userManagement.users,
   roles: storeState.userManagement.authorities,
@@ -228,4 +236,4 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(UserManagementUpdate);
+)(UserUpdate);
