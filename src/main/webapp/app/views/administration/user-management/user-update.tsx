@@ -63,6 +63,19 @@ export class UserUpdate extends React.Component<IUserUpdateProps, IUserUpdateSta
     this.props.updateUser(data);
   };
 
+  // saveUser = (event, values) => {
+  //   const { user } = this.props;
+  //   let data = {
+  //     id: user.id,
+  //     name: values.name,
+  //     phone: values.mobile,
+  //     email: values.email,
+  //     categorys: user.categorys
+  //   };
+  //   this.props.updateUser(data);
+  //   this.props.getUser(user.id);
+  // };
+
   handleClose = () => {
     this.props.history.push('/admin/user-management');
   };
@@ -183,7 +196,7 @@ export class UserUpdate extends React.Component<IUserUpdateProps, IUserUpdateSta
                   onClick={() => {
                     this.setState({
                       ...this.state,
-                      isUpdate: usuccess
+                      isUpdate: this.props.usuccess
                     });
                   }}
                 >
