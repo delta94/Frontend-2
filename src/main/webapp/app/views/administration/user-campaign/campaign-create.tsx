@@ -1,28 +1,51 @@
-import React from 'react';
+import React, { Fragment, Component } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Table, Row, Badge, Col } from 'reactstrap';
+import {
+  TabContent,
+  TabPane,
+  DropdownItem,
+  CardBody,
+  Collapse,
+  FormGroup,
+  Label,
+  Input,
+  FormFeedback,
+  FormText,
+  Card,
+  Col,
+  Row,
+  CardHeader,
+  Button
+} from 'reactstrap';
 
 import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
 import { IRootState } from 'app/reducers';
-import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
+import Sticky from 'react-stickynode';
+import PageTitleAlt from '../../../layout/AppMain/PageTitleAlt';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import ReactPaginate from 'react-paginate';
 import SweetAlert from 'sweetalert-react';
 import { Loader as LoaderAnim } from 'react-loaders';
 import Loader from 'react-loader-advanced';
+import cx from 'classnames';
+import PageTitle from '../../../layout/AppMain/PageTitle';
+import './style/campaign.scss';
 
 export interface ICampaignManagementProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
 
 export interface ICampaignManagementState {
+  isActive: boolean;
   isDelete: boolean;
 }
 
 export class CampaignManagement extends React.Component<ICampaignManagementProps, ICampaignManagementState> {
   state: ICampaignManagementState = {
-    isDelete: false
+    isDelete: false,
+    isActive: false
   };
 
   render() {
@@ -30,32 +53,23 @@ export class CampaignManagement extends React.Component<ICampaignManagementProps
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
 
     return (
-      <div>
-        <Loader message={spinner1} show={loading} priority={1}>
-          {/* day la trang quan ly user */}
-          <h3 id="user-management-page-heading">
-            <Translate contentKey="userManagement.home.title" />
-            <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity">
-              <FontAwesomeIcon icon="plus" /> <Translate contentKey="userManagement.home.createLabel" />
-            </Link>
-          </h3>
-          <div />
-          <div className="panel">
-            <Row>
-              <Col md="3">
-                <div className="totalItems">Tổng số bản ghi</div>
-              </Col>
-
-              <Col md="3">
-                <div className="has-search">
-                  <span className=" form-control-feedback" />
-                </div>
-              </Col>
-            </Row>
-            <hr />
-          </div>
-        </Loader>
-      </div>
+      <Loader message={spinner1} show={loading} priority={1}>
+        <Fragment>
+          <ReactCSSTransitionGroup
+            className={cx('app-inner-layout chat-layout', {
+              'open-mobile-menu': this.state.isActive
+            })}
+            component="div"
+            transitionName="TabsAnimation"
+            transitionAppear={true}
+            transitionAppearTimeout={0}
+            transitionEnter={false}
+            transitionLeave={false}
+          >
+            <PageTitle heading="Danh Sách Chiến Dịch > Tạo Chiến Dịch M2M" icon="pe-7s-moon icon-gradient bg-amy-crisp" />
+          </ReactCSSTransitionGroup>
+        </Fragment>
+      </Loader>
     );
   }
 }
