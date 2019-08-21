@@ -1,23 +1,9 @@
 import React, { Fragment, Component } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import {
-  TabContent,
-  TabPane,
-  DropdownItem,
-  CardBody,
-  Collapse,
-  FormGroup,
-  Label,
-  Input,
-  FormFeedback,
-  FormText,
-  Card,
-  Col,
-  Row,
-  CardHeader,
-  Button
-} from 'reactstrap';
+import { Input, Card, Col, Container } from 'reactstrap';
+
+import Wrapper from './component/date-range-picker';
 
 import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -30,23 +16,33 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import ReactPaginate from 'react-paginate';
 import SweetAlert from 'sweetalert-react';
 import { Loader as LoaderAnim } from 'react-loaders';
+import DatePicker from 'react-datepicker';
 import Loader from 'react-loader-advanced';
 import cx from 'classnames';
 import PageTitle from '../../../layout/AppMain/PageTitle';
 import './style/campaign.scss';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-daterangepicker/daterangepicker.css';
+import DateRangePicker from 'react-bootstrap-daterangepicker';
 
 export interface ICampaignManagementProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
 
 export interface ICampaignManagementState {
   isActive: boolean;
   isDelete: boolean;
+  startDate: Date;
 }
 
 export class CampaignManagement extends React.Component<ICampaignManagementProps, ICampaignManagementState> {
   state: ICampaignManagementState = {
     isDelete: false,
-    isActive: false
+    isActive: false,
+    startDate: new Date()
   };
+  handleChange = date =>
+    this.setState({
+      startDate: date
+    });
 
   render() {
     const { match, pageCount, loading } = this.props;
@@ -66,7 +62,33 @@ export class CampaignManagement extends React.Component<ICampaignManagementProps
             transitionEnter={false}
             transitionLeave={false}
           >
-            <PageTitle heading="Danh Sách Chiến Dịch > Tạo Chiến Dịch M2M" icon="pe-7s-moon icon-gradient bg-amy-crisp" />
+            <PageTitle heading="Danh Sách Chiến Dịch > Tạo Chiến Dịch M2M" />
+            <Container fluid>
+              <Card className="main-card mb-3">
+                <Col md={4}>
+                  <legend className="name-title">TÊN CHIẾN DỊCH</legend>
+                  <div>
+                    <Col sm={12}>
+                      <Input type="email" name="email" placeholder="with a placeholder" />
+                    </Col>
+                  </div>
+                  <legend className="name-title time">THỜI GIAN</legend>
+                  <div>
+                    <Col sm={12}>
+                      <Wrapper />
+                    </Col>
+                  </div>
+                </Col>
+                <Col md={9}>
+                  <legend className="name-title">MÔ TẢ</legend>
+                  <div>
+                    <Col sm={9}>
+                      <Input type="textarea" name="text" id="exampleText" />
+                    </Col>
+                  </div>
+                </Col>
+              </Card>
+            </Container>
           </ReactCSSTransitionGroup>
         </Fragment>
       </Loader>
