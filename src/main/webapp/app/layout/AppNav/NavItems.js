@@ -7,6 +7,11 @@ export const MainNav = [
                 label: 'User Management',
                 to: '#/admin/user-management',
             },
+
+            {
+                label: 'Campaign Management',
+                to: '#/admin/user-campaign',
+            },
           
             {
                 label: 'Minimal',
