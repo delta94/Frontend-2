@@ -1,13 +1,13 @@
 import React, { Fragment, Component } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Input, Card, Col, Container } from 'reactstrap';
+import { Input, Card, Col, Container, Row } from 'reactstrap';
 
 import Wrapper from './component/date-range-picker';
-
+import Responsive from './component/campaign-carousel';
 import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import FaqSection from './component/navigation';
 import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
 import { IRootState } from 'app/reducers';
 import Sticky from 'react-stickynode';
@@ -24,6 +24,7 @@ import './style/campaign.scss';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-daterangepicker/daterangepicker.css';
 import DateRangePicker from 'react-bootstrap-daterangepicker';
+import { Button } from 'app/DemoPages/Components/GuidedTours/Examples/Button';
 
 export interface ICampaignManagementProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
 
@@ -64,30 +65,36 @@ export class CampaignManagement extends React.Component<ICampaignManagementProps
           >
             <PageTitle heading="Danh Sách Chiến Dịch > Tạo Chiến Dịch M2M" />
             <Container fluid>
-              <Card className="main-card mb-3">
-                <Col md={4}>
-                  <legend className="name-title">TÊN CHIẾN DỊCH</legend>
-                  <div>
-                    <Col sm={12}>
-                      <Input type="email" name="email" placeholder="with a placeholder" />
-                    </Col>
-                  </div>
-                  <legend className="name-title time">THỜI GIAN</legend>
-                  <div>
-                    <Col sm={12}>
-                      <Wrapper />
-                    </Col>
-                  </div>
-                </Col>
-                <Col md={9}>
-                  <legend className="name-title">MÔ TẢ</legend>
-                  <div>
-                    <Col sm={9}>
-                      <Input type="textarea" name="text" id="exampleText" />
-                    </Col>
-                  </div>
-                </Col>
+              <Card className="main-card mb-4">
+                <Row>
+                  <Col md={4}>
+                    <legend className="name-title">TÊN CHIẾN DỊCH</legend>
+                    <div>
+                      <Col sm={12}>
+                        <Input type="email" name="email" placeholder="with a placeholder" />
+                      </Col>
+                    </div>
+                    <legend className="name-title time">THỜI GIAN</legend>
+                    <div>
+                      <Col sm={12}>
+                        <Wrapper />
+                      </Col>
+                    </div>
+                  </Col>
+                  <Col md={8}>
+                    <legend className="name-title">MÔ TẢ</legend>
+                    <div>
+                      <Col sm={9}>
+                        <Input type="textarea" name="text" id="exampleText" />
+                      </Col>
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Responsive />
+                </Row>
               </Card>
+              <FaqSection />
             </Container>
           </ReactCSSTransitionGroup>
         </Fragment>

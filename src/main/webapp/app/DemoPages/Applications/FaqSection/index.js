@@ -362,8 +362,8 @@ export default class FaqSection extends Component {
                         </div>
                     </div>
                 </ReactCSSTransitionGroup>
-            </
-                Fragment>
+            </ Fragment>
+               
         )
     }
 }

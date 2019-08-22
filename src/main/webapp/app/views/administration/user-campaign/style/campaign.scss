@@ -7,13 +7,131 @@
 .name-title {
   margin-left: 15px;
 }
-.card {
-  display: -webkit-box !important;
-}
 #exampleText {
   height: 125px;
   width: 700px;
 }
 .time {
   margin-top: 16px !important;
+}
+.DateRangePickerInput__withBorder_2 {
+  width: 118%;
+}
+.font-icon-wrapper {
+  border: none !important;
+  border-radius: 0.25rem;
+  margin: 0 0 10px;
+  padding: 5px;
+  float: left;
+  margin-top: 5px;
+}
+.font-icon-wrapper.font-icon-lg {
+  float: left;
+  padding: 0px !important;
+  margin-right: 0 !important;
+  min-width: 0px !important;
+}
+.page-title-actions {
+  display: none;
+}
+.search-nav .col-md-3 {
+  text-align: center;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+  margin-bottom: 20px;
+}
+.search-nav .row {
+  margin-right: -0 !important;
+  margin-left: -0 !important;
+}
+
+.search-nav .col-md-3 :hover {
+  border-bottom: 2px solid blue;
+}
+
+.grid-container-total {
+  display: grid;
+  grid-column-gap: 5px;
+  grid-row-gap: 5px;
+  grid-template-columns: auto auto auto auto;
+  padding: 10px;
+}
+
+.grid-items {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border: solid 1px gray;
+  word-break: break-word;
+}
+
+.camp-title,
+.camp-status,
+.quantity,
+.range-time {
+  float: left;
+}
+
+.camp-titles {
+  font-size: 15px;
+  font-weight: 500;
+  color: black;
+}
+
+.camp-status {
+  font-size: 8px;
+  color: limegreen;
+}
+
+.quantity,
+.range-time {
+  font-size: 11px;
+  color: #dedede;
+}
+.camp-top {
+  width: 100%;
+}
+.camp-bottom-right-top {
+  font-size: 11px;
+  float: right;
+}
+.camp-bottom-right-bot {
+  width: 50%;
+  font-size: 11px;
+  float: right;
+}
+
+.camp-bottom-left {
+  width: 33%;
+}
+.slick-slider {
+  max-width: 98%;
+}
+.label-text {
+  color: grey;
+}
+//event Click
+.image-tites {
+  width: 24px;
+  float: right;
+}
+.camp-title-click {
+  font-size: 15px;
+  font-weight: 500;
+  color: blue;
+}
+.grid-items-Click {
+  border: dashed 1px grey;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  word-break: break-word;
+}
+.card {
+  height: 400px;
+}
+.app-inner-layout__sidebar {
+  float: left;
+  width: 325px !important;
+}
+.app-inner-layout__content {
+  float: right;
 }
