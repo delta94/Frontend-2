@@ -28,9 +28,6 @@ export default class Responsive extends Component<IResponsiveProps, IResponsiveS
     image: ''
   };
   onClick = () => {
-    console.log(this.props.value.listValid.day);
-    console.log(this.props.value.listValid.name);
-    console.log(this.props.value.listValid.descri);
     this.setState({
       isActive: !this.state.isActive
     });
