@@ -1,3 +1,127 @@
 .page-title-actions {
   display: none;
 }
+.search-nav .col-md-3 {
+  text-align: center;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+  margin-bottom: 20px;
+}
+.search-nav .row {
+  margin-right: -0 !important;
+  margin-left: -0 !important;
+}
+
+.search-nav .col-md-3 :hover {
+  border-bottom: 2px solid blue;
+}
+
+.grid-container-total {
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: auto auto auto auto;
+  background: none;
+}
+
+.grid-item {
+  display: grid;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  height: auto;
+  grid-template-rows: auto auto;
+}
+
+.grid-border {
+  background-color: white;
+}
+
+.camp-title,
+.camp-status,
+.quantity,
+.range-time {
+  float: left;
+}
+
+.camp-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: black;
+}
+
+.camp-status {
+  font-size: 10px;
+  color: limegreen;
+}
+
+.quantity,
+.range-time {
+  font-size: 11px;
+  color: gray;
+}
+.camp-top {
+  width: 100%;
+  border-bottom: 1px solid #dedede;
+}
+
+.camp-bottom-right-top {
+  font-size: 11px;
+  float: right;
+}
+.camp-bottom-right-bot {
+  width: 50%;
+  font-size: 11px;
+  float: right;
+}
+
+.camp-bottom-left {
+  width: 33%;
+}
+// .camp-bottom {
+//   display: grid;
+//   grid-auto-columns: 33% auto;
+// }
+
+.modal-grid,
+.modal-grid-child1,
+.modal-grid-child1-top,
+.modal-grid-child1-bottom,
+.modal-grid-child1-bottom1,
+.modal-grid-child1-bottom2,
+.modal-grid-child1-bottom3,
+.modal-grid-child1-bottom4 {
+  display: grid;
+}
+.modal-grid {
+  grid-auto-rows: 45% auto;
+}
+.modal-header,
+.modal-footer {
+  background: white;
+}
+
+.modal-grid-child1-bottom1,
+.modal-grid-child1-bottom2,
+.modal-grid-child1-bottom3,
+.modal-grid-child1-bottom4 {
+  grid-auto-rows: 50% auto;
+}
+// .modal-grid-child1-bottom {
+//   grid-auto-columns: 15% 30% 30% 25%;
+//   grid-column-start: 5px;
+// }
+
+.modal-content {
+  width: 200% !important;
+  margin-left: -260px !important;
+}
+
+.modal-title {
+  width: 100%;
+  color: black;
+}
+.camp-modal-status {
+  font-size: 13px;
+  color: limegreen;
+  float: right;
+  margin-top: 4px;
+}
