@@ -15,7 +15,7 @@
   margin-top: 16px !important;
 }
 .DateRangePickerInput__withBorder_2 {
-  width: 118%;
+  width: 113%;
 }
 .font-icon-wrapper {
   border: none !important;
@@ -126,12 +126,55 @@
   word-break: break-word;
 }
 .card {
-  height: 400px;
+  height: 420px;
 }
 .app-inner-layout__sidebar {
   float: left;
   width: 325px !important;
+  height: 530px;
 }
 .app-inner-layout__content {
   float: right;
+  height: 530px;
+}
+.chosse-customer-class {
+  text-align: center;
+}
+.bg-arielle-smile {
+  margin-right: 5px;
+}
+.grid-items-cus {
+  height: 185px;
+  border: dashed 1px grey;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  word-break: break-word;
+}
+.fUuvxv {
+  width: 81px;
+  height: 84px;
+}
+.grid-items-pop {
+  height: 185px;
+  border: solid 1px grey;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+.img-facebook {
+  width: 30px;
+  margin-top: -3px;
+  margin-left: -4px;
+}
+.img-zalo {
+  margin-top: -6px;
+  width: 22px;
+}
+.boder-create-new {
+  border-top: solid 1px darkgray;
+  display: grid;
+  padding-left: 25px;
+  padding-right: 25px;
+}
+.label-icon {
+  float: right;
+  margin-right: 10px;
 }

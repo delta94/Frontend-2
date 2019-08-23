@@ -5,6 +5,8 @@ import Sticky from 'react-stickynode';
 
 import cx from 'classnames';
 import Hamburger from 'react-hamburgers';
+import Ionicon from 'react-ionicons';
+import '../style/campaign.scss';
 
 import {
   TabContent,
@@ -53,21 +55,8 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
     };
   }
 
-  // toggle() {
-  //     this.setState({collapse: !this.state.collapse});
-  // }
-
-  toggleAccordion = tab => {
-    const prevState = this.state.accordion;
-    const state = prevState.map((x, index) => (tab === index ? !x : false));
-
-    this.setState({
-      accordion: state
-    });
-  };
-
   toggle = tab => {
-    this.setState({ collapse: !this.state.collapse });
+    // this.setState({ collapse: !this.state.collapse });
     if (this.state.activeTab !== tab) {
       this.setState({
         activeTab: tab
@@ -141,13 +130,155 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
                   <Hamburger active={this.state.active} type="elastic" onClick={() => this.setState({ active: !this.state.active })} />
                 </div>
                 <TabContent activeTab={this.state.activeTab}>
-                  <TabPane tabId="1">
+                  <TabPane tabId="2">
                     <CardTitle>CHỌN TIỆP KHÁCH HÀNG</CardTitle>
                     <Row>
-                      <Col md="3">
-                        <div className="grid-items-Click">
+                      <Col md="4">
+                        <div className="chosse-customer-class">
+                          <div className="grid-items-cus">
+                            <div className="camp-top">
+                              <Ionicon fontSize="35px" color="blue" icon="ios-add" />
+                              <label className="camp-title-click"> Chọn Tệp KH Mới</label>
+                            </div>
+                          </div>
+                        </div>
+                      </Col>
+                      <Col md="4">
+                        <div className="grid-items-pop">
+                          <div className="camp-titles"> Giám Đốc </div>
                           <div className="camp-top">
-                            <label className="camp-title-click"> M2M kịch bản 1</label>
+                            <label className="camp-title-click">Tổng Contract :100</label>
+                          </div>
+                          <div className="boder-create-new">
+                            <div>
+                              <i className="pe-7s-mail"> Email</i>
+                              <label className="label-icon">100</label>
+                            </div>
+                            <div>
+                              <i className="pe-7s-call"> SĐT </i>
+                              <label className="label-icon">100</label>
+                            </div>
+                            <div>
+                              {' '}
+                              <img
+                                className="img-facebook"
+                                src="https://cdn3.iconfinder.com/data/icons/facebook-ui-flat/48/Facebook_UI-03-512.png"
+                              />{' '}
+                              FB<label className="label-icon">100</label>
+                            </div>
+                            <div>
+                              {' '}
+                              <img
+                                className="img-zalo"
+                                src="http://brasol.logozee.com/public/ckeditor/uploads/brasol.vn-logo-zalo-vector-logo-zalo-vector.png"
+                              />{' '}
+                              Zalo<label className="label-icon">100</label>
+                            </div>
+                          </div>
+                        </div>
+                      </Col>
+                      <Col md="4">
+                        <div className="grid-items-pop">
+                          <div className="camp-titles"> Giám Đốc </div>
+                          <div className="camp-top">
+                            <label className="camp-title-click">Tổng Contract :100</label>
+                          </div>
+                          <div className="boder-create-new">
+                            <div>
+                              <i className="pe-7s-mail"> Email</i>
+                              <label className="label-icon">100</label>
+                            </div>
+                            <div>
+                              <i className="pe-7s-call"> SĐT </i>
+                              <label className="label-icon">100</label>
+                            </div>
+                            <div>
+                              {' '}
+                              <img
+                                className="img-facebook"
+                                src="https://cdn3.iconfinder.com/data/icons/facebook-ui-flat/48/Facebook_UI-03-512.png"
+                              />{' '}
+                              FB<label className="label-icon">100</label>
+                            </div>
+                            <div>
+                              {' '}
+                              <img
+                                className="img-zalo"
+                                src="http://brasol.logozee.com/public/ckeditor/uploads/brasol.vn-logo-zalo-vector-logo-zalo-vector.png"
+                              />{' '}
+                              Zalo<label className="label-icon">100</label>
+                            </div>
+                          </div>
+                        </div>
+                      </Col>
+                    </Row>
+                    <br />
+                    <Row>
+                      <Col md="4">
+                        <div className="grid-items-pop">
+                          <div className="camp-titles"> Giám Đốc </div>
+                          <div className="camp-top">
+                            <label className="camp-title-click">Tổng Contract :100</label>
+                          </div>
+                          <div className="boder-create-new">
+                            <div>
+                              <i className="pe-7s-mail"> Email</i>
+                              <label className="label-icon">100</label>
+                            </div>
+                            <div>
+                              <i className="pe-7s-call"> SĐT </i>
+                              <label className="label-icon">100</label>
+                            </div>
+                            <div>
+                              {' '}
+                              <img
+                                className="img-facebook"
+                                src="https://cdn3.iconfinder.com/data/icons/facebook-ui-flat/48/Facebook_UI-03-512.png"
+                              />{' '}
+                              FB<label className="label-icon">100</label>
+                            </div>
+                            <div>
+                              {' '}
+                              <img
+                                className="img-zalo"
+                                src="http://brasol.logozee.com/public/ckeditor/uploads/brasol.vn-logo-zalo-vector-logo-zalo-vector.png"
+                              />{' '}
+                              Zalo<label className="label-icon">100</label>
+                            </div>
+                          </div>
+                        </div>
+                      </Col>
+                      <Col md="4">
+                        <div className="grid-items-pop">
+                          <div className="camp-titles"> Giám Đốc </div>
+                          <div className="camp-top">
+                            <label className="camp-title-click">Tổng Contract :100</label>
+                          </div>
+                          <div className="boder-create-new">
+                            <div>
+                              <i className="pe-7s-mail"> Email</i>
+                              <label className="label-icon">100</label>
+                            </div>
+                            <div>
+                              <i className="pe-7s-call"> SĐT </i>
+                              <label className="label-icon">100</label>
+                            </div>
+                            <div>
+                              {' '}
+                              <img
+                                className="img-facebook"
+                                src="https://cdn3.iconfinder.com/data/icons/facebook-ui-flat/48/Facebook_UI-03-512.png"
+                              />{' '}
+                              FB<label className="label-icon">100</label>
+                            </div>
+                            <div>
+                              {' '}
+                              <img
+                                className="img-zalo"
+                                src="http://brasol.logozee.com/public/ckeditor/uploads/brasol.vn-logo-zalo-vector-logo-zalo-vector.png"
+                              />{' '}
+                              Zalo<label className="label-icon">100</label>
+                            </div>
                           </div>
                         </div>
                       </Col>
@@ -161,6 +292,175 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
                           className="btn-pill btn-wide btn-shadow"
                           onClick={() => {
                             this.toggle('2');
+                          }}
+                        >
+                          <b>Tiếp Tục</b>
+                        </Button>
+                      </div>
+                    </div>
+                  </TabPane>
+                  <TabPane tabId="1">
+                    <CardTitle>CHỌN TIỆP KHÁCH HÀNG</CardTitle>
+                    <Row>
+                      <Col md="4">
+                        <div className="chosse-customer-class">
+                          <div className="grid-items-cus">
+                            <div className="camp-top">
+                              <Ionicon fontSize="35px" color="blue" icon="ios-add" />
+                              <label className="camp-title-click"> Chọn Tệp KH Mới</label>
+                            </div>
+                          </div>
+                        </div>
+                      </Col>
+                      <Col md="4">
+                        <div className="grid-items-pop">
+                          <div className="camp-titles"> Giám Đốc </div>
+                          <div className="camp-top">
+                            <label className="camp-title-click">Tổng Contract :100</label>
+                          </div>
+                          <div className="boder-create-new">
+                            <div>
+                              <i className="pe-7s-mail"> Email</i>
+                              <label className="label-icon">100</label>
+                            </div>
+                            <div>
+                              <i className="pe-7s-call"> SĐT </i>
+                              <label className="label-icon">100</label>
+                            </div>
+                            <div>
+                              {' '}
+                              <img
+                                className="img-facebook"
+                                src="https://cdn3.iconfinder.com/data/icons/facebook-ui-flat/48/Facebook_UI-03-512.png"
+                              />{' '}
+                              FB<label className="label-icon">100</label>
+                            </div>
+                            <div>
+                              {' '}
+                              <img
+                                className="img-zalo"
+                                src="http://brasol.logozee.com/public/ckeditor/uploads/brasol.vn-logo-zalo-vector-logo-zalo-vector.png"
+                              />{' '}
+                              Zalo<label className="label-icon">100</label>
+                            </div>
+                          </div>
+                        </div>
+                      </Col>
+                      <Col md="4">
+                        <div className="grid-items-pop">
+                          <div className="camp-titles"> Giám Đốc </div>
+                          <div className="camp-top">
+                            <label className="camp-title-click">Tổng Contract :100</label>
+                          </div>
+                          <div className="boder-create-new">
+                            <div>
+                              <i className="pe-7s-mail"> Email</i>
+                              <label className="label-icon">100</label>
+                            </div>
+                            <div>
+                              <i className="pe-7s-call"> SĐT </i>
+                              <label className="label-icon">100</label>
+                            </div>
+                            <div>
+                              {' '}
+                              <img
+                                className="img-facebook"
+                                src="https://cdn3.iconfinder.com/data/icons/facebook-ui-flat/48/Facebook_UI-03-512.png"
+                              />{' '}
+                              FB<label className="label-icon">100</label>
+                            </div>
+                            <div>
+                              {' '}
+                              <img
+                                className="img-zalo"
+                                src="http://brasol.logozee.com/public/ckeditor/uploads/brasol.vn-logo-zalo-vector-logo-zalo-vector.png"
+                              />{' '}
+                              Zalo<label className="label-icon">100</label>
+                            </div>
+                          </div>
+                        </div>
+                      </Col>
+                    </Row>
+                    <br />
+                    <Row>
+                      <Col md="4">
+                        <div className="grid-items-pop">
+                          <div className="camp-titles"> Giám Đốc </div>
+                          <div className="camp-top">
+                            <label className="camp-title-click">Tổng Contract :100</label>
+                          </div>
+                          <div className="boder-create-new">
+                            <div>
+                              <i className="pe-7s-mail"> Email</i>
+                              <label className="label-icon">100</label>
+                            </div>
+                            <div>
+                              <i className="pe-7s-call"> SĐT </i>
+                              <label className="label-icon">100</label>
+                            </div>
+                            <div>
+                              {' '}
+                              <img
+                                className="img-facebook"
+                                src="https://cdn3.iconfinder.com/data/icons/facebook-ui-flat/48/Facebook_UI-03-512.png"
+                              />{' '}
+                              FB<label className="label-icon">100</label>
+                            </div>
+                            <div>
+                              {' '}
+                              <img
+                                className="img-zalo"
+                                src="http://brasol.logozee.com/public/ckeditor/uploads/brasol.vn-logo-zalo-vector-logo-zalo-vector.png"
+                              />{' '}
+                              Zalo<label className="label-icon">100</label>
+                            </div>
+                          </div>
+                        </div>
+                      </Col>
+                      <Col md="4">
+                        <div className="grid-items-pop">
+                          <div className="camp-titles"> Giám Đốc </div>
+                          <div className="camp-top">
+                            <label className="camp-title-click">Tổng Contract :100</label>
+                          </div>
+                          <div className="boder-create-new">
+                            <div>
+                              <i className="pe-7s-mail"> Email</i>
+                              <label className="label-icon">100</label>
+                            </div>
+                            <div>
+                              <i className="pe-7s-call"> SĐT </i>
+                              <label className="label-icon">100</label>
+                            </div>
+                            <div>
+                              {' '}
+                              <img
+                                className="img-facebook"
+                                src="https://cdn3.iconfinder.com/data/icons/facebook-ui-flat/48/Facebook_UI-03-512.png"
+                              />{' '}
+                              FB<label className="label-icon">100</label>
+                            </div>
+                            <div>
+                              {' '}
+                              <img
+                                className="img-zalo"
+                                src="http://brasol.logozee.com/public/ckeditor/uploads/brasol.vn-logo-zalo-vector-logo-zalo-vector.png"
+                              />{' '}
+                              Zalo<label className="label-icon">100</label>
+                            </div>
+                          </div>
+                        </div>
+                      </Col>
+                    </Row>
+                    <div className="mt-5" />
+                    <div className="clearfix">
+                      <div className="text-center">
+                        <Button
+                          color="primary"
+                          size="lg"
+                          className="btn-pill btn-wide btn-shadow"
+                          onClick={() => {
+                            this.toggle('3');
                           }}
                         >
                           <b>Tiếp Tục</b>

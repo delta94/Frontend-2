@@ -55,7 +55,6 @@ class UserBox extends React.Component {
                                 <UncontrolledButtonDropdown>
                                     <DropdownToggle color="link" className="p-0">
                                         <img width={42} className="rounded-circle" src={avatar1} alt=""/>
-                                        <FontAwesomeIcon className="ml-2 opacity-8" icon={faAngleDown}/>
                                     </DropdownToggle>
                                     <DropdownMenu right className="rm-pointers dropdown-menu-lg">
                                         <div className="dropdown-menu-header">
@@ -177,7 +176,6 @@ class UserBox extends React.Component {
                             <div className="widget-content-right header-user-info ml-3">
                                 <Button className="btn-shadow p-1" size="sm" onClick={this.notify2} color="info"
                                         id="Tooltip-1">
-                                    <Ionicon color="#ffffff" fontSize="20px" icon="ios-calendar-outline"/>
                                 </Button>
                                 <UncontrolledTooltip placement="bottom" target={'Tooltip-1'}>
                                     Click for Toastify Notifications!

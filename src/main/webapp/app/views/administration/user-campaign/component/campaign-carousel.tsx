@@ -1,6 +1,7 @@
 import React, { Fragment, Component } from 'react';
 import Slider from 'react-slick';
 import { Input, Card, Col, Container, Row } from 'reactstrap';
+import { ICampaignManagementState } from '../campaign-create';
 
 export interface IResponsiveProps {}
 
@@ -14,6 +15,9 @@ export interface IResponsiveState {
   image: string;
 }
 export default class Responsive extends Component<IResponsiveProps, IResponsiveState> {
+  constructor(props: IResponsiveProps) {
+    super(props);
+  }
   state: IResponsiveState = {
     isActive: true,
     cssTitle: 'camp-titles',
@@ -24,6 +28,7 @@ export default class Responsive extends Component<IResponsiveProps, IResponsiveS
     image: ''
   };
   onClick = () => {
+    console.log(this.props);
     this.setState({
       isActive: !this.state.isActive
     });
