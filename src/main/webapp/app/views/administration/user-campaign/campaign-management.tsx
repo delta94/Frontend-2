@@ -73,7 +73,6 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
             <CampaignItem />
             <CampaignItem />
             <CampaignItem />
-            <CampaignItem />
           </div>
         </Loader>
       </div>
