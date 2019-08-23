@@ -2,12 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Table, Row, Badge, Col } from 'reactstrap';
-import './user-management.scss';
 
 import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './styles/user-management.scss';
-import './user-management.scss';
 
 import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
 import { getUser, getUsers, updateUser, getUserCategories, deleteUser } from 'app/actions/user-management';

@@ -1,23 +1,23 @@
-.page-title-actions {
+#userCreate .page-title-actions {
   display: none;
 }
-.app-page-title .page-title-icon {
+#userCreate.app-page-title .page-title-icon {
   display: none !important;
 }
-.name-title {
+#userCreate .name-title {
   margin-left: 15px;
 }
-#exampleText {
+#userCreate #exampleText {
   height: 125px;
   width: 700px;
 }
-.time {
+#userCreate .time {
   margin-top: 16px !important;
 }
-.DateRangePickerInput__withBorder_2 {
+#userCreate .DateRangePickerInput__withBorder_2 {
   width: 113%;
 }
-.font-icon-wrapper {
+#userCreate .font-icon-wrapper {
   border: none !important;
   border-radius: 0.25rem;
   margin: 0 0 10px;
@@ -25,31 +25,31 @@
   float: left;
   margin-top: 5px;
 }
-.font-icon-wrapper.font-icon-lg {
+#userCreate .font-icon-wrapper.font-icon-lg {
   float: left;
   padding: 0px !important;
   margin-right: 0 !important;
   min-width: 0px !important;
 }
-.page-title-actions {
+#userCreate .page-title-actions {
   display: none;
 }
-.search-nav .col-md-3 {
+#userCreate .search-nav .col-md-3 {
   text-align: center;
   padding-right: 0 !important;
   padding-left: 0 !important;
   margin-bottom: 20px;
 }
-.search-nav .row {
+#userCreate .search-nav .row {
   margin-right: -0 !important;
   margin-left: -0 !important;
 }
 
-.search-nav .col-md-3 :hover {
+#userCreate .search-nav .col-md-3 :hover {
   border-bottom: 2px solid blue;
 }
 
-.grid-container-total {
+#userCreate .grid-container-total {
   display: grid;
   grid-column-gap: 5px;
   grid-row-gap: 5px;
@@ -57,124 +57,124 @@
   padding: 10px;
 }
 
-.grid-items {
+#userCreate .grid-items {
   background-color: rgba(255, 255, 255, 0.8);
   padding: 20px;
   border: solid 1px gray;
   word-break: break-word;
 }
 
-.camp-title,
-.camp-status,
-.quantity,
-.range-time {
+#userCreate .camp-title,
+#userCreate .camp-status,
+#userCreate .quantity,
+#userCreate .range-time {
   float: left;
 }
 
-.camp-titles {
+#userCreate .camp-titles {
   font-size: 15px;
   font-weight: 500;
   color: black;
 }
 
-.camp-status {
+#userCreate .camp-status {
   font-size: 8px;
   color: limegreen;
 }
 
-.quantity,
-.range-time {
+#userCreate .quantity,
+#userCreate .range-time {
   font-size: 11px;
   color: #dedede;
 }
-.camp-top {
+#userCreate .camp-top {
   width: 100%;
 }
-.camp-bottom-right-top {
+#userCreate .camp-bottom-right-top {
   font-size: 11px;
   float: right;
 }
-.camp-bottom-right-bot {
+#userCreate .camp-bottom-right-bot {
   width: 50%;
   font-size: 11px;
   float: right;
 }
 
-.camp-bottom-left {
+#userCreate .camp-bottom-left {
   width: 33%;
 }
-.slick-slider {
+#userCreate .slick-slider {
   max-width: 98%;
 }
-.label-text {
+#userCreate .label-text {
   color: grey;
 }
 //event Click
-.image-tites {
+#userCreate .image-tites {
   width: 24px;
   float: right;
 }
-.camp-title-click {
+#userCreate .camp-title-click {
   font-size: 15px;
   font-weight: 500;
   color: blue;
 }
-.grid-items-Click {
+#userCreate .grid-items-Click {
   border: dashed 1px grey;
   background-color: rgba(255, 255, 255, 0.8);
   padding: 20px;
   word-break: break-word;
 }
-.card {
+#userCreate .card {
   height: 420px;
 }
-.app-inner-layout__sidebar {
+#userCreate .app-inner-layout__sidebar {
   float: left;
   width: 325px !important;
   height: 530px;
 }
-.app-inner-layout__content {
+#userCreate .app-inner-layout__content {
   float: right;
   height: 530px;
 }
-.chosse-customer-class {
+#userCreate .chosse-customer-class {
   text-align: center;
 }
-.bg-arielle-smile {
+#userCreate .bg-arielle-smile {
   margin-right: 5px;
 }
-.grid-items-cus {
+#userCreate .grid-items-cus {
   height: 185px;
   border: dashed 1px grey;
   background-color: rgba(255, 255, 255, 0.8);
   padding: 20px;
   word-break: break-word;
 }
-.fUuvxv {
+#userCreate .fUuvxv {
   width: 81px;
   height: 84px;
 }
-.grid-items-pop {
+#userCreate .grid-items-pop {
   height: 185px;
   border: solid 1px grey;
   background-color: rgba(255, 255, 255, 0.8);
 }
-.img-facebook {
+#userCreate .img-facebook {
   width: 30px;
   margin-top: -3px;
   margin-left: -4px;
 }
-.img-zalo {
+#userCreate .img-zalo {
   margin-top: -6px;
   width: 22px;
 }
-.boder-create-new {
+#userCreate .boder-create-new {
   border-top: solid 1px darkgray;
   display: grid;
   padding-left: 25px;
   padding-right: 25px;
 }
-.label-icon {
+#userCreate .label-icon {
   float: right;
   margin-right: 10px;
 }

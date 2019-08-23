@@ -55,14 +55,14 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
     };
   }
 
-  toggle = tab => {
+  toggle(tab) {
     // this.setState({ collapse: !this.state.collapse });
     if (this.state.activeTab !== tab) {
       this.setState({
         activeTab: tab
       });
     }
-  };
+  }
 
   render() {
     return (
@@ -130,7 +130,7 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
                   <Hamburger active={this.state.active} type="elastic" onClick={() => this.setState({ active: !this.state.active })} />
                 </div>
                 <TabContent activeTab={this.state.activeTab}>
-                  <TabPane tabId="2">
+                  <TabPane tabId="1">
                     <CardTitle>CHỌN TIỆP KHÁCH HÀNG</CardTitle>
                     <Row>
                       <Col md="4">
@@ -299,7 +299,7 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
                       </div>
                     </div>
                   </TabPane>
-                  <TabPane tabId="1">
+                  <TabPane tabId="2">
                     <CardTitle>CHỌN TIỆP KHÁCH HÀNG</CardTitle>
                     <Row>
                       <Col md="4">

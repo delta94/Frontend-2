@@ -28,16 +28,26 @@ export default class Responsive extends Component<IResponsiveProps, IResponsiveS
     image: ''
   };
   onClick = () => {
-    console.log(this.props);
+    console.log(this.props.value.listValid.descri !== '');
+    console.log(this.props.value.listValid.descri !== 'undefined');
+    console.log(this.props.value.listValid.descri);
     this.setState({
       isActive: !this.state.isActive
     });
     if (this.state.isActive) {
-      this.setState({
-        cssTitle: 'camp-title-click',
-        urlImage: 'https://abeon-hosting.com/images/complete-png-4.png',
-        gridItem: 'grid-items-Click'
-      });
+      if (
+        this.props.value.listValid.day !== 'undefined' &&
+        this.props.value.listValid.name !== 'undefined' &&
+        this.props.value.listValid.descri !== 'undefined'
+      ) {
+        this.setState({
+          cssTitle: 'camp-title-click',
+          urlImage: 'https://abeon-hosting.com/images/complete-png-4.png',
+          gridItem: 'grid-items-Click'
+        });
+
+        this.props.onClick('true');
+      }
     } else {
       this.setState({
         cssTitle: 'camp-titles',
