@@ -136,7 +136,12 @@ export class CampaignManagement extends React.Component<ICampaignManagementProps
                                 ValidateDay: '',
                                 startDate,
                                 endDate,
-                                ValueDay: startDate
+                                ValueDay: startDate,
+                                listValid: {
+                                  name: this.state.valueName,
+                                  descri: this.state.ValueDescri,
+                                  day: this.state.ValueDay
+                                }
                               });
                             }
                           }} // PropTypes.func.isRequired,
@@ -158,15 +163,7 @@ export class CampaignManagement extends React.Component<ICampaignManagementProps
                   </Col>
                 </Row>
                 <Row>
-                  <Responsive
-                    value={this.setState({
-                      listValid: {
-                        name: this.state.valueName,
-                        descri: this.state.ValueDescri,
-                        day: this.state.ValueDay
-                      }
-                    })}
-                  />
+                  <Responsive value={this.state.listValid} />
                 </Row>
               </Card>
               <FaqSection />
