@@ -1,7 +1,8 @@
 import React, { Fragment, Component } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Input, Card, Col, Container, Row } from 'reactstrap';
+import { Input, Card, Col, Container, Row, CardTitle, Label, InputGroupAddon } from 'reactstrap';
+import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 
 import Responsive from './component/campaign-carousel';
 import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
@@ -20,8 +21,6 @@ import Loader from 'react-loader-advanced';
 import cx from 'classnames';
 import PageTitle from '../../../layout/AppMain/PageTitle';
 import './style/campaign.scss';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap-daterangepicker/daterangepicker.css';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 
@@ -114,12 +113,23 @@ export class CampaignManagement extends React.Component<ICampaignManagementProps
               transitionEnter={false}
               transitionLeave={false}
             >
-              <PageTitle heading="Danh Sách Chiến Dịch > Tạo Chiến Dịch M2M" />
-              <Container fluid>
+              <div className="title-page">
+                <div className="title-head">
+                  Danh Sách Chiến Dịch > Tạo Chiến Dịch M2M
+                  <i className="pe-7s-close-circle"> </i>
+                </div>
+              </div>
+
+              <Container fluid className="container-create">
+                <Card className="card-info">
+                  <CardTitle>
+                    THÔNG TIN CHIẾN DỊCH <i className="lnr-chevron-down"> </i>{' '}
+                  </CardTitle>
+                </Card>
                 <Card className="main-card mb-4">
                   <Row>
                     <Col md={4}>
-                      <legend className="name-title">TÊN CHIẾN DỊCH</legend>
+                      <Label className="name-title">TÊN CHIẾN DỊCH</Label>
                       <div>
                         <Col sm={12}>
                           <Input
@@ -132,12 +142,14 @@ export class CampaignManagement extends React.Component<ICampaignManagementProps
                           <p>{this.state.ValidateName}</p>
                         </Col>
                       </div>
-                      <legend className="name-title time">THỜI GIAN</legend>
-                      <div>
-                        <Col sm={12}>
-                          <div className="font-icon-wrapper font-icon-lg">
-                            <i className="lnr-calendar-full icon-gradient bg-arielle-smile"> </i>
-                          </div>
+                      <Col>
+                        <Label className="name-title">THỜI GIAN</Label>
+
+                        <Col sm={15}>
+                          {/* <div className="font-icon-wrapper font-icon-lg"> */}
+                          <i className="lnr-calendar-full icon-gradient bg-arielle-smile"> </i>
+                          {/* </div> */}
+
                           <DateRangePicker
                             startDate={this.state.startDate} // momentPropTypes.momentObj or null,
                             startDateId="dateStart" // PropTypes.string.isRequired,
@@ -165,22 +177,36 @@ export class CampaignManagement extends React.Component<ICampaignManagementProps
                             focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
                             onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
                           />
+
                           <p>{this.state.ValidateDay}</p>
                         </Col>
-                      </div>
+                        <div className="reOpen-doc">
+                          <div className="grid-items-Click">
+                            <div className="camp-top">
+                              <label className="camp-title-click"> M2M kịch bản 1</label>
+                              <img className="image-tites" src="https://abeon-hosting.com/images/complete-png-4.png" />
+                            </div>
+                          </div>
+                        </div>
+                      </Col>
                     </Col>
                     <Col md={8}>
-                      <legend className="name-title">MÔ TẢ</legend>
+                      <Label className="name-title">MÔ TẢ</Label>
                       <div>
-                        <Col sm={9}>
+                        <Col sm={12}>
                           <Input type="textarea" name="text" id="exampleText" onChange={this.onChangeField} />
                           <p>{this.state.ValidateField}</p>
                         </Col>
                       </div>
                     </Col>
                   </Row>
+
                   <Row>
                     <Responsive value={this.state} onClick={this.onClick} />
+                  </Row>
+                  <Row>
+                    <br />
+                    <br />
                   </Row>
                 </Card>
                 <FaqSection />

@@ -5,18 +5,18 @@
   display: none !important;
 }
 #userCreate .name-title {
-  margin-left: 15px;
+  font: message-box;
+  font-size: 13px;
 }
 #userCreate #exampleText {
-  height: 125px;
-  width: 700px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  height: 137px;
 }
 #userCreate .time {
   margin-top: 16px !important;
 }
-#userCreate .DateRangePickerInput__withBorder_2 {
-  width: 113%;
-}
+
 #userCreate .font-icon-wrapper {
   border: none !important;
   border-radius: 0.25rem;
@@ -122,16 +122,15 @@
 #userCreate .grid-items-Click {
   border: dashed 1px grey;
   background-color: rgba(255, 255, 255, 0.8);
-  padding: 20px;
+  padding: 0px 16px;
+  padding-top: 8px;
   word-break: break-word;
 }
-#userCreate .card {
-  height: 420px;
-}
+
 #userCreate .app-inner-layout__sidebar {
   float: left;
-  width: 325px !important;
   height: 530px;
+  width: 300px;
 }
 #userCreate .app-inner-layout__content {
   float: right;
@@ -142,6 +141,7 @@
 }
 #userCreate .bg-arielle-smile {
   margin-right: 5px;
+  font-size: 20px;
 }
 #userCreate .grid-items-cus {
   height: 185px;
@@ -151,8 +151,8 @@
   word-break: break-word;
 }
 #userCreate .fUuvxv {
-  width: 81px;
-  height: 84px;
+  width: 85px;
+  height: 112px;
 }
 #userCreate .grid-items-pop {
   height: 185px;
@@ -177,4 +177,72 @@
 #userCreate .label-icon {
   float: right;
   margin-right: 10px;
+}
+
+// #userCreate .page-title-icon{
+//   display: none
+// }
+#userCreate .app-page-title {
+  padding: 10px !important;
+  font-size: 13px;
+}
+#userCreate .card-info {
+  background: rgba(255, 255, 255, 0.55);
+  padding: 0px 10px;
+  padding-top: 10px;
+}
+#userCreate .container-create {
+  margin-top: -10px;
+  margin-left: -10px;
+  padding-top: 0px;
+}
+#userCreate .lnr-chevron-down {
+  float: right;
+  font-size: 24px;
+}
+#userCreate .title-page {
+  padding: 15px;
+  margin: -25px -5px 19px;
+  position: relative;
+  background: rgba(255, 255, 255, 0.55);
+
+  align-content: center;
+  align-items: center;
+}
+#userCreate .title-head {
+  font-size: 1.25rem;
+  font-weight: 400;
+}
+#userCreate .pe-7s-close-circle {
+  float: right;
+  font-size: 30px;
+}
+#userCreate .form-control {
+  font-size: 13px;
+}
+#userCreate .DateInput_input {
+  font-size: 13px;
+  line-height: 0px;
+}
+#userCreate .DateRangePickerInput_arrow {
+  display: block;
+}
+#userCreate .DateRangePickerInput__withBorder_2 {
+  display: flex;
+  width: 208px;
+  border: 1px solid #ced4da;
+}
+#userCreate .DateRangePickerInput_arrow_svg {
+  vertical-align: middle;
+  fill: #484848;
+  height: 24px;
+  padding: 4px;
+  margin-top: 8px;
+  width: 24px;
+}
+.app-main .app-main__inner {
+  padding: 30px 5px 0 !important;
+}
+#userCreate .campaign-document {
+  display: none;
 }
