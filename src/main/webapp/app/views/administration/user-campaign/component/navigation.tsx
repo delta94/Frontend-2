@@ -78,7 +78,7 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
           transitionLeave={false}
         >
           <div>
-            <Card className="app-inner-layout__sidebar ">
+            <Card className="col-md-3 app-inner-layout__sidebar ">
               <div className="p-3">
                 <div className="dropdown-menu p-0 dropdown-menu-inline dropdown-menu-rounded dropdown-menu-hover-primary">
                   <DropdownItem

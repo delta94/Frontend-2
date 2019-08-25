@@ -1,6 +1,7 @@
 import React, { Fragment, Component } from 'react';
 import Slider from 'react-slick';
 import { Input, Card, Col, Container, Row } from 'reactstrap';
+import SweetAlert from 'sweetalert-react';
 import { ICampaignManagementState } from '../campaign-create';
 
 export interface IResponsiveProps {}
@@ -13,6 +14,8 @@ export interface IResponsiveState {
   gridItem: string;
   fileImport: string;
   image: string;
+  isError: boolean;
+  disableDocument: string;
 }
 export default class Responsive extends Component<IResponsiveProps, IResponsiveState> {
   constructor(props: IResponsiveProps) {
@@ -25,142 +28,97 @@ export default class Responsive extends Component<IResponsiveProps, IResponsiveS
     urlImage: '',
     gridItem: 'grid-items',
     fileImport: '',
-    image: ''
+    image: '',
+    isError: false,
+    disableDocument: ''
   };
   onClick = () => {
+    console.log(this.props.value.listValid.name);
     this.setState({
       isActive: !this.state.isActive
     });
-    if (this.state.isActive) {
-      if (
-        this.props.value.listValid.day !== undefined &&
-        this.props.value.listValid.name !== undefined &&
-        this.props.value.listValid.descri !== undefined &&
-        this.props.value.listValid.day !== '' &&
-        this.props.value.listValid.name !== '' &&
-        this.props.value.listValid.descri !== ''
-      ) {
-        this.setState({
-          cssTitle: 'camp-title-click',
-          urlImage: 'https://abeon-hosting.com/images/complete-png-4.png',
-          gridItem: 'grid-items-Click'
-        });
 
-        this.props.onClick('true');
-      }
+    if (
+      this.props.value.listValid.day !== undefined &&
+      this.props.value.listValid.name !== undefined &&
+      this.props.value.listValid.descri !== undefined &&
+      this.props.value.listValid.day !== '' &&
+      this.props.value.listValid.name !== '' &&
+      this.props.value.listValid.descri !== '' &&
+      this.props.value.ValidateField === '' &&
+      this.props.value.ValidateDay === '' &&
+      this.props.value.ValidateName === ''
+    ) {
+      this.setState({
+        isError: false,
+        disableDocument: 'campaign-document'
+      });
+
+      this.props.onClick('true');
     } else {
       this.setState({
-        cssTitle: 'camp-titles',
-        urlImage: '',
-        gridItem: 'grid-items'
+        isError: true,
+        disableDocument: ''
       });
     }
   };
   render() {
-    let settings = {
-      dots: false,
-      infinite: false,
-      speed: 500,
-      slidesToShow: 4,
-      slidesToScroll: 1,
-      initialSlide: 0,
-      responsive: [
-        {
-          breakpoint: 1024,
-          settings: {
-            slidesToShow: 3,
-            slidesToScroll: 3,
-            infinite: true,
-            dots: true
-          }
-        },
-        {
-          breakpoint: 600,
-          settings: {
-            slidesToShow: 2,
-            slidesToScroll: 2,
-            initialSlide: 2
-          }
-        },
-        {
-          breakpoint: 480,
-          settings: {
-            slidesToShow: 1,
-            slidesToScroll: 1
-          }
-        }
-      ]
-    };
     return (
       <Fragment>
-        <Slider {...settings}>
+        <SweetAlert
+          title="vui lòng input các trường còn thiếu"
+          confirmButtonColor=""
+          show={this.state.isError}
+          text=""
+          type="error"
+          onConfirm={() => this.setState({ isError: false })}
+        />
+        <Row className={this.state.disableDocument}>
           <Col onClick={this.onClick}>
-            <div className={this.state.gridItem}>
+            <div className="grid-items">
               <div className="camp-top">
-                <label className={this.state.cssTitle}> M2M kịch bản 1</label>
+                <label className="camp-titles"> M2M kịch bản 1</label>
                 <img className="image-tites" src={this.state.urlImage} />
               </div>
               <div className="label-text">
-                <label>kịch bản 1 dành cho đối tượng khách hàngaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</label>
+                <label>kịch bản 1 dành cho đối tượng khách aaaaa</label>
               </div>
             </div>
           </Col>
           <Col onClick={this.onClick}>
-            <div className={this.state.gridItem}>
+            <div className="grid-items">
               <div className="camp-top">
-                <label className={this.state.cssTitle}> M2M kịch bản 1</label>
+                <label className="camp-titles"> M2M kịch bản 1</label>
                 <img className="image-tites" src={this.state.urlImage} />
               </div>
               <div className="label-text">
-                <label>kịch bản 1 dành cho đối tượng khách hàngaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</label>
+                <label>kịch bản 1 dành cho đối tượng khách aaaaa</label>
               </div>
             </div>
           </Col>
           <Col onClick={this.onClick}>
-            <div className={this.state.gridItem}>
+            <div className="grid-items">
               <div className="camp-top">
-                <label className={this.state.cssTitle}> M2M kịch bản 1</label>
+                <label className="camp-titles"> M2M kịch bản 1</label>
                 <img className="image-tites" src={this.state.urlImage} />
               </div>
               <div className="label-text">
-                <label>kịch bản 1 dành cho đối tượng khách hàngaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</label>
+                <label>kịch bản 1 dành cho đối tượng khách aaaaa</label>
               </div>
             </div>
           </Col>
           <Col onClick={this.onClick}>
-            <div className={this.state.gridItem}>
+            <div className="grid-items">
               <div className="camp-top">
-                <label className={this.state.cssTitle}> M2M kịch bản 1</label>
+                <label className="camp-titles"> M2M kịch bản 1</label>
                 <img className="image-tites" src={this.state.urlImage} />
               </div>
               <div className="label-text">
-                <label>kịch bản 1 dành cho đối tượng khách hàngaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</label>
+                <label>kịch bản 1 dành cho đối tượng khách aaaaa</label>
               </div>
             </div>
           </Col>
-          <Col onClick={this.onClick}>
-            <div className={this.state.gridItem}>
-              <div className="camp-top">
-                <label className={this.state.cssTitle}> M2M kịch bản 1</label>
-                <img className="image-tites" src={this.state.urlImage} />
-              </div>
-              <div className="label-text">
-                <label>kịch bản 1 dành cho đối tượng khách hàngaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</label>
-              </div>
-            </div>
-          </Col>
-          <Col onClick={this.onClick}>
-            <div className={this.state.gridItem}>
-              <div className="camp-top">
-                <label className={this.state.cssTitle}> M2M kịch bản 1</label>
-                <img className="image-tites" src={this.state.urlImage} />
-              </div>
-              <div className="label-text">
-                <label>kịch bản 1 dành cho đối tượng khách hàngaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</label>
-              </div>
-            </div>
-          </Col>
-        </Slider>
+        </Row>
       </Fragment>
     );
   }
