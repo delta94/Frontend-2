@@ -46,16 +46,31 @@
   margin-right: -0 !important;
   margin-left: -0 !important;
 }
-
+.search-nav {
+  margin-bottom: 30px;
+  text-align: center;
+}
 .search-nav .col-md-3 :hover {
   border-bottom: 2px solid blue;
+}
+.search-nav .row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: 0;
+  margin-left: 0;
+}
+.search-nav .col-md-3 {
+  padding-right: 0;
+  padding-left: 0;
 }
 
 .grid-container-total {
   display: grid;
   grid-gap: 10px;
-  grid-template-columns: auto auto auto auto;
+  grid-template-columns: 25% 25% 25% 25%;
   background: none;
+  margin-right: 30px;
 }
 
 .grid-item {
@@ -77,7 +92,11 @@
   float: left;
 }
 
-// .camp-title {
+.camp-title {
+  width: 100%;
+  font-weight: 500;
+  font-size: 19px;
+}
 #userCreate .search-nav .col-md-3 :hover {
   border-bottom: 2px solid blue;
 }
@@ -111,7 +130,7 @@
 }
 
 .camp-status {
-  font-size: 10px;
+  font-size: 12px;
   color: limegreen;
 }
 
@@ -346,9 +365,13 @@
   margin-top: 8px;
   width: 24px;
 }
-.app-main .app-main__inner {
+#userCreate .app-main .app-main__inner {
   padding: 30px 5px 0 !important;
 }
 #userCreate .campaign-document {
   display: none;
+}
+#campList .app-main .app-main__inner {
+  padding: 30px 30px 0;
+  flex: 1;
 }
