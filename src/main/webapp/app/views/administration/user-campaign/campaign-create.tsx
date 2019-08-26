@@ -116,7 +116,7 @@ export class CampaignManagement extends React.Component<ICampaignManagementProps
               <div className="title-page">
                 <div className="title-head">
                   Danh Sách Chiến Dịch > Tạo Chiến Dịch M2M
-                  <i className="pe-7s-close-circle"> </i>
+                  <Link to={'/admin/user-campaign'} className="pe-7s-close-circle" />
                 </div>
               </div>
 

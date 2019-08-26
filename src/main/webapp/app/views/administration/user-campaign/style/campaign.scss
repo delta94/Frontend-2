@@ -11,7 +11,7 @@
 #userCreate #exampleText {
   margin-top: 0px;
   margin-bottom: 0px;
-  height: 137px;
+  height: 166px;
 }
 #userCreate .time {
   margin-top: 16px !important;
@@ -140,7 +140,7 @@
   text-align: center;
 }
 #userCreate .bg-arielle-smile {
-  font-size: 29px;
+  font-size: 35px;
 }
 #userCreate .grid-items-cus {
   height: 185px;
@@ -215,9 +215,12 @@
 #userCreate .pe-7s-close-circle {
   float: right;
   font-size: 30px;
+  text-decoration: none;
+  color: black;
 }
 #userCreate .form-control {
   font-size: 13px;
+  height: 40px;
 }
 #userCreate .DateInput_input {
   font-size: 13px;
@@ -246,5 +249,5 @@
   display: none;
 }
 #userCreate .DateRangePicker {
-  width: 83%;
+  width: 85%;
 }
