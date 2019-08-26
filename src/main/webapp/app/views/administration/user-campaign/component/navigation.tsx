@@ -25,8 +25,14 @@ import {
   CardHeader,
   CardTitle,
   Button,
-  DropdownMenu
+  DropdownMenu,
+  ModalBody,
+  Table,
+  Modal,
+  ModalHeader,
+  ModalFooter
 } from 'reactstrap';
+import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
 
 import classnames from 'classnames';
 export interface IFaqSectionProps {}
@@ -40,6 +46,7 @@ export interface IFaqSectionState {
   status: string;
   fadeIn: boolean;
   timeout: any;
+  modal: boolean;
 }
 export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionState> {
   constructor(props) {
@@ -52,7 +59,8 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
       custom: [true, false],
       status: 'Closed',
       fadeIn: true,
-      timeout: 300
+      timeout: 300,
+      modal: false
     };
   }
 
@@ -65,7 +73,9 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
     }
   };
   onClick = () => {
-    console.log('aaaa');
+    this.setState(prevState => ({
+      modal: !prevState.modal
+    }));
   };
 
   render() {
@@ -143,7 +153,7 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
                     <CardTitle>CHỌN TIỆP KHÁCH HÀNG</CardTitle>
                     <Row className="row-nav">
                       <Col md="4">
-                        <div className="chosse-customer-class">
+                        <div className="chosse-customer-class" onClick={this.onClick}>
                           <div className="grid-items-cus">
                             <div className="camp-top">
                               <Ionicon fontSize="35px" color="blue" icon="ios-add" />
@@ -299,6 +309,100 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
                         </div>
                       </Col>
                     </Row>
+                    <Modal isOpen={this.state.modal} fade={false} toggle={this.toggle}>
+                      <ModalHeader toggle={this.toggle}>
+                        <span>Chiến dịch M2M thứ </span> <span className="camp-modal-status">1</span>
+                      </ModalHeader>
+                      <ModalBody>
+                        <div className="modal-grid">
+                          <div className="modal-grid-child">
+                            <span style={{ width: '15%' }}>Mô tả chiến dịch : </span>
+                            <span style={{ width: 'auto', fontWeight: 500, marginLeft: '21px', color: 'black' }}>
+                              Chiến dịch dành cho khách hàng chưa đăng ký dịch vụ
+                            </span>
+                          </div>
+                          <div className="modal-info">
+                            <div className="left-info">
+                              <div className="modal-grid-child1">
+                                <div className="modal-grid-child1-middle">
+                                  <div>Số lượng contact : </div>
+                                  <div>Thời gian : </div>
+                                </div>
+                                <div className="modal-grid-child1-bottom">
+                                  <div className="modal-grid-child1-bottom2">2</div>
+                                  <div className="modal-grid-child1-bottom3">3</div>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="middle-info">
+                              <div className="modal-grid-child1">
+                                <div className="modal-grid-child1-middle">
+                                  <div>Landing Page : </div>
+                                  <div>Quà tặng : </div>
+                                </div>
+                                <div className="modal-grid-child1-bottom">
+                                  <div className="modal-grid-child1-bottom2">Landing Page 1</div>
+                                  <div className="modal-grid-child1-bottom3">E-voucher 1</div>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="right-info">
+                              <div className="modal-grid-child1">
+                                <div className="modal-grid-child1-middle">
+                                  <div>Nội dung : </div>
+                                </div>
+                                <div className="modal-grid-child1-bottom">
+                                  <div className="modal-grid-child1-bottom2">Tương tác Email</div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="modal-grid-child2">
+                            <div className="modal-searchBar">
+                              <span className=" form-control-feedback" />
+                              <input type="text" className="form-control" placeholder="Tìm kiếm" />
+                            </div>
+                          </div>
+
+                          <div className="modal-table">
+                            <Table responsive striped className="modal-tables">
+                              <thead>
+                                <tr className="text-center">
+                                  <th className="hand">#</th>
+                                  <th className="hand ">
+                                    <Translate contentKey="userManagement.name" />
+                                  </th>
+                                  <th className="hand">
+                                    <Translate contentKey="userManagement.mobile" />
+                                  </th>
+                                  <th className="hand">
+                                    <Translate contentKey="userManagement.email" />
+                                  </th>
+                                  <th>
+                                    <Translate contentKey="userManagement.categories" />
+                                  </th>
+                                </tr>
+                              </thead>
+                            </Table>
+                          </div>
+                        </div>
+                      </ModalBody>
+                      <ModalFooter>
+                        <Button
+                          color="primary"
+                          onClick={() => {
+                            this.setState({
+                              modal: false
+                            });
+                          }}
+                        >
+                          Do Something
+                        </Button>{' '}
+                        <Button color="secondary" onClick={this.toggle}>
+                          Cancel
+                        </Button>
+                      </ModalFooter>
+                    </Modal>
                     <div className="mt-5" />
                     <div className="clearfix">
                       <div className="text-center">
