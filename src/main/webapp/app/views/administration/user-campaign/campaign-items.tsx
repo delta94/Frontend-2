@@ -79,30 +79,23 @@ export class CampaignItem extends React.Component<ICampaignItemProps, ICampaignI
 
         <div />
         {this.state.listCamp
-          ? this.state.listCamp.map((event, index, listCamp) => {
-              var listC = this.state.listCamp;
+          ? this.state.listCamp.map((event, index) => {
               var list;
-              // for(i = 0; i< 10; i ++){
-              //   if(i<10)
-              //   listCamp.push (this.state.listCamp)
-
-              // }
-
               list = (
                 <div className="grid-item">
                   <div className="camp-top">
-                    <label className="camp-title"> Chiến dịch M2M thứ {index + 1}</label>
-                    <label className="camp-status">{event.status}</label>
+                    <div className="camp-title"> Chiến dịch M2M thứ {index + 1}</div>
+                    <div className="camp-status">{event.status}</div>
                   </div>
 
                   <div className="camp-bottom">
                     <div className="camp-bottom-left">
-                      <label className="quantity">Số lượng</label>
-                      <label className="range-time">Thời gian</label>
+                      <div className="quantity">Số lượng</div>
+                      <div className="range-time">Thời gian</div>
                     </div>
                     <div className="camp-bottom-right">
-                      <div className="camp-bottom-right-top">{event.total} contacts</div>
-                      <div className="camp-bottom-right-bot"> {event.time}</div>
+                      <div className="quantity-value">{event.total} </div>
+                      <div className="time-value"> {event.time}</div>
                     </div>
                   </div>
 
@@ -112,26 +105,160 @@ export class CampaignItem extends React.Component<ICampaignItemProps, ICampaignI
                     </ModalHeader>
                     <ModalBody>
                       <div className="modal-grid">
-                        <div className="modal-grid-child1">
-                          <div className="modal-grid-child1-middle">
-                            <span>Mô tả chiến dịch : </span> <span>Chiến dịch dành cho khách hàng chưa đăng ký dịch vụ</span>
-                          </div>
-                          <div className="modal-grid-child1-bottom">
-                            <div className="modal-grid-child1-bottom1">
-                              <span>Số lượng contact : </span>
-                              <span>Thời gian : </span>
+                        <div className="modal-grid-child">
+                          <span style={{ width: '15%' }}>Mô tả chiến dịch : </span>
+                          <span style={{ width: 'auto', fontWeight: 500, marginLeft: '21px', color: 'black' }}>
+                            Chiến dịch dành cho khách hàng chưa đăng ký dịch vụ
+                          </span>
+                        </div>
+                        <div className="modal-info">
+                          <div className="left-info">
+                            <div className="modal-grid-child1">
+                              <div className="modal-grid-child1-middle">
+                                <div>Số lượng contact : </div>
+                                <div>Thời gian : </div>
+                              </div>
+                              <div className="modal-grid-child1-bottom">
+                                <div className="modal-grid-child1-bottom2">{event.total}</div>
+                                <div className="modal-grid-child1-bottom3">{event.time}</div>
+                              </div>
                             </div>
-                            <div className="modal-grid-child1-bottom2">{event.total}</div>
-                            <div className="modal-grid-child1-bottom3">{event.time}</div>
-                            <div className="modal-grid-child1-bottom4" />
-                            <div className="modal-grid-child1-bottom5" />
-                            <div className="modal-grid-child1-bottom6" />
+                          </div>
+                          <div className="middle-info">
+                            <div className="modal-grid-child1">
+                              <div className="modal-grid-child1-middle">
+                                <div>Landing Page : </div>
+                                <div>Quà tặng : </div>
+                              </div>
+                              <div className="modal-grid-child1-bottom">
+                                <div className="modal-grid-child1-bottom2">Landing Page 1</div>
+                                <div className="modal-grid-child1-bottom3">E-voucher 1</div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="right-info">
+                            <div className="modal-grid-child1">
+                              <div className="modal-grid-child1-middle">
+                                <div>Nội dung : </div>
+                              </div>
+                              <div className="modal-grid-child1-bottom">
+                                <div className="modal-grid-child1-bottom2">Tương tác Email</div>
+                              </div>
+                            </div>
                           </div>
                         </div>
                         <div className="modal-grid-child2">
                           <div className="modal-searchBar">
-                            <input placeholder="Tìm kiếm trong danh sách" />
+                            <span className=" form-control-feedback" />
+                            <input type="text" className="form-control" placeholder="Tìm kiếm" />
                           </div>
+                        </div>
+
+                        <div className="modal-table">
+                          <Table responsive striped className="modal-tables">
+                            <thead>
+                              <tr className="text-center">
+                                <th className="hand">#</th>
+                                <th className="hand ">
+                                  <Translate contentKey="userManagement.name" />
+                                </th>
+                                <th className="hand">
+                                  <Translate contentKey="userManagement.mobile" />
+                                </th>
+                                <th className="hand">
+                                  <Translate contentKey="userManagement.email" />
+                                </th>
+                                <th>
+                                  <Translate contentKey="userManagement.categories" />
+                                </th>
+                              </tr>
+                            </thead>
+                            {/* <tbody>
+                {users
+                  ? users.map((event, index, listUser?) => {
+                      return (
+                        <tr id={event.id} key={`user-${index}`}>
+                          <td>{this.state.activePage * this.state.itemsPerPage + index + 1}</td>
+                          <td>{event.name}</td>
+                          <td>{event.phone}</td>
+                          <td>{event.email}</td>
+                          <td>
+                            {event.categories &&
+                              event.categories.split(',').map((category, index) => {
+                                return (
+                                  <span className="badge badge-success" key={index}>
+                                    {' '}
+                                    {category}
+                                  </span>
+                                );
+                              })}
+                          </td>
+                          <td className="text-center">
+                            <div className="btn-group flex-btn-group-container">
+                              <Button className="buttonUpdate" tag={Link} to={`${match.url}/${event.id}/update`} color="primary" size="sm">
+                                <FontAwesomeIcon icon="pencil-alt" />{' '}
+                                <span className="d-none d-md-inline">
+                                  <Translate contentKey="entity.action.edit" />
+                                </span>
+                              </Button>
+                              <Button
+                                color="danger"
+                                size="sm"
+                                onClick={() => {
+                                  this.setState({
+                                    ...this.state,
+                                    isDelete: true,
+                                    idUser: event.id
+                                  });
+                                }}
+                              >
+                                <SweetAlert
+                                  title="Bạn muốn xoá ?"
+                                  confirmButtonColor=""
+                                  text="Mục đã xoá sẽ không thể khôi phục !"
+                                  show={this.state.isDelete}
+                                  showCancelButton
+                                  onCancel={() => {
+                                    this.setState({
+                                      ...this.state,
+                                      isDelete: false
+                                    });
+                                  }}
+                                  onConfirm={() => {
+                                    this.props.deleteUser(idUser, activePage, itemsPerPage, categories, textSearch);
+                                    this.setState({
+                                      ...this.state,
+                                      isDelete: false,
+                                      isConfirm: success
+                                    });
+                                  }}
+                                />
+                                <SweetAlert
+                                  title="Deleted"
+                                  confirmButtonColor=""
+                                  show={isConfirm}
+                                  text="Xoá thành công."
+                                  type="success"
+                                  onConfirm={() =>
+                                    this.setState({
+                                      ...this.state,
+                                      isConfirm: false
+                                    })
+                                  }
+                                />
+                                <FontAwesomeIcon icon="trash" />{' '}
+                                <span className="d-none d-md-inline">
+                                  <Translate contentKey="entity.action.delete" />
+                                </span>
+                              </Button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  : ''}
+              </tbody> */}
+                          </Table>
                         </div>
                       </div>
                     </ModalBody>
