@@ -23,7 +23,7 @@ import PageTitle from '../../../layout/AppMain/PageTitle';
 import './style/campaign.scss';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
-
+import moment, { Moment } from 'moment';
 import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
 
 export interface ICampaignManagementProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
@@ -39,6 +39,10 @@ export interface ICampaignManagementState {
   ValueDay: string;
   listValid: {};
   ValueDescri: string;
+  displayTable: string;
+  startDate: Moment;
+  endDate: Moment;
+  focusedInput: string;
 }
 
 export class CampaignManagement extends React.Component<ICampaignManagementProps, ICampaignManagementState> {
@@ -52,7 +56,11 @@ export class CampaignManagement extends React.Component<ICampaignManagementProps
     ValueDay: '',
     ValueDescri: '',
     listValid: {},
-    isError: false
+    isError: false,
+    displayTable: 'display-complete',
+    startDate: moment(),
+    endDate: moment(),
+    focusedInput: ''
   };
 
   onChangeName = event => {
@@ -90,12 +98,40 @@ export class CampaignManagement extends React.Component<ICampaignManagementProps
       });
     }
   };
-  onClick = e => {
-    console.log(e);
+  onClick = event => {
+    if (event) {
+      this.setState({
+        displayTable: ''
+      });
+    } else {
+      this.setState({
+        displayTable: 'display-complete'
+      });
+    }
+  };
+  onDatesChange = ({ startDate, endDate }) => {
+    if (startDate === '' || startDate === null) {
+      this.setState({
+        ValidateDay: 'vui lòng nhập ngày'
+      });
+    } else {
+      this.setState({
+        ValidateDay: '',
+        startDate,
+        endDate,
+        ValueDay: startDate,
+        listValid: {
+          name: this.state.valueName,
+          descri: this.state.ValueDescri,
+          day: this.state.ValueDay
+        }
+      });
+    }
   };
 
   render() {
     const { match, pageCount, loading } = this.props;
+    const { startDate, endDate, focusedInput } = this.state;
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
 
     return (
@@ -138,6 +174,7 @@ export class CampaignManagement extends React.Component<ICampaignManagementProps
                             name="email"
                             placeholder="M2M ĐẦU TIÊN"
                             onChange={this.onChangeName}
+                            maxLength="160"
                           />
                           <p>{this.state.ValidateName}</p>
                         </Col>
@@ -146,45 +183,29 @@ export class CampaignManagement extends React.Component<ICampaignManagementProps
                         <Label className="name-title">THỜI GIAN</Label>
 
                         <Col sm={15}>
-                          {/* <div className="font-icon-wrapper font-icon-lg"> */}
-                          <i className="lnr-calendar-full icon-gradient bg-arielle-smile"> </i>
-                          {/* </div> */}
-
                           <DateRangePicker
+                            showDefaultInputIcon
+                            required={true}
+                            startDatePlaceholderText={'dd/mm'}
+                            displayFormat="DD/MM"
                             startDate={this.state.startDate} // momentPropTypes.momentObj or null,
                             startDateId="dateStart" // PropTypes.string.isRequired,
                             endDate={this.state.endDate} // momentPropTypes.momentObj or null,
                             endDateId="dateEnd" // PropTypes.string.isRequired,
-                            onDatesChange={({ startDate, endDate }) => {
-                              if (startDate === '' || startDate === null) {
-                                this.setState({
-                                  ValidateDay: 'vui lòng nhập ngày'
-                                });
-                              } else {
-                                this.setState({
-                                  ValidateDay: '',
-                                  startDate,
-                                  endDate,
-                                  ValueDay: startDate,
-                                  listValid: {
-                                    name: this.state.valueName,
-                                    descri: this.state.ValueDescri,
-                                    day: this.state.ValueDay
-                                  }
-                                });
-                              }
-                            }} // PropTypes.func.isRequired,
+                            onDatesChange={this.onDatesChange} // PropTypes.func.isRequired,
                             focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
                             onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
                           />
 
                           <p>{this.state.ValidateDay}</p>
                         </Col>
-                        <div className="reOpen-doc">
-                          <div className="grid-items-Click">
-                            <div className="camp-top">
-                              <label className="camp-title-click"> M2M kịch bản 1</label>
-                              <img className="image-tites" src="https://abeon-hosting.com/images/complete-png-4.png" />
+                        <div className={this.state.displayTable}>
+                          <div className="reOpen-doc">
+                            <div className="grid-items-Click">
+                              <div className="camp-top">
+                                <label className="camp-title-click"> M2M kịch bản 1</label>
+                                <img className="image-tites" src="https://abeon-hosting.com/images/complete-png-4.png" />
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -194,7 +215,7 @@ export class CampaignManagement extends React.Component<ICampaignManagementProps
                       <Label className="name-title">MÔ TẢ</Label>
                       <div>
                         <Col sm={12}>
-                          <Input type="textarea" name="text" id="exampleText" onChange={this.onChangeField} />
+                          <Input type="textarea" name="text" id="exampleText" onChange={this.onChangeField} maxLength="640" />
                           <p>{this.state.ValidateField}</p>
                         </Col>
                       </div>
@@ -209,7 +230,9 @@ export class CampaignManagement extends React.Component<ICampaignManagementProps
                     <br />
                   </Row>
                 </Card>
-                <FaqSection />
+                <div className={this.state.displayTable}>
+                  <FaqSection />
+                </div>
               </Container>
             </ReactCSSTransitionGroup>
           </Fragment>

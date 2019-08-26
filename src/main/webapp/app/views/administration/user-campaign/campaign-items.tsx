@@ -49,6 +49,11 @@ export class CampaignItem extends React.Component<ICampaignItemProps, ICampaignI
           time: '23/8/2019 - 24/8/2019',
           status: 'đang hoạt động',
           total: 200
+        },
+        {
+          time: '23/8/2019 - 24/8/2019',
+          status: 'đang  động',
+          total: 300
         }
       ]
     });

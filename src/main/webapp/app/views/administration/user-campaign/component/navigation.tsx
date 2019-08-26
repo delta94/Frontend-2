@@ -24,7 +24,8 @@ import {
   Row,
   CardHeader,
   CardTitle,
-  Button
+  Button,
+  DropdownMenu
 } from 'reactstrap';
 
 import classnames from 'classnames';
@@ -55,14 +56,17 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
     };
   }
 
-  toggle(tab) {
+  toggle = tab => {
     // this.setState({ collapse: !this.state.collapse });
     if (this.state.activeTab !== tab) {
       this.setState({
         activeTab: tab
       });
     }
-  }
+  };
+  onClick = () => {
+    console.log('aaaa');
+  };
 
   render() {
     return (
@@ -82,44 +86,49 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
               <div className="p-3">
                 <div className="dropdown-menu p-0 dropdown-menu-inline dropdown-menu-rounded dropdown-menu-hover-primary">
                   <DropdownItem
+                    toggle={false}
                     className={classnames('mb-1', { active: this.state.activeTab === '1' })}
                     onClick={() => {
                       this.toggle('1');
                     }}
                   >
-                    Tab Example 1
+                    Chọn tập khách hàng
                   </DropdownItem>
                   <DropdownItem
+                    toggle={false}
                     className={classnames('mb-1', { active: this.state.activeTab === '2' })}
                     onClick={() => {
                       this.toggle('2');
                     }}
                   >
-                    Tab Example 2
+                    Chọn quà tặng
                   </DropdownItem>
                   <DropdownItem
+                    toggle={false}
                     className={classnames('mb-1', { active: this.state.activeTab === '3' })}
                     onClick={() => {
                       this.toggle('3');
                     }}
                   >
-                    Tab Example 3
+                    Tạo landingpage
                   </DropdownItem>
                   <DropdownItem
+                    toggle={false}
                     className={classnames('mb-1', { active: this.state.activeTab === '4' })}
                     onClick={() => {
                       this.toggle('4');
                     }}
                   >
-                    Tab Example 3
+                    Tạo nội dung
                   </DropdownItem>
                   <DropdownItem
+                    toggle={false}
                     className={classnames('mb-1', { active: this.state.activeTab === '5' })}
                     onClick={() => {
                       this.toggle('5');
                     }}
                   >
-                    Tab Example 3
+                    Tổng quan
                   </DropdownItem>
                 </div>
               </div>
