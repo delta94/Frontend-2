@@ -140,8 +140,7 @@
   text-align: center;
 }
 #userCreate .bg-arielle-smile {
-  margin-right: 5px;
-  font-size: 20px;
+  font-size: 29px;
 }
 #userCreate .grid-items-cus {
   height: 185px;
@@ -229,7 +228,7 @@
 }
 #userCreate .DateRangePickerInput__withBorder_2 {
   display: flex;
-  width: 208px;
+  width: 100%;
   border: 1px solid #ced4da;
 }
 #userCreate .DateRangePickerInput_arrow_svg {
@@ -245,4 +244,7 @@
 }
 #userCreate .campaign-document {
   display: none;
+}
+#userCreate .DateRangePicker {
+  width: 83%;
 }
