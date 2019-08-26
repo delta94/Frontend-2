@@ -143,6 +143,10 @@
   width: 100%;
   border-bottom: 1px solid #dedede;
 }
+#userCreate .camp-top {
+  width: 100%;
+  border-bottom: none !important;
+}
 
 .camp-bottom-right-top {
   font-size: 11px;
@@ -296,6 +300,15 @@
   display: grid;
   padding-left: 25px;
   padding-right: 25px;
+  margin-top: 0px;
+}
+#userCreate .title-contract {
+  padding: 0px 10px;
+  margin-top: 9px;
+}
+
+#userCreate .row-nav {
+  margin-bottom: 2px;
 }
 
 #userCreate .label-icon {
@@ -317,7 +330,7 @@
 }
 #userCreate .container-create {
   margin-top: -10px;
-  margin-left: -10px;
+  margin-left: -25px;
   padding-top: 0px;
 }
 #userCreate .lnr-chevron-down {
@@ -325,8 +338,9 @@
   font-size: 24px;
 }
 #userCreate .title-page {
+  width: 105%;
   padding: 15px;
-  margin: -25px -5px 19px;
+  margin: -25px -29px 19px;
   position: relative;
   background: rgba(255, 255, 255, 0.55);
 
@@ -375,6 +389,9 @@
 }
 #userCreate .DateRangePicker {
   width: 85%;
+}
+#userCreate .container-fluid {
+  width: 105%;
 }
 #campList .app-main .app-main__inner {
   padding: 30px 30px 0;
