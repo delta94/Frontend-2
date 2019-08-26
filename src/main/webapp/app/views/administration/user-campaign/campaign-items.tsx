@@ -80,7 +80,7 @@ export class CampaignItem extends React.Component<ICampaignItemProps, ICampaignI
         <div />
         {this.state.listCamp
           ? this.state.listCamp.map((event, index, listCamp) => {
-              var i = 0;
+              var listC = this.state.listCamp;
               var list;
               // for(i = 0; i< 10; i ++){
               //   if(i<10)
