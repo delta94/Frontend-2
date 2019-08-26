@@ -151,6 +151,7 @@ export class CampaignManagement extends React.Component<ICampaignManagementProps
                           {/* </div> */}
 
                           <DateRangePicker
+                            displayFormat="DD/MM"
                             startDate={this.state.startDate} // momentPropTypes.momentObj or null,
                             startDateId="dateStart" // PropTypes.string.isRequired,
                             endDate={this.state.endDate} // momentPropTypes.momentObj or null,
