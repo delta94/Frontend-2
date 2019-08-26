@@ -132,7 +132,7 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
                 <TabContent activeTab={this.state.activeTab}>
                   <TabPane tabId="1">
                     <CardTitle>CHỌN TIỆP KHÁCH HÀNG</CardTitle>
-                    <Row>
+                    <Row className="row-nav">
                       <Col md="4">
                         <div className="chosse-customer-class">
                           <div className="grid-items-cus">
@@ -145,9 +145,11 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
                       </Col>
                       <Col md="4">
                         <div className="grid-items-pop">
-                          <div className="camp-titles"> Giám Đốc </div>
-                          <div className="camp-top">
-                            <label className="camp-title-click">Tổng Contract :100</label>
+                          <div className="title-contract">
+                            <div className="camp-titles"> Giám Đốc </div>
+                            <div className="camp-top">
+                              <label className="camp-title-click">Tổng Contract :100</label>
+                            </div>
                           </div>
                           <div className="boder-create-new">
                             <div>
@@ -179,9 +181,11 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
                       </Col>
                       <Col md="4">
                         <div className="grid-items-pop">
-                          <div className="camp-titles"> Giám Đốc </div>
-                          <div className="camp-top">
-                            <label className="camp-title-click">Tổng Contract :100</label>
+                          <div className="title-contract">
+                            <div className="camp-titles"> Giám Đốc </div>
+                            <div className="camp-top">
+                              <label className="camp-title-click">Tổng Contract :100</label>
+                            </div>
                           </div>
                           <div className="boder-create-new">
                             <div>
@@ -212,13 +216,14 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
                         </div>
                       </Col>
                     </Row>
-                    <br />
-                    <Row>
+                    <Row className="row-nav">
                       <Col md="4">
                         <div className="grid-items-pop">
-                          <div className="camp-titles"> Giám Đốc </div>
-                          <div className="camp-top">
-                            <label className="camp-title-click">Tổng Contract :100</label>
+                          <div className="title-contract">
+                            <div className="camp-titles"> Giám Đốc </div>
+                            <div className="camp-top">
+                              <label className="camp-title-click">Tổng Contract :100</label>
+                            </div>
                           </div>
                           <div className="boder-create-new">
                             <div>
@@ -250,9 +255,11 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
                       </Col>
                       <Col md="4">
                         <div className="grid-items-pop">
-                          <div className="camp-titles"> Giám Đốc </div>
-                          <div className="camp-top">
-                            <label className="camp-title-click">Tổng Contract :100</label>
+                          <div className="title-contract">
+                            <div className="camp-titles"> Giám Đốc </div>
+                            <div className="camp-top">
+                              <label className="camp-title-click">Tổng Contract :100</label>
+                            </div>
                           </div>
                           <div className="boder-create-new">
                             <div>
@@ -301,7 +308,7 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
                   </TabPane>
                   <TabPane tabId="2">
                     <CardTitle>CHỌN TIỆP KHÁCH HÀNG</CardTitle>
-                    <Row>
+                    <Row className="row-nav">
                       <Col md="4">
                         <div className="chosse-customer-class">
                           <div className="grid-items-cus">
@@ -381,7 +388,6 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
                         </div>
                       </Col>
                     </Row>
-                    <br />
                     <Row>
                       <Col md="4">
                         <div className="grid-items-pop">

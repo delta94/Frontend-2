@@ -12,7 +12,7 @@
 #userCreate #exampleText {
   margin-top: 0px;
   margin-bottom: 0px;
-  height: 137px;
+  height: 166px;
 }
 #userCreate .time {
   margin-top: 16px !important;
@@ -143,6 +143,10 @@
   width: 100%;
   border-bottom: 1px solid #dedede;
 }
+#userCreate .camp-top {
+  width: 100%;
+  border-bottom: none !important;
+}
 
 .camp-bottom-right-top {
   font-size: 11px;
@@ -264,8 +268,7 @@
   text-align: center;
 }
 #userCreate .bg-arielle-smile {
-  margin-right: 5px;
-  font-size: 20px;
+  font-size: 35px;
 }
 #userCreate .grid-items-cus {
   height: 185px;
@@ -297,6 +300,15 @@
   display: grid;
   padding-left: 25px;
   padding-right: 25px;
+  margin-top: 0px;
+}
+#userCreate .title-contract {
+  padding: 0px 10px;
+  margin-top: 9px;
+}
+
+#userCreate .row-nav {
+  margin-bottom: 2px;
 }
 
 #userCreate .label-icon {
@@ -342,9 +354,12 @@
 #userCreate .pe-7s-close-circle {
   float: right;
   font-size: 30px;
+  text-decoration: none;
+  color: black;
 }
 #userCreate .form-control {
   font-size: 13px;
+  height: 40px;
 }
 #userCreate .DateInput_input {
   font-size: 13px;
@@ -355,7 +370,7 @@
 }
 #userCreate .DateRangePickerInput__withBorder_2 {
   display: flex;
-  width: 208px;
+  width: 100%;
   border: 1px solid #ced4da;
 }
 #userCreate .DateRangePickerInput_arrow_svg {
@@ -371,6 +386,9 @@
 }
 #userCreate .campaign-document {
   display: none;
+}
+#userCreate .DateRangePicker {
+  width: 85%;
 }
 #userCreate .container-fluid {
   width: 105%;
