@@ -2,16 +2,18 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Table, Row, Badge, Col } from 'reactstrap';
-
-import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
-import { IRootState } from 'app/reducers';
 import ReactPaginate from 'react-paginate';
 import SweetAlert from 'sweetalert-react';
 import { Loader as LoaderAnim } from 'react-loaders';
 import Loader from 'react-loader-advanced';
+import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import './../user-campaign/style/campaign.scss';
+
+import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
+import { IRootState } from 'app/reducers';
+import CampaignItem from './campaign-items';
 
 export interface ICreateCampaignProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
 
@@ -39,19 +41,38 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
             </Link>
           </h3>
           <div />
-          <div className="panel">
+          <div className="search-nav">
             <Row>
               <Col md="3">
-                <div className="totalItems">Tổng số bản ghi</div>
+                <a className="totalCamp">Tất cả</a>
               </Col>
-
               <Col md="3">
-                <div className="has-search">
-                  <span className=" form-control-feedback" />
-                </div>
+                <a className="totalCamp">Chiến dịch đang hoạt động</a>
+              </Col>
+              <Col md="3">
+                <a className="totalCamp">Chiến dịch chưa kích hoạt/tạm dừng</a>
+              </Col>
+              <Col md="3">
+                <a className="totalCamp">Chiến dịch đã hoàn thành</a>
               </Col>
             </Row>
-            <hr />
+          </div>
+          <div className="grid-container-total">
+            <CampaignItem />
+            <CampaignItem />
+            <CampaignItem />
+            <CampaignItem />
+            <CampaignItem />
+            <CampaignItem />
+            <CampaignItem />
+            <CampaignItem />
+            <CampaignItem />
+            <CampaignItem />
+            <CampaignItem />
+            <CampaignItem />
+            <CampaignItem />
+            <CampaignItem />
+            <CampaignItem />
           </div>
         </Loader>
       </div>
