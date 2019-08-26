@@ -318,7 +318,7 @@
 }
 #userCreate .container-create {
   margin-top: -10px;
-  margin-left: -10px;
+  margin-left: -25px;
   padding-top: 0px;
 }
 #userCreate .lnr-chevron-down {
@@ -326,8 +326,9 @@
   font-size: 24px;
 }
 #userCreate .title-page {
+  width: 105%;
   padding: 15px;
-  margin: -25px -5px 19px;
+  margin: -25px -29px 19px;
   position: relative;
   background: rgba(255, 255, 255, 0.55);
 
@@ -370,6 +371,9 @@
 }
 #userCreate .campaign-document {
   display: none;
+}
+#userCreate .container-fluid {
+  width: 105%;
 }
 #campList .app-main .app-main__inner {
   padding: 30px 30px 0;
