@@ -400,3 +400,60 @@
 #userCreate .display-complete {
   display: none;
 }
+.camp-modal-status {
+  font-size: 13px;
+  color: limegreen;
+  float: right;
+  margin-top: 4px;
+}
+.modal-grid .table-responsive {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  margin: 10px 0 0 0;
+}
+.modal-grid-child1-bottom {
+  font-weight: 500;
+  color: black;
+  margin-left: 21px;
+}
+.modal-header,
+.modal-footer {
+  background: white;
+}
+.modal-grid-child1 {
+  display: flex;
+}
+.modal-grid-child {
+  margin-bottom: 10px;
+}
+.right-info {
+  width: auto;
+}
+.modal-searchBar {
+  margin-top: 20px !important;
+  width: 33%;
+}
+.modal-content {
+  width: 200% !important;
+  margin-left: -260px !important;
+}
+.modal-grid .table-responsive {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  margin: 10px 0 0 0;
+}
+.import-cus {
+  margin-top: -16px !important;
+}
+.btn-icon {
+  width: 100%;
+  background-color: ghostwhite;
+}
+.btn-icon :hover {
+  background-color: yellowgreen;
+}
+.import-cus :hover {
+  background-color: aquamarine;
+}

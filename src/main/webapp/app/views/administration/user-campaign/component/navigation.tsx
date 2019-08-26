@@ -310,82 +310,48 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
                       </Col>
                     </Row>
                     <Modal isOpen={this.state.modal} fade={false} toggle={this.toggle}>
-                      <ModalHeader toggle={this.toggle}>
-                        <span>Chiến dịch M2M thứ </span> <span className="camp-modal-status">1</span>
+                      <ModalHeader
+                        toggle={() => {
+                          this.setState({
+                            modal: false
+                          });
+                        }}
+                      >
+                        <span>CHỌN TỆP </span>
                       </ModalHeader>
                       <ModalBody>
-                        <div className="modal-grid">
-                          <div className="modal-grid-child">
-                            <span style={{ width: '15%' }}>Mô tả chiến dịch : </span>
-                            <span style={{ width: 'auto', fontWeight: 500, marginLeft: '21px', color: 'black' }}>
-                              Chiến dịch dành cho khách hàng chưa đăng ký dịch vụ
-                            </span>
-                          </div>
-                          <div className="modal-info">
-                            <div className="left-info">
-                              <div className="modal-grid-child1">
-                                <div className="modal-grid-child1-middle">
-                                  <div>Số lượng contact : </div>
-                                  <div>Thời gian : </div>
-                                </div>
-                                <div className="modal-grid-child1-bottom">
-                                  <div className="modal-grid-child1-bottom2">2</div>
-                                  <div className="modal-grid-child1-bottom3">3</div>
-                                </div>
-                              </div>
+                        <Row>
+                          <Col md="6">
+                            {' '}
+                            <legend>contract</legend>
+                          </Col>
+                          <Col md="6">
+                            <input type="text" className="form-control" placeholder="Tìm kiếm" />
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col md="3" className="import-cus">
+                            {' '}
+                            <Button className="btn-icon">
+                              <Ionicon fontSize="35px" color="#333" icon="ios-add" />
+                            </Button>{' '}
+                          </Col>
+                          <Col md="9">
+                            <div className="modal-table">
+                              <Table responsive striped className="modal-tables">
+                                <thead>
+                                  <tr className="text-center">
+                                    <th className="hand">#</th>
+                                    <th className="hand ">Họ và tên</th>
+                                    <th className="hand">Số điện thoại</th>
+                                    <th className="hand">Email</th>
+                                    <th>Nhóm</th>
+                                  </tr>
+                                </thead>
+                              </Table>
                             </div>
-                            <div className="middle-info">
-                              <div className="modal-grid-child1">
-                                <div className="modal-grid-child1-middle">
-                                  <div>Landing Page : </div>
-                                  <div>Quà tặng : </div>
-                                </div>
-                                <div className="modal-grid-child1-bottom">
-                                  <div className="modal-grid-child1-bottom2">Landing Page 1</div>
-                                  <div className="modal-grid-child1-bottom3">E-voucher 1</div>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="right-info">
-                              <div className="modal-grid-child1">
-                                <div className="modal-grid-child1-middle">
-                                  <div>Nội dung : </div>
-                                </div>
-                                <div className="modal-grid-child1-bottom">
-                                  <div className="modal-grid-child1-bottom2">Tương tác Email</div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="modal-grid-child2">
-                            <div className="modal-searchBar">
-                              <span className=" form-control-feedback" />
-                              <input type="text" className="form-control" placeholder="Tìm kiếm" />
-                            </div>
-                          </div>
-
-                          <div className="modal-table">
-                            <Table responsive striped className="modal-tables">
-                              <thead>
-                                <tr className="text-center">
-                                  <th className="hand">#</th>
-                                  <th className="hand ">
-                                    <Translate contentKey="userManagement.name" />
-                                  </th>
-                                  <th className="hand">
-                                    <Translate contentKey="userManagement.mobile" />
-                                  </th>
-                                  <th className="hand">
-                                    <Translate contentKey="userManagement.email" />
-                                  </th>
-                                  <th>
-                                    <Translate contentKey="userManagement.categories" />
-                                  </th>
-                                </tr>
-                              </thead>
-                            </Table>
-                          </div>
-                        </div>
+                          </Col>
+                        </Row>
                       </ModalBody>
                       <ModalFooter>
                         <Button
