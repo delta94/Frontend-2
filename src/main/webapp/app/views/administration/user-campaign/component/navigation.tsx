@@ -8,6 +8,58 @@ import Hamburger from 'react-hamburgers';
 import Ionicon from 'react-ionicons';
 import '../style/campaign.scss';
 
+const dumpData = [
+  {
+    id: 1,
+    name: 'Test Name',
+    email: 'email 1',
+    mobile: 'mobile 1',
+    categories: 'categories 1',
+    contact: 100
+  },
+  {
+    id: 2,
+    name: 'Test Name 1',
+    email: 'email 1',
+    mobile: 'mobile 1',
+    categories: 'categories 1',
+    contact: 100
+  },
+  {
+    id: 3,
+    name: 'Test Name 2',
+    email: 'email 1',
+    mobile: 'mobile 1',
+    categories: 'categories 1',
+    contact: 100
+  },
+  {
+    id: 4,
+    name: 'Test Name 3',
+    email: 'email 1',
+    mobile: 'mobile 1',
+    categories: 'categories 1',
+    contact: 100
+  },
+
+  {
+    id: 5,
+    name: 'Test Name 4',
+    email: 'email 1',
+    mobile: 'mobile 1',
+    categories: 'categories 1',
+    contact: 100
+  },
+  {
+    id: 6,
+    name: 'Test Name 5',
+    email: 'email 1',
+    mobile: 'mobile 1',
+    categories: 'categories 1',
+    contact: 100
+  }
+];
+
 import {
   TabContent,
   TabPane,
@@ -39,6 +91,8 @@ export interface IFaqSectionState {
   status: string;
   fadeIn: boolean;
   timeout: any;
+  gift: Object;
+  testMail: string;
 }
 export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionState> {
   constructor(props) {
@@ -51,7 +105,9 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
       custom: [true, false],
       status: 'Closed',
       fadeIn: true,
-      timeout: 300
+      timeout: 300,
+      gift: {},
+      testMail: ''
     };
   }
 
@@ -65,6 +121,8 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
   }
 
   render() {
+    const { testMail, activeTab } = this.state;
+
     return (
       <Fragment>
         <ReactCSSTransitionGroup
@@ -78,7 +136,7 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
           transitionLeave={false}
         >
           <div>
-            <Card className="col-md-3 app-inner-layout__sidebar ">
+            <Card className="col-md-3 app-inner-layout__sidebar b-r">
               <div className="p-3">
                 <div className="dropdown-menu p-0 dropdown-menu-inline dropdown-menu-rounded dropdown-menu-hover-primary">
                   <DropdownItem
@@ -119,16 +177,18 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
                       this.toggle('5');
                     }}
                   >
-                    Tab Example 3
+                    Tổng quan
                   </DropdownItem>
                 </div>
               </div>
             </Card>
+
             <Card className="col-md-9 app-inner-layout__content">
               <div className="pb-5 pl-5 pr-5 pt-3">
                 <div className="mobile-app-menu-btn mb-3">
                   <Hamburger active={this.state.active} type="elastic" onClick={() => this.setState({ active: !this.state.active })} />
                 </div>
+                {/* Tab Content */}
                 <TabContent activeTab={this.state.activeTab}>
                   <TabPane tabId="1">
                     <CardTitle>CHỌN TIỆP KHÁCH HÀNG</CardTitle>
@@ -471,6 +531,72 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
                         >
                           <b>Tiếp Tục</b>
                         </Button>
+                      </div>
+                    </div>
+                  </TabPane>
+                  <TabPane tabId="5">
+                    <div className="preview">
+                      <CardTitle>Tổng quan</CardTitle>
+                      <div className="b-dashed">
+                        <div className="preview-title">
+                          <div className="info-title">
+                            <span className="c-b">Đối tượng:</span> Tổng contact: <span className="c-g">{dumpData.length}</span>
+                          </div>
+                          <div className="info-title">
+                            Contact trùng: <span className="c-b">36</span>
+                          </div>
+                        </div>
+                        <Row>
+                          {dumpData.map((item, index) => {
+                            return (
+                              <Col md="4" key={item.name + index}>
+                                <div className="title-contact">
+                                  <div className="camp-titles">{item.name}</div>
+                                  <div className="camp-titles">
+                                    <label>Tổng contact:</label> {item.contact}
+                                  </div>
+                                </div>
+                              </Col>
+                            );
+                          })}
+                        </Row>
+                        <div className="b-b b-t all-content-review">
+                          <Row>
+                            <Col md="6" className="b-r">
+                              <div className="content-review b-b">
+                                <span className="c-b">Quà tặng: </span>E - voucher
+                              </div>
+                            </Col>
+                            <Col md="6">
+                              <div className="content-review b-b">
+                                <span className="c-b">Landingpage: </span>Landingpage M2M
+                              </div>
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col md="6" className="b-r">
+                              <div className="content-review ">
+                                <span className="c-b">Giới thiệu bạn bè: </span>Email template 5
+                              </div>
+                            </Col>
+                            <Col md="6">
+                              <div className="content-review">
+                                <span className="c-b">Nhận quà tặng: </span>Email template 2
+                              </div>
+                            </Col>
+                          </Row>
+                        </div>
+                      </div>
+                      <div className="test-commitsion">
+                        <label>Test chiến dịch</label>
+                        <input
+                          value={testMail}
+                          placeholder="Nhập email test"
+                          onChange={event => {
+                            this.setState({ testMail: event.target.value });
+                          }}
+                        />
+                        <button>Test</button>
                       </div>
                     </div>
                   </TabPane>
