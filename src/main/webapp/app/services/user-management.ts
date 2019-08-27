@@ -6,11 +6,21 @@ import { toast } from 'react-toastify';
 const apiUrl = 'v1/customer';
 
 // <<<<<<< HEAD
-// export const getUsersService = (page, size, sort) => {
-//   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
-//   return axios.get<IUser>(requestUrl);
-//   //return axios.get<IUser>('/content/json_data/list-candidate.json');
+// export const getUsersServic
+//   const requestUrl = `${api
+//   return axios.get<IUser>(r
+//   //return axios.get<IUser>
 // =======
+
+/**
+ *
+ * @param page -number
+ * @param pageSize - number
+ * @param category - string
+ * @param textSearch - string
+ * @return {code: number, data: Object{item: [{id: string, name: string, gmail: string, catagories: string, }, pageIndex: number, pageSize: number] }}
+ */
+
 export const getUsersService = (page, pageSize, category?: string, textSearch?: string) => {
   // const urlCategory = category ? category.map(cate => cate.id) : '';
   // if (category) {
