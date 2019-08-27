@@ -24,3 +24,7 @@ export const USER_MANAGE_ACTION_TYPES = {
   UPDATE_USER_CATEGORY: 'userManagement/UPDATE_USER_CATEGORY',
   RESET_MESSAGE: 'userManagement/RESET_MESSAGE'
 };
+
+export const CAMPAIGN_MANAGE_ACTION_TYPE = {
+  FETCH_CAMPAIGNS: 'campaignManagement/FETCH_CAMPAIGNS'
+};

@@ -44,16 +44,16 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
           <div className="search-nav">
             <Row>
               <Col md="3">
-                <a className="totalCamp">Tất cả</a>
+                <a className="totalCamp">Tất cả ({100})</a>
               </Col>
               <Col md="3">
-                <a className="totalCamp">Chiến dịch đang hoạt động</a>
+                <a className="totalCamp">Chiến dịch đang hoạt động ({30})</a>
               </Col>
               <Col md="3">
-                <a className="totalCamp">Chiến dịch chưa kích hoạt/tạm dừng</a>
+                <a className="totalCamp">Chiến dịch chưa kích hoạt/tạm dừng ({50})</a>
               </Col>
               <Col md="3">
-                <a className="totalCamp">Chiến dịch đã hoàn thành</a>
+                <a className="totalCamp">Chiến dịch đã hoàn thành ({20})</a>
               </Col>
             </Row>
           </div>

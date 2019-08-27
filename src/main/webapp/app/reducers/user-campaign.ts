@@ -7,7 +7,12 @@ import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
 import { IFileList } from 'app/common/model/sucess-file';
 import { ICategory } from 'app/common/model/category.model';
 
-const initialState = {};
+const initialState = {
+  // status: '',
+  // time: '',
+  // total: '',
+  // listCamp: [],
+};
 
 export type CampaignManagement = Readonly<typeof initialState>;
 
