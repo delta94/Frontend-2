@@ -7,12 +7,12 @@
 }
 #userCreate .name-title {
   font: message-box;
-  font-size: 13px;
+  font-size: 16px;
   margin-left: 15px;
 }
-#userCreate .name-titls {
+#userCreate .name-titles {
   font: message-box;
-  font-size: 13px;
+  font-size: 16px;
   margin-left: 12px;
 }
 #userCreate #exampleText {
@@ -365,12 +365,13 @@
   color: black;
 }
 #userCreate .form-control {
-  font-size: 13px;
+  font-size: 16px;
   height: 40px;
 }
 #userCreate .DateInput_input {
-  font-size: 13px;
+  font-size: 16px;
   line-height: 0px;
+  padding: 11px 38px 9px;
 }
 #userCreate .DateRangePickerInput_arrow {
   display: block;
@@ -458,9 +459,13 @@
   width: 100%;
   background-color: ghostwhite;
 }
-.btn-icon :hover {
-  background-color: yellowgreen;
+.shareholder {
+  margin-bottom: 10px;
+  display: flex;
 }
-.import-cus :hover {
-  background-color: aquamarine;
+.rw-widget {
+  width: 100%;
+}
+.paginator-nav {
+  float: right;
 }

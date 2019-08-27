@@ -1,12 +1,15 @@
-import React, { Fragment, Component } from 'react';
+import React, { Fragment, Component, useState } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-
+import IncorporationForm from './add-button';
 import Sticky from 'react-stickynode';
 
 import cx from 'classnames';
 import Hamburger from 'react-hamburgers';
 import Ionicon from 'react-ionicons';
+import ReactPaginate from 'react-paginate';
 import '../style/campaign.scss';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
   TabContent,
@@ -48,6 +51,8 @@ export interface IFaqSectionState {
   timeout: any;
   modal: boolean;
   listUser: any[];
+  nameBtn: string;
+  shareholders: any[];
 }
 export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionState> {
   constructor(props) {
@@ -75,6 +80,12 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
           email: 'hungdv@gmail.com',
           group: ' tổng giám đốc'
         }
+      ],
+      nameBtn: '',
+      shareholders: [
+        {
+          name: ''
+        }
       ]
     };
   }
@@ -94,8 +105,14 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
   };
 
   _onClickBtn = () => {
-    var addButon;
-    <div />;
+    this.setState({
+      shareholders: this.state.shareholders.concat([{ name: '' }])
+    });
+  };
+  handlerSaveForm = () => {
+    this.setState({
+      modal: false
+    });
   };
 
   render() {
@@ -340,20 +357,29 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
                       >
                         <span>CHỌN TỆP </span>
                       </ModalHeader>
+
                       <ModalBody>
                         <Row>
-                          <Col md="6">
+                          <Col md="3">
                             <legend>Tổng số contact : {100}</legend>
                           </Col>
-                          <Col md="6">
+                          <Col md="4">
                             <input type="text" className="form-control" placeholder="Tìm kiếm" />
+                          </Col>
+                          <Col md="5">
+                            <Button color="primary" type="submit" className="save-right" onClick={this.handlerSaveForm}>
+                              <FontAwesomeIcon icon="save" />
+                              &nbsp;
+                              <Translate contentKey="entity.action.save" />
+                            </Button>
                           </Col>
                         </Row>
                         <Row>
                           <Col md="3" className="import-cus">
-                            <Button className="btn-icon" onClick={this._onClickBtn}>
+                            {/* <Button className="btn-icon" onClick={this._onClickBtn}>
                               <Ionicon fontSize="35px" color="#333" icon="ios-add" />
-                            </Button>
+                            </Button> */}
+                            <IncorporationForm />
                           </Col>
                           <Col md="9">
                             <div className="modal-table">
@@ -382,6 +408,20 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
                                     : ''}
                                 </thead>
                               </Table>
+                              <div className="paginator-nav">
+                                <ReactPaginate
+                                  previousLabel={'<'}
+                                  nextLabel={'>'}
+                                  breakLabel={'...'}
+                                  breakClassName={'break-me'}
+                                  pageCount={2}
+                                  marginPagesDisplayed={1}
+                                  pageRangeDisplayed={1}
+                                  containerClassName={'pagination'}
+                                  subContainerClassName={'pages pagination'}
+                                  activeClassName={'active'}
+                                />
+                              </div>
                             </div>
                           </Col>
                         </Row>
@@ -565,6 +605,25 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
                           className="btn-pill btn-wide btn-shadow"
                           onClick={() => {
                             this.toggle('3');
+                          }}
+                        >
+                          <b>Tiếp Tục</b>
+                        </Button>
+                      </div>
+                    </div>
+                  </TabPane>
+                  <TabPane tabId="3">
+                    <CardTitle>CHỌN TIỆP KHÁCH HÀNG</CardTitle>
+
+                    <div className="mt-5" />
+                    <div className="clearfix">
+                      <div className="text-center">
+                        <Button
+                          color="primary"
+                          size="lg"
+                          className="btn-pill btn-wide btn-shadow"
+                          onClick={() => {
+                            this.toggle('4');
                           }}
                         >
                           <b>Tiếp Tục</b>
