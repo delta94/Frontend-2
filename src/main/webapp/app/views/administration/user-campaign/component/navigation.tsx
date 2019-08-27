@@ -1,5 +1,6 @@
 import React, { Fragment, Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import Voucher from './voucher-combobox';
 
 import Sticky from 'react-stickynode';
 
@@ -24,8 +25,15 @@ import {
   Row,
   CardHeader,
   CardTitle,
-  Button
+  Button,
+  DropdownMenu,
+  ModalBody,
+  Table,
+  Modal,
+  ModalHeader,
+  ModalFooter
 } from 'reactstrap';
+import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
 
 import classnames from 'classnames';
 export interface IFaqSectionProps {}
@@ -39,6 +47,9 @@ export interface IFaqSectionState {
   status: string;
   fadeIn: boolean;
   timeout: any;
+  modal: boolean;
+  listUser: any[];
+  displayVoucher: string;
 }
 export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionState> {
   constructor(props) {
@@ -51,20 +62,57 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
       custom: [true, false],
       status: 'Closed',
       fadeIn: true,
-      timeout: 300
+      timeout: 300,
+      modal: false,
+      listUser: [
+        {
+          name: 'tuan',
+          phone: '0383187960',
+          email: 'trancongtuan525@gmail.com',
+          group: 'giám đốc'
+        },
+        {
+          name: 'hung',
+          phone: '1234567890',
+          email: 'hungdv@gmail.com',
+          group: ' tổng giám đốc'
+        }
+      ],
+      displayVoucher: 'display-voucher'
     };
   }
 
-  toggle(tab) {
+  toggle = tab => {
     // this.setState({ collapse: !this.state.collapse });
     if (this.state.activeTab !== tab) {
       this.setState({
         activeTab: tab
       });
     }
-  }
+  };
+  onClick = () => {
+    this.setState(prevState => ({
+      modal: !prevState.modal
+    }));
+  };
+
+  _onClickBtn = () => {
+    var addButon;
+    <div />;
+  };
+  onClickVoucher = () => {
+    this.setState({
+      displayVoucher: ''
+    });
+  };
+  onClickNoVoucher = () => {
+    this.setState({
+      displayVoucher: 'display-voucher'
+    });
+  };
 
   render() {
+    const { listUser } = this.state;
     return (
       <Fragment>
         <ReactCSSTransitionGroup
@@ -82,44 +130,49 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
               <div className="p-3">
                 <div className="dropdown-menu p-0 dropdown-menu-inline dropdown-menu-rounded dropdown-menu-hover-primary">
                   <DropdownItem
+                    toggle={false}
                     className={classnames('mb-1', { active: this.state.activeTab === '1' })}
                     onClick={() => {
                       this.toggle('1');
                     }}
                   >
-                    Tab Example 1
+                    Chọn tập khách hàng
                   </DropdownItem>
                   <DropdownItem
+                    toggle={false}
                     className={classnames('mb-1', { active: this.state.activeTab === '2' })}
                     onClick={() => {
                       this.toggle('2');
                     }}
                   >
-                    Tab Example 2
+                    Chọn quà tặng
                   </DropdownItem>
                   <DropdownItem
+                    toggle={false}
                     className={classnames('mb-1', { active: this.state.activeTab === '3' })}
                     onClick={() => {
                       this.toggle('3');
                     }}
                   >
-                    Tab Example 3
+                    Tạo landingpage
                   </DropdownItem>
                   <DropdownItem
+                    toggle={false}
                     className={classnames('mb-1', { active: this.state.activeTab === '4' })}
                     onClick={() => {
                       this.toggle('4');
                     }}
                   >
-                    Tab Example 3
+                    Tạo nội dung
                   </DropdownItem>
                   <DropdownItem
+                    toggle={false}
                     className={classnames('mb-1', { active: this.state.activeTab === '5' })}
                     onClick={() => {
                       this.toggle('5');
                     }}
                   >
-                    Tab Example 3
+                    Tổng quan
                   </DropdownItem>
                 </div>
               </div>
@@ -134,7 +187,7 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
                     <CardTitle>CHỌN TIỆP KHÁCH HÀNG</CardTitle>
                     <Row className="row-nav">
                       <Col md="4">
-                        <div className="chosse-customer-class">
+                        <div className="chosse-customer-class" onClick={this.onClick}>
                           <div className="grid-items-cus">
                             <div className="camp-top">
                               <Ionicon fontSize="35px" color="blue" icon="ios-add" />
@@ -290,6 +343,63 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
                         </div>
                       </Col>
                     </Row>
+                    <Modal isOpen={this.state.modal} fade={false} toggle={this.toggle}>
+                      <ModalHeader
+                        toggle={() => {
+                          this.setState({
+                            modal: false
+                          });
+                        }}
+                      >
+                        <span>CHỌN TỆP </span>
+                      </ModalHeader>
+                      <ModalBody>
+                        <Row>
+                          <Col md="6">
+                            <legend>Tổng số contact : {100}</legend>
+                          </Col>
+                          <Col md="6">
+                            <input type="text" className="form-control" placeholder="Tìm kiếm" />
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col md="3" className="import-cus">
+                            <Button className="btn-icon" onClick={this._onClickBtn}>
+                              <Ionicon fontSize="35px" color="#333" icon="ios-add" />
+                            </Button>
+                          </Col>
+                          <Col md="9">
+                            <div className="modal-table">
+                              <Table responsive striped className="modal-tables">
+                                <thead>
+                                  <tr className="text-center">
+                                    <th className="hand ">Họ và tên</th>
+                                    <th className="hand">Số điện thoại</th>
+                                    <th className="hand">Email</th>
+                                    <th>Nhóm</th>
+                                  </tr>
+
+                                  {listUser
+                                    ? listUser.map((event, index) => {
+                                        var elements;
+                                        elements = (
+                                          <tr key={index + 1}>
+                                            <td>{event.name}</td>
+                                            <td>{event.phone}</td>
+                                            <td>{event.email}</td>
+                                            <td>{event.group}</td>
+                                          </tr>
+                                        );
+                                        return elements;
+                                      })
+                                    : ''}
+                                </thead>
+                              </Table>
+                            </div>
+                          </Col>
+                        </Row>
+                      </ModalBody>
+                    </Modal>
                     <div className="mt-5" />
                     <div className="clearfix">
                       <div className="text-center">
@@ -306,159 +416,28 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
                       </div>
                     </div>
                   </TabPane>
+                  {/* task 2  */}
                   <TabPane tabId="2">
-                    <CardTitle>CHỌN TIỆP KHÁCH HÀNG</CardTitle>
-                    <Row className="row-nav">
-                      <Col md="4">
-                        <div className="chosse-customer-class">
-                          <div className="grid-items-cus">
-                            <div className="camp-top">
-                              <Ionicon fontSize="35px" color="blue" icon="ios-add" />
-                              <label className="camp-title-click"> Chọn Tệp KH Mới</label>
-                            </div>
-                          </div>
+                    <CardTitle>CHỌN QUÀ TẶNG</CardTitle>
+                    <Card className="main-card mb-3">
+                      <CardBody>
+                        <FormGroup tag="fieldset">
+                          <FormGroup check>
+                            <Label check>
+                              <Input type="radio" name="radio1" onClick={this.onClickNoVoucher} /> Thông báo (Không có quà)
+                            </Label>
+                          </FormGroup>
+                          <FormGroup check>
+                            <Label check>
+                              <Input type="radio" name="radio1" onClick={this.onClickVoucher} /> E-voucher
+                            </Label>
+                          </FormGroup>
+                        </FormGroup>
+                        <div className={this.state.displayVoucher}>
+                          <Voucher />
                         </div>
-                      </Col>
-                      <Col md="4">
-                        <div className="grid-items-pop">
-                          <div className="camp-titles"> Giám Đốc </div>
-                          <div className="camp-top">
-                            <label className="camp-title-click">Tổng Contract :100</label>
-                          </div>
-                          <div className="boder-create-new">
-                            <div>
-                              <i className="pe-7s-mail"> Email</i>
-                              <label className="label-icon">100</label>
-                            </div>
-                            <div>
-                              <i className="pe-7s-call"> SĐT </i>
-                              <label className="label-icon">100</label>
-                            </div>
-                            <div>
-                              {' '}
-                              <img
-                                className="img-facebook"
-                                src="https://cdn3.iconfinder.com/data/icons/facebook-ui-flat/48/Facebook_UI-03-512.png"
-                              />{' '}
-                              FB<label className="label-icon">100</label>
-                            </div>
-                            <div>
-                              {' '}
-                              <img
-                                className="img-zalo"
-                                src="http://brasol.logozee.com/public/ckeditor/uploads/brasol.vn-logo-zalo-vector-logo-zalo-vector.png"
-                              />{' '}
-                              Zalo<label className="label-icon">100</label>
-                            </div>
-                          </div>
-                        </div>
-                      </Col>
-                      <Col md="4">
-                        <div className="grid-items-pop">
-                          <div className="camp-titles"> Giám Đốc </div>
-                          <div className="camp-top">
-                            <label className="camp-title-click">Tổng Contract :100</label>
-                          </div>
-                          <div className="boder-create-new">
-                            <div>
-                              <i className="pe-7s-mail"> Email</i>
-                              <label className="label-icon">100</label>
-                            </div>
-                            <div>
-                              <i className="pe-7s-call"> SĐT </i>
-                              <label className="label-icon">100</label>
-                            </div>
-                            <div>
-                              {' '}
-                              <img
-                                className="img-facebook"
-                                src="https://cdn3.iconfinder.com/data/icons/facebook-ui-flat/48/Facebook_UI-03-512.png"
-                              />{' '}
-                              FB<label className="label-icon">100</label>
-                            </div>
-                            <div>
-                              {' '}
-                              <img
-                                className="img-zalo"
-                                src="http://brasol.logozee.com/public/ckeditor/uploads/brasol.vn-logo-zalo-vector-logo-zalo-vector.png"
-                              />{' '}
-                              Zalo<label className="label-icon">100</label>
-                            </div>
-                          </div>
-                        </div>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col md="4">
-                        <div className="grid-items-pop">
-                          <div className="camp-titles"> Giám Đốc </div>
-                          <div className="camp-top">
-                            <label className="camp-title-click">Tổng Contract :100</label>
-                          </div>
-                          <div className="boder-create-new">
-                            <div>
-                              <i className="pe-7s-mail"> Email</i>
-                              <label className="label-icon">100</label>
-                            </div>
-                            <div>
-                              <i className="pe-7s-call"> SĐT </i>
-                              <label className="label-icon">100</label>
-                            </div>
-                            <div>
-                              {' '}
-                              <img
-                                className="img-facebook"
-                                src="https://cdn3.iconfinder.com/data/icons/facebook-ui-flat/48/Facebook_UI-03-512.png"
-                              />{' '}
-                              FB<label className="label-icon">100</label>
-                            </div>
-                            <div>
-                              {' '}
-                              <img
-                                className="img-zalo"
-                                src="http://brasol.logozee.com/public/ckeditor/uploads/brasol.vn-logo-zalo-vector-logo-zalo-vector.png"
-                              />{' '}
-                              Zalo<label className="label-icon">100</label>
-                            </div>
-                          </div>
-                        </div>
-                      </Col>
-                      <Col md="4">
-                        <div className="grid-items-pop">
-                          <div className="camp-titles"> Giám Đốc </div>
-                          <div className="camp-top">
-                            <label className="camp-title-click">Tổng Contract :100</label>
-                          </div>
-                          <div className="boder-create-new">
-                            <div>
-                              <i className="pe-7s-mail"> Email</i>
-                              <label className="label-icon">100</label>
-                            </div>
-                            <div>
-                              <i className="pe-7s-call"> SĐT </i>
-                              <label className="label-icon">100</label>
-                            </div>
-                            <div>
-                              {' '}
-                              <img
-                                className="img-facebook"
-                                src="https://cdn3.iconfinder.com/data/icons/facebook-ui-flat/48/Facebook_UI-03-512.png"
-                              />{' '}
-                              FB<label className="label-icon">100</label>
-                            </div>
-                            <div>
-                              {' '}
-                              <img
-                                className="img-zalo"
-                                src="http://brasol.logozee.com/public/ckeditor/uploads/brasol.vn-logo-zalo-vector-logo-zalo-vector.png"
-                              />{' '}
-                              Zalo<label className="label-icon">100</label>
-                            </div>
-                          </div>
-                        </div>
-                      </Col>
-                    </Row>
-                    <div className="mt-5" />
+                      </CardBody>
+                    </Card>
                     <div className="clearfix">
                       <div className="text-center">
                         <Button

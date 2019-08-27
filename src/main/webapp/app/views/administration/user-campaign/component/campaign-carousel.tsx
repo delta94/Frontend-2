@@ -4,7 +4,10 @@ import { Input, Card, Col, Container, Row } from 'reactstrap';
 import SweetAlert from 'sweetalert-react';
 import { ICampaignManagementState } from '../campaign-create';
 
-export interface IResponsiveProps {}
+export interface IResponsiveProps {
+  value: any;
+  onClick: Function;
+}
 
 export interface IResponsiveState {
   isActive: boolean;
@@ -54,12 +57,13 @@ export default class Responsive extends Component<IResponsiveProps, IResponsiveS
         disableDocument: 'campaign-document'
       });
 
-      this.props.onClick('true');
+      this.props.onClick(true);
     } else {
       this.setState({
         isError: true,
         disableDocument: ''
       });
+      this.props.onClick(false);
     }
   };
   render() {

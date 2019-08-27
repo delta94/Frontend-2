@@ -8,11 +8,18 @@
 #userCreate .name-title {
   font: message-box;
   font-size: 13px;
+  margin-left: 15px;
+}
+#userCreate .name-titls {
+  font: message-box;
+  font-size: 13px;
+  margin-left: 12px;
 }
 #userCreate #exampleText {
   margin-top: 0px;
   margin-bottom: 0px;
   height: 166px;
+  resize: none;
 }
 #userCreate .time {
   margin-top: 16px !important;
@@ -285,7 +292,7 @@
 #userCreate .app-inner-layout__sidebar {
   float: left;
   height: 530px;
-  width: 300px;
+  width: 24%;
 }
 #userCreate .app-inner-layout__content {
   float: right;
@@ -295,7 +302,7 @@
   text-align: center;
 }
 #userCreate .bg-arielle-smile {
-  font-size: 35px;
+  font-size: 34px;
 }
 #userCreate .grid-items-cus {
   height: 185px;
@@ -365,7 +372,7 @@
   font-size: 24px;
 }
 #userCreate .title-page {
-  width: 105%;
+  width: 104, 5%;
   padding: 15px;
   margin: -25px -29px 19px;
   position: relative;
@@ -415,23 +422,79 @@
   display: none;
 }
 #userCreate .DateRangePicker {
-  width: 85%;
+  width: 100%;
 }
 #userCreate .container-fluid {
-  width: 105%;
+  width: 104%;
 }
 #campList .app-main .app-main__inner {
   padding: 30px 30px 0;
   flex: 1;
 }
 
-.modal-searchBar {
-  margin-top: 20px !important;
-  width: 33%;
+#userCreate .display-complete {
+  display: none;
+}
+.camp-modal-status {
+  font-size: 13px;
+  color: limegreen;
+  float: right;
+  margin-top: 4px;
 }
 .modal-grid .table-responsive {
   display: block;
   width: 100%;
   overflow-x: auto;
   margin: 10px 0 0 0;
+}
+.modal-grid-child1-bottom {
+  font-weight: 500;
+  color: black;
+  margin-left: 21px;
+}
+.modal-header,
+.modal-footer {
+  background: white;
+}
+.modal-grid-child1 {
+  display: flex;
+}
+.modal-grid-child {
+  margin-bottom: 10px;
+}
+.right-info {
+  width: auto;
+}
+.modal-searchBar {
+  margin-top: 20px !important;
+  width: 33%;
+}
+.modal-content {
+  width: 200% !important;
+  margin-left: -260px !important;
+}
+.modal-grid .table-responsive {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  margin: 10px 0 0 0;
+}
+.import-cus {
+  margin-top: -16px !important;
+}
+.btn-icon {
+  width: 100%;
+  background-color: ghostwhite;
+}
+.btn-icon :hover {
+  background-color: yellowgreen;
+}
+.import-cus :hover {
+  background-color: aquamarine;
+}
+.display-voucher {
+  display: none;
+}
+.display-voucher-ticket {
+  display: none;
 }
