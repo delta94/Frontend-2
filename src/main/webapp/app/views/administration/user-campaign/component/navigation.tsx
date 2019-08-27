@@ -47,6 +47,7 @@ export interface IFaqSectionState {
   fadeIn: boolean;
   timeout: any;
   modal: boolean;
+  listUser: any[];
 }
 export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionState> {
   constructor(props) {
@@ -60,7 +61,21 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
       status: 'Closed',
       fadeIn: true,
       timeout: 300,
-      modal: false
+      modal: false,
+      listUser: [
+        {
+          name: 'tuan',
+          phone: '0383187960',
+          email: 'trancongtuan525@gmail.com',
+          group: 'giám đốc'
+        },
+        {
+          name: 'hung',
+          phone: '1234567890',
+          email: 'hungdv@gmail.com',
+          group: ' tổng giám đốc'
+        }
+      ]
     };
   }
 
@@ -78,7 +93,13 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
     }));
   };
 
+  _onClickBtn = () => {
+    var addButon;
+    <div />;
+  };
+
   render() {
+    const { listUser } = this.state;
     return (
       <Fragment>
         <ReactCSSTransitionGroup
@@ -322,8 +343,7 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
                       <ModalBody>
                         <Row>
                           <Col md="6">
-                            {' '}
-                            <legend>contract</legend>
+                            <legend>Tổng số contact : {100}</legend>
                           </Col>
                           <Col md="6">
                             <input type="text" className="form-control" placeholder="Tìm kiếm" />
@@ -331,43 +351,41 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
                         </Row>
                         <Row>
                           <Col md="3" className="import-cus">
-                            {' '}
-                            <Button className="btn-icon">
+                            <Button className="btn-icon" onClick={this._onClickBtn}>
                               <Ionicon fontSize="35px" color="#333" icon="ios-add" />
-                            </Button>{' '}
+                            </Button>
                           </Col>
                           <Col md="9">
                             <div className="modal-table">
                               <Table responsive striped className="modal-tables">
                                 <thead>
                                   <tr className="text-center">
-                                    <th className="hand">#</th>
                                     <th className="hand ">Họ và tên</th>
                                     <th className="hand">Số điện thoại</th>
                                     <th className="hand">Email</th>
                                     <th>Nhóm</th>
                                   </tr>
+
+                                  {listUser
+                                    ? listUser.map((event, index) => {
+                                        var elements;
+                                        elements = (
+                                          <tr key={index + 1}>
+                                            <td>{event.name}</td>
+                                            <td>{event.phone}</td>
+                                            <td>{event.email}</td>
+                                            <td>{event.group}</td>
+                                          </tr>
+                                        );
+                                        return elements;
+                                      })
+                                    : ''}
                                 </thead>
                               </Table>
                             </div>
                           </Col>
                         </Row>
                       </ModalBody>
-                      <ModalFooter>
-                        <Button
-                          color="primary"
-                          onClick={() => {
-                            this.setState({
-                              modal: false
-                            });
-                          }}
-                        >
-                          Do Something
-                        </Button>{' '}
-                        <Button color="secondary" onClick={this.toggle}>
-                          Cancel
-                        </Button>
-                      </ModalFooter>
                     </Modal>
                     <div className="mt-5" />
                     <div className="clearfix">
@@ -385,6 +403,7 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
                       </div>
                     </div>
                   </TabPane>
+                  {/* task 2  */}
                   <TabPane tabId="2">
                     <CardTitle>CHỌN TIỆP KHÁCH HÀNG</CardTitle>
                     <Row className="row-nav">

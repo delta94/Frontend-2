@@ -8,11 +8,18 @@
 #userCreate .name-title {
   font: message-box;
   font-size: 13px;
+  margin-left: 15px;
+}
+#userCreate .name-titls {
+  font: message-box;
+  font-size: 13px;
+  margin-left: 12px;
 }
 #userCreate #exampleText {
   margin-top: 0px;
   margin-bottom: 0px;
   height: 166px;
+  resize: none;
 }
 #userCreate .time {
   margin-top: 16px !important;

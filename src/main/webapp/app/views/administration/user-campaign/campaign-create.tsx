@@ -180,7 +180,7 @@ export class CampaignManagement extends React.Component<ICampaignManagementProps
                         </Col>
                       </div>
                       <Col>
-                        <Label className="name-title">THỜI GIAN</Label>
+                        <Label className="name-titles">THỜI GIAN</Label>
 
                         <Col sm={15}>
                           <DateRangePicker
