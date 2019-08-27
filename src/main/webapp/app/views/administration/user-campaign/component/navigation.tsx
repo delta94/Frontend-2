@@ -91,7 +91,9 @@ import {
 import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
 
 import classnames from 'classnames';
-export interface IFaqSectionProps {}
+export interface IFaqSectionProps {
+  onClick: Function;
+}
 
 export interface IFaqSectionState {
   activeTab: string;
@@ -150,11 +152,15 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
   }
 
   toggle = tab => {
-    // this.setState({ collapse: !this.state.collapse });
     if (this.state.activeTab !== tab) {
       this.setState({
         activeTab: tab
       });
+    }
+    if (tab > 1) {
+      this.props.onClick(true);
+    } else {
+      this.props.onClick(false);
     }
   };
   onClick = () => {

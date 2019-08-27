@@ -30,7 +30,7 @@ export interface ICampaignManagementProps extends StateProps, DispatchProps, Rou
 
 export interface ICampaignManagementState {
   isActive: boolean;
-  isError: boolean;
+  disableScreen: string;
   ValidateName: string;
   countError: any;
   ValidateField: string;
@@ -56,7 +56,7 @@ export class CampaignManagement extends React.Component<ICampaignManagementProps
     ValueDay: '',
     ValueDescri: '',
     listValid: {},
-    isError: false,
+    disableScreen: '',
     displayTable: 'display-complete',
     startDate: moment(),
     endDate: moment(),
@@ -128,6 +128,18 @@ export class CampaignManagement extends React.Component<ICampaignManagementProps
       });
     }
   };
+  clickDisable = event => {
+    if (event === true) {
+      this.setState({
+        disableScreen: 'disable-screen'
+      });
+    } else {
+      this.setState({
+        disableScreen: ''
+      });
+    }
+    console.log(typeof event);
+  };
 
   render() {
     const { match, pageCount, loading } = this.props;
@@ -162,76 +174,78 @@ export class CampaignManagement extends React.Component<ICampaignManagementProps
                     THÔNG TIN CHIẾN DỊCH <i className="lnr-chevron-down"> </i>{' '}
                   </CardTitle>
                 </Card>
-                <Card className="main-card mb-4">
-                  <Row>
-                    <Col md={4}>
-                      <Label className="name-title">TÊN CHIẾN DỊCH</Label>
-                      <div>
-                        <Col sm={12}>
-                          <Input
-                            type="email"
-                            value={this.state.valueName}
-                            name="email"
-                            placeholder="M2M ĐẦU TIÊN"
-                            onChange={this.onChangeName}
-                            maxLength="160"
-                          />
-                          <p>{this.state.ValidateName}</p>
-                        </Col>
-                      </div>
-                      <Col>
-                        <Label className="name-titles">THỜI GIAN</Label>
+                <div className={this.state.disableScreen}>
+                  <Card className="main-card mb-4">
+                    <Row>
+                      <Col md={4}>
+                        <Label className="name-title">TÊN CHIẾN DỊCH</Label>
+                        <div>
+                          <Col sm={12}>
+                            <Input
+                              type="email"
+                              value={this.state.valueName}
+                              name="email"
+                              placeholder="M2M ĐẦU TIÊN"
+                              onChange={this.onChangeName}
+                              maxLength="160"
+                            />
+                            <p>{this.state.ValidateName}</p>
+                          </Col>
+                        </div>
+                        <Col>
+                          <Label className="name-titles">THỜI GIAN</Label>
 
-                        <Col sm={15}>
-                          <DateRangePicker
-                            showDefaultInputIcon
-                            required={true}
-                            startDatePlaceholderText={'dd/mm'}
-                            displayFormat="DD/MM"
-                            startDate={this.state.startDate} // momentPropTypes.momentObj or null,
-                            startDateId="dateStart" // PropTypes.string.isRequired,
-                            endDate={this.state.endDate} // momentPropTypes.momentObj or null,
-                            endDateId="dateEnd" // PropTypes.string.isRequired,
-                            onDatesChange={this.onDatesChange} // PropTypes.func.isRequired,
-                            focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-                            onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
-                          />
+                          <Col sm={15}>
+                            <DateRangePicker
+                              showDefaultInputIcon
+                              required={true}
+                              startDatePlaceholderText={'dd/mm'}
+                              displayFormat="DD/MM"
+                              startDate={this.state.startDate} // momentPropTypes.momentObj or null,
+                              startDateId="dateStart" // PropTypes.string.isRequired,
+                              endDate={this.state.endDate} // momentPropTypes.momentObj or null,
+                              endDateId="dateEnd" // PropTypes.string.isRequired,
+                              onDatesChange={this.onDatesChange} // PropTypes.func.isRequired,
+                              focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+                              onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
+                            />
 
-                          <p>{this.state.ValidateDay}</p>
-                        </Col>
-                        <div className={this.state.displayTable}>
-                          <div className="reOpen-doc">
-                            <div className="grid-items-Click">
-                              <div className="camp-top">
-                                <label className="camp-title-click"> M2M kịch bản 1</label>
-                                <img className="image-tites" src="https://abeon-hosting.com/images/complete-png-4.png" />
+                            <p>{this.state.ValidateDay}</p>
+                          </Col>
+                          <div className={this.state.displayTable}>
+                            <div className="reOpen-doc">
+                              <div className="grid-items-Click">
+                                <div className="camp-top">
+                                  <label className="camp-title-click"> M2M kịch bản 1</label>
+                                  <img className="image-tites" src="https://abeon-hosting.com/images/complete-png-4.png" />
+                                </div>
                               </div>
                             </div>
                           </div>
+                        </Col>
+                      </Col>
+                      <Col md={8}>
+                        <Label className="name-title">MÔ TẢ</Label>
+                        <div>
+                          <Col sm={12}>
+                            <Input type="textarea" name="text" id="exampleText" onChange={this.onChangeField} maxLength="640" />
+                            <p>{this.state.ValidateField}</p>
+                          </Col>
                         </div>
                       </Col>
-                    </Col>
-                    <Col md={8}>
-                      <Label className="name-title">MÔ TẢ</Label>
-                      <div>
-                        <Col sm={12}>
-                          <Input type="textarea" name="text" id="exampleText" onChange={this.onChangeField} maxLength="640" />
-                          <p>{this.state.ValidateField}</p>
-                        </Col>
-                      </div>
-                    </Col>
-                  </Row>
+                    </Row>
 
-                  <Row>
-                    <Responsive value={this.state} onClick={this.onClick} />
-                  </Row>
-                  <Row>
-                    <br />
-                    <br />
-                  </Row>
-                </Card>
+                    <Row>
+                      <Responsive value={this.state} onClick={this.onClick} />
+                    </Row>
+                    <Row>
+                      <br />
+                      <br />
+                    </Row>
+                  </Card>
+                </div>
                 <div className={this.state.displayTable}>
-                  <FaqSection />
+                  <FaqSection onClick={this.clickDisable} />
                 </div>
               </Container>
             </ReactCSSTransitionGroup>
