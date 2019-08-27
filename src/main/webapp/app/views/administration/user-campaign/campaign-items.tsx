@@ -24,6 +24,8 @@ export interface ICampaignItemState {
   time: string;
   total: string;
   listCamp: any[];
+
+  listUser: any[];
 }
 
 export class CampaignItem extends React.Component<ICampaignItemProps, ICampaignItemState> {
@@ -38,6 +40,20 @@ export class CampaignItem extends React.Component<ICampaignItemProps, ICampaignI
         status: '',
         time: '',
         total: ''
+      }
+    ],
+    listUser: [
+      {
+        name: 'hùng',
+        phone: '0983374398',
+        email: 'hungdv@gmail.com',
+        profiles: 'sinh viên'
+      },
+      {
+        name: 'tuấn',
+        phone: '1234567890',
+        email: 'tuancave@gmail.com',
+        profiles: 'học sinh'
       }
     ]
   };
@@ -67,6 +83,7 @@ export class CampaignItem extends React.Component<ICampaignItemProps, ICampaignI
   }
 
   render() {
+    const { listUser } = this.state;
     const { loading } = this.props;
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
 
@@ -90,8 +107,8 @@ export class CampaignItem extends React.Component<ICampaignItemProps, ICampaignI
 
                   <div className="camp-bottom">
                     <div className="camp-bottom-left">
-                      <div className="quantity">Số lượng</div>
-                      <div className="range-time">Thời gian</div>
+                      <div className="quantity">Số lượng : </div>
+                      <div className="range-time">Thời gian : </div>
                     </div>
                     <div className="camp-bottom-right">
                       <div className="quantity-value">{event.total} </div>
@@ -173,6 +190,21 @@ export class CampaignItem extends React.Component<ICampaignItemProps, ICampaignI
                                 </th>
                               </tr>
                             </thead>
+                            {listUser
+                              ? listUser.map((event, index) => {
+                                  var users;
+                                  users = (
+                                    <tr key={index + 1}>
+                                      <td>{index + 1}</td>
+                                      <td>{event.name}</td>
+                                      <td>{event.phone}</td>
+                                      <td>{event.email}</td>
+                                      <td>{event.profiles}</td>
+                                    </tr>
+                                  );
+                                  return users;
+                                })
+                              : ''}
                             {/* <tbody>
                 {users
                   ? users.map((event, index, listUser?) => {

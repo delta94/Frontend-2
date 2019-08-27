@@ -50,19 +50,21 @@
   margin-bottom: 30px;
   text-align: center;
 }
-.search-nav .col-md-3 :hover {
-  border-bottom: 2px solid blue;
-}
+
 .search-nav .row {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
   margin-right: 0;
   margin-left: 0;
+  line-height: 50px;
 }
 .search-nav .col-md-3 {
   padding-right: 0;
   padding-left: 0;
+}
+.search-nav .col-md-3:hover {
+  border-bottom: 2px solid #545cd8;
 }
 
 .grid-container-total {

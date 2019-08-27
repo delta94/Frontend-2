@@ -8,10 +8,10 @@ import { IFileList } from 'app/common/model/sucess-file';
 import { ICategory } from 'app/common/model/category.model';
 
 const initialState = {
-  // status: string,
-  // time: string,
-  // total: string,
-  // listCamp: any[],
+  // status: '',
+  // time: '',
+  // total: '',
+  // listCamp: [],
 };
 
 export type CampaignManagement = Readonly<typeof initialState>;
