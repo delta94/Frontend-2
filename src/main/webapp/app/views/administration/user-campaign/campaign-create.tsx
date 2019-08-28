@@ -4,10 +4,10 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import { Input, Card, Col, Container, Row, CardTitle, Label, InputGroupAddon } from 'reactstrap';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 
-import Responsive from './component/campaign-carousel';
+import Responsive from './component/campaign-script';
 import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import FaqSection from './component/navigation';
+import FaqSection from './component/campaign-create-navigation';
 import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
 import { IRootState } from 'app/reducers';
 import Sticky from 'react-stickynode';

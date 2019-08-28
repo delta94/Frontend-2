@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import '../style/campaign.scss';
+import '../../../style/campaign.scss';
 import { Button } from 'reactstrap';
 import { DropdownList } from 'react-widgets';
 import Ionicon from 'react-ionicons';
