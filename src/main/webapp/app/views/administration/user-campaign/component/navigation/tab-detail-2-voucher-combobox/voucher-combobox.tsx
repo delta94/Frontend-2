@@ -6,7 +6,7 @@ import { DropdownList } from 'react-widgets';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-
+import '../../../style/campaign.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 let colors = ['Orange', 'Red', 'Blue', 'Purple'];
