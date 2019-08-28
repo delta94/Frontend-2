@@ -59,20 +59,6 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
           </div>
           <div className="grid-container-total">
             <CampaignItem />
-            <CampaignItem />
-            <CampaignItem />
-            <CampaignItem />
-            <CampaignItem />
-            <CampaignItem />
-            <CampaignItem />
-            <CampaignItem />
-            <CampaignItem />
-            <CampaignItem />
-            <CampaignItem />
-            <CampaignItem />
-            <CampaignItem />
-            <CampaignItem />
-            <CampaignItem />
           </div>
         </Loader>
       </div>

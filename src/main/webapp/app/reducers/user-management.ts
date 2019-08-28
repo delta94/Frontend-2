@@ -3,9 +3,10 @@ import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } 
 
 import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
 import { IUser, defaultValue } from 'app/common/model/user.model';
-import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
+import { USER_MANAGE_ACTION_TYPES, CAMPAIGN_MANAGE_ACTION_TYPE } from 'app/constants/user-management';
 import { IFileList } from 'app/common/model/sucess-file';
 import { ICategory } from 'app/common/model/category.model';
+import { ICampaign } from 'app/common/model/campaign.model';
 
 const initialState = {
   loading: false,
@@ -28,7 +29,8 @@ const initialState = {
   totalElements: 0,
   showDeleteSuccessAlert: true,
   showDeleteErrorAlert: false,
-  showUpdateSuccessAlert: false
+  showUpdateSuccessAlert: false,
+  camps: [] as ReadonlyArray<ICampaign>
 };
 
 export type UserManagementState = Readonly<typeof initialState>;
@@ -36,6 +38,10 @@ export type UserManagementState = Readonly<typeof initialState>;
 // Reducer
 export default (state: UserManagementState = initialState, action): UserManagementState => {
   switch (action.type) {
+    case REQUEST(CAMPAIGN_MANAGE_ACTION_TYPE.FETCH_CAMPAIGNS):
+      return {
+        ...state
+      };
     case REQUEST(USER_MANAGE_ACTION_TYPES.FETCH_ROLES):
       return {
         ...state
@@ -56,6 +62,7 @@ export default (state: UserManagementState = initialState, action): UserManageme
         // totalItems: 0,
         // totalElements: 0
       };
+
     case REQUEST(USER_MANAGE_ACTION_TYPES.CREATE_USER):
     case REQUEST(USER_MANAGE_ACTION_TYPES.UPDATE_USER):
     case REQUEST(USER_MANAGE_ACTION_TYPES.DELETE_USER):
@@ -67,6 +74,11 @@ export default (state: UserManagementState = initialState, action): UserManageme
         loading: true,
         showDeleteSuccessAlert: false,
         showUpdateSuccessAlert: false
+      };
+
+    case FAILURE(CAMPAIGN_MANAGE_ACTION_TYPE.FETCH_CAMPAIGNS):
+      return {
+        ...state
       };
     case FAILURE(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILE):
       return {
@@ -91,6 +103,11 @@ export default (state: UserManagementState = initialState, action): UserManageme
         uploadScheduleFailure: true,
         errorMessage: action.payload,
         showUpdateSuccessAlert: false
+      };
+    case SUCCESS(CAMPAIGN_MANAGE_ACTION_TYPE.FETCH_CAMPAIGNS):
+      return {
+        ...state,
+        camps: action.payload.data
       };
     case SUCCESS(USER_MANAGE_ACTION_TYPES.FETCH_USER_CATEGORIES):
       console.log(action.payload.data);
