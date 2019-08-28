@@ -9,13 +9,13 @@ import 'froala-editor/css/froala_editor.pkgd.min.css';
 
 import FroalaEditorComponent from 'react-froala-wysiwyg';
 
-export interface AddContentEntity {}
+export interface TabDetail4Entity {}
 
-export interface AddContentProps {
+export interface TabDetail4Props {
   value: string;
 }
 
-export interface AddContentState {
+export interface TabDetail4State {
   showMailForFriend: boolean;
 }
 
@@ -23,7 +23,7 @@ const dumpInteractive = ['Email', 'Facebook', 'Gmail'];
 
 const dumpTemplates = ['Template1', 'Template2', 'Template3', 'Template4'];
 
-class AddContent extends React.PureComponent<AddContentProps, AddContentState, AddContentEntity> {
+class TabDetail4 extends React.PureComponent<TabDetail4Props, TabDetail4State, TabDetail4Entity> {
   constructor(props) {
     super(props);
     console.log(this.props);
@@ -166,4 +166,4 @@ class AddContent extends React.PureComponent<AddContentProps, AddContentState, A
   }
 }
 
-export default AddContent;
+export default TabDetail4;

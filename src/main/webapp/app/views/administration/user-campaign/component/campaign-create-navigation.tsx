@@ -9,6 +9,7 @@ import '../style/campaign.scss';
 import TabDetail1 from './navigation/tab-detail-1';
 import TabDetail2 from './navigation/tab-detail-2';
 import TabDetail3 from './navigation/tab-detail-3';
+import TabDetail4 from './navigation/tab-detail-4';
 import TabDetail5 from './navigation/tab-detail-5';
 
 const dumpData = [
@@ -263,12 +264,86 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
               </div>
               {/* Tab Content */}
               <TabContent activeTab={this.state.activeTab}>
-                <TabDetail1 />
+                <TabPane tabId="1">
+                  <TabDetail1 />
+                  <div className="mt-5" />
+                  <div className="clearfix">
+                    <div className="text-center">
+                      <Button
+                        color="primary"
+                        size="lg"
+                        className="btn-pill btn-wide btn-shadow"
+                        onClick={() => {
+                          this.toggle('2');
+                        }}
+                      >
+                        <b>Tiếp Tục</b>
+                      </Button>
+                    </div>
+                  </div>
+                </TabPane>
                 {/* task 2  */}
-                <TabDetail2 />
-                {/* task 3 */}` <TabDetail3 />
-                {}
-                <TabDetail5 />
+                <TabPane tabId="2">
+                  <TabDetail2 />
+                  <div className="mt-5" />
+                  <div className="clearfix">
+                    <div className="text-center">
+                      <Button
+                        color="primary"
+                        size="lg"
+                        className="btn-pill btn-wide btn-shadow"
+                        onClick={() => {
+                          this.toggle('3');
+                        }}
+                      >
+                        <b>Tiếp Tục</b>
+                      </Button>
+                    </div>
+                  </div>
+                </TabPane>
+                {/* task 3 */}
+                <TabPane tabId="3">
+                  <TabDetail3 />
+                  <div className="mt-5" />
+                  <div className="clearfix">
+                    <div className="text-center">
+                      <Button
+                        color="primary"
+                        size="lg"
+                        className="btn-pill btn-wide btn-shadow"
+                        onClick={() => {
+                          this.toggle('4');
+                        }}
+                      >
+                        <b>Tiếp Tục</b>
+                      </Button>
+                    </div>
+                  </div>
+                </TabPane>
+                {/* task 4  */}
+                <TabPane tabId="4">
+                  <div className="add-content">
+                    <TabDetail4 value="helle" />
+                  </div>
+                  <div className="mt-5" />
+                  <div className="clearfix">
+                    <div className="text-center">
+                      <Button
+                        color="primary"
+                        size="lg"
+                        className="btn-pill btn-wide btn-shadow"
+                        onClick={() => {
+                          this.toggle('5');
+                        }}
+                      >
+                        <b>Tiếp Tục</b>
+                      </Button>
+                    </div>
+                  </div>
+                </TabPane>
+                <TabPane tabId="5">
+                  <TabDetail5 />
+                </TabPane>
               </TabContent>
             </div>
           </Card>

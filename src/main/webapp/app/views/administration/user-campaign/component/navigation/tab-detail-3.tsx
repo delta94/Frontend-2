@@ -39,7 +39,7 @@ class TabDetail3 extends React.Component<TabDetail3Props, TabDetail3State> {
   render() {
     return (
       <Fragment>
-        <TabPane tabId="3" className="tab-detail-3">
+        <div className="tab-detail-3">
           <CardTitle>TẠO LANDINGPAGE</CardTitle>
           <Row>
             <Col md="5">
@@ -58,22 +58,7 @@ class TabDetail3 extends React.Component<TabDetail3Props, TabDetail3State> {
             </Col>
           </Row>
           `
-          <div className="mt-5" />
-          <div className="clearfix">
-            <div className="text-center">
-              <Button
-                color="primary"
-                size="lg"
-                className="btn-pill btn-wide btn-shadow"
-                onClick={() => {
-                  this.toggle('4');
-                }}
-              >
-                <b>Tiếp Tục</b>
-              </Button>
-            </div>
-          </div>
-        </TabPane>
+        </div>
       </Fragment>
     );
   }
