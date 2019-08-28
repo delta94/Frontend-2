@@ -11,9 +11,7 @@ import FroalaEditorComponent from 'react-froala-wysiwyg';
 
 export interface TabDetail3Entity {}
 
-export interface TabDetail3Props {
-  value: string;
-}
+export interface TabDetail3Props {}
 
 export interface TabDetail3State {
   showMailForFriend: boolean;
