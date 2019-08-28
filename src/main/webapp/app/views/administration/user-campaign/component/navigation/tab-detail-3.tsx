@@ -1,65 +1,110 @@
-import { TabPane, Row, Col, CardBody, FormGroup, Label, Input, Card, CardTitle, Button } from 'reactstrap';
-import '../../style/campaign.scss';
-import '../navigation/tab-detail.scss';
+import React, { Component } from 'react';
+import './add-content.scss';
 
-import { Translate } from 'react-jhipster';
-import React, { Fragment, Component, useState } from 'react';
+import { Card, Collapse, Button, Input, CardTitle, FormGroup, Label, CardBody } from 'reactstrap';
+import DummyData from 'app/DemoPages/Forms/Components/Typeahead/Examples/DummyData';
 
-export interface TabDetail3Props {}
+import 'froala-editor/css/froala_style.min.css';
+import 'froala-editor/css/froala_editor.pkgd.min.css';
+
+import FroalaEditorComponent from 'react-froala-wysiwyg';
+
+export interface TabDetail3Entity {}
+
+export interface TabDetail3Props {
+  value: string;
+}
 
 export interface TabDetail3State {
-  activeTab: string;
-  displayVoucher: string;
+  showMailForFriend: boolean;
 }
-class TabDetail3 extends React.Component<TabDetail3Props, TabDetail3State> {
-  state: TabDetail3State = {
-    activeTab: '1',
-    displayVoucher: 'display-voucher'
-  };
 
-  toggle = tab => {
-    if (this.state.activeTab !== tab) {
-      this.setState({
-        activeTab: tab
-      });
-    }
-  };
+const dumpInteractive = ['landingpage 1', 'landingpage 2', 'landingpage 3'];
 
-  onClickVoucher = () => {
-    this.setState({
-      displayVoucher: ''
-    });
-  };
-  onClickNoVoucher = () => {
-    this.setState({
-      displayVoucher: 'display-voucher'
-    });
-  };
+const dumpTemplates = ['Template1', 'Template2', 'Template3', 'Template4'];
+
+class TabDetail3 extends React.PureComponent<TabDetail3Props, TabDetail3State, TabDetail3Entity> {
+  constructor(props) {
+    super(props);
+    console.log(this.props);
+
+    this.state = {
+      showMailForFriend: false
+    };
+  }
+
+  componentDidMount() {
+    console.log(this.props);
+  }
 
   render() {
+    let { showMailForFriend } = this.state;
     return (
-      <Fragment>
-        <div className="tab-detail-3">
-          <CardTitle>TẠO LANDINGPAGE</CardTitle>
-          <Row>
-            <Col md="5">
-              <Label className="label-landingpage">Chọn landingpage</Label>
-
-              <Input type="select" name="select" className="select-landingpage">
-                <option>1</option>
-                <option>2</option>
+      <div className="add-content">
+        {/* Title */}
+        <div className="add-content-title">
+          <CardTitle>Tạo landingpage</CardTitle>
+          <div className="interactive">
+            <label>Chọn landingpage</label>
+            <FormGroup>
+              <Input type="select" name="select" id="exampleSelect">
+                {dumpInteractive &&
+                  dumpInteractive.map((item, index) => {
+                    return <option key={index}>{item}</option>;
+                  })}
               </Input>
-            </Col>
-            <Col md="7">
-              <a href="#/top" className="preview">
-                <i className="lnr-eye" /> Preview
-              </a>
-              <Input type="textarea" name="text" id="exampleText" maxLength="640" />
-            </Col>
-          </Row>
-          `
+            </FormGroup>
+          </div>
         </div>
-      </Fragment>
+
+        {/* Detail */}
+        <div className="add-content-detail">
+          {/* Title For Detail 1 */}
+          <div className="content-detail">
+            <div className="add-content-detail-title  b-t">
+              <label>Preview</label>
+              <div className="interactive" style={{ display: showMailForFriend ? 'none' : 'inline-block' }}>
+                <div className="test-mail">
+                  <Input placeHolder="Điền email test" value="" />
+                  <Button color="primary">Test</Button>
+                </div>
+              </div>
+            </div>
+            {/* Template Fix */}
+            <Collapse isOpen={!showMailForFriend}>
+              <Card>
+                <CardBody>
+                  <div className="template-add">
+                    <label>Mẫu email gửi</label>
+                    <FormGroup>
+                      <Input type="select" name="select" id="exampleSelect">
+                        {dumpTemplates &&
+                          dumpTemplates.map((item, index) => {
+                            return <option key={index}>{item}</option>;
+                          })}
+                      </Input>
+                    </FormGroup>
+                  </div>
+                  <div className="input-mail-and-more">
+                    <Input placeHolder="Tiêu đề email" />
+                    <FormGroup>
+                      <Input type="select" name="select" id="exampleSelect" style={{ width: '200px' }}>
+                        {dumpTemplates &&
+                          dumpTemplates.map((item, index) => {
+                            return <option key={index}>{item}</option>;
+                          })}
+                      </Input>
+                    </FormGroup>
+                  </div>
+                  <div className="content-fixing">
+                    <FroalaEditorComponent tag="textarea" />
+                  </div>
+                </CardBody>
+              </Card>
+            </Collapse>
+          </div>
+        </div>
+      </div>
     );
   }
 }
