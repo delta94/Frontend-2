@@ -8,16 +8,20 @@ import { Loader as LoaderAnim } from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import { getUser, getUsers, updateUser, getUserCategories, deleteUser } from 'app/actions/user-management';
 import './../user-campaign/style/campaign.scss';
 
-import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
+import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT, ITEMS_PER_MODAL } from 'app/constants/pagination.constants';
 import { IRootState } from 'app/reducers';
 import { any } from 'prop-types';
 
 export interface ICampaignItemProps extends StateProps, DispatchProps {}
 
 export interface ICampaignItemState {
+  activePage: number;
+  itemsPerPage: number;
+  textSearch: string;
+  categories: string;
   isDelete?: boolean;
   modal?: boolean;
   status: string;
@@ -30,6 +34,10 @@ export interface ICampaignItemState {
 
 export class CampaignItem extends React.Component<ICampaignItemProps, ICampaignItemState> {
   state: ICampaignItemState = {
+    activePage: ACTIVE_PAGE,
+    itemsPerPage: ITEMS_PER_MODAL,
+    textSearch: '',
+    categories: '',
     isDelete: false,
     modal: false,
     status: '',
@@ -54,10 +62,24 @@ export class CampaignItem extends React.Component<ICampaignItemProps, ICampaignI
         phone: '1234567890',
         email: 'tuancave@gmail.com',
         profiles: 'học sinh'
+      },
+      {
+        name: 'tuấn',
+        phone: '1234567890',
+        email: 'tuancave@gmail.com',
+        profiles: 'học sinh'
+      },
+      {
+        name: 'tuấn',
+        phone: '1234567890',
+        email: 'tuancave@gmail.com',
+        profiles: 'học sinh'
       }
     ]
   };
   componentDidMount() {
+    const { activePage, itemsPerPage, textSearch, categories } = this.state;
+    this.props.getUsers(activePage, itemsPerPage, categories, textSearch);
     this.setState({
       modal: false,
       listCamp: [
@@ -65,15 +87,42 @@ export class CampaignItem extends React.Component<ICampaignItemProps, ICampaignI
           time: '23/8/2019 - 24/8/2019',
           status: 'đang hoạt động',
           total: 200
-        },
-        {
-          time: '23/8/2019 - 24/8/2019',
-          status: 'đang  động',
-          total: 300
         }
       ]
     });
   }
+
+  handlePagination = activePage => {
+    const { itemsPerPage, textSearch, categories } = this.state;
+    this.setState({
+      ...this.state,
+      activePage: activePage.selected
+    });
+
+    this.props.getUsers(activePage.selected, itemsPerPage, categories, textSearch);
+  };
+  handleChange = category => {
+    let categorieIds = category.map((event, index) => event.id);
+    const { itemsPerPage, textSearch } = this.state;
+    this.setState({
+      ...this.state,
+      categories: categorieIds.join(),
+      activePage: 0
+    });
+    this.props.getUsers(0, itemsPerPage, categorieIds.join(), textSearch);
+  };
+  search = event => {
+    if (event.key === 'Enter') {
+      const textSearch = event.target.value;
+      const { activePage, itemsPerPage, categories } = this.state;
+      this.setState({
+        ...this.state,
+        textSearch,
+        activePage: 0
+      });
+      this.props.getUsers(0, itemsPerPage, categories, textSearch);
+    }
+  };
 
   constructor(props) {
     super(props);
@@ -300,12 +349,22 @@ export class CampaignItem extends React.Component<ICampaignItemProps, ICampaignI
                       </div>
                     </ModalBody>
                     <ModalFooter>
-                      <Button color="primary" onClick={this.toggle}>
-                        Do Something
-                      </Button>{' '}
-                      <Button color="secondary" onClick={this.toggle}>
-                        Cancel
-                      </Button>
+                      <Row className="justify-content-center">
+                        <ReactPaginate
+                          previousLabel={'<'}
+                          nextLabel={'>'}
+                          breakLabel={'...'}
+                          breakClassName={'break-me'}
+                          pageCount={this.props.pageCount}
+                          marginPagesDisplayed={1}
+                          pageRangeDisplayed={3}
+                          onPageChange={this.handlePagination}
+                          containerClassName={'pagination'}
+                          subContainerClassName={'pages pagination'}
+                          activeClassName={'active'}
+                          // forcePage={activePage}
+                        />
+                      </Row>
                     </ModalFooter>
                   </Modal>
                 </div>
@@ -321,10 +380,11 @@ export class CampaignItem extends React.Component<ICampaignItemProps, ICampaignI
 const mapStateToProps = (storeState: IRootState) => ({
   loading: storeState.userManagement.loading,
   listCategory: storeState.userManagement.listCategory,
-  pageCount: Math.ceil(storeState.userManagement.totalElements / ITEMS_PER_PAGE)
+  pageCount: Math.ceil(storeState.userManagement.totalElements / ITEMS_PER_MODAL),
+  totalItems: storeState.userManagement.totalItems
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { getUsers };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
