@@ -1,7 +1,8 @@
 import { TabPane, Row, Col, CardBody, FormGroup, Label, Input, Card, CardTitle, Button } from 'reactstrap';
 import '../../style/campaign.scss';
+import '../navigation/tab-detail.scss';
 
-import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
+import { Translate } from 'react-jhipster';
 import React, { Fragment, Component, useState } from 'react';
 
 export interface TabDetail3Props {}
@@ -38,18 +39,22 @@ class TabDetail3 extends React.Component<TabDetail3Props, TabDetail3State> {
   render() {
     return (
       <Fragment>
-        <TabPane tabId="3">
+        <TabPane tabId="3" className="tab-detail-3">
           <CardTitle>TẠO LANDINGPAGE</CardTitle>
           <Row>
-            <Col md="4">
-              <Label for="exampleSelect">Chọn landingpage</Label>
-              <Input type="select" name="select" id="exampleSelect">
+            <Col md="5">
+              <Label className="label-landingpage">Chọn landingpage</Label>
+
+              <Input type="select" name="select" className="select-landingpage">
                 <option>1</option>
                 <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
               </Input>
+            </Col>
+            <Col md="7">
+              <a href="#/top" className="preview">
+                <i className="lnr-eye" /> Preview
+              </a>
+              <Input type="textarea" name="text" id="exampleText" maxLength="640" />
             </Col>
           </Row>
           `

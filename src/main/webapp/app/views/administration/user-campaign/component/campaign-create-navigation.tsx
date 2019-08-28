@@ -1,9 +1,5 @@
 import React, { Fragment, Component, useState } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import Voucher from './voucher-combobox';
-
-import IncorporationForm from './add-button';
-import Sticky from 'react-stickynode';
 
 import cx from 'classnames';
 import Hamburger from 'react-hamburgers';
@@ -14,7 +10,7 @@ import TabDetail1 from './navigation/tab-detail-1';
 import TabDetail2 from './navigation/tab-detail-2';
 import TabDetail3 from './navigation/tab-detail-3';
 import TabDetail5 from './navigation/tab-detail-5';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 const dumpData = [
   {
     id: 1,

@@ -1,21 +1,9 @@
 import { TabPane, CardBody, FormGroup, Label, Input, Card, CardTitle, Button } from 'reactstrap';
 import '../../style/campaign.scss';
 
-import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
-import Ionicon from 'react-ionicons';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { Translate } from 'react-jhipster';
 import React, { Fragment, Component, useState } from 'react';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import IncorporationForm from './tab-detail-1-button-modal.tsx/add-button';
-import Sticky from 'react-stickynode';
 import Voucher from './tab-detail-2-voucher-combobox/voucher-combobox';
-
-import cx from 'classnames';
-import Hamburger from 'react-hamburgers';
-import ReactPaginate from 'react-paginate';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export interface TabDetail2Props {}
 
