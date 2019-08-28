@@ -1,5 +1,6 @@
 import React, { Fragment, Component, useState } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import { DropdownList } from 'react-widgets';
 import Voucher from './voucher-combobox';
 
 import IncorporationForm from './add-button';
@@ -12,6 +13,37 @@ import ReactPaginate from 'react-paginate';
 import '../style/campaign.scss';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import {
+  TabContent,
+  TabPane,
+  DropdownItem,
+  CardBody,
+  Collapse,
+  FormGroup,
+  Label,
+  Input,
+  FormFeedback,
+  FormText,
+  Card,
+  Col,
+  Row,
+  CardHeader,
+  CardTitle,
+  Button,
+  DropdownMenu,
+  ModalBody,
+  Table,
+  Modal,
+  ModalHeader,
+  ModalFooter
+} from 'reactstrap';
+import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
+
+import classnames from 'classnames';
+import AddContent from './navigation/add-content';
+export interface IFaqSectionProps {}
+
 const dumpData = [
   {
     id: 1,
@@ -64,34 +96,7 @@ const dumpData = [
   }
 ];
 
-import {
-  TabContent,
-  TabPane,
-  DropdownItem,
-  CardBody,
-  Collapse,
-  FormGroup,
-  Label,
-  Input,
-  FormFeedback,
-  FormText,
-  Card,
-  Col,
-  Row,
-  CardHeader,
-  CardTitle,
-  Button,
-  DropdownMenu,
-  ModalBody,
-  Table,
-  Modal,
-  ModalHeader,
-  ModalFooter
-} from 'reactstrap';
-import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
-
-import classnames from 'classnames';
-export interface IFaqSectionProps {}
+const list_interactive = [{ id: 1, name: 'Gửi bằng Email' }];
 
 export interface IFaqSectionState {
   activeTab: string;
@@ -109,6 +114,7 @@ export interface IFaqSectionState {
   shareholders: any[];
   gift: Object;
   testMail: string;
+  choseInteractive: string;
 }
 export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionState> {
   constructor(props) {
@@ -145,7 +151,8 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
         }
       ],
       gift: {},
-      testMail: ''
+      testMail: '',
+      choseInteractive: 'Email'
     };
   }
 
@@ -185,7 +192,7 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
   };
 
   render() {
-    const { testMail, activeTab, listUser } = this.state;
+    const { testMail, activeTab, listUser, choseInteractive } = this.state;
 
     return (
       <Fragment>
@@ -271,7 +278,6 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
                         </div>
                       </div>
                     </Col>
-
                     {listUser &&
                       listUser.map((item, index) => {
                         return (
@@ -521,10 +527,31 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
                     </div>
                   </div>
                 </TabPane>
-
+                {/* Tab 3 */}
                 <TabPane tabId="3">
                   <CardTitle>TẠO LANDINGPAGE</CardTitle>
+                  <div className="mt-5" />
+                  <div className="clearfix">
+                    <div className="text-center">
+                      <Button
+                        color="primary"
+                        size="lg"
+                        className="btn-pill btn-wide btn-shadow"
+                        onClick={() => {
+                          this.toggle('4');
+                        }}
+                      >
+                        <b>Tiếp Tục</b>
+                      </Button>
+                    </div>
+                  </div>
+                </TabPane>
 
+                {/* Task 4 */}
+                <TabPane tabId="4">
+                  <div className="add-content">
+                    <AddContent value="helle" />
+                  </div>
                   <div className="mt-5" />
                   <div className="clearfix">
                     <div className="text-center">
@@ -544,7 +571,7 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
 
                 <TabPane tabId="5">
                   <div className="preview">
-                    <CardTitle>Tổng quan</CardTitle>
+                    <CardTitle>TỔNG QUAN</CardTitle>
                     <div className="b-dashed">
                       <div className="preview-title">
                         <div className="info-title">
@@ -604,7 +631,7 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
                           this.setState({ testMail: event.target.value });
                         }}
                       />
-                      <button>Test</button>
+                      <button className="btn-normal">Test</button>
                     </div>
                   </div>
                 </TabPane>
