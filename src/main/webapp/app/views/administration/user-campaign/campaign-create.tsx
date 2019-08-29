@@ -29,6 +29,7 @@ import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'rea
 export interface ICampaignManagementProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
 
 export interface ICampaignManagementState {
+  nameScripts: string;
   isActive: boolean;
   disableScreen: string;
   ValidateName: string;
@@ -48,6 +49,7 @@ export interface ICampaignManagementState {
 export class CampaignManagement extends React.Component<ICampaignManagementProps, ICampaignManagementState> {
   state: ICampaignManagementState = {
     isActive: false,
+    nameScripts: '',
     ValidateName: '',
     countError: 0,
     ValidateField: '',
@@ -99,9 +101,11 @@ export class CampaignManagement extends React.Component<ICampaignManagementProps
     }
   };
   onClick = event => {
-    if (event) {
+    console.log('event :' + event);
+    if (event !== null) {
       this.setState({
-        displayTable: ''
+        displayTable: '',
+        nameScripts: event
       });
     } else {
       this.setState({
@@ -142,7 +146,7 @@ export class CampaignManagement extends React.Component<ICampaignManagementProps
   };
 
   render() {
-    const { match, pageCount, loading } = this.props;
+    const { match, loading } = this.props;
     const { startDate, endDate, focusedInput } = this.state;
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
 
@@ -216,7 +220,7 @@ export class CampaignManagement extends React.Component<ICampaignManagementProps
                             <div className="reOpen-doc">
                               <div className="grid-items-Click">
                                 <div className="camp-top">
-                                  <label className="camp-title-click"> M2M kịch bản 1</label>
+                                  <label className="camp-title-click"> {this.state.nameScripts}</label>
                                   <img className="image-tites" src="https://abeon-hosting.com/images/complete-png-4.png" />
                                 </div>
                               </div>
@@ -256,10 +260,8 @@ export class CampaignManagement extends React.Component<ICampaignManagementProps
   }
 }
 
-const mapStateToProps = (storeState: IRootState) => ({
-  loading: storeState.userManagement.loading,
-  listCategory: storeState.userManagement.listCategory,
-  pageCount: Math.ceil(storeState.userManagement.totalElements / ITEMS_PER_PAGE)
+const mapStateToProps = ({ userCampaign }: IRootState) => ({
+  loading: userCampaign.loading
 });
 
 const mapDispatchToProps = {};

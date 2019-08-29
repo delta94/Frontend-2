@@ -6,6 +6,7 @@ import { IUser, defaultValue } from 'app/common/model/user.model';
 import { USER_CAMPAIGN_ACTION_TYPES } from 'app/constants/user-campaign';
 import { IFileList } from 'app/common/model/sucess-file';
 import { ICategory } from 'app/common/model/category.model';
+import { ICampaignInfo } from 'app/common/model/infomation-campaign.model';
 
 const initialState = {
   // status: '',
@@ -21,6 +22,7 @@ const initialState = {
   listUsers: [] as ReadonlyArray<IUser>,
   authorities: [] as any[],
   user: defaultValue,
+  listCampaignInfo: [] as ReadonlyArray<ICampaignInfo>,
   updating: false,
   updateSuccess: false,
   getNameFile: '',
@@ -51,6 +53,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.DOWNLOAD_FILE):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.UPLOAD_FILE):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.DOWNLOAD_FILERE_SULTS):
+    case REQUEST(USER_CAMPAIGN_ACTION_TYPES.INFORMATION_CAMPAIGN):
       return {
         ...state,
         errorMessage: null,
@@ -87,6 +90,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.UPLOAD_FILE):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.DOWNLOAD_FILERE_SULTS):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_SEARCH_USER):
+    case FAILURE(USER_CAMPAIGN_ACTION_TYPES.INFORMATION_CAMPAIGN):
       return {
         ...state,
         loading: false,
@@ -95,6 +99,12 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
         uploadScheduleFailure: true,
         errorMessage: action.payload,
         showUpdateSuccessAlert: false
+      };
+    case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.INFORMATION_CAMPAIGN):
+      return {
+        ...state,
+        listCampaignInfo: action.payload.data,
+        loading: false
       };
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.FETCH_USER_CATEGORIES):
       console.log(action.payload.data);

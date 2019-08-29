@@ -12,6 +12,7 @@ import {
   getUserService,
   getUsersService,
   updateUserService,
+  getInformationService,
   getFile,
   downloadFile,
   UploaddFile,
@@ -28,6 +29,12 @@ export const getUsers = (page, size, category?: string, textSearch?: string) => 
   return {
     type: USER_CAMPAIGN_ACTION_TYPES.FETCH_USERS,
     payload: getUsersService(page, size, category, textSearch)
+  };
+};
+export const getInformation = () => {
+  return {
+    type: USER_CAMPAIGN_ACTION_TYPES.INFORMATION_CAMPAIGN,
+    payload: getInformationService()
   };
 };
 
