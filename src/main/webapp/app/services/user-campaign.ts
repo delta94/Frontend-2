@@ -3,14 +3,7 @@ import { IUser, defaultValue } from 'app/common/model/user.model';
 import { ICategory } from 'app/common/model/category.model';
 import { toast } from 'react-toastify';
 
-const apiUrl = 'v1/customer';
-
-// <<<<<<< HEAD
-// export const getUsersServic
-//   const requestUrl = `${api
-//   return axios.get<IUser>(r
-//   //return axios.get<IUser>
-// =======
+const apiUrl = 'v1/campaigns';
 
 /**
  *
@@ -20,6 +13,12 @@ const apiUrl = 'v1/customer';
  * @param textSearch - string
  * @return {code: number, data: Object{item: [{id: string, name: string, gmail: string, catagories: string, }, pageIndex: number, pageSize: number] }}
  */
+export const getCampaignInfoService = () => {
+  return axios.get(apiUrl);
+};
+export const getCampaignInfoByIdService = id => {
+  return axios.get(`v1/campaign/${id}`);
+};
 
 export const getUsersService = (page, pageSize, category?: string, textSearch?: string) => {
   // const urlCategory = category ? category.map(cate => cate.id) : '';

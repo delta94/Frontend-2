@@ -1,78 +1,244 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Table, Row, Badge, Col } from 'reactstrap';
 import ReactPaginate from 'react-paginate';
 import SweetAlert from 'sweetalert-react';
 import { Loader as LoaderAnim } from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Button, Table, Row, Badge, Col, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 import './../user-campaign/style/campaign.scss';
-
+import { getCampaignInfo, getCampaignInfoById } from 'app/actions/user-campaign';
 import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
 import { IRootState } from 'app/reducers';
-import CampaignItem from './campaign-items';
+import { faClock } from '@fortawesome/free-solid-svg-icons';
 
 export interface ICreateCampaignProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
 
 export interface ICreateCampaignState {
-  isDelete: boolean;
+  modal?: boolean;
 }
 
 export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampaignState> {
   state: ICreateCampaignState = {
-    isDelete: false
+    modal: false
   };
+  constructor(props) {
+    super(props);
+    this.toggle = this.toggle.bind(this);
+  }
+  componentDidMount() {
+    this.setState({
+      modal: false
+    });
+    this.props.getCampaignInfo();
+  }
+
+  toggle(id?) {
+    console.log(id);
+    this.setState(prevState => ({
+      modal: !prevState.modal
+    }));
+    this.props.getCampaignInfoById(id);
+  }
 
   render() {
-    const { match, pageCount, loading } = this.props;
+    const { match, loading, camps } = this.props;
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
-
     return (
       <div>
         <Loader message={spinner1} show={loading} priority={1}>
           {/* day la trang quan ly user */}
           <h3 id="user-management-page-heading">
-            <Translate contentKey="userManagement.home.title" />
+            <Translate contentKey="campaign.title" />
             <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity">
-              <FontAwesomeIcon icon="plus" /> <Translate contentKey="userManagement.home.createLabel" />
+              <FontAwesomeIcon icon="plus" /> <Translate contentKey="campaign.createCamp" />
             </Link>
           </h3>
           <div />
           <div className="search-nav">
             <Row>
               <Col md="3">
-                <a className="totalCamp">Tất cả ({100})</a>
+                <a className="totalCamp">
+                  <Translate contentKey="campaign.allCamps" />
+                </a>
               </Col>
               <Col md="3">
-                <a className="totalCamp">Chiến dịch đang hoạt động ({30})</a>
+                <a className="totalCamp">
+                  <Translate contentKey="campaign.onAction" />
+                </a>
               </Col>
               <Col md="3">
-                <a className="totalCamp">Chiến dịch chưa kích hoạt/tạm dừng ({50})</a>
+                <a className="totalCamp">
+                  <Translate contentKey="campaign.onPause" />
+                </a>
               </Col>
               <Col md="3">
-                <a className="totalCamp">Chiến dịch đã hoàn thành ({20})</a>
+                <a className="totalCamp">
+                  <Translate contentKey="campaign.complete" />
+                </a>
               </Col>
             </Row>
           </div>
           <div className="grid-container-total">
-            <CampaignItem />
-            <CampaignItem />
-            <CampaignItem />
-            <CampaignItem />
-            <CampaignItem />
-            <CampaignItem />
-            <CampaignItem />
-            <CampaignItem />
-            <CampaignItem />
-            <CampaignItem />
-            <CampaignItem />
-            <CampaignItem />
-            <CampaignItem />
-            <CampaignItem />
-            <CampaignItem />
+            <Fragment>
+              <Modal isOpen={this.state.modal} fade={false} toggle={this.toggle}>
+                <ModalHeader toggle={this.toggle}>
+                  <span> </span> <span className="camp-modal-status">{}</span>
+                </ModalHeader>
+                <ModalBody>
+                  <div className="modal-grid">
+                    <div className="modal-grid-child">
+                      <span style={{ width: '15%' }}>
+                        <Translate contentKey="campaign.description" />
+                      </span>
+                      <span style={{ width: 'auto', fontWeight: 500, marginLeft: '21px', color: 'black' }}>
+                        Chiến dịch dành cho khách hàng chưa đăng ký dịch vụ
+                      </span>
+                    </div>
+                    <div className="modal-info">
+                      <div className="left-info">
+                        <div className="modal-grid-child1">
+                          <div className="modal-grid-child1-middle">
+                            <div>
+                              <Translate contentKey="campaign.contact" />
+                            </div>
+                            <div>
+                              <Translate contentKey="campaign.time" />
+                            </div>
+                          </div>
+                          <div className="modal-grid-child1-bottom">
+                            <div className="modal-grid-child1-bottom2">{}</div>
+                            <div className="modal-grid-child1-bottom3">{}</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="middle-info">
+                        <div className="modal-grid-child1">
+                          <div className="modal-grid-child1-middle">
+                            <div>
+                              <Translate contentKey="campaign.ladi" />{' '}
+                            </div>
+                            <div>
+                              <Translate contentKey="campaign.gift" />
+                            </div>
+                          </div>
+                          <div className="modal-grid-child1-bottom">
+                            <div className="modal-grid-child1-bottom2">Landing Page 1</div>
+                            <div className="modal-grid-child1-bottom3">E-voucher 1</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="right-info">
+                        <div className="modal-grid-child1">
+                          <div className="modal-grid-child1-middle">
+                            <div>
+                              <Translate contentKey="campaign.content" />{' '}
+                            </div>
+                          </div>
+                          <div className="modal-grid-child1-bottom">
+                            <div className="modal-grid-child1-bottom2">Tương tác Email</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="modal-grid-child2">
+                      <div className="modal-searchBar">
+                        <span className=" form-control-feedback" />
+                        <input type="text" className="form-control" placeholder="Tìm kiếm" />
+                      </div>
+                    </div>
+
+                    <div className="modal-table">
+                      <Table responsive striped className="modal-tables">
+                        <thead>
+                          <tr className="text-center">
+                            <th className="hand">#</th>
+                            <th className="hand ">
+                              <Translate contentKey="userManagement.name" />
+                            </th>
+                            <th className="hand">
+                              <Translate contentKey="userManagement.mobile" />
+                            </th>
+                            <th className="hand">
+                              <Translate contentKey="userManagement.email" />
+                            </th>
+                            <th>
+                              <Translate contentKey="userManagement.categories" />
+                            </th>
+                          </tr>
+                        </thead>
+                      </Table>
+                    </div>
+                  </div>
+                </ModalBody>
+                <ModalFooter>
+                  <Button color="primary" onClick={this.toggle}>
+                    Do Something
+                  </Button>{' '}
+                  <Button color="secondary" onClick={this.toggle}>
+                    Cancel
+                  </Button>
+                </ModalFooter>
+              </Modal>
+
+              {/* Body Content */}
+              <div className="grid-border">
+                {/* <Loader message={spinner1} show={loading} priority={1}>
+            {' '}
+          </Loader> */}
+                {/* day la trang camp*/}
+
+                {camps &&
+                  camps.map((item, index) => {
+                    var list;
+                    list = (
+                      <div
+                        className="grid-item"
+                        onClick={() => {
+                          this.toggle(item.id);
+                        }}
+                      >
+                        <div className="camp-top">
+                          <div className="camp-title"> {item.name}</div>
+                          <div className="camp-status">
+                            {item.status && item.status == 0 ? (
+                              <Translate contentKey="campaign.status.pause" />
+                            ) : item.status && item.status == 1 ? (
+                              <Translate contentKey="campaign.status.action" />
+                            ) : (
+                              <Translate contentKey="campaign.status.complete" />
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="camp-bottom">
+                          <div className="camp-bottom-left">
+                            <div className="quantity">
+                              {' '}
+                              <Translate contentKey="campaign.quantity" />{' '}
+                            </div>
+                            <div className="range-time">
+                              <Translate contentKey="campaign.time" />{' '}
+                            </div>
+                          </div>
+                          <div className="camp-bottom-right">
+                            <div className="quantity-value">{item.contactNumber} </div>
+                            <div className="time-value">
+                              {' '}
+                              {item.fromDate}/{item.toDate}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                    return list;
+                  })}
+                <div />
+              </div>
+            </Fragment>
           </div>
         </Loader>
       </div>
@@ -80,13 +246,12 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
   }
 }
 
-const mapStateToProps = (storeState: IRootState) => ({
-  loading: storeState.userManagement.loading,
-  listCategory: storeState.userManagement.listCategory,
-  pageCount: Math.ceil(storeState.userManagement.totalElements / ITEMS_PER_PAGE)
+const mapStateToProps = ({ userCampaign }: IRootState) => ({
+  camps: userCampaign.camps,
+  loading: userCampaign.loading
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { getCampaignInfo, getCampaignInfoById };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
