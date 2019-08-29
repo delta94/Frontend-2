@@ -30,6 +30,9 @@ export const getUsersService = (page, pageSize, category?: string, textSearch?: 
   // const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}&category=${category ? urlCategory.join(',') : ''}` : ''}`;
   return axios.get<IUser>(requestUrl);
 };
+export const getInformationService = () => {
+  return axios.get('v1/campaignTypes');
+};
 
 // get typeName category
 export const getUserCategoriesService = () => {

@@ -3,8 +3,11 @@ import Slider from 'react-slick';
 import { Input, Card, Col, Container, Row } from 'reactstrap';
 import SweetAlert from 'sweetalert-react';
 import { ICampaignManagementState } from '../campaign-create';
+import { IRootState } from 'app/reducers';
+import { connect } from 'react-redux';
+import { getInformation } from 'app/actions/user-campaign';
 
-export interface IResponsiveProps {
+export interface IResponsiveProps extends StateProps, DispatchProps {
   value: any;
   onClick: Function;
 }
@@ -15,12 +18,12 @@ export interface IResponsiveState {
   cssGrid: string;
   urlImage: string;
   gridItem: string;
-  fileImport: string;
+  nameScript: string;
   image: string;
   isError: boolean;
   disableDocument: string;
 }
-export default class Responsive extends Component<IResponsiveProps, IResponsiveState> {
+export class Responsive extends Component<IResponsiveProps, IResponsiveState> {
   constructor(props: IResponsiveProps) {
     super(props);
   }
@@ -30,15 +33,21 @@ export default class Responsive extends Component<IResponsiveProps, IResponsiveS
     cssGrid: '',
     urlImage: '',
     gridItem: 'grid-items',
-    fileImport: '',
+    nameScript: '',
     image: '',
     isError: false,
     disableDocument: ''
   };
-  onClick = () => {
-    console.log(this.props.value.listValid.name);
+
+  componentDidMount() {
+    this.props.getInformation();
+  }
+
+  onClick = name => {
+    console.log(name);
     this.setState({
-      isActive: !this.state.isActive
+      isActive: !this.state.isActive,
+      nameScript: name
     });
 
     if (
@@ -57,16 +66,18 @@ export default class Responsive extends Component<IResponsiveProps, IResponsiveS
         disableDocument: 'campaign-document'
       });
 
-      this.props.onClick(true);
+      this.props.onClick(name);
     } else {
       this.setState({
         isError: true,
         disableDocument: ''
       });
-      this.props.onClick(false);
+      this.props.onClick(null);
     }
   };
   render() {
+    console.log(this.props.listCampaignInfo);
+    const { listCampaignInfo } = this.props;
     return (
       <Fragment>
         <SweetAlert
@@ -78,52 +89,41 @@ export default class Responsive extends Component<IResponsiveProps, IResponsiveS
           onConfirm={() => this.setState({ isError: false })}
         />
         <Row className={this.state.disableDocument}>
-          <Col onClick={this.onClick}>
-            <div className="grid-items">
-              <div className="camp-top">
-                <label className="camp-titles"> M2M kịch bản 1</label>
-                <img className="image-tites" src={this.state.urlImage} />
-              </div>
-              <div className="label-text">
-                <label>kịch bản 1 dành cho đối tượng khách aaaaa</label>
-              </div>
-            </div>
-          </Col>
-          <Col onClick={this.onClick}>
-            <div className="grid-items">
-              <div className="camp-top">
-                <label className="camp-titles"> M2M kịch bản 1</label>
-                <img className="image-tites" src={this.state.urlImage} />
-              </div>
-              <div className="label-text">
-                <label>kịch bản 1 dành cho đối tượng khách aaaaa</label>
-              </div>
-            </div>
-          </Col>
-          <Col onClick={this.onClick}>
-            <div className="grid-items">
-              <div className="camp-top">
-                <label className="camp-titles"> M2M kịch bản 1</label>
-                <img className="image-tites" src={this.state.urlImage} />
-              </div>
-              <div className="label-text">
-                <label>kịch bản 1 dành cho đối tượng khách aaaaa</label>
-              </div>
-            </div>
-          </Col>
-          <Col onClick={this.onClick}>
-            <div className="grid-items">
-              <div className="camp-top">
-                <label className="camp-titles"> M2M kịch bản 1</label>
-                <img className="image-tites" src={this.state.urlImage} />
-              </div>
-              <div className="label-text">
-                <label>kịch bản 1 dành cho đối tượng khách aaaaa</label>
-              </div>
-            </div>
-          </Col>
+          {listCampaignInfo
+            ? listCampaignInfo.map((item, index) => {
+                let elements;
+                elements = (
+                  <Col onClick={() => this.onClick(item.name)}>
+                    <div className="grid-items" key={index + 1}>
+                      <div className="camp-top">
+                        <label className="camp-titles"> {item.name}</label>
+                        <img className="image-tites" src={this.state.urlImage} />
+                      </div>
+                      <div className="label-text">
+                        <label>{item.description}</label>
+                      </div>
+                    </div>
+                  </Col>
+                );
+                return elements;
+              })
+            : ''}
         </Row>
       </Fragment>
     );
   }
 }
+const mapStateToProps = ({ userCampaign }: IRootState) => ({
+  loading: userCampaign.loading,
+  listCampaignInfo: userCampaign.listCampaignInfo
+});
+
+const mapDispatchToProps = { getInformation };
+
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Responsive);
