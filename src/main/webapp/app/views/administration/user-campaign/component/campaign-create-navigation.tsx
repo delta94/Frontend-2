@@ -111,6 +111,7 @@ export interface IFaqSectionState {
   shareholders: any[];
   gift: Object;
   testMail: string;
+  endTab: boolean;
 }
 export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionState> {
   constructor(props) {
@@ -147,7 +148,8 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
         }
       ],
       gift: {},
-      testMail: ''
+      testMail: '',
+      endTab: false
     };
   }
 
@@ -190,8 +192,23 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
     });
   };
 
+  onHandletTab = (param: number) => {
+    let activeTab: string = this.state.activeTab;
+    let activeTabNumber: number = parseInt(activeTab);
+    activeTabNumber += param;
+
+    console.log(activeTabNumber);
+    if (activeTabNumber === 6) {
+      this.setState({ activeTab: '5', endTab: true });
+    } else if (activeTabNumber === 0) {
+      this.setState({ activeTab: '1' });
+    } else {
+      this.setState({ activeTab: activeTabNumber.toString() });
+    }
+  };
+
   render() {
-    const { testMail, activeTab, listUser } = this.state;
+    const { testMail, activeTab, listUser, endTab } = this.state;
 
     return (
       <Fragment>
@@ -258,7 +275,7 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
           </Card>
 
           <Card className="col-md-9 app-inner-layout__content">
-            <div className="pb-5 pl-5 pr-5 pt-3">
+            <Row className="row-content-info">
               <div className="mobile-app-menu-btn mb-3">
                 <Hamburger active={this.state.active} type="elastic" onClick={() => this.setState({ active: !this.state.active })} />
               </div>
@@ -267,58 +284,19 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
                 <TabPane tabId="1">
                   <TabDetail1 />
                   <div className="mt-5" />
-                  <div className="clearfix">
-                    <div className="text-center">
-                      <Button
-                        color="primary"
-                        size="lg"
-                        className="btn-pill btn-wide btn-shadow"
-                        onClick={() => {
-                          this.toggle('2');
-                        }}
-                      >
-                        <b>Tiếp Tục</b>
-                      </Button>
-                    </div>
-                  </div>
+                  <div className="clearfix" />
                 </TabPane>
                 {/* task 2  */}
                 <TabPane tabId="2">
                   <TabDetail2 />
                   <div className="mt-5" />
-                  <div className="clearfix">
-                    <div className="text-center">
-                      <Button
-                        color="primary"
-                        size="lg"
-                        className="btn-pill btn-wide btn-shadow"
-                        onClick={() => {
-                          this.toggle('3');
-                        }}
-                      >
-                        <b>Tiếp Tục</b>
-                      </Button>
-                    </div>
-                  </div>
+                  <div className="clearfix" />
                 </TabPane>
                 {/* task 3 */}
                 <TabPane tabId="3">
                   <TabDetail3 />
                   <div className="mt-5" />
-                  <div className="clearfix">
-                    <div className="text-center">
-                      <Button
-                        color="primary"
-                        size="lg"
-                        className="btn-pill btn-wide btn-shadow"
-                        onClick={() => {
-                          this.toggle('4');
-                        }}
-                      >
-                        <b>Tiếp Tục</b>
-                      </Button>
-                    </div>
-                  </div>
+                  <div className="clearfix" />
                 </TabPane>
                 {/* task 4  */}
                 <TabPane tabId="4">
@@ -326,26 +304,36 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
                     <TabDetail4 value="helle" />
                   </div>
                   <div className="mt-5" />
-                  <div className="clearfix">
-                    <div className="text-center">
-                      <Button
-                        color="primary"
-                        size="lg"
-                        className="btn-pill btn-wide btn-shadow"
-                        onClick={() => {
-                          this.toggle('5');
-                        }}
-                      >
-                        <b>Tiếp Tục</b>
-                      </Button>
-                    </div>
-                  </div>
+                  <div className="clearfix" />
                 </TabPane>
                 <TabPane tabId="5">
                   <TabDetail5 />
                 </TabPane>
               </TabContent>
-            </div>
+            </Row>
+            <Row className="b-t">
+              <Col xs="8" sm="6" md="6">
+                <Button
+                  style={{ color: '#353ed1', backgroundColor: 'white', borderColor: '#ffffff' }}
+                  onClick={() => {
+                    this.onHandletTab(-1);
+                  }}
+                >
+                  Quay lại
+                </Button>
+              </Col>
+              <Col xs="8" sm="6" md="6">
+                <Button
+                  color="primary"
+                  style={{ float: 'right', backgroundColor: endTab ? 'green' : 'primary' }}
+                  onClick={() => {
+                    this.onHandletTab(1);
+                  }}
+                >
+                  {endTab ? 'Tạo chiến dịch' : 'Tiếp tục'}
+                </Button>
+              </Col>
+            </Row>
           </Card>
         </ReactCSSTransitionGroup>
       </Fragment>

@@ -40,7 +40,7 @@ class TabDetail2 extends React.Component<TabDetail2Props, TabDetail2State> {
     return (
       <Fragment>
         <CardTitle>CHỌN QUÀ TẶNG</CardTitle>
-        <Card className="main-card mb-3">
+        <Card>
           <CardBody>
             <FormGroup tag="fieldset">
               <FormGroup check>

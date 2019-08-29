@@ -295,12 +295,16 @@
 
 #userCreate .app-inner-layout__sidebar {
   float: left;
-  height: 530px;
   width: 24%;
+  height: 654px;
+  position: relative;
 }
+
 #userCreate .app-inner-layout__content {
+  height: 700px;
+  overflow-y: auto;
   float: right;
-  height: 530px;
+  height: auto;
 }
 #userCreate .chosse-customer-class {
   text-align: center;
@@ -625,4 +629,14 @@ $color_border: rgba(206, 206, 206, 0.687);
 }
 .disable-screen {
   display: none;
+}
+
+.tab-content {
+  width: 100%;
+  padding: 20px;
+}
+
+.row-content-info {
+  height: 600px;
+  background-color: white;
 }
