@@ -4,10 +4,10 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import { Input, Card, Col, Container, Row, CardTitle, Label, InputGroupAddon } from 'reactstrap';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 
-import Responsive from './component/campaign-carousel';
+import Responsive from './component/campaign-script';
 import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import FaqSection from './component/navigation';
+import FaqSection from './component/campaign-create-navigation';
 import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
 import { IRootState } from 'app/reducers';
 import Sticky from 'react-stickynode';
@@ -23,14 +23,14 @@ import PageTitle from '../../../layout/AppMain/PageTitle';
 import './style/campaign.scss';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
-
+import moment, { Moment } from 'moment';
 import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
 
 export interface ICampaignManagementProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
 
 export interface ICampaignManagementState {
   isActive: boolean;
-  isError: boolean;
+  disableScreen: string;
   ValidateName: string;
   countError: any;
   ValidateField: string;
@@ -39,6 +39,10 @@ export interface ICampaignManagementState {
   ValueDay: string;
   listValid: {};
   ValueDescri: string;
+  displayTable: string;
+  startDate: Moment;
+  endDate: Moment;
+  focusedInput: string;
 }
 
 export class CampaignManagement extends React.Component<ICampaignManagementProps, ICampaignManagementState> {
@@ -52,7 +56,11 @@ export class CampaignManagement extends React.Component<ICampaignManagementProps
     ValueDay: '',
     ValueDescri: '',
     listValid: {},
-    isError: false
+    disableScreen: '',
+    displayTable: 'display-complete',
+    startDate: moment(),
+    endDate: moment(),
+    focusedInput: ''
   };
 
   onChangeName = event => {
@@ -90,12 +98,52 @@ export class CampaignManagement extends React.Component<ICampaignManagementProps
       });
     }
   };
-  onClick = e => {
-    console.log(e);
+  onClick = event => {
+    if (event) {
+      this.setState({
+        displayTable: ''
+      });
+    } else {
+      this.setState({
+        displayTable: 'display-complete'
+      });
+    }
+  };
+  onDatesChange = ({ startDate, endDate }) => {
+    if (startDate === '' || startDate === null) {
+      this.setState({
+        ValidateDay: 'vui lòng nhập ngày'
+      });
+    } else {
+      this.setState({
+        ValidateDay: '',
+        startDate,
+        endDate,
+        ValueDay: startDate,
+        listValid: {
+          name: this.state.valueName,
+          descri: this.state.ValueDescri,
+          day: this.state.ValueDay
+        }
+      });
+    }
+  };
+  clickDisable = event => {
+    if (event === true) {
+      this.setState({
+        disableScreen: 'disable-screen'
+      });
+    } else {
+      this.setState({
+        disableScreen: ''
+      });
+    }
+    console.log(typeof event);
   };
 
   render() {
     const { match, pageCount, loading } = this.props;
+    const { startDate, endDate, focusedInput } = this.state;
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
 
     return (
@@ -126,91 +174,79 @@ export class CampaignManagement extends React.Component<ICampaignManagementProps
                     THÔNG TIN CHIẾN DỊCH <i className="lnr-chevron-down"> </i>{' '}
                   </CardTitle>
                 </Card>
-                <Card className="main-card mb-4">
-                  <Row>
-                    <Col md={4}>
-                      <Label className="name-title">TÊN CHIẾN DỊCH</Label>
-                      <div>
-                        <Col sm={12}>
-                          <Input
-                            type="email"
-                            value={this.state.valueName}
-                            name="email"
-                            placeholder="M2M ĐẦU TIÊN"
-                            onChange={this.onChangeName}
-                          />
-                          <p>{this.state.ValidateName}</p>
-                        </Col>
-                      </div>
-                      <Col>
-                        <Label className="name-title">THỜI GIAN</Label>
+                <div className={this.state.disableScreen}>
+                  <Card className="main-card mb-4">
+                    <Row>
+                      <Col md={4}>
+                        <Label className="name-title">TÊN CHIẾN DỊCH</Label>
+                        <div>
+                          <Col sm={12}>
+                            <Input
+                              type="email"
+                              value={this.state.valueName}
+                              name="email"
+                              placeholder="M2M ĐẦU TIÊN"
+                              onChange={this.onChangeName}
+                              maxLength="160"
+                            />
+                            <p>{this.state.ValidateName}</p>
+                          </Col>
+                        </div>
+                        <Col>
+                          <Label className="name-titles">THỜI GIAN</Label>
 
-                        <Col sm={15}>
-                          {/* <div className="font-icon-wrapper font-icon-lg"> */}
-                          <i className="lnr-calendar-full icon-gradient bg-arielle-smile"> </i>
-                          {/* </div> */}
+                          <Col sm={15}>
+                            <DateRangePicker
+                              showDefaultInputIcon
+                              required={true}
+                              startDatePlaceholderText={'dd/mm'}
+                              displayFormat="DD/MM"
+                              startDate={this.state.startDate} // momentPropTypes.momentObj or null,
+                              startDateId="dateStart" // PropTypes.string.isRequired,
+                              endDate={this.state.endDate} // momentPropTypes.momentObj or null,
+                              endDateId="dateEnd" // PropTypes.string.isRequired,
+                              onDatesChange={this.onDatesChange} // PropTypes.func.isRequired,
+                              focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+                              onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
+                            />
 
-                          <DateRangePicker
-                            displayFormat="DD/MM"
-                            startDate={this.state.startDate} // momentPropTypes.momentObj or null,
-                            startDateId="dateStart" // PropTypes.string.isRequired,
-                            endDate={this.state.endDate} // momentPropTypes.momentObj or null,
-                            endDateId="dateEnd" // PropTypes.string.isRequired,
-                            onDatesChange={({ startDate, endDate }) => {
-                              if (startDate === '' || startDate === null) {
-                                this.setState({
-                                  ValidateDay: 'vui lòng nhập ngày'
-                                });
-                              } else {
-                                this.setState({
-                                  ValidateDay: '',
-                                  startDate,
-                                  endDate,
-                                  ValueDay: startDate,
-                                  listValid: {
-                                    name: this.state.valueName,
-                                    descri: this.state.ValueDescri,
-                                    day: this.state.ValueDay
-                                  }
-                                });
-                              }
-                            }} // PropTypes.func.isRequired,
-                            focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-                            onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
-                          />
-
-                          <p>{this.state.ValidateDay}</p>
-                        </Col>
-                        <div className="reOpen-doc">
-                          <div className="grid-items-Click">
-                            <div className="camp-top">
-                              <label className="camp-title-click"> M2M kịch bản 1</label>
-                              <img className="image-tites" src="https://abeon-hosting.com/images/complete-png-4.png" />
+                            <p>{this.state.ValidateDay}</p>
+                          </Col>
+                          <div className={this.state.displayTable}>
+                            <div className="reOpen-doc">
+                              <div className="grid-items-Click">
+                                <div className="camp-top">
+                                  <label className="camp-title-click"> M2M kịch bản 1</label>
+                                  <img className="image-tites" src="https://abeon-hosting.com/images/complete-png-4.png" />
+                                </div>
+                              </div>
                             </div>
                           </div>
+                        </Col>
+                      </Col>
+                      <Col md={8}>
+                        <Label className="name-title">MÔ TẢ</Label>
+                        <div>
+                          <Col sm={12}>
+                            <Input type="textarea" name="text" id="exampleText" onChange={this.onChangeField} maxLength="640" />
+                            <p>{this.state.ValidateField}</p>
+                          </Col>
                         </div>
                       </Col>
-                    </Col>
-                    <Col md={8}>
-                      <Label className="name-title">MÔ TẢ</Label>
-                      <div>
-                        <Col sm={12}>
-                          <Input type="textarea" name="text" id="exampleText" onChange={this.onChangeField} />
-                          <p>{this.state.ValidateField}</p>
-                        </Col>
-                      </div>
-                    </Col>
-                  </Row>
+                    </Row>
 
-                  <Row>
-                    <Responsive value={this.state} onClick={this.onClick} />
-                  </Row>
-                  <Row>
-                    <br />
-                    <br />
-                  </Row>
-                </Card>
-                <FaqSection />
+                    <Row>
+                      <Responsive value={this.state} onClick={this.onClick} />
+                    </Row>
+                    <Row>
+                      <br />
+                      <br />
+                    </Row>
+                  </Card>
+                </div>
+                <div className={this.state.displayTable}>
+                  <FaqSection onClick={this.clickDisable} />
+                </div>
               </Container>
             </ReactCSSTransitionGroup>
           </Fragment>

@@ -1,16 +1,14 @@
 // Applications
 
-$app-layout-sidebar-width         : 270px;
-$app-layout-aside-width           : 60px;
-$app-layout-header-height         : 50px;
-
-
+$app-layout-sidebar-width: 270px;
+$app-layout-aside-width: 60px;
+$app-layout-header-height: 50px;
 
 .app-inner-layout {
-
   &.rm-sidebar {
     .app-inner-layout__wrapper {
       .app-inner-layout__content {
+        // overflow-y: auto;
         width: auto;
         float: none;
       }
@@ -132,7 +130,7 @@ $app-layout-header-height         : 50px;
 
 // Components
 
-@import "chat";
+@import 'chat';
 
 // Responsive
 
@@ -141,4 +139,4 @@ $app-layout-header-height         : 50px;
   margin: 3px $layout-spacer-x 0 0;
 }
 
-@import "responsive";
+@import 'responsive';
