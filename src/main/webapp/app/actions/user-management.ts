@@ -4,9 +4,8 @@ import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction, t
 import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
 import { toast } from 'react-toastify';
 import { IUser, defaultValue } from 'app/common/model/user.model';
-import { USER_MANAGE_ACTION_TYPES, CAMPAIGN_MANAGE_ACTION_TYPE } from 'app/constants/user-management';
+import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
 import {
-  getCampaignInfoService,
   createUserService,
   deleteUserService,
   getRolesService,
@@ -25,14 +24,6 @@ import { warn } from 'fullcalendar';
 
 const apiUrl = 'v1/customer';
 // Actions
-
-export const getCampaignInfo = () => {
-  return {
-    type: CAMPAIGN_MANAGE_ACTION_TYPE.FETCH_CAMPAIGNS,
-    payload: getCampaignInfoService()
-  };
-};
-
 export const getUsers = (page, size, category?: string, textSearch?: string) => {
   return {
     type: USER_MANAGE_ACTION_TYPES.FETCH_USERS,

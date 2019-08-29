@@ -5,6 +5,13 @@ import { toast } from 'react-toastify';
 
 const apiUrl = 'v1/customer';
 
+// <<<<<<< HEAD
+// export const getUsersServic
+//   const requestUrl = `${api
+//   return axios.get<IUser>(r
+//   //return axios.get<IUser>
+// =======
+
 /**
  *
  * @param page -number
@@ -15,15 +22,16 @@ const apiUrl = 'v1/customer';
  */
 
 export const getUsersService = (page, pageSize, category?: string, textSearch?: string) => {
+  // const urlCategory = category ? category.map(cate => cate.id) : '';
+  // if (category) {
+  //   console.log(urlCategory.join(','));
+  // }
   const requestUrl = `${apiUrl}${`?page=${page}&pageSize=${pageSize}&category=${category}&textSearch=${textSearch}`}`;
+  // const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}&category=${category ? urlCategory.join(',') : ''}` : ''}`;
   return axios.get<IUser>(requestUrl);
 };
 
 // get typeName category
-export const getCampaignInfoService = () => {
-  return axios.get(apiUrl);
-};
-
 export const getUserCategoriesService = () => {
   return axios.get<ICategory>(`${apiUrl}/category-name?textSearch`);
 };

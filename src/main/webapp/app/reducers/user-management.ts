@@ -3,7 +3,6 @@ import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } 
 
 import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
 import { IUser, defaultValue } from 'app/common/model/user.model';
-import { ICampaign } from 'app/common/model/campaign.model';
 import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
 import { IFileList } from 'app/common/model/sucess-file';
 import { ICategory } from 'app/common/model/category.model';
@@ -69,7 +68,6 @@ export default (state: UserManagementState = initialState, action): UserManageme
         showDeleteSuccessAlert: false,
         showUpdateSuccessAlert: false
       };
-
     case FAILURE(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILE):
       return {
         ...state
@@ -94,7 +92,6 @@ export default (state: UserManagementState = initialState, action): UserManageme
         errorMessage: action.payload,
         showUpdateSuccessAlert: false
       };
-
     case SUCCESS(USER_MANAGE_ACTION_TYPES.FETCH_USER_CATEGORIES):
       console.log(action.payload.data);
       return {
