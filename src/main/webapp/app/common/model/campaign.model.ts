@@ -1,10 +1,4 @@
 export interface ICampaign {
-  // id: string;
-  // name: string;
-  // status: any;
-  // toDate: Date;
-  // fromDate: Date;
-  // contactNumber: any;
   id: string;
   type: any;
   name: string;
