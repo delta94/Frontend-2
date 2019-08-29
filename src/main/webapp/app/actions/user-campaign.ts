@@ -5,7 +5,7 @@ import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
 import { toast } from 'react-toastify';
 import { IUser, defaultValue } from 'app/common/model/user.model';
 import { USER_CAMPAIGN_ACTION_TYPES } from 'app/constants/user-campaign';
-import { getCampaignInfoService, getInformationService } from 'app/services/user-campaign';
+import { getCampaignInfoService, getInformationService, getCampaignInfoByIdService } from 'app/services/user-campaign';
 import { IFileList } from 'app/common/model/sucess-file';
 import { warn } from 'fullcalendar';
 
@@ -15,6 +15,13 @@ export const getCampaignInfo = () => {
   return {
     type: USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS,
     payload: getCampaignInfoService()
+  };
+};
+
+export const getCampaignInfoById = id => {
+  return {
+    type: USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_ID,
+    payload: getCampaignInfoByIdService(id)
   };
 };
 

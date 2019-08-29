@@ -16,6 +16,9 @@ const apiUrl = 'v1/campaigns';
 export const getCampaignInfoService = () => {
   return axios.get(apiUrl);
 };
+export const getCampaignInfoByIdService = id => {
+  return axios.get(`v1/campaign/${id}`);
+};
 
 export const getUsersService = (page, pageSize, category?: string, textSearch?: string) => {
   // const urlCategory = category ? category.map(cate => cate.id) : '';

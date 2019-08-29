@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Table, Row, Badge, Col, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 import './../user-campaign/style/campaign.scss';
-import { getCampaignInfo } from 'app/actions/user-campaign';
+import { getCampaignInfo, getCampaignInfoById } from 'app/actions/user-campaign';
 import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
 import { IRootState } from 'app/reducers';
 import { faClock } from '@fortawesome/free-solid-svg-icons';
@@ -36,16 +36,17 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
     this.props.getCampaignInfo();
   }
 
-  toggle() {
+  toggle(id?) {
+    console.log(id);
     this.setState(prevState => ({
       modal: !prevState.modal
     }));
+    this.props.getCampaignInfoById(id);
   }
 
   render() {
     const { match, loading, camps } = this.props;
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
-    console.info('camps', camps);
     return (
       <div>
         <Loader message={spinner1} show={loading} priority={1}>
@@ -85,7 +86,7 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
             <Fragment>
               <Modal isOpen={this.state.modal} fade={false} toggle={this.toggle}>
                 <ModalHeader toggle={this.toggle}>
-                  <span>Chiến dịch M2M thứ {1} </span> <span className="camp-modal-status">{}</span>
+                  <span> </span> <span className="camp-modal-status">{}</span>
                 </ModalHeader>
                 <ModalBody>
                   <div className="modal-grid">
@@ -184,7 +185,7 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
               </Modal>
 
               {/* Body Content */}
-              <div className="grid-border" onClick={this.toggle}>
+              <div className="grid-border">
                 {/* <Loader message={spinner1} show={loading} priority={1}>
             {' '}
           </Loader> */}
@@ -193,17 +194,23 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
                 {camps &&
                   camps.map((item, index) => {
                     var list;
-                    console.log(typeof item.status);
                     list = (
-                      <div className="grid-item">
+                      <div
+                        className="grid-item"
+                        onClick={() => {
+                          this.toggle(item.id);
+                        }}
+                      >
                         <div className="camp-top">
                           <div className="camp-title"> {item.name}</div>
                           <div className="camp-status">
-                            {item.status && item.status == 0
-                              ? 'chưa hoàn thành/tạm dừng'
-                              : item.status && item.status == 1
-                              ? 'đang hoạt động'
-                              : 'đã hoàn thành'}
+                            {item.status && item.status == 0 ? (
+                              <Translate contentKey="campaign.status.pause" />
+                            ) : item.status && item.status == 1 ? (
+                              <Translate contentKey="campaign.status.action" />
+                            ) : (
+                              <Translate contentKey="campaign.status.complete" />
+                            )}
                           </div>
                         </div>
 
@@ -244,7 +251,7 @@ const mapStateToProps = ({ userCampaign }: IRootState) => ({
   loading: userCampaign.loading
 });
 
-const mapDispatchToProps = { getCampaignInfo };
+const mapDispatchToProps = { getCampaignInfo, getCampaignInfoById };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

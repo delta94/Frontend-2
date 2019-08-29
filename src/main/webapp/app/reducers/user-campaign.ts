@@ -15,6 +15,7 @@ const initialState = {
   // total: '',
   // listCamp: [],
   camps: [] as ReadonlyArray<ICampaign>,
+
   loading: false,
   errorMessage: null,
   uploadScheduleFailure: false,
@@ -44,6 +45,7 @@ export type UserCampaignState = Readonly<typeof initialState>;
 // Reducer
 export default (state: UserCampaignState = initialState, action): UserCampaignState => {
   switch (action.type) {
+    case REQUEST(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_ID):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS):
       return {
         ...state
@@ -77,6 +79,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
         showDeleteSuccessAlert: false,
         showUpdateSuccessAlert: false
       };
+    case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_ID):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS):
       return {
         ...state
@@ -108,6 +111,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
         listCampaignInfo: action.payload.data,
         loading: false
       };
+    case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_ID):
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS):
       console.log(action.payload.data);
       return {
