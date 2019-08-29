@@ -1,15 +1,17 @@
 export interface ICampaign {
   id?: string;
   name?: string;
-  status?: string;
-  time?: string;
-  listCamp?: any[];
+  status: any;
+  fromDate: Date;
+  toDate: Date;
+  contactNumber: any;
 }
 
 export const defaultValue: Readonly<ICampaign> = {
   id: '',
   name: '',
   status: '',
-  time: '',
-  listCamp: []
+  fromDate: new Date(),
+  toDate: new Date(),
+  contactNumber: 0
 };

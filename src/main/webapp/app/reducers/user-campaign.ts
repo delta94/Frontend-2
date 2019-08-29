@@ -6,8 +6,10 @@ import { IUser, defaultValue } from 'app/common/model/user.model';
 import { USER_CAMPAIGN_ACTION_TYPES } from 'app/constants/user-campaign';
 import { IFileList } from 'app/common/model/sucess-file';
 import { ICategory } from 'app/common/model/category.model';
+import { ICampaign } from 'app/common/model/campaign.model';
 
 const initialState = {
+  camps: [] as ReadonlyArray<ICampaign>,
   // status: '',
   // time: '',
   // total: '',
@@ -40,7 +42,7 @@ export type UserCampaignState = Readonly<typeof initialState>;
 // Reducer
 export default (state: UserCampaignState = initialState, action): UserCampaignState => {
   switch (action.type) {
-    case REQUEST(USER_CAMPAIGN_ACTION_TYPES.FETCH_ROLES):
+    case REQUEST(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS):
       return {
         ...state
       };
@@ -76,7 +78,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
       return {
         ...state
       };
-    case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_USERS):
+    case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_USER):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_USER_CATEGORIES):
     // case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_LIST_USER):
@@ -96,12 +98,12 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
         errorMessage: action.payload,
         showUpdateSuccessAlert: false
       };
-    case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.FETCH_USER_CATEGORIES):
+    case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS):
       console.log(action.payload.data);
       return {
         ...state,
-        loading: false,
-        listCategory: action.payload.data
+        // loading: false,
+        camps: action.payload.data
       };
 
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.FETCH_ROLES):
