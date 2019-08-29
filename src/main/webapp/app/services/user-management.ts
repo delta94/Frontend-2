@@ -21,6 +21,9 @@ const apiUrl = 'v1/customer';
  * @return {code: number, data: Object{item: [{id: string, name: string, gmail: string, catagories: string, }, pageIndex: number, pageSize: number] }}
  */
 
+export const getCampaignInfoService = () => {
+  return axios.get(`v1/campaigns`);
+};
 export const getUsersService = (page, pageSize, category?: string, textSearch?: string) => {
   // const urlCategory = category ? category.map(cate => cate.id) : '';
   // if (category) {

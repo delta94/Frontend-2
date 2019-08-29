@@ -17,7 +17,8 @@ import {
   UploaddFile,
   listUserService,
   getUserCategoriesService,
-  getDoSearch
+  getDoSearch,
+  getCampaignInfoService
 } from 'app/services/user-management';
 import { IFileList } from 'app/common/model/sucess-file';
 import { warn } from 'fullcalendar';
@@ -28,7 +29,8 @@ const apiUrl = 'v1/customer';
 export const getCampaignInfo = () => {
   return {
     type: CAMPAIGN_MANAGE_ACTION_TYPE.FETCH_CAMPAIGNS,
-    payload: axios.get('./content/json_data/campaign.json')
+    payload: getCampaignInfoService()
+    // payload: axios.get('./content/json_data/campaign.json')
   };
 };
 export const getUsers = (page, size, category?: string, textSearch?: string) => {

@@ -67,17 +67,17 @@
   border-bottom: 2px solid #545cd8;
 }
 
-.grid-container-total {
-  display: grid;
-  grid-gap: 10px;
-  grid-template-columns: 25% 25% 25% 25%;
-  background: none;
-  margin-right: 30px;
-}
+// .grid-container-total {
+//   display: grid;
+//   grid-gap: 10px;
+//   grid-template-columns: 25% 25% 25% 25%;
+//   background: none;
+
+// }
 
 .grid-item {
   display: grid;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: #ffffff;
   padding: 20px;
   height: auto;
   grid-template-rows: auto auto;
@@ -85,7 +85,10 @@
 }
 
 .grid-border {
-  background-color: white;
+  // background-color: white;
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  grid-column-gap: 10px;
 }
 
 .camp-title,
@@ -94,10 +97,10 @@
 .range-time {
   float: left;
 }
-.quantity-value,
-.time-value {
-  float: right;
-}
+// .quantity-value,
+// .time-value {
+// float: right;
+// }
 
 .camp-title {
   width: 100%;

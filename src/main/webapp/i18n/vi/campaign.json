@@ -1,0 +1,17 @@
+{
+  "campaign": {
+    "title": "Danh sách chiến dịch",
+    "createCamp": "Tạo chiến dịch mới",
+    "allCamps": "Tất cả",
+    "onAction": "Chiến dịch đang hoạt động",
+    "onPause": "Chiến dịch chưa hoạt động/tạm dừng",
+    "complete": "Chiến dịch đã hoàn thành",
+    "quantity": "Số lượng",
+    "time": "Thời gian",
+    "description": "Mô tả chiến dịch",
+    "contact": "Số lượng contact",
+    "ladi": "Landing Page",
+    "gift": "Quà tặng",
+    "content": "Nội dung"
+  }
+}
