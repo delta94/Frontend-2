@@ -38,7 +38,7 @@ class SelectReward extends React.Component<SelectRewardProps, SelectRewardState>
 
   render() {
     return (
-      <Fragment>
+      <div className="select-reward">
         <CardTitle>CHỌN QUÀ TẶNG</CardTitle>
         <Card>
           <CardBody>
@@ -59,7 +59,7 @@ class SelectReward extends React.Component<SelectRewardProps, SelectRewardState>
             </div>
           </CardBody>
         </Card>
-      </Fragment>
+      </div>
     );
   }
 }

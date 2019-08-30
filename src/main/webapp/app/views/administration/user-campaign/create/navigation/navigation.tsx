@@ -123,7 +123,7 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
   };
 
   render() {
-    const { testMail, activeTab, listUser, endTab } = this.state;
+    const { endTab } = this.state;
 
     return (
       <Fragment>

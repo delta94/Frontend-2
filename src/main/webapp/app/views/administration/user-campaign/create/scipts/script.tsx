@@ -74,7 +74,6 @@ export class Responsive extends Component<IResponsiveProps, IResponsiveState> {
     }
   };
   render() {
-    console.log(this.props.listCampaignInfo);
     const { listCampaignInfo } = this.props;
     return (
       <Fragment>

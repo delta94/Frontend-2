@@ -27,7 +27,9 @@ import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'rea
 import Script from '../scipts/script';
 import Navigation from '../navigation/navigation';
 
-export interface IinfoProps extends StateProps, DispatchProps {}
+export interface IinfoProps extends StateProps, DispatchProps {
+  onClick: Function;
+}
 
 export interface IinfoPropsState {
   nameScripts: string;
@@ -45,6 +47,7 @@ export interface IinfoPropsState {
   startDate: Moment;
   endDate: Moment;
   focusedInput: string;
+  isDisplayInfo: boolean;
 }
 
 export class Info extends React.Component<IinfoProps, IinfoPropsState> {
@@ -63,7 +66,8 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
     displayTable: 'display-complete',
     startDate: moment(),
     endDate: moment(),
-    focusedInput: ''
+    focusedInput: '',
+    isDisplayInfo: false
   };
 
   onChangeName = event => {
@@ -102,12 +106,13 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
     }
   };
   onClick = event => {
-    console.log('event :' + event);
     if (event !== null) {
       this.setState({
         displayTable: '',
         nameScripts: event
       });
+      console.log(this.state.displayTable);
+      this.props.onClick('');
     } else {
       this.setState({
         displayTable: 'display-complete'
@@ -142,18 +147,6 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
     return (
       <Loader message={spinner1} show={loading} priority={1}>
         <div id="userCreate">
-          <div className="title-page">
-            <div className="title-head">
-              Danh Sách Chiến Dịch > Tạo Chiến Dịch M2M
-              <Link to={'/admin/user-campaign'} className="pe-7s-close-circle" />
-            </div>
-          </div>
-
-          <Card className="card-info">
-            <CardTitle>
-              THÔNG TIN CHIẾN DỊCH <i className="lnr-chevron-down"> </i>{' '}
-            </CardTitle>
-          </Card>
           <div className={this.state.disableScreen}>
             <Card className="main-card mb-4">
               <Row>
