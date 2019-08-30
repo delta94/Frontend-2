@@ -1,21 +1,18 @@
 import React, { Component } from 'react';
-import './add-content.scss';
+import '../create-content/create-content.scss';
 
 import { Card, Collapse, Button, Input, CardTitle, FormGroup, Label, CardBody } from 'reactstrap';
-import DummyData from 'app/DemoPages/Forms/Components/Typeahead/Examples/DummyData';
 
 import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 
 import FroalaEditorComponent from 'react-froala-wysiwyg';
 
-export interface TabDetail4Entity {}
+export interface CreateContentEntity {}
 
-export interface TabDetail4Props {
-  value: string;
-}
+export interface CreateContentProps {}
 
-export interface TabDetail4State {
+export interface CreateContentState {
   showMailForFriend: boolean;
 }
 
@@ -23,15 +20,13 @@ const dumpInteractive = ['Email', 'Facebook', 'Gmail'];
 
 const dumpTemplates = ['Template1', 'Template2', 'Template3', 'Template4'];
 
-class TabDetail4 extends React.PureComponent<TabDetail4Props, TabDetail4State, TabDetail4Entity> {
+class CreateContent extends React.PureComponent<CreateContentEntity, CreateContentProps, CreateContentState> {
   constructor(props) {
     super(props);
-    console.log(this.props);
-
-    this.state = {
-      showMailForFriend: false
-    };
   }
+  state: CreateContentState = {
+    showMailForFriend: false
+  };
 
   componentDidMount() {
     console.log(this.props);
@@ -166,4 +161,4 @@ class TabDetail4 extends React.PureComponent<TabDetail4Props, TabDetail4State, T
   }
 }
 
-export default TabDetail4;
+export default CreateContent;

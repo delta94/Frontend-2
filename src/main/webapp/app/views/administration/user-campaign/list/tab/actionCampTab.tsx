@@ -218,7 +218,7 @@ class ActionCampTab extends React.Component<IActionCampTabProps, IActionCampTabS
                         </div>
                       </div>
                       <div className="camp-bottom-right">
-                        <div className="quantity-value">{item.contactNumber} </div>
+                        <div className="quantity-value">{item.contactNumber} contacts </div>
                         <div className="time-value">
                           {' '}
                           {item.fromDate}/{item.toDate}

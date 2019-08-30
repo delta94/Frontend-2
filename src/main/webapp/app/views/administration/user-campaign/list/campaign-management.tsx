@@ -34,6 +34,7 @@ import {
 } from 'reactstrap';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
+// import './../list/campaign-management.scss';
 import './../list/campaign-management.scss';
 import { getCampaignInfo, getCampaignInfoByStatus } from 'app/actions/user-campaign';
 import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
@@ -202,109 +203,6 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
               </Container>
             </ReactCSSTransitionGroup>
           </Fragment>
-          <div className="grid-container-total">
-            <Fragment>
-              <Modal isOpen={this.state.modal} fade={false} toggle={this.toggle}>
-                <ModalHeader toggle={this.toggle}>
-                  <span> </span> <span className="camp-modal-status">{}</span>
-                </ModalHeader>
-                <ModalBody>
-                  <div className="modal-grid">
-                    <div className="modal-grid-child">
-                      <span style={{ width: '15%' }}>
-                        <Translate contentKey="campaign.description" />
-                      </span>
-                      <span style={{ width: 'auto', fontWeight: 500, marginLeft: '21px', color: 'black' }} />
-                    </div>
-                    <div className="modal-info">
-                      <div className="left-info">
-                        <div className="modal-grid-child1">
-                          <div className="modal-grid-child1-middle">
-                            <div>
-                              <Translate contentKey="campaign.contact" />
-                            </div>
-                            <div>
-                              <Translate contentKey="campaign.time" />
-                            </div>
-                          </div>
-                          <div className="modal-grid-child1-bottom">
-                            <div className="modal-grid-child1-bottom2" />
-                            <div className="modal-grid-child1-bottom3" />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="middle-info">
-                        <div className="modal-grid-child1">
-                          <div className="modal-grid-child1-middle">
-                            <div>
-                              <Translate contentKey="campaign.ladi" />{' '}
-                            </div>
-                            <div>
-                              <Translate contentKey="campaign.gift" />
-                            </div>
-                          </div>
-                          <div className="modal-grid-child1-bottom">
-                            <div className="modal-grid-child1-bottom2" />
-                            <div className="modal-grid-child1-bottom3" />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="right-info">
-                        <div className="modal-grid-child1">
-                          <div className="modal-grid-child1-middle">
-                            <div>
-                              <Translate contentKey="campaign.content" />{' '}
-                            </div>
-                          </div>
-                          <div className="modal-grid-child1-bottom">
-                            <div className="modal-grid-child1-bottom2" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="modal-grid-child2">
-                      <div className="modal-searchBar">
-                        <span className=" form-control-feedback" />
-                        <input type="text" className="form-control" placeholder="Tìm kiếm" />
-                      </div>
-                    </div>
-
-                    <div className="modal-table">
-                      <Table responsive striped className="modal-tables">
-                        <thead>
-                          <tr className="text-center">
-                            <th className="hand">#</th>
-                            <th className="hand ">
-                              <Translate contentKey="userManagement.name" />
-                            </th>
-                            <th className="hand">
-                              <Translate contentKey="userManagement.mobile" />
-                            </th>
-                            <th className="hand">
-                              <Translate contentKey="userManagement.email" />
-                            </th>
-                            <th>
-                              <Translate contentKey="userManagement.categories" />
-                            </th>
-                          </tr>
-                        </thead>
-                      </Table>
-                    </div>
-                  </div>
-                </ModalBody>
-                <ModalFooter>
-                  <Button color="primary" onClick={this.toggle}>
-                    Do Something
-                  </Button>{' '}
-                  <Button color="secondary" onClick={this.toggle}>
-                    Cancel
-                  </Button>
-                </ModalFooter>
-              </Modal>
-
-              {/* Body Content */}
-            </Fragment>
-          </div>
         </Loader>
       </div>
     );

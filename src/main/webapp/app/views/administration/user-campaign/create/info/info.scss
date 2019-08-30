@@ -74,29 +74,12 @@
   border-bottom: 2px solid #545cd8;
 }
 
-// .grid-container-total {
-//   display: grid;
-//   grid-gap: 10px;
-//   grid-template-columns: 25% 25% 25% 25%;
-//   background: none;
-
-// }
-
 .grid-item {
   display: grid;
-  background-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.8);
   padding: 20px;
   height: auto;
   grid-template-rows: auto auto;
-  margin-bottom: 10px;
-}
-
-.grid-border {
-  // background-color: white;
-  display: grid;
-  grid-template-columns: 25% 25% 25% 25%;
-  margin-right: 30px;
-  grid-column-gap: 10px;
 }
 
 .camp-title,
@@ -105,10 +88,10 @@
 .range-time {
   float: left;
 }
-// .quantity-value,
-// .time-value {
-// float: right;
-// }
+.quantity-value,
+.time-value {
+  float: right;
+}
 
 .camp-title {
   width: 100%;
@@ -117,14 +100,6 @@
 }
 #userCreate .search-nav .col-md-3 :hover {
   border-bottom: 2px solid blue;
-}
-
-#userCreate .grid-container-total {
-  display: grid;
-  grid-column-gap: 5px;
-  grid-row-gap: 5px;
-  grid-template-columns: auto auto auto auto;
-  padding: 10px;
 }
 
 #userCreate .grid-items {
