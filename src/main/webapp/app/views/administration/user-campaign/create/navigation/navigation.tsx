@@ -4,14 +4,16 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import cx from 'classnames';
 import Hamburger from 'react-hamburgers';
 import '../navigation/navigation.scss';
-
+import SelectCustomer from './select-customer/select-customer';
+import SelectReward from './select-reward/select-reward';
+import CreateLandingPage from './create-landingpage/create-landingpage';
+import CreateContent from './create-content/create-content';
+import Review from './review/review';
 import { TabContent, TabPane, DropdownItem, Card, Col, Row, Button } from 'reactstrap';
 import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
 
 import classnames from 'classnames';
-export interface IFaqSectionProps {
-  onClick: Function;
-}
+export interface IFaqSectionProps {}
 
 export interface IFaqSectionState {
   activeTab: string;
@@ -76,11 +78,6 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
       this.setState({
         activeTab: tab
       });
-    }
-    if (tab > 1) {
-      this.props.onClick(true);
-    } else {
-      this.props.onClick(false);
     }
   };
   onClick = () => {
@@ -200,29 +197,33 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
               {/* Tab Content */}
               <TabContent activeTab={this.state.activeTab}>
                 <TabPane tabId="1">
-                  {/* task 1 */}
+                  <SelectCustomer />
                   <div className="mt-5" />
                   <div className="clearfix" />
                 </TabPane>
                 {/* task 2  */}
                 <TabPane tabId="2">
-                  {/* task 2  */}
+                  <SelectReward />
                   <div className="mt-5" />
                   <div className="clearfix" />
                 </TabPane>
                 {/* task 3 */}
                 <TabPane tabId="3">
-                  {/* task 3  */}
+                  <CreateLandingPage />
                   <div className="mt-5" />
                   <div className="clearfix" />
                 </TabPane>
                 {/* task 4  */}
                 <TabPane tabId="4">
-                  <div className="add-content">{/* task 4  */}</div>
+                  <div className="add-content">
+                    <CreateContent />
+                  </div>
                   <div className="mt-5" />
                   <div className="clearfix" />
                 </TabPane>
-                <TabPane tabId="5">{/* task 5  */}</TabPane>
+                <TabPane tabId="5">
+                  <Review />
+                </TabPane>
               </TabContent>
             </Row>
             <Row className="b-t">

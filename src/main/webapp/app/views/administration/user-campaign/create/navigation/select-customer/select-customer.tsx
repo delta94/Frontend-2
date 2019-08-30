@@ -1,43 +1,24 @@
-import {
-  TabPane,
-  Col,
-  Row,
-  CardHeader,
-  CardTitle,
-  Button,
-  DropdownMenu,
-  ModalBody,
-  Table,
-  Modal,
-  ModalHeader,
-  ModalFooter
-} from 'reactstrap';
-import '../../style/campaign.scss';
+import { Col, Row, CardTitle, Button, ModalBody, Table, Modal, ModalHeader } from 'reactstrap';
+import '../select-customer/select-customer.scss';
 
-import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
+import { Translate } from 'react-jhipster';
 import Ionicon from 'react-ionicons';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import React, { Fragment, Component, useState } from 'react';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import IncorporationForm from './tab-detail-1-button-modal.tsx/add-button';
-import Sticky from 'react-stickynode';
+import IncorporationForm from './customer-dialog/button-dialog/button-dialog';
 
-import cx from 'classnames';
-import Hamburger from 'react-hamburgers';
 import ReactPaginate from 'react-paginate';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export interface TabDetail1Props {}
+export interface SelectCustomerProps {}
 
-export interface TabDetail1State {
+export interface SelectCustomerState {
   listUser: any[];
   modal: boolean;
   activeTab: string;
 }
-class TabDetail1 extends React.Component<TabDetail1Props, TabDetail1State> {
-  state: TabDetail1State = {
+class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomerState> {
+  state: SelectCustomerState = {
     activeTab: '1',
     listUser: [
       {
@@ -288,4 +269,4 @@ class TabDetail1 extends React.Component<TabDetail1Props, TabDetail1State> {
   }
 }
 
-export default TabDetail1;
+export default SelectCustomer;

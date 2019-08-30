@@ -1,18 +1,18 @@
 import { TabPane, CardBody, FormGroup, Label, Input, Card, CardTitle, Button } from 'reactstrap';
-import '../../style/campaign.scss';
+import '../select-reward/select-reward.scss';
 
 import { Translate } from 'react-jhipster';
 import React, { Fragment, Component, useState } from 'react';
-import Voucher from './tab-detail-2-voucher-combobox/voucher-combobox';
+import Voucher from '../select-reward/voucher/voucher';
 
-export interface TabDetail2Props {}
+export interface SelectRewardProps {}
 
-export interface TabDetail2State {
+export interface SelectRewardState {
   activeTab: string;
   displayVoucher: string;
 }
-class TabDetail2 extends React.Component<TabDetail2Props, TabDetail2State> {
-  state: TabDetail2State = {
+class SelectReward extends React.Component<SelectRewardProps, SelectRewardState> {
+  state: SelectRewardState = {
     activeTab: '1',
     displayVoucher: 'display-voucher'
   };
@@ -64,4 +64,4 @@ class TabDetail2 extends React.Component<TabDetail2Props, TabDetail2State> {
   }
 }
 
-export default TabDetail2;
+export default SelectReward;

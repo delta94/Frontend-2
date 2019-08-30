@@ -6,15 +6,14 @@ import { DropdownList } from 'react-widgets';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import '../../../style/campaign.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import '../voucher/voucher.scss';
 
 let colors = ['Orange', 'Red', 'Blue', 'Purple'];
 
 library.add(faSpinner);
-export interface VocherFormProps {}
+export interface VocherProps {}
 
-export interface VocherFormState {
+export interface VocherState {
   activeTab: string;
   name: string;
   shareholders: any[];
@@ -24,8 +23,8 @@ export interface VocherFormState {
   valueList: any[];
   displayTable: string;
 }
-class VocherForm extends React.Component<VocherFormProps, VocherFormState> {
-  state: VocherFormState = {
+class Vocher extends React.Component<VocherProps, VocherState> {
+  state: VocherState = {
     name: '',
     shareholders: [{ name: '' }],
     activeTab: '',
@@ -128,19 +127,6 @@ class VocherForm extends React.Component<VocherFormProps, VocherFormState> {
                 </thead>
               </Table>
             </div>
-            {/* <label className="voucher-name" style={{fontSize:'20px', fontWeight: 'initial'}}>E-voucher {1}</label> */}
-            {/* <div style={{display:'flex'}}>
-                            <div style={{width:'10%', marginRight:'30px'}}>
-                                <span>Giá trị : </span>
-                                <span>Thời hạn : </span>
-                                <span>Số lượng : </span>
-                            </div>
-                            <div style={{width:'auto'}}>
-                                <div className="voucher-value">{100000} VNĐ</div>
-                                <div className="voucher-range">27/8 - 28/9</div>
-                                <div className="voucher-quantity"> {2000} mã </div>
-                            </div>
-                        </div> */}
           </Container>
         </ReactCSSTransitionGroup>
       </Fragment>
@@ -148,4 +134,4 @@ class VocherForm extends React.Component<VocherFormProps, VocherFormState> {
   }
 }
 
-export default VocherForm;
+export default Vocher;

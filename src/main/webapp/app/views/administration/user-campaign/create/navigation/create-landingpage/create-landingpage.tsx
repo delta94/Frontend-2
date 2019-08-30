@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
-import './add-content.scss';
+import '../create-landingpage/create-landingpage.scss';
 
 import { Card, Collapse, Button, Input, CardTitle, FormGroup, Label, CardBody } from 'reactstrap';
-import DummyData from 'app/DemoPages/Forms/Components/Typeahead/Examples/DummyData';
 
 import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 
 import FroalaEditorComponent from 'react-froala-wysiwyg';
 
-export interface TabDetail3Entity {}
+export interface CreateLandingPageEntity {}
 
-export interface TabDetail3Props {}
+export interface CreateLandingPageProps {}
 
-export interface TabDetail3State {
+export interface CreateLandingPageState {
   showMailForFriend: boolean;
 }
 
@@ -21,19 +20,13 @@ const dumpInteractive = ['landingpage 1', 'landingpage 2', 'landingpage 3'];
 
 const dumpTemplates = ['Template1', 'Template2', 'Template3', 'Template4'];
 
-class TabDetail3 extends React.PureComponent<TabDetail3Props, TabDetail3State, TabDetail3Entity> {
+class CreateLandingPage extends React.PureComponent<CreateLandingPageProps, CreateLandingPageEntity, CreateLandingPageState> {
   constructor(props) {
     super(props);
-    console.log(this.props);
-
-    this.state = {
-      showMailForFriend: false
-    };
   }
-
-  componentDidMount() {
-    console.log(this.props);
-  }
+  state: CreateLandingPageState = {
+    showMailForFriend: false
+  };
 
   render() {
     let { showMailForFriend } = this.state;
@@ -107,4 +100,4 @@ class TabDetail3 extends React.PureComponent<TabDetail3Props, TabDetail3State, T
   }
 }
 
-export default TabDetail3;
+export default CreateLandingPage;
