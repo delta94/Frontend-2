@@ -1,8 +1,6 @@
 import React, { Fragment, Component } from 'react';
-import Slider from 'react-slick';
-import { Input, Card, Col, Container, Row } from 'reactstrap';
+import { Col, Row } from 'reactstrap';
 import SweetAlert from 'sweetalert-react';
-import { ICampaignManagementState } from '../campaign-create';
 import { IRootState } from 'app/reducers';
 import { connect } from 'react-redux';
 import { getInformation } from 'app/actions/user-campaign';
@@ -76,7 +74,6 @@ export class Responsive extends Component<IResponsiveProps, IResponsiveState> {
     }
   };
   render() {
-    console.log(this.props.listCampaignInfo);
     const { listCampaignInfo } = this.props;
     return (
       <Fragment>

@@ -3,97 +3,17 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import cx from 'classnames';
 import Hamburger from 'react-hamburgers';
-import Ionicon from 'react-ionicons';
-import ReactPaginate from 'react-paginate';
-import '../style/campaign.scss';
-import TabDetail1 from './navigation/tab-detail-1';
-import TabDetail2 from './navigation/tab-detail-2';
-import TabDetail3 from './navigation/tab-detail-3';
-import TabDetail4 from './navigation/tab-detail-4';
-import TabDetail5 from './navigation/tab-detail-5';
-
-const dumpData = [
-  {
-    id: 1,
-    name: 'Test Name',
-    email: 'email 1',
-    mobile: 'mobile 1',
-    categories: 'categories 1',
-    contact: 100
-  },
-  {
-    id: 2,
-    name: 'Test Name 1',
-    email: 'email 1',
-    mobile: 'mobile 1',
-    categories: 'categories 1',
-    contact: 100
-  },
-  {
-    id: 3,
-    name: 'Test Name 2',
-    email: 'email 1',
-    mobile: 'mobile 1',
-    categories: 'categories 1',
-    contact: 100
-  },
-  {
-    id: 4,
-    name: 'Test Name 3',
-    email: 'email 1',
-    mobile: 'mobile 1',
-    categories: 'categories 1',
-    contact: 100
-  },
-
-  {
-    id: 5,
-    name: 'Test Name 4',
-    email: 'email 1',
-    mobile: 'mobile 1',
-    categories: 'categories 1',
-    contact: 100
-  },
-  {
-    id: 6,
-    name: 'Test Name 5',
-    email: 'email 1',
-    mobile: 'mobile 1',
-    categories: 'categories 1',
-    contact: 100
-  }
-];
-
-import {
-  TabContent,
-  TabPane,
-  DropdownItem,
-  CardBody,
-  Collapse,
-  FormGroup,
-  Label,
-  Input,
-  FormFeedback,
-  FormText,
-  Card,
-  Col,
-  Row,
-  CardHeader,
-  CardTitle,
-  Button,
-  DropdownMenu,
-  ModalBody,
-  Table,
-  Modal,
-  ModalHeader,
-  ModalFooter
-} from 'reactstrap';
+import '../navigation/navigation.scss';
+import SelectCustomer from './select-customer/select-customer';
+import SelectReward from './select-reward/select-reward';
+import CreateLandingPage from './create-landingpage/create-landingpage';
+import CreateContent from './create-content/create-content';
+import Review from './review/review';
+import { TabContent, TabPane, DropdownItem, Card, Col, Row, Button } from 'reactstrap';
 import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
 
 import classnames from 'classnames';
-export interface IFaqSectionProps {
-  onClick: Function;
-}
+export interface IFaqSectionProps {}
 
 export interface IFaqSectionState {
   activeTab: string;
@@ -159,11 +79,6 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
         activeTab: tab
       });
     }
-    if (tab > 1) {
-      this.props.onClick(true);
-    } else {
-      this.props.onClick(false);
-    }
   };
   onClick = () => {
     this.setState(prevState => ({
@@ -208,7 +123,7 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
   };
 
   render() {
-    const { testMail, activeTab, listUser, endTab } = this.state;
+    const { endTab } = this.state;
 
     return (
       <Fragment>
@@ -282,32 +197,32 @@ export default class FaqSection extends Component<IFaqSectionProps, IFaqSectionS
               {/* Tab Content */}
               <TabContent activeTab={this.state.activeTab}>
                 <TabPane tabId="1">
-                  <TabDetail1 />
+                  <SelectCustomer />
                   <div className="mt-5" />
                   <div className="clearfix" />
                 </TabPane>
                 {/* task 2  */}
                 <TabPane tabId="2">
-                  <TabDetail2 />
+                  <SelectReward />
                   <div className="mt-5" />
                   <div className="clearfix" />
                 </TabPane>
                 {/* task 3 */}
                 <TabPane tabId="3">
-                  <TabDetail3 />
+                  <CreateLandingPage />
                   <div className="mt-5" />
                   <div className="clearfix" />
                 </TabPane>
                 {/* task 4  */}
                 <TabPane tabId="4">
                   <div className="add-content">
-                    <TabDetail4 value="helle" />
+                    <CreateContent />
                   </div>
                   <div className="mt-5" />
                   <div className="clearfix" />
                 </TabPane>
                 <TabPane tabId="5">
-                  <TabDetail5 />
+                  <Review />
                 </TabPane>
               </TabContent>
             </Row>

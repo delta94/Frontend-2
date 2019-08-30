@@ -1,5 +1,5 @@
 import { TabPane, Row, Col, CardBody, FormGroup, Label, Input, Card, CardTitle, Button } from 'reactstrap';
-import '../../style/campaign.scss';
+import '../review/review.scss';
 
 import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
 import React, { Fragment, Component, useState } from 'react';
@@ -56,16 +56,16 @@ const dumpData = [
   }
 ];
 
-export interface TabDetail5Props {}
+export interface ReviewProps {}
 
-export interface TabDetail5State {
+export interface ReviewState {
   activeTab: string;
   displayVoucher: string;
   gift: Object;
   testMail: string;
 }
-class TabDetail5 extends React.Component<TabDetail5Props, TabDetail5State> {
-  state: TabDetail5State = {
+class Review extends React.Component<ReviewProps, ReviewState> {
+  state: ReviewState = {
     activeTab: '1',
     displayVoucher: 'display-voucher',
     gift: {},
@@ -164,4 +164,4 @@ class TabDetail5 extends React.Component<TabDetail5Props, TabDetail5State> {
   }
 }
 
-export default TabDetail5;
+export default Review;
