@@ -94,7 +94,8 @@
 .grid-border {
   // background-color: white;
   display: grid;
-  grid-template-columns: auto auto auto auto;
+  grid-template-columns: 25% 25% 25% 25%;
+  margin-right: 30px;
   grid-column-gap: 10px;
 }
 

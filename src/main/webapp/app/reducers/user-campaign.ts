@@ -46,6 +46,7 @@ export type UserCampaignState = Readonly<typeof initialState>;
 export default (state: UserCampaignState = initialState, action): UserCampaignState => {
   switch (action.type) {
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_ID):
+    case REQUEST(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_STATUS):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS):
       return {
         ...state
@@ -80,6 +81,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
         showUpdateSuccessAlert: false
       };
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_ID):
+    case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_STATUS):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS):
       return {
         ...state
@@ -112,6 +114,13 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
         loading: false
       };
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_ID):
+    case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_STATUS):
+      console.log('aaaaaaaaaaaaaaaaa' + action.payload.data);
+      return {
+        ...state,
+        loading: false,
+        camps: action.payload.data
+      };
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS):
       console.log(action.payload.data);
       return {

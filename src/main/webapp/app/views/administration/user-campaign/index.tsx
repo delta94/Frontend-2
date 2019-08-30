@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch } from 'react-router-dom';
-import CampaignManagement from './campaign-management';
+import CampaignManagement from './list/campaign-management';
 import CreateCampagin from './campaign-create';
 
 import ErrorBoundaryRoute from 'app/common/error/error-boundary-route';
