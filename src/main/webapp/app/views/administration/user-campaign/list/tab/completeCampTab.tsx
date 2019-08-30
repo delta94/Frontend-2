@@ -225,7 +225,7 @@ class CompleteCampTab extends React.Component<ICompleteCampTabProps, ICompleteCa
                         </div>
                       </div>
                       <div className="camp-bottom-right">
-                        <div className="quantity-value">{item.contactNumber} </div>
+                        <div className="quantity-value">{item.contactNumber} contacts </div>
                         <div className="time-value">
                           {' '}
                           {item.fromDate}/{item.toDate}

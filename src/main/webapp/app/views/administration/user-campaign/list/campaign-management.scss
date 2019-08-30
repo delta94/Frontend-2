@@ -19,14 +19,6 @@
   border-bottom: 2px solid #545cd8;
 }
 
-// .grid-container-total {
-//   display: grid;
-//   grid-gap: 10px;
-//   grid-template-columns: 25% 25% 25% 25%;
-//   background: none;
-
-// }
-
 .grid-item {
   display: grid;
   background-color: #ffffff;
@@ -348,4 +340,9 @@ $color_border: rgba(206, 206, 206, 0.687);
 .card-header {
   margin-bottom: 30px !important;
   background: none !important;
+}
+
+.col-md-12 {
+  padding-right: 0;
+  padding-left: 0;
 }
