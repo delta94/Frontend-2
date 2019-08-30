@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircle, faClock, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Loader as LoaderAnim } from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import {
@@ -196,7 +197,9 @@ class AllCampTab extends React.Component<IAllCampTabProps, IAllCampTabState> {
                     <div className="camp-top">
                       <div className="camp-title"> {item.name}</div>
                       <div className="camp-status">
-                        {item.status && item.status == 0 ? (
+                        {' '}
+                        <FontAwesomeIcon icon={faCircle} />
+                        {item.status && item.status === 0 ? (
                           <Translate contentKey="campaign.status.pause" />
                         ) : item.status && item.status == 1 ? (
                           <Translate contentKey="campaign.status.action" />
@@ -210,10 +213,10 @@ class AllCampTab extends React.Component<IAllCampTabProps, IAllCampTabState> {
                       <div className="camp-bottom-left">
                         <div className="quantity">
                           {' '}
-                          <Translate contentKey="campaign.quantity" />{' '}
+                          <FontAwesomeIcon icon={faUser} /> <Translate contentKey="campaign.quantity" />{' '}
                         </div>
                         <div className="range-time">
-                          <Translate contentKey="campaign.time" />{' '}
+                          <FontAwesomeIcon icon={faClock} /> <Translate contentKey="campaign.time" />{' '}
                         </div>
                       </div>
                       <div className="camp-bottom-right">

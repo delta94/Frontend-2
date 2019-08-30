@@ -46,11 +46,15 @@
 .camp-title {
   width: 100%;
   font-weight: 500;
-  font-size: 19px;
+  font-size: 16px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
 }
 
 .camp-status {
   font-size: 12px;
+  line-height: 22px;
   color: limegreen;
 }
 
@@ -62,7 +66,7 @@
 .camp-top {
   width: 100%;
   border-bottom: 1px solid #dedede;
-  padding-bottom: 10px;
+  padding-bottom: 15px;
 }
 
 .camp-bottom-right {
@@ -74,7 +78,7 @@
 }
 
 .camp-bottom-left {
-  width: 40%;
+  width: 45%;
 }
 
 .modal-header,
@@ -345,4 +349,10 @@ $color_border: rgba(206, 206, 206, 0.687);
 .col-md-12 {
   padding-right: 0;
   padding-left: 0;
+}
+.card-header > .nav {
+  font-size: 15px;
+}
+.card-header > .nav .nav-link.active {
+  color: #3866dd;
 }

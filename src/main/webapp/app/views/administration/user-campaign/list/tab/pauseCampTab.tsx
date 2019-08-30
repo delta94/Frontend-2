@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircle, faUser, faClock } from '@fortawesome/free-solid-svg-icons';
 import { Loader as LoaderAnim } from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import {
@@ -196,14 +197,9 @@ class PauseCampTab extends React.Component<IPauseCampTabProps, IPauseCampTabStat
                   >
                     <div className="camp-top">
                       <div className="camp-title"> {item.name}</div>
-                      <div className="camp-status">
-                        {item.status && item.status == 0 ? (
-                          <Translate contentKey="campaign.status.pause" />
-                        ) : item.status && item.status == 1 ? (
-                          <Translate contentKey="campaign.status.action" />
-                        ) : (
-                          <Translate contentKey="campaign.status.complete" />
-                        )}
+                      <div className="camp-status" style={{ color: '#97A3B4' }}>
+                        <FontAwesomeIcon icon={faCircle} />
+                        <Translate contentKey="campaign.status.pause" />
                       </div>
                     </div>
 
@@ -211,9 +207,10 @@ class PauseCampTab extends React.Component<IPauseCampTabProps, IPauseCampTabStat
                       <div className="camp-bottom-left">
                         <div className="quantity">
                           {' '}
-                          <Translate contentKey="campaign.quantity" />{' '}
+                          <FontAwesomeIcon icon={faUser} /> <Translate contentKey="campaign.quantity" />{' '}
                         </div>
                         <div className="range-time">
+                          <FontAwesomeIcon icon={faClock} />
                           <Translate contentKey="campaign.time" />{' '}
                         </div>
                       </div>

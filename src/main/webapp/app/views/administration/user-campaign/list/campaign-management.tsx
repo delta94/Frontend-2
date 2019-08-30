@@ -34,7 +34,6 @@ import {
 } from 'reactstrap';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-// import './../list/campaign-management.scss';
 import './../list/campaign-management.scss';
 import { getCampaignInfo, getCampaignInfoByStatus } from 'app/actions/user-campaign';
 import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
@@ -83,7 +82,6 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
   }
 
   toggle(tab) {
-    console.log(typeof tab);
     if (tab === '1') {
       this.props.getCampaignInfoByStatus(DISPLAY_STATUS_ALL);
     } else if (tab === '2') {

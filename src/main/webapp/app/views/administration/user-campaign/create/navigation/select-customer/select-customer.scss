@@ -82,9 +82,6 @@
   grid-template-rows: auto auto;
 }
 
-.camp-title,
-.camp-status,
-.quantity,
 .range-time {
   float: left;
 }
@@ -93,11 +90,6 @@
   float: right;
 }
 
-.camp-title {
-  width: 100%;
-  font-weight: 500;
-  font-size: 19px;
-}
 #userCreate .search-nav .col-md-3 :hover {
   border-bottom: 2px solid blue;
 }
@@ -108,10 +100,6 @@
   border: solid 1px gray;
   word-break: break-word;
 }
-
-#userCreate .camp-title,
-#userCreate .camp-status,
-#userCreate .quantity,
 #userCreate .range-time {
   float: left;
 }
@@ -126,73 +114,6 @@
   color: black;
 }
 
-.camp-status {
-  font-size: 12px;
-  color: limegreen;
-}
-
-.quantity,
-.range-time {
-  font-size: 14px;
-  color: gray;
-}
-.camp-top {
-  width: 100%;
-  border-bottom: 1px solid #dedede;
-  padding-bottom: 10px;
-}
-#userCreate .camp-top {
-  width: 100%;
-  border-bottom: none !important;
-}
-
-#userCreate .camp-status {
-  font-size: 8px;
-  color: limegreen;
-}
-
-#userCreate .quantity,
-#userCreate .range-time {
-  font-size: 11px;
-  color: #dedede;
-}
-#userCreate .camp-top {
-  width: 100%;
-}
-#userCreate .camp-bottom-right-top {
-  font-size: 11px;
-  float: right;
-}
-#userCreate .camp-bottom-right-bot {
-  width: 50%;
-  font-size: 11px;
-  float: right;
-}
-.camp-bottom-right {
-  width: auto;
-}
-.camp-bottom {
-  display: flex;
-  margin-top: 7px;
-}
-
-.camp-bottom-left {
-  width: 40%;
-}
-
-// .camp-bottom {
-//   display: grid;
-//   grid-auto-columns: 33% auto;
-// }
-
-// .modal-grid{
-// // .modal-grid-child1,
-// // .modal-grid-child1-top {
-//   display: grid;
-// }
-// .modal-grid {
-//   grid-auto-rows: auto auto;
-// }
 .modal-header,
 .modal-footer {
   background: white;
@@ -204,20 +125,12 @@
   margin-bottom: 10px;
 }
 
-// .modal-grid-child1-bottom1,
-// .modal-grid-child1-bottom2,
-// .modal-grid-child1-bottom3,
-// .modal-grid-child1-bottom4 {
-//   grid-auto-rows: 50% auto;
-// }
 .modal-grid-child1-bottom {
   font-weight: 500;
   color: black;
   margin-left: 21px;
 }
-//   grid-auto-columns: 15% 30% 30% 25%;
-//   grid-column-start: 5px;
-// }
+
 .modal-info {
   display: flex;
 }
@@ -255,7 +168,6 @@
 #userCreate .label-text {
   color: grey;
 }
-//event Click
 #userCreate .image-tites {
   width: 24px;
   float: right;

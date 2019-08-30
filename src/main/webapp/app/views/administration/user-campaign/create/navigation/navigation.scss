@@ -81,9 +81,6 @@
   height: auto;
   grid-template-rows: auto auto;
 }
-.camp-title,
-.camp-status,
-.quantity,
 .range-time {
   float: left;
 }
@@ -92,11 +89,6 @@
   float: right;
 }
 
-.camp-title {
-  width: 100%;
-  font-weight: 500;
-  font-size: 19px;
-}
 #userCreate .search-nav .col-md-3 :hover {
   border-bottom: 2px solid blue;
 }
@@ -109,7 +101,6 @@
 }
 
 #userCreate .camp-title,
-#userCreate .camp-status,
 #userCreate .quantity,
 #userCreate .range-time {
   float: left;
@@ -123,60 +114,6 @@
   font-size: 15px;
   font-weight: 500;
   color: black;
-}
-
-.camp-status {
-  font-size: 12px;
-  color: limegreen;
-}
-
-.quantity,
-.range-time {
-  font-size: 14px;
-  color: gray;
-}
-.camp-top {
-  width: 100%;
-  border-bottom: 1px solid #dedede;
-  padding-bottom: 10px;
-}
-#userCreate .camp-top {
-  width: 100%;
-  border-bottom: none !important;
-}
-
-#userCreate .camp-status {
-  font-size: 8px;
-  color: limegreen;
-}
-
-#userCreate .quantity,
-#userCreate .range-time {
-  font-size: 11px;
-  color: #dedede;
-}
-#userCreate .camp-top {
-  width: 100%;
-}
-#userCreate .camp-bottom-right-top {
-  font-size: 11px;
-  float: right;
-}
-#userCreate .camp-bottom-right-bot {
-  width: 50%;
-  font-size: 11px;
-  float: right;
-}
-.camp-bottom-right {
-  width: auto;
-}
-.camp-bottom {
-  display: flex;
-  margin-top: 7px;
-}
-
-.camp-bottom-left {
-  width: 40%;
 }
 
 // .camp-bottom {
