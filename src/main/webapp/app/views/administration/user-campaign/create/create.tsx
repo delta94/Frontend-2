@@ -53,7 +53,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
             <Container fluid className="container-create">
               <div className="title-page">
                 <div className="title-head">
-                  <Translate contentKey="" />
+                  {/* <Translate contentKey="" /> */}
                   Danh Sách Chiến Dịch > Tạo Chiến Dịch M2M
                   <Link to={'/admin/user-campaign'} className="pe-7s-close-circle" />
                 </div>
