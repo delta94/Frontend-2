@@ -6,6 +6,7 @@ import { IUser, defaultValue } from 'app/common/model/user.model';
 import { USER_CAMPAIGN_ACTION_TYPES } from 'app/constants/user-campaign';
 import { ICampaignInfo } from 'app/common/model/infomation-campaign.model';
 import { ICampaign } from 'app/common/model/campaign.model';
+import { ICampaignId } from 'app/common/model/campaign-id.model';
 
 export interface IlistCampaignInfo {
   id?: string;
@@ -29,6 +30,7 @@ const initialState = {
 
   listCampaignInfo: [] as ReadonlyArray<ICampaignInfo>,
   listStepCampaign: [] as ReadonlyArray<IStepCampaign>,
+  camp: [] as ReadonlyArray<ICampaignId>,
   camps: [] as ReadonlyArray<ICampaign>,
   users: [] as ReadonlyArray<IUser>
 };
@@ -80,12 +82,17 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
         loading: false
       };
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_ID):
+      return {
+        ...state,
+        loading: false,
+        camp: action.payload.data
+      };
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_STATUS):
       return {
         ...state,
         loading: false,
         camps: action.payload.data,
-        totalElements: action.payload.data.totalElements
+        totalElements: action.payload.data.total
       };
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS):
       console.log(action.payload.data);

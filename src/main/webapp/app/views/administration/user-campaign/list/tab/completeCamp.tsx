@@ -30,7 +30,7 @@ import {
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
-import { getCampaignInfo, getCampaignInfoByStatus } from 'app/actions/user-campaign';
+import { getCampaignInfo, getCampaignInfoByStatus, getCampaignInfoById } from 'app/actions/user-campaign';
 
 import { DISPLAY_STATUS_ALL, DISPLAY_STATUS_PAUSE, DISPLAY_STATUS_ACTION, DISPLAY_STATUS_COMPLETE } from 'app/constants/common';
 
@@ -53,6 +53,7 @@ class CompleteCamp extends React.Component<ICompleteCampProps, ICompleteCampStat
     super(props);
 
     this.toggle = this.toggle.bind(this);
+    this.onShow = this.onShow.bind(this);
     this.state = {
       loading: false,
       modal: false,
@@ -72,7 +73,12 @@ class CompleteCamp extends React.Component<ICompleteCampProps, ICompleteCampStat
   // componentDidMount() {
   //   this.props.getCampaignInfoByStatus(2);
   // }
-
+  onShow(id) {
+    this.setState({
+      modal: !this.state.modal
+    });
+    this.props.getCampaignInfoById(id);
+  }
   toggle(tab) {
     if (this.state.activeTab !== tab) {
       this.setState({
@@ -82,16 +88,22 @@ class CompleteCamp extends React.Component<ICompleteCampProps, ICompleteCampStat
   }
 
   render() {
-    const { loading, camps } = this.props;
+    const { loading, camps, camp } = this.props;
+    const closeBtn = (
+      <button className="close" onClick={this.onShow}>
+        &times;
+      </button>
+    );
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
     return (
       <div className="grid-container-total">
         <Loader message={spinner1} show={loading} priority={1}>
           <Fragment>
-            <Modal isOpen={this.state.modal} fade={false} toggle={this.toggle}>
-              <ModalHeader toggle={this.toggle}>
-                <span> </span> <span className="camp-modal-status">{}</span>
+            <Modal isOpen={this.state.modal} fade={false} onClick={this.onShow}>
+              <ModalHeader toggle={this.toggle} close={closeBtn}>
+                Thông tin chiến dịch
               </ModalHeader>
+
               <ModalBody>
                 <div className="modal-grid">
                   <div className="modal-grid-child">
@@ -176,14 +188,7 @@ class CompleteCamp extends React.Component<ICompleteCampProps, ICompleteCampStat
                   </div>
                 </div>
               </ModalBody>
-              <ModalFooter>
-                <Button color="primary" onClick={this.toggle}>
-                  Do Something
-                </Button>{' '}
-                <Button color="secondary" onClick={this.toggle}>
-                  Cancel
-                </Button>
-              </ModalFooter>
+              <ModalFooter />
             </Modal>
 
             {/* Body Content */}
@@ -197,7 +202,7 @@ class CompleteCamp extends React.Component<ICompleteCampProps, ICompleteCampStat
                     <div
                       className="grid-item"
                       onClick={() => {
-                        this.toggle(item.id);
+                        this.onShow(item.id);
                       }}
                     >
                       <div className="camp-top">
@@ -242,10 +247,11 @@ class CompleteCamp extends React.Component<ICompleteCampProps, ICompleteCampStat
 
 const mapStateToProps = ({ userCampaign }: IRootState) => ({
   camps: userCampaign.camps,
-  loading: userCampaign.loading
+  loading: userCampaign.loading,
+  camp: userCampaign.camp
 });
 
-const mapDispatchToProps = { getCampaignInfo, getCampaignInfoByStatus };
+const mapDispatchToProps = { getCampaignInfo, getCampaignInfoByStatus, getCampaignInfoById };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

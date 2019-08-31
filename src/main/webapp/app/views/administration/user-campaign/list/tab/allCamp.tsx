@@ -52,6 +52,7 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
     super(props);
 
     this.toggle = this.toggle.bind(this);
+    this.onShow = this.onShow.bind(this);
     this.state = {
       loading: false,
       modal: false,
@@ -64,7 +65,12 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
       transformWidth: 400
     };
   }
-
+  onShow(id) {
+    this.setState({
+      modal: !this.state.modal
+    });
+    this.props.getCampaignInfoById(id);
+  }
   toggle(tab) {
     if (this.state.activeTab !== tab) {
       this.setState({
@@ -84,15 +90,20 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
   // }
 
   render() {
-    const { loading, camps } = this.props;
+    const { loading, camps, camp } = this.props;
+    const closeBtn = (
+      <button className="close" onClick={this.onShow}>
+        &times;
+      </button>
+    );
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
     return (
       <div className="grid-container-total">
         <Loader message={spinner1} show={loading} priority={1}>
           <Fragment>
-            <Modal isOpen={this.state.modal} fade={false} toggle={this.toggle}>
-              <ModalHeader toggle={this.toggle}>
-                <span> </span> <span className="camp-modal-status">{}</span>
+            <Modal isOpen={this.state.modal} fade={false}>
+              <ModalHeader toggle={this.toggle} close={closeBtn}>
+                Thông tin chiến dịch
               </ModalHeader>
               <ModalBody>
                 <div className="modal-grid">
@@ -178,14 +189,7 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
                   </div>
                 </div>
               </ModalBody>
-              <ModalFooter>
-                <Button color="primary" onClick={this.toggle}>
-                  Do Something
-                </Button>{' '}
-                <Button color="secondary" onClick={this.toggle}>
-                  Cancel
-                </Button>
-              </ModalFooter>
+              <ModalFooter />
             </Modal>
 
             {/* Body Content */}
@@ -199,7 +203,7 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
                     <div
                       className="grid-item"
                       onClick={() => {
-                        this.toggle(item.id);
+                        this.onShow(item.id);
                       }}
                     >
                       <div className="camp-top">
@@ -251,6 +255,7 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
 
 const mapStateToProps = ({ userCampaign }: IRootState) => ({
   camps: userCampaign.camps,
+  camp: userCampaign.camp,
   loading: userCampaign.loading
 });
 
