@@ -56,6 +56,7 @@
   font-size: 12px;
   line-height: 22px;
   color: limegreen;
+  font-family: Roboto;
 }
 
 .quantity,
@@ -344,6 +345,7 @@ $color_border: rgba(206, 206, 206, 0.687);
 .card-header {
   margin-bottom: 30px !important;
   background: none !important;
+  padding: 0;
 }
 
 .col-md-12 {
@@ -352,6 +354,7 @@ $color_border: rgba(206, 206, 206, 0.687);
 }
 .card-header > .nav {
   font-size: 15px;
+  margin-left: 0;
 }
 .card-header > .nav .nav-link.active {
   color: #3866dd;
