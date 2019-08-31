@@ -5,21 +5,30 @@ import { Translate } from 'react-jhipster';
 import Ionicon from 'react-ionicons';
 import React, { Fragment, Component, useState } from 'react';
 import IncorporationForm from './customer-dialog/button-dialog/button-dialog';
-
+import { connect } from 'react-redux';
+import { IRootState } from 'app/reducers';
 import ReactPaginate from 'react-paginate';
-
+import { getCustomer } from '../../../../../../actions/user-campaign';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export interface SelectCustomerProps {}
+export interface SelectCustomerProps extends StateProps, DispatchProps {}
 
 export interface SelectCustomerState {
   listUser: any[];
   modal: boolean;
   activeTab: string;
+
+  // set param to get list
+  activePage: string;
+  pageSize: string;
+  category: string;
 }
 class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomerState> {
   state: SelectCustomerState = {
     activeTab: '1',
+    activePage: '0',
+    pageSize: '5',
+    category: '',
     listUser: [
       {
         name: 'tuan',
@@ -36,10 +45,12 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
     ],
     modal: false
   };
+
   onClick = () => {
     this.setState(prevState => ({
       modal: !prevState.modal
     }));
+    this.props.getCustomer(this.state.activePage, this.state.pageSize, this.state.category);
   };
   toggle = tab => {
     if (this.state.activeTab !== tab) {
@@ -190,83 +201,20 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
               );
             })}
         </Row>
-        <Row className="row-nav">
-          <Col md="4">
-            <div className="grid-items-pop">
-              <div className="title-contract">
-                <div className="camp-titles"> Giám Đốc </div>
-                <div className="camp-top">
-                  <label className="camp-title-click">Tổng Contract :100</label>
-                </div>
-              </div>
-              <div className="boder-create-new">
-                <div>
-                  <i className="pe-7s-mail"> Email</i>
-                  <label className="label-icon">100</label>
-                </div>
-                <div>
-                  <i className="pe-7s-call"> SĐT </i>
-                  <label className="label-icon">100</label>
-                </div>
-                <div>
-                  {' '}
-                  <img
-                    className="img-facebook"
-                    src="https://cdn3.iconfinder.com/data/icons/facebook-ui-flat/48/Facebook_UI-03-512.png"
-                  />{' '}
-                  FB<label className="label-icon">100</label>
-                </div>
-                <div>
-                  {' '}
-                  <img
-                    className="img-zalo"
-                    src="http://brasol.logozee.com/public/ckeditor/uploads/brasol.vn-logo-zalo-vector-logo-zalo-vector.png"
-                  />{' '}
-                  Zalo<label className="label-icon">100</label>
-                </div>
-              </div>
-            </div>
-          </Col>
-          <Col md="4">
-            <div className="grid-items-pop">
-              <div className="title-contract">
-                <div className="camp-titles"> Giám Đốc </div>
-                <div className="camp-top">
-                  <label className="camp-title-click">Tổng Contract :100</label>
-                </div>
-              </div>
-              <div className="boder-create-new">
-                <div>
-                  <i className="pe-7s-mail"> Email</i>
-                  <label className="label-icon">100</label>
-                </div>
-                <div>
-                  <i className="pe-7s-call"> SĐT </i>
-                  <label className="label-icon">100</label>
-                </div>
-                <div>
-                  {' '}
-                  <img
-                    className="img-facebook"
-                    src="https://cdn3.iconfinder.com/data/icons/facebook-ui-flat/48/Facebook_UI-03-512.png"
-                  />{' '}
-                  FB<label className="label-icon">100</label>
-                </div>
-                <div>
-                  {' '}
-                  <img
-                    className="img-zalo"
-                    src="http://brasol.logozee.com/public/ckeditor/uploads/brasol.vn-logo-zalo-vector-logo-zalo-vector.png"
-                  />{' '}
-                  Zalo<label className="label-icon">100</label>
-                </div>
-              </div>
-            </div>
-          </Col>
-        </Row>
       </Fragment>
     );
   }
 }
+const mapStateToProps = ({ userCampaign }: IRootState) => ({
+  loading: userCampaign.loading
+});
 
-export default SelectCustomer;
+const mapDispatchToProps = { getCustomer };
+
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SelectCustomer);
