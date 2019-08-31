@@ -22,21 +22,19 @@ export const getCampaignInfoByIdService = id => {
 };
 
 export const getCampaignInfoByStatusService = status => {
-  console.log('đã vảo service' + status);
   return axios.get(`v1/campaigns?status=${status}`);
 };
 
 export const getUsersService = (page, pageSize, category?: string, textSearch?: string) => {
-  // const urlCategory = category ? category.map(cate => cate.id) : '';
-  // if (category) {
-  //   console.log(urlCategory.join(','));
-  // }
   const requestUrl = `${apiUrl}${`?page=${page}&pageSize=${pageSize}&category=${category}&textSearch=${textSearch}`}`;
-  // const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}&category=${category ? urlCategory.join(',') : ''}` : ''}`;
   return axios.get<IUser>(requestUrl);
 };
 export const getInformationService = () => {
   return axios.get('v1/campaignTypes');
+};
+
+export const getStep = id => {
+  return axios.get(` v1/campaignType/${id}/step`);
 };
 
 // get typeName category

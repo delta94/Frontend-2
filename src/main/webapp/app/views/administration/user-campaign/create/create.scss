@@ -6,19 +6,38 @@
   display: none !important;
 }
 #userCreate .name-title {
-  font: message-box;
-  font-size: 16px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 13px;
+  line-height: 27px;
   margin-left: 15px;
+  margin-bottom: 1px;
+  /* identical to box height, or 208% */
+
+  letter-spacing: 1px;
+
+  color: #595c82;
 }
 #userCreate .name-titles {
-  font: message-box;
-  font-size: 16px;
-  margin-left: 12px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 13px;
+  line-height: 27px;
+  margin-bottom: 1px;
+  /* identical to box height, or 208% */
+  margin-left: 0px;
+  letter-spacing: 1px;
+
+  color: #595c82;
 }
 #userCreate #exampleText {
   margin-top: 0px;
   margin-bottom: 0px;
-  height: 166px;
+  height: 132px;
+
+  border-radius: 3px;
   resize: none;
 }
 #userCreate .time {
@@ -317,7 +336,7 @@
 }
 #userCreate .container-create {
   margin-top: -10px;
-  margin-left: -25px;
+  margin-left: 0px;
   padding-top: 0px;
 }
 #userCreate .lnr-chevron-down {
@@ -327,7 +346,7 @@
 #userCreate .title-page {
   width: 104, 5%;
   padding: 15px;
-  margin: -25px -29px 19px;
+  margin: -18px -29px 19px;
   position: relative;
   background: rgba(255, 255, 255, 0.55);
 
@@ -335,8 +354,13 @@
   align-items: center;
 }
 #userCreate .title-head {
-  font-size: 1.25rem;
-  font-weight: 400;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 23px;
+
+  color: #2d3843;
 }
 #userCreate .pe-7s-close-circle {
   float: right;
@@ -582,9 +606,18 @@ $color_border: rgba(206, 206, 206, 0.687);
 }
 
 .row-content-info {
-  height: 600px;
+  height: 620px;
   background-color: white;
 }
 #userCreate .app-inner-layout {
   display: flex;
+}
+#userCreate .card-title {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 13px;
+  line-height: 27px;
+  /* identical to box height, or 208% */
+  letter-spacing: 1px;
 }
