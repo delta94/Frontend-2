@@ -42,7 +42,6 @@ export class Responsive extends Component<IResponsiveProps, IResponsiveState> {
   }
 
   onClick = name => {
-    console.log(name);
     this.setState({
       isActive: !this.state.isActive,
       nameScript: name

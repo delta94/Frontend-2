@@ -1,31 +1,18 @@
 import React, { Fragment, Component } from 'react';
 import { connect } from 'react-redux';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { Input, Card, Col, Container, Row, CardTitle, Label, InputGroupAddon } from 'reactstrap';
-import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
-
-// import CampaignScrip from './component/campaign-script';
-import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import FaqSection from './component/campaign-create-navigation';
-import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
+import { Input, Card, Col, Row, Label } from 'reactstrap';
+import { Translate } from 'react-jhipster';
 import { IRootState } from 'app/reducers';
-import Sticky from 'react-stickynode';
 import PageTitleAlt from '../../../../../layout/AppMain/PageTitleAlt';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import ReactPaginate from 'react-paginate';
-import SweetAlert from 'sweetalert-react';
 import { Loader as LoaderAnim } from 'react-loaders';
-import DatePicker from 'react-datepicker';
 import Loader from 'react-loader-advanced';
-import cx from 'classnames';
 import '../info/info.scss';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import moment, { Moment } from 'moment';
-import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
+import { DateRangePicker } from 'react-dates';
 import Script from '../scipts/script';
-import Navigation from '../navigation/navigation';
 
 export interface IinfoProps extends StateProps, DispatchProps {
   onClick: Function;
@@ -33,7 +20,6 @@ export interface IinfoProps extends StateProps, DispatchProps {
 
 export interface IinfoPropsState {
   nameScripts: string;
-  isActive: boolean;
   disableScreen: string;
   ValidateName: string;
   countError: any;
@@ -52,7 +38,6 @@ export interface IinfoPropsState {
 
 export class Info extends React.Component<IinfoProps, IinfoPropsState> {
   state: IinfoPropsState = {
-    isActive: false,
     nameScripts: '',
     ValidateName: '',
     countError: 0,
@@ -141,7 +126,6 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
 
   render() {
     const { loading } = this.props;
-    const { startDate, endDate, focusedInput } = this.state;
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
 
     return (

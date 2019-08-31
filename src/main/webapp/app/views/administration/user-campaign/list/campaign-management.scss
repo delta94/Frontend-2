@@ -50,6 +50,8 @@
   font-family: Roboto;
   font-style: normal;
   font-weight: 500;
+  color: black;
+  margin-bottom: 5px;
 }
 
 .camp-status {
@@ -72,6 +74,10 @@
 
 .camp-bottom-right {
   width: auto;
+  color: #343a40;
+  font-size: 13px;
+  line-height: 30px;
+  font-family: Roboto;
 }
 .camp-bottom {
   display: flex;
@@ -80,6 +86,10 @@
 
 .camp-bottom-left {
   width: 45%;
+  color: #97a3b4;
+  font-size: 13px;
+  line-height: 30px;
+  font-family: Roboto;
 }
 
 .modal-header,
@@ -338,9 +348,9 @@ $color_border: rgba(206, 206, 206, 0.687);
   padding-right: 0;
   padding-left: 0;
 }
-.card {
-  background: none !important;
-}
+// .card {
+//   background: none !important;
+// }
 
 .card-header {
   margin-bottom: 30px !important;
@@ -352,10 +362,24 @@ $color_border: rgba(206, 206, 206, 0.687);
   padding-right: 0;
   padding-left: 0;
 }
+.col-md-12 > .mb-3 {
+  background: none;
+}
 .card-header > .nav {
   font-size: 15px;
   margin-left: 0;
+  line-height: 18px;
 }
 .card-header > .nav .nav-link.active {
   color: #3866dd;
+}
+#user-management-page-heading {
+  margin-left: -30px;
+  margin-right: -30px;
+}
+h3 {
+  padding: 15px 30px;
+  line-height: 30px;
+  background: #f9fafb;
+  font-size: 20px;
 }

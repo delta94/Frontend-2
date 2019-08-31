@@ -37,10 +37,10 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import './../list/campaign-management.scss';
 import { getCampaignInfo, getCampaignInfoByStatus } from 'app/actions/user-campaign';
 import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
-import AllCampTab from './../list/tab/allCampTab';
-import ActionCampTab from './../list/tab/actionCampTab';
-import PauseCampTab from './../list/tab/pauseCampTab';
-import CompleteCampTab from './../list/tab/completeCampTab';
+import AllCamp from './tab/allCamp';
+import ActionCamp from './tab/actionCamp';
+import PauseCamp from './tab/pauseCamp';
+import CompleteCamp from './tab/completeCamp';
 
 import classnames from 'classnames';
 
@@ -106,102 +106,107 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
   // }
 
   render() {
-    const { match, loading, camps } = this.props;
+    const { match, loading, camps, totalElements } = this.props;
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
     return (
-      <div>
-        <Loader message={spinner1} show={loading} priority={1}>
-          {/* day la trang quan ly user */}
-          <h3 id="user-management-page-heading">
-            <Translate contentKey="campaign.title" />
-            <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity">
-              <FontAwesomeIcon icon="plus" /> <Translate contentKey="campaign.createCamp" />
-            </Link>
-          </h3>
-          <div />
-          <Fragment>
-            <ReactCSSTransitionGroup
-              component="div"
-              transitionName="TabsAnimation"
-              // transitionAppear={true}
-              transitionAppearTimeout={0}
-              transitionEnter={false}
-              transitionLeave={false}
-            >
-              <Container fluid>
-                <Row>
-                  <Col md="12">
-                    <Card tabs="true" className="mb-3">
-                      <CardHeader>
-                        <Nav justified>
-                          <NavItem>
-                            <NavLink
-                              href="javascript:void(0);"
-                              className={classnames({ active: this.state.activeTab === '1' })}
-                              onClick={() => {
-                                this.toggle('1');
-                              }}
-                            >
-                              <Translate contentKey="campaign.allCamps" />
-                            </NavLink>
-                          </NavItem>
-                          <NavItem>
-                            <NavLink
-                              href="javascript:void(0);"
-                              className={classnames({ active: this.state.activeTab === '2' })}
-                              onClick={() => {
-                                this.toggle('2');
-                              }}
-                            >
-                              <Translate contentKey="campaign.onAction" />
-                            </NavLink>
-                          </NavItem>
-                          <NavItem>
-                            <NavLink
-                              href="javascript:void(0);"
-                              className={classnames({ active: this.state.activeTab === '3' })}
-                              onClick={() => {
-                                this.toggle('3');
-                              }}
-                            >
-                              <Translate contentKey="campaign.onPause" />
-                            </NavLink>
-                          </NavItem>
-                          <NavItem>
-                            <NavLink
-                              href="javascript:void(0);"
-                              className={classnames({ active: this.state.activeTab === '4' })}
-                              onClick={() => {
-                                this.toggle('4');
-                              }}
-                            >
-                              <Translate contentKey="campaign.complete" />
-                            </NavLink>
-                          </NavItem>
-                        </Nav>
-                      </CardHeader>
+      <div id="campaign-management">
+        {/* day la trang quan ly user */}
+        <h3 id="user-management-page-heading">
+          <Translate contentKey="campaign.title" />
+          <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity">
+            <FontAwesomeIcon icon="plus" /> <Translate contentKey="campaign.createCamp" />
+          </Link>
+        </h3>
+        <div />
+        <Fragment>
+          <ReactCSSTransitionGroup
+            component="div"
+            transitionName="TabsAnimation"
+            // transitionAppear={true}
+            transitionAppearTimeout={0}
+            transitionEnter={false}
+            transitionLeave={false}
+          >
+            <Container fluid>
+              <Row>
+                <Col md="12">
+                  <Card tabs="true" className="mb-3">
+                    <CardHeader>
+                      <Nav justified>
+                        <NavItem>
+                          <NavLink
+                            href="javascript:void(0);"
+                            className={classnames({ active: this.state.activeTab === '1' })}
+                            onClick={() => {
+                              this.toggle('1');
+                            }}
+                          >
+                            <Translate contentKey="campaign.allCamps" /> {''}
+                            {this.props.totalElements}
+                          </NavLink>
+                        </NavItem>
+                        <NavItem>
+                          <NavLink
+                            href="javascript:void(0);"
+                            className={classnames({ active: this.state.activeTab === '2' })}
+                            onClick={() => {
+                              this.toggle('2');
+                            }}
+                          >
+                            <Translate contentKey="campaign.onAction" />
+                            {''}
+                            {this.props.totalElements}
+                          </NavLink>
+                        </NavItem>
+                        <NavItem>
+                          <NavLink
+                            href="javascript:void(0);"
+                            className={classnames({ active: this.state.activeTab === '3' })}
+                            onClick={() => {
+                              this.toggle('3');
+                            }}
+                          >
+                            <Translate contentKey="campaign.onPause" />
+                            {''}
+                            {this.props.totalElements}
+                          </NavLink>
+                        </NavItem>
+                        <NavItem>
+                          <NavLink
+                            href="javascript:void(0);"
+                            className={classnames({ active: this.state.activeTab === '4' })}
+                            onClick={() => {
+                              this.toggle('4');
+                            }}
+                          >
+                            <Translate contentKey="campaign.complete" />
+                            {''}
+                            {this.props.totalElements}
+                          </NavLink>
+                        </NavItem>
+                      </Nav>
+                    </CardHeader>
 
-                      <TabContent activeTab={this.state.activeTab}>
-                        <TabPane tabId="1">
-                          <AllCampTab />
-                        </TabPane>
-                        <TabPane tabId="2">
-                          <ActionCampTab />
-                        </TabPane>
-                        <TabPane tabId="3">
-                          <PauseCampTab />
-                        </TabPane>
-                        <TabPane tabId="4">
-                          <CompleteCampTab />
-                        </TabPane>
-                      </TabContent>
-                    </Card>
-                  </Col>
-                </Row>
-              </Container>
-            </ReactCSSTransitionGroup>
-          </Fragment>
-        </Loader>
+                    <TabContent activeTab={this.state.activeTab}>
+                      <TabPane tabId="1">
+                        <AllCamp />
+                      </TabPane>
+                      <TabPane tabId="2">
+                        <ActionCamp />
+                      </TabPane>
+                      <TabPane tabId="3">
+                        <PauseCamp />
+                      </TabPane>
+                      <TabPane tabId="4">
+                        <CompleteCamp />
+                      </TabPane>
+                    </TabContent>
+                  </Card>
+                </Col>
+              </Row>
+            </Container>
+          </ReactCSSTransitionGroup>
+        </Fragment>
       </div>
     );
   }
@@ -209,7 +214,8 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
 
 const mapStateToProps = ({ userCampaign }: IRootState) => ({
   camps: userCampaign.camps,
-  loading: userCampaign.loading
+  loading: userCampaign.loading,
+  totalElements: userCampaign.totalElements
 });
 
 const mapDispatchToProps = { getCampaignInfo, getCampaignInfoByStatus };

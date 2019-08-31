@@ -24,7 +24,6 @@ export const getCampaignInfo = () => {
 };
 
 export const getCampaignInfoByStatus = status => {
-  console.log('aaaaaaaaaaaaaaaaaaa' + status);
   return {
     type: USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_STATUS,
     payload: getCampaignInfoByStatusService(status)
@@ -32,6 +31,7 @@ export const getCampaignInfoByStatus = status => {
 };
 
 export const getCampaignInfoById = id => {
+  console.log('Đã vào service' + id);
   return {
     type: USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_ID,
     payload: getCampaignInfoByIdService(id)

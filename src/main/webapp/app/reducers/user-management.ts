@@ -42,7 +42,6 @@ export default (state: UserManagementState = initialState, action): UserManageme
       };
     case REQUEST(USER_MANAGE_ACTION_TYPES.FETCH_USER_CATEGORIES):
     case REQUEST(USER_MANAGE_ACTION_TYPES.FETCH_USERS):
-    // case REQUEST(USER_MANAGE_ACTION_TYPES.FETCH_LIST_USER):
     case REQUEST(USER_MANAGE_ACTION_TYPES.FETCH_USER):
     case REQUEST(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILE):
     case REQUEST(USER_MANAGE_ACTION_TYPES.UPLOAD_FILE):
@@ -53,8 +52,6 @@ export default (state: UserManagementState = initialState, action): UserManageme
         updateSuccess: false,
 
         loading: true
-        // totalItems: 0,
-        // totalElements: 0
       };
     case REQUEST(USER_MANAGE_ACTION_TYPES.CREATE_USER):
     case REQUEST(USER_MANAGE_ACTION_TYPES.UPDATE_USER):
@@ -75,7 +72,6 @@ export default (state: UserManagementState = initialState, action): UserManageme
     case FAILURE(USER_MANAGE_ACTION_TYPES.FETCH_USERS):
     case FAILURE(USER_MANAGE_ACTION_TYPES.FETCH_USER):
     case FAILURE(USER_MANAGE_ACTION_TYPES.FETCH_USER_CATEGORIES):
-    // case FAILURE(USER_MANAGE_ACTION_TYPES.FETCH_LIST_USER):
     case FAILURE(USER_MANAGE_ACTION_TYPES.FETCH_ROLES):
     case FAILURE(USER_MANAGE_ACTION_TYPES.CREATE_USER):
     case FAILURE(USER_MANAGE_ACTION_TYPES.UPDATE_USER):
@@ -114,7 +110,6 @@ export default (state: UserManagementState = initialState, action): UserManageme
         categories: action.payload.data.content.categories,
         totalItems: action.payload.data.content.totalItems,
         totalElements: action.payload.data.totalElements
-        // totalItems: action.payload.headers['x-total-count']
       };
     case SUCCESS(USER_MANAGE_ACTION_TYPES.FETCH_SEARCH_USER):
       console.log(action);
@@ -122,17 +117,9 @@ export default (state: UserManagementState = initialState, action): UserManageme
         ...state,
         loading: false,
         users: action.payload.data.content,
-        // categories: action.payload.data.content.categories,
-        // totalItems: action.payload.data.content.totalItems,
         totalElements: action.payload.data.totalElements
-        // totalItems: action.payload.headers['x-total-count']
       };
-    // case SUCCESS(USER_MANAGE_ACTION_TYPES.FETCH_LIST_USER):
-    //   console.log(action);
-    //   return {
-    //     ...state,
-    //     listUsers: action
-    //   };
+
     case SUCCESS(USER_MANAGE_ACTION_TYPES.FETCH_USER):
       return {
         ...state,

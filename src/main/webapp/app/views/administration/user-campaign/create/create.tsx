@@ -9,6 +9,7 @@ import cx from 'classnames';
 import '../create/create.scss';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Translate, translate } from 'react-jhipster';
+import { ULTILS_ACTION_TYPES } from '../../../../constants/ultils';
 
 export interface ICreateProps extends StateProps, DispatchProps {}
 
@@ -22,7 +23,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
   state: ICreateState = {
     collapse: true,
     isActive: false,
-    isDisplayTable: 'display-complete'
+    isDisplayTable: ULTILS_ACTION_TYPES.DISPLAY_NAVIGATION
   };
   toggle = () => {
     this.setState({
@@ -30,7 +31,6 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
     });
   };
   isDisPlayInfo = e => {
-    console.log(e);
     this.setState({
       isDisplayTable: e
     });
@@ -53,14 +53,13 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
             <Container fluid className="container-create">
               <div className="title-page">
                 <div className="title-head">
-                  {/* <Translate contentKey="" /> */}
-                  Danh Sách Chiến Dịch > Tạo Chiến Dịch M2M
+                  <Translate contentKey="campaign.title-create-screen" />
                   <Link to={'/admin/user-campaign'} className="pe-7s-close-circle" />
                 </div>
               </div>
               <Card className="card-info">
                 <CardTitle>
-                  THÔNG TIN CHIẾN DỊCH{' '}
+                  <Translate contentKey="campaign.info-campaign" />{' '}
                   <i className="lnr-chevron-down" onClick={this.toggle}>
                     {' '}
                   </i>{' '}
