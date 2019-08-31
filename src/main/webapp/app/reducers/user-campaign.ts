@@ -4,30 +4,33 @@ import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } 
 import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
 import { IUser, defaultValue } from 'app/common/model/user.model';
 import { USER_CAMPAIGN_ACTION_TYPES } from 'app/constants/user-campaign';
-import { IFileList } from 'app/common/model/sucess-file';
-import { ICategory } from 'app/common/model/category.model';
 import { ICampaignInfo } from 'app/common/model/infomation-campaign.model';
 import { ICampaign } from 'app/common/model/campaign.model';
 
+export interface IlistCampaignInfo {
+  id?: string;
+  name?: string;
+  description?: string;
+  status?: string;
+}
+
+export interface IStepCampaign {
+  id?: string;
+  mgmCampaignTypeId?: string;
+  step?: string;
+  status?: string;
+  description?: string;
+}
+
 const initialState = {
   loading: false,
-  errorMessage: null,
-  camps: [] as ReadonlyArray<ICampaign>,
-  users: [] as ReadonlyArray<IUser>,
-  listFiles: {} as IFileList,
-  listUsers: [] as ReadonlyArray<IUser>,
-  authorities: [] as any[],
-  user: defaultValue,
-  listCampaignInfo: [] as ReadonlyArray<ICampaignInfo>,
-  updating: false,
-  updateSuccess: false,
-  getNameFile: '',
-  dowloadTemplate: null,
-  errorTemplate: null,
+  totalElements: 0,
   totalItems: 0,
-  categories: defaultValue,
-  listCategory: [] as ReadonlyArray<ICategory>,
-  totalElements: 0
+
+  listCampaignInfo: [] as ReadonlyArray<ICampaignInfo>,
+  listStepCampaign: [] as ReadonlyArray<IStepCampaign>,
+  camps: [] as ReadonlyArray<ICampaign>,
+  users: [] as ReadonlyArray<IUser>
 };
 
 export type UserCampaignState = Readonly<typeof initialState>;
@@ -38,6 +41,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_ID):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_STATUS):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS):
+    case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_STEP_CAMPAIGNS):
       return {
         ...state,
         loading: true
@@ -46,26 +50,28 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.INFORMATION_CAMPAIGN):
       return {
         ...state,
-        errorMessage: null,
-        updateSuccess: false,
         loading: true
       };
 
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_ID):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_STATUS):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS):
+    case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_STEP_CAMPAIGNS):
       return {
         ...state,
-        loading: true
+        loading: false
       };
 
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.INFORMATION_CAMPAIGN):
       return {
         ...state,
-        loading: false,
-        updating: false,
-        updateSuccess: false,
-        errorMessage: action.payload
+        loading: false
+      };
+    case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_STEP_CAMPAIGNS):
+      return {
+        ...state,
+        listStepCampaign: action.payload.data,
+        loading: false
       };
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.INFORMATION_CAMPAIGN):
       return {
