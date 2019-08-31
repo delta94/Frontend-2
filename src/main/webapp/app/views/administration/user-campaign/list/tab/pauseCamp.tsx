@@ -70,7 +70,7 @@ class PauseCamp extends React.Component<IPauseCampProps, IPauseCampState> {
     this.setState({
       modal: !this.state.modal
     });
-    // this.props.getCampaignInfoById(id);
+    this.props.getCampaignInfoById(id);
   }
   toggle(tab) {
     if (this.state.activeTab !== tab) {
@@ -81,16 +81,22 @@ class PauseCamp extends React.Component<IPauseCampProps, IPauseCampState> {
   }
 
   render() {
-    const { loading, camps } = this.props;
+    const { loading, camps, camp } = this.props;
+    const closeBtn = (
+      <button className="close" onClick={this.onShow}>
+        &times;
+      </button>
+    );
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
     return (
       <div className="grid-container-total">
         <Loader message={spinner1} show={loading} priority={1}>
           <Fragment>
-            <Modal isOpen={this.state.modal} fade={false} onShow={this.onShow}>
-              <ModalHeader onShow={this.onShow}>
-                <span> </span> <span className="camp-modal-status">{}</span>
+            <Modal isOpen={this.state.modal} fade={false} onClick={this.onShow}>
+              <ModalHeader toggle={this.toggle} close={closeBtn}>
+                Thông tin chiến dịch
               </ModalHeader>
+
               <ModalBody>
                 <div className="modal-grid">
                   <div className="modal-grid-child">
@@ -175,14 +181,7 @@ class PauseCamp extends React.Component<IPauseCampProps, IPauseCampState> {
                   </div>
                 </div>
               </ModalBody>
-              <ModalFooter>
-                <Button color="primary" onClick={this.onShow}>
-                  Do Something
-                </Button>{' '}
-                <Button color="secondary" onClick={this.onShow}>
-                  Cancel
-                </Button>
-              </ModalFooter>
+              <ModalFooter />
             </Modal>
 
             {/* Body Content */}
@@ -241,6 +240,7 @@ class PauseCamp extends React.Component<IPauseCampProps, IPauseCampState> {
 
 const mapStateToProps = ({ userCampaign }: IRootState) => ({
   camps: userCampaign.camps,
+  camp: userCampaign.camp,
   loading: userCampaign.loading
 });
 

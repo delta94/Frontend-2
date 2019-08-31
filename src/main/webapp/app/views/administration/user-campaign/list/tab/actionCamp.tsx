@@ -30,7 +30,7 @@ import {
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
-import { getCampaignInfo, getCampaignInfoByStatus } from 'app/actions/user-campaign';
+import { getCampaignInfo, getCampaignInfoByStatus, getCampaignInfoById } from 'app/actions/user-campaign';
 
 import { DISPLAY_STATUS_ALL, DISPLAY_STATUS_PAUSE, DISPLAY_STATUS_ACTION, DISPLAY_STATUS_COMPLETE } from 'app/constants/common';
 
@@ -51,8 +51,8 @@ export interface IActionCampState {
 class ActionCamp extends React.Component<IActionCampProps, IActionCampState> {
   constructor(props) {
     super(props);
-
     this.toggle = this.toggle.bind(this);
+    this.onShow = this.onShow.bind(this);
     this.state = {
       loading: false,
       modal: false,
@@ -65,6 +65,12 @@ class ActionCamp extends React.Component<IActionCampProps, IActionCampState> {
       transformWidth: 400
     };
   }
+  onShow(id) {
+    this.setState({
+      modal: !this.state.modal
+    });
+    this.props.getCampaignInfoById(id);
+  }
 
   toggle(tab) {
     if (this.state.activeTab !== tab) {
@@ -73,23 +79,22 @@ class ActionCamp extends React.Component<IActionCampProps, IActionCampState> {
       });
     }
   }
-  // toggle(id?) {
-  //   this.setState(prevState => ({
-  //     modal: !prevState.modal
-  //   }));
-  //   // this.props.getCampaignInfoById(id);
-  // }
 
   render() {
-    const { loading, camps } = this.props;
+    const { loading, camps, camp } = this.props;
+    const closeBtn = (
+      <button className="close" onClick={this.onShow}>
+        &times;
+      </button>
+    );
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
     return (
       <div className="grid-container-total">
         <Loader message={spinner1} show={loading} priority={1}>
           <Fragment>
-            <Modal isOpen={this.state.modal} fade={false} toggle={this.toggle}>
-              <ModalHeader toggle={this.toggle}>
-                <span> </span> <span className="camp-modal-status">{}</span>
+            <Modal isOpen={this.state.modal} fade={false} onClick={this.onShow}>
+              <ModalHeader toggle={this.toggle} close={closeBtn}>
+                Thông tin chiến dịch
               </ModalHeader>
               <ModalBody>
                 <div className="modal-grid">
@@ -97,7 +102,7 @@ class ActionCamp extends React.Component<IActionCampProps, IActionCampState> {
                     <span style={{ width: '15%' }}>
                       <Translate contentKey="campaign.description" />
                     </span>
-                    <span style={{ width: 'auto', fontWeight: 500, marginLeft: '21px', color: 'black' }} />
+                    <span style={{ width: 'auto', fontWeight: 500, marginLeft: '21px', color: 'black' }}>{}</span>
                   </div>
                   <div className="modal-info">
                     <div className="left-info">
@@ -175,16 +180,8 @@ class ActionCamp extends React.Component<IActionCampProps, IActionCampState> {
                   </div>
                 </div>
               </ModalBody>
-              <ModalFooter>
-                <Button color="primary" onClick={this.toggle}>
-                  Do Something
-                </Button>{' '}
-                <Button color="secondary" onClick={this.toggle}>
-                  Cancel
-                </Button>
-              </ModalFooter>
+              <ModalFooter />
             </Modal>
-
             {/* Body Content */}
             <div className="grid-border">
               {camps &&
@@ -194,7 +191,7 @@ class ActionCamp extends React.Component<IActionCampProps, IActionCampState> {
                     <div
                       className="grid-item"
                       onClick={() => {
-                        this.toggle(item.id);
+                        this.onShow(item.id);
                       }}
                     >
                       <div className="camp-top">
@@ -238,10 +235,11 @@ class ActionCamp extends React.Component<IActionCampProps, IActionCampState> {
 
 const mapStateToProps = ({ userCampaign }: IRootState) => ({
   camps: userCampaign.camps,
+  camp: userCampaign.camp,
   loading: userCampaign.loading
 });
 
-const mapDispatchToProps = { getCampaignInfo, getCampaignInfoByStatus };
+const mapDispatchToProps = { getCampaignInfo, getCampaignInfoByStatus, getCampaignInfoById };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

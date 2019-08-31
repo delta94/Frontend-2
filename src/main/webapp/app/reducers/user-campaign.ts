@@ -8,11 +8,13 @@ import { IFileList } from 'app/common/model/sucess-file';
 import { ICategory } from 'app/common/model/category.model';
 import { ICampaignInfo } from 'app/common/model/infomation-campaign.model';
 import { ICampaign } from 'app/common/model/campaign.model';
+import { ICampaignId } from 'app/common/model/campaign-id.model';
 
 const initialState = {
   loading: false,
   errorMessage: null,
   camps: [] as ReadonlyArray<ICampaign>,
+  camp: [] as ReadonlyArray<ICampaignId>,
   users: [] as ReadonlyArray<IUser>,
   listFiles: {} as IFileList,
   listUsers: [] as ReadonlyArray<IUser>,
@@ -56,7 +58,8 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS):
       return {
         ...state,
-        loading: true
+        loading: false,
+        errorMessage: action.payload
       };
 
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.INFORMATION_CAMPAIGN):
@@ -74,12 +77,17 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
         loading: false
       };
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_ID):
+      return {
+        ...state,
+        loading: false,
+        camp: action.payload.data
+      };
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_STATUS):
       return {
         ...state,
         loading: false,
         camps: action.payload.data,
-        totalElements: action.payload.data.totalElements
+        totalElements: action.payload.data.total
       };
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS):
       console.log(action.payload.data);
