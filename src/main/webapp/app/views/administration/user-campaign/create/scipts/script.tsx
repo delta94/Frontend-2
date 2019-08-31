@@ -3,7 +3,7 @@ import { Col, Row } from 'reactstrap';
 import SweetAlert from 'sweetalert-react';
 import { IRootState } from 'app/reducers';
 import { connect } from 'react-redux';
-import { getInformation } from 'app/actions/user-campaign';
+import { getInformation, getStepCampaign } from 'app/actions/user-campaign';
 import { ULTILS_ACTION_TYPES } from '../../../../../constants/ultils';
 
 export interface IScriptsCampaignProps extends StateProps, DispatchProps {
@@ -42,11 +42,10 @@ export class ScriptsCampaign extends Component<IScriptsCampaignProps, IScriptsCa
     this.props.getInformation();
   }
 
-  onClick = name => {
+  onClick = (name, id) => {
     this.setState({
       nameScript: name
     });
-    debugger;
     if (
       this.props.value.valueDay !== ULTILS_ACTION_TYPES.EMPTY &&
       this.props.value.valueName !== ULTILS_ACTION_TYPES.EMPTY &&
@@ -59,7 +58,8 @@ export class ScriptsCampaign extends Component<IScriptsCampaignProps, IScriptsCa
         isError: false,
         disableDocument: 'campaign-document'
       });
-
+      console.log(id);
+      this.props.getStepCampaign(id);
       this.props.onClick(name);
     } else {
       this.setState({
@@ -86,7 +86,7 @@ export class ScriptsCampaign extends Component<IScriptsCampaignProps, IScriptsCa
             ? listCampaignInfo.map((item, index) => {
                 let elements;
                 elements = (
-                  <Col onClick={() => this.onClick(item.name)}>
+                  <Col onClick={() => this.onClick(item.name, item.id)}>
                     <div className="grid-items" key={index + 1}>
                       <div className="camp-top">
                         <label className="camp-titles"> {item.name}</label>
@@ -111,7 +111,7 @@ const mapStateToProps = ({ userCampaign }: IRootState) => ({
   listCampaignInfo: userCampaign.listCampaignInfo
 });
 
-const mapDispatchToProps = { getInformation };
+const mapDispatchToProps = { getInformation, getStepCampaign };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

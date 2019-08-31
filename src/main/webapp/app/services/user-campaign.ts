@@ -34,7 +34,8 @@ export const getInformationService = () => {
 };
 
 export const getStep = id => {
-  return axios.get(` v1/campaignType/${id}/step`);
+  console.log(id);
+  return axios.get(`v1/campaignType/${id}/step`);
 };
 
 // get typeName category
