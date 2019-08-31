@@ -15,7 +15,7 @@ export interface ICampaignId {
   channelName: string;
 }
 
-export const defaultValue: Readonly<ICampaignId> = {
+export const defaultCampValue: Readonly<ICampaignId> = {
   id: '',
   type: '',
   name: '',
