@@ -1,5 +1,8 @@
 {
   "campaign": {
+    "modal": {
+      "title": "Thông tin chiến dịch"
+    },
     "title": "Danh sách chiến dịch",
     "createCamp": "Tạo mới chiến dịch",
     "name-campaign": "TÊN CHIẾN DỊCH",

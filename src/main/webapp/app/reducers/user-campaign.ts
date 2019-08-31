@@ -3,7 +3,7 @@ import { IUser } from 'app/common/model/user.model';
 import { USER_CAMPAIGN_ACTION_TYPES } from 'app/constants/user-campaign';
 import { ICampaignInfo } from 'app/common/model/campaign-infomation.model';
 import { ICampaign } from 'app/common/model/campaign.model';
-import { ICampaignId } from 'app/common/model/campaign-id.model';
+import { ICampaignId, defaultCampValue } from 'app/common/model/campaign-id.model';
 
 export interface IlistCampaignInfo {
   id?: string;

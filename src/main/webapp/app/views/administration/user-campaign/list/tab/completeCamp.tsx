@@ -99,18 +99,17 @@ class CompleteCamp extends React.Component<ICompleteCampProps, ICompleteCampStat
       <div className="grid-container-total">
         <Loader message={spinner1} show={loading} priority={1}>
           <Fragment>
-            <Modal isOpen={this.state.modal} fade={false} onClick={this.onShow}>
-              <ModalHeader toggle={this.toggle} close={closeBtn}>
-                Thông tin chiến dịch
+            <Modal isOpen={this.state.modal} fade={false}>
+              <ModalHeader onClick={this.onShow} close={closeBtn}>
+                <Translate contentKey="campaign.modal.title" />
               </ModalHeader>
-
               <ModalBody>
                 <div className="modal-grid">
                   <div className="modal-grid-child">
                     <span style={{ width: '15%' }}>
                       <Translate contentKey="campaign.description" />
                     </span>
-                    <span style={{ width: 'auto', fontWeight: 500, marginLeft: '21px', color: 'black' }} />
+                    <span style={{ width: 'auto', fontWeight: 500, marginLeft: '21px', color: 'black' }}>{camp.description}</span>
                   </div>
                   <div className="modal-info">
                     <div className="left-info">
@@ -124,8 +123,10 @@ class CompleteCamp extends React.Component<ICompleteCampProps, ICompleteCampStat
                           </div>
                         </div>
                         <div className="modal-grid-child1-bottom">
-                          <div className="modal-grid-child1-bottom2" />
-                          <div className="modal-grid-child1-bottom3" />
+                          <div className="modal-grid-child1-bottom2">{camp.contactNumber}</div>
+                          <div className="modal-grid-child1-bottom3">
+                            {camp.fromDate}-{camp.toDate}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -140,8 +141,8 @@ class CompleteCamp extends React.Component<ICompleteCampProps, ICompleteCampStat
                           </div>
                         </div>
                         <div className="modal-grid-child1-bottom">
-                          <div className="modal-grid-child1-bottom2" />
-                          <div className="modal-grid-child1-bottom3" />
+                          <div className="modal-grid-child1-bottom2">{camp.landingPageName}</div>
+                          <div className="modal-grid-child1-bottom3">{camp.rewardName}</div>
                         </div>
                       </div>
                     </div>
@@ -153,7 +154,7 @@ class CompleteCamp extends React.Component<ICompleteCampProps, ICompleteCampStat
                           </div>
                         </div>
                         <div className="modal-grid-child1-bottom">
-                          <div className="modal-grid-child1-bottom2" />
+                          <div className="modal-grid-child1-bottom2">{camp.channelName}</div>
                         </div>
                       </div>
                     </div>

@@ -79,16 +79,6 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
     }
   }
 
-  // onShow(id){
-
-  // }
-  // toggle(id?) {
-  //   this.setState(prevState => ({
-  //     modal: !prevState.modal
-  //   }));
-  //   // this.props.getCampaignInfoById(id);
-  // }
-
   render() {
     const { loading, camps, camp } = this.props;
     const closeBtn = (
@@ -102,8 +92,8 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
         <Loader message={spinner1} show={loading} priority={1}>
           <Fragment>
             <Modal isOpen={this.state.modal} fade={false}>
-              <ModalHeader toggle={this.toggle} close={closeBtn}>
-                Thông tin chiến dịch
+              <ModalHeader onClick={this.onShow} close={closeBtn}>
+                <Translate contentKey="campaign.modal.title" />
               </ModalHeader>
               <ModalBody>
                 <div className="modal-grid">
@@ -111,7 +101,7 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
                     <span style={{ width: '15%' }}>
                       <Translate contentKey="campaign.description" />
                     </span>
-                    <span style={{ width: 'auto', fontWeight: 500, marginLeft: '21px', color: 'black' }} />
+                    <span style={{ width: 'auto', fontWeight: 500, marginLeft: '21px', color: 'black' }}>{camp.description}</span>
                   </div>
                   <div className="modal-info">
                     <div className="left-info">
@@ -125,8 +115,10 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
                           </div>
                         </div>
                         <div className="modal-grid-child1-bottom">
-                          <div className="modal-grid-child1-bottom2" />
-                          <div className="modal-grid-child1-bottom3" />
+                          <div className="modal-grid-child1-bottom2">{camp.contactNumber}</div>
+                          <div className="modal-grid-child1-bottom3">
+                            {camp.fromDate}-{camp.toDate}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -141,8 +133,8 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
                           </div>
                         </div>
                         <div className="modal-grid-child1-bottom">
-                          <div className="modal-grid-child1-bottom2" />
-                          <div className="modal-grid-child1-bottom3" />
+                          <div className="modal-grid-child1-bottom2">{camp.landingPageName}</div>
+                          <div className="modal-grid-child1-bottom3">{camp.rewardName}</div>
                         </div>
                       </div>
                     </div>
@@ -154,7 +146,7 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
                           </div>
                         </div>
                         <div className="modal-grid-child1-bottom">
-                          <div className="modal-grid-child1-bottom2" />
+                          <div className="modal-grid-child1-bottom2">{camp.channelName}</div>
                         </div>
                       </div>
                     </div>
@@ -200,43 +192,45 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
                 camps.map((item, index) => {
                   var list;
                   list = (
-                    <div
-                      className="grid-item"
-                      onClick={() => {
-                        this.onShow(item.id);
-                      }}
-                    >
-                      <div className="camp-top">
-                        <div className="camp-title"> {item.name}</div>
-                        <div className="camp-status">
-                          <FontAwesomeIcon icon={faCircle} />{' '}
-                          {item.status && item.status === 0 ? (
-                            <Translate contentKey="campaign.status.pause" />
-                          ) : item.status && item.status == 1 ? (
-                            <Translate contentKey="campaign.status.action" />
-                          ) : (
-                            <Translate contentKey="campaign.status.complete" />
-                          )}
+                    <div>
+                      <div
+                        className="grid-item"
+                        onClick={() => {
+                          this.onShow(item.id);
+                        }}
+                      >
+                        <div className="camp-top">
+                          <div className="camp-title"> {item.name}</div>
+                          <div className="camp-status">
+                            <FontAwesomeIcon icon={faCircle} />{' '}
+                            {item.status && item.status === 0 ? (
+                              <Translate contentKey="campaign.status.pause" />
+                            ) : item.status && item.status == 1 ? (
+                              <Translate contentKey="campaign.status.action" />
+                            ) : (
+                              <Translate contentKey="campaign.status.complete" />
+                            )}
+                          </div>
                         </div>
-                      </div>
 
-                      <div className="camp-bottom">
-                        <div className="camp-bottom-left">
-                          <div className="quantity">
-                            {' '}
-                            <FontAwesomeIcon icon={faUser} /> <Translate contentKey="campaign.quantity" />
+                        <div className="camp-bottom">
+                          <div className="camp-bottom-left">
+                            <div className="quantity">
+                              {' '}
+                              <FontAwesomeIcon icon={faUser} /> <Translate contentKey="campaign.quantity" />
+                            </div>
+                            <div className="range-time">
+                              <FontAwesomeIcon icon={faClock} /> <Translate contentKey="campaign.time" />
+                            </div>
                           </div>
-                          <div className="range-time">
-                            <FontAwesomeIcon icon={faClock} /> <Translate contentKey="campaign.time" />
-                          </div>
-                        </div>
-                        <div className="camp-bottom-right">
-                          <div className="quantity-value">
-                            {item.contactNumber} <Translate contentKey="campaign.title-contact" />{' '}
-                          </div>
-                          <div className="time-value">
-                            {' '}
-                            {item.fromDate}/{item.toDate}
+                          <div className="camp-bottom-right">
+                            <div className="quantity-value">
+                              {item.contactNumber} <Translate contentKey="campaign.title-contact" />{' '}
+                            </div>
+                            <div className="time-value">
+                              {' '}
+                              {item.fromDate}/{item.toDate}
+                            </div>
                           </div>
                         </div>
                       </div>
