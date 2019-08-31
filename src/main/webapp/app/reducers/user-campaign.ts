@@ -1,8 +1,5 @@
-import axios from 'axios';
-import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } from 'react-jhipster';
-
 import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
-import { IUser, defaultValue } from 'app/common/model/user.model';
+import { IUser } from 'app/common/model/user.model';
 import { USER_CAMPAIGN_ACTION_TYPES } from 'app/constants/user-campaign';
 import { ICampaignInfo } from 'app/common/model/infomation-campaign.model';
 import { ICampaign } from 'app/common/model/campaign.model';
