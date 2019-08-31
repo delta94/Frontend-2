@@ -2,34 +2,70 @@ import React, { Component } from 'react';
 import '../create-landingpage/create-landingpage.scss';
 
 import { Card, Collapse, Button, Input, CardTitle, FormGroup, Label, CardBody } from 'reactstrap';
+import Dropdown from '../../../../../../layout/DropDown/Dropdown';
 
 import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 
 import FroalaEditorComponent from 'react-froala-wysiwyg';
+import { string } from 'prop-types';
 
-export interface CreateLandingPageEntity {}
+export interface ICreateLandingPageEntity {
+  headerMail?: string;
+  contentMail?: string;
+}
 
-export interface CreateLandingPageProps {}
+export interface ICreateLandingPageProps {}
 
-export interface CreateLandingPageState {
+export interface ICreateLandingPageState {
   showMailForFriend: boolean;
+  defaultValueContent: string;
 }
 
 const dumpInteractive = ['landingpage 1', 'landingpage 2', 'landingpage 3'];
 
-const dumpTemplates = ['Template1', 'Template2', 'Template3', 'Template4'];
+const dumpTemplates = [
+  { id: '1', name: 'Template1' },
+  { id: '1', name: 'Template2' },
+  { id: '1', name: 'Template4' },
+  { id: '1', name: 'Template3' }
+];
 
-class CreateLandingPage extends React.PureComponent<CreateLandingPageProps, CreateLandingPageEntity, CreateLandingPageState> {
+class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICreateLandingPageState, ICreateLandingPageEntity> {
   constructor(props) {
     super(props);
   }
-  state: CreateLandingPageState = {
-    showMailForFriend: false
+  state: ICreateLandingPageState = {
+    showMailForFriend: false,
+    defaultValueContent: ''
+  };
+
+  toggleDropdownMail = () => {};
+
+  addText = text => {
+    var sel, range;
+
+    if (window.getSelection() && window.getSelection().focusNode.parentElement.offsetParent.className === 'fr-element fr-view') {
+      console.log(window.getSelection().anchorNode);
+      sel = window.getSelection();
+      if (sel.rangeCount) {
+        range = sel.getRangeAt(0);
+        range.deleteContents();
+        range.insertNode(document.createTextNode(text));
+      }
+    }
+  };
+
+  toggleDropdownParams = event => {
+    this.addText(event.name);
+  };
+
+  handleModelChange = event => {
+    this.setState({ defaultValueContent: event });
   };
 
   render() {
-    let { showMailForFriend } = this.state;
+    let { showMailForFriend, defaultValueContent } = this.state;
     return (
       <div className="add-content">
         {/* Title */}
@@ -67,28 +103,32 @@ class CreateLandingPage extends React.PureComponent<CreateLandingPageProps, Crea
                 <CardBody>
                   <div className="template-add">
                     <label>Mẫu email gửi</label>
-                    <FormGroup>
-                      <Input type="select" name="select" id="exampleSelect">
-                        {dumpTemplates &&
-                          dumpTemplates.map((item, index) => {
-                            return <option key={index}>{item}</option>;
-                          })}
-                      </Input>
-                    </FormGroup>
+                    <Dropdown
+                      selection={false}
+                      defaultValue="Chọn mẫu email"
+                      listArray={dumpTemplates}
+                      toggleDropdown={this.toggleDropdownMail}
+                    />
                   </div>
                   <div className="input-mail-and-more">
-                    <Input placeHolder="Tiêu đề email" />
-                    <FormGroup>
-                      <Input type="select" name="select" id="exampleSelect" style={{ width: '200px' }}>
-                        {dumpTemplates &&
-                          dumpTemplates.map((item, index) => {
-                            return <option key={index}>{item}</option>;
-                          })}
-                      </Input>
-                    </FormGroup>
+                    <Input placeHolder="Tiêu đề Email" value={''} />
+                    <Dropdown
+                      selection={true}
+                      defaultValue="Tham số"
+                      listArray={dumpTemplates}
+                      toggleDropdown={this.toggleDropdownParams}
+                    />
                   </div>
                   <div className="content-fixing">
-                    <FroalaEditorComponent tag="textarea" />
+                    <FroalaEditorComponent
+                      tag="textarea"
+                      config={{
+                        placeholderText: 'Tạo nội dung của bạn',
+                        events: {}
+                      }}
+                      model={defaultValueContent}
+                      onModelChange={this.handleModelChange}
+                    />
                   </div>
                 </CardBody>
               </Card>

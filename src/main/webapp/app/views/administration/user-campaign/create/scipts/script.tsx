@@ -46,7 +46,7 @@ export class ScriptsCampaign extends Component<IScriptsCampaignProps, IScriptsCa
     this.setState({
       nameScript: name
     });
-    debugger;
+
     if (
       this.props.value.valueDay !== ULTILS_ACTION_TYPES.EMPTY &&
       this.props.value.valueName !== ULTILS_ACTION_TYPES.EMPTY &&
