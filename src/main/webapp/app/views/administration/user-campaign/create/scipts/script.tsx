@@ -4,36 +4,37 @@ import SweetAlert from 'sweetalert-react';
 import { IRootState } from 'app/reducers';
 import { connect } from 'react-redux';
 import { getInformation } from 'app/actions/user-campaign';
+import { ULTILS_ACTION_TYPES } from '../../../../../constants/ultils';
 
-export interface IResponsiveProps extends StateProps, DispatchProps {
+export interface IScriptsCampaignProps extends StateProps, DispatchProps {
   value: any;
   onClick: Function;
 }
 
-export interface IResponsiveState {
-  isActive: boolean;
-  cssTitle: string;
-  cssGrid: string;
+export interface IScriptsCampaignState {
+  //set url image
   urlImage: string;
-  gridItem: string;
+
+  //set name table chosse scripts
   nameScript: string;
-  image: string;
+
+  //set display sweet alert
   isError: boolean;
+
+  //set disable Document
   disableDocument: string;
 }
-export class Responsive extends Component<IResponsiveProps, IResponsiveState> {
-  constructor(props: IResponsiveProps) {
+export class ScriptsCampaign extends Component<IScriptsCampaignProps, IScriptsCampaignState> {
+  constructor(props) {
     super(props);
   }
-  state: IResponsiveState = {
-    isActive: true,
-    cssTitle: 'camp-titles',
-    cssGrid: '',
+  state: IScriptsCampaignState = {
     urlImage: '',
-    gridItem: 'grid-items',
+
     nameScript: '',
-    image: '',
+
     isError: false,
+
     disableDocument: ''
   };
 
@@ -43,20 +44,16 @@ export class Responsive extends Component<IResponsiveProps, IResponsiveState> {
 
   onClick = name => {
     this.setState({
-      isActive: !this.state.isActive,
       nameScript: name
     });
-
+    debugger;
     if (
-      this.props.value.listValid.day !== undefined &&
-      this.props.value.listValid.name !== undefined &&
-      this.props.value.listValid.descri !== undefined &&
-      this.props.value.listValid.day !== '' &&
-      this.props.value.listValid.name !== '' &&
-      this.props.value.listValid.descri !== '' &&
-      this.props.value.ValidateField === '' &&
-      this.props.value.ValidateDay === '' &&
-      this.props.value.ValidateName === ''
+      this.props.value.valueDay !== ULTILS_ACTION_TYPES.EMPTY &&
+      this.props.value.valueName !== ULTILS_ACTION_TYPES.EMPTY &&
+      this.props.value.valueDes !== ULTILS_ACTION_TYPES.EMPTY &&
+      this.props.value.validateName === ULTILS_ACTION_TYPES.EMPTY &&
+      this.props.value.validateField === ULTILS_ACTION_TYPES.EMPTY &&
+      this.props.value.validateDay === ULTILS_ACTION_TYPES.EMPTY
     ) {
       this.setState({
         isError: false,
@@ -77,7 +74,7 @@ export class Responsive extends Component<IResponsiveProps, IResponsiveState> {
     return (
       <Fragment>
         <SweetAlert
-          title="vui lòng input các trường còn thiếu"
+          title={ULTILS_ACTION_TYPES.MESSAGE_SWEET_ALER}
           confirmButtonColor=""
           show={this.state.isError}
           text=""
@@ -122,4 +119,4 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Responsive);
+)(ScriptsCampaign);

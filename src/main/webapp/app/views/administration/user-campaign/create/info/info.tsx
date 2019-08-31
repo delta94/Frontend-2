@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import { Input, Card, Col, Row, Label } from 'reactstrap';
 import { Translate } from 'react-jhipster';
 import { IRootState } from 'app/reducers';
-import PageTitleAlt from '../../../../../layout/AppMain/PageTitleAlt';
-import ReactPaginate from 'react-paginate';
 import { Loader as LoaderAnim } from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import '../info/info.scss';
@@ -13,62 +11,66 @@ import 'react-dates/lib/css/_datepicker.css';
 import moment, { Moment } from 'moment';
 import { DateRangePicker } from 'react-dates';
 import Script from '../scipts/script';
+import { ULTILS_ACTION_TYPES } from '../../../../../constants/ultils';
 
 export interface IinfoProps extends StateProps, DispatchProps {
   onClick: Function;
 }
 
 export interface IinfoPropsState {
-  nameScripts: string;
-  disableScreen: string;
-  ValidateName: string;
-  countError: any;
-  ValidateField: string;
-  ValidateDay: string;
+  //value info
+  valueDay: string;
   valueName: string;
-  ValueDay: string;
-  listValid: {};
-  ValueDescri: string;
+  valueDes: string;
+
+  //message error
+  validateName: any;
+  validateField: any;
+  validateDay: any;
+
+  //handler show table
+  showNameScripts: string;
+  disableScreen: string;
   displayTable: string;
+
+  //set date & time
   startDate: Moment;
   endDate: Moment;
   focusedInput: string;
-  isDisplayInfo: boolean;
 }
 
 export class Info extends React.Component<IinfoProps, IinfoPropsState> {
   state: IinfoPropsState = {
-    nameScripts: '',
-    ValidateName: '',
-    countError: 0,
-    ValidateField: '',
-    ValidateDay: '',
-    valueName: '',
-    ValueDay: '',
-    ValueDescri: '',
-    listValid: {},
+    //set defaul value message error
+    validateDay: '',
+    validateField: '',
+    validateName: '',
+
+    //set style class table default
     disableScreen: '',
-    displayTable: 'display-complete',
+    displayTable: ULTILS_ACTION_TYPES.DISPLAY_TABLE,
+    showNameScripts: '',
+
+    // set default value info
+    valueName: '',
+    valueDay: '',
+    valueDes: '',
+
+    //set default date & time
     startDate: moment(),
     endDate: moment(),
-    focusedInput: '',
-    isDisplayInfo: false
+    focusedInput: ''
   };
 
   onChangeName = event => {
     if (event.target.value === '' || event.target.value === null) {
       this.setState({
-        ValidateName: 'vui lòng nhập tên chiến dịch'
+        validateName: <Translate contentKey="campaign.message-error.name" />
       });
     } else {
       this.setState({
-        ValidateName: '',
-        valueName: event.target.value,
-        listValid: {
-          name: this.state.valueName,
-          descri: this.state.ValueDescri,
-          day: this.state.ValueDay
-        }
+        validateName: '',
+        valueName: event.target.value
       });
     }
   };
@@ -76,50 +78,39 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
   onChangeField = event => {
     if (event.target.value === '' || event.target.value === null) {
       this.setState({
-        ValidateField: 'vui lòng nhập Mô tả'
+        validateField: <Translate contentKey="campaign.message-error.des" />
       });
     } else {
       this.setState({
-        ValidateField: '',
-        ValueDescri: event.target.value,
-        listValid: {
-          name: this.state.valueName,
-          descri: this.state.ValueDescri,
-          day: this.state.ValueDay
-        }
+        validateField: ULTILS_ACTION_TYPES.EMPTY,
+        valueDes: event.target.value
       });
     }
   };
   onClick = event => {
     if (event !== null) {
       this.setState({
-        displayTable: '',
-        nameScripts: event
+        displayTable: ULTILS_ACTION_TYPES.EMPTY,
+        showNameScripts: event
       });
-      console.log(this.state.displayTable);
-      this.props.onClick('');
+      this.props.onClick(ULTILS_ACTION_TYPES.EMPTY);
     } else {
       this.setState({
-        displayTable: 'display-complete'
+        displayTable: ULTILS_ACTION_TYPES.DISPLAY_TABLE
       });
     }
   };
   onDatesChange = ({ startDate, endDate }) => {
     if (startDate === '' || startDate === null) {
       this.setState({
-        ValidateDay: 'vui lòng nhập ngày'
+        validateDay: <Translate contentKey="campaign.message-error.day" />
       });
     } else {
       this.setState({
-        ValidateDay: '',
+        validateDay: ULTILS_ACTION_TYPES.EMPTY,
         startDate,
         endDate,
-        ValueDay: startDate,
-        listValid: {
-          name: this.state.valueName,
-          descri: this.state.ValueDescri,
-          day: this.state.ValueDay
-        }
+        valueDay: startDate
       });
     }
   };
@@ -127,30 +118,33 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
   render() {
     const { loading } = this.props;
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
-
     return (
       <Loader message={spinner1} show={loading} priority={1}>
         <div id="userCreate">
           <div className={this.state.disableScreen}>
             <Card className="main-card mb-4">
-              <Row>
+              <Row className="row-info">
                 <Col md={4}>
-                  <Label className="name-title">TÊN CHIẾN DỊCH</Label>
+                  <Label className="name-title">
+                    <Translate contentKey="campaign.name-campaign" />
+                  </Label>
                   <div>
                     <Col sm={12}>
                       <Input
                         type="email"
                         value={this.state.valueName}
                         name="email"
-                        placeholder="M2M ĐẦU TIÊN"
+                        placeholder={ULTILS_ACTION_TYPES.PLACEHODER_NAME}
                         onChange={this.onChangeName}
                         maxLength="160"
                       />
-                      <p>{this.state.ValidateName}</p>
+                      <p>{this.state.validateName}</p>
                     </Col>
                   </div>
                   <Col>
-                    <Label className="name-titles">THỜI GIAN</Label>
+                    <Label className="name-titles">
+                      <Translate contentKey="campaign.time-create" />
+                    </Label>
 
                     <Col sm={15}>
                       <DateRangePicker
@@ -167,14 +161,14 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
                         onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
                       />
 
-                      <p>{this.state.ValidateDay}</p>
+                      <p>{this.state.validateDay}</p>
                     </Col>
                     <div className={this.state.displayTable}>
                       <div className="reOpen-doc">
                         <div className="grid-items-Click">
                           <div className="camp-top">
-                            <label className="camp-title-click"> {this.state.nameScripts}</label>
-                            <img className="image-tites" src="https://abeon-hosting.com/images/complete-png-4.png" />
+                            <label className="camp-title-click"> {this.state.showNameScripts}</label>
+                            <img className="image-tites" src={ULTILS_ACTION_TYPES.LINK_IMAGE} />
                           </div>
                         </div>
                       </div>
@@ -182,11 +176,13 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
                   </Col>
                 </Col>
                 <Col md={8}>
-                  <Label className="name-title">MÔ TẢ</Label>
+                  <Label className="name-title">
+                    <Translate contentKey="campaign.descrition" />
+                  </Label>
                   <div>
                     <Col sm={12}>
                       <Input type="textarea" name="text" id="exampleText" onChange={this.onChangeField} maxLength="640" />
-                      <p>{this.state.ValidateField}</p>
+                      <p>{this.state.validateField}</p>
                     </Col>
                   </div>
                 </Col>

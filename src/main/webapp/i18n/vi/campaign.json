@@ -2,6 +2,9 @@
   "campaign": {
     "title": "Danh sách chiến dịch",
     "createCamp": "Tạo mới chiến dịch",
+    "name-campaign": "TÊN CHIẾN DỊCH",
+    "time-create": "THỜI GIAN",
+    "descrition": "MÔ TẢ",
     "allCamps": "Tất cả",
     "onAction": "Chiến dịch đang hoạt động",
     "onPause": "Chiến dịch dừng hoạt động/tạm dừng",
@@ -14,11 +17,16 @@
     "contact": "Số lượng contact",
     "gift": "Quà tặng",
     "info-campaign": "THÔNG TIN CHIẾN DỊCH",
-    "title-create-screen": "Danh sách chiến dịch > Tạo chiến dịch",
+    "title-create-screen": "Danh sách chiến dịch > Tạo chiến dịch M2M",
     "status": {
       "action": "đang hoạt động",
       "pause": "chưa kích hoạt/tạm dừng",
       "complete": "đã hoàn thành"
+    },
+    "message-error": {
+      "name": "vui lòng nhập tên chiến dịch",
+      "day": "vui lòng nhập ngày",
+      "des": "vui lòng nhập mô tả"
     }
   }
 }
