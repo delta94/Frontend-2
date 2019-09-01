@@ -68,7 +68,7 @@ class IncorporationForm extends React.Component<IncorporationFormProps, Incorpor
   render() {
     let { value, people } = this.state;
     return (
-      <form>
+      <form className="form-button">
         {this.state.shareholders.map((shareholder, idx) => (
           <div className="shareholder" key={idx + 1}>
             <DropdownList

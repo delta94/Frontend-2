@@ -5,6 +5,7 @@ import { IRootState } from 'app/reducers';
 import { connect } from 'react-redux';
 import { getInformation, getStepCampaign } from 'app/actions/user-campaign';
 import { ULTILS_ACTION_TYPES } from '../../../../../constants/ultils';
+import '../scripts/script.scss';
 
 export interface IScriptsCampaignProps extends StateProps, DispatchProps {
   value: any;

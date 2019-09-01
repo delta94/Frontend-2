@@ -16,7 +16,7 @@ import classnames from 'classnames';
 export interface INavigationProps extends StateProps, DispatchProps {}
 
 export interface INavigationState {
-  activeTab: string;
+  activeTab: number;
   active: boolean;
   endTab: boolean;
 }
@@ -24,14 +24,13 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
   constructor(props) {
     super(props);
     this.state = {
-      activeTab: '1',
+      activeTab: 1,
       active: false,
       endTab: false
     };
   }
 
   toggle = tab => {
-    console.log(typeof tab);
     if (this.state.activeTab !== tab) {
       this.setState({
         activeTab: tab
@@ -40,16 +39,16 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
   };
 
   onHandletTab = (param: number) => {
-    let activeTab: string = this.state.activeTab;
-    let activeTabNumber: number = parseInt(activeTab);
+    let activeTab: number = this.state.activeTab;
+    let activeTabNumber: number = activeTab;
     activeTabNumber += param;
 
     if (activeTabNumber === 6) {
-      this.setState({ activeTab: '5', endTab: true });
+      this.setState({ activeTab: 5, endTab: true });
     } else if (activeTabNumber === 0) {
-      this.setState({ activeTab: '1' });
+      this.setState({ activeTab: 1 });
     } else {
-      this.setState({ activeTab: activeTabNumber.toString() });
+      this.setState({ activeTab: activeTabNumber });
     }
   };
 
@@ -75,7 +74,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
                   var elements = (
                     <DropdownItem
                       toggle={false}
-                      className={classnames('mb-1', { active: this.state.activeTab === event.step })}
+                      className={classnames('mb-1', { active: this.state.activeTab === parseInt(event.step) })}
                       onClick={() => {
                         this.toggle(event.step);
                       }}

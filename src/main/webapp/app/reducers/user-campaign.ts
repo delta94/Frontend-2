@@ -81,7 +81,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
       return {
         ...state,
         loading: false,
-        listNewCustomer: action.payload.data
+        listNewCustomer: action.payload.data.content
       };
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_STEP_CAMPAIGNS):
       return {

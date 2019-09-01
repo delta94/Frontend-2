@@ -19,6 +19,21 @@
 
   color: #595c82;
 }
+
+#userCreate .name-title-des {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 13px;
+  line-height: 27px;
+  margin-left: 3px;
+  margin-bottom: 1px;
+  /* identical to box height, or 208% */
+
+  letter-spacing: 1px;
+
+  color: #595c82;
+}
 #userCreate .name-titles {
   font-family: Roboto;
   font-style: normal;
@@ -35,8 +50,7 @@
 #userCreate #exampleText {
   margin-top: 0px;
   margin-bottom: 0px;
-  height: 132px;
-
+  height: 77%;
   border-radius: 3px;
   resize: none;
 }
@@ -241,13 +255,17 @@
 }
 //event Click
 #userCreate .image-tites {
-  width: 24px;
+  width: 17px;
   float: right;
 }
 #userCreate .camp-title-click {
-  font-size: 15px;
+  font-family: Roboto;
+  font-style: normal;
   font-weight: 500;
-  color: blue;
+  font-size: 16px;
+  line-height: 19px;
+
+  color: #3866dd;
 }
 #userCreate .grid-items-Click {
   border: dashed 1px grey;
@@ -277,15 +295,15 @@
   font-size: 34px;
 }
 #userCreate .grid-items-cus {
-  height: 185px;
-  border: dashed 1px grey;
+  height: 167px;
+  border: dashed 1px#AEC1F0;
   background-color: rgba(255, 255, 255, 0.8);
-  padding: 20px;
+  padding: 10%;
   word-break: break-word;
 }
 #userCreate .fUuvxv {
-  width: 85px;
-  height: 112px;
+  width: 79px;
+  height: 100%;
 }
 #userCreate .grid-items-pop {
   height: 185px;
@@ -293,13 +311,13 @@
   background-color: rgba(255, 255, 255, 0.8);
 }
 #userCreate .img-facebook {
-  width: 30px;
+  width: 10%;
   margin-top: -3px;
   margin-left: -4px;
 }
 #userCreate .img-zalo {
   margin-top: -6px;
-  width: 22px;
+  width: 7%;
 }
 #userCreate .boder-create-new {
   border-top: solid 1px darkgray;

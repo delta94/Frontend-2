@@ -10,7 +10,7 @@ import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import moment, { Moment } from 'moment';
 import { DateRangePicker } from 'react-dates';
-import Script from '../scipts/script';
+import Script from '../scripts/script';
 import { ULTILS_ACTION_TYPES } from '../../../../../constants/ultils';
 
 export interface IinfoProps extends StateProps, DispatchProps {
@@ -176,15 +176,11 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
                   </Col>
                 </Col>
                 <Col md={8}>
-                  <Label className="name-title">
+                  <Label className="name-title-des">
                     <Translate contentKey="campaign.descrition" />
                   </Label>
-                  <div>
-                    <Col sm={12}>
-                      <Input type="textarea" name="text" id="exampleText" onChange={this.onChangeField} maxLength="640" />
-                      <p>{this.state.validateField}</p>
-                    </Col>
-                  </div>
+                  <Input type="textarea" name="text" id="exampleText" onChange={this.onChangeField} maxLength="640" />
+                  <p>{this.state.validateField}</p>
                 </Col>
               </Row>
               <Script value={this.state} onClick={this.onClick} />
