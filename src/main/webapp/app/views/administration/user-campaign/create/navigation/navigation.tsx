@@ -13,7 +13,9 @@ import Review from './review/review';
 import { TabContent, TabPane, DropdownItem, Card, Col, Row, Button } from 'reactstrap';
 import classnames from 'classnames';
 
-export interface INavigationProps extends StateProps, DispatchProps {}
+export interface INavigationProps extends StateProps, DispatchProps {
+  onClick: Function;
+}
 
 export interface INavigationState {
   activeTab: number;
@@ -24,13 +26,14 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
   constructor(props) {
     super(props);
     this.state = {
-      activeTab: 1,
+      activeTab: 0,
       active: false,
       endTab: false
     };
   }
 
   toggle = tab => {
+    this.props.onClick(tab);
     if (this.state.activeTab !== tab) {
       this.setState({
         activeTab: tab
@@ -79,7 +82,10 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
                         this.toggle(event.step);
                       }}
                     >
-                      {event.description}
+                      <div id="circle">
+                        <label className="step-icon"> {event.step}</label>
+                      </div>
+                      <label className="descrition-item"> {event.description}</label>
                     </DropdownItem>
                   );
                   return elements;

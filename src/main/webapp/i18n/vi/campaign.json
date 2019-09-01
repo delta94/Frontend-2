@@ -3,6 +3,16 @@
     "modal": {
       "title": "Thông tin chiến dịch"
     },
+    "choose-folder": "CHỌN TỆP",
+    "total-contract": "Tổng số contact : ",
+    "phone": "Số điện thoại",
+    "email": "Email",
+    "group": " Nhóm",
+    "list-custom": "CHỌN TỆP KHÁCH HÀNG",
+    "all-contract": "Tổng contact : ",
+    "choose-new-customer": " Chọn Tệp KH mới",
+    "duplicate-contract": "Contact trùng : ",
+    "fullname": "Họ và tên",
     "title": "Danh sách chiến dịch",
     "createCamp": "Tạo mới chiến dịch",
     "name-campaign": "TÊN CHIẾN DỊCH",

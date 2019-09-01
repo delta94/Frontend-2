@@ -69,13 +69,18 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
                   });
                 }}
               >
-                <span>CHỌN TỆP </span>
+                <span>
+                  {' '}
+                  <Translate contentKey="campaign.choose-folder" />{' '}
+                </span>
               </ModalHeader>
 
               <ModalBody>
                 <Row>
                   <Col md="3">
-                    <legend>Tổng số contact : {100}</legend>
+                    <legend>
+                      <Translate contentKey="campaign.total-contract" /> {100}
+                    </legend>
                   </Col>
                   <Col md="4">
                     <input type="text" className="form-control" placeholder="Tìm kiếm" />
@@ -97,10 +102,18 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
                       <Table responsive striped className="modal-tables">
                         <thead>
                           <tr className="text-center">
-                            <th className="hand ">Họ và tên</th>
-                            <th className="hand">Số điện thoại</th>
-                            <th className="hand">Email</th>
-                            <th>Nhóm</th>
+                            <th className="hand ">
+                              <Translate contentKey="campaign.fullname" />
+                            </th>
+                            <th className="hand">
+                              <Translate contentKey="campaign.phone" />
+                            </th>
+                            <th className="hand">
+                              <Translate contentKey="campaign.email" />
+                            </th>
+                            <th>
+                              <Translate contentKey="campaign.group" />
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -142,7 +155,9 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
           </Modal>
           <Row>
             <Col md="4">
-              <CardTitle className="cartitle-customer">CHỌN TIỆP KHÁCH HÀNG</CardTitle>
+              <CardTitle className="cartitle-customer">
+                <Translate contentKey="campaign.list-custom" />
+              </CardTitle>
             </Col>
             <Col md="3" className="total-contract-customer">
               <Label />
@@ -151,14 +166,16 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
               <Col md="6">
                 {' '}
                 <Label>
-                  Tổng contract :<span className="number-contract">100</span>
+                  <Translate contentKey="campaign.all-contract" />
+                  <span className="number-contract">100</span>
                 </Label>
               </Col>
               <Col md="6">
                 {' '}
                 <Label>
                   {' '}
-                  contract trùng :<span className="number-contract">100</span>
+                  <Translate contentKey="campaign.duplicate-contract" />
+                  <span className="number-contract">100</span>
                 </Label>
               </Col>
             </Col>
@@ -169,7 +186,10 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
                 <div className="grid-items-cus">
                   <div className="camp-top">
                     <Ionicon fontSize="35px" color="blue" icon="ios-add" />
-                    <label className="camp-title-click"> Chọn Tệp KH Mới</label>
+                    <label className="camp-title-click">
+                      {' '}
+                      <Translate contentKey="campaign.choose-new-customer" />
+                    </label>
                   </div>
                 </div>
               </div>
