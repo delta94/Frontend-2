@@ -9,5 +9,8 @@ export const ULTILS_TYPES = {
   MESSAGE_SWEET_ALER: 'vui lòng input các trường còn thiếu',
   ICON_UP: 'lnr-chevron-up',
   ICON_DOWN: 'lnr-chevron-down',
-  DISABLE_DOCUMENT: 'campaign-document'
+  DISABLE_DOCUMENT: 'campaign-document',
+  ACTIVE_TAB: '1'
 };
+export const ITEMS_PER_PAGE = 5;
+export const ACTIVE_PAGE = 0;

@@ -11,6 +11,8 @@ import { IRootState } from 'app/reducers';
 import ReactPaginate from 'react-paginate';
 import { getCustomer } from '../../../../../../actions/user-campaign';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import CustomerDialog from './customer-dialog/customer-dialog';
+import { ITEMS_PER_PAGE, ULTILS_TYPES, ACTIVE_PAGE } from '../../../../../../constants/ultils';
 
 export interface SelectCustomerProps extends StateProps, DispatchProps {}
 
@@ -20,16 +22,16 @@ export interface SelectCustomerState {
   activeTab: string;
 
   // set param to get list
-  activePage: string;
-  pageSize: string;
+  activePage: number;
+  pageSize: number;
   category: string;
 }
 class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomerState> {
   state: SelectCustomerState = {
-    activeTab: '1',
-    activePage: '0',
-    pageSize: '5',
-    category: '',
+    activeTab: ULTILS_TYPES.ACTIVE_TAB,
+    activePage: ACTIVE_PAGE,
+    pageSize: ITEMS_PER_PAGE,
+    category: ULTILS_TYPES.EMPTY,
     listUser: [],
     modal: false
   };
@@ -47,111 +49,24 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
       });
     }
   };
-  handlerSaveForm = () => {
+
+  handlerModal = (event, list) => {
     this.setState({
-      modal: false
+      modal: event
     });
+    if (list !== undefined) this.state.listUser.push(list);
   };
 
   render() {
     const spinner = <LoaderAnim color="#ffffff" type="ball-pulse" />;
     const { listUser } = this.state;
-    const { listCustomer, loading } = this.props;
+    const { loading } = this.props;
+    console.log(listUser);
     return (
       <Loader message={spinner} show={loading} priority={10}>
         <Fragment>
           <Modal isOpen={this.state.modal} fade={false} toggle={this.toggle}>
-            <Loader message={spinner} show={loading} priority={10}>
-              <ModalHeader
-                toggle={() => {
-                  this.setState({
-                    modal: false
-                  });
-                }}
-              >
-                <span>
-                  {' '}
-                  <Translate contentKey="campaign.choose-folder" />{' '}
-                </span>
-              </ModalHeader>
-
-              <ModalBody>
-                <Row>
-                  <Col md="3">
-                    <legend>
-                      <Translate contentKey="campaign.total-contract" /> {100}
-                    </legend>
-                  </Col>
-                  <Col md="4">
-                    <input type="text" className="form-control" placeholder="Tìm kiếm" />
-                  </Col>
-                  <Col md="5">
-                    <Button color="primary" type="submit" className="save-right" onClick={this.handlerSaveForm}>
-                      <FontAwesomeIcon icon="save" />
-                      &nbsp;
-                      <Translate contentKey="entity.action.save" />
-                    </Button>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col md="3" className="import-cus">
-                    <IncorporationForm />
-                  </Col>
-                  <Col md="9">
-                    <div className="modal-table">
-                      <Table responsive striped className="modal-tables">
-                        <thead>
-                          <tr className="text-center">
-                            <th className="hand ">
-                              <Translate contentKey="campaign.fullname" />
-                            </th>
-                            <th className="hand">
-                              <Translate contentKey="campaign.phone" />
-                            </th>
-                            <th className="hand">
-                              <Translate contentKey="campaign.email" />
-                            </th>
-                            <th>
-                              <Translate contentKey="campaign.group" />
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {listCustomer
-                            ? listCustomer.map((event, index) => {
-                                var elements;
-                                elements = (
-                                  <tr key={index + 1}>
-                                    <td>{event.name}</td>
-                                    <td>{event.phone}</td>
-                                    <td>{event.email}</td>
-                                    <td>{event.categories}</td>
-                                  </tr>
-                                );
-                                return elements;
-                              })
-                            : ''}
-                        </tbody>
-                      </Table>
-                      <div className="paginator-nav">
-                        <ReactPaginate
-                          previousLabel={'<'}
-                          nextLabel={'>'}
-                          breakLabel={'...'}
-                          breakClassName={'break-me'}
-                          pageCount={2}
-                          marginPagesDisplayed={1}
-                          pageRangeDisplayed={1}
-                          containerClassName={'pagination'}
-                          subContainerClassName={'pages pagination'}
-                          activeClassName={'active'}
-                        />
-                      </div>
-                    </div>
-                  </Col>
-                </Row>
-              </ModalBody>
-            </Loader>
+            <CustomerDialog onClick={this.handlerModal} />
           </Modal>
           <Row>
             <Col md="4">
@@ -196,7 +111,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
             </Col>
 
             {listUser &&
-              listUser.map((item, index) => {
+              listUser.map((item, index, list) => {
                 return (
                   <Col md="4" key={item.id + index}>
                     <div className="table-customer">
@@ -204,7 +119,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
                         <div className="name-group"> Giám Đốc </div>
                         <div className="camp-top">
                           <label className="total-contract">
-                            Tổng Contract : <span className="number-contract">100</span>
+                            <Translate contentKey="campaign.sum-contact" /> <span className="number-contract">{list[index].length}</span>
                           </label>
                         </div>
                       </div>
@@ -214,14 +129,14 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
                             {' '}
                             <span className="name-icon">Email</span>
                           </i>
-                          <label className="label-icon">100</label>
+                          <label className="label-icon">{list[index].filter(item => item.email !== null).length}</label>
                         </div>
                         <div>
                           <i className="pe-7s-call">
                             {' '}
                             <span className="name-icon"> SĐT </span>{' '}
                           </i>
-                          <label className="label-icon"> 100</label>
+                          <label className="label-icon"> {list[index].filter(item => item.phone !== null).length}</label>
                         </div>
                         <div>
                           {' '}
@@ -230,7 +145,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
                             src="https://cdn3.iconfinder.com/data/icons/facebook-ui-flat/48/Facebook_UI-03-512.png"
                           />{' '}
                           <span className="name-icon">FB</span>
-                          <label className="label-icon">100</label>
+                          <label className="label-icon">{ACTIVE_PAGE}</label>
                         </div>
                         <div>
                           {' '}
@@ -239,10 +154,11 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
                             src="http://brasol.logozee.com/public/ckeditor/uploads/brasol.vn-logo-zalo-vector-logo-zalo-vector.png"
                           />{' '}
                           <span className="name-icon">Zalo</span>
-                          <label className="label-icon"> 100</label>
+                          <label className="label-icon"> {ACTIVE_PAGE}</label>
                         </div>
                       </div>
                     </div>
+                    <br />
                   </Col>
                 );
               })}

@@ -1,33 +1,31 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import '../button-dialog/button-dialog.scss';
 import { Button } from 'reactstrap';
 import { DropdownList } from 'react-widgets';
 import Ionicon from 'react-ionicons';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-
-let colors = ['Orange', 'Red', 'Blue', 'Purple'];
+import { connect } from 'react-redux';
+import { IRootState } from 'app/reducers';
+import { getCustomer } from '../../../../../../../../actions/user-campaign';
+import { IListNewCustomer } from 'app/common/model/campaign-new-customer.model';
 
 library.add(faSpinner);
-export interface IncorporationFormProps {}
+export interface IButtonDialogProps extends StateProps, DispatchProps {
+  onClick: Function;
+  value: ReadonlyArray<IListNewCustomer>;
+}
 
-export interface IncorporationFormState {
-  activeTab: string;
-  name: string;
+export interface IButtonDialogState {
   shareholders: any[];
-  dropdownOpen: boolean;
   people: any[];
   value: any[];
   valueList: any[];
 }
-class IncorporationForm extends React.Component<IncorporationFormProps, IncorporationFormState> {
-  state: IncorporationFormState = {
-    name: '',
+class ButtonDialog extends React.Component<IButtonDialogProps, IButtonDialogState> {
+  state: IButtonDialogState = {
     shareholders: [{ name: '' }],
-    activeTab: '',
-    dropdownOpen: false,
-    people: colors,
+    people: [],
     value: [],
     valueList: []
   };
@@ -38,48 +36,33 @@ class IncorporationForm extends React.Component<IncorporationFormProps, Incorpor
     });
   };
 
-  handleRemoveShareholder = idx => () => {
+  handleRemoveShareholder = (idx, value) => () => {
     this.setState({
       shareholders: this.state.shareholders.filter((s, sidx) => idx !== sidx)
     });
   };
 
-  handleCreate(name) {
-    let { people, value } = this.state;
-
-    let newOption = {
-      name,
-      id: people.length + 1
-    };
-
-    this.setState({
-      value: [...value, newOption], // select new option
-      people: [...people, newOption] // add new option to our dataset
-    });
-  }
   onChangeList = value => {
     this.setState({
       value
     });
-    this.state.valueList.push(value);
-    console.log(this.state.valueList);
+    this.props.onClick(this.state.value);
   };
 
   render() {
     let { value, people } = this.state;
+    people = this.props.value
+      .filter(item => item.categories)
+      .map(event => {
+        return event.categories;
+      });
     return (
       <form className="form-button">
         {this.state.shareholders.map((shareholder, idx) => (
           <div className="shareholder" key={idx + 1}>
-            <DropdownList
-              data={people}
-              allowCreate="onFilter"
-              onCreate={name => this.handleCreate(name)}
-              onChange={this.onChangeList}
-              textField="name"
-            />
+            <DropdownList data={people} allowCreate="onFilter" onChange={this.onChangeList} textField="name" />
 
-            <Button onClick={this.handleRemoveShareholder(idx)} className="pe-7s-close" />
+            <Button onClick={this.handleRemoveShareholder(idx, this.state.value)} className="pe-7s-close" />
           </div>
         ))}
 
@@ -91,4 +74,17 @@ class IncorporationForm extends React.Component<IncorporationFormProps, Incorpor
   }
 }
 
-export default IncorporationForm;
+const mapStateToProps = ({ userCampaign }: IRootState) => ({
+  loading: userCampaign.loading,
+  listCustomer: userCampaign.listNewCustomer
+});
+
+const mapDispatchToProps = { getCustomer };
+
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ButtonDialog);
