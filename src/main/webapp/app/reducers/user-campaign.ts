@@ -3,7 +3,7 @@ import { IUser } from 'app/common/model/user.model';
 import { USER_CAMPAIGN_ACTION_TYPES } from 'app/constants/user-campaign';
 import { ICampaignInfo } from 'app/common/model/campaign-infomation.model';
 import { ICampaign } from 'app/common/model/campaign.model';
-import { ICampaignId, defaultCampValue } from 'app/common/model/campaign-id.model';
+import { ICampaignId, defaultValue } from 'app/common/model/campaign-id.model';
 
 export interface IlistCampaignInfo {
   id?: string;
@@ -37,7 +37,7 @@ const initialState = {
   listCampaignInfo: [] as ReadonlyArray<IlistCampaignInfo>,
   listStepCampaign: [] as ReadonlyArray<IStepCampaign>,
   listNewCustomer: [] as ReadonlyArray<IListNewCustomer>,
-  camp: [] as ReadonlyArray<ICampaignId>,
+  camp: {},
   camps: [] as ReadonlyArray<ICampaign>,
   users: [] as ReadonlyArray<IUser>
 };

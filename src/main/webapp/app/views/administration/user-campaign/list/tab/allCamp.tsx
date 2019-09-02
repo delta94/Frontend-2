@@ -81,6 +81,7 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
 
   render() {
     const { loading, camps, camp } = this.props;
+    console.log(camp.status);
     const closeBtn = (
       <button className="close" onClick={this.onShow}>
         &times;
@@ -93,7 +94,20 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
           <Fragment>
             <Modal isOpen={this.state.modal} fade={false}>
               <ModalHeader onClick={this.onShow} close={closeBtn}>
-                <Translate contentKey="campaign.modal.title" />
+                <span>
+                  <Translate contentKey="campaign.modal.title" />{' '}
+                </span>{' '}
+                <span className="camp-status" style={{ float: 'right' }}>
+                  {/* {camp.status && camp.status === 2 ? (
+                              <span style={{ color: '#02B3FF' }}> <FontAwesomeIcon icon={faCircle} />{' '}<Translate contentKey="campaign.status.complete" /></span>
+                              
+                            ) : camp.status && camp.status == 1 ? (
+                              <span style={{ color: '#23C00A' }}> <FontAwesomeIcon icon={faCircle} />{' '}<Translate contentKey="campaign.status.action" /></span>
+                            ) : (
+                              <span style={{ color: '#97A3B4' }}> <FontAwesomeIcon icon={faCircle} />{' '}<Translate contentKey="campaign.status.pause" /></span>
+                            )} */}
+                  this is status
+                </span>
               </ModalHeader>
               <ModalBody>
                 <div className="modal-grid">
@@ -202,13 +216,21 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
                         <div className="camp-top">
                           <div className="camp-title"> {item.name}</div>
                           <div className="camp-status">
-                            <FontAwesomeIcon icon={faCircle} />{' '}
-                            {item.status && item.status === 0 ? (
-                              <Translate contentKey="campaign.status.pause" />
+                            {item.status && item.status === 2 ? (
+                              <span style={{ color: '#02B3FF' }}>
+                                {' '}
+                                <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.complete" />
+                              </span>
                             ) : item.status && item.status == 1 ? (
-                              <Translate contentKey="campaign.status.action" />
+                              <span style={{ color: '#23C00A' }}>
+                                {' '}
+                                <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.action" />
+                              </span>
                             ) : (
-                              <Translate contentKey="campaign.status.complete" />
+                              <span style={{ color: '#97A3B4' }}>
+                                {' '}
+                                <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.pause" />
+                              </span>
                             )}
                           </div>
                         </div>

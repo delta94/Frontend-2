@@ -53,7 +53,6 @@ class PauseCamp extends React.Component<IPauseCampProps, IPauseCampState> {
     super(props);
     this.toggle = this.toggle.bind(this);
     this.onShow = this.onShow.bind(this);
-
     this.state = {
       loading: false,
       modal: false,

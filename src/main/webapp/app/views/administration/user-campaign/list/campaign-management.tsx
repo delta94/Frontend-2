@@ -8,7 +8,13 @@ import { Loader as LoaderAnim } from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { DISPLAY_STATUS_ALL, DISPLAY_STATUS_PAUSE, DISPLAY_STATUS_ACTION, DISPLAY_STATUS_COMPLETE } from 'app/constants/common';
+import {
+  DISPLAY_STATUS_ALL,
+  DISPLAY_STATUS_PAUSE,
+  DISPLAY_STATUS_ACTION,
+  DISPLAY_STATUS_COMPLETE,
+  DISPLAY_STATUS_NULL
+} from 'app/constants/common';
 
 import {
   TabContent,
