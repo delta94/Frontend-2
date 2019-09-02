@@ -111,7 +111,7 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
                     />
                   </div>
                   <div className="input-mail-and-more">
-                    <Input placeHolder="Tiêu đề Email" value={''} />
+                    <Input placeHolder="Tiêu đề email" value={''} />
                     <Dropdown
                       selection={true}
                       defaultValue="Tham số"

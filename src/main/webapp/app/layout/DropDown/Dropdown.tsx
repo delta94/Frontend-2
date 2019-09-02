@@ -1,6 +1,8 @@
 import { PureComponent } from 'react';
 import React from 'react';
 import './Dropdown.scss';
+import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export interface IArrayEntity {
   id?: string;
@@ -74,6 +76,7 @@ class Dropdown extends PureComponent<IDropdownProps, IDropdownState> {
           }}
         >
           {value === '' ? defaultValue : value}
+          <FontAwesomeIcon icon={faAngleDown} size="1x" />
         </div>
         <div id={id} className="topica-dropdown-menu" style={{ display: isShow ? 'block' : 'none' }}>
           {listArray.map((item, index) => {

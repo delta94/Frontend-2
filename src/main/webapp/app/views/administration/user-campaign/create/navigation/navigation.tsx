@@ -12,6 +12,7 @@ import CreateContent from './create-content/create-content';
 import Review from './review/review';
 import { TabContent, TabPane, DropdownItem, Card, Col, Row, Button } from 'reactstrap';
 import classnames from 'classnames';
+import { getContentPageParams } from 'app/actions/user-campaign';
 
 export interface INavigationProps extends StateProps, DispatchProps {}
 
@@ -55,7 +56,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
 
   render() {
     const { endTab } = this.state;
-    const { listStep } = this.props;
+    const { listStep, listContentParams } = this.props;
     return (
       <Fragment>
         <ReactCSSTransitionGroup
@@ -109,7 +110,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
                 </TabPane>
                 {/* task 3 */}
                 <TabPane tabId={3}>
-                  <CreateLandingPage />
+                  <CreateLandingPage listContentParams={listContentParams} />
                   <div className="mt-5" />
                   <div className="clearfix" />
                 </TabPane>
@@ -157,10 +158,11 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
 }
 const mapStateToProps = ({ userCampaign }: IRootState) => ({
   loading: userCampaign.loading,
-  listStep: userCampaign.listStepCampaign
+  listStep: userCampaign.listStepCampaign,
+  listContentParams: userCampaign.listCampainContentParams
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { getContentPageParams };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

@@ -16,6 +16,7 @@ const defaultMiddlewares = [
   loadingBarMiddleware(),
   loggerMiddleware
 ];
+
 const composedMiddlewares = middlewares =>
   process.env.NODE_ENV === 'development'
     ? compose(
