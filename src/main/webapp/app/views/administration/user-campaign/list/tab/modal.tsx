@@ -44,7 +44,7 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
     );
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
     return (
-      <Loader message={spinner1} show={loading} priority={1}>
+      <Loader message={spinner1} show={loading} priority={2}>
         <ModalHeader onClick={this.onShow} close={closeBtn}>
           <span>
             <Translate contentKey="campaign.modal.title" />{' '}

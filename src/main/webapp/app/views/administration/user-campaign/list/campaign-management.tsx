@@ -12,7 +12,7 @@ import classnames from 'classnames';
 
 import { DISPLAY_STATUS_ALL, DISPLAY_STATUS_PAUSE, DISPLAY_STATUS_ACTION, DISPLAY_STATUS_COMPLETE } from 'app/constants/common';
 import './../list/campaign-management.scss';
-import { getCampaignInfo, getCampaignInfoByStatus } from 'app/actions/user-campaign';
+import { getCampaignInfo, getCampaignInfoByStatus, getCampaignInfoById } from 'app/actions/user-campaign';
 import AllCamp from './tab/all-camp/all-camp';
 import ActionCamp from './tab/action-camp/action-camp';
 import PauseCamp from './tab/pause-camp/pause-camp';
@@ -98,8 +98,7 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
                               this.toggle('1');
                             }}
                           >
-                            <Translate contentKey="campaign.allCamps" /> {''}
-                            {totalElements}
+                            <Translate contentKey="campaign.allCamps" /> {''}({totalElements})
                           </NavLink>
                         </NavItem>
                         <NavItem>
@@ -111,8 +110,7 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
                             }}
                           >
                             <Translate contentKey="campaign.onAction" />
-                            {''}
-                            {totalElements}
+                            {''}({totalElements})
                           </NavLink>
                         </NavItem>
                         <NavItem>
@@ -124,8 +122,7 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
                             }}
                           >
                             <Translate contentKey="campaign.onPause" />
-                            {''}
-                            {totalElements}
+                            {''}({totalElements})
                           </NavLink>
                         </NavItem>
                         <NavItem>
@@ -137,8 +134,7 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
                             }}
                           >
                             <Translate contentKey="campaign.complete" />
-                            {''}
-                            {totalElements}
+                            {''}({totalElements})
                           </NavLink>
                         </NavItem>
                       </Nav>
@@ -175,7 +171,7 @@ const mapStateToProps = ({ userCampaign }: IRootState) => ({
   totalElements: userCampaign.totalElements
 });
 
-const mapDispatchToProps = { getCampaignInfo, getCampaignInfoByStatus };
+const mapDispatchToProps = { getCampaignInfo, getCampaignInfoByStatus, getCampaignInfoById };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
