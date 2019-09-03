@@ -162,7 +162,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
       return {
         ...state,
         loading: false,
-        postMailRequest: { code: 202, name: 'Đã gửi mail thành công', openModal: false }
+        postMailRequest: { code: 202, name: 'Đã gửi mail thành công', openModal: true }
       };
 
     case USER_CAMPAIGN_ACTION_TYPES.RESET_MESSAGE:
