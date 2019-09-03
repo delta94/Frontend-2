@@ -13,6 +13,11 @@
     border: solid $color_border 1px;
     border-radius: 5px;
     text-align: center;
+    svg {
+      position: absolute;
+      right: 10px;
+      top: 15px;
+    }
   }
 
   .topica-dropdown-menu {
