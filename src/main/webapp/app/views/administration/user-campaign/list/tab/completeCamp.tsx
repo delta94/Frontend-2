@@ -5,86 +5,35 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircle, faClock, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Loader as LoaderAnim } from 'react-loaders';
 import Loader from 'react-loader-advanced';
-import {
-  TabContent,
-  TabPane,
-  Nav,
-  NavItem,
-  NavLink,
-  Row,
-  Col,
-  CardHeader,
-  CardFooter,
-  Card,
-  CardBody,
-  Button,
-  ButtonGroup,
-  Container,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Table,
-  Badge
-} from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Table, Badge } from 'reactstrap';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
-import { getCampaignInfo, getCampaignInfoByStatus, getCampaignInfoById } from 'app/actions/user-campaign';
 
-import { DISPLAY_STATUS_ALL, DISPLAY_STATUS_PAUSE, DISPLAY_STATUS_ACTION, DISPLAY_STATUS_COMPLETE } from 'app/constants/common';
+import { getCampaignInfo, getCampaignInfoByStatus, getCampaignInfoById } from 'app/actions/user-campaign';
 
 export interface ICompleteCampProps extends StateProps, DispatchProps {}
 // extends StateProps, DispatchProps
 export interface ICompleteCampState {
-  //   listUser: any[];
   loading: boolean;
   modal: boolean;
-  activeTab: string;
-  showMore: boolean;
-  transform: boolean;
-  showInkBar: boolean;
-  // items:{};
-  selectedTabKey: 0;
-  transformWidth: 400;
 }
 class CompleteCamp extends React.Component<ICompleteCampProps, ICompleteCampState> {
   constructor(props) {
     super(props);
 
-    this.toggle = this.toggle.bind(this);
     this.onShow = this.onShow.bind(this);
     this.state = {
       loading: false,
-      modal: false,
-      activeTab: '1',
-      showMore: true,
-      transform: true,
-      showInkBar: true,
-      // items: this.getSimpleTabs(),
-      selectedTabKey: 0,
-      transformWidth: 400
+      modal: false
     };
   }
-  // componentDidMount() {
-  //   this.props.getCampaignInfoByStatus('');
 
-  //   }
-  // componentDidMount() {
-  //   this.props.getCampaignInfoByStatus(2);
-  // }
   onShow(id) {
     this.setState({
       modal: !this.state.modal
     });
     this.props.getCampaignInfoById(id);
-  }
-  toggle(tab) {
-    if (this.state.activeTab !== tab) {
-      this.setState({
-        activeTab: tab
-      });
-    }
   }
 
   render() {

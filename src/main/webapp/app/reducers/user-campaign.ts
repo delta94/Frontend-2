@@ -118,15 +118,15 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
       return {
         ...state,
         loading: false,
-        camps: action.payload.data.data,
-        totalElements: action.payload.data.data.total
+        camps: action.payload.data.data
+        // totalElements: action.payload.data.total
       };
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS):
       return {
         ...state,
         loading: false,
         camps: action.payload.data.data,
-        totalElements: action.payload.data.data.total
+        totalElements: action.payload.data.total
       };
 
     // success on get campain action content params

@@ -2,82 +2,38 @@ import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import ReactPaginate from 'react-paginate';
-import SweetAlert from 'sweetalert-react';
 import { Loader as LoaderAnim } from 'react-loaders';
 import Loader from 'react-loader-advanced';
-import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
+import { Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  DISPLAY_STATUS_ALL,
-  DISPLAY_STATUS_PAUSE,
-  DISPLAY_STATUS_ACTION,
-  DISPLAY_STATUS_COMPLETE,
-  DISPLAY_STATUS_NULL
-} from 'app/constants/common';
-
-import {
-  TabContent,
-  TabPane,
-  Nav,
-  NavItem,
-  NavLink,
-  Row,
-  Col,
-  CardHeader,
-  CardFooter,
-  Card,
-  CardBody,
-  Button,
-  ButtonGroup,
-  Container,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Table,
-  Badge
-} from 'reactstrap';
+import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, CardHeader, Card, Container } from 'reactstrap';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import classnames from 'classnames';
 
+import { DISPLAY_STATUS_ALL, DISPLAY_STATUS_PAUSE, DISPLAY_STATUS_ACTION, DISPLAY_STATUS_COMPLETE } from 'app/constants/common';
 import './../list/campaign-management.scss';
 import { getCampaignInfo, getCampaignInfoByStatus } from 'app/actions/user-campaign';
-import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
 import AllCamp from './tab/allCamp';
 import ActionCamp from './tab/actionCamp';
 import PauseCamp from './tab/pauseCamp';
 import CompleteCamp from './tab/completeCamp';
 
-import classnames from 'classnames';
-
-import { faClock } from '@fortawesome/free-solid-svg-icons';
-
 export interface ICreateCampaignProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
 
 export interface ICreateCampaignState {
+  // display campaign info by id
   modal?: boolean;
-  status: any;
+  // display campaign list follow tab's number
   activeTab: string;
-  showMore: boolean;
-  transform: boolean;
-  showInkBar: boolean;
-  // items:{};
-  selectedTabKey: 0;
-  transformWidth: 400;
 }
 
 export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampaignState> {
   state: ICreateCampaignState = {
     modal: false,
-    status: '',
-    activeTab: '1',
-    showMore: true,
-    transform: true,
-    showInkBar: true,
-    // items: this.getSimpleTabs(),
-    selectedTabKey: 0,
-    transformWidth: 400
+    // display start with tab 1
+    activeTab: '1'
   };
+
   constructor(props) {
     super(props);
     this.toggle = this.toggle.bind(this);
@@ -104,12 +60,6 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
       });
     }
   }
-  // toggle(id?) {
-  //   this.setState(prevState => ({
-  //     modal: !prevState.modal
-  //   }));
-  //   // this.props.getCampaignInfoById(id);
-  // }
 
   render() {
     const { match, loading, camps, totalElements } = this.props;
@@ -148,7 +98,7 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
                             }}
                           >
                             <Translate contentKey="campaign.allCamps" /> {''}
-                            {this.props.totalElements}
+                            {totalElements}
                           </NavLink>
                         </NavItem>
                         <NavItem>
@@ -161,7 +111,7 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
                           >
                             <Translate contentKey="campaign.onAction" />
                             {''}
-                            {this.props.totalElements}
+                            {totalElements}
                           </NavLink>
                         </NavItem>
                         <NavItem>
@@ -174,7 +124,7 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
                           >
                             <Translate contentKey="campaign.onPause" />
                             {''}
-                            {this.props.totalElements}
+                            {totalElements}
                           </NavLink>
                         </NavItem>
                         <NavItem>
@@ -187,7 +137,7 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
                           >
                             <Translate contentKey="campaign.complete" />
                             {''}
-                            {this.props.totalElements}
+                            {totalElements}
                           </NavLink>
                         </NavItem>
                       </Nav>
