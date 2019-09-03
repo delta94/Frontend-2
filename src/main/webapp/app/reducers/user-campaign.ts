@@ -3,6 +3,7 @@ import { IUser } from 'app/common/model/user.model';
 import { USER_CAMPAIGN_ACTION_TYPES } from 'app/constants/user-campaign';
 import { ICampaignInfo } from 'app/common/model/campaign-infomation.model';
 import { ICampaign, defaultValue } from 'app/common/model/campaign.model';
+import { ICategory } from 'app/common/model/category.model';
 // import { ICampaignId, defaultValue } from 'app/common/model/campaign-id.model';
 
 export interface IlistCampaignInfo {
@@ -46,6 +47,7 @@ const initialState = {
   camp: {} as ReadonlyArray<ICampaign>,
   camps: [] as ReadonlyArray<ICampaign>,
   users: [] as ReadonlyArray<IUser>,
+  listCategory: [] as ReadonlyArray<ICategory>,
 
   loading: false,
   totalElements: 0,
@@ -63,6 +65,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_STEP_CAMPAIGNS):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_PARAMS):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_LIST_CUSTOMER_GROUP):
+    case REQUEST(USER_CAMPAIGN_ACTION_TYPES.FETCH_USER_CATEGORIES):
       return {
         ...state,
         loading: true
@@ -79,6 +82,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_PARAMS):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_STEP_CAMPAIGNS):
+    case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_USER_CATEGORIES):
       return {
         ...state,
         loading: false
@@ -99,14 +103,20 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_STEP_CAMPAIGNS):
       return {
         ...state,
-        listStepCampaign: action.payload.data.data,
+        listStepCampaign: action.payload.data,
         loading: false
       };
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.INFORMATION_CAMPAIGN):
       return {
         ...state,
-        listCampaignInfo: action.payload.data.data,
+        listCampaignInfo: action.payload.data,
         loading: false
+      };
+    case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.FETCH_USER_CATEGORIES):
+      return {
+        ...state,
+        loading: false,
+        listCategory: action.payload.data
       };
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_ID):
       return {

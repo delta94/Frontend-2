@@ -116,3 +116,7 @@ export const getContentPageParamsService = () => {
   const requestUrl = `${`v1/contentParams`}`;
   return axios.get(requestUrl);
 };
+
+export const getCategory = name => {
+  return axios.get(`v1/category?type=Customer&textSearch=${name}`);
+};
