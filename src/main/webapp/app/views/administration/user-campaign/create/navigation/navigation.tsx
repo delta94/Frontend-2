@@ -115,7 +115,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
                 </TabPane>
                 {/* task 3 */}
                 <TabPane tabId={3}>
-                  <CreateLandingPage listContentParams={listContentParams} />
+                  <CreateLandingPage />
                   <div className="mt-5" />
                   <div className="clearfix" />
                 </TabPane>

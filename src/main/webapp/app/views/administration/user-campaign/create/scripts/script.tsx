@@ -3,7 +3,7 @@ import { Col, Row } from 'reactstrap';
 import SweetAlert from 'sweetalert-react';
 import { IRootState } from 'app/reducers';
 import { connect } from 'react-redux';
-import { getInformation, getStepCampaign } from 'app/actions/user-campaign';
+import { getInformation, getStepCampaign, getContentPageParams } from 'app/actions/user-campaign';
 import { ULTILS_TYPES } from '../../../../../constants/ultils';
 import '../scripts/script.scss';
 

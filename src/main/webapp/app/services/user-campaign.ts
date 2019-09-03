@@ -1,3 +1,4 @@
+import { ICampaignTestMailLanding } from './../common/model/campaign.model';
 import axios from 'axios';
 import { IUser, defaultValue } from 'app/common/model/user.model';
 import { ICategory } from 'app/common/model/category.model';
@@ -111,11 +112,23 @@ export const UploaddFile = data => {
   });
 };
 
-// Get Landing Page Params
+//GET: v1/contentParams API => lấy thông tin landing page param
 export const getContentPageParamsService = () => {
   const requestUrl = `${`v1/contentParams`}`;
-  return axios.get(requestUrl);
+  var data = axios.get(requestUrl);
+  console.log(data);
+  return data;
 };
+
+//TODO: POST v1/email/send => Api test gửi email test
+export const postTestMailLandingService = (data: ICampaignTestMailLanding) => {
+  const requestUrl = `${`v1/email/send`}`;
+  return axios.post(requestUrl, data);
+};
+
+//TODO: POST v1/campaign => Api lưu thông tin chiến dịch
+
+//TODO: GET v1/content-template?templateType=EMAIL => Api lấy danh sách loại content template
 
 export const getCategory = name => {
   return axios.get(`v1/category?type=Customer&textSearch=${name}`);

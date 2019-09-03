@@ -13,6 +13,7 @@ import { ULTILS_TYPES } from '../../../../constants/ultils';
 
 export interface ICreateProps extends StateProps, DispatchProps {}
 
+export interface ICreateEntity {}
 export interface ICreateState {
   //collapse componemt table detail
   collapse: boolean;
