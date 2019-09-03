@@ -20,6 +20,15 @@ export interface IStepCampaign {
   description?: string;
 }
 
+export interface ICampaignContentParams {
+  id?: number;
+  paramCode?: string;
+  paramName?: string;
+  sampleValue?: string;
+  description?: string;
+  merchantId?: string;
+}
+
 const initialState = {
   loading: false,
   totalElements: 0,
@@ -27,6 +36,7 @@ const initialState = {
 
   listCampaignInfo: [] as ReadonlyArray<ICampaignInfo>,
   listStepCampaign: [] as ReadonlyArray<IStepCampaign>,
+  listCampainContentParams: [] as ICampaignContentParams[],
   camp: [] as ReadonlyArray<ICampaignId>,
   camps: [] as ReadonlyArray<ICampaign>,
   users: [] as ReadonlyArray<IUser>
@@ -41,6 +51,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_STATUS):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_STEP_CAMPAIGNS):
+    case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_PARAMS):
       return {
         ...state,
         loading: true
@@ -55,6 +66,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_ID):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_STATUS):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS):
+    case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_PARAMS):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_STEP_CAMPAIGNS):
       return {
         ...state,
@@ -98,6 +110,15 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
         loading: false,
         camps: action.payload.data,
         totalElements: action.payload.data.totalElements
+      };
+
+    // success on get campain action content params
+    case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_PARAMS):
+      return {
+        ...state,
+        loading: false,
+        listCampainContentParams: action.payload.data,
+        totalElements: action.payload.data.total
       };
 
     case USER_CAMPAIGN_ACTION_TYPES.RESET_MESSAGE:

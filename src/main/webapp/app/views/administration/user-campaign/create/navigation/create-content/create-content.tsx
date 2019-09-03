@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../create-content/create-content.scss';
-import { connect } from 'react-redux';
+import Dropdown from '../../../../../../layout/DropDown/Dropdown';
 
 import { Card, Collapse, Button, Input, CardTitle, FormGroup, Label, CardBody } from 'reactstrap';
 
@@ -9,26 +9,31 @@ import 'froala-editor/css/froala_editor.pkgd.min.css';
 
 import FroalaEditorComponent from 'react-froala-wysiwyg';
 
-export interface CreateContentEntity {}
+export interface ICreateContentEntity {}
 
-export interface CreateContentProps {}
+export interface ICreateContentProps {}
 
-export interface CreateContentState {
+export interface ICreateContentState {
   showMailForFriend: boolean;
-  mailHeader: string;
+  defaultValueContent?: string;
 }
 
 const dumpInteractive = ['Email', 'Facebook', 'Gmail'];
 
-const dumpTemplates = ['Template1', 'Template2', 'Template3', 'Template4'];
+const dumpTemplates = [
+  { id: '1', name: 'Template1' },
+  { id: '1', name: 'Template2' },
+  { id: '1', name: 'Template4' },
+  { id: '1', name: 'Template3' }
+];
 
-class CreateContent extends React.PureComponent<CreateContentEntity, CreateContentProps, CreateContentState> {
+class CreateContent extends React.PureComponent<ICreateContentProps, ICreateContentState, ICreateContentEntity> {
   constructor(props) {
     super(props);
   }
-  state: CreateContentState = {
+  state: ICreateContentState = {
     showMailForFriend: false,
-    mailHeader: ''
+    defaultValueContent: ''
   };
 
   componentDidMount() {
@@ -38,6 +43,28 @@ class CreateContent extends React.PureComponent<CreateContentEntity, CreateConte
   _handleshowMailForFriendState = () => {
     let showMailForFriend: boolean = !this.state.showMailForFriend;
     this.setState({ showMailForFriend });
+  };
+
+  addText = text => {
+    var sel, range;
+
+    if (window.getSelection() && window.getSelection().focusNode.parentElement.offsetParent.className === 'fr-element fr-view') {
+      console.log(window.getSelection().anchorNode);
+      sel = window.getSelection();
+      if (sel.rangeCount) {
+        range = sel.getRangeAt(0);
+        range.deleteContents();
+        range.insertNode(document.createTextNode(text));
+      }
+    }
+  };
+
+  toggleDropdownParams = event => {
+    this.addText(event.name);
+  };
+
+  handleModelChange = event => {
+    this.setState({ defaultValueContent: event });
   };
 
   render() {
@@ -82,25 +109,21 @@ class CreateContent extends React.PureComponent<CreateContentEntity, CreateConte
                 <CardBody>
                   <div className="template-add">
                     <label>Mẫu email gửi</label>
-                    <FormGroup>
-                      <Input type="select" name="select" id="exampleSelect">
-                        {dumpTemplates &&
-                          dumpTemplates.map((item, index) => {
-                            return <option key={index}>{item}</option>;
-                          })}
-                      </Input>
-                    </FormGroup>
+                    <Dropdown
+                      selection={true}
+                      defaultValue="Chọn mẫu email"
+                      listArray={dumpTemplates}
+                      toggleDropdown={this.toggleDropdownParams}
+                    />
                   </div>
                   <div className="input-mail-and-more">
                     <Input placeHolder="Tiêu đề email" />
-                    <FormGroup>
-                      <Input type="select" name="select" id="exampleSelect" style={{ width: '200px' }}>
-                        {dumpTemplates &&
-                          dumpTemplates.map((item, index) => {
-                            return <option key={index}>{item}</option>;
-                          })}
-                      </Input>
-                    </FormGroup>
+                    <Dropdown
+                      selection={true}
+                      defaultValue="Tham số"
+                      listArray={dumpTemplates}
+                      toggleDropdown={this.toggleDropdownParams}
+                    />
                   </div>
                   <div className="content-fixing">
                     <FroalaEditorComponent tag="textarea" />
@@ -131,25 +154,21 @@ class CreateContent extends React.PureComponent<CreateContentEntity, CreateConte
                 <CardBody>
                   <div className="template-add">
                     <label>Mẫu email gửi</label>
-                    <FormGroup>
-                      <Input type="select" name="select" id="exampleSelect">
-                        {dumpTemplates &&
-                          dumpTemplates.map((item, index) => {
-                            return <option key={index}>{item}</option>;
-                          })}
-                      </Input>
-                    </FormGroup>
+                    <Dropdown
+                      selection={true}
+                      defaultValue="Chọn mẫu email"
+                      listArray={dumpTemplates}
+                      toggleDropdown={this.toggleDropdownParams}
+                    />
                   </div>
                   <div className="input-mail-and-more">
                     <Input placeHolder="Tiêu đề email" />
-                    <FormGroup>
-                      <Input type="select" name="select" id="exampleSelect" style={{ width: '200px' }}>
-                        {dumpTemplates &&
-                          dumpTemplates.map((item, index) => {
-                            return <option key={index}>{item}</option>;
-                          })}
-                      </Input>
-                    </FormGroup>
+                    <Dropdown
+                      selection={true}
+                      defaultValue="Tham số"
+                      listArray={dumpTemplates}
+                      toggleDropdown={this.toggleDropdownParams}
+                    />
                   </div>
                   <div className="content-fixing">
                     <FroalaEditorComponent tag="textarea" />

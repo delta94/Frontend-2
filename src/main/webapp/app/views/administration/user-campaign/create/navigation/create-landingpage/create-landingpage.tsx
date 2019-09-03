@@ -11,11 +11,13 @@ import 'froala-editor/css/froala_editor.pkgd.min.css';
 import FroalaEditorComponent from 'react-froala-wysiwyg';
 import { string } from 'prop-types';
 import { getCampaignInfoService } from '../../../../../../services/user-campaign';
+import { getContentPageParams } from 'app/actions/user-campaign';
 
 export interface ICreateLandingPageEntity {
   headerMail?: string;
   contentMail?: string;
   typeMail?: string;
+  mail?: string;
 }
 
 export interface ICreateLandingPageProps {}
@@ -23,6 +25,7 @@ export interface ICreateLandingPageProps {}
 export interface ICreateLandingPageState {
   showMailForFriend: boolean;
   defaultValueContent: string;
+  mailEntity: ICreateLandingPageEntity;
 }
 
 const dumpInteractive = ['landingpage 1', 'landingpage 2', 'landingpage 3'];
@@ -40,10 +43,18 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
   }
   state: ICreateLandingPageState = {
     showMailForFriend: false,
-    defaultValueContent: ''
+    defaultValueContent: '',
+    mailEntity: {
+      contentMail: '',
+      typeMail: '',
+      headerMail: '',
+      mail: ''
+    }
   };
 
   componentDidMount() {
+    let data = getContentPageParams();
+    console.log(data);
     console.log(this.props);
   }
 
@@ -71,8 +82,10 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
     this.setState({ defaultValueContent: event });
   };
 
+  handleInput = () => {};
+
   render() {
-    let { showMailForFriend, defaultValueContent } = this.state;
+    let { showMailForFriend, defaultValueContent, mailEntity } = this.state;
     return (
       <div className="add-content">
         {/* Title */}
@@ -118,7 +131,7 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
                     />
                   </div>
                   <div className="input-mail-and-more">
-                    <Input placeHolder="Tiêu đề Email" value={''} />
+                    <Input placeHolder="Tiêu đề email" value={''} />
                     <Dropdown
                       selection={true}
                       defaultValue="Tham số"
