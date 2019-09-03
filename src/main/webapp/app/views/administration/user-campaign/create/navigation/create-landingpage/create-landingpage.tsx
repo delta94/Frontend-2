@@ -50,8 +50,13 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
       sel = window.getSelection();
       if (sel.rangeCount) {
         range = sel.getRangeAt(0);
-        range.deleteContents();
-        range.insertNode(document.createTextNode(text));
+
+        if (range === '' || range === null) {
+          range.insertNode(document.createTextNode(text));
+        } else {
+          range.deleteContents();
+          range.insertNode(document.createTextNode(text));
+        }
       }
     }
   };

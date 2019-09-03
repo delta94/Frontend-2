@@ -102,7 +102,6 @@ export default (state: UserManagementState = initialState, action): UserManageme
         authorities: action.payload.data
       };
     case SUCCESS(USER_MANAGE_ACTION_TYPES.FETCH_USERS):
-      console.log(action);
       return {
         ...state,
         loading: false,
@@ -112,7 +111,6 @@ export default (state: UserManagementState = initialState, action): UserManageme
         totalElements: action.payload.data.totalElements
       };
     case SUCCESS(USER_MANAGE_ACTION_TYPES.FETCH_SEARCH_USER):
-      console.log(action);
       return {
         ...state,
         loading: false,

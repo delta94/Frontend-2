@@ -1,4 +1,4 @@
-export const ULTILS_ACTION_TYPES = {
+export const ULTILS_TYPES = {
   DISPLAY_NAVIGATION: 'display-complete',
   DISPLAY_TABLE: 'display-complete',
   EMPTY: '',
@@ -6,5 +6,11 @@ export const ULTILS_ACTION_TYPES = {
   LINK_IMAGE: 'https://abeon-hosting.com/images/complete-png-4.png',
   DEFAULT_TITLE: 'camp-titles',
   GRID_ITEM: 'grid-items',
-  MESSAGE_SWEET_ALER: 'vui lòng input các trường còn thiếu'
+  MESSAGE_SWEET_ALER: 'vui lòng input các trường còn thiếu',
+  ICON_UP: 'lnr-chevron-up',
+  ICON_DOWN: 'lnr-chevron-down',
+  DISABLE_DOCUMENT: 'campaign-document',
+  ACTIVE_TAB: '1'
 };
+export const ITEMS_PER_PAGE = 5;
+export const ACTIVE_PAGE = 0;

@@ -1,45 +1,46 @@
-import { Col, Row, CardTitle, Button, ModalBody, Table, Modal, ModalHeader } from 'reactstrap';
+import { Col, Row, CardTitle, Button, ModalBody, Table, Modal, ModalHeader, Label } from 'reactstrap';
 import '../select-customer/select-customer.scss';
-
+import Loader from 'react-loader-advanced';
+import { Loader as LoaderAnim } from 'react-loaders';
 import { Translate } from 'react-jhipster';
 import Ionicon from 'react-ionicons';
 import React, { Fragment, Component, useState } from 'react';
 import IncorporationForm from './customer-dialog/button-dialog/button-dialog';
-
+import { connect } from 'react-redux';
+import { IRootState } from 'app/reducers';
 import ReactPaginate from 'react-paginate';
-
+import { getCustomer } from '../../../../../../actions/user-campaign';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import CustomerDialog from './customer-dialog/customer-dialog';
+import { ITEMS_PER_PAGE, ULTILS_TYPES, ACTIVE_PAGE } from '../../../../../../constants/ultils';
 
-export interface SelectCustomerProps {}
+export interface SelectCustomerProps extends StateProps, DispatchProps {}
 
 export interface SelectCustomerState {
   listUser: any[];
   modal: boolean;
   activeTab: string;
+
+  // set param to get list
+  activePage: number;
+  pageSize: number;
+  category: string;
 }
 class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomerState> {
   state: SelectCustomerState = {
-    activeTab: '1',
-    listUser: [
-      {
-        name: 'tuan',
-        phone: '0383187960',
-        email: 'trancongtuan525@gmail.com',
-        group: 'giám đốc'
-      },
-      {
-        name: 'hung',
-        phone: '1234567890',
-        email: 'hungdv@gmail.com',
-        group: ' tổng giám đốc'
-      }
-    ],
+    activeTab: ULTILS_TYPES.ACTIVE_TAB,
+    activePage: ACTIVE_PAGE,
+    pageSize: ITEMS_PER_PAGE,
+    category: ULTILS_TYPES.EMPTY,
+    listUser: [],
     modal: false
   };
+
   onClick = () => {
     this.setState(prevState => ({
       modal: !prevState.modal
     }));
+    this.props.getCustomer(this.state.activePage, this.state.pageSize, this.state.category);
   };
   toggle = tab => {
     if (this.state.activeTab !== tab) {
@@ -48,225 +49,136 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
       });
     }
   };
-  handlerSaveForm = () => {
+
+  handlerModal = (event, list) => {
     this.setState({
-      modal: false
+      modal: event
     });
+    if (list !== undefined) this.state.listUser.push(list);
   };
 
   render() {
+    const spinner = <LoaderAnim color="#ffffff" type="ball-pulse" />;
     const { listUser } = this.state;
+    const { loading } = this.props;
+    console.log(listUser);
     return (
-      <Fragment>
-        <Modal isOpen={this.state.modal} fade={false} toggle={this.toggle}>
-          <ModalHeader
-            toggle={() => {
-              this.setState({
-                modal: false
-              });
-            }}
-          >
-            <span>CHỌN TỆP </span>
-          </ModalHeader>
-
-          <ModalBody>
-            <Row>
-              <Col md="3">
-                <legend>Tổng số contact : {100}</legend>
+      <Loader message={spinner} show={loading} priority={10}>
+        <Fragment>
+          <Modal isOpen={this.state.modal} fade={false} toggle={this.toggle}>
+            <CustomerDialog onClick={this.handlerModal} />
+          </Modal>
+          <Row>
+            <Col md="4">
+              <CardTitle className="cartitle-customer">
+                <Translate contentKey="campaign.list-custom" />
+              </CardTitle>
+            </Col>
+            <Col md="3" className="total-contract-customer">
+              <Label />
+            </Col>
+            <Col md="5" className="total-contract-customer">
+              <Col md="6">
+                {' '}
+                <Label>
+                  <Translate contentKey="campaign.all-contract" />
+                  <span className="number-contract">100</span>
+                </Label>
               </Col>
-              <Col md="4">
-                <input type="text" className="form-control" placeholder="Tìm kiếm" />
+              <Col md="6">
+                {' '}
+                <Label>
+                  {' '}
+                  <Translate contentKey="campaign.duplicate-contract" />
+                  <span className="number-contract">100</span>
+                </Label>
               </Col>
-              <Col md="5">
-                <Button color="primary" type="submit" className="save-right" onClick={this.handlerSaveForm}>
-                  <FontAwesomeIcon icon="save" />
-                  &nbsp;
-                  <Translate contentKey="entity.action.save" />
-                </Button>
-              </Col>
-            </Row>
-            <Row>
-              <Col md="3" className="import-cus">
-                <IncorporationForm />
-              </Col>
-              <Col md="9">
-                <div className="modal-table">
-                  <Table responsive striped className="modal-tables">
-                    <thead>
-                      <tr className="text-center">
-                        <th className="hand ">Họ và tên</th>
-                        <th className="hand">Số điện thoại</th>
-                        <th className="hand">Email</th>
-                        <th>Nhóm</th>
-                      </tr>
-
-                      {listUser
-                        ? listUser.map((event, index) => {
-                            var elements;
-                            elements = (
-                              <tr key={index + 1}>
-                                <td>{event.name}</td>
-                                <td>{event.phone}</td>
-                                <td>{event.email}</td>
-                                <td>{event.group}</td>
-                              </tr>
-                            );
-                            return elements;
-                          })
-                        : ''}
-                    </thead>
-                  </Table>
-                  <div className="paginator-nav">
-                    <ReactPaginate
-                      previousLabel={'<'}
-                      nextLabel={'>'}
-                      breakLabel={'...'}
-                      breakClassName={'break-me'}
-                      pageCount={2}
-                      marginPagesDisplayed={1}
-                      pageRangeDisplayed={1}
-                      containerClassName={'pagination'}
-                      subContainerClassName={'pages pagination'}
-                      activeClassName={'active'}
-                    />
+            </Col>
+          </Row>
+          <Row className="row-nav">
+            <Col md="4">
+              <div className="chosse-customer-class" onClick={this.onClick}>
+                <div className="grid-items-cus">
+                  <div className="camp-top">
+                    <Ionicon fontSize="35px" color="blue" icon="ios-add" />
+                    <label className="camp-title-click">
+                      {' '}
+                      <Translate contentKey="campaign.choose-new-customer" />
+                    </label>
                   </div>
                 </div>
-              </Col>
-            </Row>
-          </ModalBody>
-        </Modal>
-        <CardTitle>CHỌN TIỆP KHÁCH HÀNG</CardTitle>
-        <Row className="row-nav">
-          <Col md="4">
-            <div className="chosse-customer-class" onClick={this.onClick}>
-              <div className="grid-items-cus">
-                <div className="camp-top">
-                  <Ionicon fontSize="35px" color="blue" icon="ios-add" />
-                  <label className="camp-title-click"> Chọn Tệp KH Mới</label>
-                </div>
               </div>
-            </div>
-          </Col>
+            </Col>
 
-          {listUser &&
-            listUser.map((item, index) => {
-              return (
-                <Col md="4" key={item.id + index}>
-                  <div className="grid-items-pop">
-                    <div className="title-contract">
-                      <div className="camp-titles"> Giám Đốc </div>
-                      <div className="camp-top">
-                        <label className="camp-title-click">Tổng Contract :100</label>
+            {listUser &&
+              listUser.map((item, index, list) => {
+                return (
+                  <Col md="4" key={item.id + index}>
+                    <div className="table-customer">
+                      <div className="title-contract">
+                        <div className="name-group"> Giám Đốc </div>
+                        <div className="camp-top">
+                          <label className="total-contract">
+                            <Translate contentKey="campaign.sum-contact" /> <span className="number-contract">{list[index].length}</span>
+                          </label>
+                        </div>
+                      </div>
+                      <div className="boder-customer">
+                        <div>
+                          <i className="pe-7s-mail">
+                            {' '}
+                            <span className="name-icon">Email</span>
+                          </i>
+                          <label className="label-icon">{list[index].filter(item => item.email !== null).length}</label>
+                        </div>
+                        <div>
+                          <i className="pe-7s-call">
+                            {' '}
+                            <span className="name-icon"> SĐT </span>{' '}
+                          </i>
+                          <label className="label-icon"> {list[index].filter(item => item.phone !== null).length}</label>
+                        </div>
+                        <div>
+                          {' '}
+                          <img
+                            className="img-facebook"
+                            src="https://cdn3.iconfinder.com/data/icons/facebook-ui-flat/48/Facebook_UI-03-512.png"
+                          />{' '}
+                          <span className="name-icon">FB</span>
+                          <label className="label-icon">{ACTIVE_PAGE}</label>
+                        </div>
+                        <div>
+                          {' '}
+                          <img
+                            className="img-zalo"
+                            src="http://brasol.logozee.com/public/ckeditor/uploads/brasol.vn-logo-zalo-vector-logo-zalo-vector.png"
+                          />{' '}
+                          <span className="name-icon">Zalo</span>
+                          <label className="label-icon"> {ACTIVE_PAGE}</label>
+                        </div>
                       </div>
                     </div>
-                    <div className="boder-create-new">
-                      <div>
-                        <i className="pe-7s-mail"> Email</i>
-                        <label className="label-icon">100</label>
-                      </div>
-                      <div>
-                        <i className="pe-7s-call"> SĐT </i>
-                        <label className="label-icon">100</label>
-                      </div>
-                      <div>
-                        {' '}
-                        <img
-                          className="img-facebook"
-                          src="https://cdn3.iconfinder.com/data/icons/facebook-ui-flat/48/Facebook_UI-03-512.png"
-                        />{' '}
-                        FB<label className="label-icon">100</label>
-                      </div>
-                      <div>
-                        {' '}
-                        <img
-                          className="img-zalo"
-                          src="http://brasol.logozee.com/public/ckeditor/uploads/brasol.vn-logo-zalo-vector-logo-zalo-vector.png"
-                        />{' '}
-                        Zalo<label className="label-icon">100</label>
-                      </div>
-                    </div>
-                  </div>
-                </Col>
-              );
-            })}
-        </Row>
-        <Row className="row-nav">
-          <Col md="4">
-            <div className="grid-items-pop">
-              <div className="title-contract">
-                <div className="camp-titles"> Giám Đốc </div>
-                <div className="camp-top">
-                  <label className="camp-title-click">Tổng Contract :100</label>
-                </div>
-              </div>
-              <div className="boder-create-new">
-                <div>
-                  <i className="pe-7s-mail"> Email</i>
-                  <label className="label-icon">100</label>
-                </div>
-                <div>
-                  <i className="pe-7s-call"> SĐT </i>
-                  <label className="label-icon">100</label>
-                </div>
-                <div>
-                  {' '}
-                  <img
-                    className="img-facebook"
-                    src="https://cdn3.iconfinder.com/data/icons/facebook-ui-flat/48/Facebook_UI-03-512.png"
-                  />{' '}
-                  FB<label className="label-icon">100</label>
-                </div>
-                <div>
-                  {' '}
-                  <img
-                    className="img-zalo"
-                    src="http://brasol.logozee.com/public/ckeditor/uploads/brasol.vn-logo-zalo-vector-logo-zalo-vector.png"
-                  />{' '}
-                  Zalo<label className="label-icon">100</label>
-                </div>
-              </div>
-            </div>
-          </Col>
-          <Col md="4">
-            <div className="grid-items-pop">
-              <div className="title-contract">
-                <div className="camp-titles"> Giám Đốc </div>
-                <div className="camp-top">
-                  <label className="camp-title-click">Tổng Contract :100</label>
-                </div>
-              </div>
-              <div className="boder-create-new">
-                <div>
-                  <i className="pe-7s-mail"> Email</i>
-                  <label className="label-icon">100</label>
-                </div>
-                <div>
-                  <i className="pe-7s-call"> SĐT </i>
-                  <label className="label-icon">100</label>
-                </div>
-                <div>
-                  {' '}
-                  <img
-                    className="img-facebook"
-                    src="https://cdn3.iconfinder.com/data/icons/facebook-ui-flat/48/Facebook_UI-03-512.png"
-                  />{' '}
-                  FB<label className="label-icon">100</label>
-                </div>
-                <div>
-                  {' '}
-                  <img
-                    className="img-zalo"
-                    src="http://brasol.logozee.com/public/ckeditor/uploads/brasol.vn-logo-zalo-vector-logo-zalo-vector.png"
-                  />{' '}
-                  Zalo<label className="label-icon">100</label>
-                </div>
-              </div>
-            </div>
-          </Col>
-        </Row>
-      </Fragment>
+                    <br />
+                  </Col>
+                );
+              })}
+          </Row>
+        </Fragment>
+      </Loader>
     );
   }
 }
+const mapStateToProps = ({ userCampaign }: IRootState) => ({
+  loading: userCampaign.loading,
+  listCustomer: userCampaign.listNewCustomer
+});
 
-export default SelectCustomer;
+const mapDispatchToProps = { getCustomer };
+
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SelectCustomer);

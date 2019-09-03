@@ -4,7 +4,8 @@ import SweetAlert from 'sweetalert-react';
 import { IRootState } from 'app/reducers';
 import { connect } from 'react-redux';
 import { getInformation, getStepCampaign } from 'app/actions/user-campaign';
-import { ULTILS_ACTION_TYPES } from '../../../../../constants/ultils';
+import { ULTILS_TYPES } from '../../../../../constants/ultils';
+import '../scripts/script.scss';
 
 export interface IScriptsCampaignProps extends StateProps, DispatchProps {
   value: any;
@@ -29,13 +30,13 @@ export class ScriptsCampaign extends Component<IScriptsCampaignProps, IScriptsCa
     super(props);
   }
   state: IScriptsCampaignState = {
-    urlImage: '',
+    urlImage: ULTILS_TYPES.EMPTY,
 
-    nameScript: '',
+    nameScript: ULTILS_TYPES.EMPTY,
 
     isError: false,
 
-    disableDocument: ''
+    disableDocument: ULTILS_TYPES.EMPTY
   };
 
   componentDidMount() {
@@ -47,16 +48,16 @@ export class ScriptsCampaign extends Component<IScriptsCampaignProps, IScriptsCa
       nameScript: name
     });
     if (
-      this.props.value.valueDay !== ULTILS_ACTION_TYPES.EMPTY &&
-      this.props.value.valueName !== ULTILS_ACTION_TYPES.EMPTY &&
-      this.props.value.valueDes !== ULTILS_ACTION_TYPES.EMPTY &&
-      this.props.value.validateName === ULTILS_ACTION_TYPES.EMPTY &&
-      this.props.value.validateField === ULTILS_ACTION_TYPES.EMPTY &&
-      this.props.value.validateDay === ULTILS_ACTION_TYPES.EMPTY
+      this.props.value.valueDay !== ULTILS_TYPES.EMPTY &&
+      this.props.value.valueName !== ULTILS_TYPES.EMPTY &&
+      this.props.value.valueDes !== ULTILS_TYPES.EMPTY &&
+      this.props.value.validateName === ULTILS_TYPES.EMPTY &&
+      this.props.value.validateField === ULTILS_TYPES.EMPTY &&
+      this.props.value.validateDay === ULTILS_TYPES.EMPTY
     ) {
       this.setState({
         isError: false,
-        disableDocument: 'campaign-document'
+        disableDocument: ULTILS_TYPES.DISABLE_DOCUMENT
       });
       console.log(id);
       this.props.getStepCampaign(id);
@@ -64,7 +65,7 @@ export class ScriptsCampaign extends Component<IScriptsCampaignProps, IScriptsCa
     } else {
       this.setState({
         isError: true,
-        disableDocument: ''
+        disableDocument: ULTILS_TYPES.EMPTY
       });
       this.props.onClick(null);
     }
@@ -74,10 +75,10 @@ export class ScriptsCampaign extends Component<IScriptsCampaignProps, IScriptsCa
     return (
       <Fragment>
         <SweetAlert
-          title={ULTILS_ACTION_TYPES.MESSAGE_SWEET_ALER}
-          confirmButtonColor=""
+          title={ULTILS_TYPES.MESSAGE_SWEET_ALER}
+          confirmButtonColor={ULTILS_TYPES.EMPTY}
           show={this.state.isError}
-          text=""
+          text={ULTILS_TYPES.EMPTY}
           type="error"
           onConfirm={() => this.setState({ isError: false })}
         />

@@ -2,6 +2,7 @@ import axios from 'axios';
 import { IUser, defaultValue } from 'app/common/model/user.model';
 import { ICategory } from 'app/common/model/category.model';
 import { toast } from 'react-toastify';
+import { IListNewCustomer } from 'app/common/model/campaign-new-customer.model';
 
 const apiUrl = 'v1/campaigns';
 
@@ -29,6 +30,11 @@ export const getUsersService = (page, pageSize, category?: string, textSearch?: 
   const requestUrl = `${apiUrl}${`?page=${page}&pageSize=${pageSize}&category=${category}&textSearch=${textSearch}`}`;
   return axios.get<IUser>(requestUrl);
 };
+
+export const getNewCustomer = (page, pageSize, category?: string) => {
+  return axios.get<IListNewCustomer>(`v1/customer?type=MgM&page=${page}&pageSize=${pageSize}&category=${category}`);
+};
+
 export const getInformationService = () => {
   return axios.get('v1/campaignTypes');
 };

@@ -5,7 +5,8 @@ import {
   getCampaignInfoByIdService,
   getCampaignInfoByStatusService,
   getStep,
-  getContentPageParamsService
+  getContentPageParamsService,
+  getNewCustomer
 } from 'app/services/user-campaign';
 
 const apiUrl = 'v1/campaigns';
@@ -32,7 +33,6 @@ export const getStepCampaign = id => {
 };
 
 export const getCampaignInfoById = id => {
-  console.log('Đã vào service' + id);
   return {
     type: USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_ID,
     payload: getCampaignInfoByIdService(id)
@@ -43,6 +43,19 @@ export const getInformation = () => {
   return {
     type: USER_CAMPAIGN_ACTION_TYPES.INFORMATION_CAMPAIGN,
     payload: getInformationService()
+  };
+};
+
+// export const getUsers = (page, size, category?: string, textSearch?: string) => {
+//   return {
+//     type: USER_MANAGE_ACTION_TYPES.FETCH_USERS,
+//     payload: getUsersService(page, size, category, textSearch)
+//   };
+// };
+export const getCustomer = (page, pageSize, category?: string) => {
+  return {
+    type: USER_CAMPAIGN_ACTION_TYPES.GET_LIST_CUSTOMER_GROUP,
+    payload: getNewCustomer(page, pageSize, category)
   };
 };
 
