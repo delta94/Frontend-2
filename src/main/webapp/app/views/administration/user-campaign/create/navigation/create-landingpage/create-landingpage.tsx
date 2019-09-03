@@ -3,16 +3,19 @@ import '../create-landingpage/create-landingpage.scss';
 
 import { Card, Collapse, Button, Input, CardTitle, FormGroup, Label, CardBody } from 'reactstrap';
 import Dropdown from '../../../../../../layout/DropDown/Dropdown';
+import { connect } from 'react-redux';
 
 import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 
 import FroalaEditorComponent from 'react-froala-wysiwyg';
 import { string } from 'prop-types';
+import { getCampaignInfoService } from '../../../../../../services/user-campaign';
 
 export interface ICreateLandingPageEntity {
   headerMail?: string;
   contentMail?: string;
+  typeMail?: string;
 }
 
 export interface ICreateLandingPageProps {}
@@ -39,6 +42,10 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
     showMailForFriend: false,
     defaultValueContent: ''
   };
+
+  componentDidMount() {
+    console.log(this.props);
+  }
 
   toggleDropdownMail = () => {};
 
@@ -88,7 +95,7 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
         <div className="add-content-detail">
           {/* Title For Detail 1 */}
           <div className="content-detail">
-            <div className="add-content-detail-title  b-t">
+            <div className="add-content-detail-title">
               <label>Preview</label>
               <div className="interactive" style={{ display: showMailForFriend ? 'none' : 'inline-block' }}>
                 <div className="test-mail">
@@ -140,4 +147,16 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
   }
 }
 
-export default CreateLandingPage;
+const mapStateToProps = state => ({
+  allState: state
+});
+
+const mapDispatchToProps = {};
+
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CreateLandingPage);

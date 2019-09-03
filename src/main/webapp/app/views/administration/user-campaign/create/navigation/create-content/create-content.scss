@@ -17,7 +17,7 @@
   .add-content-title {
     height: 40px;
     display: flex;
-    margin-bottom: 20px;
+    margin: 10px 0px;
 
     .interactive {
       position: absolute;
@@ -40,6 +40,7 @@
     .content-detail {
       border: 1px solid #ced4da;
       border-radius: 3px;
+      padding: 0px 2px;
 
       .add-content-detail-title {
         display: flex;
@@ -47,7 +48,7 @@
         background: #eff9ff;
         box-sizing: border-box;
         border-radius: 3px;
-        line-height: 43px;
+        line-height: 44px;
 
         .interactive {
           position: absolute;

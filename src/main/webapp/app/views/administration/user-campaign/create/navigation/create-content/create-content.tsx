@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../create-content/create-content.scss';
+import { connect } from 'react-redux';
 
 import { Card, Collapse, Button, Input, CardTitle, FormGroup, Label, CardBody } from 'reactstrap';
 
@@ -14,6 +15,7 @@ export interface CreateContentProps {}
 
 export interface CreateContentState {
   showMailForFriend: boolean;
+  mailHeader: string;
 }
 
 const dumpInteractive = ['Email', 'Facebook', 'Gmail'];
@@ -25,7 +27,8 @@ class CreateContent extends React.PureComponent<CreateContentEntity, CreateConte
     super(props);
   }
   state: CreateContentState = {
-    showMailForFriend: false
+    showMailForFriend: false,
+    mailHeader: ''
   };
 
   componentDidMount() {
@@ -61,7 +64,7 @@ class CreateContent extends React.PureComponent<CreateContentEntity, CreateConte
         <div className="add-content-detail">
           {/* Title For Detail 1 */}
           <div className="content-detail">
-            <div className="add-content-detail-title  b-t" onClick={this._handleshowMailForFriendState}>
+            <div className="add-content-detail-title" onClick={this._handleshowMailForFriendState}>
               <Button color="primary" style={{ marginBottom: '1rem' }}>
                 1
               </Button>
@@ -109,7 +112,7 @@ class CreateContent extends React.PureComponent<CreateContentEntity, CreateConte
 
           {/* Title For Detail 2 */}
           <div className="content-detail ">
-            <div className="add-content-detail-title b-t" onClick={this._handleshowMailForFriendState}>
+            <div className="add-content-detail-title" onClick={this._handleshowMailForFriendState}>
               <Button color="primary" style={{ marginBottom: '1rem' }}>
                 2
               </Button>

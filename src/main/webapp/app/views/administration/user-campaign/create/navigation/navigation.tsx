@@ -39,6 +39,13 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
     }
   };
 
+  componentDidMount() {
+    let activeTab: string = this.state.activeTab;
+    if (activeTab === '5') {
+      this.setState({ endTab: true });
+    }
+  }
+
   onHandletTab = (param: number) => {
     let activeTab: string = this.state.activeTab;
     let activeTabNumber: number = parseInt(activeTab);
