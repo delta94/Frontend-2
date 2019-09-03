@@ -5,6 +5,7 @@ import {
   getCampaignInfoByIdService,
   getCampaignInfoByStatusService,
   getStep,
+  getContentPageParamsService,
   getNewCustomer
 } from 'app/services/user-campaign';
 
@@ -60,4 +61,9 @@ export const getCustomer = (page, pageSize, category?: string) => {
 
 export const resetMessage = () => ({
   type: USER_CAMPAIGN_ACTION_TYPES.RESET_MESSAGE
+});
+
+export const getContentPageParams = () => ({
+  type: USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_PARAMS,
+  paylod: getContentPageParamsService()
 });

@@ -110,3 +110,9 @@ export const UploaddFile = data => {
     }
   });
 };
+
+// Get Landing Page Params
+export const getContentPageParamsService = () => {
+  const requestUrl = `${`v1/contentParams`}`;
+  return axios.get(requestUrl);
+};
