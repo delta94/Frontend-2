@@ -13,10 +13,10 @@ import classnames from 'classnames';
 import { DISPLAY_STATUS_ALL, DISPLAY_STATUS_PAUSE, DISPLAY_STATUS_ACTION, DISPLAY_STATUS_COMPLETE } from 'app/constants/common';
 import './../list/campaign-management.scss';
 import { getCampaignInfo, getCampaignInfoByStatus } from 'app/actions/user-campaign';
-import AllCamp from './tab/allCamp';
-import ActionCamp from './tab/actionCamp';
-import PauseCamp from './tab/pauseCamp';
-import CompleteCamp from './tab/completeCamp';
+import AllCamp from './tab/allCamp/allCamp';
+import ActionCamp from './tab/actionCamp/actionCamp';
+import PauseCamp from './tab/pauseCamp/pauseCamp';
+import CompleteCamp from './tab/completeCamp/completeCamp';
 
 export interface ICreateCampaignProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
 
@@ -37,6 +37,7 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
   constructor(props) {
     super(props);
     this.toggle = this.toggle.bind(this);
+    console.log(this);
   }
 
   componentDidMount() {

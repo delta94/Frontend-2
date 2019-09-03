@@ -2,26 +2,28 @@ import React, { Fragment } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircle, faClock, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faCircle, faUser, faClock } from '@fortawesome/free-solid-svg-icons';
 import { Loader as LoaderAnim } from 'react-loaders';
 import Loader from 'react-loader-advanced';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Table } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Table, Badge } from 'reactstrap';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
-import { getCampaignInfo, getCampaignInfoByStatus, getCampaignInfoById } from 'app/actions/user-campaign';
 
-export interface IAllCampProps extends StateProps, DispatchProps {}
-export interface IAllCampState {
-  // loading page
+import { getCampaignInfo, getCampaignInfoByStatus, getCampaignInfoById } from 'app/actions/user-campaign';
+import './../../tab/pauseCamp/pauseCamp.scss';
+
+export interface IPauseCampProps extends StateProps, DispatchProps {}
+// extends StateProps, DispatchProps
+export interface IPauseCampState {
   loading: boolean;
   modal: boolean;
 }
-class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
+class PauseCamp extends React.Component<IPauseCampProps, IPauseCampState> {
   constructor(props) {
     super(props);
-
     this.onShow = this.onShow.bind(this);
+
     this.state = {
       loading: false,
       modal: false
@@ -48,26 +50,10 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
           <Fragment>
             <Modal isOpen={this.state.modal} fade={false}>
               <ModalHeader onClick={this.onShow} close={closeBtn}>
-                <span>
-                  <Translate contentKey="campaign.modal.title" />{' '}
-                </span>{' '}
-                <span className="camp-status" style={{ float: 'right' }}>
-                  {camp.status && camp.status === 2 ? (
-                    <span style={{ color: '#02B3FF' }}>
-                      {' '}
-                      <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.complete" />
-                    </span>
-                  ) : camp.status && camp.status == 1 ? (
-                    <span style={{ color: '#23C00A' }}>
-                      {' '}
-                      <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.action" />
-                    </span>
-                  ) : (
-                    <span style={{ color: '#97A3B4' }}>
-                      {' '}
-                      <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.pause" />
-                    </span>
-                  )}
+                <Translate contentKey="campaign.modal.title" />
+                <span className="camp-status" style={{ float: 'right', color: '#97A3B4' }}>
+                  {' '}
+                  <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.pause" />
                 </span>
               </ModalHeader>
               <ModalBody>
@@ -167,53 +153,36 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
                 camps.map((item, index) => {
                   var list;
                   list = (
-                    <div>
-                      <div
-                        className="grid-item"
-                        onClick={() => {
-                          this.onShow(item.id);
-                        }}
-                      >
-                        <div className="camp-top">
-                          <div className="camp-title"> {item.name}</div>
-                          <div className="camp-status">
-                            {item.status && item.status === 2 ? (
-                              <span style={{ color: '#02B3FF' }}>
-                                {' '}
-                                <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.complete" />
-                              </span>
-                            ) : item.status && item.status == 1 ? (
-                              <span style={{ color: '#23C00A' }}>
-                                {' '}
-                                <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.action" />
-                              </span>
-                            ) : (
-                              <span style={{ color: '#97A3B4' }}>
-                                {' '}
-                                <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.pause" />
-                              </span>
-                            )}
+                    <div
+                      className="grid-item"
+                      onClick={() => {
+                        this.onShow(item.id);
+                      }}
+                    >
+                      <div className="camp-top">
+                        <div className="camp-title"> {item.name}</div>
+                        <div className="camp-status" style={{ color: '#97A3B4' }}>
+                          <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.pause" />
+                        </div>
+                      </div>
+
+                      <div className="camp-bottom">
+                        <div className="camp-bottom-left">
+                          <div className="quantity">
+                            {' '}
+                            <FontAwesomeIcon icon={faUser} /> <Translate contentKey="campaign.quantity" />{' '}
+                          </div>
+                          <div className="range-time">
+                            <FontAwesomeIcon icon={faClock} /> <Translate contentKey="campaign.time" />
                           </div>
                         </div>
-
-                        <div className="camp-bottom">
-                          <div className="camp-bottom-left">
-                            <div className="quantity">
-                              {' '}
-                              <FontAwesomeIcon icon={faUser} /> <Translate contentKey="campaign.quantity" />
-                            </div>
-                            <div className="range-time">
-                              <FontAwesomeIcon icon={faClock} /> <Translate contentKey="campaign.time" />
-                            </div>
+                        <div className="camp-bottom-right">
+                          <div className="quantity-value">
+                            {item.contactNumber} <Translate contentKey="campaign.title-contact" />{' '}
                           </div>
-                          <div className="camp-bottom-right">
-                            <div className="quantity-value">
-                              {item.contactNumber} <Translate contentKey="campaign.title-contact" />{' '}
-                            </div>
-                            <div className="time-value">
-                              {' '}
-                              {item.fromDate}/{item.toDate}
-                            </div>
+                          <div className="time-value">
+                            {' '}
+                            {item.fromDate}/{item.toDate}
                           </div>
                         </div>
                       </div>
@@ -244,4 +213,4 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(AllCamp);
+)(PauseCamp);

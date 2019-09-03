@@ -11,6 +11,7 @@ import { IRootState } from 'app/reducers';
 import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
 
 import { getCampaignInfo, getCampaignInfoByStatus, getCampaignInfoById } from 'app/actions/user-campaign';
+import './../../tab/completeCamp/completeCamp.scss';
 
 export interface ICompleteCampProps extends StateProps, DispatchProps {}
 // extends StateProps, DispatchProps

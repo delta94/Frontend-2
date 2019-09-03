@@ -2,32 +2,33 @@ import React, { Fragment } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircle, faUser, faClock } from '@fortawesome/free-solid-svg-icons';
+import { faCircle, faClock, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Loader as LoaderAnim } from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Table, Badge } from 'reactstrap';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
-
 import { getCampaignInfo, getCampaignInfoByStatus, getCampaignInfoById } from 'app/actions/user-campaign';
 
-export interface IPauseCampProps extends StateProps, DispatchProps {}
+import './../../tab/actionCamp/actionCamp.scss';
+
+export interface IActionCampProps extends StateProps, DispatchProps {}
 // extends StateProps, DispatchProps
-export interface IPauseCampState {
+export interface IActionCampState {
   loading: boolean;
   modal: boolean;
 }
-class PauseCamp extends React.Component<IPauseCampProps, IPauseCampState> {
+class ActionCamp extends React.Component<IActionCampProps, IActionCampState> {
   constructor(props) {
     super(props);
     this.onShow = this.onShow.bind(this);
-
     this.state = {
       loading: false,
       modal: false
     };
   }
+
   onShow(id) {
     this.setState({
       modal: !this.state.modal
@@ -47,12 +48,14 @@ class PauseCamp extends React.Component<IPauseCampProps, IPauseCampState> {
       <div className="grid-container-total">
         <Loader message={spinner1} show={loading} priority={1}>
           <Fragment>
+            {/* {camp&&camp.map(item=>{ */}
+
             <Modal isOpen={this.state.modal} fade={false}>
               <ModalHeader onClick={this.onShow} close={closeBtn}>
                 <Translate contentKey="campaign.modal.title" />
-                <span className="camp-status" style={{ float: 'right', color: '#97A3B4' }}>
+                <span className="camp-status" style={{ float: 'right', color: '#23C00A' }}>
                   {' '}
-                  <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.pause" />
+                  <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.action" />
                 </span>
               </ModalHeader>
               <ModalBody>
@@ -143,11 +146,10 @@ class PauseCamp extends React.Component<IPauseCampProps, IPauseCampState> {
               </ModalBody>
               <ModalFooter />
             </Modal>
+            {/* })} */}
 
             {/* Body Content */}
             <div className="grid-border">
-              {/* day la trang camp*/}
-
               {camps &&
                 camps.map((item, index) => {
                   var list;
@@ -160,8 +162,8 @@ class PauseCamp extends React.Component<IPauseCampProps, IPauseCampState> {
                     >
                       <div className="camp-top">
                         <div className="camp-title"> {item.name}</div>
-                        <div className="camp-status" style={{ color: '#97A3B4' }}>
-                          <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.pause" />
+                        <div className="camp-status" style={{ color: '#23C00A' }}>
+                          <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.action" />
                         </div>
                       </div>
 
@@ -169,7 +171,7 @@ class PauseCamp extends React.Component<IPauseCampProps, IPauseCampState> {
                         <div className="camp-bottom-left">
                           <div className="quantity">
                             {' '}
-                            <FontAwesomeIcon icon={faUser} /> <Translate contentKey="campaign.quantity" />{' '}
+                            <FontAwesomeIcon icon={faUser} /> <Translate contentKey="campaign.quantity" />
                           </div>
                           <div className="range-time">
                             <FontAwesomeIcon icon={faClock} /> <Translate contentKey="campaign.time" />
@@ -180,7 +182,6 @@ class PauseCamp extends React.Component<IPauseCampProps, IPauseCampState> {
                             {item.contactNumber} <Translate contentKey="campaign.title-contact" />{' '}
                           </div>
                           <div className="time-value">
-                            {' '}
                             {item.fromDate}/{item.toDate}
                           </div>
                         </div>
@@ -212,4 +213,4 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(PauseCamp);
+)(ActionCamp);
