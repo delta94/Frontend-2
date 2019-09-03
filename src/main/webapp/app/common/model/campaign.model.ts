@@ -1,3 +1,4 @@
+import { ICampaign } from './campaign.model';
 export interface ICampaign {
   id: string;
   type: any;
@@ -31,3 +32,9 @@ export const defaultValue: Readonly<ICampaign> = {
   landingPageName: '',
   channelName: ''
 };
+
+export interface ICampaignTestMailLanding {
+  emailTo?: string;
+  subject?: string;
+  content?: string;
+}

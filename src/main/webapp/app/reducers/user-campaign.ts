@@ -1,15 +1,22 @@
+import { IPostMail } from './user-campaign';
 import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
 import { IUser } from 'app/common/model/user.model';
 import { USER_CAMPAIGN_ACTION_TYPES } from 'app/constants/user-campaign';
 import { ICampaignInfo } from 'app/common/model/campaign-infomation.model';
 import { ICampaign } from 'app/common/model/campaign.model';
 import { ICampaignId, defaultValue } from 'app/common/model/campaign-id.model';
+import { number } from 'prop-types';
 
 export interface IlistCampaignInfo {
   id?: string;
   name?: string;
   description?: string;
   status?: string;
+}
+
+export interface IPostMail {
+  code?: number;
+  value?: string;
 }
 
 export interface IStepCampaign {
@@ -46,12 +53,13 @@ const initialState = {
   listCampaignInfo: [] as ReadonlyArray<IlistCampaignInfo>,
   listStepCampaign: [] as ReadonlyArray<IStepCampaign>,
 
-  listCampainContentParams: [] as ICampaignContentParams[],
+  listCampainContentParams: [] as ReadonlyArray<ICampaignContentParams>,
   camp: [] as ReadonlyArray<ICampaignId>,
   listNewCustomer: [] as ReadonlyArray<IListNewCustomer>,
-  camp: {},
+  // camp: {},
   camps: [] as ReadonlyArray<ICampaign>,
-  users: [] as ReadonlyArray<IUser>
+  users: [] as ReadonlyArray<IUser>,
+  postMailRequest: { code: 202, name: 'ok', openModal: false }
 };
 
 export type UserCampaignState = Readonly<typeof initialState>;
@@ -65,6 +73,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_STEP_CAMPAIGNS):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_PARAMS):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_LIST_CUSTOMER_GROUP):
+    case REQUEST(USER_CAMPAIGN_ACTION_TYPES.POST_TEST_MAIL):
       return {
         ...state,
         loading: true
@@ -75,6 +84,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
         ...state,
         loading: true
       };
+
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_LIST_CUSTOMER_GROUP):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_ID):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_STATUS):
@@ -90,6 +100,13 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
       return {
         ...state,
         loading: false
+      };
+
+    case FAILURE(USER_CAMPAIGN_ACTION_TYPES.POST_TEST_MAIL):
+      console.log('false');
+      return {
+        ...state,
+        postMailRequest: { code: 500, name: 'fail', openModal: false }
       };
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_LIST_CUSTOMER_GROUP):
       return {
@@ -133,11 +150,19 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
 
     // success on get campain action content params
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_PARAMS):
+      console.log('data is', action.payload.data);
       return {
         ...state,
         loading: false,
         listCampainContentParams: action.payload.data,
-        totalElements: action.payload.data.total
+        totalElements: action.payload.data.length
+      };
+    // success on post mail Test action
+    case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.POST_TEST_MAIL):
+      return {
+        ...state,
+        loading: false,
+        postMailRequest: { code: 202, name: 'Đã gửi mail thành công', openModal: false }
       };
 
     case USER_CAMPAIGN_ACTION_TYPES.RESET_MESSAGE:

@@ -6,7 +6,8 @@ import {
   getCampaignInfoByStatusService,
   getStep,
   getContentPageParamsService,
-  getNewCustomer
+  getNewCustomer,
+  postTestMailLandingService
 } from 'app/services/user-campaign';
 
 const apiUrl = 'v1/campaigns';
@@ -63,7 +64,18 @@ export const resetMessage = () => ({
   type: USER_CAMPAIGN_ACTION_TYPES.RESET_MESSAGE
 });
 
-export const getContentPageParams = () => ({
-  type: USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_PARAMS,
-  paylod: getContentPageParamsService()
-});
+// GET: landing params
+export const getContentPageParams = () => {
+  return {
+    type: USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_PARAMS,
+    payload: getContentPageParamsService()
+  };
+};
+
+// POST: testMail
+export const postTestMailLanding = data => {
+  return {
+    type: USER_CAMPAIGN_ACTION_TYPES.POST_TEST_MAIL,
+    payload: postTestMailLandingService(data)
+  };
+};
