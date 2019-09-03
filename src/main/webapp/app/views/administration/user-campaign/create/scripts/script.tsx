@@ -59,7 +59,6 @@ export class ScriptsCampaign extends Component<IScriptsCampaignProps, IScriptsCa
         isError: false,
         disableDocument: ULTILS_TYPES.DISABLE_DOCUMENT
       });
-      console.log(id);
       this.props.getStepCampaign(id);
       this.props.onClick(name);
     } else {

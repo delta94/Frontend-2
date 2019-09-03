@@ -101,10 +101,10 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
                 <div className="grid-items-cus">
                   <div className="camp-top">
                     <Ionicon fontSize="35px" color="blue" icon="ios-add" />
-                    <label className="camp-title-click">
+                    <div className="camp-title-click">
                       {' '}
                       <Translate contentKey="campaign.choose-new-customer" />
-                    </label>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -127,14 +127,20 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
                         <div>
                           <i className="pe-7s-mail">
                             {' '}
-                            <span className="name-icon">Email</span>
+                            <span className="name-icon">
+                              {' '}
+                              <Translate contentKey="campaign.email" />
+                            </span>
                           </i>
                           <label className="label-icon">{list[index].filter(item => item.email !== null).length}</label>
                         </div>
                         <div>
                           <i className="pe-7s-call">
                             {' '}
-                            <span className="name-icon"> SĐT </span>{' '}
+                            <span className="name-icon">
+                              {' '}
+                              <Translate contentKey="campaign.sdt" />{' '}
+                            </span>{' '}
                           </i>
                           <label className="label-icon"> {list[index].filter(item => item.phone !== null).length}</label>
                         </div>
@@ -144,7 +150,10 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
                             className="img-facebook"
                             src="https://cdn3.iconfinder.com/data/icons/facebook-ui-flat/48/Facebook_UI-03-512.png"
                           />{' '}
-                          <span className="name-icon">FB</span>
+                          <span className="name-icon">
+                            {' '}
+                            <Translate contentKey="campaign.facebook" />
+                          </span>
                           <label className="label-icon">{ACTIVE_PAGE}</label>
                         </div>
                         <div>
@@ -153,7 +162,10 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
                             className="img-zalo"
                             src="http://brasol.logozee.com/public/ckeditor/uploads/brasol.vn-logo-zalo-vector-logo-zalo-vector.png"
                           />{' '}
-                          <span className="name-icon">Zalo</span>
+                          <span className="name-icon">
+                            {' '}
+                            <Translate contentKey="campaign.zalo" />
+                          </span>
                           <label className="label-icon"> {ACTIVE_PAGE}</label>
                         </div>
                       </div>
