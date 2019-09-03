@@ -81,7 +81,9 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
 
   render() {
     const { loading, camps, camp } = this.props;
-    console.log(camp.status);
+
+    // console.log(typeof camp, typeof camps);
+    console.log(camps);
     const closeBtn = (
       <button className="close" onClick={this.onShow}>
         &times;
@@ -98,15 +100,22 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
                   <Translate contentKey="campaign.modal.title" />{' '}
                 </span>{' '}
                 <span className="camp-status" style={{ float: 'right' }}>
-                  {/* {camp.status && camp.status === 2 ? (
-                              <span style={{ color: '#02B3FF' }}> <FontAwesomeIcon icon={faCircle} />{' '}<Translate contentKey="campaign.status.complete" /></span>
-                              
-                            ) : camp.status && camp.status == 1 ? (
-                              <span style={{ color: '#23C00A' }}> <FontAwesomeIcon icon={faCircle} />{' '}<Translate contentKey="campaign.status.action" /></span>
-                            ) : (
-                              <span style={{ color: '#97A3B4' }}> <FontAwesomeIcon icon={faCircle} />{' '}<Translate contentKey="campaign.status.pause" /></span>
-                            )} */}
-                  this is status
+                  {camp.status && camp.status === 2 ? (
+                    <span style={{ color: '#02B3FF' }}>
+                      {' '}
+                      <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.complete" />
+                    </span>
+                  ) : camp.status && camp.status == 1 ? (
+                    <span style={{ color: '#23C00A' }}>
+                      {' '}
+                      <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.action" />
+                    </span>
+                  ) : (
+                    <span style={{ color: '#97A3B4' }}>
+                      {' '}
+                      <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.pause" />
+                    </span>
+                  )}
                 </span>
               </ModalHeader>
               <ModalBody>
@@ -115,7 +124,7 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
                     <span style={{ width: '15%' }}>
                       <Translate contentKey="campaign.description" />
                     </span>
-                    <span style={{ width: 'auto', fontWeight: 500, marginLeft: '21px', color: 'black' }}>{camp.description}</span>
+                    <span style={{ width: 'auto', fontWeight: 500, marginLeft: '21px', color: 'black' }}>{camp && camp.description}</span>
                   </div>
                   <div className="modal-info">
                     <div className="left-info">
@@ -129,9 +138,9 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
                           </div>
                         </div>
                         <div className="modal-grid-child1-bottom">
-                          <div className="modal-grid-child1-bottom2">{camp.contactNumber}</div>
+                          <div className="modal-grid-child1-bottom2">{camp && camp.contactNumber}</div>
                           <div className="modal-grid-child1-bottom3">
-                            {camp.fromDate}-{camp.toDate}
+                            {camp && camp.fromDate}-{camp && camp.toDate}
                           </div>
                         </div>
                       </div>
@@ -147,8 +156,8 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
                           </div>
                         </div>
                         <div className="modal-grid-child1-bottom">
-                          <div className="modal-grid-child1-bottom2">{camp.landingPageName}</div>
-                          <div className="modal-grid-child1-bottom3">{camp.rewardName}</div>
+                          <div className="modal-grid-child1-bottom2">{camp && camp.landingPageName}</div>
+                          <div className="modal-grid-child1-bottom3">{camp && camp.rewardName}</div>
                         </div>
                       </div>
                     </div>
@@ -160,7 +169,7 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
                           </div>
                         </div>
                         <div className="modal-grid-child1-bottom">
-                          <div className="modal-grid-child1-bottom2">{camp.channelName}</div>
+                          <div className="modal-grid-child1-bottom2">{camp && camp.channelName}</div>
                         </div>
                       </div>
                     </div>

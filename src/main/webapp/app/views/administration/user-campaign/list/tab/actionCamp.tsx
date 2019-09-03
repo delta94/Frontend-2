@@ -94,9 +94,15 @@ class ActionCamp extends React.Component<IActionCampProps, IActionCampState> {
       <div className="grid-container-total">
         <Loader message={spinner1} show={loading} priority={1}>
           <Fragment>
+            {/* {camp&&camp.map(item=>{ */}
+
             <Modal isOpen={this.state.modal} fade={false}>
               <ModalHeader onClick={this.onShow} close={closeBtn}>
                 <Translate contentKey="campaign.modal.title" />
+                <span className="camp-status" style={{ float: 'right', color: '#23C00A' }}>
+                  {' '}
+                  <FontAwesomeIcon icon={faCircle} />{' '}
+                </span>
               </ModalHeader>
               <ModalBody>
                 <div className="modal-grid">
@@ -104,7 +110,7 @@ class ActionCamp extends React.Component<IActionCampProps, IActionCampState> {
                     <span style={{ width: '15%' }}>
                       <Translate contentKey="campaign.description" />
                     </span>
-                    <span style={{ width: 'auto', fontWeight: 500, marginLeft: '21px', color: 'black' }}>{camp.description}</span>
+                    <span style={{ width: 'auto', fontWeight: 500, marginLeft: '21px', color: 'black' }}>{camp && camp.description}</span>
                   </div>
                   <div className="modal-info">
                     <div className="left-info">
@@ -118,9 +124,9 @@ class ActionCamp extends React.Component<IActionCampProps, IActionCampState> {
                           </div>
                         </div>
                         <div className="modal-grid-child1-bottom">
-                          <div className="modal-grid-child1-bottom2">{camp.contactNumber}</div>
+                          <div className="modal-grid-child1-bottom2">{camp && camp.contactNumber}</div>
                           <div className="modal-grid-child1-bottom3">
-                            {camp.fromDate}-{camp.toDate}
+                            {camp && camp.fromDate}-{camp && camp.toDate}
                           </div>
                         </div>
                       </div>
@@ -136,8 +142,8 @@ class ActionCamp extends React.Component<IActionCampProps, IActionCampState> {
                           </div>
                         </div>
                         <div className="modal-grid-child1-bottom">
-                          <div className="modal-grid-child1-bottom2">{camp.landingPageName}</div>
-                          <div className="modal-grid-child1-bottom3">{camp.rewardName}</div>
+                          <div className="modal-grid-child1-bottom2">{camp && camp.landingPageName}</div>
+                          <div className="modal-grid-child1-bottom3">{camp && camp.rewardName}</div>
                         </div>
                       </div>
                     </div>
@@ -149,7 +155,7 @@ class ActionCamp extends React.Component<IActionCampProps, IActionCampState> {
                           </div>
                         </div>
                         <div className="modal-grid-child1-bottom">
-                          <div className="modal-grid-child1-bottom2">{camp.channelName}</div>
+                          <div className="modal-grid-child1-bottom2">{camp && camp.channelName}</div>
                         </div>
                       </div>
                     </div>
@@ -186,6 +192,7 @@ class ActionCamp extends React.Component<IActionCampProps, IActionCampState> {
               </ModalBody>
               <ModalFooter />
             </Modal>
+            {/* })} */}
 
             {/* Body Content */}
             <div className="grid-border">
