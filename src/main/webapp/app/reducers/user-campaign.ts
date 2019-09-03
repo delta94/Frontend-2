@@ -1,3 +1,4 @@
+import { ICategory } from './../common/model/category.model';
 import { IPostMail } from './user-campaign';
 import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
 import { IUser } from 'app/common/model/user.model';
@@ -6,7 +7,6 @@ import { ICampaignInfo } from 'app/common/model/campaign-infomation.model';
 import { ICampaign } from 'app/common/model/campaign.model';
 import { ICampaignId, defaultValue } from 'app/common/model/campaign-id.model';
 import { number } from 'prop-types';
-
 
 export interface IlistCampaignInfo {
   id?: string;
@@ -50,11 +50,10 @@ const initialState = {
   listCampaignInfo: [] as ReadonlyArray<IlistCampaignInfo>,
   listStepCampaign: [] as ReadonlyArray<IStepCampaign>,
   listNewCustomer: [] as ReadonlyArray<IListNewCustomer>,
-  // camp: {},
+  camp: {},
   camps: [] as ReadonlyArray<ICampaign>,
   users: [] as ReadonlyArray<IUser>,
   listCampainContentParams: [] as ICampaignContentParams[],
-  users: [] as ReadonlyArray<IUser>,
   listCategory: [] as ReadonlyArray<ICategory>,
 
   loading: false,
@@ -76,7 +75,6 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_LIST_CUSTOMER_GROUP):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.POST_TEST_MAIL):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.FETCH_USER_CATEGORIES):
-
       return {
         ...state,
         loading: true
