@@ -41,9 +41,7 @@ export interface IListNewCustomer {
 const initialState = {
   listCampaignInfo: [] as ReadonlyArray<IlistCampaignInfo>,
   listStepCampaign: [] as ReadonlyArray<IStepCampaign>,
-
   listCampainContentParams: [] as ICampaignContentParams[],
-  camp: [] as ReadonlyArray<ICampaignId>,
   listNewCustomer: [] as ReadonlyArray<IListNewCustomer>,
   camp: {} as ReadonlyArray<ICampaign>,
   camps: [] as ReadonlyArray<ICampaign>,
