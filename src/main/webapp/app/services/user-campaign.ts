@@ -129,3 +129,7 @@ export const postTestMailLandingService = (data: ICampaignTestMailLanding) => {
 //TODO: POST v1/campaign => Api lưu thông tin chiến dịch
 
 //TODO: GET v1/content-template?templateType=EMAIL => Api lấy danh sách loại content template
+
+export const getCategory = name => {
+  return axios.get(`v1/category?type=Customer&textSearch=${name}`);
+};

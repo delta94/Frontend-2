@@ -7,6 +7,7 @@ import { ICampaign } from 'app/common/model/campaign.model';
 import { ICampaignId, defaultValue } from 'app/common/model/campaign-id.model';
 import { number } from 'prop-types';
 
+
 export interface IlistCampaignInfo {
   id?: string;
   name?: string;
@@ -46,19 +47,19 @@ export interface IListNewCustomer {
 }
 
 const initialState = {
-  loading: false,
-  totalElements: 0,
-  totalItems: 0,
-
   listCampaignInfo: [] as ReadonlyArray<IlistCampaignInfo>,
   listStepCampaign: [] as ReadonlyArray<IStepCampaign>,
-
-  listCampainContentParams: [] as ReadonlyArray<ICampaignContentParams>,
-  camp: [] as ReadonlyArray<ICampaignId>,
   listNewCustomer: [] as ReadonlyArray<IListNewCustomer>,
   // camp: {},
   camps: [] as ReadonlyArray<ICampaign>,
   users: [] as ReadonlyArray<IUser>,
+  listCampainContentParams: [] as ICampaignContentParams[],
+  users: [] as ReadonlyArray<IUser>,
+  listCategory: [] as ReadonlyArray<ICategory>,
+
+  loading: false,
+  totalElements: 0,
+  totalItems: 0,
   postMailRequest: { code: 202, name: 'ok', openModal: false }
 };
 
@@ -74,6 +75,8 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_PARAMS):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_LIST_CUSTOMER_GROUP):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.POST_TEST_MAIL):
+    case REQUEST(USER_CAMPAIGN_ACTION_TYPES.FETCH_USER_CATEGORIES):
+
       return {
         ...state,
         loading: true
@@ -91,6 +94,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_PARAMS):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_STEP_CAMPAIGNS):
+    case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_USER_CATEGORIES):
       return {
         ...state,
         loading: false
@@ -127,6 +131,12 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
         listCampaignInfo: action.payload.data,
         loading: false
       };
+    case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.FETCH_USER_CATEGORIES):
+      return {
+        ...state,
+        loading: false,
+        listCategory: action.payload.data
+      };
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_ID):
       return {
         ...state,
@@ -137,15 +147,15 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
       return {
         ...state,
         loading: false,
-        camps: action.payload.data,
-        totalElements: action.payload.data.total
+        camps: action.payload.data.data
+        // totalElements: action.payload.data.total
       };
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS):
       return {
         ...state,
         loading: false,
-        camps: action.payload.data,
-        totalElements: action.payload.data.totalElements
+        camps: action.payload.data.data,
+        totalElements: action.payload.data.total
       };
 
     // success on get campain action content params
