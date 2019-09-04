@@ -2,7 +2,6 @@ import { USER_CAMPAIGN_ACTION_TYPES } from 'app/constants/user-campaign';
 import {
   getCampaignDetailService,
   getCountCampaignService,
-  getCampaignInfoService,
   getInformationService,
   getCampaignInfoByIdService,
   getCampaignInfoByStatusService,

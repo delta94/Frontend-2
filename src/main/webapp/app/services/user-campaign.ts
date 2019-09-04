@@ -15,9 +15,6 @@ const apiUrl = 'v1/campaigns';
  * @param textSearch - string
  * @return {code: number, data: Object{item: [{id: string, name: string, gmail: string, catagories: string, }, pageIndex: number, pageSize: number] }}
  */
-export const getCampaignInfoService = () => {
-  return axios.get(apiUrl);
-};
 
 export const getCampaignInfoByIdService = id => {
   return axios.get(`v1/campaign/${id}`);

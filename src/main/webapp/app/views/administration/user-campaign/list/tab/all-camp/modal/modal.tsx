@@ -10,7 +10,7 @@ import ReactPaginate from 'react-paginate';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
-import { getCampaignInfo, getCampaignInfoByStatus, getCampaignInfoById, getCampaignDetailById } from 'app/actions/user-campaign';
+import { getCampaignInfoByStatus, getCampaignInfoById, getCampaignDetailById } from 'app/actions/user-campaign';
 import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
 import { ITEMS_PER_MODAL_TABLE } from 'app/constants/common';
 
@@ -55,6 +55,7 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
     }
   };
 
+  //  handle paging
   handlePagination = activePage => {
     const { itemsPerPage, textSearch } = this.state;
     this.setState({
@@ -232,7 +233,7 @@ const mapStateToProps = ({ userCampaign }: IRootState) => ({
   pageCount: Math.ceil(userCampaign.totalElements / ITEMS_PER_MODAL_TABLE)
 });
 
-const mapDispatchToProps = { getCampaignInfo, getCampaignInfoByStatus, getCampaignInfoById, getCampaignDetailById };
+const mapDispatchToProps = { getCampaignInfoByStatus, getCampaignInfoById, getCampaignDetailById };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

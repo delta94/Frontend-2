@@ -9,7 +9,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter, Table } from 'reactstrap';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
-import { getCampaignInfo, getCampaignInfoByStatus, getCampaignInfoById, getCampaignDetailById } from 'app/actions/user-campaign';
+import { getCampaignInfoByStatus, getCampaignInfoById, getCampaignDetailById } from 'app/actions/user-campaign';
 import './../all-camp/all-camp.scss';
 import ModalDisplay from './modal/modal';
 import { ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
@@ -142,7 +142,7 @@ const mapStateToProps = ({ userCampaign }: IRootState) => ({
   loading: userCampaign.loading
 });
 
-const mapDispatchToProps = { getCampaignInfo, getCampaignInfoByStatus, getCampaignInfoById, getCampaignDetailById };
+const mapDispatchToProps = { getCampaignInfoByStatus, getCampaignInfoById, getCampaignDetailById };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
