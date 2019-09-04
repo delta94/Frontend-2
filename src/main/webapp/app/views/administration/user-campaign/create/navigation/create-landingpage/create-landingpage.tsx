@@ -78,8 +78,9 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
     let { testEmailEntity } = this.state;
     let { postMailRequest } = this.props;
 
+    this.props.postTestMailLanding(testEmailEntity);
+
     if (postMailRequest.openModal === true) {
-      this.props.postTestMailLanding(testEmailEntity);
       this.setState({ openModal: true }, () => {
         this.closeModal();
       });
