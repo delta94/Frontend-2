@@ -23,30 +23,32 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
   constructor(props) {
     super(props);
 
-    this.onShow = this.onShow.bind(this);
     this.state = {
       loading: false,
       modal: false
     };
   }
-
-  onShow(id) {
+  //handler close modal
+  handerModal = event => {
+    this.setState({
+      modal: event
+    });
+  };
+  onShow = id => {
     this.setState({
       modal: !this.state.modal
     });
     this.props.getCampaignInfoById(id);
-  }
+  };
 
   render() {
     const { loading, camps, camp } = this.props;
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
     return (
       <div className="grid-container-total">
+        <ModalDisplay value={this.state.modal} onClick={this.handerModal} />
         <Loader message={spinner1} show={loading} priority={1}>
           <Fragment>
-            <Modal isOpen={this.state.modal} fade={false}>
-              <ModalDisplay onClick={this.onShow} />
-            </Modal>
             <div className="grid-border">
               {/* day la trang camp*/}
               {camps &&
@@ -98,7 +100,7 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
                             </div>
                             <div className="time-value">
                               {' '}
-                              {item.fromDate}/{item.toDate}
+                              {item.fromDate} - {item.toDate}
                             </div>
                           </div>
                         </div>

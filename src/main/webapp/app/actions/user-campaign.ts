@@ -1,5 +1,6 @@
 import { USER_CAMPAIGN_ACTION_TYPES } from 'app/constants/user-campaign';
 import {
+  getCountCampaignService,
   getCampaignInfoService,
   getInformationService,
   getCampaignInfoByIdService,
@@ -17,6 +18,13 @@ export const getCampaignInfo = () => {
   return {
     type: USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS,
     payload: getCampaignInfoService()
+  };
+};
+
+export const getCountCampaignByStatus = status => {
+  return {
+    type: USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_COUNT,
+    payload: getCountCampaignService(status)
   };
 };
 
