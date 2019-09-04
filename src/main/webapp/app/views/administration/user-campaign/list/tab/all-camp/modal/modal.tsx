@@ -55,6 +55,7 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
     }
   };
 
+  //  handle paging
   handlePagination = activePage => {
     const { itemsPerPage, textSearch } = this.state;
     this.setState({

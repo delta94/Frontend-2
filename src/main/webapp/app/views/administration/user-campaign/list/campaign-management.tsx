@@ -34,11 +34,18 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
   constructor(props) {
     super(props);
     this.toggle = this.toggle.bind(this);
-    this.props.getCountCampaignByStatus(status);
+    this.props.getCampaignInfoByStatus(DISPLAY_STATUS_ALL);
   }
 
   componentDidMount() {
-    this.props.getCampaignInfoByStatus(DISPLAY_STATUS_ALL);
+    var all = this.props.getCountCampaignByStatus(DISPLAY_STATUS_ALL);
+    console.log('all camp', all);
+    var action = this.props.getCountCampaignByStatus(DISPLAY_STATUS_ACTION);
+    console.log('action camp', action);
+    var pause = this.props.getCountCampaignByStatus(DISPLAY_STATUS_PAUSE);
+    console.log('pause camp', pause);
+    var complete = this.props.getCountCampaignByStatus(DISPLAY_STATUS_COMPLETE);
+    console.log('complete camp', complete);
   }
 
   toggle(tab) {
@@ -95,7 +102,7 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
                               this.toggle('1');
                             }}
                           >
-                            <Translate contentKey="campaign.allCamps" /> {''}({totalElements})
+                            <Translate contentKey="campaign.allCamps" /> {''}()
                           </NavLink>
                         </NavItem>
                         <NavItem>
@@ -107,7 +114,7 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
                             }}
                           >
                             <Translate contentKey="campaign.onAction" />
-                            {''}({totalElements})
+                            {''}()
                           </NavLink>
                         </NavItem>
                         <NavItem>
@@ -119,7 +126,7 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
                             }}
                           >
                             <Translate contentKey="campaign.onPause" />
-                            {''}({totalElements})
+                            {''}()
                           </NavLink>
                         </NavItem>
                         <NavItem>
@@ -131,7 +138,7 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
                             }}
                           >
                             <Translate contentKey="campaign.complete" />
-                            {''}({totalElements})
+                            {''}()
                           </NavLink>
                         </NavItem>
                       </Nav>
