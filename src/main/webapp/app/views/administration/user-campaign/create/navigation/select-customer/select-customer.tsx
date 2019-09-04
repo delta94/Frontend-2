@@ -5,7 +5,6 @@ import { Loader as LoaderAnim } from 'react-loaders';
 import { Translate } from 'react-jhipster';
 import Ionicon from 'react-ionicons';
 import React, { Fragment, Component, useState } from 'react';
-import IncorporationForm from './customer-dialog/button-dialog/button-dialog';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import ReactPaginate from 'react-paginate';
@@ -25,6 +24,7 @@ export interface SelectCustomerState {
   activePage: number;
   pageSize: number;
   category: string;
+  textSearch: string;
 }
 class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomerState> {
   state: SelectCustomerState = {
@@ -33,14 +33,15 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
     pageSize: ITEMS_PER_PAGE,
     category: ULTILS_TYPES.EMPTY,
     listUser: [],
-    modal: false
+    modal: false,
+    textSearch: ''
   };
 
   onClick = () => {
     this.setState(prevState => ({
       modal: !prevState.modal
     }));
-    this.props.getCustomer(this.state.activePage, this.state.pageSize, this.state.category);
+    this.props.getCustomer(this.state.activePage, this.state.pageSize, this.state.category, this.state.textSearch);
   };
   toggle = tab => {
     if (this.state.activeTab !== tab) {
@@ -61,7 +62,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
     const spinner = <LoaderAnim color="#ffffff" type="ball-pulse" />;
     const { listUser } = this.state;
     const { loading } = this.props;
-    console.log(listUser);
+
     return (
       <Loader message={spinner} show={loading} priority={10}>
         <Fragment>
