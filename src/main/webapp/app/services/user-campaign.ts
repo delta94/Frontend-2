@@ -30,11 +30,6 @@ export const getCampaignInfoByStatusService = status => {
   return axios.get(`v1/campaigns?status=${status}`);
 };
 
-export const getUsersService = (page, pageSize, category?: string, textSearch?: string) => {
-  const requestUrl = `${apiUrl}${`?page=${page}&pageSize=${pageSize}&category=${category}&textSearch=${textSearch}`}`;
-  return axios.get<IUser>(requestUrl);
-};
-
 export const getNewCustomer = (page, pageSize, category?: string, textSearch?: string) => {
   return axios.get<IListNewCustomer>(
     `v1/customer?type=MgM&page=${page}&pageSize=${pageSize}&category=${category}&textSearch=${textSearch}`
@@ -42,12 +37,11 @@ export const getNewCustomer = (page, pageSize, category?: string, textSearch?: s
 };
 
 export const getInformationService = () => {
-  return axios.get('v1/campaignTypes');
+  return axios.get('v1/campaign-types');
 };
 
 export const getStep = id => {
-  console.log(id);
-  return axios.get(`v1/campaignType/${id}/step`);
+  return axios.get(`v1/campaign-types/${id}/step`);
 };
 
 // get typeName category
@@ -137,4 +131,9 @@ export const postTestMailLandingService = (data: ICampaignTestMailLanding) => {
 
 export const getCategory = name => {
   return axios.get(`v1/category?type=Customer&textSearch=${name}`);
+};
+
+//get api statitis phone & email
+export const getStatitis = category => {
+  return axios.get(`v1/customer/statistics?categories=${category}`);
 };

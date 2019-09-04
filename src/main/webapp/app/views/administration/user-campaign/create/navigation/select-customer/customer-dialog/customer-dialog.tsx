@@ -8,7 +8,7 @@ import React, { Fragment, Component, useState } from 'react';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import ReactPaginate from 'react-paginate';
-import { getCustomer } from '../../../../../../../actions/user-campaign';
+import { getCustomer, getStatistic } from '../../../../../../../actions/user-campaign';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ITEMS_PER_PAGE, ULTILS_TYPES, ACTIVE_PAGE } from '../../../../../../../constants/ultils';
 import CategoryDialog from './../customer-dialog/categories/categories';
@@ -18,24 +18,31 @@ export interface CustomerDialogProps extends StateProps, DispatchProps {
 }
 
 export interface CustomerDialogState {
+  //list new customer
+  listNewCustomer: any[];
+
+  //set modal
   modal: boolean;
 
   // set param to get list
   activePage: number;
   pageSize: number;
   category: string;
-
+  nameCategory: string;
   //text Search
   textSearch: string;
   categories: string;
 }
 class CustomerDialog extends React.Component<CustomerDialogProps, CustomerDialogState> {
   state: CustomerDialogState = {
+    listNewCustomer: [],
+
     modal: false,
 
     activePage: ACTIVE_PAGE,
     pageSize: ITEMS_PER_PAGE,
     category: ULTILS_TYPES.EMPTY,
+    nameCategory: ULTILS_TYPES.EMPTY,
 
     textSearch: ULTILS_TYPES.EMPTY,
     categories: ULTILS_TYPES.EMPTY
@@ -45,7 +52,9 @@ class CustomerDialog extends React.Component<CustomerDialogProps, CustomerDialog
     this.setState({
       modal: false
     });
-    this.props.onClick(this.state.modal, this.props.listCustomer);
+    //count contact
+    this.props.getStatistic(this.state.categories);
+    this.props.onClick(this.state.modal, this.state.nameCategory, true);
   };
 
   // function panigator
@@ -60,11 +69,13 @@ class CustomerDialog extends React.Component<CustomerDialogProps, CustomerDialog
 
   //function search catelogy
   handleChange = category => {
-    let categorieIds = category.map((event, index) => event.id);
+    let categorieIds = category.map(event => event.id);
+    let categorieName = category.map(event => event.typeName);
     const { pageSize, textSearch } = this.state;
     this.setState({
       ...this.state,
       categories: categorieIds.join(),
+      nameCategory: categorieName.join(),
       activePage: 0
     });
     this.props.getCustomer(0, pageSize, categorieIds.join(), textSearch);
@@ -202,7 +213,7 @@ const mapStateToProps = ({ userCampaign }: IRootState) => ({
   total: userCampaign.totalElements
 });
 
-const mapDispatchToProps = { getCustomer };
+const mapDispatchToProps = { getCustomer, getStatistic };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

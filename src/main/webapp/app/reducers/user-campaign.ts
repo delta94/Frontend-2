@@ -45,6 +45,11 @@ export interface IListNewCustomer {
   categories: string;
   categorys: [];
 }
+export interface IcountContact {
+  id: string;
+  totalEmail: string;
+  totalPhone: string;
+}
 
 const initialState = {
   listCampaignInfo: [] as ReadonlyArray<IlistCampaignInfo>,
@@ -55,6 +60,7 @@ const initialState = {
   users: [] as ReadonlyArray<IUser>,
   listCampainContentParams: [] as ICampaignContentParams[],
   listCategory: [] as ReadonlyArray<ICategory>,
+  countContact: [] as ReadonlyArray<IcountContact>,
 
   loading: false,
   totalElements: 0,
@@ -76,6 +82,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_LIST_CUSTOMER_GROUP):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.POST_TEST_MAIL):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.FETCH_USER_CATEGORIES):
+    case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_STATISTIC_PHONE_AND_EMAIL):
       return {
         ...state,
         loading: true
@@ -94,6 +101,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_PARAMS):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_STEP_CAMPAIGNS):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_USER_CATEGORIES):
+    case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_STATISTIC_PHONE_AND_EMAIL):
       return {
         ...state,
         loading: false
@@ -106,10 +114,15 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
       };
 
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.POST_TEST_MAIL):
-      console.log('false');
       return {
         ...state,
         postMailRequest: { code: 500, name: 'fail', openModal: false }
+      };
+    case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_STATISTIC_PHONE_AND_EMAIL):
+      return {
+        ...state,
+        loading: false,
+        countContact: action.payload.data
       };
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_LIST_CUSTOMER_GROUP):
       return {

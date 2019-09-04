@@ -9,18 +9,11 @@ import {
   getContentPageParamsService,
   getNewCustomer,
   postTestMailLandingService,
-  getCategory
+  getCategory,
+  getStatitis
 } from 'app/services/user-campaign';
 
-const apiUrl = 'v1/campaigns';
-// Actions
-export const getCampaignInfo = () => {
-  return {
-    type: USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS,
-    payload: getCampaignInfoService()
-  };
-};
-
+//count campaign
 export const getCountCampaignByStatus = status => {
   return {
     type: USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_COUNT,
@@ -28,6 +21,7 @@ export const getCountCampaignByStatus = status => {
   };
 };
 
+//get list equal status
 export const getCampaignInfoByStatus = status => {
   return {
     type: USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_STATUS,
@@ -35,6 +29,7 @@ export const getCampaignInfoByStatus = status => {
   };
 };
 
+//get step of campagin script
 export const getStepCampaign = id => {
   return {
     type: USER_CAMPAIGN_ACTION_TYPES.GET_STEP_CAMPAIGNS,
@@ -42,6 +37,7 @@ export const getStepCampaign = id => {
   };
 };
 
+//get detail list campagin customer
 export const getCampaignInfoById = id => {
   return {
     type: USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_ID,
@@ -49,6 +45,7 @@ export const getCampaignInfoById = id => {
   };
 };
 
+//get type campagin script
 export const getInformation = () => {
   return {
     type: USER_CAMPAIGN_ACTION_TYPES.INFORMATION_CAMPAIGN,
@@ -56,12 +53,7 @@ export const getInformation = () => {
   };
 };
 
-// export const getUsers = (page, size, category?: string, textSearch?: string) => {
-//   return {
-//     type: USER_MANAGE_ACTION_TYPES.FETCH_USERS,
-//     payload: getUsersService(page, size, category, textSearch)
-//   };
-// };
+//get new list customer
 export const getCustomer = (page, pageSize, category?: string, textSearch?: string) => {
   return {
     type: USER_CAMPAIGN_ACTION_TYPES.GET_LIST_CUSTOMER_GROUP,
@@ -89,7 +81,14 @@ export const postTestMailLanding = data => {
   };
 };
 
+// get catelogy
 export const getUserCategories = (name?) => ({
   type: USER_CAMPAIGN_ACTION_TYPES.FETCH_USER_CATEGORIES,
   payload: getCategory(name)
+});
+
+//get statistic phone and email
+export const getStatistic = category => ({
+  type: USER_CAMPAIGN_ACTION_TYPES.GET_STATISTIC_PHONE_AND_EMAIL,
+  payload: getStatitis(category)
 });

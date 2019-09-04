@@ -12,6 +12,7 @@ import { getCustomer } from '../../../../../../actions/user-campaign';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CustomerDialog from './customer-dialog/customer-dialog';
 import { ITEMS_PER_PAGE, ULTILS_TYPES, ACTIVE_PAGE } from '../../../../../../constants/ultils';
+import { isThisSecond } from 'date-fns';
 
 export interface SelectCustomerProps extends StateProps, DispatchProps {}
 
@@ -25,6 +26,9 @@ export interface SelectCustomerState {
   pageSize: number;
   category: string;
   textSearch: string;
+
+  //name group
+  nameGroup: string;
 }
 class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomerState> {
   state: SelectCustomerState = {
@@ -34,14 +38,16 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
     category: ULTILS_TYPES.EMPTY,
     listUser: [],
     modal: false,
-    textSearch: ''
+    textSearch: ULTILS_TYPES.EMPTY,
+    nameGroup: ULTILS_TYPES.EMPTY
   };
 
   onClick = () => {
+    const { activePage, pageSize, category, textSearch } = this.state;
     this.setState(prevState => ({
       modal: !prevState.modal
     }));
-    this.props.getCustomer(this.state.activePage, this.state.pageSize, this.state.category, this.state.textSearch);
+    this.props.getCustomer(activePage, pageSize, category, textSearch);
   };
   toggle = tab => {
     if (this.state.activeTab !== tab) {
@@ -51,18 +57,39 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
     }
   };
 
-  handlerModal = (event, list) => {
+  handlerModal = (modal, categories, isSubmit) => {
     this.setState({
-      modal: event
+      modal: modal
     });
-    if (list !== undefined) this.state.listUser.push(list);
+    if (categories !== undefined) {
+      this.setState({
+        nameGroup: categories
+      });
+    }
+    if (isSubmit === true) {
+      this.setState({
+        listUser: [
+          {
+            nameGroup: this.state.nameGroup,
+            totalContact: this.props.total,
+            email: this.props.countContact.map(event => {
+              return event.totalEmail;
+            }),
+            phone: this.props.countContact.map(event => {
+              return event.totalPhone;
+            }),
+            facebook: 0,
+            zalo: 0
+          }
+        ]
+      });
+    }
   };
 
   render() {
     const spinner = <LoaderAnim color="#ffffff" type="ball-pulse" />;
-    const { listUser } = this.state;
-    const { loading } = this.props;
-
+    const { listUser, nameGroup } = this.state;
+    const { loading, listCustomer } = this.props;
     return (
       <Loader message={spinner} show={loading} priority={10}>
         <Fragment>
@@ -117,10 +144,10 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
                   <Col md="4" key={item.id + index}>
                     <div className="table-customer">
                       <div className="title-contract">
-                        <div className="name-group"> Giám Đốc </div>
+                        <div className="name-group">{item.nameGroup} </div>
                         <div className="camp-top">
                           <label className="total-contract">
-                            <Translate contentKey="campaign.sum-contact" /> <span className="number-contract">{list[index].length}</span>
+                            <Translate contentKey="campaign.sum-contact" /> <span className="number-contract">{item.totalContact}</span>
                           </label>
                         </div>
                       </div>
@@ -133,7 +160,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
                               <Translate contentKey="campaign.email" />
                             </span>
                           </i>
-                          <label className="label-icon">{list[index].filter(item => item.email !== null).length}</label>
+                          <label className="label-icon">{item.email}</label>
                         </div>
                         <div>
                           <i className="pe-7s-call">
@@ -143,7 +170,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
                               <Translate contentKey="campaign.sdt" />{' '}
                             </span>{' '}
                           </i>
-                          <label className="label-icon"> {list[index].filter(item => item.phone !== null).length}</label>
+                          <label className="label-icon"> {item.phone}</label>
                         </div>
                         <div>
                           {' '}
@@ -155,7 +182,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
                             {' '}
                             <Translate contentKey="campaign.facebook" />
                           </span>
-                          <label className="label-icon">{ACTIVE_PAGE}</label>
+                          <label className="label-icon">{item.facebook}</label>
                         </div>
                         <div>
                           {' '}
@@ -167,7 +194,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
                             {' '}
                             <Translate contentKey="campaign.zalo" />
                           </span>
-                          <label className="label-icon"> {ACTIVE_PAGE}</label>
+                          <label className="label-icon"> {item.zalo}</label>
                         </div>
                       </div>
                     </div>
@@ -183,7 +210,9 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
 }
 const mapStateToProps = ({ userCampaign }: IRootState) => ({
   loading: userCampaign.loading,
-  listCustomer: userCampaign.listNewCustomer
+  listCustomer: userCampaign.listNewCustomer,
+  total: userCampaign.totalElements,
+  countContact: userCampaign.countContact
 });
 
 const mapDispatchToProps = { getCustomer };
