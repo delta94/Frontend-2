@@ -12,12 +12,20 @@ import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPagi
 import { getCampaignInfo, getCampaignInfoByStatus, getCampaignInfoById, getCampaignDetailById } from 'app/actions/user-campaign';
 import './../all-camp/all-camp.scss';
 import ModalDisplay from './modal/modal';
+import { ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
+import { ITEMS_PER_MODAL_TABLE } from 'app/constants/common';
 
 export interface IAllCampProps extends StateProps, DispatchProps {}
 export interface IAllCampState {
   // loading page
   loading: boolean;
   modal: boolean;
+
+  textSearch: string;
+  categories: string;
+  activePage: number;
+  itemsPerPage: number;
+  id: string;
 }
 class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
   constructor(props) {
@@ -25,7 +33,12 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
 
     this.state = {
       loading: false,
-      modal: false
+      modal: false,
+      activePage: ACTIVE_PAGE,
+      itemsPerPage: ITEMS_PER_MODAL_TABLE,
+      textSearch: '',
+      categories: '',
+      id: ''
     };
   }
   //handler close modal
@@ -36,18 +49,22 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
   };
   onShow = async id => {
     this.setState({
-      modal: !this.state.modal
+      modal: !this.state.modal,
+      id: id
     });
     await this.props.getCampaignInfoById(id);
-    this.props.getCampaignDetailById(id);
+    // this.props.getCampaignDetailById(id);
+    const { activePage, itemsPerPage, textSearch } = this.state;
+    this.props.getCampaignDetailById(id, activePage, itemsPerPage, textSearch);
   };
 
   render() {
+    console.log(this.state.id);
     const { loading, camps } = this.props;
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
     return (
       <div className="grid-container-total">
-        <ModalDisplay isOpen={this.state.modal} onClick={this.handerModal} />
+        <ModalDisplay isOpen={this.state.modal} id={this.state.id} onClick={this.handerModal} />
         <Loader message={spinner1} show={loading} priority={1}>
           <Fragment>
             <div className="grid-border">
