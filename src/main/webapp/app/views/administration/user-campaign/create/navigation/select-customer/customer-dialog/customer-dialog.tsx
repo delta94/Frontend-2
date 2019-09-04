@@ -18,9 +18,6 @@ export interface CustomerDialogProps extends StateProps, DispatchProps {
 }
 
 export interface CustomerDialogState {
-  //list new customer
-  listNewCustomer: any[];
-
   //set modal
   modal: boolean;
 
@@ -35,8 +32,6 @@ export interface CustomerDialogState {
 }
 class CustomerDialog extends React.Component<CustomerDialogProps, CustomerDialogState> {
   state: CustomerDialogState = {
-    listNewCustomer: [],
-
     modal: false,
 
     activePage: ACTIVE_PAGE,
@@ -211,9 +206,7 @@ const mapStateToProps = ({ userCampaign }: IRootState) => ({
   loading: userCampaign.loading,
   listCustomer: userCampaign.listNewCustomer,
   pageCount: Math.ceil(userCampaign.totalElements / ITEMS_PER_PAGE),
-  total: userCampaign.totalElements,
-  totalEmail: userCampaign.totalEmail,
-  totalPhone: userCampaign.totalPhone
+  total: userCampaign.totalElements
 });
 
 const mapDispatchToProps = { getCustomer, getStatistic };

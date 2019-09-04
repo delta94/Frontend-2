@@ -1,137 +1,122 @@
-import React, { Fragment } from 'react';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import { Row, Col, Card, CardBody, CardTitle, FormGroup, Label, Input, Container, Table } from 'reactstrap';
-
+import React from 'react';
+import { Row, Col, Card, CardBody, CardTitle, Container, Table } from 'reactstrap';
 import { DropdownList } from 'react-widgets';
-
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import '../voucher/voucher.scss';
+import { connect } from 'react-redux';
+import { IRootState } from 'app/reducers';
+import { getListEvoucher, getDetailEvoucher } from '../../../../../../../actions/user-campaign';
+import Loader from 'react-loader-advanced';
+import { Loader as LoaderAnim } from 'react-loaders';
+import { ULTILS_TYPES } from '../../../../../../../constants/ultils';
+import { Translate } from 'react-jhipster';
 
-let colors = ['Orange', 'Red', 'Blue', 'Purple'];
-
-library.add(faSpinner);
-export interface VocherProps {}
+export interface VocherProps extends StateProps, DispatchProps {}
 
 export interface VocherState {
-  activeTab: string;
-  name: string;
-  shareholders: any[];
-  dropdownOpen: boolean;
-  people: any[];
   value: any[];
   valueList: any[];
   displayTable: string;
 }
 class Vocher extends React.Component<VocherProps, VocherState> {
   state: VocherState = {
-    name: '',
-    shareholders: [{ name: '' }],
-    activeTab: '',
-    dropdownOpen: false,
-    people: colors,
     value: [],
     valueList: [],
-    displayTable: 'display-voucher-ticket'
+    displayTable: ULTILS_TYPES.DISPLAY_VOUCHER
   };
-
-  handleAddShareholder = () => {
-    this.setState({
-      shareholders: this.state.shareholders.concat([{ name: '' }])
-    });
-  };
-
-  handleRemoveShareholder = idx => () => {
-    this.setState({
-      shareholders: this.state.shareholders.filter((s, sidx) => idx !== sidx)
-    });
-  };
-
-  handleCreate(name) {
-    let { people, value } = this.state;
-
-    let newOption = {
-      name,
-      id: people.length + 1
-    };
-
-    this.setState({
-      value: [...value, newOption], // select new option
-      people: [...people, newOption] // add new option to our dataset
-    });
+  // init list evoucher
+  componentDidMount() {
+    this.props.getListEvoucher();
   }
-  onChangeList = value => {
+
+  //show evoucher
+  onChangeList = data => {
     this.setState({
-      value
+      value: data
     });
-    this.state.valueList.push(value);
-    console.log(this.state.valueList.length);
-    if (this.state.valueList.length > 0) {
+    if (data !== undefined) {
       this.setState({
-        displayTable: ''
+        displayTable: ULTILS_TYPES.EMPTY
       });
     } else {
       this.setState({
-        displayTable: 'display-voucher-ticket'
+        displayTable: ULTILS_TYPES.DISPLAY_VOUCHER
       });
     }
+    this.props.getDetailEvoucher(data.id);
   };
 
   render() {
-    let { value, people } = this.state;
+    let { value } = this.state;
+    const { loading, listEvoucher, evoucherDetail } = this.props;
+    const spinner = <LoaderAnim color="#ffffff" type="ball-pulse" />;
+    console.log(evoucherDetail);
     return (
-      <Fragment>
-        <ReactCSSTransitionGroup
-          component="div"
-          transitionName="TabsAnimation"
-          transitionAppear={true}
-          transitionAppearTimeout={0}
-          transitionEnter={false}
-          transitionLeave={false}
-        >
-          <Container fluid>
-            <Row>
-              <Col md="6">
-                <Card className="main-card mb-3">
-                  <CardBody>
-                    <CardTitle>E-voucher</CardTitle>
-                    <Row form>
-                      <Col md={12}>
-                        <DropdownList
-                          data={people}
-                          value={value}
-                          allowCreate="onFilter"
-                          onCreate={name => this.handleCreate(name)}
-                          onChange={this.onChangeList}
-                          textField="name"
-                        />
-                      </Col>
-                    </Row>
-                  </CardBody>
-                </Card>
-              </Col>
-            </Row>
-            <div className={this.state.displayTable}>
-              <Table>
-                <thead>
-                  <tr>
-                    <th>giá trị</th>
-                    <th>thời hạn </th>
-                    <th>số lượng </th>
-                  </tr>
-                  <tr>
-                    <td>10.000 VNĐ</td>
-                    <td>27/8 - 28/9</td>
-                    <td>2.000 mã</td>
-                  </tr>
-                </thead>
-              </Table>
-            </div>
-          </Container>
-        </ReactCSSTransitionGroup>
-      </Fragment>
+      <Loader message={spinner} show={loading} priority={10}>
+        <Container fluid>
+          <Row>
+            <Col md="6">
+              <Card className="main-card mb-3">
+                <CardBody>
+                  <CardTitle>E-voucher</CardTitle>
+                  <Row form>
+                    <Col md={12}>
+                      <DropdownList
+                        data={listEvoucher}
+                        value={value}
+                        allowCreate="onFilter"
+                        onChange={data => this.onChangeList(data)}
+                        textField="name"
+                      />
+                    </Col>
+                  </Row>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+          <div className={this.state.displayTable}>
+            <Table>
+              <thead>
+                <tr>
+                  <th>
+                    {' '}
+                    <Translate contentKey="campaign.value" />
+                  </th>
+                  <th>
+                    <Translate contentKey="campaign.time-voucher" />
+                  </th>
+                  <th>
+                    <Translate contentKey="campaign.amount" />{' '}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{evoucherDetail.value}</td>
+                  <td>
+                    {evoucherDetail.availableFrom} - {evoucherDetail.availableTo}
+                  </td>
+                  <td>{evoucherDetail.totalCode}</td>
+                </tr>
+              </tbody>
+            </Table>
+          </div>
+        </Container>
+      </Loader>
     );
   }
 }
+const mapStateToProps = ({ userCampaign }: IRootState) => ({
+  loading: userCampaign.loading,
+  listEvoucher: userCampaign.listEvoucher,
+  evoucherDetail: userCampaign.EvoucherDetail
+});
 
-export default Vocher;
+const mapDispatchToProps = { getListEvoucher, getDetailEvoucher };
+
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Vocher);

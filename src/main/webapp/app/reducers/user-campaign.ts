@@ -46,6 +46,23 @@ export interface IListNewCustomer {
   categorys: [];
 }
 
+export interface IListEvoucher {
+  id: string;
+  name: string;
+  availableFrom: string;
+  availableTo: string;
+  value: string;
+  totalCode: number;
+}
+export interface IEvoucherDetail {
+  id: string;
+  name: string;
+  availableFrom: string;
+  availableTo: string;
+  value: string;
+  totalCode: number;
+}
+
 const initialState = {
   listCampaignInfo: [] as ReadonlyArray<IlistCampaignInfo>,
   listStepCampaign: [] as ReadonlyArray<IStepCampaign>,
@@ -54,14 +71,17 @@ const initialState = {
   users: [] as ReadonlyArray<IUser>,
   listCampainContentParams: [] as ICampaignContentParams[],
   listCategory: [] as ReadonlyArray<ICategory>,
-
+  listEvoucher: [] as ReadonlyArray<IListEvoucher>,
   camp: {} as ReadonlyArray<ICampaignId>,
+  EvoucherDetail: {} as IEvoucherDetail,
   campDetail: [] as ReadonlyArray<ICampaignCustomer>,
+
   loading: false,
   totalElements: 0,
   totalItems: 0,
   totalEmail: 0,
   totalPhone: 0,
+  duplicateContact: 0,
   postMailRequest: { code: 202, name: 'ok', openModal: false }
 };
 
@@ -81,6 +101,9 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.POST_TEST_MAIL):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.FETCH_USER_CATEGORIES):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_STATISTIC_PHONE_AND_EMAIL):
+    case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_COUNT_DUPLICATE):
+    case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_LIST_EVOUCHER):
+    case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_EVOUCHER_DETAIL):
       return {
         ...state,
         loading: true
@@ -102,6 +125,9 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_STEP_CAMPAIGNS):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_USER_CATEGORIES):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_STATISTIC_PHONE_AND_EMAIL):
+    case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_COUNT_DUPLICATE):
+    case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_LIST_EVOUCHER):
+    case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_EVOUCHER_DETAIL):
       return {
         ...state,
         loading: false
@@ -118,8 +144,26 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
         ...state,
         postMailRequest: { code: 500, name: 'fail', openModal: false }
       };
+
+    case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_EVOUCHER_DETAIL):
+      return {
+        ...state,
+        EvoucherDetail: action.payload.data,
+        loading: false
+      };
+    case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_LIST_EVOUCHER):
+      return {
+        ...state,
+        loading: false,
+        listEvoucher: action.payload.data
+      };
+    case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_COUNT_DUPLICATE):
+      return {
+        ...state,
+        loading: false,
+        duplicateContact: action.payload.data
+      };
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_STATISTIC_PHONE_AND_EMAIL):
-      console.log(action.payload.data.totalEmail);
       return {
         ...state,
         loading: false,
