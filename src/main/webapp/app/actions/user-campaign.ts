@@ -1,5 +1,6 @@
 import { USER_CAMPAIGN_ACTION_TYPES } from 'app/constants/user-campaign';
 import {
+  getCampaignDetailService,
   getCountCampaignService,
   getCampaignInfoService,
   getInformationService,
@@ -18,6 +19,13 @@ export const getCampaignInfo = () => {
   return {
     type: USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS,
     payload: getCampaignInfoService()
+  };
+};
+
+export const getCampaignDetailById = id => {
+  return {
+    type: USER_CAMPAIGN_ACTION_TYPES.CAMPAIGN_DETAIL,
+    payload: getCampaignDetailService(id)
   };
 };
 

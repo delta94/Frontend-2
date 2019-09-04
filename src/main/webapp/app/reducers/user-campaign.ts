@@ -6,7 +6,7 @@ import { USER_CAMPAIGN_ACTION_TYPES } from 'app/constants/user-campaign';
 import { ICampaignInfo } from 'app/common/model/campaign-infomation.model';
 import { ICampaign } from 'app/common/model/campaign.model';
 import { ICampaignId, defaultValue } from 'app/common/model/campaign-id.model';
-import { number } from 'prop-types';
+import { ICampaignCustomer } from 'app/common/model/campaign-customer';
 
 export interface IlistCampaignInfo {
   id?: string;
@@ -50,12 +50,12 @@ const initialState = {
   listCampaignInfo: [] as ReadonlyArray<IlistCampaignInfo>,
   listStepCampaign: [] as ReadonlyArray<IStepCampaign>,
   listNewCustomer: [] as ReadonlyArray<IListNewCustomer>,
-  camp: {},
   camps: [] as ReadonlyArray<ICampaign>,
   users: [] as ReadonlyArray<IUser>,
   listCampainContentParams: [] as ICampaignContentParams[],
   listCategory: [] as ReadonlyArray<ICategory>,
-
+  camp: {} as ReadonlyArray<ICampaignId>,
+  campDetail: [] as ReadonlyArray<ICampaignCustomer>,
   loading: false,
   totalElements: 0,
   totalItems: 0,
@@ -70,7 +70,8 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_ID):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_STATUS):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS):
-    // case REQUEST()
+    case REQUEST(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_COUNT):
+    case REQUEST(USER_CAMPAIGN_ACTION_TYPES.CAMPAIGN_DETAIL):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_STEP_CAMPAIGNS):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_PARAMS):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_LIST_CUSTOMER_GROUP):
@@ -91,6 +92,8 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_ID):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_STATUS):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS):
+    case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_COUNT):
+    case FAILURE(USER_CAMPAIGN_ACTION_TYPES.CAMPAIGN_DETAIL):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_PARAMS):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_STEP_CAMPAIGNS):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_USER_CATEGORIES):
@@ -148,6 +151,18 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
         loading: false,
         camps: action.payload.data
         // totalElements: action.payload.data.total
+      };
+    case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_COUNT):
+      return {
+        ...state,
+        loading: false,
+        totalElements: action.payload.data
+      };
+    case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.CAMPAIGN_DETAIL):
+      return {
+        ...state,
+        loading: false,
+        campDetail: action.payload.data.content
       };
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS):
       return {

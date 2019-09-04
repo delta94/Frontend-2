@@ -12,7 +12,7 @@ import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPagi
 import { getCampaignInfo, getCampaignInfoByStatus, getCampaignInfoById } from 'app/actions/user-campaign';
 
 export interface IModalDisplayProps extends StateProps, DispatchProps {
-  value: boolean;
+  isOpen: boolean;
   onClick: Function;
 }
 export interface IModalDisplayState {
@@ -31,13 +31,13 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
   }
 
   render() {
-    const { loading, camps, camp } = this.props;
-    const { value } = this.props;
+    const { loading, camps, camp, campDetail } = this.props;
+    const { isOpen } = this.props;
 
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
     return (
       <Loader message={spinner1} show={loading} priority={2}>
-        <Modal isOpen={value} fade={false}>
+        <Modal isOpen={isOpen} fade={false}>
           <ModalHeader>
             <span>
               <Translate contentKey="campaign.modal.title" />{' '}
@@ -146,6 +146,22 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
                       </th>
                     </tr>
                   </thead>
+                  <tbody>
+                    {campDetail &&
+                      campDetail.map((item, index) => {
+                        var listCustomer;
+                        listCustomer = (
+                          <tr>
+                            <td>{index + 1}</td>
+                            <td>{item.name}</td>
+                            <td>{item.phone}</td>
+                            <td>{item.email}</td>
+                            <td>{item.categories}</td>
+                          </tr>
+                        );
+                        return listCustomer;
+                      })}
+                  </tbody>
                 </Table>
               </div>
             </div>
@@ -159,7 +175,8 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
 const mapStateToProps = ({ userCampaign }: IRootState) => ({
   camps: userCampaign.camps,
   camp: userCampaign.camp,
-  loading: userCampaign.loading
+  loading: userCampaign.loading,
+  campDetail: userCampaign.campDetail
 });
 
 const mapDispatchToProps = { getCampaignInfo, getCampaignInfoByStatus, getCampaignInfoById };

@@ -35,11 +35,11 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
     super(props);
     this.toggle = this.toggle.bind(this);
     console.log(this);
+    this.props.getCountCampaignByStatus(status);
   }
 
   componentDidMount() {
     this.props.getCampaignInfoByStatus(DISPLAY_STATUS_ALL);
-    this.props.getCountCampaignByStatus(status);
   }
 
   toggle(tab) {

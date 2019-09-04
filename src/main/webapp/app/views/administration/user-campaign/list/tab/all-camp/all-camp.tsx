@@ -9,9 +9,9 @@ import { Modal, ModalHeader, ModalBody, ModalFooter, Table } from 'reactstrap';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
-import { getCampaignInfo, getCampaignInfoByStatus, getCampaignInfoById } from 'app/actions/user-campaign';
+import { getCampaignInfo, getCampaignInfoByStatus, getCampaignInfoById, getCampaignDetailById } from 'app/actions/user-campaign';
 import './../all-camp/all-camp.scss';
-import ModalDisplay from './../modal';
+import ModalDisplay from './modal/modal';
 
 export interface IAllCampProps extends StateProps, DispatchProps {}
 export interface IAllCampState {
@@ -34,19 +34,20 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
       modal: event
     });
   };
-  onShow = id => {
+  onShow = async id => {
     this.setState({
       modal: !this.state.modal
     });
-    this.props.getCampaignInfoById(id);
+    await this.props.getCampaignInfoById(id);
+    this.props.getCampaignDetailById(id);
   };
 
   render() {
-    const { loading, camps, camp } = this.props;
+    const { loading, camps } = this.props;
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
     return (
       <div className="grid-container-total">
-        <ModalDisplay value={this.state.modal} onClick={this.handerModal} />
+        <ModalDisplay isOpen={this.state.modal} onClick={this.handerModal} />
         <Loader message={spinner1} show={loading} priority={1}>
           <Fragment>
             <div className="grid-border">
@@ -124,7 +125,7 @@ const mapStateToProps = ({ userCampaign }: IRootState) => ({
   loading: userCampaign.loading
 });
 
-const mapDispatchToProps = { getCampaignInfo, getCampaignInfoByStatus, getCampaignInfoById };
+const mapDispatchToProps = { getCampaignInfo, getCampaignInfoByStatus, getCampaignInfoById, getCampaignDetailById };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
