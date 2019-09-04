@@ -70,10 +70,10 @@ export const getInformation = () => {
 //     payload: getUsersService(page, size, category, textSearch)
 //   };
 // };
-export const getCustomer = (page, pageSize, category?: string) => {
+export const getCustomer = (page, pageSize, category?: string, textSearch?: string) => {
   return {
     type: USER_CAMPAIGN_ACTION_TYPES.GET_LIST_CUSTOMER_GROUP,
-    payload: getNewCustomer(page, pageSize, category)
+    payload: getNewCustomer(page, pageSize, category, textSearch)
   };
 };
 

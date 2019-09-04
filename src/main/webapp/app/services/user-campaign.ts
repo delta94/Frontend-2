@@ -38,8 +38,10 @@ export const getUsersService = (page, pageSize, category?: string, textSearch?: 
   return axios.get<IUser>(requestUrl);
 };
 
-export const getNewCustomer = (page, pageSize, category?: string) => {
-  return axios.get<IListNewCustomer>(`v1/customer?type=MgM&page=${page}&pageSize=${pageSize}&category=${category}`);
+export const getNewCustomer = (page, pageSize, category?: string, textSearch?: string) => {
+  return axios.get<IListNewCustomer>(
+    `v1/customer?type=MgM&page=${page}&pageSize=${pageSize}&category=${category}&textSearch=${textSearch}`
+  );
 };
 
 export const getInformationService = () => {

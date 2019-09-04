@@ -5,13 +5,13 @@ import { Loader as LoaderAnim } from 'react-loaders';
 import { Translate } from 'react-jhipster';
 import Ionicon from 'react-ionicons';
 import React, { Fragment, Component, useState } from 'react';
-import ButtonDialog from '../customer-dialog/button-dialog/button-dialog';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import ReactPaginate from 'react-paginate';
 import { getCustomer } from '../../../../../../../actions/user-campaign';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ITEMS_PER_PAGE, ULTILS_TYPES, ACTIVE_PAGE } from '../../../../../../../constants/ultils';
+import CategoryDialog from './../customer-dialog/categories/categories';
 
 export interface CustomerDialogProps extends StateProps, DispatchProps {
   onClick: Function;
@@ -24,15 +24,23 @@ export interface CustomerDialogState {
   activePage: number;
   pageSize: number;
   category: string;
+
+  //text Search
+  textSearch: string;
+  categories: string;
 }
 class CustomerDialog extends React.Component<CustomerDialogProps, CustomerDialogState> {
   state: CustomerDialogState = {
+    modal: false,
+
     activePage: ACTIVE_PAGE,
     pageSize: ITEMS_PER_PAGE,
     category: ULTILS_TYPES.EMPTY,
-    modal: false
-  };
 
+    textSearch: ULTILS_TYPES.EMPTY,
+    categories: ULTILS_TYPES.EMPTY
+  };
+  //function submit
   handlerSaveForm = () => {
     this.setState({
       modal: false
@@ -40,16 +48,40 @@ class CustomerDialog extends React.Component<CustomerDialogProps, CustomerDialog
     this.props.onClick(this.state.modal, this.props.listCustomer);
   };
 
+  // function panigator
   handlePagination = activePage => {
+    const { pageSize, category, textSearch } = this.state;
     this.setState({
       ...this.state,
       activePage: activePage.selected
     });
-    this.props.getCustomer(activePage.selected, this.state.pageSize, this.state.category);
+    this.props.getCustomer(activePage.selected, pageSize, category, textSearch);
   };
 
-  filterGroup = e => {
-    console.log(e);
+  //function search catelogy
+  handleChange = category => {
+    let categorieIds = category.map((event, index) => event.id);
+    const { pageSize, textSearch } = this.state;
+    this.setState({
+      ...this.state,
+      categories: categorieIds.join(),
+      activePage: 0
+    });
+    this.props.getCustomer(0, pageSize, categorieIds.join(), textSearch);
+  };
+
+  //function search all item
+  search = event => {
+    if (event.key === 'Enter') {
+      const textSearch = event.target.value;
+      const { pageSize, categories } = this.state;
+      this.setState({
+        ...this.state,
+        textSearch,
+        activePage: 0
+      });
+      this.props.getCustomer(0, pageSize, categories, textSearch);
+    }
   };
   render() {
     const spinner = <LoaderAnim color="#ffffff" type="ball-pulse" />;
@@ -79,7 +111,7 @@ class CustomerDialog extends React.Component<CustomerDialogProps, CustomerDialog
             </Col>
             <Col md="3" />
             <Col md="6" className="group-btn">
-              <input type="text" className="form-control" placeholder="Tìm kiếm" />
+              <input type="text" className="form-control" onKeyDown={this.search} placeholder="Tìm kiếm" />
               <Button color="primary" type="submit" className="save-right" onClick={this.handlerSaveForm}>
                 <FontAwesomeIcon icon="save" />
                 &nbsp;
@@ -89,7 +121,7 @@ class CustomerDialog extends React.Component<CustomerDialogProps, CustomerDialog
           </Row>
           <Row>
             <Col md="3" className="import-cus">
-              <ButtonDialog onClick={this.filterGroup} value={listCustomer} />
+              <CategoryDialog handleChange={this.handleChange} />
             </Col>
             <Col md="9">
               <div className="modal-table">
