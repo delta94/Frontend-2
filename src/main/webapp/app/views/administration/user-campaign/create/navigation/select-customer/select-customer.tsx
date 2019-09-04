@@ -8,7 +8,7 @@ import React, { Fragment, Component, useState } from 'react';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import ReactPaginate from 'react-paginate';
-import { getCustomer } from '../../../../../../actions/user-campaign';
+import { getCustomer, getStatistic } from '../../../../../../actions/user-campaign';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CustomerDialog from './customer-dialog/customer-dialog';
 import { ITEMS_PER_PAGE, ULTILS_TYPES, ACTIVE_PAGE } from '../../../../../../constants/ultils';
@@ -57,7 +57,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
     }
   };
 
-  handlerModal = (modal, categories, isSubmit) => {
+  handlerModal = async (modal, categories, isSubmit) => {
     this.setState({
       modal: modal
     });
@@ -66,30 +66,29 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
         nameGroup: categories
       });
     }
+    let email = this.props.totalEmail;
+    let phone = this.props.totalPhone;
+    let elements;
     if (isSubmit === true) {
-      this.setState({
-        listUser: [
-          {
-            nameGroup: this.state.nameGroup,
-            totalContact: this.props.total,
-            email: this.props.countContact.map(event => {
-              return event.totalEmail;
-            }),
-            phone: this.props.countContact.map(event => {
-              return event.totalPhone;
-            }),
-            facebook: 0,
-            zalo: 0
-          }
-        ]
-      });
+      elements = {
+        nameGroup: categories,
+        totalContact: this.props.total,
+        email,
+        phone,
+        facebook: 0,
+        zalo: 0
+      };
+      this.state.listUser.push(elements);
     }
+    console.log(elements);
+    console.log(this.state.listUser);
   };
 
   render() {
     const spinner = <LoaderAnim color="#ffffff" type="ball-pulse" />;
     const { listUser, nameGroup } = this.state;
     const { loading, listCustomer } = this.props;
+    console.log(listUser);
     return (
       <Loader message={spinner} show={loading} priority={10}>
         <Fragment>
@@ -139,7 +138,8 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
             </Col>
 
             {listUser &&
-              listUser.map((item, index, list) => {
+              listUser.map((item, index) => {
+                console.log(item);
                 return (
                   <Col md="4" key={item.id + index}>
                     <div className="table-customer">
@@ -212,10 +212,11 @@ const mapStateToProps = ({ userCampaign }: IRootState) => ({
   loading: userCampaign.loading,
   listCustomer: userCampaign.listNewCustomer,
   total: userCampaign.totalElements,
-  countContact: userCampaign.countContact
+  totalEmail: userCampaign.totalEmail,
+  totalPhone: userCampaign.totalPhone
 });
 
-const mapDispatchToProps = { getCustomer };
+const mapDispatchToProps = { getCustomer, getStatistic };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

@@ -53,7 +53,6 @@ class CustomerDialog extends React.Component<CustomerDialogProps, CustomerDialog
       modal: false
     });
     //count contact
-    this.props.getStatistic(this.state.categories);
     this.props.onClick(this.state.modal, this.state.nameCategory, true);
   };
 
@@ -68,7 +67,7 @@ class CustomerDialog extends React.Component<CustomerDialogProps, CustomerDialog
   };
 
   //function search catelogy
-  handleChange = category => {
+  handleChange = async category => {
     let categorieIds = category.map(event => event.id);
     let categorieName = category.map(event => event.typeName);
     const { pageSize, textSearch } = this.state;
@@ -78,7 +77,9 @@ class CustomerDialog extends React.Component<CustomerDialogProps, CustomerDialog
       nameCategory: categorieName.join(),
       activePage: 0
     });
-    this.props.getCustomer(0, pageSize, categorieIds.join(), textSearch);
+
+    await this.props.getCustomer(0, pageSize, categorieIds.join(), textSearch);
+    this.props.getStatistic(this.state.categories);
   };
 
   //function search all item
@@ -210,7 +211,9 @@ const mapStateToProps = ({ userCampaign }: IRootState) => ({
   loading: userCampaign.loading,
   listCustomer: userCampaign.listNewCustomer,
   pageCount: Math.ceil(userCampaign.totalElements / ITEMS_PER_PAGE),
-  total: userCampaign.totalElements
+  total: userCampaign.totalElements,
+  totalEmail: userCampaign.totalEmail,
+  totalPhone: userCampaign.totalPhone
 });
 
 const mapDispatchToProps = { getCustomer, getStatistic };

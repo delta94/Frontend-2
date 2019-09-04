@@ -45,11 +45,6 @@ export interface IListNewCustomer {
   categories: string;
   categorys: [];
 }
-export interface IcountContact {
-  id: string;
-  totalEmail: string;
-  totalPhone: string;
-}
 
 const initialState = {
   listCampaignInfo: [] as ReadonlyArray<IlistCampaignInfo>,
@@ -59,13 +54,14 @@ const initialState = {
   users: [] as ReadonlyArray<IUser>,
   listCampainContentParams: [] as ICampaignContentParams[],
   listCategory: [] as ReadonlyArray<ICategory>,
-  countContact: [] as ReadonlyArray<IcountContact>,
 
   camp: {} as ReadonlyArray<ICampaignId>,
   campDetail: [] as ReadonlyArray<ICampaignCustomer>,
   loading: false,
   totalElements: 0,
   totalItems: 0,
+  totalEmail: 0,
+  totalPhone: 0,
   postMailRequest: { code: 202, name: 'ok', openModal: false }
 };
 
@@ -123,10 +119,12 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
         postMailRequest: { code: 500, name: 'fail', openModal: false }
       };
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_STATISTIC_PHONE_AND_EMAIL):
+      console.log(action.payload.data.totalEmail);
       return {
         ...state,
         loading: false,
-        countContact: action.payload.data
+        totalEmail: action.payload.data.totalEmail,
+        totalPhone: action.payload.data.totalPhone
       };
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_LIST_CUSTOMER_GROUP):
       return {
