@@ -157,7 +157,8 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
       return {
         ...state,
         loading: false,
-        camp: action.payload.data
+        camp: action.payload.data,
+        totalElements: action.payload.totalElements
       };
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_STATUS):
       return {
@@ -176,7 +177,8 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
       return {
         ...state,
         loading: false,
-        campDetail: action.payload.data.content
+        campDetail: action.payload.data.content,
+        totalElements: action.payload.data.totalElements
       };
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS):
       return {

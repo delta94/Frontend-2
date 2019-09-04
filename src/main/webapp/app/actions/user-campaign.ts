@@ -18,10 +18,10 @@ import {
 const apiUrl = 'v1/campaigns';
 // Actions
 
-export const getCampaignDetailById = id => {
+export const getCampaignDetailById = (id, activePage, itemsPerPage, textSearch?) => {
   return {
     type: USER_CAMPAIGN_ACTION_TYPES.CAMPAIGN_DETAIL,
-    payload: getCampaignDetailService(id)
+    payload: getCampaignDetailService(id, activePage, itemsPerPage, textSearch)
   };
 };
 
