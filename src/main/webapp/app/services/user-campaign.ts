@@ -15,33 +15,34 @@ const apiUrl = 'v1/campaigns';
  * @param textSearch - string
  * @return {code: number, data: Object{item: [{id: string, name: string, gmail: string, catagories: string, }, pageIndex: number, pageSize: number] }}
  */
+export const getCampaignInfoService = () => {
+  return axios.get(apiUrl);
+};
 
 export const getCampaignInfoByIdService = id => {
   return axios.get(`v1/campaign/${id}`);
 };
 
-export const getCampaignDetailService = (id, page, pageSize, textSearch?: string) => {
-  return axios.get(`v1/campaign/${id}/customers${`?page=${page}&pageSize=${pageSize}&textSearch=${textSearch}`}`);
-};
-export const getCountCampaignService = status => {
-  return axios.get(`v1/campaigns/count?status=${status}`);
-};
 export const getCampaignInfoByStatusService = status => {
   return axios.get(`v1/campaigns?status=${status}`);
 };
 
-export const getNewCustomer = (page, pageSize, category?: string, textSearch?: string) => {
-  return axios.get<IListNewCustomer>(
-    `v1/customer?type=MgM&page=${page}&pageSize=${pageSize}&category=${category}&textSearch=${textSearch}`
-  );
+export const getUsersService = (page, pageSize, category?: string, textSearch?: string) => {
+  const requestUrl = `${apiUrl}${`?page=${page}&pageSize=${pageSize}&category=${category}&textSearch=${textSearch}`}`;
+  return axios.get<IUser>(requestUrl);
+};
+
+export const getNewCustomer = (page, pageSize, category?: string) => {
+  return axios.get<IListNewCustomer>(`v1/customer?type=MgM&page=${page}&pageSize=${pageSize}&category=${category}`);
 };
 
 export const getInformationService = () => {
-  return axios.get('v1/campaign-types');
+  return axios.get('v1/campaignTypes');
 };
 
 export const getStep = id => {
-  return axios.get(`v1/campaign-types/${id}/step`);
+  console.log(id);
+  return axios.get(`v1/campaignType/${id}/step`);
 };
 
 // get typeName category
@@ -113,27 +114,42 @@ export const UploaddFile = data => {
 
 //GET: v1/contentParams API => lấy thông tin landing page param
 export const getContentPageParamsService = () => {
-  const requestUrl = `${`v1/contentParams`}`;
+  const requestUrl = `${`v1/content-param`}`;
   var data = axios.get(requestUrl);
-  console.log(data);
   return data;
 };
 
-//TODO: POST v1/email/send => Api test gửi email test
+//POST v1/email/send => Api test gửi email test
 export const postTestMailLandingService = (data: ICampaignTestMailLanding) => {
   const requestUrl = `${`v1/email/send`}`;
   return axios.post(requestUrl, data);
 };
 
 //TODO: POST v1/campaign => Api lưu thông tin chiến dịch
-
-//TODO: GET v1/content-template?templateType=EMAIL => Api lấy danh sách loại content template
-
-export const getCategory = name => {
-  return axios.get(`v1/category?type=Customer&textSearch=${name}`);
+export const postSaveInfoCampaignService = (data: any) => {
+  const requestUrl = `${`v1/email/send`}`;
+  return axios.post(requestUrl, data);
 };
 
-//get api statitis phone & email
-export const getStatitis = category => {
-  return axios.get(`v1/customer/statistics?categories=${category}`);
+//TODO: GET v1/content-template?templateType=EMAIL => Api lấy danh sách loại content template
+export const getContentTemplateAsTypeService = type => {
+  var defaultType: string = 'LANDING';
+
+  if (type) {
+    defaultType = type;
+  }
+
+  var requestUrl = `${`v1/content-template?templateType=${defaultType}`}`;
+  return axios.get(requestUrl);
+};
+
+//TODO: GET =>  v1/content-template/{id} => API lấy thông tin content template (landing, email)
+export const getContentTemplateService = id => {
+  const requestUrl = `${`v1/content-template/${id}`}`;
+  return axios.get(requestUrl);
+};
+
+//GET: get catagory of customer
+export const getCategory = name => {
+  return axios.get(`v1/category?type=Customer&textSearch=${name}`);
 };
