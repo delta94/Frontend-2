@@ -56,7 +56,7 @@ class CustomerDialog extends React.Component<CustomerDialogProps, CustomerDialog
         modal: false
       });
       //count contact
-      this.props.onClick(modal, nameCategory, true);
+      this.props.onClick(modal, nameCategory, true, categories);
     } else {
       this.setState({
         isError: true

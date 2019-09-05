@@ -53,7 +53,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
   };
 
   // function event button submit
-  handlerModal = (modal, categories, isSubmit) => {
+  handlerModal = (modal, categories, isSubmit, idCategory) => {
     this.setState({
       modal: modal
     });
@@ -65,7 +65,8 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
         email: this.props.totalEmail,
         phone: this.props.totalPhone,
         facebook: 0,
-        zalo: 0
+        zalo: 0,
+        categories: idCategory
       };
       this.state.listUser.push(elements);
       // get list from component select customer - to navigation
