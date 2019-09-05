@@ -1,4 +1,4 @@
-import { ICategory } from './../common/model/category.model';
+import { ICategory } from '../common/model/category.model';
 import { IPostMail } from './user-campaign';
 import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
 import { IUser } from 'app/common/model/user.model';
@@ -72,7 +72,7 @@ const initialState = {
   listCampainContentParams: [] as ICampaignContentParams[],
   listCategory: [] as ReadonlyArray<ICategory>,
   listEvoucher: [] as ReadonlyArray<IListEvoucher>,
-  camp: {} as ICampaignId,
+  camp: {} as ReadonlyArray<ICampaignId>,
   EvoucherDetail: {} as IEvoucherDetail,
   campDetail: [] as ReadonlyArray<ICampaignCustomer>,
 
@@ -87,16 +87,14 @@ const initialState = {
   totalPhone: 0,
   duplicateContact: 0,
   listContentTemplate: [],
-  listContentTemplateAsTypeLanding: [],
-  listContentTemplateAsTypeSMS: [],
-  listContentTemplateAsTypeEmail: [],
+  listContentTemplateAsType: [],
   postMailRequest: { code: 202, name: 'ok', openModal: false }
 };
 
-export type UserCampaignState = Readonly<typeof initialState>;
+export type LandingPageState = Readonly<typeof initialState>;
 
 // Reducer
-export default (state: UserCampaignState = initialState, action): UserCampaignState => {
+export default (state: LandingPageState = initialState, action): LandingPageState => {
   switch (action.type) {
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_ID):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_STATUS):
@@ -113,9 +111,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_LIST_EVOUCHER):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_EVOUCHER_DETAIL):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE):
-    case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_SMS):
-    case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL):
-    case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_LANDING):
+    case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE):
       return {
         ...state,
         loading: true
@@ -141,9 +137,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_LIST_EVOUCHER):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_EVOUCHER_DETAIL):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE):
-    case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_SMS):
-    case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL):
-    case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_LANDING):
+    case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE):
       return {
         ...state,
         loading: false
@@ -273,24 +267,11 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
         listContentTemplate: action.payload.data
       };
     // success on get content template as type
-    case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_LANDING):
+    case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE):
       return {
         ...state,
         loading: false,
-        listContentTemplateAsTypeLanding: action.payload.data
-      };
-    case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_SMS):
-      return {
-        ...state,
-        loading: false,
-        listContentTemplateAsTypeSMS: action.payload.data
-      };
-
-    case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL):
-      return {
-        ...state,
-        loading: false,
-        listContentTemplateAsTypeEmail: action.payload.data
+        listContentTemplateAsType: action.payload.data
       };
 
     case USER_CAMPAIGN_ACTION_TYPES.RESET_MESSAGE:

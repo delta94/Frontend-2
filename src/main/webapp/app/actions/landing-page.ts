@@ -134,24 +134,7 @@ export const getContentTemplate = id => ({
 });
 
 //  get content template as type
-export const getContentTemplateAsType = typeContent => {
-  let type = USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_LANDING;
-  switch (typeContent) {
-    case 'EMAIL':
-      type = USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL;
-      break;
-    case 'SMS':
-      type = USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_SMS;
-      break;
-    case 'LANDING':
-      type = USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_LANDING;
-      break;
-    default:
-      break;
-  }
-
-  return {
-    type,
-    payload: getContentTemplateAsTypeService(typeContent)
-  };
-};
+export const getContentTemplateAsType = type => ({
+  type: USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE,
+  payload: getContentTemplateAsTypeService(type)
+});

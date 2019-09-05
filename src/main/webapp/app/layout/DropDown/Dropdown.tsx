@@ -3,7 +3,6 @@ import React from 'react';
 import './Dropdown.scss';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { defaultValue } from '../../common/model/user.model';
 
 export interface IArrayEntity {
   id?: number;
@@ -80,6 +79,8 @@ class Dropdown extends PureComponent<IDropdownProps, IDropdownState> {
       }
 
       newValue += '...';
+    } else {
+      newValue = value;
     }
     return newValue;
   };
@@ -87,38 +88,39 @@ class Dropdown extends PureComponent<IDropdownProps, IDropdownState> {
   render() {
     const { listArray, defaultValue, width } = this.props;
     const { value, isShow } = this.state;
-
     return (
       <div id={id} className="topica-dropdown" style={{ width: width ? width + 'px' : '150px' }}>
         <div
           id={id}
           className="toggle-dropdown"
+          style={{ boxShadow: isShow ? '0px 0px 4px 1px rgba(97,192,255,1)' : 'none' }}
           onClick={() => {
             event.preventDefault();
             this.setState({ isShow: !isShow });
           }}
         >
-          <div className="toggle-data">{value.length > 0 ? this.limitString(value) : this.limitString(defaultValue)}</div>
+          <div className="toggle-data">{value ? this.limitString(value) : this.limitString(defaultValue)}</div>
           <div className="toggle-icon">
             <FontAwesomeIcon icon={faAngleDown} size="1x" />
           </div>
         </div>
         <div id={id} className="topica-dropdown-menu" style={{ display: isShow ? 'block' : 'none' }}>
-          {listArray.map((item, index) => {
-            return (
-              <div
-                id={id}
-                key={index}
-                onClick={event => {
-                  event.preventDefault();
-                  this.setState({ isShow: false, value: item.name }), this.toggleDropdown(item);
-                }}
-                className="topica-dropdown-item"
-              >
-                <label>{item.name}</label>
-              </div>
-            );
-          })}
+          {listArray &&
+            listArray.map((item, index) => {
+              return (
+                <div
+                  id={id}
+                  key={index}
+                  onClick={event => {
+                    event.preventDefault();
+                    this.setState({ isShow: false, value: item.name }), this.toggleDropdown(item);
+                  }}
+                  className="topica-dropdown-item"
+                >
+                  <label>{item.name}</label>
+                </div>
+              );
+            })}
         </div>
       </div>
     );

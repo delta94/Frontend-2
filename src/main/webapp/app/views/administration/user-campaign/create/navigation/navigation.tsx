@@ -13,7 +13,15 @@ import Review from './review/review';
 import { TabContent, TabPane, DropdownItem, Card, Col, Row, Button } from 'reactstrap';
 import classnames from 'classnames';
 import { getContentPageParams } from 'app/actions/user-campaign';
-import { isThisSecond } from 'date-fns';
+
+export interface IListCreateNewCustomer {
+  email: number;
+  facebook: number;
+  nameGroup: string;
+  phone: number;
+  totalContact: number;
+  zalo: number;
+}
 
 export interface INavigationProps extends StateProps, DispatchProps {
   onClick: Function;
@@ -21,7 +29,7 @@ export interface INavigationProps extends StateProps, DispatchProps {
 }
 
 export interface INavigationState {
-  listCustomerGroup: any[];
+  listCustomerGroup: [];
   activeTab: number;
   active: boolean;
   endTab: boolean;
@@ -70,7 +78,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
   //function get value Customer group
   onClick = list => {
     if (list !== undefined) {
-      this.state.listCustomerGroup.push(list);
+      this.setState({});
       console.log(this.state.listCustomerGroup);
     }
     console.log(this.props.valueListInfo);
