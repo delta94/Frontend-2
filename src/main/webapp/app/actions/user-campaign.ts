@@ -102,7 +102,7 @@ export const getUserCategories = (name?) => ({
 
 //get statistic phone and email
 export const getStatistic = category => async dispatch => {
-  const result = await dispatch({
+  await dispatch({
     type: USER_CAMPAIGN_ACTION_TYPES.GET_STATISTIC_PHONE_AND_EMAIL,
     payload: getStatitis(category)
   });

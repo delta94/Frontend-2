@@ -14,13 +14,11 @@ export interface VocherProps extends StateProps, DispatchProps {}
 
 export interface VocherState {
   value: any[];
-  valueList: any[];
   displayTable: string;
 }
 class Vocher extends React.Component<VocherProps, VocherState> {
   state: VocherState = {
     value: [],
-    valueList: [],
     displayTable: ULTILS_TYPES.DISPLAY_VOUCHER
   };
   // init list evoucher
@@ -46,7 +44,7 @@ class Vocher extends React.Component<VocherProps, VocherState> {
   };
 
   render() {
-    let { value } = this.state;
+    const { value } = this.state;
     const { loading, listEvoucher, evoucherDetail } = this.props;
     const spinner = <LoaderAnim color="#ffffff" type="ball-pulse" />;
     console.log(evoucherDetail);

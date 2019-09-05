@@ -11,7 +11,8 @@ export const ULTILS_TYPES = {
   ICON_DOWN: 'lnr-chevron-down',
   DISABLE_DOCUMENT: 'campaign-document',
   ACTIVE_TAB: '1',
-  DISPLAY_VOUCHER: 'display-voucher-ticket'
+  DISPLAY_VOUCHER: 'display-voucher-ticket',
+  DISPLAY_VOUCHER_TICKET: 'display-voucher'
 };
 export const ITEMS_PER_PAGE = 5;
 export const ACTIVE_PAGE = 0;
