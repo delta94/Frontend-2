@@ -120,10 +120,6 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
     this.addText(event.name);
   };
 
-  toggleChangeTypeTemplate = event => {
-    this.setState({ templateType: event.name });
-  };
-
   toggleLanding = (event, typeMail) => {
     this.addContentTemplate(event.id, typeMail);
   };
@@ -152,7 +148,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
   };
 
   render() {
-    let { showMailForFriend, templateType, defaultValueContentEmailEward, defaultValueContentEmailIntro, openModal } = this.state;
+    let { showMailForFriend, defaultValueContentEmailEward, defaultValueContentEmailIntro, openModal } = this.state;
     let { listContentPageParams, listContentTemplateAsTypeEmailEward, listContentTemplateAsTypeEmailIntro } = this.props;
 
     const listIndexParams = listContentPageParams.map(item => {
@@ -170,22 +166,6 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
       return { id: item.id, name: item.name };
     });
 
-    let listTemplate = [];
-
-    switch (templateType) {
-      case 'EMAIL_INTRO':
-        listTemplate = listTemplateMailIntro;
-        break;
-
-      case 'EMAIL_EWARD':
-        listTemplate = listTemplateEmailEward;
-        break;
-
-      default:
-        listTemplate = [];
-        break;
-    }
-
     return (
       <Fragment>
         <div style={{ position: 'fixed', top: '100px', right: '300px', zIndex: 2 }}>
@@ -200,12 +180,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
             <CardTitle>Tạo nội dung</CardTitle>
             <div className="interactive">
               <label>Hình thức tương tác</label>
-              <Dropdown
-                selection={true}
-                defaultValue="Chọn hình thức"
-                listArray={[{ id: 1, name: 'SMS' }, { id: 2, name: 'EMAIL' }]}
-                toggleDropdown={this.toggleChangeTypeTemplate}
-              />
+              <Dropdown selection={true} defaultValue="Chọn hình thức" listArray={[{ id: 1, name: 'SMS' }, { id: 2, name: 'EMAIL' }]} />
             </div>
           </div>
 
@@ -241,7 +216,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                       <Dropdown
                         selection={true}
                         defaultValue={'Chọn mẫu email'}
-                        listArray={listTemplate}
+                        listArray={listTemplateEmailEward}
                         toggleDropdown={this.toggleLanding}
                       />
                     </div>
@@ -307,7 +282,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                       <Dropdown
                         selection={true}
                         defaultValue={'Chọn mẫu mail'}
-                        listArray={listTemplate}
+                        listArray={listTemplateMailIntro}
                         toggleDropdown={event => this.toggleLanding(event, 'EMAIL_INTRO')}
                       />
                     </div>
