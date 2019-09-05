@@ -1,4 +1,5 @@
 import { USER_CAMPAIGN_ACTION_TYPES } from 'app/constants/user-campaign';
+import { getContentTemplateService, getContentTemplateAsTypeService } from '../services/user-campaign';
 import {
   getCampaignDetailService,
   getCountCampaignService,
@@ -124,4 +125,16 @@ export const getListEvoucher = () => ({
 export const getDetailEvoucher = id => ({
   type: USER_CAMPAIGN_ACTION_TYPES.GET_EVOUCHER_DETAIL,
   payload: getDetail(id)
+});
+
+//  get content template
+export const getContentTemplate = id => ({
+  type: USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE,
+  payload: getContentTemplateService(id)
+});
+
+//  get content template as type
+export const getContentTemplateAsType = type => ({
+  type: USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE,
+  payload: getContentTemplateAsTypeService(type)
 });

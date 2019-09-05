@@ -3,29 +3,28 @@ import '../create-content/create-content.scss';
 import Dropdown from '../../../../../../layout/DropDown/Dropdown';
 
 import { Card, Collapse, Button, Input, CardTitle, FormGroup, Label, CardBody } from 'reactstrap';
+import { connect } from 'react-redux';
 
 import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 
 import FroalaEditorComponent from 'react-froala-wysiwyg';
+import {
+  getContentTemplateAsType,
+  getContentPageParams,
+  postTestMailLanding,
+  getContentTemplate
+} from '../../../../../../actions/user-campaign';
+import { IRootState } from '../../../../../../reducers/index';
 
 export interface ICreateContentEntity {}
 
-export interface ICreateContentProps {}
+export interface ICreateContentProps extends StateProps, DispatchProps {}
 
 export interface ICreateContentState {
   showMailForFriend: boolean;
   defaultValueContent?: string;
 }
-
-const dumpInteractive = ['Email', 'Facebook', 'Gmail'];
-
-const dumpTemplates = [
-  { id: '1', name: 'Template1' },
-  { id: '1', name: 'Template2' },
-  { id: '1', name: 'Template4' },
-  { id: '1', name: 'Template3' }
-];
 
 class CreateContent extends React.PureComponent<ICreateContentProps, ICreateContentState, ICreateContentEntity> {
   constructor(props) {
@@ -37,7 +36,9 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
   };
 
   componentDidMount() {
-    console.log(this.props);
+    this.props.getContentPageParams();
+    // this.props.getContentTemplate();
+    this.props.getContentTemplateAsType('EMAIL');
   }
 
   _handleshowMailForFriendState = () => {
@@ -67,8 +68,37 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
     this.setState({ defaultValueContent: event });
   };
 
+  toggleLanding = event => {
+    this.addContentTemplate(event.id);
+  };
+
+  addContentTemplate = id => {
+    let { listContentTemplateAsType } = this.props;
+    let { defaultValueContent } = this.state;
+    listContentTemplateAsType.forEach(item => {
+      if (item.id === id) {
+        defaultValueContent = item.content;
+      }
+    });
+
+    this.setState({ defaultValueContent });
+  };
+
   render() {
     let { showMailForFriend } = this.state;
+    let { listContentPageParams, listContentTemplateAsType } = this.props;
+
+    const listIndexParams = listContentPageParams.map(item => {
+      return {
+        id: item.id,
+        name: item.paramName
+      };
+    });
+
+    const listTemplate = listContentTemplateAsType.map(item => {
+      return { id: item.id, name: item.name };
+    });
+
     return (
       <div className="add-content">
         {/* Title */}
@@ -76,14 +106,12 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
           <CardTitle>Tạo nội dung</CardTitle>
           <div className="interactive">
             <label>Hình thức tương tác</label>
-            <FormGroup>
-              <Input type="select" name="select" id="exampleSelect">
-                {dumpInteractive &&
-                  dumpInteractive.map((item, index) => {
-                    return <option key={index}>{item}</option>;
-                  })}
-              </Input>
-            </FormGroup>
+            <Dropdown
+              selection={true}
+              defaultValue="Chọn mẫu email"
+              listArray={[{ id: 1, name: 'SMS' }, { id: 2, name: 'EMAIL' }]}
+              toggleDropdown={this.toggleDropdownParams}
+            />
           </div>
         </div>
 
@@ -91,7 +119,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
         <div className="add-content-detail">
           {/* Title For Detail 1 */}
           <div className="content-detail">
-            <div className="add-content-detail-title  b-t" onClick={this._handleshowMailForFriendState}>
+            <div className="add-content-detail-title" onClick={this._handleshowMailForFriendState}>
               <Button color="primary" style={{ marginBottom: '1rem' }}>
                 1
               </Button>
@@ -109,19 +137,14 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                 <CardBody>
                   <div className="template-add">
                     <label>Mẫu email gửi</label>
-                    <Dropdown
-                      selection={true}
-                      defaultValue="Chọn mẫu email"
-                      listArray={dumpTemplates}
-                      toggleDropdown={this.toggleDropdownParams}
-                    />
+                    <Dropdown selection={true} defaultValue="Chọn mẫu email" listArray={listTemplate} toggleDropdown={this.toggleLanding} />
                   </div>
                   <div className="input-mail-and-more">
                     <Input placeHolder="Tiêu đề email" />
                     <Dropdown
                       selection={true}
                       defaultValue="Tham số"
-                      listArray={dumpTemplates}
+                      listArray={listIndexParams}
                       toggleDropdown={this.toggleDropdownParams}
                     />
                   </div>
@@ -135,7 +158,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
 
           {/* Title For Detail 2 */}
           <div className="content-detail ">
-            <div className="add-content-detail-title b-t" onClick={this._handleshowMailForFriendState}>
+            <div className="add-content-detail-title" onClick={this._handleshowMailForFriendState}>
               <Button color="primary" style={{ marginBottom: '1rem' }}>
                 2
               </Button>
@@ -154,19 +177,14 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                 <CardBody>
                   <div className="template-add">
                     <label>Mẫu email gửi</label>
-                    <Dropdown
-                      selection={true}
-                      defaultValue="Chọn mẫu email"
-                      listArray={dumpTemplates}
-                      toggleDropdown={this.toggleDropdownParams}
-                    />
+                    <Dropdown selection={true} defaultValue="Chọn mẫu email" listArray={listTemplate} toggleDropdown={this.toggleLanding} />
                   </div>
                   <div className="input-mail-and-more">
                     <Input placeHolder="Tiêu đề email" />
                     <Dropdown
                       selection={true}
                       defaultValue="Tham số"
-                      listArray={dumpTemplates}
+                      listArray={listIndexParams}
                       toggleDropdown={this.toggleDropdownParams}
                     />
                   </div>
@@ -183,4 +201,19 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
   }
 }
 
-export default CreateContent;
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
+
+const mapStateToProps = ({ userCampaign }: IRootState) => {
+  return {
+    listContentPageParams: userCampaign.listCampainContentParams,
+    postMailRequest: userCampaign.postMailRequest,
+    listContentTemplateAsType: userCampaign.listContentTemplateAsType
+  };
+};
+
+const mapDispatchToProps = { getContentPageParams, postTestMailLanding, getContentTemplate, getContentTemplateAsType };
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CreateContent);
