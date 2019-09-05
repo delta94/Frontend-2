@@ -38,14 +38,7 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
   }
 
   componentDidMount() {
-    var all = this.props.getCountCampaignByStatus(DISPLAY_STATUS_ALL);
-    console.log('all camp', all);
-    var action = this.props.getCountCampaignByStatus(DISPLAY_STATUS_ACTION);
-    console.log('action camp', action);
-    var pause = this.props.getCountCampaignByStatus(DISPLAY_STATUS_PAUSE);
-    console.log('pause camp', pause);
-    var complete = this.props.getCountCampaignByStatus(DISPLAY_STATUS_COMPLETE);
-    console.log('complete camp', complete);
+    this.props.getCountCampaignByStatus(DISPLAY_STATUS_ALL);
   }
 
   toggle(tab) {
@@ -67,7 +60,7 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
   }
 
   render() {
-    const { match, loading, camps, totalElements } = this.props;
+    const { match, loading, camps, total, totalActive, totalFinish, totalNotActive } = this.props;
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
     return (
       <div id="campaign-management">
@@ -102,7 +95,7 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
                               this.toggle('1');
                             }}
                           >
-                            <Translate contentKey="campaign.allCamps" /> {''}()
+                            <Translate contentKey="campaign.allCamps" /> {''}({this.props.total})
                           </NavLink>
                         </NavItem>
                         <NavItem>
@@ -114,7 +107,7 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
                             }}
                           >
                             <Translate contentKey="campaign.onAction" />
-                            {''}()
+                            {''}({this.props.totalActive})
                           </NavLink>
                         </NavItem>
                         <NavItem>
@@ -126,7 +119,7 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
                             }}
                           >
                             <Translate contentKey="campaign.onPause" />
-                            {''}()
+                            {''}({this.props.totalNotActive})
                           </NavLink>
                         </NavItem>
                         <NavItem>
@@ -138,7 +131,7 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
                             }}
                           >
                             <Translate contentKey="campaign.complete" />
-                            {''}()
+                            {''}({this.props.totalFinish})
                           </NavLink>
                         </NavItem>
                       </Nav>
@@ -172,7 +165,10 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
 const mapStateToProps = ({ userCampaign }: IRootState) => ({
   camps: userCampaign.camps,
   loading: userCampaign.loading,
-  totalElements: userCampaign.totalElements
+  total: userCampaign.total,
+  totalActive: userCampaign.totalActive,
+  totalFinish: userCampaign.totalFinish,
+  totalNotActive: userCampaign.totalNotActive
 });
 
 const mapDispatchToProps = { getCampaignInfoByStatus, getCampaignInfoById, getCountCampaignByStatus };

@@ -77,6 +77,10 @@ const initialState = {
   campDetail: [] as ReadonlyArray<ICampaignCustomer>,
 
   loading: false,
+  total: 0,
+  totalActive: 0,
+  totalFinish: 0,
+  totalNotActive: 0,
   totalElements: 0,
   totalItems: 0,
   totalEmail: 0,
@@ -213,7 +217,10 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
       return {
         ...state,
         loading: false,
-        totalElements: action.payload.data
+        total: action.payload.data.total,
+        totalActive: action.payload.data.totalActive,
+        totalFinish: action.payload.data.totalFinish,
+        totalNotActive: action.payload.data.totalNotActive
       };
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.CAMPAIGN_DETAIL):
       return {
