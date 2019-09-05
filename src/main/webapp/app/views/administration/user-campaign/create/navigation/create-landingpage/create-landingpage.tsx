@@ -1,30 +1,21 @@
 import React, { Component, Fragment } from 'react';
 import '../create-landingpage/create-landingpage.scss';
 
-import {
-  Card,
-  Collapse,
-  Button,
-  Input,
-  CardTitle,
-  FormGroup,
-  Label,
-  CardBody,
-  Modal,
-  ModalBody,
-  ModalFooter,
-  ModalHeader
-} from 'reactstrap';
+import { Card, Collapse, Button, CardTitle, CardBody, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import Dropdown from '../../../../../../layout/DropDown/Dropdown';
-
 import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
+import 'froala-editor/js/plugins.pkgd.min.js';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
 
-import FroalaEditorComponent from 'react-froala-wysiwyg';
+import FroalaEditor from 'react-froala-wysiwyg';
 import { connect } from 'react-redux';
 import { getContentPageParams, postTestMailLanding } from 'app/actions/user-campaign';
 import { IRootState } from 'app/reducers';
 import ModalExample from 'app/DemoPages/Components/Modal/Examples/Modal';
+import { getContentTemplate, getContentTemplateAsType } from '../../../../../../actions/user-campaign';
+import PreviewLanding from './preview-landing/preview-landing';
 
 export interface ICreateTestMailEntity {
   emailTo?: string;
@@ -42,15 +33,6 @@ export interface ICreateLandingPageState {
   testEmailEntity: ICreateTestMailEntity;
   openModal: boolean;
 }
-
-const dumpInteractive = ['landingpage 1', 'landingpage 2', 'landingpage 3'];
-
-const dumpTemplates = [
-  { id: 1, name: 'Template1' },
-  { id: 1, name: 'Template2' },
-  { id: 1, name: 'Template4' },
-  { id: 1, name: 'Template3' }
-];
 
 class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICreateLandingPageState, ICreateTestMailEntity> {
   constructor(props) {
@@ -70,6 +52,7 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
 
   componentDidMount() {
     this.props.getContentPageParams();
+    this.props.getContentTemplateAsType('LANDING');
   }
 
   toggleDropdownMail = () => {};
@@ -116,11 +99,31 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
     this.addText(event.name);
   };
 
+  toggleLanding = event => {
+    this.addContentTemplate(event.id);
+  };
+
+  addContentTemplate = id => {
+    let { listContentTemplateAsType } = this.props;
+    let { defaultValueContent } = this.state;
+    listContentTemplateAsType.forEach(item => {
+      if (item.id === id) {
+        defaultValueContent = item.content;
+      }
+    });
+
+    this.setState({ defaultValueContent });
+  };
+
   handleModelChange = event => {
     let { testEmailEntity } = this.state;
 
     testEmailEntity.content = event;
     this.setState({ defaultValueContent: event, testEmailEntity });
+  };
+
+  openModalPreview = () => {
+    this.setState({ openModal: true });
   };
 
   handleInput = (event, type) => {
@@ -134,9 +137,11 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
     this.setState({ openModal: false });
   };
 
+  // handleInput = () => { };
+
   render() {
-    const { showMailForFriend, defaultValueContent, testEmailEntity, openModal } = this.state;
-    const { listCampainContentParams, postMailRequest } = this.props;
+    const { showMailForFriend, defaultValueContent, openModal } = this.state;
+    const { listCampainContentParams, listContentTemplateAsType } = this.props;
 
     const listIndexParams = listCampainContentParams.map(item => {
       return {
@@ -145,11 +150,21 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
       };
     });
 
+    const listTemplate = listContentTemplateAsType.map(item => {
+      return { id: item.id, name: item.name };
+    });
+
     return (
       <Fragment>
         <Modal isOpen={openModal} toggle={this.toggleModal}>
-          <ModalHeader toggle={this.toggleModal}>Thông báo</ModalHeader>
-          <ModalBody>{postMailRequest.name}</ModalBody>
+          <ModalHeader toggle={this.toggleModal}>Landing preview</ModalHeader>
+          <ModalBody>
+            <PreviewLanding
+              htmlDOM={defaultValueContent}
+              styleForDOM={'p {color: blue} button {color: white;background-color: blue}'}
+              scriptDOM='function test(){alert("test")}'
+            />
+          </ModalBody>
           <ModalFooter>
             <Button color="primary" onClick={this.toggleModal}>
               Thoát
@@ -162,15 +177,10 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
           <div className="add-content-title">
             <CardTitle>Tạo landingpage</CardTitle>
             <div className="interactive">
-              <label>Chọn landingpage</label>
-              <FormGroup>
-                <Input type="select" name="select" id="exampleSelect">
-                  {dumpInteractive &&
-                    dumpInteractive.map((item, index) => {
-                      return <option key={index}>{item}</option>;
-                    })}
-                </Input>
-              </FormGroup>
+              <label onClick={this.openModalPreview} style={{ textDecoration: 'underline' }}>
+                <FontAwesomeIcon icon={faEye} />
+                Preview
+              </label>
             </div>
           </div>
 
@@ -178,56 +188,33 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
           <div className="add-content-detail">
             {/* Title For Detail 1 */}
             <div className="content-detail">
-              <div className="add-content-detail-title  b-t">
-                <label>Preview</label>
-                <div className="interactive" style={{ display: showMailForFriend ? 'none' : 'inline-block' }}>
-                  <div className="test-mail">
-                    <Input
-                      placeHolder="Điền email test"
-                      onChange={event => {
-                        this.handleInput(event, 'emailTo');
-                      }}
-                    />
-                    <Button
-                      color="primary"
-                      onClick={() => {
-                        this.sendTestMailLanding();
-                      }}
-                    >
-                      Test
-                    </Button>
-                  </div>
-                </div>
-              </div>
               {/* Template Fix */}
               <Collapse isOpen={!showMailForFriend}>
                 <Card>
                   <CardBody>
-                    <div className="template-add">
-                      <label>Mẫu email gửi</label>
-                      <Dropdown
-                        selection={false}
-                        defaultValue="Chọn mẫu email"
-                        listArray={dumpTemplates}
-                        toggleDropdown={this.toggleDropdownMail}
-                      />
-                    </div>
                     <div className="input-mail-and-more">
-                      <Input
-                        placeHolder="Tiêu đề email"
-                        onChange={event => {
-                          this.handleInput(event, 'subject');
-                        }}
-                      />
-                      <Dropdown
-                        selection={true}
-                        defaultValue="Tham số"
-                        listArray={listIndexParams}
-                        toggleDropdown={this.toggleDropdownParams}
-                      />
+                      <div style={{ width: '60%', display: 'flex' }}>
+                        <div style={{ padding: '0px 5px', lineHeight: '40px' }}>Chọn landingpage</div>
+                        <div>
+                          <Dropdown
+                            selection={true}
+                            defaultValue="Chọn landing"
+                            listArray={listTemplate}
+                            toggleDropdown={this.toggleLanding}
+                          />
+                        </div>
+                      </div>
+                      <div style={{ right: '0px' }}>
+                        <Dropdown
+                          selection={true}
+                          defaultValue="Tham số"
+                          listArray={listIndexParams}
+                          toggleDropdown={this.toggleDropdownParams}
+                        />
+                      </div>
                     </div>
                     <div className="content-fixing">
-                      <FroalaEditorComponent
+                      <FroalaEditor
                         tag="textarea"
                         config={{
                           placeholderText: 'Tạo nội dung của bạn',
@@ -254,12 +241,12 @@ type DispatchProps = typeof mapDispatchToProps;
 const mapStateToProps = ({ userCampaign }: IRootState) => {
   return {
     listCampainContentParams: userCampaign.listCampainContentParams,
-    postMailRequest: userCampaign.postMailRequest
+    postMailRequest: userCampaign.postMailRequest,
+    listContentTemplateAsType: userCampaign.listContentTemplateAsType
   };
 };
 
-const mapDispatchToProps = { getContentPageParams, postTestMailLanding };
-
+const mapDispatchToProps = { getContentPageParams, postTestMailLanding, getContentTemplate, getContentTemplateAsType };
 export default connect(
   mapStateToProps,
   mapDispatchToProps

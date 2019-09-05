@@ -113,13 +113,13 @@ export const UploaddFile = data => {
 
 //GET: v1/contentParams API => lấy thông tin landing page param
 export const getContentPageParamsService = () => {
-  const requestUrl = `${`v1/contentParams`}`;
+  const requestUrl = `${`v1/content-param`}`;
   var data = axios.get(requestUrl);
   console.log(data);
   return data;
 };
 
-//TODO: POST v1/email/send => Api test gửi email test
+// POST v1/email/send => Api test gửi email test
 export const postTestMailLandingService = (data: ICampaignTestMailLanding) => {
   const requestUrl = `${`v1/email/send`}`;
   return axios.post(requestUrl, data);
@@ -127,7 +127,21 @@ export const postTestMailLandingService = (data: ICampaignTestMailLanding) => {
 
 //TODO: POST v1/campaign => Api lưu thông tin chiến dịch
 
-//TODO: GET v1/content-template?templateType=EMAIL => Api lấy danh sách loại content template
+//GET v1/content-template?templateType=EMAIL => Api lấy danh sách loại content template
+export const getContentTemplateAsTypeService = type => {
+  let defaultTemplate = 'EMAIL';
+  if (type) {
+    defaultTemplate = type;
+  }
+  const requestUrl = `${`v1/content-template?templateType=${defaultTemplate}`}`;
+  return axios.get(requestUrl);
+};
+
+// GET v1/content-template
+export const getContentTemplateService = id => {
+  const requestUrl = `${`v1/content-template/${id} `}`;
+  return axios.get(requestUrl);
+};
 
 export const getCategory = name => {
   return axios.get(`v1/category?type=Customer&textSearch=${name}`);
