@@ -74,6 +74,14 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
     }
   };
 
+  //close element group
+  deleteGroup = id => {
+    const deleteItem = this.state.listUser.filter(item => item.totalContact !== id);
+    this.setState({
+      listUser: deleteItem
+    });
+  };
+
   render() {
     const spinner = <LoaderAnim color="#ffffff" type="ball-pulse" />;
     const { listUser } = this.state;
@@ -136,7 +144,10 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
                   <Col md="4" key={item.id + index}>
                     <div className="table-customer">
                       <div className="title-contract">
-                        <div className="name-group">{item.nameGroup} </div>
+                        <div className="name-group">
+                          {item.nameGroup}
+                          <i className="lnr-cross-circle" onClick={() => this.deleteGroup(item.totalContact)} />
+                        </div>
                         <div className="camp-top">
                           <label className="total-contract">
                             <Translate contentKey="campaign.sum-contact" /> <span className="number-contract">{item.totalContact}</span>
