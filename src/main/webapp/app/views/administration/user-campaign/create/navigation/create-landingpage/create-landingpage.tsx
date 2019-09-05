@@ -23,6 +23,7 @@ export interface ICreateLandingPageProps extends StateProps, DispatchProps {}
 export interface ICreateLandingPageState {
   showMailForFriend: boolean;
   defaultValueContent: string;
+  defaultValueContentPopup: string;
   openModal: boolean;
 }
 
@@ -34,15 +35,14 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
   state: ICreateLandingPageState = {
     showMailForFriend: false,
     defaultValueContent: '',
-    openModal: false
+    openModal: false,
+    defaultValueContentPopup: ''
   };
 
   componentDidMount() {
     this.props.getContentPageParams();
     this.props.getContentTemplateAsType('LANDING');
   }
-
-  toggleDropdownMail = () => {};
 
   closeModal = () => {
     setTimeout(() => {
@@ -79,6 +79,30 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
 
   handleModelChange = event => {
     this.setState({ defaultValueContent: event });
+    this.setValueForPopUp(event);
+  };
+
+  setValueForPopUp = event => {
+    let { listCampainContentParams } = this.props;
+    let newValue: string = '';
+
+    console.log(event);
+
+    let listParam = listCampainContentParams.map(item => {
+      return { paramCode: item.paramCode, sampleValue: item.sampleValue };
+    });
+    for (let i = 0; i < listParam.length; i++) {
+      let item = listParam[i];
+      let paramCode = item.paramCode;
+      let sampleValue = item.sampleValue;
+
+      console.log(paramCode, sampleValue);
+      newValue = event.replace(paramCode, sampleValue);
+      event = newValue;
+    }
+
+    console.log('new Event ís', event);
+    this.setState({ defaultValueContentPopup: event });
   };
 
   addContentTemplate = id => {
@@ -104,7 +128,7 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
   // handleInput = () => { };
 
   render() {
-    const { showMailForFriend, defaultValueContent, openModal } = this.state;
+    const { showMailForFriend, defaultValueContent, openModal, defaultValueContentPopup } = this.state;
     const { listCampainContentParams, listContentTemplateAsTypeLanding } = this.props;
 
     const listIndexParams = listCampainContentParams.map(item => {
@@ -123,7 +147,7 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
         <Modal isOpen={openModal} toggle={this.toggleModal}>
           <ModalHeader toggle={this.toggleModal}>Landing preview</ModalHeader>
           <ModalBody>
-            <PreviewLanding htmlDOM={defaultValueContent} styleForDOM={''} />
+            <PreviewLanding htmlDOM={defaultValueContentPopup} styleForDOM={''} />
           </ModalBody>
           <ModalFooter>
             <Button color="primary" onClick={this.toggleModal}>
