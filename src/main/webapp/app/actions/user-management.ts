@@ -64,7 +64,6 @@ export const createUser: ICrudPutAction<IUser> = user => async dispatch => {
 };
 
 export const updateUser: ICrudPutAction<IUser> = user => async dispatch => {
-  debugger;
   const result = await dispatch({
     type: USER_MANAGE_ACTION_TYPES.UPDATE_USER,
     payload: updateUserService(user)

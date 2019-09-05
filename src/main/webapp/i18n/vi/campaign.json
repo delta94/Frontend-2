@@ -4,6 +4,12 @@
       "title": "Thông tin chiến dịch"
     },
     "choose-folder": "CHỌN TỆP",
+    "value": "giá trị",
+    "select-reward": "CHỌN QUÀ TẶNG",
+    "notifi-reward": "Thông báo (Không có quà)",
+    "evoucher": " E-voucher",
+    "time-voucher": "thời gian",
+    "amount": "số lượng",
     "total-contract": "Tổng số contact : ",
     "sum-contact": "Tổng contact",
     "phone": "Số điện thoại",

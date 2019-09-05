@@ -137,3 +137,17 @@ export const getCategory = name => {
 export const getStatitis = category => {
   return axios.get(`v1/customer/statistics?categories=${category}`);
 };
+// get api duplicate
+export const getDuplicate = category => {
+  return axios.get(`v1/customer/duplicate?categories=${category}`);
+};
+
+//get list evoucher
+export const getEvoucher = () => {
+  return axios.get(`v1/e-voucher`);
+};
+
+//get evoucher detail
+export const getDetail = id => {
+  return axios.get(`v1/e-voucher/${id}/code`);
+};

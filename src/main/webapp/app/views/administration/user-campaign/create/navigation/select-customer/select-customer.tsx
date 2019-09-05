@@ -1,45 +1,41 @@
-import { Col, Row, CardTitle, Button, ModalBody, Table, Modal, ModalHeader, Label } from 'reactstrap';
+import React, { Fragment } from 'react';
+import { Col, Row, CardTitle, Modal, Label } from 'reactstrap';
 import '../select-customer/select-customer.scss';
 import Loader from 'react-loader-advanced';
 import { Loader as LoaderAnim } from 'react-loaders';
 import { Translate } from 'react-jhipster';
 import Ionicon from 'react-ionicons';
-import React, { Fragment, Component, useState } from 'react';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
-import ReactPaginate from 'react-paginate';
-import { getCustomer } from '../../../../../../actions/user-campaign';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { getCustomer, getStatistic } from '../../../../../../actions/user-campaign';
 import CustomerDialog from './customer-dialog/customer-dialog';
 import { ITEMS_PER_PAGE, ULTILS_TYPES, ACTIVE_PAGE } from '../../../../../../constants/ultils';
-import { isThisSecond } from 'date-fns';
 
 export interface SelectCustomerProps extends StateProps, DispatchProps {}
 
 export interface SelectCustomerState {
   listUser: any[];
+
   modal: boolean;
-  activeTab: string;
 
   // set param to get list
+  activeTab: string;
   activePage: number;
   pageSize: number;
   category: string;
   textSearch: string;
-
-  //name group
-  nameGroup: string;
 }
 class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomerState> {
   state: SelectCustomerState = {
+    listUser: [],
+
+    modal: false,
+
     activeTab: ULTILS_TYPES.ACTIVE_TAB,
     activePage: ACTIVE_PAGE,
     pageSize: ITEMS_PER_PAGE,
     category: ULTILS_TYPES.EMPTY,
-    listUser: [],
-    modal: false,
-    textSearch: ULTILS_TYPES.EMPTY,
-    nameGroup: ULTILS_TYPES.EMPTY
+    textSearch: ULTILS_TYPES.EMPTY
   };
 
   onClick = () => {
@@ -49,51 +45,38 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
     }));
     this.props.getCustomer(activePage, pageSize, category, textSearch);
   };
-  toggle = tab => {
-    if (this.state.activeTab !== tab) {
-      this.setState({
-        activeTab: tab
-      });
-    }
-  };
 
+  // function event button submit
   handlerModal = (modal, categories, isSubmit) => {
     this.setState({
       modal: modal
     });
-    if (categories !== undefined) {
-      this.setState({
-        nameGroup: categories
-      });
-    }
+    let elements;
     if (isSubmit === true) {
-      this.setState({
-        listUser: [
-          {
-            nameGroup: this.state.nameGroup,
-            totalContact: this.props.total,
-            email: this.props.countContact.map(event => {
-              return event.totalEmail;
-            }),
-            phone: this.props.countContact.map(event => {
-              return event.totalPhone;
-            }),
-            facebook: 0,
-            zalo: 0
-          }
-        ]
-      });
+      elements = {
+        nameGroup: categories,
+        totalContact: this.props.total,
+        email: this.props.totalEmail,
+        phone: this.props.totalPhone,
+        facebook: 0,
+        zalo: 0
+      };
+      this.state.listUser.push(elements);
     }
   };
 
   render() {
     const spinner = <LoaderAnim color="#ffffff" type="ball-pulse" />;
-    const { listUser, nameGroup } = this.state;
-    const { loading, listCustomer } = this.props;
+    const { listUser } = this.state;
+    const { loading, total } = this.props;
+    var sumContact = 0;
+    for (var i = 0; i < listUser.length; i++) {
+      sumContact += listUser[i].totalContact;
+    }
     return (
       <Loader message={spinner} show={loading} priority={10}>
         <Fragment>
-          <Modal isOpen={this.state.modal} fade={false} toggle={this.toggle}>
+          <Modal isOpen={this.state.modal} fade={false}>
             <CustomerDialog onClick={this.handlerModal} />
           </Modal>
           <Row>
@@ -110,7 +93,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
                 {' '}
                 <Label>
                   <Translate contentKey="campaign.all-contract" />
-                  <span className="number-contract">100</span>
+                  <span className="number-contract">{sumContact} </span>
                 </Label>
               </Col>
               <Col md="6">
@@ -118,7 +101,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
                 <Label>
                   {' '}
                   <Translate contentKey="campaign.duplicate-contract" />
-                  <span className="number-contract">100</span>
+                  <span className="number-contract">{this.props.duplicateContact}</span>
                 </Label>
               </Col>
             </Col>
@@ -139,7 +122,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
             </Col>
 
             {listUser &&
-              listUser.map((item, index, list) => {
+              listUser.map((item, index) => {
                 return (
                   <Col md="4" key={item.id + index}>
                     <div className="table-customer">
@@ -212,10 +195,12 @@ const mapStateToProps = ({ userCampaign }: IRootState) => ({
   loading: userCampaign.loading,
   listCustomer: userCampaign.listNewCustomer,
   total: userCampaign.totalElements,
-  countContact: userCampaign.countContact
+  totalEmail: userCampaign.totalEmail,
+  totalPhone: userCampaign.totalPhone,
+  duplicateContact: userCampaign.duplicateContact
 });
 
-const mapDispatchToProps = { getCustomer };
+const mapDispatchToProps = { getCustomer, getStatistic };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
