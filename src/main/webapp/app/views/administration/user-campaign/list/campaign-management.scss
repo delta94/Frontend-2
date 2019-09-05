@@ -54,13 +54,6 @@
   margin-bottom: 5px;
 }
 
-.camp-status {
-  font-size: 12px;
-  line-height: 22px;
-  color: limegreen;
-  font-family: Roboto;
-}
-
 .quantity,
 .range-time {
   font-size: 14px;
@@ -282,7 +275,7 @@ $color_border: rgba(206, 206, 206, 0.687);
       font-weight: 500;
       width: 80px;
       color: whitesmoke;
-      background-color: #545cd8;
+      background-color: #3866dd;
       border: solid $color_border 1px;
       border-radius: 5px;
     }
