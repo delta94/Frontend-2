@@ -51,6 +51,10 @@
       "name": "vui lòng nhập tên chiến dịch",
       "day": "vui lòng nhập ngày",
       "des": "vui lòng nhập mô tả"
+    },
+
+    "send-mail": {
+      "success": "Gửi Email thành công"
     }
   }
 }

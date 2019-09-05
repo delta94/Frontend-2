@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import '../create-landingpage/create-landingpage.scss';
 
-import { Card, Collapse, Button, CardTitle, CardBody, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Card, Collapse, Button, CardTitle, CardBody, Modal, ModalBody, ModalFooter, ModalHeader, Alert } from 'reactstrap';
 import Dropdown from '../../../../../../layout/DropDown/Dropdown';
 import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
@@ -13,15 +13,8 @@ import FroalaEditor from 'react-froala-wysiwyg';
 import { connect } from 'react-redux';
 import { getContentPageParams, postTestMailLanding } from 'app/actions/user-campaign';
 import { IRootState } from 'app/reducers';
-import ModalExample from 'app/DemoPages/Components/Modal/Examples/Modal';
 import { getContentTemplate, getContentTemplateAsType } from '../../../../../../actions/user-campaign';
 import PreviewLanding from './preview-landing/preview-landing';
-
-export interface ICreateTestMailEntity {
-  emailTo?: string;
-  subject?: string;
-  content?: string;
-}
 
 // export interface I
 
@@ -30,23 +23,17 @@ export interface ICreateLandingPageProps extends StateProps, DispatchProps {}
 export interface ICreateLandingPageState {
   showMailForFriend: boolean;
   defaultValueContent: string;
-  testEmailEntity: ICreateTestMailEntity;
   openModal: boolean;
 }
 
-class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICreateLandingPageState, ICreateTestMailEntity> {
+class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICreateLandingPageState> {
   constructor(props) {
     super(props);
   }
+
   state: ICreateLandingPageState = {
     showMailForFriend: false,
     defaultValueContent: '',
-    testEmailEntity: {
-      emailTo: '',
-      subject: '',
-      content: ''
-    },
-
     openModal: false
   };
 
@@ -56,19 +43,6 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
   }
 
   toggleDropdownMail = () => {};
-
-  sendTestMailLanding = () => {
-    let { testEmailEntity } = this.state;
-    let { postMailRequest } = this.props;
-
-    this.props.postTestMailLanding(testEmailEntity);
-
-    if (postMailRequest.openModal === true) {
-      this.setState({ openModal: true }, () => {
-        this.closeModal();
-      });
-    }
-  };
 
   closeModal = () => {
     setTimeout(() => {
@@ -103,10 +77,14 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
     this.addContentTemplate(event.id);
   };
 
+  handleModelChange = event => {
+    this.setState({ defaultValueContent: event });
+  };
+
   addContentTemplate = id => {
-    let { listContentTemplateAsType } = this.props;
+    let { listContentTemplateAsTypeLanding } = this.props;
     let { defaultValueContent } = this.state;
-    listContentTemplateAsType.forEach(item => {
+    listContentTemplateAsTypeLanding.forEach(item => {
       if (item.id === id) {
         defaultValueContent = item.content;
       }
@@ -115,22 +93,8 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
     this.setState({ defaultValueContent });
   };
 
-  handleModelChange = event => {
-    let { testEmailEntity } = this.state;
-
-    testEmailEntity.content = event;
-    this.setState({ defaultValueContent: event, testEmailEntity });
-  };
-
   openModalPreview = () => {
     this.setState({ openModal: true });
-  };
-
-  handleInput = (event, type) => {
-    let contentData = event.target.value;
-    let { testEmailEntity } = this.state;
-    testEmailEntity[type] = contentData;
-    this.setState({ testEmailEntity });
   };
 
   toggleModal = () => {
@@ -141,7 +105,7 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
 
   render() {
     const { showMailForFriend, defaultValueContent, openModal } = this.state;
-    const { listCampainContentParams, listContentTemplateAsType } = this.props;
+    const { listCampainContentParams, listContentTemplateAsTypeLanding } = this.props;
 
     const listIndexParams = listCampainContentParams.map(item => {
       return {
@@ -150,7 +114,7 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
       };
     });
 
-    const listTemplate = listContentTemplateAsType.map(item => {
+    const listTemplate = listContentTemplateAsTypeLanding.map(item => {
       return { id: item.id, name: item.name };
     });
 
@@ -159,11 +123,7 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
         <Modal isOpen={openModal} toggle={this.toggleModal}>
           <ModalHeader toggle={this.toggleModal}>Landing preview</ModalHeader>
           <ModalBody>
-            <PreviewLanding
-              htmlDOM={defaultValueContent}
-              styleForDOM={'p {color: blue} button {color: white;background-color: blue}'}
-              scriptDOM='function test(){alert("test")}'
-            />
+            <PreviewLanding htmlDOM={defaultValueContent} styleForDOM={''} />
           </ModalBody>
           <ModalFooter>
             <Button color="primary" onClick={this.toggleModal}>
@@ -193,7 +153,7 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
                 <Card>
                   <CardBody>
                     <div className="input-mail-and-more">
-                      <div style={{ width: '60%', display: 'flex' }}>
+                      <div style={{ width: 'calc(100% - 150px)', display: 'flex' }}>
                         <div style={{ padding: '0px 5px', lineHeight: '40px' }}>Chọn landingpage</div>
                         <div>
                           <Dropdown
@@ -242,7 +202,7 @@ const mapStateToProps = ({ userCampaign }: IRootState) => {
   return {
     listCampainContentParams: userCampaign.listCampainContentParams,
     postMailRequest: userCampaign.postMailRequest,
-    listContentTemplateAsType: userCampaign.listContentTemplateAsType
+    listContentTemplateAsTypeLanding: userCampaign.listContentTemplateAsTypeLanding
   };
 };
 

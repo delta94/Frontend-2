@@ -29,14 +29,14 @@
 
   .topica-dropdown-menu {
     position: relative;
-    bottom: -10px;
+    bottom: -5px;
     border: solid $color_border 1px;
     border-radius: 5px;
     width: 100%;
     z-index: 5;
     padding: 2px;
     background-color: white;
-    max-height: 300px;
+    max-height: 250px;
     overflow-y: auto;
 
     /* width */

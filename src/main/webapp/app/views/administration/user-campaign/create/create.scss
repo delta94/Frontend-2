@@ -631,6 +631,7 @@ $color_border: rgba(206, 206, 206, 0.687);
 .row-content-info {
   height: 620px;
   background-color: white;
+  overflow-x: auto;
 }
 #userCreate .app-inner-layout {
   display: flex;
