@@ -60,13 +60,13 @@ export class ScriptsCampaign extends Component<IScriptsCampaignProps, IScriptsCa
         disableDocument: ULTILS_TYPES.DISABLE_DOCUMENT
       });
       this.props.getStepCampaign(id);
-      this.props.onClick(name);
+      this.props.onClick(name, id);
     } else {
       this.setState({
         isError: true,
         disableDocument: ULTILS_TYPES.EMPTY
       });
-      this.props.onClick(null);
+      this.props.onClick(null, id);
     }
   };
   render() {

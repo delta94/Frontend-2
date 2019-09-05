@@ -14,6 +14,8 @@ import { getCampaignInfoByStatus, getCampaignInfoById, getCampaignDetailById } f
 import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
 import { ITEMS_PER_MODAL_TABLE } from 'app/constants/common';
 
+export const KEY_ENTER = 'Enter';
+
 export interface IModalDisplayProps extends StateProps, DispatchProps {
   // properties from parent class
   isOpen: boolean;
@@ -44,9 +46,9 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
   }
   // search customer on modal
   search = event => {
-    if (event.key === 'Enter') {
+    if (event.key === KEY_ENTER) {
       const textSearch = event.target.value;
-      const { activePage, itemsPerPage } = this.state;
+      const { itemsPerPage } = this.state;
       this.setState({
         ...this.state,
         textSearch,
@@ -67,8 +69,8 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
   };
 
   render() {
-    const { loading, camps, camp, campDetail, totalElements, isOpen, pageCount } = this.props;
-    const { itemsPerPage, activePage } = this.state;
+    const { loading, camp, campDetail, isOpen } = this.props;
+    const { activePage } = this.state;
 
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
     return (

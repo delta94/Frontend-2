@@ -9,21 +9,25 @@ export interface SelectRewardProps {}
 
 export interface SelectRewardState {
   displayVoucher: string;
+  type: string;
 }
 class SelectReward extends React.Component<SelectRewardProps, SelectRewardState> {
   state: SelectRewardState = {
-    displayVoucher: ULTILS_TYPES.DISPLAY_VOUCHER_TICKET
+    displayVoucher: ULTILS_TYPES.DISPLAY_VOUCHER_TICKET,
+    type: ULTILS_TYPES.EMPTY
   };
 
   onClickVoucher = () => {
     this.setState({
-      displayVoucher: ULTILS_TYPES.EMPTY
+      displayVoucher: ULTILS_TYPES.EMPTY,
+      type: ULTILS_TYPES.SELECT_REWARD
     });
   };
 
   onClickNoVoucher = () => {
     this.setState({
-      displayVoucher: ULTILS_TYPES.DISPLAY_VOUCHER_TICKET
+      displayVoucher: ULTILS_TYPES.DISPLAY_VOUCHER_TICKET,
+      type: ULTILS_TYPES.NO_SELECT_REWARD
     });
   };
 

@@ -72,7 +72,7 @@ const initialState = {
   listCampainContentParams: [] as ICampaignContentParams[],
   listCategory: [] as ReadonlyArray<ICategory>,
   listEvoucher: [] as ReadonlyArray<IListEvoucher>,
-  camp: {} as ReadonlyArray<ICampaignId>,
+  camp: {} as ICampaignId,
   EvoucherDetail: {} as IEvoucherDetail,
   campDetail: [] as ReadonlyArray<ICampaignCustomer>,
 

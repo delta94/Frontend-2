@@ -15,6 +15,8 @@ export interface ICreateProps extends StateProps, DispatchProps {}
 
 export interface ICreateEntity {}
 export interface ICreateState {
+  //list value info
+  listInfo: {};
   //collapse componemt table detail
   collapse: boolean;
 
@@ -23,16 +25,21 @@ export interface ICreateState {
 
   //change icon
   changeIcon: string;
+
+  //id type campaign
+  campaignTypeId: string;
 }
 
 export class Create extends React.Component<ICreateProps, ICreateState> {
   state: ICreateState = {
+    listInfo: {},
     collapse: true,
     isDisplayTable: ULTILS_TYPES.DISPLAY_NAVIGATION,
-    changeIcon: ULTILS_TYPES.ICON_DOWN
+    changeIcon: ULTILS_TYPES.ICON_DOWN,
+    campaignTypeId: ULTILS_TYPES.EMPTY
   };
 
-  //function handler click
+  //function handler click collapse
   toggle = () => {
     this.setState({
       collapse: !this.state.collapse
@@ -51,10 +58,11 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
   };
 
   //function handler display componemt navigation
-  isDisPlayInfo = e => {
+  isDisPlayInfo = (e, list) => {
     this.setState({
       isDisplayTable: e
     });
+    this.state.listInfo = list;
   };
 
   //function handler collapse table detail
@@ -73,6 +81,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
   };
 
   render() {
+    const { listInfo } = this.state;
     return (
       <Fragment>
         <div id="userCreate">
@@ -107,7 +116,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
 
               {/* navigation campaign */}
               <div className={this.state.isDisplayTable}>
-                <Navigation onClick={this.isDisable} />
+                <Navigation valueListInfo={listInfo} onClick={this.isDisable} />
               </div>
             </Container>
           </ReactCSSTransitionGroup>

@@ -42,58 +42,66 @@ export interface IinfoPropsState {
 export class Info extends React.Component<IinfoProps, IinfoPropsState> {
   state: IinfoPropsState = {
     //set defaul value message error
-    validateDay: '',
-    validateField: '',
-    validateName: '',
+    validateDay: ULTILS_TYPES.EMPTY,
+    validateField: ULTILS_TYPES.EMPTY,
+    validateName: ULTILS_TYPES.EMPTY,
 
     //set style class table default
-    disableScreen: '',
+    disableScreen: ULTILS_TYPES.EMPTY,
     displayTable: ULTILS_TYPES.DISPLAY_TABLE,
-    showNameScripts: '',
+    showNameScripts: ULTILS_TYPES.EMPTY,
 
     // set default value info
-    valueName: '',
-    valueDay: '',
-    valueDes: '',
+    valueName: ULTILS_TYPES.EMPTY,
+    valueDay: ULTILS_TYPES.EMPTY,
+    valueDes: ULTILS_TYPES.EMPTY,
 
     //set default date & time
     startDate: moment(),
     endDate: moment(),
-    focusedInput: ''
+    focusedInput: ULTILS_TYPES.EMPTY
   };
 
   onChangeName = event => {
-    if (event.target.value === '' || event.target.value === null) {
+    if (event.target.value) {
       this.setState({
-        validateName: <Translate contentKey="campaign.message-error.name" />
+        validateName: ULTILS_TYPES.EMPTY,
+        valueName: event.target.value
       });
     } else {
       this.setState({
-        validateName: '',
-        valueName: event.target.value
+        validateName: <Translate contentKey="campaign.message-error.name" />
       });
     }
   };
 
   onChangeField = event => {
-    if (event.target.value === '' || event.target.value === null) {
-      this.setState({
-        validateField: <Translate contentKey="campaign.message-error.des" />
-      });
-    } else {
+    if (event.target.value) {
       this.setState({
         validateField: ULTILS_TYPES.EMPTY,
         valueDes: event.target.value
       });
+    } else {
+      this.setState({
+        validateField: <Translate contentKey="campaign.message-error.des" />
+      });
     }
   };
-  onClick = event => {
+  //function show text scripts
+  onClick = (event, id) => {
     if (event !== null) {
       this.setState({
         displayTable: ULTILS_TYPES.EMPTY,
         showNameScripts: event
       });
-      this.props.onClick(ULTILS_TYPES.EMPTY);
+      let listInfo = {
+        campaignTypeId: id,
+        name: event,
+        fromDate: this.state.startDate,
+        toDate: this.state.endDate,
+        description: this.state.valueDes
+      };
+      this.props.onClick(ULTILS_TYPES.EMPTY, listInfo);
     } else {
       this.setState({
         displayTable: ULTILS_TYPES.DISPLAY_TABLE
@@ -101,16 +109,16 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
     }
   };
   onDatesChange = ({ startDate, endDate }) => {
-    if (startDate === '' || startDate === null) {
-      this.setState({
-        validateDay: <Translate contentKey="campaign.message-error.day" />
-      });
-    } else {
+    if (startDate) {
       this.setState({
         validateDay: ULTILS_TYPES.EMPTY,
         startDate,
         endDate,
         valueDay: startDate
+      });
+    } else {
+      this.setState({
+        validateDay: <Translate contentKey="campaign.message-error.day" />
       });
     }
   };

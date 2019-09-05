@@ -13,12 +13,15 @@ import Review from './review/review';
 import { TabContent, TabPane, DropdownItem, Card, Col, Row, Button } from 'reactstrap';
 import classnames from 'classnames';
 import { getContentPageParams } from 'app/actions/user-campaign';
+import { isThisSecond } from 'date-fns';
 
 export interface INavigationProps extends StateProps, DispatchProps {
   onClick: Function;
+  valueListInfo: {};
 }
 
 export interface INavigationState {
+  listCustomerGroup: any[];
   activeTab: number;
   active: boolean;
   endTab: boolean;
@@ -27,6 +30,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
   constructor(props) {
     super(props);
     this.state = {
+      listCustomerGroup: [],
       activeTab: 0,
       active: false,
       endTab: false
@@ -63,9 +67,18 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
     }
   };
 
+  //function get value Customer group
+  onClick = list => {
+    if (list !== undefined) {
+      this.state.listCustomerGroup.push(list);
+      console.log(this.state.listCustomerGroup);
+    }
+    console.log(this.props.valueListInfo);
+  };
+
   render() {
     const { endTab } = this.state;
-    const { listStep, listContentParams } = this.props;
+    const { listStep } = this.props;
     return (
       <Fragment>
         <ReactCSSTransitionGroup
@@ -109,8 +122,8 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
               </div>
               {/* Tab Content */}
               <TabContent activeTab={this.state.activeTab}>
-                <TabPane tabId={1}>
-                  <SelectCustomer />
+                <TabPane tabId={1} onClick={this.onClick}>
+                  <SelectCustomer onClick={this.onClick} />
                   <div className="mt-5" />
                   <div className="clearfix" />
                 </TabPane>

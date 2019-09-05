@@ -47,7 +47,6 @@ class Vocher extends React.Component<VocherProps, VocherState> {
     const { value } = this.state;
     const { loading, listEvoucher, evoucherDetail } = this.props;
     const spinner = <LoaderAnim color="#ffffff" type="ball-pulse" />;
-    console.log(evoucherDetail);
     return (
       <Loader message={spinner} show={loading} priority={10}>
         <Container fluid>
@@ -55,7 +54,10 @@ class Vocher extends React.Component<VocherProps, VocherState> {
             <Col md="6">
               <Card className="main-card mb-3">
                 <CardBody>
-                  <CardTitle>E-voucher</CardTitle>
+                  <CardTitle>
+                    {' '}
+                    <Translate contentKey="campaign.evoucher" />
+                  </CardTitle>
                   <Row form>
                     <Col md={12}>
                       <DropdownList

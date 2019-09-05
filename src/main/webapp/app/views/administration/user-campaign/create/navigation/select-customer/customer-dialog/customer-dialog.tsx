@@ -12,6 +12,8 @@ import { getCustomer, getStatistic } from '../../../../../../../actions/user-cam
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ITEMS_PER_PAGE, ULTILS_TYPES, ACTIVE_PAGE } from '../../../../../../../constants/ultils';
 import CategoryDialog from './../customer-dialog/categories/categories';
+import SweetAlert from 'sweetalert-react';
+import { faKeybase } from '@fortawesome/free-brands-svg-icons';
 
 export interface CustomerDialogProps extends StateProps, DispatchProps {
   onClick: Function;
@@ -20,6 +22,8 @@ export interface CustomerDialogProps extends StateProps, DispatchProps {
 export interface CustomerDialogState {
   //set modal
   modal: boolean;
+
+  isError: boolean;
 
   // set param to get list
   activePage: number;
@@ -34,6 +38,8 @@ class CustomerDialog extends React.Component<CustomerDialogProps, CustomerDialog
   state: CustomerDialogState = {
     modal: false,
 
+    isError: false,
+
     activePage: ACTIVE_PAGE,
     pageSize: ITEMS_PER_PAGE,
     category: ULTILS_TYPES.EMPTY,
@@ -44,11 +50,18 @@ class CustomerDialog extends React.Component<CustomerDialogProps, CustomerDialog
   };
   //function submit
   handlerSaveForm = () => {
-    this.setState({
-      modal: false
-    });
-    //count contact
-    this.props.onClick(this.state.modal, this.state.nameCategory, true);
+    const { modal, nameCategory, categories } = this.state;
+    if (categories) {
+      this.setState({
+        modal: false
+      });
+      //count contact
+      this.props.onClick(modal, nameCategory, true);
+    } else {
+      this.setState({
+        isError: true
+      });
+    }
   };
 
   // function panigator
@@ -95,6 +108,14 @@ class CustomerDialog extends React.Component<CustomerDialogProps, CustomerDialog
     const { listCustomer, loading, total } = this.props;
     return (
       <Loader message={spinner} show={loading} priority={10}>
+        <SweetAlert
+          title={ULTILS_TYPES.MESSAGE_SWEET_ERROR}
+          confirmButtonColor={ULTILS_TYPES.EMPTY}
+          show={this.state.isError}
+          text={ULTILS_TYPES.EMPTY}
+          type="error"
+          onConfirm={() => this.setState({ isError: false })}
+        />
         <ModalHeader
           toggle={() => {
             this.setState({

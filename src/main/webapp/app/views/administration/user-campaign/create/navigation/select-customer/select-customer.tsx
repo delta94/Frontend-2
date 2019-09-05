@@ -11,7 +11,9 @@ import { getCustomer, getStatistic } from '../../../../../../actions/user-campai
 import CustomerDialog from './customer-dialog/customer-dialog';
 import { ITEMS_PER_PAGE, ULTILS_TYPES, ACTIVE_PAGE } from '../../../../../../constants/ultils';
 
-export interface SelectCustomerProps extends StateProps, DispatchProps {}
+export interface SelectCustomerProps extends StateProps, DispatchProps {
+  onClick: Function;
+}
 
 export interface SelectCustomerState {
   listUser: any[];
@@ -24,6 +26,9 @@ export interface SelectCustomerState {
   pageSize: number;
   category: string;
   textSearch: string;
+
+  //sum contact
+  sumContact: number;
 }
 class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomerState> {
   state: SelectCustomerState = {
@@ -35,7 +40,8 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
     activePage: ACTIVE_PAGE,
     pageSize: ITEMS_PER_PAGE,
     category: ULTILS_TYPES.EMPTY,
-    textSearch: ULTILS_TYPES.EMPTY
+    textSearch: ULTILS_TYPES.EMPTY,
+    sumContact: 0
   };
 
   onClick = () => {
@@ -62,16 +68,17 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
         zalo: 0
       };
       this.state.listUser.push(elements);
+      // get list from component select customer - to navigation
+      this.props.onClick(this.state.listUser);
     }
   };
 
   render() {
     const spinner = <LoaderAnim color="#ffffff" type="ball-pulse" />;
     const { listUser } = this.state;
-    const { loading, total } = this.props;
-    var sumContact = 0;
+    const { loading } = this.props;
     for (var i = 0; i < listUser.length; i++) {
-      sumContact += listUser[i].totalContact;
+      this.state.sumContact += listUser[i].totalContact;
     }
     return (
       <Loader message={spinner} show={loading} priority={10}>
@@ -93,7 +100,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
                 {' '}
                 <Label>
                   <Translate contentKey="campaign.all-contract" />
-                  <span className="number-contract">{sumContact} </span>
+                  <span className="number-contract">{this.state.sumContact} </span>
                 </Label>
               </Col>
               <Col md="6">
