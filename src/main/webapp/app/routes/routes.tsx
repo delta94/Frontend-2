@@ -5,6 +5,8 @@ import Loader from 'react-loaders';
 import { ToastContainer } from 'react-toastify';
 
 const Admin = lazy(() => import('app/views/administration'));
+const Pages = lazy(() => import('app/views/pages'));
+
 const UserPages = lazy(() => import('app/DemoPages/UserPages'));
 const Applications = lazy(() => import('app/DemoPages/Applications'));
 const Dashboards = lazy(() => import('app/DemoPages/Dashboards'));
@@ -20,7 +22,6 @@ const AppRoutes = () => {
   return (
     <Fragment>
       {/* Admin */}
-
       <Suspense
         fallback={
           <div className="loader-container">
@@ -37,6 +38,25 @@ const AppRoutes = () => {
         }
       >
         <Route path="/admin" component={Admin} />
+      </Suspense>
+      {/* Pages */}
+
+      <Suspense
+        fallback={
+          <div className="loader-container">
+            <div className="loader-container-inner">
+              <div className="text-center">{/* <Loader type="line-scale-party" /> */}</div>
+              <h6 className="mt-3">
+                Please wait while we load all the Pages examples
+                <small>
+                  Because this is a demonstration we load at once all the Pages examples. This wouldn't happen in a real live app!
+                </small>
+              </h6>
+            </div>
+          </div>
+        }
+      >
+        <Route path="/pages" component={Pages} />
       </Suspense>
 
       {/* Forms */}
@@ -138,26 +158,6 @@ const AppRoutes = () => {
         }
       >
         <Route path="/widgets" component={Widgets} />
-      </Suspense>
-
-      {/* Pages */}
-
-      <Suspense
-        fallback={
-          <div className="loader-container">
-            <div className="loader-container-inner">
-              <div className="text-center">{/* <Loader type="line-scale-party" /> */}</div>
-              <h6 className="mt-3">
-                Please wait while we load all the Pages examples
-                <small>
-                  Because this is a demonstration we load at once all the Pages examples. This wouldn't happen in a real live app!
-                </small>
-              </h6>
-            </div>
-          </div>
-        }
-      >
-        <Route path="/pages" component={UserPages} />
       </Suspense>
 
       {/* Applications */}

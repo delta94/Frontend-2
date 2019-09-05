@@ -26,8 +26,6 @@
   height: auto;
   grid-template-rows: auto auto;
   margin-bottom: 10px;
-  border-radius: 3px;
-  border: 1px solid #e9ecef;
 }
 
 .grid-border {
@@ -81,17 +79,6 @@
   line-height: 30px;
   font-family: Roboto;
 }
-.modal-name {
-  margin-bottom: 10px;
-}
-.modal-campaign-name {
-  font-size: 16px;
-  line-height: 19px;
-  font-weight: 500;
-  font-style: normal;
-  font-family: Roboto;
-  color: #3866dd;
-}
 .camp-bottom {
   display: flex;
   margin-top: 7px;
@@ -113,7 +100,7 @@
   display: flex;
 }
 .modal-grid-child {
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 
 .modal-grid-child1-bottom {
@@ -398,4 +385,5 @@ h3 {
 }
 .nav-link {
   padding: 0 !important;
+  line-height: 53px;
 }

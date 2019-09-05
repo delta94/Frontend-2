@@ -6,6 +6,7 @@ import authentication, { AuthenticationState } from './authentication';
 // import applicationProfile, { ApplicationProfileState } from './application-profile';
 import userManagement, { UserManagementState } from './user-management';
 import userCampaign, { UserCampaignState } from './user-campaign';
+import landingPage, { LandingPageState } from './landing-page';
 import themeOptions, { ThemeOptionsState } from './theme-options';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
@@ -16,6 +17,7 @@ export interface IRootState {
   readonly userManagement: UserManagementState;
   readonly userCampaign: UserCampaignState;
   readonly themeOptions: ThemeOptionsState;
+  readonly landingPage: LandingPageState;
   readonly loadingBar: any;
 }
 
@@ -26,7 +28,8 @@ const rootReducer = combineReducers<IRootState>({
   userManagement,
   themeOptions,
   loadingBar,
-  userCampaign
+  userCampaign,
+  landingPage
 });
 
 export default rootReducer;
