@@ -34,20 +34,21 @@
 }
 
 .dropdown-item:focus #circle {
-  background: #6a91f3;
+  background: #3866dd;
 }
 .dropdown-item:focus .descrition-item {
   color: white;
 }
 .dropdown-item:active #circle {
-  background: #6a91f3;
+  background: #3866dd;
 }
 .dropdown-item:active .descrition-item {
   color: white;
 }
 .dropdown-item:hover #circle {
-  background: #6a91f3;
+  background: #3866dd !important;
 }
 .dropdown-item:hover .descrition-item {
   color: white;
+  background-color: #3866dd !important;
 }

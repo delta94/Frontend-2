@@ -62,10 +62,11 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
     console.log(this.state.id);
     const { loading, camps } = this.props;
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
+
     return (
       <div className="grid-container-total">
         <ModalDisplay isOpen={this.state.modal} id={this.state.id} onClick={this.handerModal} />
-        <Loader message={spinner1} show={loading} priority={1}>
+        <Loader message={spinner1} show={loading} priority={5}>
           <Fragment>
             <div className="grid-border">
               {/* day la trang camp*/}

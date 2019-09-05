@@ -71,36 +71,37 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
 
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
     return (
-      <Loader message={spinner1} show={loading} priority={2}>
-        <Modal isOpen={isOpen} fade={false}>
-          <ModalHeader>
-            <span>
-              <Translate contentKey="campaign.modal.title" />{' '}
-            </span>{' '}
-            <button className="close" onClick={() => this.props.onClick(false)}>
-              &times;
-            </button>
-            <span className="camp-status" style={{ float: 'right' }}>
-              {camp.status && camp.status === 2 ? (
-                <span style={{ color: '#02B3FF' }}>
-                  {' '}
-                  <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.complete" />
-                </span>
-              ) : camp.status && camp.status == 1 ? (
-                <span style={{ color: '#23C00A' }}>
-                  {' '}
-                  <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.action" />
-                </span>
-              ) : (
-                <span style={{ color: '#97A3B4' }}>
-                  {' '}
-                  <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.pause" />
-                </span>
-              )}
-            </span>
-          </ModalHeader>
-          <ModalBody>
-            <div className="modal-grid">
+      <Modal isOpen={isOpen} fade={false}>
+        <ModalHeader>
+          <span>
+            <Translate contentKey="campaign.modal.title" />{' '}
+          </span>{' '}
+          <button className="close" onClick={() => this.props.onClick(false)}>
+            &times;
+          </button>
+          <span className="camp-status" style={{ float: 'right' }}>
+            {camp.status && camp.status === 2 ? (
+              <span style={{ color: '#02B3FF' }}>
+                {' '}
+                <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.complete" />
+              </span>
+            ) : camp.status && camp.status == 1 ? (
+              <span style={{ color: '#23C00A' }}>
+                {' '}
+                <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.action" />
+              </span>
+            ) : (
+              <span style={{ color: '#97A3B4' }}>
+                {' '}
+                <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.pause" />
+              </span>
+            )}
+          </span>
+        </ModalHeader>
+
+        <ModalBody>
+          <div className="modal-grid">
+            <Loader message={spinner1} show={loading} priority={2}>
               <div className="modal-grid-child">
                 <span style={{ width: '15%' }}>
                   <Translate contentKey="campaign.description" />
@@ -155,71 +156,71 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
                   </div>
                 </div>
               </div>
-              <div className="modal-grid-child2">
-                <div className="modal-searchBar">
-                  <span className=" form-control-feedback" />
-                  <input type="text" className="form-control" placeholder="Tìm kiếm" onKeyDown={this.search} />
-                </div>
+            </Loader>
+            <div className="modal-grid-child2">
+              <div className="modal-searchBar">
+                <span className=" form-control-feedback" />
+                <input type="text" className="form-control" placeholder="Tìm kiếm" onKeyDown={this.search} />
               </div>
-              <Loader message={spinner1} show={loading} priority={3}>
-                <div className="modal-table">
-                  <Table responsive striped className="modal-tables">
-                    <thead>
-                      <tr className="text-center">
-                        <th className="hand">#</th>
-                        <th className="hand ">
-                          <Translate contentKey="userManagement.name" />
-                        </th>
-                        <th className="hand">
-                          <Translate contentKey="userManagement.mobile" />
-                        </th>
-                        <th className="hand">
-                          <Translate contentKey="userManagement.email" />
-                        </th>
-                        <th>
-                          <Translate contentKey="userManagement.categories" />
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {campDetail &&
-                        campDetail.map((item, index) => {
-                          var listCustomer;
-                          listCustomer = (
-                            <tr>
-                              <td>{index + 1}</td>
-                              <td>{item.name}</td>
-                              <td>{item.phone}</td>
-                              <td>{item.email}</td>
-                              <td>{item.categories}</td>
-                            </tr>
-                          );
-                          return listCustomer;
-                        })}
-                    </tbody>
-                  </Table>
-                  <Row className="justify-content-center">
-                    <ReactPaginate
-                      previousLabel={'<'}
-                      nextLabel={'>'}
-                      breakLabel={'...'}
-                      breakClassName={'break-me'}
-                      pageCount={this.props.pageCount}
-                      marginPagesDisplayed={1}
-                      pageRangeDisplayed={3}
-                      onPageChange={this.handlePagination}
-                      containerClassName={'pagination'}
-                      subContainerClassName={'pages pagination'}
-                      activeClassName={'active'}
-                      forcePage={activePage}
-                    />
-                  </Row>
-                </div>
-              </Loader>
             </div>
-          </ModalBody>
-        </Modal>
-      </Loader>
+            <Loader message={spinner1} show={loading} priority={10}>
+              <div className="modal-table">
+                <Table responsive striped className="modal-tables">
+                  <thead>
+                    <tr className="text-center">
+                      <th className="hand">#</th>
+                      <th className="hand ">
+                        <Translate contentKey="userManagement.name" />
+                      </th>
+                      <th className="hand">
+                        <Translate contentKey="userManagement.mobile" />
+                      </th>
+                      <th className="hand">
+                        <Translate contentKey="userManagement.email" />
+                      </th>
+                      <th>
+                        <Translate contentKey="userManagement.categories" />
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {campDetail &&
+                      campDetail.map((item, index) => {
+                        var listCustomer;
+                        listCustomer = (
+                          <tr>
+                            <td>{index + 1}</td>
+                            <td>{item.name}</td>
+                            <td>{item.phone}</td>
+                            <td>{item.email}</td>
+                            <td>{item.categories}</td>
+                          </tr>
+                        );
+                        return listCustomer;
+                      })}
+                  </tbody>
+                </Table>
+                <Row className="justify-content-center">
+                  <ReactPaginate
+                    previousLabel={'<'}
+                    nextLabel={'>'}
+                    breakLabel={'...'}
+                    breakClassName={'break-me'}
+                    pageCount={this.props.pageCount}
+                    marginPagesDisplayed={1}
+                    pageRangeDisplayed={3}
+                    onPageChange={this.handlePagination}
+                    containerClassName={'pagination'}
+                    subContainerClassName={'pages pagination'}
+                    activeClassName={'active'}
+                    forcePage={activePage}
+                  />
+                </Row>
+              </div>
+            </Loader>
+          </div>
+        </ModalBody>
+      </Modal>
     );
   }
 }
