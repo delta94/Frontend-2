@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircle, faClock, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faCircle, faClock, faUser, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { Loader as LoaderAnim } from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Table, Row } from 'reactstrap';
@@ -15,6 +15,7 @@ import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pag
 import { ITEMS_PER_MODAL_TABLE } from 'app/constants/common';
 
 export interface IModalDisplayProps extends StateProps, DispatchProps {
+  // properties from parent class
   isOpen: boolean;
   onClick: Function;
   id: string;
@@ -79,29 +80,33 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
           <button className="close" onClick={() => this.props.onClick(false)}>
             &times;
           </button>
-          <span className="camp-status" style={{ float: 'right' }}>
-            {camp.status && camp.status === 2 ? (
-              <span style={{ color: '#02B3FF' }}>
-                {' '}
-                <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.complete" />
-              </span>
-            ) : camp.status && camp.status == 1 ? (
-              <span style={{ color: '#23C00A' }}>
-                {' '}
-                <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.action" />
-              </span>
-            ) : (
-              <span style={{ color: '#97A3B4' }}>
-                {' '}
-                <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.pause" />
-              </span>
-            )}
-          </span>
         </ModalHeader>
 
         <ModalBody>
           <div className="modal-grid">
             <Loader message={spinner1} show={loading} priority={2}>
+              <div className="modal-name">
+                <span className="modal-campaign-name">{camp.name}</span>
+                <span className="camp-status" style={{ float: 'right' }}>
+                  {camp.status && camp.status === 2 ? (
+                    <span style={{ color: '#02B3FF' }}>
+                      {' '}
+                      <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.complete" />
+                    </span>
+                  ) : camp.status && camp.status == 1 ? (
+                    <span style={{ color: '#23C00A' }}>
+                      {' '}
+                      <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.action" />
+                    </span>
+                  ) : (
+                    <span style={{ color: '#97A3B4' }}>
+                      {' '}
+                      <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.pause" />
+                    </span>
+                  )}
+                </span>
+              </div>
+
               <div className="modal-grid-child">
                 <span style={{ width: '15%' }}>
                   <Translate contentKey="campaign.description" />
@@ -189,11 +194,21 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
                         var listCustomer;
                         listCustomer = (
                           <tr>
-                            <td>{index + 1}</td>
+                            <td>{this.state.activePage * this.state.itemsPerPage + index + 1}</td>
                             <td>{item.name}</td>
                             <td>{item.phone}</td>
                             <td>{item.email}</td>
-                            <td>{item.categories}</td>
+                            <td>
+                              {item.categories &&
+                                item.categories.split(',').map((category, index) => {
+                                  return (
+                                    <span className="badge badge-success" key={index}>
+                                      {' '}
+                                      {category}
+                                    </span>
+                                  );
+                                })}
+                            </td>
                           </tr>
                         );
                         return listCustomer;

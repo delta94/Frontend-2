@@ -142,7 +142,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
             <Row className="b-t">
               <Col xs="8" sm="6" md="6">
                 <Button
-                  style={{ color: '#353ed1', backgroundColor: 'white', borderColor: '#ffffff' }}
+                  style={{ color: '#3866DD', backgroundColor: 'white', borderColor: '#ffffff' }}
                   onClick={() => {
                     this.onHandletTab(-1);
                   }}
@@ -153,7 +153,6 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
               <Col xs="8" sm="6" md="6">
                 <Button
                   color="primary"
-                  style={{ float: 'right', backgroundColor: endTab ? 'green' : 'primary' }}
                   onClick={() => {
                     this.onHandletTab(1);
                   }}
