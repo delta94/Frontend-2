@@ -3,9 +3,10 @@ import React from 'react';
 import './Dropdown.scss';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { defaultValue } from '../../common/model/user.model';
 
 export interface IArrayEntity {
-  id?: string;
+  id?: number;
   name?: string;
 }
 
@@ -39,7 +40,7 @@ class Dropdown extends PureComponent<IDropdownProps, IDropdownState> {
 
   state = {
     isShow: false,
-    value: ''
+    value: 'Chọn giá trị'
   };
 
   toggleDropdown = item => {
@@ -49,6 +50,13 @@ class Dropdown extends PureComponent<IDropdownProps, IDropdownState> {
   };
 
   componentDidMount() {
+    let { defaultValue } = this.props;
+    let { value } = this.state;
+
+    if (defaultValue) {
+      value = defaultValue;
+    }
+
     if (this.props.selection) {
       var allDropSelection = document.querySelectorAll(
         `div.topica-dropdown, div.toggle-dropdown, div.topica-dropdown-menu , div.topica-dropdown-item`
@@ -60,10 +68,25 @@ class Dropdown extends PureComponent<IDropdownProps, IDropdownState> {
         });
       });
     }
+
+    this.setState({ value });
   }
 
-  render(defaultValue = this.props.defaultValue, value = this.state.value, isShow = this.state.isShow, width = this.props.width) {
-    const listArray = this.props.listArray;
+  limitString = (value: string) => {
+    let newValue = '';
+    if (value.length > 15) {
+      for (let i = 0; i < 15; i++) {
+        newValue += value[i];
+      }
+
+      newValue += '...';
+    }
+    return newValue;
+  };
+
+  render() {
+    const { listArray, defaultValue, width } = this.props;
+    const { value, isShow } = this.state;
 
     return (
       <div id={id} className="topica-dropdown" style={{ width: width ? width + 'px' : '150px' }}>
@@ -75,8 +98,10 @@ class Dropdown extends PureComponent<IDropdownProps, IDropdownState> {
             this.setState({ isShow: !isShow });
           }}
         >
-          {value === '' ? defaultValue : value}
-          <FontAwesomeIcon icon={faAngleDown} size="1x" />
+          <div className="toggle-data">{value.length > 0 ? this.limitString(value) : this.limitString(defaultValue)}</div>
+          <div className="toggle-icon">
+            <FontAwesomeIcon icon={faAngleDown} size="1x" />
+          </div>
         </div>
         <div id={id} className="topica-dropdown-menu" style={{ display: isShow ? 'block' : 'none' }}>
           {listArray.map((item, index) => {

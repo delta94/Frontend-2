@@ -9,40 +9,75 @@ import cx from 'classnames';
 import '../create/create.scss';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Translate, translate } from 'react-jhipster';
-import { ULTILS_ACTION_TYPES } from '../../../../constants/ultils';
+import { ULTILS_TYPES } from '../../../../constants/ultils';
 
 export interface ICreateProps extends StateProps, DispatchProps {}
 
+export interface ICreateEntity {}
 export interface ICreateState {
+  //collapse componemt table detail
   collapse: boolean;
-  isActive: boolean;
+
+  //display componemt navigation
   isDisplayTable: string;
+
+  //change icon
+  changeIcon: string;
 }
 
 export class Create extends React.Component<ICreateProps, ICreateState> {
   state: ICreateState = {
     collapse: true,
-    isActive: false,
-    isDisplayTable: ULTILS_ACTION_TYPES.DISPLAY_NAVIGATION
+    isDisplayTable: ULTILS_TYPES.DISPLAY_NAVIGATION,
+    changeIcon: ULTILS_TYPES.ICON_DOWN
   };
+
+  //function handler click
   toggle = () => {
     this.setState({
       collapse: !this.state.collapse
     });
+    if (this.state.collapse) {
+      this.setState({
+        collapse: false,
+        changeIcon: ULTILS_TYPES.ICON_UP
+      });
+    } else {
+      this.setState({
+        collapse: true,
+        changeIcon: ULTILS_TYPES.ICON_DOWN
+      });
+    }
   };
+
+  //function handler display componemt navigation
   isDisPlayInfo = e => {
     this.setState({
       isDisplayTable: e
     });
   };
+
+  //function handler collapse table detail
+  isDisable = event => {
+    if (event > 1) {
+      this.setState({
+        collapse: false,
+        changeIcon: ULTILS_TYPES.ICON_UP
+      });
+    } else {
+      this.setState({
+        collapse: true,
+        changeIcon: ULTILS_TYPES.ICON_DOWN
+      });
+    }
+  };
+
   render() {
     return (
       <Fragment>
         <div id="userCreate">
           <ReactCSSTransitionGroup
-            className={cx('app-inner-layout chat-layout', {
-              'open-mobile-menu': this.state.isActive
-            })}
+            className={cx('app-inner-layout chat-layout')}
             component="div"
             transitionName="TabsAnimation"
             transitionAppear={true}
@@ -60,7 +95,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
               <Card className="card-info">
                 <CardTitle>
                   <Translate contentKey="campaign.info-campaign" />{' '}
-                  <i className="lnr-chevron-down" onClick={this.toggle}>
+                  <i className={this.state.changeIcon} onClick={this.toggle}>
                     {' '}
                   </i>{' '}
                 </CardTitle>
@@ -72,7 +107,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
 
               {/* navigation campaign */}
               <div className={this.state.isDisplayTable}>
-                <Navigation />
+                <Navigation onClick={this.isDisable} />
               </div>
             </Container>
           </ReactCSSTransitionGroup>

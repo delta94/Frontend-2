@@ -2,6 +2,7 @@
   position: relative;
   line-height: 40px;
   height: 40px;
+  min-width: 150px;
   $color_border: #ced4da;
   &:hover {
     cursor: pointer;
@@ -18,6 +19,12 @@
       right: 10px;
       top: 15px;
     }
+
+    .toggle-data {
+    }
+
+    .toggle-icon {
+    }
   }
 
   .topica-dropdown-menu {
@@ -29,6 +36,28 @@
     z-index: 5;
     padding: 2px;
     background-color: white;
+    max-height: 300px;
+    overflow-y: auto;
+
+    /* width */
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+      background: #888;
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
 
     .topica-dropdown-item {
       display: list-item;

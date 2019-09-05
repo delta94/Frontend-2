@@ -36,6 +36,7 @@
   .add-content-detail {
     position: relative;
     border-radius: 3px;
+    overflow-y: auto;
 
     .content-detail {
       border: 1px solid #ced4da;
@@ -65,7 +66,6 @@
 
       .template-add {
         padding: 10px 0px;
-
         display: flex;
         line-height: 40px;
 
@@ -76,7 +76,6 @@
 
       .input-mail-and-more {
         padding: 10px 0px;
-        display: flex;
         input {
           margin: 0px 5px 0px 0px;
         }
@@ -84,6 +83,7 @@
 
       .content-fixing {
         margin-bottom: 10px;
+        overflow-y: auto;
       }
     }
   }

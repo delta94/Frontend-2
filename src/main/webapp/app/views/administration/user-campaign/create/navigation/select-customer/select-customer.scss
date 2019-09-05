@@ -1,0 +1,82 @@
+.total-contract {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 22px;
+  /* identical to box height, or 183% */
+  color: #41464c;
+}
+.number-contract {
+  color: #6ac259;
+}
+.name-group {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  /* identical to box height */
+
+  color: #101010;
+}
+.boder-customer {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 22px;
+  border-top: 1px solid #e9ecef;
+  padding: 10px;
+}
+.label-icon {
+  margin-bottom: 0px !important;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 22px;
+  /* identical to box height, or 169% */
+  color: #343a40;
+}
+.table-customer {
+  background: #ffffff;
+  border: 1px solid #e9ecef;
+  box-sizing: border-box;
+  border-radius: 3px;
+}
+.cartitle-customer {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 900;
+  font-size: 14px;
+  line-height: 27px;
+  /* identical to box height, or 193% */
+
+  letter-spacing: 1px;
+
+  color: #595c82;
+  margin-top: 17px;
+}
+.total-contract-customer {
+  margin-top: 2%;
+  text-align: right;
+  display: flex;
+  padding-right: 0px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 22px;
+  padding-left: 8%;
+}
+.name-icon {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 22px;
+  /* identical to box height, or 169% */
+
+  color: #97a3b4;
+}

@@ -1,7 +1,9 @@
+import { ICampaignTestMailLanding } from './../common/model/campaign.model';
 import axios from 'axios';
 import { IUser, defaultValue } from 'app/common/model/user.model';
 import { ICategory } from 'app/common/model/category.model';
 import { toast } from 'react-toastify';
+import { IListNewCustomer } from 'app/common/model/campaign-new-customer.model';
 
 const apiUrl = 'v1/campaigns';
 
@@ -13,29 +15,33 @@ const apiUrl = 'v1/campaigns';
  * @param textSearch - string
  * @return {code: number, data: Object{item: [{id: string, name: string, gmail: string, catagories: string, }, pageIndex: number, pageSize: number] }}
  */
-export const getCampaignInfoService = () => {
-  return axios.get(apiUrl);
-};
 
 export const getCampaignInfoByIdService = id => {
   return axios.get(`v1/campaign/${id}`);
 };
 
+export const getCampaignDetailService = (id, page, pageSize, textSearch?: string) => {
+  return axios.get(`v1/campaign/${id}/customers${`?page=${page}&pageSize=${pageSize}&textSearch=${textSearch}`}`);
+};
+export const getCountCampaignService = status => {
+  return axios.get(`v1/campaigns/count?status=${status}`);
+};
 export const getCampaignInfoByStatusService = status => {
   return axios.get(`v1/campaigns?status=${status}`);
 };
 
-export const getUsersService = (page, pageSize, category?: string, textSearch?: string) => {
-  const requestUrl = `${apiUrl}${`?page=${page}&pageSize=${pageSize}&category=${category}&textSearch=${textSearch}`}`;
-  return axios.get<IUser>(requestUrl);
+export const getNewCustomer = (page, pageSize, category?: string, textSearch?: string) => {
+  return axios.get<IListNewCustomer>(
+    `v1/customer?type=MgM&page=${page}&pageSize=${pageSize}&category=${category}&textSearch=${textSearch}`
+  );
 };
+
 export const getInformationService = () => {
-  return axios.get('v1/campaignTypes');
+  return axios.get('v1/campaign-types');
 };
 
 export const getStep = id => {
-  console.log(id);
-  return axios.get(`v1/campaignType/${id}/step`);
+  return axios.get(`v1/campaign-types/${id}/step`);
 };
 
 // get typeName category
@@ -105,8 +111,43 @@ export const UploaddFile = data => {
   });
 };
 
-// Get Landing Page Params
+//GET: v1/contentParams API => lấy thông tin landing page param
 export const getContentPageParamsService = () => {
-  const requestUrl = `${`v1/contentParams`}`;
+  const requestUrl = `${`v1/content-param`}`;
+  var data = axios.get(requestUrl);
+  console.log(data);
+  return data;
+};
+
+// POST v1/email/send => Api test gửi email test
+export const postTestMailLandingService = (data: ICampaignTestMailLanding) => {
+  const requestUrl = `${`v1/email/send`}`;
+  return axios.post(requestUrl, data);
+};
+
+//TODO: POST v1/campaign => Api lưu thông tin chiến dịch
+
+//GET v1/content-template?templateType=EMAIL => Api lấy danh sách loại content template
+export const getContentTemplateAsTypeService = type => {
+  let defaultTemplate = 'EMAIL';
+  if (type) {
+    defaultTemplate = type;
+  }
+  const requestUrl = `${`v1/content-template?templateType=${defaultTemplate}`}`;
   return axios.get(requestUrl);
+};
+
+// GET v1/content-template
+export const getContentTemplateService = id => {
+  const requestUrl = `${`v1/content-template/${id} `}`;
+  return axios.get(requestUrl);
+};
+
+export const getCategory = name => {
+  return axios.get(`v1/category?type=Customer&textSearch=${name}`);
+};
+
+//get api statitis phone & email
+export const getStatitis = category => {
+  return axios.get(`v1/customer/statistics?categories=${category}`);
 };

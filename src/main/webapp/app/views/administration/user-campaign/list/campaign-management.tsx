@@ -2,83 +2,50 @@ import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import ReactPaginate from 'react-paginate';
-import SweetAlert from 'sweetalert-react';
 import { Loader as LoaderAnim } from 'react-loaders';
 import Loader from 'react-loader-advanced';
-import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
+import { Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { DISPLAY_STATUS_ALL, DISPLAY_STATUS_PAUSE, DISPLAY_STATUS_ACTION, DISPLAY_STATUS_COMPLETE } from 'app/constants/common';
-
-import {
-  TabContent,
-  TabPane,
-  Nav,
-  NavItem,
-  NavLink,
-  Row,
-  Col,
-  CardHeader,
-  CardFooter,
-  Card,
-  CardBody,
-  Button,
-  ButtonGroup,
-  Container,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Table,
-  Badge
-} from 'reactstrap';
+import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, CardHeader, Card, Container } from 'reactstrap';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-
-import './../list/campaign-management.scss';
-import { getCampaignInfo, getCampaignInfoByStatus } from 'app/actions/user-campaign';
-import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
-import AllCamp from './tab/allCamp';
-import ActionCamp from './tab/actionCamp';
-import PauseCamp from './tab/pauseCamp';
-import CompleteCamp from './tab/completeCamp';
-
 import classnames from 'classnames';
 
-import { faClock } from '@fortawesome/free-solid-svg-icons';
+import { DISPLAY_STATUS_ALL, DISPLAY_STATUS_PAUSE, DISPLAY_STATUS_ACTION, DISPLAY_STATUS_COMPLETE } from 'app/constants/common';
+import './../list/campaign-management.scss';
+import { getCampaignInfoByStatus, getCampaignInfoById, getCountCampaignByStatus } from 'app/actions/user-campaign';
+import AllCamp from './tab/all-camp/all-camp';
 
 export interface ICreateCampaignProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
 
 export interface ICreateCampaignState {
+  // display campaign info by id
   modal?: boolean;
-  status: any;
+  // display campaign list follow tab's number
   activeTab: string;
-  showMore: boolean;
-  transform: boolean;
-  showInkBar: boolean;
-  // items:{};
-  selectedTabKey: 0;
-  transformWidth: 400;
 }
 
 export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampaignState> {
   state: ICreateCampaignState = {
     modal: false,
-    status: '',
-    activeTab: '1',
-    showMore: true,
-    transform: true,
-    showInkBar: true,
-    // items: this.getSimpleTabs(),
-    selectedTabKey: 0,
-    transformWidth: 400
+    // display start with tab 1
+    activeTab: '1'
   };
+
   constructor(props) {
     super(props);
     this.toggle = this.toggle.bind(this);
+    this.props.getCampaignInfoByStatus(DISPLAY_STATUS_ALL);
   }
 
   componentDidMount() {
-    this.props.getCampaignInfo();
+    var all = this.props.getCountCampaignByStatus(DISPLAY_STATUS_ALL);
+    console.log('all camp', all);
+    var action = this.props.getCountCampaignByStatus(DISPLAY_STATUS_ACTION);
+    console.log('action camp', action);
+    var pause = this.props.getCountCampaignByStatus(DISPLAY_STATUS_PAUSE);
+    console.log('pause camp', pause);
+    var complete = this.props.getCountCampaignByStatus(DISPLAY_STATUS_COMPLETE);
+    console.log('complete camp', complete);
   }
 
   toggle(tab) {
@@ -98,12 +65,6 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
       });
     }
   }
-  // toggle(id?) {
-  //   this.setState(prevState => ({
-  //     modal: !prevState.modal
-  //   }));
-  //   // this.props.getCampaignInfoById(id);
-  // }
 
   render() {
     const { match, loading, camps, totalElements } = this.props;
@@ -141,8 +102,7 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
                               this.toggle('1');
                             }}
                           >
-                            <Translate contentKey="campaign.allCamps" /> {''}
-                            {this.props.totalElements}
+                            <Translate contentKey="campaign.allCamps" /> {''}()
                           </NavLink>
                         </NavItem>
                         <NavItem>
@@ -154,8 +114,7 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
                             }}
                           >
                             <Translate contentKey="campaign.onAction" />
-                            {''}
-                            {this.props.totalElements}
+                            {''}()
                           </NavLink>
                         </NavItem>
                         <NavItem>
@@ -167,8 +126,7 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
                             }}
                           >
                             <Translate contentKey="campaign.onPause" />
-                            {''}
-                            {this.props.totalElements}
+                            {''}()
                           </NavLink>
                         </NavItem>
                         <NavItem>
@@ -180,8 +138,7 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
                             }}
                           >
                             <Translate contentKey="campaign.complete" />
-                            {''}
-                            {this.props.totalElements}
+                            {''}()
                           </NavLink>
                         </NavItem>
                       </Nav>
@@ -192,13 +149,13 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
                         <AllCamp />
                       </TabPane>
                       <TabPane tabId="2">
-                        <ActionCamp />
+                        <AllCamp />
                       </TabPane>
                       <TabPane tabId="3">
-                        <PauseCamp />
+                        <AllCamp />
                       </TabPane>
                       <TabPane tabId="4">
-                        <CompleteCamp />
+                        <AllCamp />
                       </TabPane>
                     </TabContent>
                   </Card>
@@ -218,7 +175,7 @@ const mapStateToProps = ({ userCampaign }: IRootState) => ({
   totalElements: userCampaign.totalElements
 });
 
-const mapDispatchToProps = { getCampaignInfo, getCampaignInfoByStatus };
+const mapDispatchToProps = { getCampaignInfoByStatus, getCampaignInfoById, getCountCampaignByStatus };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

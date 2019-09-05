@@ -10,8 +10,8 @@ import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import moment, { Moment } from 'moment';
 import { DateRangePicker } from 'react-dates';
-import Script from '../scipts/script';
-import { ULTILS_ACTION_TYPES } from '../../../../../constants/ultils';
+import Script from '../scripts/script';
+import { ULTILS_TYPES } from '../../../../../constants/ultils';
 
 export interface IinfoProps extends StateProps, DispatchProps {
   onClick: Function;
@@ -48,7 +48,7 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
 
     //set style class table default
     disableScreen: '',
-    displayTable: ULTILS_ACTION_TYPES.DISPLAY_TABLE,
+    displayTable: ULTILS_TYPES.DISPLAY_TABLE,
     showNameScripts: '',
 
     // set default value info
@@ -82,7 +82,7 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
       });
     } else {
       this.setState({
-        validateField: ULTILS_ACTION_TYPES.EMPTY,
+        validateField: ULTILS_TYPES.EMPTY,
         valueDes: event.target.value
       });
     }
@@ -90,13 +90,13 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
   onClick = event => {
     if (event !== null) {
       this.setState({
-        displayTable: ULTILS_ACTION_TYPES.EMPTY,
+        displayTable: ULTILS_TYPES.EMPTY,
         showNameScripts: event
       });
-      this.props.onClick(ULTILS_ACTION_TYPES.EMPTY);
+      this.props.onClick(ULTILS_TYPES.EMPTY);
     } else {
       this.setState({
-        displayTable: ULTILS_ACTION_TYPES.DISPLAY_TABLE
+        displayTable: ULTILS_TYPES.DISPLAY_TABLE
       });
     }
   };
@@ -107,7 +107,7 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
       });
     } else {
       this.setState({
-        validateDay: ULTILS_ACTION_TYPES.EMPTY,
+        validateDay: ULTILS_TYPES.EMPTY,
         startDate,
         endDate,
         valueDay: startDate
@@ -134,7 +134,7 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
                         type="email"
                         value={this.state.valueName}
                         name="email"
-                        placeholder={ULTILS_ACTION_TYPES.PLACEHODER_NAME}
+                        placeholder={ULTILS_TYPES.PLACEHODER_NAME}
                         onChange={this.onChangeName}
                         maxLength="160"
                       />
@@ -168,7 +168,7 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
                         <div className="grid-items-Click">
                           <div className="camp-top">
                             <label className="camp-title-click"> {this.state.showNameScripts}</label>
-                            <img className="image-tites" src={ULTILS_ACTION_TYPES.LINK_IMAGE} />
+                            <img className="image-tites" src={ULTILS_TYPES.LINK_IMAGE} />
                           </div>
                         </div>
                       </div>
@@ -176,15 +176,11 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
                   </Col>
                 </Col>
                 <Col md={8}>
-                  <Label className="name-title">
+                  <Label className="name-title-des">
                     <Translate contentKey="campaign.descrition" />
                   </Label>
-                  <div>
-                    <Col sm={12}>
-                      <Input type="textarea" name="text" id="exampleText" onChange={this.onChangeField} maxLength="640" />
-                      <p>{this.state.validateField}</p>
-                    </Col>
-                  </div>
+                  <Input type="textarea" name="text" id="exampleText" onChange={this.onChangeField} maxLength="640" />
+                  <p>{this.state.validateField}</p>
                 </Col>
               </Row>
               <Script value={this.state} onClick={this.onClick} />
