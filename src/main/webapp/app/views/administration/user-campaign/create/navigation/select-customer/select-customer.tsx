@@ -69,7 +69,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
       };
       this.state.listUser.push(elements);
       // get list from component select customer - to navigation
-      this.props.onClick(this.state.listUser);
+      this.props.onClick(elements);
     }
   };
 
@@ -77,8 +77,9 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
     const spinner = <LoaderAnim color="#ffffff" type="ball-pulse" />;
     const { listUser } = this.state;
     const { loading } = this.props;
+    var sumContact = 0;
     for (var i = 0; i < listUser.length; i++) {
-      this.state.sumContact += listUser[i].totalContact;
+      sumContact += listUser[i].totalContact;
     }
     return (
       <Loader message={spinner} show={loading} priority={10}>
@@ -100,7 +101,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
                 {' '}
                 <Label>
                   <Translate contentKey="campaign.all-contract" />
-                  <span className="number-contract">{this.state.sumContact} </span>
+                  <span className="number-contract">{sumContact} </span>
                 </Label>
               </Col>
               <Col md="6">

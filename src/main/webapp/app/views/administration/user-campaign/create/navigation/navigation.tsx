@@ -13,6 +13,7 @@ import Review from './review/review';
 import { TabContent, TabPane, DropdownItem, Card, Col, Row, Button } from 'reactstrap';
 import classnames from 'classnames';
 import { getContentPageParams } from 'app/actions/user-campaign';
+import { Class } from 'fullcalendar';
 
 export interface IListCreateNewCustomer {
   email: number;
@@ -29,7 +30,7 @@ export interface INavigationProps extends StateProps, DispatchProps {
 }
 
 export interface INavigationState {
-  listCustomerGroup: [];
+  listCustomerGroup: any[];
   activeTab: number;
   active: boolean;
   endTab: boolean;
@@ -77,11 +78,8 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
 
   //function get value Customer group
   onClick = list => {
-    if (list !== undefined) {
-      this.setState({});
-      console.log(this.state.listCustomerGroup);
-    }
-    console.log(this.props.valueListInfo);
+    this.setState({});
+    this.state.listCustomerGroup.push(list);
   };
 
   render() {
@@ -130,7 +128,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
               </div>
               {/* Tab Content */}
               <TabContent activeTab={this.state.activeTab}>
-                <TabPane tabId={1} onClick={this.onClick}>
+                <TabPane tabId={1}>
                   <SelectCustomer onClick={this.onClick} />
                   <div className="mt-5" />
                   <div className="clearfix" />
