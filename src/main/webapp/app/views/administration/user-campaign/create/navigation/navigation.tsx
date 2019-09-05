@@ -160,10 +160,10 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
                 </TabPane>
               </TabContent>
             </Row>
-            <Row className="b-t">
+            <Row className="b-t footer">
               <Col xs="8" sm="6" md="6">
                 <Button
-                  style={{ color: '#3866DD', backgroundColor: 'white', borderColor: '#ffffff' }}
+                  className="btnBack"
                   onClick={() => {
                     this.onHandletTab(-1);
                   }}
@@ -173,7 +173,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
               </Col>
               <Col xs="8" sm="6" md="6">
                 <Button
-                  color="primary"
+                  className="btnNext"
                   onClick={() => {
                     this.onHandletTab(1);
                   }}
