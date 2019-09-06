@@ -1,6 +1,7 @@
 import { USER_CAMPAIGN_ACTION_TYPES } from 'app/constants/user-campaign';
 import { getContentTemplateService, getContentTemplateAsTypeService } from '../services/user-campaign';
 import {
+  updateCampStatusService,
   getCampaignDetailService,
   getCountCampaignService,
   getInformationService,
@@ -40,6 +41,13 @@ export const getCampaignInfoByStatus = status => {
   return {
     type: USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_STATUS,
     payload: getCampaignInfoByStatusService(status)
+  };
+};
+// todo : change status action
+export const updateCampStatus = data => {
+  return {
+    type: USER_CAMPAIGN_ACTION_TYPES.UPDATE_STATUS,
+    payload: updateCampStatusService(data)
   };
 };
 
