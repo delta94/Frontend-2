@@ -1,6 +1,7 @@
 import { USER_CAMPAIGN_ACTION_TYPES } from 'app/constants/user-campaign';
 import { getContentTemplateService, getContentTemplateAsTypeService, postSaveDataCampainService } from '../services/user-campaign';
 import {
+  getSumAllContactService,
   updateCampStatusService,
   getCampaignDetailService,
   getCountCampaignService,
@@ -109,13 +110,14 @@ export const getUserCategories = (name?) => ({
   payload: getCategory(name)
 });
 
-//get statistic phone and email
+//call api statistic phone and mail, appi get count duplicate and call api all contact
 export const getStatistic = category => async dispatch => {
   await dispatch({
     type: USER_CAMPAIGN_ACTION_TYPES.GET_STATISTIC_PHONE_AND_EMAIL,
     payload: getStatitis(category)
   });
-  dispatch(getCountDuplicate(category));
+  await dispatch(getCountDuplicate(category));
+  // dispatch (getSumAllContact(category))
 };
 
 //get count duplicate
@@ -144,7 +146,13 @@ export const getContentTemplate = id => ({
 //TODO: post save data campain
 export const postSaveDataCampain = data => ({
   type: USER_CAMPAIGN_ACTION_TYPES.POST_SAVE_DATA_CAMPAIN,
-  paylod: postSaveDataCampainService(data)
+  payload: postSaveDataCampainService(data)
+});
+
+//action count duplicate contact
+export const getSumAllContact = categories => ({
+  type: USER_CAMPAIGN_ACTION_TYPES.SUM_ALL_CONTACT,
+  payload: getSumAllContactService(categories)
 });
 
 //  get content template as type

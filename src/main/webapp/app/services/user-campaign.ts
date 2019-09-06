@@ -4,6 +4,7 @@ import { IUser, defaultValue } from 'app/common/model/user.model';
 import { ICategory } from 'app/common/model/category.model';
 import { toast } from 'react-toastify';
 import { IListNewCustomer } from 'app/common/model/campaign-new-customer.model';
+import categories from 'app/views/administration/user-campaign/create/navigation/select-customer/customer-dialog/categories/categories';
 
 const apiUrl = 'v1/campaigns';
 
@@ -45,6 +46,9 @@ export const getInformationService = () => {
   return axios.get('v1/campaign-types');
 };
 
+export const getSumAllContactService = categories => {
+  return axios.get(`v1/customer/summary-statistics?categories=${categories}`);
+};
 export const getStep = id => {
   return axios.get(`v1/campaign-types/${id}/step`);
 };

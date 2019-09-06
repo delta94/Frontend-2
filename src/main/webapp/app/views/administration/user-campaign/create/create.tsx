@@ -113,7 +113,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
                 {/* info campaign */}
                 <InformationCampaign onClick={this.isDisPlayInfo} />
               </Collapse>
-
+              <br />
               {/* navigation campaign */}
               <div className={this.state.isDisplayTable}>
                 <Navigation valueListInfo={listInfo} onClick={this.isDisable} />
