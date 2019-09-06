@@ -53,8 +53,16 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
   addText = text => {
     var sel, range;
 
-    if (window.getSelection() && window.getSelection().focusNode.parentElement.offsetParent.className === 'fr-element fr-view') {
-      console.log(window.getSelection().anchorNode);
+    if (window.getSelection()) {
+      console.log(window.getSelection());
+      let listChildren = window.getSelection().focusNode.childNodes;
+      let canFix = true;
+
+      listChildren.forEach(item => {
+        if (item.nodeName === 'INPUT') {
+          canFix = false;
+        }
+      });
       sel = window.getSelection();
       if (sel.rangeCount) {
         range = sel.getRangeAt(0);
@@ -70,7 +78,12 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
   };
 
   toggleDropdownParams = event => {
-    this.addText(event.name);
+    let { listCampainContentParams } = this.props;
+    listCampainContentParams.forEach(item => {
+      if (event.id === item.id) {
+        this.addText(item.paramCode);
+      }
+    });
   };
 
   toggleLanding = event => {
@@ -86,8 +99,6 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
     let { listCampainContentParams } = this.props;
     let newValue: string = '';
 
-    console.log(event);
-
     let listParam = listCampainContentParams.map(item => {
       return { paramCode: item.paramCode, sampleValue: item.sampleValue };
     });
@@ -96,12 +107,10 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
       let paramCode = item.paramCode;
       let sampleValue = item.sampleValue;
 
-      console.log(paramCode, sampleValue);
       newValue = event.replace(paramCode, sampleValue);
       event = newValue;
     }
 
-    console.log('new Event ís', event);
     this.setState({ defaultValueContentPopup: event });
   };
 

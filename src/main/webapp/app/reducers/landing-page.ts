@@ -87,7 +87,8 @@ const initialState = {
   totalPhone: 0,
   duplicateContact: 0,
   listContentTemplate: [],
-  listContentTemplateAsType: [],
+  listContentTemplateAsEmailIntro: [],
+  listContentTemplateAsEmailEward: [],
   postMailRequest: { code: 202, name: 'ok', openModal: false }
 };
 
@@ -111,7 +112,8 @@ export default (state: LandingPageState = initialState, action): LandingPageStat
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_LIST_EVOUCHER):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_EVOUCHER_DETAIL):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE):
-    case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE):
+    case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL_EWARD):
+    case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL_INTRO):
       return {
         ...state,
         loading: true
@@ -137,7 +139,8 @@ export default (state: LandingPageState = initialState, action): LandingPageStat
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_LIST_EVOUCHER):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_EVOUCHER_DETAIL):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE):
-    case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE):
+    case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL_EWARD):
+    case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL_INTRO):
       return {
         ...state,
         loading: false
@@ -267,11 +270,18 @@ export default (state: LandingPageState = initialState, action): LandingPageStat
         listContentTemplate: action.payload.data
       };
     // success on get content template as type
-    case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE):
+    case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL_EWARD):
       return {
         ...state,
         loading: false,
-        listContentTemplateAsType: action.payload.data
+        listContentTemplateAsEmailEward: action.payload.data
+      };
+
+    case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL_INTRO):
+      return {
+        ...state,
+        loading: false,
+        listContentTemplateAsEmailIntro: action.payload.data
       };
 
     case USER_CAMPAIGN_ACTION_TYPES.RESET_MESSAGE:
