@@ -1,5 +1,5 @@
 import { USER_CAMPAIGN_ACTION_TYPES } from 'app/constants/user-campaign';
-import { getContentTemplateService, getContentTemplateAsTypeService } from '../services/user-campaign';
+import { getContentTemplateService, getContentTemplateAsTypeService, postSaveDataCampainService } from '../services/user-campaign';
 import {
   updateCampStatusService,
   getCampaignDetailService,
@@ -139,6 +139,12 @@ export const getDetailEvoucher = id => ({
 export const getContentTemplate = id => ({
   type: USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE,
   payload: getContentTemplateService(id)
+});
+
+//TODO: post save data campain
+export const postSaveDataCampain = data => ({
+  type: USER_CAMPAIGN_ACTION_TYPES.POST_SAVE_DATA_CAMPAIN,
+  paylod: postSaveDataCampainService(data)
 });
 
 //  get content template as type
