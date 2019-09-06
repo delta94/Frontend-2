@@ -77,7 +77,10 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
       <Modal isOpen={isOpen} fade={false}>
         <ModalHeader>
           <span>
-            <Translate contentKey="campaign.modal.title" />{' '}
+            <Translate contentKey="campaign.modal.title" />
+          </span>
+          <span>
+            <i className="pe-7s-play" /> <i className="pe-7s-power" />
           </span>{' '}
           <button className="close" onClick={() => this.props.onClick(false)}>
             &times;
