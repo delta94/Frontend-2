@@ -19,6 +19,7 @@ class SelectReward extends React.Component<SelectRewardProps, SelectRewardState>
     type: ULTILS_TYPES.EMPTY
   };
 
+  //function select evoucher
   onClickVoucher = () => {
     this.setState({
       displayVoucher: ULTILS_TYPES.EMPTY,
@@ -26,13 +27,17 @@ class SelectReward extends React.Component<SelectRewardProps, SelectRewardState>
     });
   };
 
+  //function no select evoucher
   onClickNoVoucher = () => {
     this.setState({
       displayVoucher: ULTILS_TYPES.DISPLAY_VOUCHER_TICKET,
       type: ULTILS_TYPES.NO_SELECT_REWARD
     });
   };
-
+  //function get value from seclect reward component to navigation
+  getValueVoucher = value => {
+    this.props.onClick(value);
+  };
   render() {
     return (
       <div className="select-reward">
@@ -56,7 +61,7 @@ class SelectReward extends React.Component<SelectRewardProps, SelectRewardState>
               </FormGroup>
             </FormGroup>
             <div className={this.state.displayVoucher}>
-              <Voucher />
+              <Voucher onClick={this.getValueVoucher} />
             </div>
           </CardBody>
         </Card>

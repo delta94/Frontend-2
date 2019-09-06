@@ -10,7 +10,9 @@ import { Loader as LoaderAnim } from 'react-loaders';
 import { ULTILS_TYPES } from '../../../../../../../constants/ultils';
 import { Translate } from 'react-jhipster';
 
-export interface VocherProps extends StateProps, DispatchProps {}
+export interface VocherProps extends StateProps, DispatchProps {
+  onClick: Function;
+}
 
 export interface VocherState {
   value: any[];
@@ -40,6 +42,9 @@ class Vocher extends React.Component<VocherProps, VocherState> {
         displayTable: ULTILS_TYPES.DISPLAY_VOUCHER
       });
     }
+    //get value from voucher to select - reward component
+    this.props.onClick(data);
+    // call api get detail voucher
     this.props.getDetailEvoucher(data.id);
   };
 

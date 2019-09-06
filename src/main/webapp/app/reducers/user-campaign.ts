@@ -63,6 +63,48 @@ export interface IEvoucherDetail {
   totalCode: number;
 }
 
+export interface ICustomerCampaigns {
+  name?: string;
+  categories?: Array<String>;
+}
+
+export interface IReward {
+  type?: number;
+  voucherId?: string;
+}
+
+export interface IParamester {
+  code?: string;
+  name?: string;
+  id?: string;
+}
+
+export interface IContentTemplate {
+  subject?: string;
+  content?: string;
+  templateId?: string;
+  channelId?: string;
+  contentType?: string;
+  parameter: Array<IParamester>;
+}
+
+export interface ISaveDataCampain {
+  campaignTypeId?: string;
+  name?: string;
+  fromDate?: string;
+  toDate?: string;
+  description?: string;
+  customerCampaigns?: Array<ICustomerCampaigns>;
+  reward?: IReward;
+  contentTemplates?: Array<IContentTemplate>;
+}
+
+export interface IPostRequestReturn {
+  code?: number;
+  name?: number;
+  openModal?: boolean;
+}
+
 const initialState = {
   listCampaignInfo: [] as ReadonlyArray<IlistCampaignInfo>,
   listStepCampaign: [] as ReadonlyArray<IStepCampaign>,
@@ -90,7 +132,8 @@ const initialState = {
   listContentTemplateAsTypeLanding: [],
   listContentTemplateAsTypeEmailEward: [],
   listContentTemplateAsTypeEmailIntro: [],
-  postMailRequest: { code: 202, name: 'ok', openModal: false }
+  postMailRequest: { code: 202, name: 'ok', openModal: false },
+  postSaveDataCampainService: { code: 202, name: 'ok', openModal: false }
 };
 
 export type UserCampaignState = Readonly<typeof initialState>;
@@ -116,6 +159,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL_EWARD):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_LANDING):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL_INTRO):
+    case REQUEST(USER_CAMPAIGN_ACTION_TYPES.POST_SAVE_DATA_CAMPAIN):
       return {
         ...state,
         loading: true
@@ -156,6 +200,12 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
       };
 
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.POST_TEST_MAIL):
+      return {
+        ...state,
+        postMailRequest: { code: 500, name: 'fail', openModal: false }
+      };
+
+    case FAILURE(USER_CAMPAIGN_ACTION_TYPES.POST_SAVE_DATA_CAMPAIN):
       return {
         ...state,
         postMailRequest: { code: 500, name: 'fail', openModal: false }
@@ -251,7 +301,6 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
 
     // success on get campain action content params
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_PARAMS):
-      console.log('data is', action.payload.data);
       return {
         ...state,
         loading: false,
@@ -272,6 +321,15 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
         loading: false,
         listContentTemplate: action.payload.data
       };
+
+    // success on post mail Test action
+    case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.POST_SAVE_DATA_CAMPAIN):
+      return {
+        ...state,
+        loading: false,
+        postMailRequest: { code: 202, name: 'Đã gửi mail thành công', openModal: true }
+      };
+
     // success on get content template as type
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_LANDING):
       return {

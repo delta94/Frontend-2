@@ -131,6 +131,10 @@ export const postTestMailLandingService = (data: ICampaignTestMailLanding) => {
 };
 
 //TODO: POST v1/campaign => Api lưu thông tin chiến dịch
+export const postSaveDataCampainService = (data: any) => {
+  const requestURL = `${`v1/campain`}`;
+  return axios.post(requestURL, data);
+};
 
 //GET v1/content-template?templateType=EMAIL => Api lấy danh sách loại content template
 export const getContentTemplateAsTypeService = type => {
