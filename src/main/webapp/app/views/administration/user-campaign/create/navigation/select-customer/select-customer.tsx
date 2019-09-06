@@ -76,7 +76,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
 
   //close element group
   deleteGroup = id => {
-    const deleteItem = this.state.listUser.filter(item => item.totalContact !== id);
+    const deleteItem = this.state.listUser.filter(item => item.categories !== id);
     this.setState({
       listUser: deleteItem
     });
@@ -146,7 +146,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
                       <div className="title-contract">
                         <div className="name-group">
                           {item.nameGroup}
-                          <i className="lnr-cross-circle" onClick={() => this.deleteGroup(item.totalContact)} />
+                          <i className="lnr-cross-circle" onClick={() => this.deleteGroup(item.categories)} />
                         </div>
                         <div className="camp-top">
                           <label className="total-contract">
