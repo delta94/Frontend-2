@@ -1,6 +1,7 @@
 import { USER_CAMPAIGN_ACTION_TYPES } from 'app/constants/user-campaign';
 import { getContentTemplateService, getContentTemplateAsTypeService } from '../services/user-campaign';
 import {
+  updateCampStatusService,
   getCampaignDetailService,
   getCountCampaignService,
   getInformationService,
@@ -40,6 +41,13 @@ export const getCampaignInfoByStatus = status => {
   return {
     type: USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_STATUS,
     payload: getCampaignInfoByStatusService(status)
+  };
+};
+// todo : change status action
+export const updateCampStatus = data => {
+  return {
+    type: USER_CAMPAIGN_ACTION_TYPES.UPDATE_STATUS,
+    payload: updateCampStatusService(data)
   };
 };
 
@@ -137,11 +145,11 @@ export const getContentTemplate = id => ({
 export const getContentTemplateAsType = typeContent => {
   let type = USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_LANDING;
   switch (typeContent) {
-    case 'EMAIL':
-      type = USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL;
+    case 'EMAIL_INTRO':
+      type = USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL_INTRO;
       break;
-    case 'SMS':
-      type = USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_SMS;
+    case 'EMAIL_EWARD':
+      type = USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL_EWARD;
       break;
     case 'LANDING':
       type = USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_LANDING;

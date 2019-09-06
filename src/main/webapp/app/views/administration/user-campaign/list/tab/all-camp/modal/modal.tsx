@@ -10,7 +10,7 @@ import ReactPaginate from 'react-paginate';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
-import { getCampaignInfoByStatus, getCampaignInfoById, getCampaignDetailById } from 'app/actions/user-campaign';
+import { getCampaignInfoByStatus, getCampaignInfoById, getCampaignDetailById, updateCampStatus } from 'app/actions/user-campaign';
 import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
 import { ITEMS_PER_MODAL_TABLE } from 'app/constants/common';
 
@@ -67,6 +67,14 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
     });
     this.props.getCampaignDetailById(this.props.id, activePage.selected, itemsPerPage, textSearch);
   };
+  updateStatus = camp => {
+    console.log('camp', camp);
+    let data = {
+      id: camp.id,
+      status: camp.status
+    };
+    this.props.updateCampStatus(data);
+  };
 
   render() {
     const { loading, camp, campDetail, isOpen } = this.props;
@@ -79,9 +87,7 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
           <span>
             <Translate contentKey="campaign.modal.title" />
           </span>
-          <span>
-            <i className="pe-7s-play" /> <i className="pe-7s-power" />
-          </span>{' '}
+
           <button className="close" onClick={() => this.props.onClick(false)}>
             &times;
           </button>
@@ -92,6 +98,10 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
             <Loader message={spinner1} show={loading} priority={2}>
               <div className="modal-name">
                 <span className="modal-campaign-name">{camp.name}</span>
+                <span>
+                  <i className="pe-7s-play" onClick={() => this.updateStatus(camp)} />{' '}
+                  <i className="pe-7s-power" onClick={() => this.updateStatus(camp)} />
+                </span>{' '}
                 <span className="camp-status" style={{ float: 'right' }}>
                   {camp.status && camp.status === 2 ? (
                     <span style={{ color: '#02B3FF' }}>
@@ -254,7 +264,7 @@ const mapStateToProps = ({ userCampaign }: IRootState) => ({
   pageCount: Math.ceil(userCampaign.totalElements / ITEMS_PER_MODAL_TABLE)
 });
 
-const mapDispatchToProps = { getCampaignInfoByStatus, getCampaignInfoById, getCampaignDetailById };
+const mapDispatchToProps = { getCampaignInfoByStatus, getCampaignInfoById, getCampaignDetailById, updateCampStatus };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

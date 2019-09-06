@@ -13,6 +13,8 @@ import Review from './review/review';
 import { TabContent, TabPane, DropdownItem, Card, Col, Row, Button } from 'reactstrap';
 import classnames from 'classnames';
 import { getContentPageParams } from 'app/actions/user-campaign';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export interface INavigationProps extends StateProps, DispatchProps {
   onClick: Function;
@@ -30,7 +32,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
     super(props);
     this.state = {
       listCustomerGroup: [],
-      activeTab: 0,
+      activeTab: 1,
       active: false,
       endTab: false
     };
@@ -49,6 +51,13 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
     let activeTab: number = this.state.activeTab;
     if (activeTab === 5) {
       this.setState({ endTab: true });
+    }
+  }
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (prevState.activeTab === 5) {
+      return { endTab: true };
+    } else {
+      return { endTab: false };
     }
   }
 
@@ -77,7 +86,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
   };
 
   render() {
-    const { endTab } = this.state;
+    const { endTab, activeTab } = this.state;
     const { listStep } = this.props;
     return (
       <Fragment>
@@ -166,10 +175,12 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
               <Col xs="8" sm="6" md="6">
                 <Button
                   className="btnNext"
+                  style={{ float: 'right', color: 'white', backgroundColor: activeTab === 5 ? 'green' : '#3866dd' }}
                   onClick={() => {
                     this.onHandletTab(1);
                   }}
                 >
+                  {endTab ? <FontAwesomeIcon icon={faCheck} /> : ''}
                   {endTab ? 'Tạo chiến dịch' : 'Tiếp tục'}
                 </Button>
               </Col>

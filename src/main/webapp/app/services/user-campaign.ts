@@ -30,6 +30,11 @@ export const getCampaignInfoByStatusService = status => {
   return axios.get(`v1/campaigns?status=${status}`);
 };
 
+export const updateCampStatusService = data => {
+  const urlUpdate = `v1/campaign/${data.id}/status`;
+  return axios.post(urlUpdate, data);
+};
+
 export const getNewCustomer = (page, pageSize, category?: string, textSearch?: string) => {
   return axios.get<IListNewCustomer>(
     `v1/customer?type=MgM&page=${page}&pageSize=${pageSize}&category=${category}&textSearch=${textSearch}`
@@ -129,7 +134,7 @@ export const postTestMailLandingService = (data: ICampaignTestMailLanding) => {
 
 //GET v1/content-template?templateType=EMAIL => Api lấy danh sách loại content template
 export const getContentTemplateAsTypeService = type => {
-  let defaultTemplate = 'EMAIL';
+  let defaultTemplate = 'LANDING';
   if (type) {
     defaultTemplate = type;
   }
