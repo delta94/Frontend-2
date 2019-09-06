@@ -5,7 +5,9 @@ import { Translate } from 'react-jhipster';
 import React from 'react';
 import Voucher from '../select-reward/voucher/voucher';
 
-export interface SelectRewardProps {}
+export interface SelectRewardProps {
+  onClick: Function;
+}
 
 export interface SelectRewardState {
   displayVoucher: string;

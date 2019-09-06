@@ -13,16 +13,6 @@ import Review from './review/review';
 import { TabContent, TabPane, DropdownItem, Card, Col, Row, Button } from 'reactstrap';
 import classnames from 'classnames';
 import { getContentPageParams } from 'app/actions/user-campaign';
-import { Class } from 'fullcalendar';
-
-export interface IListCreateNewCustomer {
-  email: number;
-  facebook: number;
-  nameGroup: string;
-  phone: number;
-  totalContact: number;
-  zalo: number;
-}
 
 export interface INavigationProps extends StateProps, DispatchProps {
   onClick: Function;
@@ -81,6 +71,8 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
     this.setState({});
     this.state.listCustomerGroup.push(list);
   };
+  //function get value Reward
+  handlerValueReward = list => {};
 
   render() {
     const { endTab } = this.state;
@@ -135,7 +127,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
                 </TabPane>
                 {/* task 2  */}
                 <TabPane tabId={2}>
-                  <SelectReward />
+                  <SelectReward onClick={this.handlerValueReward} />
                   <div className="mt-5" />
                   <div className="clearfix" />
                 </TabPane>
