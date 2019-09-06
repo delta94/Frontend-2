@@ -24,8 +24,8 @@ export interface ICreateContentProps extends StateProps, DispatchProps {}
 
 export interface ICreateContentState {
   showMailForFriend: boolean;
-  defaultValueContent?: string;
-  templateType?: string;
+  defaultValueContentEmailIntro?: string;
+  defaultValueContentEmailEward?: string;
   testEmailEntity: ICreateTestMailEntity;
   openModal: boolean;
 }
@@ -36,8 +36,8 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
   }
   state: ICreateContentState = {
     showMailForFriend: false,
-    defaultValueContent: '',
-    templateType: 'EMAIL',
+    defaultValueContentEmailIntro: '',
+    defaultValueContentEmailEward: '',
     testEmailEntity: {
       emailTo: '',
       subject: '',
@@ -48,8 +48,8 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
 
   componentDidMount() {
     this.props.getContentPageParams();
-    this.props.getContentTemplateAsType('EMAIL');
-    this.props.getContentTemplateAsType('SMS');
+    this.props.getContentTemplateAsType('EMAIL_INTRO');
+    this.props.getContentTemplateAsType('EMAIL_EWARD');
   }
 
   _handleshowMailForFriendState = () => {
@@ -64,15 +64,25 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
     this.setState({ testEmailEntity });
   };
 
-  handleModelChange = event => {
+  handleModelChange = (event, typeMail) => {
     let { testEmailEntity } = this.state;
-    testEmailEntity.content = event;
-    this.setState({ defaultValueContent: event, testEmailEntity });
+
+    if (typeMail === 'EMAIL_INTRO') {
+      this.setState({ defaultValueContentEmailIntro: event, testEmailEntity });
+    } else {
+      this.setState({ defaultValueContentEmailEward: event, testEmailEntity });
+    }
   };
 
-  sendTestMailLanding = () => {
+  sendTestMailLanding = typeMail => {
     let { postMailRequest } = this.props;
-    let { testEmailEntity } = this.state;
+    let { testEmailEntity, defaultValueContentEmailIntro, defaultValueContentEmailEward } = this.state;
+
+    if (typeMail === 'EMAIL_INTRO') {
+      testEmailEntity.content = defaultValueContentEmailIntro;
+    } else {
+      testEmailEntity.content = defaultValueContentEmailEward;
+    }
 
     this.props.postTestMailLanding(testEmailEntity);
     if (postMailRequest.openModal === true) {
@@ -110,30 +120,36 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
     this.addText(event.name);
   };
 
-  toggleChangeTypeTemplate = event => {
-    this.setState({ templateType: event.name });
+  toggleLanding = (event, typeMail) => {
+    this.addContentTemplate(event.id, typeMail);
   };
 
-  toggleLanding = event => {
-    this.addContentTemplate(event.id);
-  };
+  addContentTemplate = (id, typeMail) => {
+    let { listContentTemplateAsTypeEmailEward, listContentTemplateAsTypeEmailIntro } = this.props;
+    let { defaultValueContentEmailEward, defaultValueContentEmailIntro } = this.state;
 
-  addContentTemplate = id => {
-    let { listContentTemplateAsTypeEmail, listContentTemplateAsTypeSMS } = this.props;
-    let { defaultValueContent } = this.state;
+    if (typeMail === 'EMAIL_EWARD') {
+      listContentTemplateAsTypeEmailEward.forEach(item => {
+        if (item.id === id) {
+          defaultValueContentEmailEward = item.content;
+        }
+      });
 
-    listContentTemplateAsTypeEmail.forEach(item => {
-      if (item.id === id) {
-        defaultValueContent = item.content;
-      }
-    });
+      this.setState({ defaultValueContentEmailEward });
+    } else {
+      listContentTemplateAsTypeEmailIntro.forEach(item => {
+        if (item.id === id) {
+          defaultValueContentEmailIntro = item.content;
+        }
+      });
 
-    this.setState({ defaultValueContent });
+      this.setState({ defaultValueContentEmailIntro });
+    }
   };
 
   render() {
-    let { showMailForFriend, templateType, defaultValueContent, openModal } = this.state;
-    let { listContentPageParams, listContentTemplateAsTypeEmail, listContentTemplateAsTypeSMS } = this.props;
+    let { showMailForFriend, defaultValueContentEmailEward, defaultValueContentEmailIntro, openModal } = this.state;
+    let { listContentPageParams, listContentTemplateAsTypeEmailEward, listContentTemplateAsTypeEmailIntro } = this.props;
 
     const listIndexParams = listContentPageParams.map(item => {
       return {
@@ -142,29 +158,13 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
       };
     });
 
-    const listTemplateSMS = listContentTemplateAsTypeSMS.map(item => {
+    const listTemplateEmailEward = listContentTemplateAsTypeEmailEward.map(item => {
       return { id: item.id, name: item.name };
     });
 
-    const listTemplateMail = listContentTemplateAsTypeEmail.map(item => {
+    const listTemplateMailIntro = listContentTemplateAsTypeEmailIntro.map(item => {
       return { id: item.id, name: item.name };
     });
-
-    let listTemplate = [];
-
-    switch (templateType) {
-      case 'EMAIL':
-        listTemplate = listTemplateMail;
-        break;
-
-      case 'SMS':
-        listTemplate = listTemplateSMS;
-        break;
-
-      default:
-        listTemplate = [];
-        break;
-    }
 
     return (
       <Fragment>
@@ -180,12 +180,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
             <CardTitle>Tạo nội dung</CardTitle>
             <div className="interactive">
               <label>Hình thức tương tác</label>
-              <Dropdown
-                selection={true}
-                defaultValue="Chọn hình thức"
-                listArray={[{ id: 1, name: 'SMS' }, { id: 2, name: 'EMAIL' }]}
-                toggleDropdown={this.toggleChangeTypeTemplate}
-              />
+              <Dropdown selection={true} defaultValue="Chọn hình thức" listArray={[{ id: 1, name: 'SMS' }, { id: 2, name: 'EMAIL' }]} />
             </div>
           </div>
 
@@ -220,15 +215,15 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                       <label>Mẫu email gửi</label>
                       <Dropdown
                         selection={true}
-                        defaultValue={'Chọn mẫu ' + templateType}
-                        listArray={listTemplate}
+                        defaultValue={'Chọn mẫu email'}
+                        listArray={listTemplateEmailEward}
                         toggleDropdown={this.toggleLanding}
                       />
                     </div>
 
                     <div className="input-mail-and-more">
                       <Input
-                        placeHolder={'Tiêu đề ' + templateType}
+                        placeHolder={'Tiêu đề mail'}
                         onChange={event => {
                           this.handleInput(event, 'subject');
                         }}
@@ -247,8 +242,8 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                           placeholderText: 'Tạo nội dung của bạn',
                           events: {}
                         }}
-                        model={defaultValueContent}
-                        onModelChange={this.handleModelChange}
+                        model={defaultValueContentEmailIntro}
+                        onModelChange={() => this.handleModelChange(event, 'EMAIL_INTRO')}
                       />
                     </div>
                   </CardBody>
@@ -286,14 +281,14 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                       <label>Mẫu email gửi</label>
                       <Dropdown
                         selection={true}
-                        defaultValue={'Chọn mẫu ' + templateType}
-                        listArray={listTemplate}
-                        toggleDropdown={this.toggleLanding}
+                        defaultValue={'Chọn mẫu mail'}
+                        listArray={listTemplateMailIntro}
+                        toggleDropdown={event => this.toggleLanding(event, 'EMAIL_INTRO')}
                       />
                     </div>
                     <div className="input-mail-and-more">
                       <Input
-                        placeHolder={'Tiêu đề ' + templateType}
+                        placeHolder={'Tiêu đề mail'}
                         onChange={event => {
                           this.handleInput(event, 'emailTo');
                         }}
@@ -302,7 +297,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                         selection={true}
                         defaultValue="Tham số"
                         listArray={listIndexParams}
-                        toggleDropdown={this.toggleDropdownParams}
+                        toggleDropdown={event => this.toggleLanding(event, 'EMAIL_EWARD')}
                       />
                     </div>
                     <div className="content-fixing">
@@ -312,7 +307,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                           placeholderText: 'Tạo nội dung của bạn',
                           events: {}
                         }}
-                        model={defaultValueContent}
+                        model={defaultValueContentEmailEward}
                         onModelChange={this.handleModelChange}
                       />
                     </div>
@@ -334,8 +329,8 @@ const mapStateToProps = ({ userCampaign }: IRootState) => {
   return {
     listContentPageParams: userCampaign.listCampainContentParams,
     postMailRequest: userCampaign.postMailRequest,
-    listContentTemplateAsTypeEmail: userCampaign.listContentTemplateAsTypeEmail,
-    listContentTemplateAsTypeSMS: userCampaign.listContentTemplateAsTypeSMS
+    listContentTemplateAsTypeEmailIntro: userCampaign.listContentTemplateAsTypeEmailIntro,
+    listContentTemplateAsTypeEmailEward: userCampaign.listContentTemplateAsTypeEmailEward
   };
 };
 

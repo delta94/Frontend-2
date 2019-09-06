@@ -134,7 +134,7 @@ export const postTestMailLandingService = (data: ICampaignTestMailLanding) => {
 
 //GET v1/content-template?templateType=EMAIL => Api lấy danh sách loại content template
 export const getContentTemplateAsTypeService = type => {
-  let defaultTemplate = 'EMAIL';
+  let defaultTemplate = 'LANDING';
   if (type) {
     defaultTemplate = type;
   }

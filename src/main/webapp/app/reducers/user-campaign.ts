@@ -88,8 +88,8 @@ const initialState = {
   duplicateContact: 0,
   listContentTemplate: [],
   listContentTemplateAsTypeLanding: [],
-  listContentTemplateAsTypeSMS: [],
-  listContentTemplateAsTypeEmail: [],
+  listContentTemplateAsTypeEmailEward: [],
+  listContentTemplateAsTypeEmailIntro: [],
   postMailRequest: { code: 202, name: 'ok', openModal: false }
 };
 
@@ -113,9 +113,9 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_LIST_EVOUCHER):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_EVOUCHER_DETAIL):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE):
-    case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_SMS):
-    case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL):
+    case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL_EWARD):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_LANDING):
+    case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL_INTRO):
       return {
         ...state,
         loading: true
@@ -141,8 +141,8 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_LIST_EVOUCHER):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_EVOUCHER_DETAIL):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE):
-    case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_SMS):
-    case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL):
+    case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL_EWARD):
+    case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL_INTRO):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_LANDING):
       return {
         ...state,
@@ -279,18 +279,18 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
         loading: false,
         listContentTemplateAsTypeLanding: action.payload.data
       };
-    case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_SMS):
+    case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL_EWARD):
       return {
         ...state,
         loading: false,
-        listContentTemplateAsTypeSMS: action.payload.data
+        listContentTemplateAsTypeEmailEward: action.payload.data
       };
 
-    case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL):
+    case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL_INTRO):
       return {
         ...state,
         loading: false,
-        listContentTemplateAsTypeEmail: action.payload.data
+        listContentTemplateAsTypeEmailIntro: action.payload.data
       };
 
     case USER_CAMPAIGN_ACTION_TYPES.RESET_MESSAGE:

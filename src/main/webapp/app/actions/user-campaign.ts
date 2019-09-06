@@ -145,11 +145,11 @@ export const getContentTemplate = id => ({
 export const getContentTemplateAsType = typeContent => {
   let type = USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_LANDING;
   switch (typeContent) {
-    case 'EMAIL':
-      type = USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL;
+    case 'EMAIL_INTRO':
+      type = USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL_INTRO;
       break;
-    case 'SMS':
-      type = USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_SMS;
+    case 'EMAIL_EWARD':
+      type = USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL_EWARD;
       break;
     case 'LANDING':
       type = USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_LANDING;
