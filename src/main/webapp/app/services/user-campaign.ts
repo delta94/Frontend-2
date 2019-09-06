@@ -54,6 +54,10 @@ export const getUserCategoriesService = () => {
   return axios.get<ICategory>(`${apiUrl}/category-name?textSearch`);
 };
 
+export const bindingLandingPageService = (customerCode, idCampaing) => {
+  return axios.get(`v1/campaign/${idCampaing}/customer/${customerCode}`);
+};
+
 export const getRolesService = () => {
   return axios.get(`${apiUrl}/authorities`);
 };

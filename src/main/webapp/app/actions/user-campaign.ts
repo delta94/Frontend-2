@@ -1,6 +1,7 @@
 import { USER_CAMPAIGN_ACTION_TYPES } from 'app/constants/user-campaign';
 import { getContentTemplateService, getContentTemplateAsTypeService, postSaveDataCampainService } from '../services/user-campaign';
 import {
+  bindingLandingPageService,
   updateCampStatusService,
   getCampaignDetailService,
   getCountCampaignService,
@@ -60,6 +61,12 @@ export const getStepCampaign = id => {
   };
 };
 
+export const bindingLandingPage = (customerCode, idCampaing) => {
+  return {
+    type: USER_CAMPAIGN_ACTION_TYPES.BINDING_LANDINGPAGE,
+    payload: bindingLandingPageService(customerCode, idCampaing)
+  };
+};
 //get detail list campagin customer
 export const getCampaignInfoById = id => {
   return {

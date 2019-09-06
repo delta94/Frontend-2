@@ -4,7 +4,7 @@ import { IRootState } from 'app/reducers';
 import { Link, RouteComponentProps } from 'react-router-dom';
 
 import './landing.scss';
-import { getCampaignInfoByStatus, getCampaignInfoById, getCountCampaignByStatus } from 'app/actions/user-campaign';
+import { getCampaignInfoByStatus, getCampaignInfoById, getCountCampaignByStatus, bindingLandingPage } from 'app/actions/user-campaign';
 
 export interface ILandingProps extends StateProps, DispatchProps, RouteComponentProps<{ customerCode: string; idCampaing: string }> {
   script?: string;
@@ -33,6 +33,7 @@ export class Landing extends React.Component<ILandingProps, ILandingState> {
     console.info('customerCode', customerCode);
 
     // call service get thong tin landing page o day
+    this.props.bindingLandingPage(idCampaing, customerCode);
   }
 
   componentDidMount() {
@@ -61,7 +62,7 @@ const mapStateToProps = ({ userCampaign }: IRootState) => ({
   totalNotActive: userCampaign.totalNotActive
 });
 
-const mapDispatchToProps = { getCampaignInfoByStatus, getCampaignInfoById, getCountCampaignByStatus };
+const mapDispatchToProps = { getCampaignInfoByStatus, getCampaignInfoById, getCountCampaignByStatus, bindingLandingPage };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
