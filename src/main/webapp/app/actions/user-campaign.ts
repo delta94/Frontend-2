@@ -30,10 +30,10 @@ export const getCampaignDetailById = (id, activePage, itemsPerPage, textSearch?)
   };
 };
 
-export const getCountCampaignByStatus = status => {
+export const getCountCampaignByStatus = () => {
   return {
     type: USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_COUNT,
-    payload: getCountCampaignService(status)
+    payload: getCountCampaignService()
   };
 };
 
@@ -44,12 +44,13 @@ export const getCampaignInfoByStatus = status => {
     payload: getCampaignInfoByStatusService(status)
   };
 };
-// todo : change status action
-export const updateCampStatus = data => {
-  return {
+
+export const updateCampStatus = data => async dispatch => {
+  await dispatch({
     type: USER_CAMPAIGN_ACTION_TYPES.UPDATE_STATUS,
     payload: updateCampStatusService(data)
-  };
+  });
+  dispatch(getCampaignInfoById(data.id));
 };
 
 //get step of campagin script

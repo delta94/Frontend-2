@@ -83,6 +83,7 @@
 }
 .modal-name {
   margin-bottom: 10px;
+  align-items: center;
 }
 .modal-campaign-name {
   font-size: 16px;
@@ -398,4 +399,7 @@ h3 {
 }
 .nav-link {
   padding: 0 !important;
+}
+.btn-primary {
+  background-color: #3866dd !important;
 }
