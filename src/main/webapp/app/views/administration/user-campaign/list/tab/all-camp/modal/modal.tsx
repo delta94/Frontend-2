@@ -13,12 +13,12 @@ import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPagi
 import { getCampaignInfoByStatus, getCampaignInfoById, getCampaignDetailById, updateCampStatus } from 'app/actions/user-campaign';
 import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
 import { ITEMS_PER_MODAL_TABLE } from 'app/constants/common';
-import { Route, RouterProps } from 'react-router';
+import { Route, RouterProps, RouteComponentProps } from 'react-router';
 import Ionicon from 'react-ionicons';
 
 export const KEY_ENTER = 'Enter';
 
-export interface IModalDisplayProps extends StateProps, DispatchProps, RouterProps {
+export interface IModalDisplayProps extends StateProps, DispatchProps, RouteComponentProps {
   // properties from parent class
   isOpen: boolean;
   onClick: Function;
@@ -114,8 +114,8 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
 
     await this.props.updateCampStatus(data);
     this.props.onClick(false, this.state.displayPause);
-    // this.props.history.push('/admin/user-campaign');
-    window.location.reload();
+    this.props.history.push('/admin/user-campaign');
+    // window.location.reload();
   };
 
   render() {
