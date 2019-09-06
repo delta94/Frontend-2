@@ -49,7 +49,7 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
       modal: event
     });
   };
-  onShow = async (id, event) => {
+  onShow = async id => {
     this.setState({
       modal: !this.state.modal,
       id: id
@@ -59,11 +59,11 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
 
     if (camp.status === 1) {
       this.setState({
-        displayPause: 'pe-7s-power'
+        displayPause: 'ios-square'
       });
     } else if (camp.status === 0) {
       this.setState({
-        displayPause: 'pe-7s-play'
+        displayPause: 'ios-play'
       });
     } else {
       this.setState({

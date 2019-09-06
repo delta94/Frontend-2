@@ -14,6 +14,7 @@ import { getCampaignInfoByStatus, getCampaignInfoById, getCampaignDetailById, up
 import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
 import { ITEMS_PER_MODAL_TABLE } from 'app/constants/common';
 import { Route, RouterProps } from 'react-router';
+import Ionicon from 'react-ionicons';
 
 export const KEY_ENTER = 'Enter';
 
@@ -99,7 +100,7 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
         status: 0
       };
       this.setState({
-        displayPause: 'pe-7s-play'
+        displayPause: 'ios-play'
       });
     } else if (camp.status === 0) {
       data = {
@@ -107,12 +108,13 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
         status: 1
       };
       this.setState({
-        displayPause: 'pe-7s-power'
+        displayPause: 'ios-square'
       });
     }
 
     await this.props.updateCampStatus(data);
     this.props.onClick(false, this.state.displayPause);
+    // this.props.history.push('/admin/user-campaign');
     window.location.reload();
   };
 
@@ -142,11 +144,17 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
                 </Col>
                 <Col md="2">
                   <span className="modal-icon" style={{ float: 'right' }}>
-                    <i className={this.props.showIcon} onClick={() => this.updateStatus(camp)} />{' '}
+                    <Ionicon
+                      icon={this.props.showIcon}
+                      onClick={() => this.updateStatus(camp)}
+                      color="#3866DD"
+                      fontSize="2rem"
+                      beat={true}
+                    />
                   </span>
                 </Col>
                 <Col md="3">
-                  <span className="camp-status" style={{ float: 'right' }}>
+                  <span className="camp-status" style={{ float: 'left' }}>
                     {camp.status && camp.status === 2 ? (
                       <span style={{ color: '#02B3FF' }}>
                         {' '}
