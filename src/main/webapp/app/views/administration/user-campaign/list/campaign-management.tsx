@@ -33,15 +33,14 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
 
   constructor(props) {
     super(props);
-    this.toggle = this.toggle.bind(this);
     this.props.getCampaignInfoByStatus(DISPLAY_STATUS_ALL);
   }
 
   componentDidMount() {
-    this.props.getCountCampaignByStatus(DISPLAY_STATUS_ALL);
+    this.props.getCountCampaignByStatus();
   }
 
-  toggle(tab) {
+  toggle = tab => {
     if (tab === '1') {
       this.props.getCampaignInfoByStatus(DISPLAY_STATUS_ALL);
     } else if (tab === '2') {
@@ -57,7 +56,7 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
         activeTab: tab
       });
     }
-  }
+  };
 
   render() {
     const { match, loading, camps, total, totalActive, totalFinish, totalNotActive } = this.props;

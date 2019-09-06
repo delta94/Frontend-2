@@ -23,8 +23,8 @@ export const getCampaignInfoByIdService = id => {
 export const getCampaignDetailService = (id, page, pageSize, textSearch?: string) => {
   return axios.get(`v1/campaign/${id}/customers${`?page=${page}&pageSize=${pageSize}&textSearch=${textSearch}`}`);
 };
-export const getCountCampaignService = status => {
-  return axios.get(`v1/campaigns/count?status=${status}`);
+export const getCountCampaignService = () => {
+  return axios.get(`v1/campaigns/count`);
 };
 export const getCampaignInfoByStatusService = status => {
   return axios.get(`v1/campaigns?status=${status}`);

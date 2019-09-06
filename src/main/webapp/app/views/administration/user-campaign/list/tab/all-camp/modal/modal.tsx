@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircle, faClock, faUser, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { Loader as LoaderAnim } from 'react-loaders';
 import Loader from 'react-loader-advanced';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Table, Row } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Table, Row, Col } from 'reactstrap';
 import ReactPaginate from 'react-paginate';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
@@ -13,14 +13,16 @@ import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPagi
 import { getCampaignInfoByStatus, getCampaignInfoById, getCampaignDetailById, updateCampStatus } from 'app/actions/user-campaign';
 import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
 import { ITEMS_PER_MODAL_TABLE } from 'app/constants/common';
+import { Route, RouterProps } from 'react-router';
 
 export const KEY_ENTER = 'Enter';
 
-export interface IModalDisplayProps extends StateProps, DispatchProps {
+export interface IModalDisplayProps extends StateProps, DispatchProps, RouterProps {
   // properties from parent class
   isOpen: boolean;
   onClick: Function;
   id: string;
+  showIcon: string;
 }
 export interface IModalDisplayState {
   // loading page
@@ -30,8 +32,11 @@ export interface IModalDisplayState {
   categories: string;
   activePage: number;
   itemsPerPage: number;
+
+  displayPause: string;
+  displayPlay: string;
 }
-class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayState> {
+class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayState, Route> {
   constructor(props) {
     super(props);
 
@@ -41,7 +46,9 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
       activePage: ACTIVE_PAGE,
       itemsPerPage: ITEMS_PER_MODAL_TABLE,
       textSearch: '',
-      categories: ''
+      categories: '',
+      displayPause: '',
+      displayPlay: ''
     };
   }
   // search customer on modal
@@ -67,13 +74,46 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
     });
     this.props.getCampaignDetailById(this.props.id, activePage.selected, itemsPerPage, textSearch);
   };
-  updateStatus = camp => {
-    console.log('camp', camp);
-    let data = {
-      id: camp.id,
-      status: camp.status
-    };
-    this.props.updateCampStatus(data);
+  // Change status 1->0  0->1
+  updateStatus = async camp => {
+    let data;
+    if (camp.status === 1) {
+      data = {
+        id: camp.id,
+        status: 0
+      };
+    } else if (camp.status === 0) {
+      data = {
+        id: camp.id,
+        status: 1
+      };
+    } else {
+      data = {
+        id: camp.id,
+        status: data.status
+      };
+    }
+    if (camp.status === 1) {
+      data = {
+        id: camp.id,
+        status: 0
+      };
+      this.setState({
+        displayPause: 'pe-7s-play'
+      });
+    } else if (camp.status === 0) {
+      data = {
+        id: camp.id,
+        status: 1
+      };
+      this.setState({
+        displayPause: 'pe-7s-power'
+      });
+    }
+
+    await this.props.updateCampStatus(data);
+    this.props.onClick(false, this.state.displayPause);
+    window.location.reload();
   };
 
   render() {
@@ -96,31 +136,36 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
         <ModalBody>
           <div className="modal-grid">
             <Loader message={spinner1} show={loading} priority={2}>
-              <div className="modal-name">
-                <span className="modal-campaign-name">{camp.name}</span>
-                <span>
-                  <i className="pe-7s-play" onClick={() => this.updateStatus(camp)} />{' '}
-                  <i className="pe-7s-power" onClick={() => this.updateStatus(camp)} />
-                </span>{' '}
-                <span className="camp-status" style={{ float: 'right' }}>
-                  {camp.status && camp.status === 2 ? (
-                    <span style={{ color: '#02B3FF' }}>
-                      {' '}
-                      <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.complete" />
-                    </span>
-                  ) : camp.status && camp.status == 1 ? (
-                    <span style={{ color: '#23C00A' }}>
-                      {' '}
-                      <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.action" />
-                    </span>
-                  ) : (
-                    <span style={{ color: '#97A3B4' }}>
-                      {' '}
-                      <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.pause" />
-                    </span>
-                  )}
-                </span>
-              </div>
+              <Row className="modal-name">
+                <Col md="7">
+                  <span className="modal-campaign-name">{camp.name}</span>
+                </Col>
+                <Col md="2">
+                  <span className="modal-icon" style={{ float: 'right' }}>
+                    <i className={this.props.showIcon} onClick={() => this.updateStatus(camp)} />{' '}
+                  </span>
+                </Col>
+                <Col md="3">
+                  <span className="camp-status" style={{ float: 'right' }}>
+                    {camp.status && camp.status === 2 ? (
+                      <span style={{ color: '#02B3FF' }}>
+                        {' '}
+                        <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.complete" />
+                      </span>
+                    ) : camp.status && camp.status == 1 ? (
+                      <span style={{ color: '#23C00A' }}>
+                        {' '}
+                        <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.action" />
+                      </span>
+                    ) : (
+                      <span style={{ color: '#97A3B4' }}>
+                        {' '}
+                        <FontAwesomeIcon icon={faCircle} /> <Translate contentKey="campaign.status.pause" />
+                      </span>
+                    )}
+                  </span>
+                </Col>
+              </Row>
 
               <div className="modal-grid-child">
                 <span style={{ width: '15%' }}>

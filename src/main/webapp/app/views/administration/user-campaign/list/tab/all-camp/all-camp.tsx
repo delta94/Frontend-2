@@ -9,7 +9,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter, Table } from 'reactstrap';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
-import { getCampaignInfoByStatus, getCampaignInfoById, getCampaignDetailById } from 'app/actions/user-campaign';
+import { getCampaignInfoByStatus, getCampaignInfoById, getCampaignDetailById, updateCampStatus } from 'app/actions/user-campaign';
 import './../all-camp/all-camp.scss';
 import ModalDisplay from './modal/modal';
 import { ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
@@ -26,6 +26,7 @@ export interface IAllCampState {
   activePage: number;
   itemsPerPage: number;
   id: string;
+  displayPause: string;
 }
 class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
   constructor(props) {
@@ -34,6 +35,7 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
     this.state = {
       loading: false,
       modal: false,
+      displayPause: '',
       activePage: ACTIVE_PAGE,
       itemsPerPage: ITEMS_PER_MODAL_TABLE,
       textSearch: '',
@@ -47,25 +49,41 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
       modal: event
     });
   };
-  onShow = async id => {
+  onShow = async (id, event) => {
     this.setState({
       modal: !this.state.modal,
       id: id
     });
     await this.props.getCampaignInfoById(id);
+    const { camp } = this.props;
+
+    if (camp.status === 1) {
+      this.setState({
+        displayPause: 'pe-7s-power'
+      });
+    } else if (camp.status === 0) {
+      this.setState({
+        displayPause: 'pe-7s-play'
+      });
+    } else {
+      this.setState({
+        displayPause: ''
+      });
+    }
+
+    console.log(this.state.displayPause);
     // this.props.getCampaignDetailById(id);
     const { activePage, itemsPerPage, textSearch } = this.state;
     this.props.getCampaignDetailById(id, activePage, itemsPerPage, textSearch);
   };
 
   render() {
-    console.log(this.state.id);
     const { loading, camps } = this.props;
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
 
     return (
       <div className="grid-container-total">
-        <ModalDisplay isOpen={this.state.modal} id={this.state.id} onClick={this.handerModal} />
+        <ModalDisplay isOpen={this.state.modal} id={this.state.id} showIcon={this.state.displayPause} onClick={this.handerModal} />
         <Loader message={spinner1} show={loading} priority={5}>
           <Fragment>
             <div className="grid-border">
@@ -143,7 +161,7 @@ const mapStateToProps = ({ userCampaign }: IRootState) => ({
   loading: userCampaign.loading
 });
 
-const mapDispatchToProps = { getCampaignInfoByStatus, getCampaignInfoById, getCampaignDetailById };
+const mapDispatchToProps = { getCampaignInfoByStatus, getCampaignInfoById, getCampaignDetailById, updateCampStatus };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
