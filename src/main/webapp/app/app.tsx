@@ -79,7 +79,27 @@ export class App extends React.Component<IAppProps, IAppState> {
             </Fragment>
           )}
         /> */}
-        <AppRoutes />
+        <ResizeDetector
+          handleWidth
+          render={({ width }) => (
+            <Fragment>
+              <div
+                className={cx(
+                  'app-container app-theme-' + colorScheme,
+                  { 'fixed-header': enableFixedHeader },
+                  { 'fixed-sidebar': enableFixedSidebar || width < 1250 },
+                  { 'fixed-footer': enableFixedFooter },
+                  { 'closed-sidebar': enableClosedSidebar || width < 1250 },
+                  { 'closed-sidebar-mobile': closedSmallerSidebar || width < 1250 },
+                  { 'sidebar-mobile-open': enableMobileMenu },
+                  { 'body-tabs-shadow-btn': enablePageTabsAlt }
+                )}
+              >
+                <AppRoutes />
+              </div>
+            </Fragment>
+          )}
+        />
       </Router>
     );
   }
