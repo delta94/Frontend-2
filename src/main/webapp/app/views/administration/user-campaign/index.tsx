@@ -2,7 +2,6 @@ import React from 'react';
 import { Switch } from 'react-router-dom';
 import CampaignManagement from './list/campaign-management';
 import CreateCampagin from './create/create';
-
 import ErrorBoundaryRoute from 'app/common/error/error-boundary-route';
 
 //todo rename cho router

@@ -48,7 +48,7 @@ export class App extends React.Component<IAppProps, IAppState> {
     let { closedSmallerSidebar } = this.state;
     return (
       <Router basename={baseHref}>
-        <ResizeDetector
+        {/* <ResizeDetector
           handleWidth
           render={({ width }) => (
             <Fragment>
@@ -78,7 +78,8 @@ export class App extends React.Component<IAppProps, IAppState> {
               </div>
             </Fragment>
           )}
-        />
+        /> */}
+        <AppRoutes />
       </Router>
     );
   }
