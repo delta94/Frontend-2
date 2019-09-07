@@ -11,7 +11,7 @@ const Routes = ({ match }) => (
     <div className="app-main">
       <AppSidebar />
       <div className="app-main__outer">
-        <div className="app-main__inner p-0">
+        <div className="app-main__inner">
           <ErrorBoundaryRoute path={`${match.url}/user-management`} component={UserManagement} />
           <ErrorBoundaryRoute path={`${match.url}/user-campaign`} component={CampaignManagement} />
         </div>

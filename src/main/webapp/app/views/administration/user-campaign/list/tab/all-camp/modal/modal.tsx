@@ -115,7 +115,7 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
 
     this.props.updateCampStatus(data);
     this.props.onClick(false, this.state.displayPause);
-    this.props.history.push('/admin/user-campaign');
+    // window.location.reload(false)
     // window.location.reload();
   };
 
