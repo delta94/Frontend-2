@@ -45,6 +45,8 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
         activeTab: tab
       });
     }
+    console.log('tab', tab);
+    console.log('activeTab', this.state.activeTab);
   };
 
   componentDidMount() {
@@ -76,8 +78,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
   };
 
   //function get value Customer group
-  onClick = list => {
-    this.setState({});
+  handlerValueCustomer = list => {
     this.state.listCustomerGroup.push(list);
   };
   //function get value Reward
@@ -132,7 +133,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
               {/* Tab Content */}
               <TabContent activeTab={this.state.activeTab}>
                 <TabPane tabId={1}>
-                  <SelectCustomer onClick={this.onClick} />
+                  <SelectCustomer onClick={this.handlerValueCustomer} />
                   <div className="mt-5" />
                   <div className="clearfix" />
                 </TabPane>

@@ -70,7 +70,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
       };
       this.state.listUser.push(elements);
       // get list from component select customer - to navigation
-      this.props.onClick(elements);
+      this.props.onClick(this.state.listUser);
     }
   };
 
