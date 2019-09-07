@@ -138,16 +138,16 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
 
                     <TabContent activeTab={this.state.activeTab}>
                       <TabPane tabId="1">
-                        <AllCamp />
+                        <AllCamp history={this.props.history} />
                       </TabPane>
                       <TabPane tabId="2">
-                        <AllCamp />
+                        <AllCamp history={this.props.history} />
                       </TabPane>
                       <TabPane tabId="3">
-                        <AllCamp />
+                        <AllCamp history={this.props.history} />
                       </TabPane>
                       <TabPane tabId="4">
-                        <AllCamp />
+                        <AllCamp history={this.props.history} />
                       </TabPane>
                     </TabContent>
                   </Card>

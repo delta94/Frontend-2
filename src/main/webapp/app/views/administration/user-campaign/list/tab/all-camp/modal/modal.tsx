@@ -18,12 +18,13 @@ import Ionicon from 'react-ionicons';
 
 export const KEY_ENTER = 'Enter';
 
-export interface IModalDisplayProps extends StateProps, DispatchProps, RouteComponentProps {
+export interface IModalDisplayProps extends StateProps, DispatchProps {
   // properties from parent class
   isOpen: boolean;
   onClick: Function;
   id: string;
   showIcon: string;
+  history: Object;
 }
 export interface IModalDisplayState {
   // loading page
@@ -37,7 +38,7 @@ export interface IModalDisplayState {
   displayPause: string;
   displayPlay: string;
 }
-class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayState, Route> {
+class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayState> {
   constructor(props) {
     super(props);
 
@@ -114,8 +115,8 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
 
     this.props.updateCampStatus(data);
     this.props.onClick(false, this.state.displayPause);
-    // this.props.history.push('/admin/user-campaign');
-    window.location.reload();
+    this.props.history.push('/admin/user-campaign');
+    // window.location.reload();
   };
 
   render() {

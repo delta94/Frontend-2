@@ -15,7 +15,9 @@ import ModalDisplay from './modal/modal';
 import { ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
 import { ITEMS_PER_MODAL_TABLE } from 'app/constants/common';
 
-export interface IAllCampProps extends StateProps, DispatchProps {}
+export interface IAllCampProps extends StateProps, DispatchProps {
+  history: Object;
+}
 export interface IAllCampState {
   // loading page
   loading: boolean;
@@ -83,7 +85,13 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
 
     return (
       <div className="grid-container-total">
-        <ModalDisplay isOpen={this.state.modal} id={this.state.id} showIcon={this.state.displayPause} onClick={this.handerModal} />
+        <ModalDisplay
+          isOpen={this.state.modal}
+          id={this.state.id}
+          showIcon={this.state.displayPause}
+          onClick={this.handerModal}
+          history={this.props.history}
+        />
         <Loader message={spinner1} show={loading} priority={5}>
           <Fragment>
             <div className="grid-border">
