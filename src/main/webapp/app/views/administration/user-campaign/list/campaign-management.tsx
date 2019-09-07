@@ -41,6 +41,12 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
   }
 
   toggle = tab => {
+    if (this.state.activeTab !== tab) {
+      this.setState({
+        activeTab: tab
+      });
+    }
+
     if (tab === '1') {
       this.props.getCampaignInfoByStatus(DISPLAY_STATUS_ALL);
     } else if (tab === '2') {
@@ -51,11 +57,7 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
       this.props.getCampaignInfoByStatus(DISPLAY_STATUS_COMPLETE);
     }
 
-    if (this.state.activeTab !== tab) {
-      this.setState({
-        activeTab: tab
-      });
-    }
+    console.log(this.state.activeTab);
   };
 
   render() {
@@ -138,16 +140,16 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
 
                     <TabContent activeTab={this.state.activeTab}>
                       <TabPane tabId="1">
-                        <AllCamp history={this.props.history} />
+                        <AllCamp value={''} history={this.props.history} />
                       </TabPane>
                       <TabPane tabId="2">
-                        <AllCamp history={this.props.history} />
+                        <AllCamp value={1} history={this.props.history} />
                       </TabPane>
                       <TabPane tabId="3">
-                        <AllCamp history={this.props.history} />
+                        <AllCamp value={0} history={this.props.history} />
                       </TabPane>
                       <TabPane tabId="4">
-                        <AllCamp history={this.props.history} />
+                        <AllCamp value={2} history={this.props.history} />
                       </TabPane>
                     </TabContent>
                   </Card>

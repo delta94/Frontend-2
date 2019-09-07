@@ -25,6 +25,7 @@ export interface IModalDisplayProps extends StateProps, DispatchProps {
   id: string;
   showIcon: string;
   history: Object;
+  value: any;
 }
 export interface IModalDisplayState {
   // loading page
@@ -112,8 +113,7 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
         displayPause: 'ios-square'
       });
     }
-
-    this.props.updateCampStatus(data);
+    this.props.updateCampStatus(data, this.props.value);
     this.props.onClick(false, this.state.displayPause);
     // window.location.reload(false)
     // window.location.reload();

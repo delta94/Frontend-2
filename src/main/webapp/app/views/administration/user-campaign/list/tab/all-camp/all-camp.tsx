@@ -17,6 +17,7 @@ import { ITEMS_PER_MODAL_TABLE } from 'app/constants/common';
 
 export interface IAllCampProps extends StateProps, DispatchProps {
   history: Object;
+  value: any;
 }
 export interface IAllCampState {
   // loading page
@@ -86,6 +87,7 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
     return (
       <div className="grid-container-total">
         <ModalDisplay
+          value={this.props.value}
           isOpen={this.state.modal}
           id={this.state.id}
           showIcon={this.state.displayPause}

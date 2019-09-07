@@ -46,12 +46,13 @@ export const getCampaignInfoByStatus = status => {
   };
 };
 
-export const updateCampStatus = data => async dispatch => {
+export const updateCampStatus = (data, id) => async dispatch => {
   await dispatch({
     type: USER_CAMPAIGN_ACTION_TYPES.UPDATE_STATUS,
     payload: updateCampStatusService(data)
   });
-  dispatch(getCampaignInfoById(data.id));
+  await dispatch(getCampaignInfoByStatus(id));
+  dispatch(getCountCampaignByStatus());
 };
 
 //get step of campagin script
