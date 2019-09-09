@@ -60,6 +60,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
     let elements;
     if (isSubmit === true) {
       elements = {
+        id: Math.random(),
         nameGroup: categories,
         totalContact: this.props.total,
         email: this.props.totalEmail,
@@ -81,7 +82,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
 
   //close element group
   deleteGroup = id => {
-    const deleteItem = this.state.listUser.filter(item => item.categories !== id);
+    const deleteItem = this.state.listUser.filter(item => item.id !== id);
     this.state.listUser = deleteItem;
     this.setState({
       listUser: deleteItem
@@ -164,7 +165,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
                           <i
                             className="lnr-cross-circle"
                             onClick={() => {
-                              this.deleteGroup(item.categories);
+                              this.deleteGroup(item.id);
                             }}
                           />
                         </div>
