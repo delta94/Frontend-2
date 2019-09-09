@@ -126,7 +126,9 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
                 {' '}
                 <Label>
                   <Translate contentKey="campaign.all-contract" />
-                  <span className="number-contract">{totalContact.totalContact ? totalContact.totalContact : 0} </span>
+                  <span className="number-contract">
+                    {totalContact.totalContact && this.state.listUser.length > 0 ? totalContact.totalContact : 0}{' '}
+                  </span>
                 </Label>
               </Col>
               <Col md="6">
@@ -134,7 +136,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
                 <Label>
                   {' '}
                   <Translate contentKey="campaign.duplicate-contract" />
-                  <span className="number-contract">{duplicate ? duplicate : 0}</span>
+                  <span className="number-contract">{duplicate && duplicate > 0 ? duplicate : 0}</span>
                 </Label>
               </Col>
             </Col>
