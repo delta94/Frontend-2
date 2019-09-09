@@ -171,25 +171,32 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
   };
 
   toggleLanding = (event, typeMail) => {
+    console.log(event, typeMail);
     this.addContentTemplate(event.id, typeMail);
   };
 
   addContentTemplate = (id, typeMail) => {
     let { listContentTemplateAsTypeEmailEward, listContentTemplateAsTypeEmailIntro } = this.props;
-    let { defaultValueContentEmailEward, defaultValueContentEmailIntro } = this.state;
+    let { defaultValueContentEmailEward, defaultValueContentEmailIntro, testEmailEntityForEward, testEmailEntityForIntro } = this.state;
 
     if (typeMail === 'EMAIL_EWARD') {
       listContentTemplateAsTypeEmailEward.forEach(item => {
+        console.log(item);
         if (item.id === id) {
           defaultValueContentEmailEward = item.content;
+          testEmailEntityForEward.subject = item.subject;
         }
       });
 
       this.setState({ defaultValueContentEmailEward });
-    } else {
+    }
+
+    if (typeMail === 'EMAIL_INTRO') {
       listContentTemplateAsTypeEmailIntro.forEach(item => {
+        console.log(item);
         if (item.id === id) {
           defaultValueContentEmailIntro = item.content;
+          testEmailEntityForIntro.subject = item.subject;
         }
       });
 
@@ -271,7 +278,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                       <Dropdown
                         selection={true}
                         defaultValue={'Chọn mẫu email'}
-                        listArray={listTemplateEmailEward}
+                        listArray={listTemplateMailIntro}
                         toggleDropdown={event => this.toggleLanding(event, 'EMAIL_INTRO')}
                       />
                     </div>
@@ -337,7 +344,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                       <Dropdown
                         selection={true}
                         defaultValue={'Chọn mẫu mail'}
-                        listArray={listTemplateMailIntro}
+                        listArray={listContentTemplateAsTypeEmailEward}
                         toggleDropdown={event => this.toggleLanding(event, 'EMAIL_EWARD')}
                       />
                     </div>

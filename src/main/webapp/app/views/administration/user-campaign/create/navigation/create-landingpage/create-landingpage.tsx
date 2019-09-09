@@ -14,6 +14,7 @@ import { connect } from 'react-redux';
 import { getContentPageParams, postTestMailLanding } from 'app/actions/user-campaign';
 import { IRootState } from 'app/reducers';
 import { getContentTemplate, getContentTemplateAsType } from '../../../../../../actions/user-campaign';
+import { getNavigationContentTemplates } from 'app/actions/navigation-info';
 import PreviewLanding from './preview-landing/preview-landing';
 
 // export interface I
@@ -52,27 +53,14 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
 
   addText = text => {
     var sel, range;
+    let newWindow = document.getElementsByTagName('iframe')[0].contentWindow;
 
-    if (window.getSelection()) {
-      console.log(window.getSelection());
-      let listChildren = window.getSelection().focusNode.childNodes;
-      let canFix = true;
-
-      listChildren.forEach(item => {
-        if (item.nodeName === 'INPUT') {
-          canFix = false;
-        }
-      });
-      sel = window.getSelection();
+    if (newWindow.getSelection()) {
+      sel = newWindow.getSelection();
       if (sel.rangeCount) {
         range = sel.getRangeAt(0);
-
-        if (range === '' || range === null) {
-          range.insertNode(document.createTextNode(text));
-        } else {
-          range.deleteContents();
-          range.insertNode(document.createTextNode(text));
-        }
+        range.deleteContents();
+        range.insertNode(document.createTextNode(text));
       }
     }
   };
@@ -211,6 +199,7 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
                         tag="textarea"
                         config={{
                           placeholderText: 'Tạo nội dung của bạn',
+                          iframe: true,
                           events: {}
                         }}
                         model={defaultValueContent}
@@ -239,7 +228,13 @@ const mapStateToProps = ({ userCampaign }: IRootState) => {
   };
 };
 
-const mapDispatchToProps = { getContentPageParams, postTestMailLanding, getContentTemplate, getContentTemplateAsType };
+const mapDispatchToProps = {
+  getContentPageParams,
+  postTestMailLanding,
+  getContentTemplate,
+  getContentTemplateAsType,
+  getNavigationContentTemplates
+};
 export default connect(
   mapStateToProps,
   mapDispatchToProps

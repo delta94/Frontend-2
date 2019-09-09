@@ -8,6 +8,7 @@ import userManagement, { UserManagementState } from './user-management';
 import userCampaign, { UserCampaignState } from './user-campaign';
 import landingPage, { LandingPageState } from './landing-page';
 import themeOptions, { ThemeOptionsState } from './theme-options';
+import navigationInfo, { NavigationInfo } from './navigation-info';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -19,6 +20,7 @@ export interface IRootState {
   readonly themeOptions: ThemeOptionsState;
   readonly landingPage: LandingPageState;
   readonly loadingBar: any;
+  readonly navigationInfo: NavigationInfo;
 }
 
 const rootReducer = combineReducers<IRootState>({
@@ -29,7 +31,8 @@ const rootReducer = combineReducers<IRootState>({
   themeOptions,
   loadingBar,
   userCampaign,
-  landingPage
+  landingPage,
+  navigationInfo
 });
 
 export default rootReducer;

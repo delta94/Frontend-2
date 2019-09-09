@@ -8,6 +8,7 @@ import Ionicon from 'react-ionicons';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import { getCustomer, getStatistic, getSumAllContact } from '../../../../../../actions/user-campaign';
+import { getNavigationCustomerCampaign } from 'app/actions/navigation-info';
 import CustomerDialog from './customer-dialog/customer-dialog';
 import { ITEMS_PER_PAGE, ULTILS_TYPES, ACTIVE_PAGE } from '../../../../../../constants/ultils';
 
@@ -71,7 +72,8 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
       };
       this.state.listUser.push(elements);
       // get list from component select customer - to navigation
-      this.props.onClick(this.state.listUser);
+      this.props.onClick(elements);
+      this.props.getNavigationCustomerCampaign(elements);
     }
     let cate = this.state.listUser.map(event => {
       let cate = event.categories;
@@ -126,7 +128,9 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
                 {' '}
                 <Label>
                   <Translate contentKey="campaign.all-contract" />
-                  <span className="number-contract">{totalContact.totalContact ? totalContact.totalContact : 0} </span>
+                  <span className="number-contract">
+                    {totalContact.totalContact && this.state.listUser.length > 0 ? totalContact.totalContact : 0}{' '}
+                  </span>
                 </Label>
               </Col>
               <Col md="6">
@@ -134,7 +138,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
                 <Label>
                   {' '}
                   <Translate contentKey="campaign.duplicate-contract" />
-                  <span className="number-contract">{duplicate ? duplicate : 0}</span>
+                  <span className="number-contract">{duplicate && duplicate > 0 ? duplicate : 0}</span>
                 </Label>
               </Col>
             </Col>
@@ -241,7 +245,7 @@ const mapStateToProps = ({ userCampaign }: IRootState) => ({
   totalContact: userCampaign.totalContact
 });
 
-const mapDispatchToProps = { getCustomer, getStatistic, getSumAllContact };
+const mapDispatchToProps = { getCustomer, getStatistic, getNavigationCustomerCampaign, getSumAllContact };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
