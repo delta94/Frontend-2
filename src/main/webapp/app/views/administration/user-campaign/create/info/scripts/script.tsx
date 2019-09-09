@@ -1,11 +1,12 @@
 import React, { Fragment, Component } from 'react';
 import { Col, Row } from 'reactstrap';
 import SweetAlert from 'sweetalert-react';
-import { IRootState } from 'app/reducers';
+import { IRootState } from './../../../../../../reducers/index';
 import { connect } from 'react-redux';
-import { getInformation, getStepCampaign, getContentPageParams } from 'app/actions/user-campaign';
-import { ULTILS_TYPES } from '../../../../../constants/ultils';
-import '../scripts/script.scss';
+import { getNavigationId, getNavigationName } from './../../../../../../actions/navigation-info';
+import { getInformation, getStepCampaign, getContentPageParams } from './../../../../../../actions/user-campaign';
+import { ULTILS_TYPES } from '../../../../../../constants/ultils';
+import './script.scss';
 
 export interface IScriptsCampaignProps extends StateProps, DispatchProps {
   value: any;
@@ -61,6 +62,7 @@ export class ScriptsCampaign extends Component<IScriptsCampaignProps, IScriptsCa
       });
       this.props.getStepCampaign(id);
       this.props.onClick(name, id);
+      this.props.getNavigationId(id);
     } else {
       this.setState({
         isError: true,
@@ -111,7 +113,11 @@ const mapStateToProps = ({ userCampaign }: IRootState) => ({
   listCampaignInfo: userCampaign.listCampaignInfo
 });
 
-const mapDispatchToProps = { getInformation, getStepCampaign };
+const mapDispatchToProps = {
+  getInformation,
+  getStepCampaign,
+  getNavigationId
+};
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

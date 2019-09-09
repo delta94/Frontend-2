@@ -5,14 +5,13 @@ import '../voucher/voucher.scss';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import { getListEvoucher, getDetailEvoucher } from '../../../../../../../actions/user-campaign';
+import { getNavigationReward } from 'app/actions/navigation-info';
 import Loader from 'react-loader-advanced';
 import { Loader as LoaderAnim } from 'react-loaders';
 import { ULTILS_TYPES } from '../../../../../../../constants/ultils';
 import { Translate } from 'react-jhipster';
 
-export interface VocherProps extends StateProps, DispatchProps {
-  onClick: Function;
-}
+export interface VocherProps extends StateProps, DispatchProps {}
 
 export interface VocherState {
   value: any[];
@@ -30,6 +29,7 @@ class Vocher extends React.Component<VocherProps, VocherState> {
 
   //show evoucher
   onChangeList = data => {
+    console.log(data);
     this.setState({
       value: data
     });
@@ -43,9 +43,9 @@ class Vocher extends React.Component<VocherProps, VocherState> {
       });
     }
     //get value from voucher to select - reward component
-    this.props.onClick(data);
     // call api get detail voucher
     this.props.getDetailEvoucher(data.id);
+    this.props.getNavigationReward({ type: parseInt(ULTILS_TYPES.SELECT_REWARD), id: data.id });
   };
 
   render() {
@@ -110,13 +110,14 @@ class Vocher extends React.Component<VocherProps, VocherState> {
     );
   }
 }
+
 const mapStateToProps = ({ userCampaign }: IRootState) => ({
   loading: userCampaign.loading,
   listEvoucher: userCampaign.listEvoucher,
   evoucherDetail: userCampaign.EvoucherDetail
 });
 
-const mapDispatchToProps = { getListEvoucher, getDetailEvoucher };
+const mapDispatchToProps = { getListEvoucher, getDetailEvoucher, getNavigationReward };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
