@@ -65,11 +65,6 @@ export const getUserCategoriesService = () => {
   return axios.get<ICategory>(`${apiUrl}/category-name?textSearch`);
 };
 
-// display landing page content to empty page
-export const bindingLandingPageService = (customerCode, idCampaign) => {
-  return axios.get(`v1/campaign/${idCampaign}/customer/${customerCode}`);
-};
-
 export const getRolesService = () => {
   return axios.get(`${apiUrl}/authorities`);
 };
