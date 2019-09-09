@@ -7,7 +7,7 @@ import { Translate } from 'react-jhipster';
 import Ionicon from 'react-ionicons';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
-import { getCustomer, getStatistic } from '../../../../../../actions/user-campaign';
+import { getCustomer, getStatistic, getSumAllContact } from '../../../../../../actions/user-campaign';
 import CustomerDialog from './customer-dialog/customer-dialog';
 import { ITEMS_PER_PAGE, ULTILS_TYPES, ACTIVE_PAGE } from '../../../../../../constants/ultils';
 
@@ -72,24 +72,39 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
       // get list from component select customer - to navigation
       this.props.onClick(this.state.listUser);
     }
+    let cate = this.state.listUser.map(event => {
+      let cate = event.categories;
+      return cate;
+    });
+    this.props.getSumAllContact(cate);
   };
 
   //close element group
   deleteGroup = id => {
     const deleteItem = this.state.listUser.filter(item => item.categories !== id);
+    this.state.listUser = deleteItem;
     this.setState({
       listUser: deleteItem
     });
+    if (this.state.listUser.length > 0) {
+      let cate = this.state.listUser.map(event => {
+        let cate = event.categories;
+        return cate;
+      });
+      this.props.getSumAllContact(cate);
+    }
   };
 
   render() {
     const spinner = <LoaderAnim color="#ffffff" type="ball-pulse" />;
     const { listUser } = this.state;
-    const { loading } = this.props;
+    const { loading, totalContact } = this.props;
     var sumContact = 0;
     for (var i = 0; i < listUser.length; i++) {
       sumContact += listUser[i].totalContact;
     }
+    var duplicate = 0;
+    duplicate = sumContact - totalContact.totalContact;
     return (
       <Loader message={spinner} show={loading} priority={10}>
         <Fragment>
@@ -110,7 +125,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
                 {' '}
                 <Label>
                   <Translate contentKey="campaign.all-contract" />
-                  <span className="number-contract">{sumContact} </span>
+                  <span className="number-contract">{totalContact.totalContact ? totalContact.totalContact : 0} </span>
                 </Label>
               </Col>
               <Col md="6">
@@ -118,7 +133,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
                 <Label>
                   {' '}
                   <Translate contentKey="campaign.duplicate-contract" />
-                  <span className="number-contract">{this.props.duplicateContact}</span>
+                  <span className="number-contract">{duplicate ? duplicate : 0}</span>
                 </Label>
               </Col>
             </Col>
@@ -146,7 +161,12 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
                       <div className="title-contract">
                         <div className="name-group">
                           {item.nameGroup}
-                          <i className="lnr-cross-circle" onClick={() => this.deleteGroup(item.categories)} />
+                          <i
+                            className="lnr-cross-circle"
+                            onClick={() => {
+                              this.deleteGroup(item.categories);
+                            }}
+                          />
                         </div>
                         <div className="camp-top">
                           <label className="total-contract">
@@ -217,10 +237,10 @@ const mapStateToProps = ({ userCampaign }: IRootState) => ({
   total: userCampaign.totalElements,
   totalEmail: userCampaign.totalEmail,
   totalPhone: userCampaign.totalPhone,
-  duplicateContact: userCampaign.duplicateContact
+  totalContact: userCampaign.totalContact
 });
 
-const mapDispatchToProps = { getCustomer, getStatistic };
+const mapDispatchToProps = { getCustomer, getStatistic, getSumAllContact };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

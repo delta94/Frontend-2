@@ -32,7 +32,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
     super(props);
     this.state = {
       listCustomerGroup: [],
-      activeTab: 1,
+      activeTab: 0,
       active: false,
       endTab: false
     };
@@ -45,8 +45,6 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
         activeTab: tab
       });
     }
-    console.log('tab', tab);
-    console.log('activeTab', this.state.activeTab);
   };
 
   componentDidMount() {
@@ -83,7 +81,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
   };
   //function get value Reward
   handlerValueReward = list => {
-    this.props.onClick(list);
+    console.info(list);
   };
 
   render() {

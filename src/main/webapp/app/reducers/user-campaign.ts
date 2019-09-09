@@ -104,6 +104,9 @@ export interface IPostRequestReturn {
   name?: number;
   openModal?: boolean;
 }
+export interface ICountContact {
+  totalContact: number;
+}
 
 const initialState = {
   listCampaignInfo: [] as ReadonlyArray<IlistCampaignInfo>,
@@ -114,9 +117,10 @@ const initialState = {
   listCampainContentParams: [] as ICampaignContentParams[],
   listCategory: [] as ReadonlyArray<ICategory>,
   listEvoucher: [] as ReadonlyArray<IListEvoucher>,
+  campDetail: [] as ReadonlyArray<ICampaignCustomer>,
   camp: {} as ICampaignId,
   EvoucherDetail: {} as IEvoucherDetail,
-  campDetail: [] as ReadonlyArray<ICampaignCustomer>,
+  totalContact: {} as ICountContact,
 
   loading: false,
   showUpdateSuccessAlert: true,
@@ -128,7 +132,6 @@ const initialState = {
   totalItems: 0,
   totalEmail: 0,
   totalPhone: 0,
-  duplicateContact: 0,
   listContentTemplate: [],
   listContentTemplateAsTypeLanding: [],
   listContentTemplateAsTypeEmailEward: [],
@@ -153,7 +156,6 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.POST_TEST_MAIL):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.FETCH_USER_CATEGORIES):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_STATISTIC_PHONE_AND_EMAIL):
-    case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_COUNT_DUPLICATE):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_LIST_EVOUCHER):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_EVOUCHER_DETAIL):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE):
@@ -161,6 +163,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_LANDING):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL_INTRO):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.POST_SAVE_DATA_CAMPAIN):
+    case REQUEST(USER_CAMPAIGN_ACTION_TYPES.SUM_ALL_CONTACT):
       return {
         ...state,
         loading: true
@@ -182,13 +185,13 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_STEP_CAMPAIGNS):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_USER_CATEGORIES):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_STATISTIC_PHONE_AND_EMAIL):
-    case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_COUNT_DUPLICATE):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_LIST_EVOUCHER):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_EVOUCHER_DETAIL):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL_EWARD):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL_INTRO):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_LANDING):
+    case FAILURE(USER_CAMPAIGN_ACTION_TYPES.SUM_ALL_CONTACT):
       return {
         ...state,
         loading: false
@@ -212,6 +215,13 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
         postMailRequest: { code: 500, name: 'fail', openModal: false }
       };
 
+    case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.SUM_ALL_CONTACT):
+      return {
+        ...state,
+        loading: false,
+        totalContact: action.payload.data
+      };
+
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_EVOUCHER_DETAIL):
       return {
         ...state,
@@ -223,12 +233,6 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
         ...state,
         loading: false,
         listEvoucher: action.payload.data
-      };
-    case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_COUNT_DUPLICATE):
-      return {
-        ...state,
-        loading: false,
-        duplicateContact: action.payload.data
       };
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_STATISTIC_PHONE_AND_EMAIL):
       return {
