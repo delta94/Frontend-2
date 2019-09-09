@@ -39,19 +39,19 @@ export class Landing extends React.Component<ILandingProps, ILandingState> {
 
   componentDidMount() {
     // load script xu ly form submit
-    // const script = document.createElement('script');
+    const script = document.createElement('script');
 
-    // script.innerHTML = this.props.script;
-    // script.async = true;
-    // document.body.appendChild(script);
+    script.innerHTML = this.props.script;
+    script.async = true;
+    document.body.appendChild(script);
 
     // action for button submit in landingpage
     // this.props.landingSubmit()
-    window.addEventListener('mousedown', event => {
-      let doc = document.getElementsByClassName['btn'];
-      console.log(doc);
-      // window.location.assign('http://localhost:9000/#/pages/ngm/9e6e2110-8a6e-4277-9180-00d60de614bd/customer/91a65346-f6c3-494a-9337-58e42e644421')
-    });
+    // window.addEventListener('mousedown', event => {
+    //   let doc = document.getElementsByClassName['btn'];
+    //   console.log(doc);
+    //   // window.location.assign('http://localhost:9000/#/pages/ngm/9e6e2110-8a6e-4277-9180-00d60de614bd/customer/91a65346-f6c3-494a-9337-58e42e644421')
+    // });
   }
 
   render() {
