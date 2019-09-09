@@ -1,8 +1,6 @@
 import { USER_CAMPAIGN_ACTION_TYPES } from 'app/constants/user-campaign';
-import { LANDING_PAGE_ACTION_TYPES } from 'app/constants/landing-page';
 import { getContentTemplateService, getContentTemplateAsTypeService, postSaveDataCampainService } from '../services/user-campaign';
 import {
-  bindingLandingPageService,
   getSumAllContactService,
   updateCampStatusService,
   getCampaignDetailService,
@@ -66,14 +64,6 @@ export const getStepCampaign = id => {
   };
 };
 
-// put landingpage content to empty page
-export const bindingLandingPage = (customerCode, idCampaign) => {
-  console.log('code', customerCode, 'id', idCampaign);
-  return {
-    type: LANDING_PAGE_ACTION_TYPES.BINDING_LANDINGPAGE,
-    payload: bindingLandingPageService(customerCode, idCampaign)
-  };
-};
 //get campaign info by id
 export const getCampaignInfoById = id => {
   return {

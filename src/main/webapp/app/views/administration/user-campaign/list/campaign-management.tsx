@@ -56,8 +56,6 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
     } else {
       this.props.getCampaignInfoByStatus(DISPLAY_STATUS_COMPLETE);
     }
-
-    console.log(this.state.activeTab);
   };
 
   render() {
