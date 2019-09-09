@@ -15,6 +15,11 @@ const apiUrl = 'v1/campaigns';
  * @return {code: number, data: Object{item: [{id: string, name: string, gmail: string, catagories: string, }, pageIndex: number, pageSize: number] }}
  */
 
+// submit param when press button submit in ladingpage
+export const landingSubmitService = (customerCode, campaignId) => {
+  return axios.post(`v1/campaign/${customerCode}/customer/${campaignId}`);
+};
+
 export const getCampaignInfoByIdService = id => {
   return axios.get(`v1/campaign/${id}`);
 };

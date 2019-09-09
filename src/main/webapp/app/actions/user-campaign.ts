@@ -1,4 +1,5 @@
 import { USER_CAMPAIGN_ACTION_TYPES } from 'app/constants/user-campaign';
+import { LANDING_PAGE_ACTION_TYPES } from 'app/constants/landing-page';
 import { getContentTemplateService, getContentTemplateAsTypeService, postSaveDataCampainService } from '../services/user-campaign';
 import {
   bindingLandingPageService,
@@ -20,10 +21,10 @@ import {
   getDetail
 } from 'app/services/user-campaign';
 
-//count campaign
 const apiUrl = 'v1/campaigns';
 // Actions
 
+//display campaign detail to modal follow campaign's id
 export const getCampaignDetailById = (id, activePage, itemsPerPage, textSearch?) => {
   return {
     type: USER_CAMPAIGN_ACTION_TYPES.CAMPAIGN_DETAIL,
@@ -31,6 +32,7 @@ export const getCampaignDetailById = (id, activePage, itemsPerPage, textSearch?)
   };
 };
 
+// get quantity of campaign by status
 export const getCountCampaignByStatus = () => {
   return {
     type: USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_COUNT,
@@ -46,6 +48,7 @@ export const getCampaignInfoByStatus = status => {
   };
 };
 
+// Update status : 0->1, 1->0
 export const updateCampStatus = (data, id) => async dispatch => {
   await dispatch({
     type: USER_CAMPAIGN_ACTION_TYPES.UPDATE_STATUS,
@@ -63,13 +66,15 @@ export const getStepCampaign = id => {
   };
 };
 
-export const bindingLandingPage = (customerCode, idCampaing) => {
+// put landingpage content to empty page
+export const bindingLandingPage = (customerCode, idCampaign) => {
+  console.log('code', customerCode, 'id', idCampaign);
   return {
-    type: USER_CAMPAIGN_ACTION_TYPES.BINDING_LANDINGPAGE,
-    payload: bindingLandingPageService(customerCode, idCampaing)
+    type: LANDING_PAGE_ACTION_TYPES.BINDING_LANDINGPAGE,
+    payload: bindingLandingPageService(customerCode, idCampaign)
   };
 };
-//get detail list campagin customer
+//get campaign info by id
 export const getCampaignInfoById = id => {
   return {
     type: USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_ID,

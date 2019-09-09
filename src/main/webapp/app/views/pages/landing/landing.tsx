@@ -4,9 +4,15 @@ import { IRootState } from 'app/reducers';
 import { Link, RouteComponentProps } from 'react-router-dom';
 
 import './landing.scss';
-import { getCampaignInfoByStatus, getCampaignInfoById, getCountCampaignByStatus, bindingLandingPage } from 'app/actions/user-campaign';
+import {
+  getCampaignInfoByStatus,
+  getCampaignInfoById,
+  getCountCampaignByStatus,
+  bindingLandingPage,
+  landingSubmit
+} from 'app/actions/user-campaign';
 
-export interface ILandingProps extends StateProps, DispatchProps, RouteComponentProps<{ customerCode: string; idCampaing: string }> {
+export interface ILandingProps extends StateProps, DispatchProps, RouteComponentProps<{ customerCode: string; idCampaign: string }> {
   script?: string;
   htmlContent: string;
 }
@@ -28,41 +34,51 @@ export class Landing extends React.Component<ILandingProps, ILandingState> {
 
   componentWillMount() {
     const customerCode = this.props.match.params.customerCode;
-    const idCampaing = this.props.match.params.idCampaing;
-    console.info('idCampaing', idCampaing);
+    const idCampaign = this.props.match.params.idCampaign;
+    console.info('idCampaign', idCampaign);
     console.info('customerCode', customerCode);
 
     // call service get thong tin landing page o day
-    this.props.bindingLandingPage(idCampaing, customerCode);
+    this.props.bindingLandingPage(customerCode, idCampaign);
   }
 
   componentDidMount() {
     // load script xu ly form submit
-    const script = document.createElement('script');
+    // const script = document.createElement('script');
+
     // script.innerHTML = this.props.script;
-    script.async = true;
-    document.body.appendChild(script);
+    // script.async = true;
+    // document.body.appendChild(script);
+
+    // action for button submit in landingpage
+    // this.props.landingSubmit()
+    window.addEventListener('mousedown', event => {
+      let doc = document.getElementsByClassName['btn'];
+      console.log(doc);
+      // window.location.assign('http://localhost:9000/#/pages/ngm/9e6e2110-8a6e-4277-9180-00d60de614bd/customer/91a65346-f6c3-494a-9337-58e42e644421')
+    });
   }
 
   render() {
-    const htmlContent = this.props.htmlContent;
+    const landingContent = this.props.landingContent;
     return (
       // <div dangerouslySetInnerHTML={{__html: htmlContent}} />
-      <div dangerouslySetInnerHTML={{ __html: 'day la trang landing_page' }} />
+      <div dangerouslySetInnerHTML={{ __html: landingContent }} />
     );
   }
 }
 
-const mapStateToProps = ({ userCampaign }: IRootState) => ({
+const mapStateToProps = ({ userCampaign, landingPage }: IRootState) => ({
   camps: userCampaign.camps,
   loading: userCampaign.loading,
   total: userCampaign.total,
   totalActive: userCampaign.totalActive,
   totalFinish: userCampaign.totalFinish,
-  totalNotActive: userCampaign.totalNotActive
+  totalNotActive: userCampaign.totalNotActive,
+  landingContent: landingPage.landingContent
 });
 
-const mapDispatchToProps = { getCampaignInfoByStatus, getCampaignInfoById, getCountCampaignByStatus, bindingLandingPage };
+const mapDispatchToProps = { getCampaignInfoByStatus, getCampaignInfoById, getCountCampaignByStatus, bindingLandingPage, landingSubmit };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

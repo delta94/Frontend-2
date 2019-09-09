@@ -3,6 +3,7 @@ import { IPostMail } from './user-campaign';
 import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
 import { IUser } from 'app/common/model/user.model';
 import { USER_CAMPAIGN_ACTION_TYPES } from 'app/constants/user-campaign';
+import { LANDING_PAGE_ACTION_TYPES } from 'app/constants/landing-page';
 import { ICampaignInfo } from 'app/common/model/campaign-infomation.model';
 import { ICampaign } from 'app/common/model/campaign.model';
 import { ICampaignId, defaultValue } from 'app/common/model/campaign-id.model';
@@ -76,6 +77,7 @@ const initialState = {
   EvoucherDetail: {} as IEvoucherDetail,
   campDetail: [] as ReadonlyArray<ICampaignCustomer>,
 
+  landingContent: '',
   loading: false,
   total: 0,
   totalActive: 0,
@@ -97,6 +99,7 @@ export type LandingPageState = Readonly<typeof initialState>;
 // Reducer
 export default (state: LandingPageState = initialState, action): LandingPageState => {
   switch (action.type) {
+    case REQUEST(LANDING_PAGE_ACTION_TYPES.BINDING_LANDINGPAGE):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_ID):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_STATUS):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS):
@@ -125,6 +128,7 @@ export default (state: LandingPageState = initialState, action): LandingPageStat
         loading: true
       };
 
+    case FAILURE(LANDING_PAGE_ACTION_TYPES.BINDING_LANDINGPAGE):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_LIST_CUSTOMER_GROUP):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_ID):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_STATUS):
@@ -158,6 +162,11 @@ export default (state: LandingPageState = initialState, action): LandingPageStat
         postMailRequest: { code: 500, name: 'fail', openModal: false }
       };
 
+    case SUCCESS(LANDING_PAGE_ACTION_TYPES.BINDING_LANDINGPAGE):
+      return {
+        ...state,
+        landingContent: action.payload.data
+      };
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_EVOUCHER_DETAIL):
       return {
         ...state,

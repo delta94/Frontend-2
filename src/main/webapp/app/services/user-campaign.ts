@@ -17,20 +17,27 @@ const apiUrl = 'v1/campaigns';
  * @return {code: number, data: Object{item: [{id: string, name: string, gmail: string, catagories: string, }, pageIndex: number, pageSize: number] }}
  */
 
+// get campaign info by id
 export const getCampaignInfoByIdService = id => {
   return axios.get(`v1/campaign/${id}`);
 };
 
+// display list customer in campaign by campaign id
 export const getCampaignDetailService = (id, page, pageSize, textSearch?: string) => {
   return axios.get(`v1/campaign/${id}/customers${`?page=${page}&pageSize=${pageSize}&textSearch=${textSearch}`}`);
 };
+
+// display quantity of campaign  by status
 export const getCountCampaignService = () => {
   return axios.get(`v1/campaigns/count`);
 };
+
+// display list campaign by status follow tab by tab
 export const getCampaignInfoByStatusService = status => {
   return axios.get(`v1/campaigns?status=${status}`);
 };
 
+// update status 1->0, 0->1
 export const updateCampStatusService = data => {
   const urlUpdate = `v1/campaign/${data.id}/status`;
   return axios.post(urlUpdate, data);
@@ -58,8 +65,9 @@ export const getUserCategoriesService = () => {
   return axios.get<ICategory>(`${apiUrl}/category-name?textSearch`);
 };
 
-export const bindingLandingPageService = (customerCode, idCampaing) => {
-  return axios.get(`v1/campaign/${idCampaing}/customer/${customerCode}`);
+// display landing page content to empty page
+export const bindingLandingPageService = (customerCode, idCampaign) => {
+  return axios.get(`v1/campaign/${idCampaign}/customer/${customerCode}`);
 };
 
 export const getRolesService = () => {
