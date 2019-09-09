@@ -4,13 +4,8 @@ import { IRootState } from 'app/reducers';
 import { Link, RouteComponentProps } from 'react-router-dom';
 
 import './landing.scss';
-import {
-  getCampaignInfoByStatus,
-  getCampaignInfoById,
-  getCountCampaignByStatus,
-  bindingLandingPage,
-  landingSubmit
-} from 'app/actions/user-campaign';
+import { getCampaignInfoByStatus, getCampaignInfoById, getCountCampaignByStatus } from 'app/actions/user-campaign';
+import { bindingLandingPage } from 'app/actions/landing-page';
 
 export interface ILandingProps extends StateProps, DispatchProps, RouteComponentProps<{ customerCode: string; idCampaign: string }> {
   script?: string;
@@ -78,7 +73,7 @@ const mapStateToProps = ({ userCampaign, landingPage }: IRootState) => ({
   landingContent: landingPage.landingContent
 });
 
-const mapDispatchToProps = { getCampaignInfoByStatus, getCampaignInfoById, getCountCampaignByStatus, bindingLandingPage, landingSubmit };
+const mapDispatchToProps = { getCampaignInfoByStatus, getCampaignInfoById, getCountCampaignByStatus, bindingLandingPage };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

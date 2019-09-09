@@ -4,7 +4,6 @@ import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
 import { IUser } from 'app/common/model/user.model';
 import { USER_CAMPAIGN_ACTION_TYPES } from 'app/constants/user-campaign';
 import { LANDING_PAGE_ACTION_TYPES } from 'app/constants/landing-page';
-import { ICampaignInfo } from 'app/common/model/campaign-infomation.model';
 import { ICampaign } from 'app/common/model/campaign.model';
 import { ICampaignId, defaultValue } from 'app/common/model/campaign-id.model';
 import { ICampaignCustomer } from 'app/common/model/campaign-customer';
@@ -77,6 +76,7 @@ const initialState = {
   EvoucherDetail: {} as IEvoucherDetail,
   campDetail: [] as ReadonlyArray<ICampaignCustomer>,
 
+  // file html landing page
   landingContent: '',
   loading: false,
   total: 0,
