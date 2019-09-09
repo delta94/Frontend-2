@@ -16,7 +16,6 @@ import {
   postTestMailLandingService,
   getCategory,
   getStatitis,
-  getDuplicate,
   getEvoucher,
   getDetail
 } from 'app/services/user-campaign';
@@ -130,15 +129,7 @@ export const getStatistic = category => async dispatch => {
     type: USER_CAMPAIGN_ACTION_TYPES.GET_STATISTIC_PHONE_AND_EMAIL,
     payload: getStatitis(category)
   });
-  await dispatch(getCountDuplicate(category));
-  // dispatch (getSumAllContact(category))
 };
-
-//get count duplicate
-export const getCountDuplicate = category => ({
-  type: USER_CAMPAIGN_ACTION_TYPES.GET_COUNT_DUPLICATE,
-  payload: getDuplicate(category)
-});
 
 //get list evoucher
 export const getListEvoucher = () => ({
@@ -163,7 +154,7 @@ export const postSaveDataCampain = data => ({
   payload: postSaveDataCampainService(data)
 });
 
-//action count duplicate contact
+//action count all contact
 export const getSumAllContact = categories => ({
   type: USER_CAMPAIGN_ACTION_TYPES.SUM_ALL_CONTACT,
   payload: getSumAllContactService(categories)

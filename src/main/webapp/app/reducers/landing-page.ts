@@ -87,7 +87,6 @@ const initialState = {
   totalItems: 0,
   totalEmail: 0,
   totalPhone: 0,
-  duplicateContact: 0,
   listContentTemplate: [],
   listContentTemplateAsEmailIntro: [],
   listContentTemplateAsEmailEward: [],
@@ -139,7 +138,6 @@ export default (state: LandingPageState = initialState, action): LandingPageStat
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_STEP_CAMPAIGNS):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.FETCH_USER_CATEGORIES):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_STATISTIC_PHONE_AND_EMAIL):
-    case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_COUNT_DUPLICATE):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_LIST_EVOUCHER):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_EVOUCHER_DETAIL):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE):
@@ -182,8 +180,7 @@ export default (state: LandingPageState = initialState, action): LandingPageStat
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_COUNT_DUPLICATE):
       return {
         ...state,
-        loading: false,
-        duplicateContact: action.payload.data
+        loading: false
       };
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_STATISTIC_PHONE_AND_EMAIL):
       return {
