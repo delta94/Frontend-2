@@ -119,6 +119,7 @@ const initialState = {
   campDetail: [] as ReadonlyArray<ICampaignCustomer>,
 
   loading: false,
+  showUpdateSuccessAlert: true,
   total: 0,
   totalActive: 0,
   totalFinish: 0,
