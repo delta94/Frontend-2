@@ -42,6 +42,40 @@ export class Landing extends React.Component<ILandingProps, ILandingState> {
     const script = document.createElement('script');
 
     script.innerHTML = this.props.script;
+    script.innerHTML = `
+    function onSubmit() {
+      var path = window.location.pathname;
+      var arr = path.split("/");
+      var campaign = arr[arr.indexOf("campaign")+ 1];
+      var customer = arr[arr.indexOf("customer")+ 1];
+      var form=document.getElementById('mgm');
+            var campaignEl =  document.getElementById('campaign');
+            if (!campaignEl)
+            {
+            campaignEl = document.createElement('input');//prepare a new input DOM element
+        campaignEl.setAttribute('id', "campaign");//set the param name
+            campaignEl.setAttribute('name', "campaign");//set the param name
+        campaignEl.setAttribute('value', campaign);//set the value
+        campaignEl.setAttribute('type', 'hidden')//set the type
+      form.appendChild(campaignEl);
+      }
+            var customerEl =  document.getElementById('customer');
+            if (!customerEl)
+            {
+            customerEl = document.createElement('input');//prepare a new input DOM element
+        
+            customerEl.setAttribute('id', "customer");//set the param name
+            customerEl.setAttribute('name', "customer");//set the param name
+        customerEl.setAttribute('value', customer);//set the value
+        customerEl.setAttribute('type', 'hidden')//set the type
+      form.appendChild(customerEl);
+      }
+    
+            form.action= 'http://localhost:8088/v1/campaign/'+ campaign+'/customer/'+customer;
+      form.submit();
+    }
+    `;
+    console.log(script);
     script.async = true;
     document.body.appendChild(script);
 
@@ -56,10 +90,8 @@ export class Landing extends React.Component<ILandingProps, ILandingState> {
 
   render() {
     const landingContent = this.props.landingContent;
-    return (
-      // <div dangerouslySetInnerHTML={{__html: htmlContent}} />
-      <div dangerouslySetInnerHTML={{ __html: landingContent }} />
-    );
+
+    return <div dangerouslySetInnerHTML={{ __html: landingContent }} />;
   }
 }
 
