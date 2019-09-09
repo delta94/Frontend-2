@@ -10,8 +10,9 @@ import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import moment, { Moment } from 'moment';
 import { DateRangePicker } from 'react-dates';
-import Script from '../scripts/script';
+import Script from './scripts/script';
 import { ULTILS_TYPES } from '../../../../../constants/ultils';
+import { getNavigationFromDate, getNavigationToDate, getNavigationName, getNavigationDescription } from 'app/actions/navigation-info';
 
 export interface IinfoProps extends StateProps, DispatchProps {
   onClick: Function;
@@ -68,6 +69,8 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
         validateName: ULTILS_TYPES.EMPTY,
         valueName: event.target.value
       });
+
+      this.props.getNavigationName(event.target.value);
     } else {
       this.setState({
         validateName: <Translate contentKey="campaign.message-error.name" />
@@ -81,12 +84,15 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
         validateField: ULTILS_TYPES.EMPTY,
         valueDes: event.target.value
       });
+
+      this.props.getNavigationDescription(event.target.value);
     } else {
       this.setState({
         validateField: <Translate contentKey="campaign.message-error.des" />
       });
     }
   };
+
   //function show text scripts
   onClick = (event, id) => {
     if (event !== null) {
@@ -108,6 +114,7 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
       });
     }
   };
+
   onDatesChange = ({ startDate, endDate }) => {
     if (startDate) {
       this.setState({
@@ -116,10 +123,16 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
         endDate,
         valueDay: startDate
       });
+
+      this.props.getNavigationFromDate(new Date(startDate._d).toISOString());
     } else {
       this.setState({
         validateDay: <Translate contentKey="campaign.message-error.day" />
       });
+    }
+
+    if (endDate) {
+      this.props.getNavigationToDate(new Date(endDate._d).toISOString());
     }
   };
 
@@ -204,7 +217,12 @@ const mapStateToProps = ({ userCampaign }: IRootState) => ({
   loading: userCampaign.loading
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  getNavigationFromDate,
+  getNavigationToDate,
+  getNavigationName,
+  getNavigationDescription
+};
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

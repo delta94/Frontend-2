@@ -3,60 +3,13 @@ import '../review/review.scss';
 
 import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
 import React, { Fragment, Component, useState } from 'react';
+import { ISaveDataCampain } from 'app/common/model/campaign-navigation.model';
+import { connect } from 'react-redux';
+import { IRootState } from 'app/reducers';
 
-const dumpData = [
-  {
-    id: 1,
-    name: 'Test Name',
-    email: 'email 1',
-    mobile: 'mobile 1',
-    categories: 'categories 1',
-    contact: 100
-  },
-  {
-    id: 2,
-    name: 'Test Name 1',
-    email: 'email 1',
-    mobile: 'mobile 1',
-    categories: 'categories 1',
-    contact: 100
-  },
-  {
-    id: 3,
-    name: 'Test Name 2',
-    email: 'email 1',
-    mobile: 'mobile 1',
-    categories: 'categories 1',
-    contact: 100
-  },
-  {
-    id: 4,
-    name: 'Test Name 3',
-    email: 'email 1',
-    mobile: 'mobile 1',
-    categories: 'categories 1',
-    contact: 100
-  },
-
-  {
-    id: 5,
-    name: 'Test Name 4',
-    email: 'email 1',
-    mobile: 'mobile 1',
-    categories: 'categories 1',
-    contact: 100
-  },
-  {
-    id: 6,
-    name: 'Test Name 5',
-    email: 'email 1',
-    mobile: 'mobile 1',
-    categories: 'categories 1',
-    contact: 100
-  }
-];
-
-export interface ReviewProps {}
+export interface ReviewProps {
+  navigationValue?: ISaveDataCampain;
+}
 
 export interface ReviewState {
   activeTab: string;
@@ -93,6 +46,7 @@ class Review extends React.Component<ReviewProps, ReviewState> {
 
   render() {
     const { testMail } = this.state;
+    const { navigationInfo } = this.props;
     return (
       <Fragment>
         <div className="preview">
@@ -100,25 +54,26 @@ class Review extends React.Component<ReviewProps, ReviewState> {
           <div className="b-dashed">
             <div className="preview-title">
               <div className="info-title">
-                <span className="c-b">Đối tượng:</span> Tổng contact: <span className="c-g">{dumpData.length}</span>
+                <span className="c-b">Đối tượng:</span> Tổng contact: <span className="c-g">{navigationInfo.customerCampaigns.length}</span>
               </div>
               <div className="info-title">
                 Contact trùng: <span className="c-b">36</span>
               </div>
             </div>
             <Row>
-              {dumpData.map((item, index) => {
-                return (
-                  <Col md="4" key={item.name + index}>
-                    <div className="title-contact">
-                      <div className="camp-titles">{item.name}</div>
-                      <div className="camp-titles">
-                        <label>Tổng contact:</label> {item.contact}
+              {navigationInfo &&
+                navigationInfo.customerCampaigns.map((item, index) => {
+                  return (
+                    <Col md="4" key={item.name + index}>
+                      <div className="title-contact">
+                        <div className="camp-titles">{item.name}</div>
+                        <div className="camp-titles">
+                          <label>Tổng contact:</label> {item.contact}
+                        </div>
                       </div>
-                    </div>
-                  </Col>
-                );
-              })}
+                    </Col>
+                  );
+                })}
             </Row>
             <div className="b-b b-t all-content-review">
               <Row>
@@ -164,4 +119,16 @@ class Review extends React.Component<ReviewProps, ReviewState> {
   }
 }
 
-export default Review;
+const mapStateToProps = ({ navigationInfo }: IRootState) => ({
+  navigationInfo
+});
+
+const mapDispatchToProps = {};
+
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Review);

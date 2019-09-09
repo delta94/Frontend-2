@@ -137,7 +137,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
                 </TabPane>
                 {/* task 2  */}
                 <TabPane tabId={2}>
-                  <SelectReward onClick={this.handlerValueReward} />
+                  <SelectReward />
                   <div className="mt-5" />
                   <div className="clearfix" />
                 </TabPane>

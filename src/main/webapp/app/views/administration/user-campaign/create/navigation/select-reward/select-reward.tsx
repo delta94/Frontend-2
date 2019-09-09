@@ -4,10 +4,11 @@ import { ULTILS_TYPES } from '../../../../../../constants/ultils';
 import { Translate } from 'react-jhipster';
 import React from 'react';
 import Voucher from '../select-reward/voucher/voucher';
+import { connect } from 'react-redux';
+import { getNavigationReward } from 'app/actions/navigation-info';
+import { IRootState } from 'app/reducers';
 
-export interface SelectRewardProps {
-  onClick: Function;
-}
+export interface SelectRewardProps extends StateProps, DispatchProps {}
 
 export interface SelectRewardState {
   displayVoucher: string;
@@ -33,11 +34,11 @@ class SelectReward extends React.Component<SelectRewardProps, SelectRewardState>
       displayVoucher: ULTILS_TYPES.DISPLAY_VOUCHER_TICKET,
       type: ULTILS_TYPES.NO_SELECT_REWARD
     });
+
+    this.props.getNavigationReward({ type: parseInt(ULTILS_TYPES.NO_SELECT_REWARD) });
   };
   //function get value from seclect reward component to navigation
-  getValueVoucher = value => {
-    this.props.onClick(value);
-  };
+
   render() {
     return (
       <div className="select-reward">
@@ -61,7 +62,7 @@ class SelectReward extends React.Component<SelectRewardProps, SelectRewardState>
               </FormGroup>
             </FormGroup>
             <div className={this.state.displayVoucher}>
-              <Voucher onClick={this.getValueVoucher} />
+              <Voucher />
             </div>
           </CardBody>
         </Card>
@@ -70,4 +71,14 @@ class SelectReward extends React.Component<SelectRewardProps, SelectRewardState>
   }
 }
 
-export default SelectReward;
+const mapStateToProps = ({ navigationInfo }: IRootState) => ({});
+
+const mapDispatchToProps = { getNavigationReward };
+
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SelectReward);
