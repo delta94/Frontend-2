@@ -143,6 +143,7 @@ const initialState = {
 export type UserCampaignState = Readonly<typeof initialState>;
 
 // Reducer
+
 export default (state: UserCampaignState = initialState, action): UserCampaignState => {
   switch (action.type) {
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_ID):
@@ -281,6 +282,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
         // totalElements: action.payload.data.total
       };
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_COUNT):
+      debugger;
       return {
         ...state,
         loading: false,

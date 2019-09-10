@@ -41,17 +41,42 @@ export class Landing extends React.Component<ILandingProps, ILandingState> {
     // load script xu ly form submit
     const script = document.createElement('script');
 
-    script.innerHTML = this.props.script;
+    script.innerHTML = `
+    function onSubmit() {
+      var path = window.location.pathname;
+      var arr = path.split("/");
+      var campaign = arr[arr.indexOf("campaign")+ 1];
+      var customer = arr[arr.indexOf("customer")+ 1];
+      var form=document.getElementById('mgm');
+            var campaignEl =  document.getElementById('campaign');
+            if (!campaignEl)
+            {
+            campaignEl = document.createElement('input');//prepare a new input DOM element
+        campaignEl.setAttribute('id', "campaign");//set the param name
+            campaignEl.setAttribute('name', "campaign");//set the param name
+        campaignEl.setAttribute('value', campaign);//set the value
+        campaignEl.setAttribute('type', 'hidden')//set the type
+      form.appendChild(campaignEl);
+      }
+            var customerEl =  document.getElementById('customer');
+            if (!customerEl)
+            {
+            customerEl = document.createElement('input');//prepare a new input DOM element
+        
+            customerEl.setAttribute('id', "customer");//set the param name
+            customerEl.setAttribute('name', "customer");//set the param name
+        customerEl.setAttribute('value', customer);//set the value
+        customerEl.setAttribute('type', 'hidden')//set the type
+      form.appendChild(customerEl);
+      }
+  
+            form.action= 'http://localhost:8088/v1/campaign/'+ campaign+'/customer/'+customer;
+      form.submit();
+    }
+
+  `;
     script.async = true;
     document.body.appendChild(script);
-
-    // action for button submit in landingpage
-    // this.props.landingSubmit()
-    // window.addEventListener('mousedown', event => {
-    //   let doc = document.getElementsByClassName['btn'];
-    //   console.log(doc);
-    //   // window.location.assign('http://localhost:9000/#/pages/ngm/9e6e2110-8a6e-4277-9180-00d60de614bd/customer/91a65346-f6c3-494a-9337-58e42e644421')
-    // });
   }
 
   render() {

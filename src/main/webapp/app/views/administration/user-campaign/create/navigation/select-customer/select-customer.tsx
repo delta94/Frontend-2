@@ -54,7 +54,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
   };
 
   // function event button submit
-  handlerModal = (modal, categories, isSubmit, idCategory) => {
+  handlerModal = async (modal, categories, isSubmit, idCategory) => {
     this.setState({
       modal: modal
     });
@@ -73,13 +73,16 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
       this.state.listUser.push(elements);
       // get list from component select customer - to navigation
       this.props.onClick(elements);
-      this.props.getNavigationCustomerCampaign(elements);
+      await this.props.getNavigationCustomerCampaign(elements);
+
+      let cate = this.state.listUser.map(event => {
+        let cate = event.categories;
+        return cate;
+      });
+      this.props.getSumAllContact(cate);
+      cate = [];
+      console.log(cate);
     }
-    let cate = this.state.listUser.map(event => {
-      let cate = event.categories;
-      return cate;
-    });
-    this.props.getSumAllContact(cate);
   };
 
   //close element group
