@@ -105,7 +105,7 @@ export interface IPostRequestReturn {
   openModal?: boolean;
 }
 export interface ITotalContact {
-  totalContact: boolean;
+  totalContact: number;
 }
 const initialState = {
   listCampaignInfo: [] as ReadonlyArray<IlistCampaignInfo>,
