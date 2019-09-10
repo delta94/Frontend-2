@@ -126,7 +126,6 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
   render() {
     const { loading, camp, campDetail, isOpen, showAlert } = this.props;
     const { activePage, isConfirm } = this.state;
-    console.log(showAlert);
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
     return (
       <Modal isOpen={isOpen} fade={false}>

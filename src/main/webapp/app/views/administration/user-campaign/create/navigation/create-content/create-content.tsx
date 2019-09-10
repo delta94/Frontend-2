@@ -150,7 +150,6 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
         }
       });
 
-      console.log(listChildren);
       sel = window.getSelection();
       if (sel.rangeCount && canFix) {
         range = sel.getRangeAt(0);
@@ -171,7 +170,6 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
   };
 
   toggleLanding = (event, typeMail) => {
-    console.log(event, typeMail);
     this.addContentTemplate(event.id, typeMail);
   };
 
@@ -181,7 +179,6 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
 
     if (typeMail === 'EMAIL_EWARD') {
       listContentTemplateAsTypeEmailEward.forEach(item => {
-        console.log(item);
         if (item.id === id) {
           defaultValueContentEmailEward = item.content;
           testEmailEntityForEward.subject = item.subject;
@@ -193,7 +190,6 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
 
     if (typeMail === 'EMAIL_INTRO') {
       listContentTemplateAsTypeEmailIntro.forEach(item => {
-        console.log(item);
         if (item.id === id) {
           defaultValueContentEmailIntro = item.content;
           testEmailEntityForIntro.subject = item.subject;

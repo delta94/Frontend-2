@@ -298,7 +298,6 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
         totalNotActive: action.payload.data.totalNotActive
       };
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.UPDATE_STATUS):
-      console.log(initialState.showUpdateSuccessAlert);
       return {
         ...state,
         loading: false,

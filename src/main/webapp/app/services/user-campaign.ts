@@ -89,7 +89,6 @@ export const createUserService = user => {
 };
 
 export const updateUserService = user => {
-  console.log(user);
   const urlUpdate = `${apiUrl}/${user.id}/update`;
   return axios.post(urlUpdate, user);
 };
@@ -131,7 +130,6 @@ export const UploaddFile = data => {
 export const getContentPageParamsService = () => {
   const requestUrl = `${`v1/content-param`}`;
   var data = axios.get(requestUrl);
-  console.log(data);
   return data;
 };
 

@@ -78,8 +78,6 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
         displayPause: ''
       });
     }
-
-    console.log(this.state.displayPause);
     // this.props.getCampaignDetailById(id);
     const { activePage, itemsPerPage, textSearch, isConfirm } = this.state;
     this.props.getCampaignDetailById(id, activePage, itemsPerPage, textSearch);
