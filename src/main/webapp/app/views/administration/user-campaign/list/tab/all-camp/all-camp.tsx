@@ -14,6 +14,7 @@ import './../all-camp/all-camp.scss';
 import ModalDisplay from './modal/modal';
 import { ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
 import { ITEMS_PER_MODAL_TABLE } from 'app/constants/common';
+import SweetAlert from 'sweetalert-react';
 
 export interface IAllCampProps extends StateProps, DispatchProps {
   history: Object;
@@ -30,6 +31,7 @@ export interface IAllCampState {
   itemsPerPage: number;
   id: string;
   displayPause: string;
+  isConfirm: boolean;
 }
 class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
   constructor(props) {
@@ -43,13 +45,16 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
       itemsPerPage: ITEMS_PER_MODAL_TABLE,
       textSearch: '',
       categories: '',
-      id: ''
+      id: '',
+      isConfirm: false
     };
   }
+
   //handler close modal
-  handerModal = event => {
+  handerModal = (event, confirm) => {
     this.setState({
-      modal: event
+      modal: event,
+      isConfirm: confirm
     });
   };
   onShow = async id => {
@@ -76,7 +81,7 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
 
     console.log(this.state.displayPause);
     // this.props.getCampaignDetailById(id);
-    const { activePage, itemsPerPage, textSearch } = this.state;
+    const { activePage, itemsPerPage, textSearch, isConfirm } = this.state;
     this.props.getCampaignDetailById(id, activePage, itemsPerPage, textSearch);
   };
 
@@ -95,6 +100,18 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
           history={this.props.history}
         />
         <Loader message={spinner1} show={loading} priority={5}>
+          <SweetAlert
+            title="Updated"
+            confirmButtonColor=""
+            show={this.state.isConfirm}
+            text="Cập nhật thành công."
+            type="success"
+            onConfirm={() =>
+              this.setState({
+                isConfirm: false
+              })
+            }
+          />
           <Fragment>
             <div className="grid-border">
               {/* day la trang camp*/}
@@ -168,7 +185,8 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
 const mapStateToProps = ({ userCampaign }: IRootState) => ({
   camps: userCampaign.camps,
   camp: userCampaign.camp,
-  loading: userCampaign.loading
+  loading: userCampaign.loading,
+  showAlert: userCampaign.showUpdateSuccessAlert
 });
 
 const mapDispatchToProps = { getCampaignInfoByStatus, getCampaignInfoById, getCampaignDetailById, updateCampStatus };

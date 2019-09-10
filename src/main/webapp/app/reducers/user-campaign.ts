@@ -121,7 +121,7 @@ const initialState = {
   campDetail: [] as ReadonlyArray<ICampaignCustomer>,
 
   loading: false,
-  showUpdateSuccessAlert: true,
+  showUpdateSuccessAlert: false,
   total: 0,
   totalActive: 0,
   totalFinish: 0,
@@ -168,8 +168,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.SUM_ALL_CONTACT):
       return {
         ...state,
-        loading: true,
-        showUpdateSuccessAlert: false
+        loading: true
       };
 
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.INFORMATION_CAMPAIGN):
@@ -297,9 +296,16 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
         total: action.payload.data.total,
         totalActive: action.payload.data.totalActive,
         totalFinish: action.payload.data.totalFinish,
-        totalNotActive: action.payload.data.totalNotActive,
+        totalNotActive: action.payload.data.totalNotActive
+      };
+    case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.UPDATE_STATUS):
+      console.log(initialState.showUpdateSuccessAlert);
+      return {
+        ...state,
+        loading: false,
         showUpdateSuccessAlert: true
       };
+
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.CAMPAIGN_DETAIL):
       return {
         ...state,
