@@ -30,12 +30,10 @@ export const getCampaignDetailById = (id, activePage, itemsPerPage, textSearch?)
 };
 
 // get quantity of campaign by status
-export const getCountCampaignByStatus = () => {
-  return {
-    type: USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_COUNT,
-    payload: getCountCampaignService()
-  };
-};
+export const getCountCampaignByStatus = () => ({
+  type: USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_COUNT,
+  payload: getCountCampaignService()
+});
 
 //get list equal status
 export const getCampaignInfoByStatus = status => {

@@ -41,6 +41,7 @@ export class Landing extends React.Component<ILandingProps, ILandingState> {
     // load script xu ly form submit
     const script = document.createElement('script');
 
+    script.innerHTML = this.props.script;
     script.innerHTML = `
     function onSubmit() {
       var path = window.location.pathname;
@@ -81,10 +82,8 @@ export class Landing extends React.Component<ILandingProps, ILandingState> {
 
   render() {
     const landingContent = this.props.landingContent;
-    return (
-      // <div dangerouslySetInnerHTML={{__html: htmlContent}} />
-      <div dangerouslySetInnerHTML={{ __html: landingContent }} />
-    );
+
+    return <div dangerouslySetInnerHTML={{ __html: landingContent }} />;
   }
 }
 

@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircle, faClock, faUser, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faCircle, faClock, faUser, faSearch, faKaaba } from '@fortawesome/free-solid-svg-icons';
 import { Loader as LoaderAnim } from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Table, Row, Col } from 'reactstrap';
@@ -15,6 +15,8 @@ import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pag
 import { ITEMS_PER_MODAL_TABLE } from 'app/constants/common';
 import { Route, RouteComponentProps, Router } from 'react-router-dom';
 import Ionicon from 'react-ionicons';
+import SweetAlert from 'sweetalert-react';
+import { Button } from 'app/DemoPages/Components/GuidedTours/Examples/Button';
 
 export const KEY_ENTER = 'Enter';
 
@@ -38,6 +40,10 @@ export interface IModalDisplayState {
 
   displayPause: string;
   displayPlay: string;
+
+  //handler show alert complete or error
+  isUpdate: boolean;
+  isConfirm: boolean;
 }
 class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayState> {
   constructor(props) {
@@ -51,7 +57,9 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
       textSearch: '',
       categories: '',
       displayPause: '',
-      displayPlay: ''
+      displayPlay: '',
+      isUpdate: false,
+      isConfirm: false
     };
   }
   // search customer on modal
@@ -85,22 +93,6 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
         id: camp.id,
         status: 0
       };
-    } else if (camp.status === 0) {
-      data = {
-        id: camp.id,
-        status: 1
-      };
-    } else {
-      data = {
-        id: camp.id,
-        status: data.status
-      };
-    }
-    if (camp.status === 1) {
-      data = {
-        id: camp.id,
-        status: 0
-      };
       this.setState({
         displayPause: 'ios-play'
       });
@@ -112,16 +104,21 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
       this.setState({
         displayPause: 'ios-square'
       });
+    } else {
+      data = {
+        id: camp.id,
+        status: data.status
+      };
     }
     this.props.updateCampStatus(data, this.props.value);
     this.props.onClick(false, this.state.displayPause);
-    // window.location.reload(false)
-    // window.location.reload();
   };
+  // window.location.reload(false)
+  // window.location.reload();
 
   render() {
-    const { loading, camp, campDetail, isOpen } = this.props;
-    const { activePage } = this.state;
+    const { loading, camp, campDetail, isOpen, showAlert } = this.props;
+    const { activePage, isConfirm } = this.state;
 
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
     return (
@@ -145,13 +142,60 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
                 </Col>
                 <Col md="2">
                   <span className="modal-icon" style={{ float: 'right' }}>
-                    <Ionicon
+                    {/* <Ionicon */}
+
+                    <Button
                       icon={this.props.showIcon}
-                      onClick={() => this.updateStatus(camp)}
-                      color="#3866DD"
-                      fontSize="2rem"
-                      beat={true}
-                    />
+                      color="danger"
+                      size="sm"
+                      // onClick={() => this.updateStatus(camp)}
+                      onClick={() => {
+                        this.setState({
+                          ...this.state,
+                          isUpdate: true
+                        });
+                      }}
+                      // color="#3866DD"
+                      // fontSize="2rem"
+                      // beat={true}
+                    >
+                      <SweetAlert
+                        title="Cập nhật trạng thái ?"
+                        confirmButtonColor=""
+                        // text="Mục đã xoá sẽ không thể khôi phục !"
+                        show={this.state.isUpdate}
+                        showCancelButton
+                        onCancel={() => {
+                          this.setState({
+                            ...this.state,
+                            isUpdate: false
+                          });
+                        }}
+                        onConfirm={() => {
+                          // this.props.deleteUser(idUser, activePage, itemsPerPage, categories, textSearch);
+                          this.updateStatus(camp);
+                          this.setState({
+                            ...this.state,
+                            isUpdate: false,
+                            isConfirm: showAlert
+                          });
+                        }}
+                      />
+                      <SweetAlert
+                        title="Updated"
+                        confirmButtonColor=""
+                        show={isConfirm}
+                        text="Cập nhật thành công."
+                        type="success"
+                        onConfirm={() =>
+                          this.setState({
+                            ...this.state,
+                            isConfirm: false
+                          })
+                        }
+                      />
+                      {/* </Ionicon> */}
+                    </Button>
                   </span>
                 </Col>
                 <Col md="3">
@@ -315,7 +359,8 @@ const mapStateToProps = ({ userCampaign }: IRootState) => ({
   loading: userCampaign.loading,
   campDetail: userCampaign.campDetail,
   totalElements: userCampaign.totalElements,
-  pageCount: Math.ceil(userCampaign.totalElements / ITEMS_PER_MODAL_TABLE)
+  pageCount: Math.ceil(userCampaign.totalElements / ITEMS_PER_MODAL_TABLE),
+  showAlert: userCampaign.showUpdateSuccessAlert
 });
 
 const mapDispatchToProps = { getCampaignInfoByStatus, getCampaignInfoById, getCampaignDetailById, updateCampStatus };
