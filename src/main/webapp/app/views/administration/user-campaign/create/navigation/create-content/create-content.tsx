@@ -235,148 +235,149 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
             onConfirm={() => this.setState({ openModal: false })}
           />
         </div>
-
-        <div className="add-content">
-          {/* Title */}
-          <div className="add-content-title">
-            <CardTitle>Tạo nội dung</CardTitle>
-            <div className="interactive">
-              <label>Hình thức tương tác</label>
-              <Dropdown selection={true} defaultValue="Chọn hình thức" listArray={[{ id: 2, name: 'EMAIL' }]} />
-            </div>
-          </div>
-
-          {/* Detail */}
-          <div className="add-content-detail">
-            {/* Title For Detail 1 */}
-            <div className="content-detail">
-              <div className="add-content-detail-title">
-                <Button color="primary" style={{ marginBottom: '1rem', width: '40px' }} onClick={this.handleshowMailForFriendState}>
-                  1
-                </Button>
-                <label>GỬI MAIL GIỚI THIỆU BẠN BÈ</label>
-                <div className="interactive" style={{ display: showMailForFriend ? 'none' : 'inline-block' }}>
-                  <div className="test-mail">
-                    <Input
-                      placeHolder="Điền email test"
-                      onChange={event => {
-                        this.handleInput(event, 'emailTo', 'EMAIL_INTRO');
-                      }}
-                    />
-                    <Button color="primary" onClick={() => this.sendTestMailLanding('EMAIL_INTRO')}>
-                      Test
-                    </Button>
-                  </div>
-                </div>
+        <div className="create-content">
+          <div className="add-content">
+            {/* Title */}
+            <div className="add-content-title">
+              <CardTitle>Tạo nội dung</CardTitle>
+              <div className="interactive">
+                <label>Hình thức tương tác</label>
+                <Dropdown selection={true} defaultValue="Chọn hình thức" listArray={[{ id: 2, name: 'EMAIL' }]} />
               </div>
-              {/* Template Fix */}
-              <Collapse isOpen={!showMailForFriend}>
-                <Card>
-                  <CardBody>
-                    <div className="template-add">
-                      <label>Mẫu email gửi</label>
-                      <Dropdown
-                        selection={true}
-                        defaultValue={'Chọn mẫu email'}
-                        listArray={listTemplateMailIntro}
-                        toggleDropdown={event => this.toggleLanding(event, 'EMAIL_INTRO')}
-                      />
-                    </div>
-                    {/* mail data */}
-                    <div className="input-mail-and-more">
-                      <Input
-                        placeHolder={'Tiêu đề mail'}
-                        onChange={event => {
-                          this.handleInput(event, 'subject', 'EMAIL_INTRO');
-                        }}
-                      />
-                      <Dropdown
-                        selection={true}
-                        defaultValue="Tham số"
-                        listArray={listIndexParams}
-                        toggleDropdown={event => this.toggleDropdownParams(event, 'EMAIL_INTRO')}
-                      />
-                    </div>
-                    <div className="content-fixing">
-                      <FroalaEditor
-                        tag="textarea"
-                        config={{
-                          placeholderText: 'Tạo nội dung của bạn',
-                          events: {}
-                        }}
-                        model={defaultValueContentEmailIntro}
-                        onModelChange={event => this.handleModelChange(event, 'EMAIL_INTRO')}
-                      />
-                    </div>
-                  </CardBody>
-                </Card>
-              </Collapse>
             </div>
 
-            {/* Title For Detail 2 */}
-            <div className="content-detail ">
-              <div className="add-content-detail-title">
-                <Button color="primary" style={{ marginBottom: '1rem', width: '40px' }} onClick={this.handleshowMailForFriendState}>
-                  2
-                </Button>
-                <label>GỬI MAIL TẶNG QUÀ</label>
-                <div className="interactive" style={{ display: showMailForFriend ? 'inline-block' : 'none' }}>
-                  <div className="test-mail">
-                    <Input
-                      placeHolder="Điền email test"
-                      onChange={event => {
-                        this.handleInput(event, 'emailTo', 'EMAIL_EWARD');
-                      }}
-                    />
-                    <Button color="primary" onClick={() => this.sendTestMailLanding('EMAIL_EWARD')}>
-                      Test
-                    </Button>
+            {/* Detail */}
+            <div className="add-content-detail">
+              {/* Title For Detail 1 */}
+              <div className="content-detail">
+                <div className="add-content-detail-title">
+                  <Button color="primary" style={{ marginBottom: '1rem', width: '40px' }} onClick={this.handleshowMailForFriendState}>
+                    1
+                  </Button>
+                  <label>GỬI MAIL GIỚI THIỆU BẠN BÈ</label>
+                  <div className="interactive" style={{ display: showMailForFriend ? 'none' : 'inline-block' }}>
+                    <div className="test-mail">
+                      <Input
+                        placeHolder="Điền email test"
+                        onChange={event => {
+                          this.handleInput(event, 'emailTo', 'EMAIL_INTRO');
+                        }}
+                      />
+                      <Button color="primary" onClick={() => this.sendTestMailLanding('EMAIL_INTRO')}>
+                        Test
+                      </Button>
+                    </div>
                   </div>
                 </div>
+                {/* Template Fix */}
+                <Collapse isOpen={!showMailForFriend}>
+                  <Card>
+                    <CardBody>
+                      <div className="template-add">
+                        <label>Mẫu email gửi</label>
+                        <Dropdown
+                          selection={true}
+                          defaultValue={'Chọn mẫu email'}
+                          listArray={listTemplateMailIntro}
+                          toggleDropdown={event => this.toggleLanding(event, 'EMAIL_INTRO')}
+                        />
+                      </div>
+                      {/* mail data */}
+                      <div className="input-mail-and-more">
+                        <Input
+                          placeHolder={'Tiêu đề mail'}
+                          onChange={event => {
+                            this.handleInput(event, 'subject', 'EMAIL_INTRO');
+                          }}
+                        />
+                        <Dropdown
+                          selection={true}
+                          defaultValue="Tham số"
+                          listArray={listIndexParams}
+                          toggleDropdown={event => this.toggleDropdownParams(event, 'EMAIL_INTRO')}
+                        />
+                      </div>
+                      <div className="content-fixing">
+                        <FroalaEditor
+                          tag="textarea"
+                          config={{
+                            placeholderText: 'Tạo nội dung của bạn',
+                            events: {}
+                          }}
+                          model={defaultValueContentEmailIntro}
+                          onModelChange={event => this.handleModelChange(event, 'EMAIL_INTRO')}
+                        />
+                      </div>
+                    </CardBody>
+                  </Card>
+                </Collapse>
               </div>
 
-              {/* Template Fix */}
-              <Collapse isOpen={showMailForFriend}>
-                <Card>
-                  <CardBody>
-                    <div className="template-add">
-                      <label>Mẫu email gửi</label>
-                      <Dropdown
-                        selection={true}
-                        defaultValue={'Chọn mẫu mail'}
-                        listArray={listContentTemplateAsTypeEmailEward}
-                        toggleDropdown={event => this.toggleLanding(event, 'EMAIL_EWARD')}
-                      />
-                    </div>
-                    {/* mail data */}
-                    <div className="input-mail-and-more">
+              {/* Title For Detail 2 */}
+              <div className="content-detail ">
+                <div className="add-content-detail-title">
+                  <Button color="primary" style={{ marginBottom: '1rem', width: '40px' }} onClick={this.handleshowMailForFriendState}>
+                    2
+                  </Button>
+                  <label>GỬI MAIL TẶNG QUÀ</label>
+                  <div className="interactive" style={{ display: showMailForFriend ? 'inline-block' : 'none' }}>
+                    <div className="test-mail">
                       <Input
-                        placeHolder={'Tiêu đề mail'}
+                        placeHolder="Điền email test"
                         onChange={event => {
-                          this.handleInput(event, 'subject', 'EMAIL_EWARD');
+                          this.handleInput(event, 'emailTo', 'EMAIL_EWARD');
                         }}
                       />
-                      <Dropdown
-                        selection={true}
-                        defaultValue="Tham số"
-                        listArray={listIndexParams}
-                        toggleDropdown={event => this.toggleDropdownParams(event, 'EMAIL_EWARD')}
-                      />
+                      <Button color="primary" onClick={() => this.sendTestMailLanding('EMAIL_EWARD')}>
+                        Test
+                      </Button>
                     </div>
-                    <div className="content-fixing">
-                      <FroalaEditor
-                        tag="textarea"
-                        config={{
-                          placeholderText: 'Tạo nội dung của bạn',
-                          events: {}
-                        }}
-                        model={defaultValueContentEmailEward}
-                        onModelChange={event => this.handleModelChange(event, 'EMAIL_EWARD')}
-                      />
-                    </div>
-                  </CardBody>
-                </Card>
-              </Collapse>
+                  </div>
+                </div>
+
+                {/* Template Fix */}
+                <Collapse isOpen={showMailForFriend}>
+                  <Card>
+                    <CardBody>
+                      <div className="template-add">
+                        <label>Mẫu email gửi</label>
+                        <Dropdown
+                          selection={true}
+                          defaultValue={'Chọn mẫu mail'}
+                          listArray={listContentTemplateAsTypeEmailEward}
+                          toggleDropdown={event => this.toggleLanding(event, 'EMAIL_EWARD')}
+                        />
+                      </div>
+                      {/* mail data */}
+                      <div className="input-mail-and-more">
+                        <Input
+                          placeHolder={'Tiêu đề mail'}
+                          onChange={event => {
+                            this.handleInput(event, 'subject', 'EMAIL_EWARD');
+                          }}
+                        />
+                        <Dropdown
+                          selection={true}
+                          defaultValue="Tham số"
+                          listArray={listIndexParams}
+                          toggleDropdown={event => this.toggleDropdownParams(event, 'EMAIL_EWARD')}
+                        />
+                      </div>
+                      <div className="content-fixing">
+                        <FroalaEditor
+                          tag="textarea"
+                          config={{
+                            placeholderText: 'Tạo nội dung của bạn',
+                            events: {}
+                          }}
+                          model={defaultValueContentEmailEward}
+                          onModelChange={event => this.handleModelChange(event, 'EMAIL_EWARD')}
+                        />
+                      </div>
+                    </CardBody>
+                  </Card>
+                </Collapse>
+              </div>
             </div>
           </div>
         </div>

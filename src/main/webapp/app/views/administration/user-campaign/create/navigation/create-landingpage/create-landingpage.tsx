@@ -152,63 +152,64 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
             </Button>
           </ModalFooter>
         </Modal>
-
-        <div className="add-content">
-          {/* Title */}
-          <div className="add-content-title">
-            <CardTitle>Tạo landingpage</CardTitle>
-            <div className="interactive">
-              <label onClick={this.openModalPreview} style={{ textDecoration: 'underline' }}>
-                <FontAwesomeIcon icon={faEye} />
-                Preview
-              </label>
+        <div className="create-landing">
+          <div className="add-content">
+            {/* Title */}
+            <div className="add-content-title">
+              <CardTitle>Tạo landingpage</CardTitle>
+              <div className="interactive">
+                <label onClick={this.openModalPreview} style={{ textDecoration: 'underline' }}>
+                  <FontAwesomeIcon icon={faEye} />
+                  Preview
+                </label>
+              </div>
             </div>
-          </div>
 
-          {/* Detail */}
-          <div className="add-content-detail">
-            {/* Title For Detail 1 */}
-            <div className="content-detail">
-              {/* Template Fix */}
-              <Collapse isOpen={!showMailForFriend}>
-                <Card>
-                  <CardBody>
-                    <div className="input-mail-and-more">
-                      <div style={{ width: 'calc(100% - 150px)', display: 'flex' }}>
-                        <div style={{ padding: '0px 5px', lineHeight: '40px' }}>Chọn landingpage</div>
-                        <div>
+            {/* Detail */}
+            <div className="add-content-detail">
+              {/* Title For Detail 1 */}
+              <div className="content-detail">
+                {/* Template Fix */}
+                <Collapse isOpen={!showMailForFriend}>
+                  <Card>
+                    <CardBody>
+                      <div className="input-mail-and-more">
+                        <div style={{ width: 'calc(100% - 150px)', display: 'flex', marginBottom: '5px' }}>
+                          <div style={{ padding: '0px 5px', lineHeight: '40px' }}>Chọn landingpage</div>
+                          <div>
+                            <Dropdown
+                              selection={true}
+                              defaultValue="Chọn landing"
+                              listArray={listTemplate}
+                              toggleDropdown={this.toggleLanding}
+                            />
+                          </div>
+                        </div>
+                        <div style={{ right: '0px' }}>
                           <Dropdown
                             selection={true}
-                            defaultValue="Chọn landing"
-                            listArray={listTemplate}
-                            toggleDropdown={this.toggleLanding}
+                            defaultValue="Tham số"
+                            listArray={listIndexParams}
+                            toggleDropdown={this.toggleDropdownParams}
                           />
                         </div>
                       </div>
-                      <div style={{ right: '0px' }}>
-                        <Dropdown
-                          selection={true}
-                          defaultValue="Tham số"
-                          listArray={listIndexParams}
-                          toggleDropdown={this.toggleDropdownParams}
+                      <div className="content-fixing">
+                        <FroalaEditor
+                          tag="textarea"
+                          config={{
+                            placeholderText: 'Tạo nội dung của bạn',
+                            iframe: true,
+                            events: {}
+                          }}
+                          model={defaultValueContent}
+                          onModelChange={this.handleModelChange}
                         />
                       </div>
-                    </div>
-                    <div className="content-fixing">
-                      <FroalaEditor
-                        tag="textarea"
-                        config={{
-                          placeholderText: 'Tạo nội dung của bạn',
-                          iframe: true,
-                          events: {}
-                        }}
-                        model={defaultValueContent}
-                        onModelChange={this.handleModelChange}
-                      />
-                    </div>
-                  </CardBody>
-                </Card>
-              </Collapse>
+                    </CardBody>
+                  </Card>
+                </Collapse>
+              </div>
             </div>
           </div>
         </div>

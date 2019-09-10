@@ -1,89 +1,93 @@
-.add-content {
-  position: relative;
-  .btn-primary {
-    margin: 0px !important;
-  }
-
-  label {
-    width: auto;
-    margin: 0px !important;
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    padding: 0px 15px;
-  }
-
-  .add-content-title {
-    height: 40px;
-    display: flex;
-    margin-bottom: 20px;
-
-    .interactive {
-      position: absolute;
-      display: flex;
-      top: 0px;
-      right: 0px;
-      line-height: 43px;
-
-      .form-group {
-        margin: 0px;
-        width: 150px !important;
-      }
-    }
-  }
-
-  .add-content-detail {
+.create-landing {
+  .add-content {
+    padding: 35px;
     position: relative;
-    border-radius: 3px;
-    overflow-y: auto;
+    .btn-primary {
+      margin: 0px !important;
+    }
 
-    .content-detail {
-      border: 1px solid #ced4da;
-      border-radius: 3px;
+    label {
+      width: auto;
+      margin: 0px !important;
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      padding: 0px 15px;
+    }
 
-      .add-content-detail-title {
+    .add-content-title {
+      height: 40px;
+      display: flex;
+      // margin-bottom: 20px;
+
+      .interactive {
+        position: absolute;
         display: flex;
-        position: relative;
-        background: #eff9ff;
-        box-sizing: border-box;
-        border-radius: 3px;
+        top: 21px;
+        right: 25px;
         line-height: 43px;
 
-        .interactive {
-          position: absolute;
-          display: flex;
-          top: 0px;
-          right: 0px;
-          line-height: 43px;
-          padding: 1px 5px 1px 0px;
+        .form-group {
+          margin: 0px;
+          width: 150px !important;
+        }
+      }
+    }
 
-          .test-mail {
+    .add-content-detail {
+      position: relative;
+      border-radius: 3px;
+      overflow-y: auto;
+
+      .content-detail {
+        border: 1px solid #ced4da;
+        border-radius: 3px;
+
+        .add-content-detail-title {
+          display: flex;
+          position: relative;
+          background: #eff9ff;
+          box-sizing: border-box;
+          border-radius: 3px;
+          line-height: 43px;
+
+          .interactive {
+            position: absolute;
             display: flex;
+            top: 0px;
+            right: 0px;
+            line-height: 43px;
+            padding: 1px 5px 1px 0px;
+
+            .test-mail {
+              display: flex;
+            }
           }
         }
-      }
 
-      .template-add {
-        padding: 10px 0px;
-        display: flex;
-        line-height: 40px;
+        .template-add {
+          padding: 10px 0px;
+          display: flex;
+          line-height: 40px;
 
-        label {
-          padding: 0px 15px 0px 0px;
+          label {
+            padding: 0px 15px 0px 0px;
+          }
         }
-      }
 
-      .input-mail-and-more {
-        padding: 10px 0px;
-        input {
-          margin: 0px 5px 0px 0px;
+        .input-mail-and-more {
+          display: flex;
+          padding: 10px 0px;
+          input {
+            margin: 0px 5px 0px 0px;
+          }
         }
-      }
 
-      .content-fixing {
-        margin-bottom: 10px;
-        overflow-y: auto;
+        .content-fixing {
+          margin-bottom: 10px;
+          overflow-y: auto;
+        }
       }
     }
   }
