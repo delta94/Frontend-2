@@ -103,6 +103,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
             <div className="p-3">
               <div className="dropdown-menu p-0 dropdown-menu-inline dropdown-menu-rounded dropdown-menu-hover-primary">
                 {listStep.map(event => {
+                  let isPass = event.step && parseInt(event.step, 0) < activeTab;
                   var elements = (
                     <DropdownItem
                       toggle={false}
@@ -111,10 +112,13 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
                         this.toggle(event.step);
                       }}
                     >
-                      <div id="circle">
+                      <div id="circle" style={{ backgroundColor: isPass ? '#3866DD' : '' }}>
                         <label className="step-icon"> {event.step}</label>
                       </div>
-                      <label className="descrition-item"> {event.description}</label>
+                      <label className="descrition-item" style={{ color: isPass ? '#3866DD' : '#CED4DA' }}>
+                        {' '}
+                        {event.description}
+                      </label>
                     </DropdownItem>
                   );
                   return elements;
