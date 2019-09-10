@@ -104,7 +104,9 @@ export interface IPostRequestReturn {
   name?: number;
   openModal?: boolean;
 }
-
+export interface ITotalContact {
+  totalContact: boolean;
+}
 const initialState = {
   listCampaignInfo: [] as ReadonlyArray<IlistCampaignInfo>,
   listStepCampaign: [] as ReadonlyArray<IStepCampaign>,
@@ -128,6 +130,7 @@ const initialState = {
   totalItems: 0,
   totalEmail: 0,
   totalPhone: 0,
+  totalContact: {} as ITotalContact,
   duplicateContact: 0,
   listContentTemplate: [],
   listContentTemplateAsTypeLanding: [],
@@ -161,6 +164,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_LANDING):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL_INTRO):
     case REQUEST(USER_CAMPAIGN_ACTION_TYPES.POST_SAVE_DATA_CAMPAIN):
+    case REQUEST(USER_CAMPAIGN_ACTION_TYPES.SUM_ALL_CONTACT):
       return {
         ...state,
         loading: true,
@@ -190,6 +194,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL_EWARD):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL_INTRO):
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_LANDING):
+    case FAILURE(USER_CAMPAIGN_ACTION_TYPES.SUM_ALL_CONTACT):
       return {
         ...state,
         loading: false
@@ -213,6 +218,12 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
         postMailRequest: { code: 500, name: 'fail', openModal: false }
       };
 
+    case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.SUM_ALL_CONTACT):
+      return {
+        ...state,
+        loading: false,
+        totalContact: action.payload.data
+      };
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_EVOUCHER_DETAIL):
       return {
         ...state,
