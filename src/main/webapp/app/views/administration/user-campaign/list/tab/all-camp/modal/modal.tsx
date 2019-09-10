@@ -110,8 +110,15 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
         status: data.status
       };
     }
+
     this.props.updateCampStatus(data, this.props.value);
-    this.props.onClick(false, this.state.displayPause);
+    if (this.props.showAlert === true) {
+      this.setState({
+        isConfirm: this.props.showAlert
+      });
+    }
+
+    this.props.onClick(false, this.state.isConfirm);
   };
   // window.location.reload(false)
   // window.location.reload();
@@ -119,7 +126,7 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
   render() {
     const { loading, camp, campDetail, isOpen, showAlert } = this.props;
     const { activePage, isConfirm } = this.state;
-
+    console.log(showAlert);
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
     return (
       <Modal isOpen={isOpen} fade={false}>
@@ -142,12 +149,11 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
                 </Col>
                 <Col md="2">
                   <span className="modal-icon" style={{ float: 'right' }}>
-                    {/* <Ionicon */}
-
-                    <Button
+                    <Ionicon
+                      // <Button
                       icon={this.props.showIcon}
-                      color="danger"
-                      size="sm"
+                      // color="danger"
+                      // size="sm"
                       // onClick={() => this.updateStatus(camp)}
                       onClick={() => {
                         this.setState({
@@ -155,47 +161,32 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
                           isUpdate: true
                         });
                       }}
-                      // color="#3866DD"
-                      // fontSize="2rem"
-                      // beat={true}
-                    >
-                      <SweetAlert
-                        title="Cập nhật trạng thái ?"
-                        confirmButtonColor=""
-                        // text="Mục đã xoá sẽ không thể khôi phục !"
-                        show={this.state.isUpdate}
-                        showCancelButton
-                        onCancel={() => {
-                          this.setState({
-                            ...this.state,
-                            isUpdate: false
-                          });
-                        }}
-                        onConfirm={() => {
-                          // this.props.deleteUser(idUser, activePage, itemsPerPage, categories, textSearch);
-                          this.updateStatus(camp);
-                          this.setState({
-                            ...this.state,
-                            isUpdate: false,
-                            isConfirm: showAlert
-                          });
-                        }}
-                      />
-                      <SweetAlert
-                        title="Updated"
-                        confirmButtonColor=""
-                        show={isConfirm}
-                        text="Cập nhật thành công."
-                        type="success"
-                        onConfirm={() =>
-                          this.setState({
-                            ...this.state,
-                            isConfirm: false
-                          })
-                        }
-                      />
-                      {/* </Ionicon> */}
-                    </Button>
+                      color="#3866DD"
+                      fontSize="2rem"
+                      beat={true}
+                    />
+                    <SweetAlert
+                      title="Cập nhật trạng thái ?"
+                      confirmButtonColor=""
+                      // text="Mục đã xoá sẽ không thể khôi phục !"
+                      show={this.state.isUpdate}
+                      showCancelButton
+                      onCancel={() => {
+                        this.setState({
+                          isUpdate: false
+                        });
+                      }}
+                      onConfirm={() => {
+                        // this.props.deleteUser(idUser, activePage, itemsPerPage, categories, textSearch);
+                        this.updateStatus(camp);
+                        this.setState({
+                          isUpdate: false,
+                          isConfirm: showAlert
+                        });
+                      }}
+                    />
+
+                    {/* </Button> */}
                   </span>
                 </Col>
                 <Col md="3">
