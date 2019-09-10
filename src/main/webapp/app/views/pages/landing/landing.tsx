@@ -70,22 +70,14 @@ export class Landing extends React.Component<ILandingProps, ILandingState> {
         customerEl.setAttribute('type', 'hidden')//set the type
       form.appendChild(customerEl);
       }
-    
+  
             form.action= 'http://localhost:8088/v1/campaign/'+ campaign+'/customer/'+customer;
       form.submit();
     }
-    `;
-    console.log(script);
+
+  `;
     script.async = true;
     document.body.appendChild(script);
-
-    // action for button submit in landingpage
-    // this.props.landingSubmit()
-    // window.addEventListener('mousedown', event => {
-    //   let doc = document.getElementsByClassName['btn'];
-    //   console.log(doc);
-    //   // window.location.assign('http://localhost:9000/#/pages/ngm/9e6e2110-8a6e-4277-9180-00d60de614bd/customer/91a65346-f6c3-494a-9337-58e42e644421')
-    // });
   }
 
   render() {

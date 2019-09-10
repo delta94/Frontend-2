@@ -201,9 +201,9 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
                     <Translate contentKey="campaign.descrition" />
                   </Label>
                   <Input type="textarea" name="text" id="exampleText" onChange={this.onChangeField} maxLength="640" />
-                  <p>{this.state.validateField}</p>
                 </Col>
               </Row>
+              <p>{this.state.validateField}</p>
               <Script value={this.state} onClick={this.onClick} />
             </Card>
           </div>
