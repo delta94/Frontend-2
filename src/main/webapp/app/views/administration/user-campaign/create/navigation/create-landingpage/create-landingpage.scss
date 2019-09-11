@@ -38,7 +38,6 @@
     .add-content-detail {
       position: relative;
       border-radius: 3px;
-      overflow-y: auto;
 
       .content-detail {
         border: 1px solid #ced4da;
@@ -86,7 +85,6 @@
 
         .content-fixing {
           margin-bottom: 10px;
-          overflow-y: auto;
         }
       }
     }

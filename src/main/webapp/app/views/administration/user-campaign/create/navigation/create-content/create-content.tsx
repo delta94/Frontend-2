@@ -137,7 +137,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
   };
 
   componentWillReceiveProps(nextProps, prevState) {
-    if (nextProps.postMailRequest.openModal === true) {
+    if (nextProps.postMailRequest.openModal === true && prevState.openModal === false) {
       this.setState({ openModal: true, type: 'success', title: 'Thành công', text: 'Đã gửi đến email' });
     }
   }
