@@ -13,6 +13,7 @@ import 'froala-editor/js/plugins.pkgd.min.js';
 import FroalaEditor from 'react-froala-wysiwyg';
 import { getContentTemplateAsType, getContentPageParams, postTestMailLanding } from '../../../../../../actions/user-campaign';
 import { getNavigationContentTemplates } from '../../../../../../actions/navigation-info';
+import { openModal, closeModal } from '../../../../../../actions/modal';
 import { IRootState } from '../../../../../../reducers/index';
 import { Translate } from 'react-jhipster';
 
@@ -136,12 +137,6 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
     }
   };
 
-  componentWillReceiveProps(nextProps, prevState) {
-    if (nextProps.postMailRequest.openModal === true) {
-      this.setState({ openModal: true, type: 'success', title: 'Thành công', text: 'Đã gửi đến email' });
-    }
-  }
-
   closeModal = () => {
     setTimeout(() => {
       this.setState({ openModal: false });
@@ -235,7 +230,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
       subjectIntro
     } = this.state;
 
-    let { listContentPageParams, listContentTemplateAsTypeEmailEward, listContentTemplateAsTypeEmailIntro } = this.props;
+    let { listContentPageParams, listContentTemplateAsTypeEmailEward, listContentTemplateAsTypeEmailIntro, modalState } = this.props;
 
     const listIndexParams = listContentPageParams.map(item => {
       return {
@@ -256,12 +251,12 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
       <Fragment>
         <div style={{ position: 'fixed', top: '100px', right: '300px', zIndex: 2 }}>
           <SweetAlert
-            title={title}
+            title={modalState.title}
             confirmButtonColor=""
-            show={openModal}
-            text={text}
-            type={type}
-            onConfirm={() => this.setState({ openModal: false })}
+            show={modalState.show}
+            text={modalState.text}
+            type={modalState.show}
+            onConfirm={() => this.props.closeModal}
           />
         </div>
         <div className="create-content">
@@ -430,12 +425,13 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-const mapStateToProps = ({ userCampaign }: IRootState) => {
+const mapStateToProps = ({ userCampaign, handleModal }: IRootState) => {
   return {
     listContentPageParams: userCampaign.listCampainContentParams,
     postMailRequest: userCampaign.postMailRequest,
     listContentTemplateAsTypeEmailIntro: userCampaign.listContentTemplateAsTypeEmailIntro,
-    listContentTemplateAsTypeEmailEward: userCampaign.listContentTemplateAsTypeEmailEward
+    listContentTemplateAsTypeEmailEward: userCampaign.listContentTemplateAsTypeEmailEward,
+    modalState: handleModal
   };
 };
 
@@ -443,7 +439,9 @@ const mapDispatchToProps = {
   getContentPageParams,
   postTestMailLanding,
   getContentTemplateAsType,
-  getNavigationContentTemplates
+  getNavigationContentTemplates,
+  openModal,
+  closeModal
 };
 export default connect(
   mapStateToProps,

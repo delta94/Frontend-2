@@ -17,6 +17,7 @@ import {
   getEvoucher,
   getDetail
 } from 'app/services/user-campaign';
+import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
 
 const apiUrl = 'v1/campaigns';
 // Actions

@@ -76,6 +76,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
       this.setState({ activeTab: activeTabNumber });
     }
   };
+
   render() {
     const { endTab, activeTab } = this.state;
     const { listStep, navigationInfo } = this.props;
