@@ -9,7 +9,7 @@ import SelectCustomer from './select-customer/select-customer';
 import SelectReward from './select-reward/select-reward';
 import CreateLandingPage from './create-landingpage/create-landingpage';
 import CreateContent from './create-content/create-content';
-import Review from './review/review';
+import Review from './select-customer/review';
 import { TabContent, TabPane, DropdownItem, Card, Col, Row, Button } from 'reactstrap';
 import classnames from 'classnames';
 import { getContentPageParams, postSaveDataCampain } from 'app/actions/user-campaign';
@@ -76,6 +76,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
       this.setState({ activeTab: activeTabNumber });
     }
   };
+
   render() {
     const { endTab, activeTab } = this.state;
     const { listStep, navigationInfo } = this.props;
@@ -156,7 +157,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
                 </TabPane>
               </TabContent>
             </Row>
-            <Row className="b-t footer">
+            <Row className="b-t footer" style={{ padding: '10px' }}>
               <Col xs="8" sm="6" md="6">
                 <Button
                   className="btnBack"

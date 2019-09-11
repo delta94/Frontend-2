@@ -17,6 +17,7 @@ import {
   getEvoucher,
   getDetail
 } from 'app/services/user-campaign';
+import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
 
 const apiUrl = 'v1/campaigns';
 // Actions
@@ -136,7 +137,7 @@ export const getContentTemplate = id => ({
   payload: getContentTemplateService(id)
 });
 
-//TODO: post save data campain
+//post save data campain
 export const postSaveDataCampain = data => ({
   type: USER_CAMPAIGN_ACTION_TYPES.POST_SAVE_DATA_CAMPAIN,
   payload: postSaveDataCampainService(data)

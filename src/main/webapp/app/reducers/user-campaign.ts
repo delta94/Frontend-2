@@ -1,3 +1,4 @@
+import { IOpenModal } from './modal';
 import { ICategory } from './../common/model/category.model';
 import { IPostMail } from './user-campaign';
 import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
@@ -7,6 +8,10 @@ import { ICampaignInfo } from 'app/common/model/campaign-infomation.model';
 import { ICampaign } from 'app/common/model/campaign.model';
 import { ICampaignId, defaultValue } from 'app/common/model/campaign-id.model';
 import { ICampaignCustomer } from 'app/common/model/campaign-customer';
+import { openModal } from 'app/actions/modal';
+import store from 'react-redux';
+import { registerLocale } from 'app/config/translation';
+import { createStore } from 'redux';
 
 export interface IlistCampaignInfo {
   id?: string;
@@ -136,8 +141,13 @@ const initialState = {
   listContentTemplateAsTypeLanding: [],
   listContentTemplateAsTypeEmailEward: [],
   listContentTemplateAsTypeEmailIntro: [],
-  postMailRequest: { code: 202, name: 'ok', openModal: false },
-  postSaveDataCampainService: { code: 202, name: 'ok', openModal: false }
+  postMailRequest: {
+    type: 'success',
+    text: 'Gửi mail thành công',
+    title: 'Thông báo',
+    show: true,
+    payload: {}
+  } as IOpenModal
 };
 
 export type UserCampaignState = Readonly<typeof initialState>;
@@ -210,14 +220,24 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
       return {
         ...state,
         loading: false,
-        postMailRequest: { code: 500, name: 'fail', openModal: false }
+        postMailRequest: {
+          type: 'success',
+          text: 'Gửi mail thất bại',
+          title: 'Thông báo',
+          show: true
+        }
       };
 
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.POST_SAVE_DATA_CAMPAIN):
       return {
         ...state,
         loading: false,
-        postMailRequest: { code: 500, name: 'fail', openModal: false }
+        postMailRequest: {
+          type: 'error',
+          text: 'Gửi mail thất bại',
+          title: 'Thông báo',
+          show: true
+        }
       };
 
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.SUM_ALL_CONTACT):
@@ -334,7 +354,12 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
       return {
         ...state,
         loading: false,
-        postMailRequest: { code: 202, name: 'Đã gửi mail thành công', openModal: true }
+        postMailRequest: {
+          type: 'success',
+          text: 'Gửi mail thành công',
+          title: 'Thông báo',
+          show: true
+        }
       };
     // success on get content template
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE):
@@ -349,7 +374,12 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
       return {
         ...state,
         loading: false,
-        postMailRequest: { code: 202, name: 'Đã gửi mail thành công', openModal: true }
+        postMailRequest: {
+          type: 'success',
+          text: 'Gửi mail thành công',
+          title: 'Thông báo',
+          show: false
+        }
       };
 
     // success on get content template as type
