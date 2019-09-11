@@ -32,6 +32,7 @@ export interface IModalDisplayProps extends StateProps, DispatchProps {
 export interface IModalDisplayState {
   // loading page
   loading: boolean;
+  //display modal
   modal: boolean;
   textSearch: string;
   categories: string;
@@ -149,11 +150,7 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
                 <Col md="2">
                   <span className="modal-icon" style={{ float: 'right' }}>
                     <Ionicon
-                      // <Button
                       icon={this.props.showIcon}
-                      // color="danger"
-                      // size="sm"
-                      // onClick={() => this.updateStatus(camp)}
                       onClick={() => {
                         this.setState({
                           ...this.state,
@@ -176,7 +173,6 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
                         });
                       }}
                       onConfirm={() => {
-                        // this.props.deleteUser(idUser, activePage, itemsPerPage, categories, textSearch);
                         this.updateStatus(camp);
                         this.setState({
                           isUpdate: false,
@@ -184,8 +180,6 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
                         });
                       }}
                     />
-
-                    {/* </Button> */}
                   </span>
                 </Col>
                 <Col md="3">
