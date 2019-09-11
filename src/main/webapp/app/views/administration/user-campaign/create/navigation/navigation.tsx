@@ -76,16 +76,6 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
       this.setState({ activeTab: activeTabNumber });
     }
   };
-
-  //function get value Customer group
-  handlerValueCustomer = list => {
-    this.state.listCustomerGroup.push(list);
-  };
-  //function get value Reward
-  handlerValueReward = list => {
-    console.info(list);
-  };
-
   render() {
     const { endTab, activeTab } = this.state;
     const { listStep, navigationInfo } = this.props;

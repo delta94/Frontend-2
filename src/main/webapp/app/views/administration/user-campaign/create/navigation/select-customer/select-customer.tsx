@@ -92,7 +92,6 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
         return cate;
       });
       this.props.getSumAllContact(cate);
-      cate = [];
       this.setState({ listUser });
     }
   };

@@ -5,7 +5,7 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 
 import './landing.scss';
 import { getCampaignInfoByStatus, getCampaignInfoById, getCountCampaignByStatus } from 'app/actions/user-campaign';
-import { bindingLandingPage } from 'app/actions/landing-page';
+import { bindingLandingPage, landingSubmit } from 'app/actions/landing-page';
 
 export interface ILandingProps extends StateProps, DispatchProps, RouteComponentProps<{ customerCode: string; idCampaign: string }> {
   script?: string;
@@ -44,9 +44,9 @@ export class Landing extends React.Component<ILandingProps, ILandingState> {
     script.innerHTML = this.props.script;
     script.innerHTML = `
     function onSubmit() {
-      var path = window.location.pathname;
+      var path = window.location.href;
       var arr = path.split("/");
-      var campaign = arr[arr.indexOf("campaign")+ 1];
+      var campaign = arr[arr.indexOf("mgm")+ 1];
       var customer = arr[arr.indexOf("customer")+ 1];
       var form=document.getElementById('mgm');
             var campaignEl =  document.getElementById('campaign');
@@ -70,13 +70,12 @@ export class Landing extends React.Component<ILandingProps, ILandingState> {
         customerEl.setAttribute('type', 'hidden')//set the type
       form.appendChild(customerEl);
       }
-  
-            form.action= 'http://localhost:9000/#/v1/campaign/'+ campaign+'/customer/'+customer;
+       form.action= 'http://192.168.1.63:8088/v1/campaign/'+ campaign+'/customer/'+customer;
       form.submit();
     }
-
   `;
     script.async = true;
+
     document.body.appendChild(script);
   }
 
@@ -97,7 +96,7 @@ const mapStateToProps = ({ userCampaign, landingPage }: IRootState) => ({
   landingContent: landingPage.landingContent
 });
 
-const mapDispatchToProps = { getCampaignInfoByStatus, getCampaignInfoById, getCountCampaignByStatus, bindingLandingPage };
+const mapDispatchToProps = { getCampaignInfoByStatus, getCampaignInfoById, getCountCampaignByStatus, bindingLandingPage, landingSubmit };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
