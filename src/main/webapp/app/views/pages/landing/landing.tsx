@@ -73,6 +73,7 @@ export class Landing extends React.Component<ILandingProps, ILandingState> {
        form.action= 'http://192.168.1.63:8088/v1/campaign/'+ campaign+'/customer/'+customer;
       form.submit();
     }
+    
   `;
     script.async = true;
 

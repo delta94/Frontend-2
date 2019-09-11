@@ -88,8 +88,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
       this.props.getNavigationCustomerCampaign(listCustomer);
 
       let cate = this.state.listUser.map(event => {
-        let cate = event.categories;
-        return cate;
+        return event.categories;
       });
       this.props.getSumAllContact(cate);
       this.setState({ listUser });
@@ -105,8 +104,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
     });
     if (this.state.listUser.length > 0) {
       let cate = this.state.listUser.map(event => {
-        let cate = event.categories;
-        return cate;
+        return event.categories;
       });
       this.props.getSumAllContact(cate);
     }
