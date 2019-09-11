@@ -16,6 +16,7 @@ import { IRootState } from 'app/reducers';
 import { getContentTemplate, getContentTemplateAsType } from '../../../../../../actions/user-campaign';
 import { getNavigationContentTemplates } from 'app/actions/navigation-info';
 import PreviewLanding from './preview-landing/preview-landing';
+import { IParamester } from 'app/common/model/campaign-navigation.model';
 
 // export interface I
 
@@ -26,19 +27,22 @@ export interface ICreateLandingPageState {
   defaultValueContent: string;
   defaultValueContentPopup: string;
   openModal: boolean;
+  paramester: IParamester[];
+  subjectLanding: string;
 }
 
 class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICreateLandingPageState> {
-  constructor(props) {
-    super(props);
-  }
-
   state: ICreateLandingPageState = {
     showMailForFriend: false,
     defaultValueContent: '',
     openModal: false,
-    defaultValueContentPopup: ''
+    defaultValueContentPopup: '',
+    paramester: [],
+    subjectLanding: ''
   };
+  constructor(props) {
+    super(props);
+  }
 
   componentDidMount() {
     this.props.getContentPageParams();
@@ -76,10 +80,27 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
 
   toggleLanding = event => {
     this.addContentTemplate(event.id);
+    this.props.getNavigationContentTemplates(event.id, 'FORM_LANDING', 'templateId');
   };
 
   handleModelChange = event => {
-    this.setState({ defaultValueContent: event });
+    let { listCampainContentParams } = this.props;
+    let paramester = [];
+    listCampainContentParams.forEach(item => {
+      if (event.indexOf(item.paramCode) > 0) {
+        paramester.push(item);
+      }
+    });
+
+    let newParamester = paramester.map(item => ({
+      id: item.id,
+      name: item.paramName,
+      code: item.paramCode
+    }));
+
+    this.setState({ defaultValueContent: event, paramester });
+    this.props.getNavigationContentTemplates(newParamester, 'FORM_LANDING', 'parameter');
+    this.props.getNavigationContentTemplates(event, 'FORM_LANDING', 'content');
     this.setValueForPopUp(event);
   };
 
@@ -90,6 +111,7 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
     let listParam = listCampainContentParams.map(item => {
       return { paramCode: item.paramCode, sampleValue: item.sampleValue };
     });
+
     for (let i = 0; i < listParam.length; i++) {
       let item = listParam[i];
       let paramCode = item.paramCode;
@@ -104,14 +126,16 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
 
   addContentTemplate = id => {
     let { listContentTemplateAsTypeLanding } = this.props;
-    let { defaultValueContent } = this.state;
+    let { defaultValueContent, subjectLanding } = this.state;
     listContentTemplateAsTypeLanding.forEach(item => {
       if (item.id === id) {
         defaultValueContent = item.content;
+        subjectLanding = item.name;
       }
     });
 
     this.setState({ defaultValueContent });
+    this.props.getNavigationContentTemplates(subjectLanding, 'FORM_LANDING', 'subject');
   };
 
   openModalPreview = () => {
@@ -121,8 +145,6 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
   toggleModal = () => {
     this.setState({ openModal: false });
   };
-
-  // handleInput = () => { };
 
   render() {
     const { showMailForFriend, defaultValueContent, openModal, defaultValueContentPopup } = this.state;

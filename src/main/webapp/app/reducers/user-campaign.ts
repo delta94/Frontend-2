@@ -209,12 +209,14 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.POST_TEST_MAIL):
       return {
         ...state,
+        loading: false,
         postMailRequest: { code: 500, name: 'fail', openModal: false }
       };
 
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.POST_SAVE_DATA_CAMPAIN):
       return {
         ...state,
+        loading: false,
         postMailRequest: { code: 500, name: 'fail', openModal: false }
       };
 

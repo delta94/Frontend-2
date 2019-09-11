@@ -143,7 +143,7 @@ export const postTestMailLandingService = (data: ICampaignTestMailLanding) => {
 
 //TODO: POST v1/campaign => Api lưu thông tin chiến dịch
 export const postSaveDataCampainService = (data: any) => {
-  const requestURL = `${`v1/campain`}`;
+  const requestURL = `${`v1/campaign`}`;
   return axios.post(requestURL, data);
 };
 
