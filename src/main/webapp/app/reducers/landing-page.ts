@@ -254,7 +254,6 @@ export default (state: LandingPageState = initialState, action): LandingPageStat
 
     // success on get campain action content params
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_PARAMS):
-      console.log('data is', action.payload.data);
       return {
         ...state,
         loading: false,

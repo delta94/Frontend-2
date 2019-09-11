@@ -71,7 +71,7 @@ export class Landing extends React.Component<ILandingProps, ILandingState> {
       form.appendChild(customerEl);
       }
   
-            form.action= 'http://localhost:8088/v1/campaign/'+ campaign+'/customer/'+customer;
+            form.action= 'http://localhost:9000/#/v1/campaign/'+ campaign+'/customer/'+customer;
       form.submit();
     }
 

@@ -46,7 +46,6 @@ export class UserCreate extends React.Component<IUserCreateProps, IUserCreateSta
     var file = checkFile.split('.')[1];
     //todo: khong duoc hard code
     if (file === USER_MANAGE_ACTION_TYPES.XLS || file === USER_MANAGE_ACTION_TYPES.XLSX) {
-      console.log(this.props.fileList);
       this.setState({
         ...this.state,
         fileImport: acceptedFiles[0],
@@ -84,7 +83,6 @@ export class UserCreate extends React.Component<IUserCreateProps, IUserCreateSta
   render() {
     const { downloadFileExcel, loading, downloadTemplate } = this.props;
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
-    console.log(this.props.fileList);
     return (
       <Container fluid>
         <Loader message={spinner1} show={loading} priority={1}>

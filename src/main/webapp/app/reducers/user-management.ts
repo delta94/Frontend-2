@@ -89,7 +89,6 @@ export default (state: UserManagementState = initialState, action): UserManageme
         showUpdateSuccessAlert: false
       };
     case SUCCESS(USER_MANAGE_ACTION_TYPES.FETCH_USER_CATEGORIES):
-      console.log(action.payload.data);
       return {
         ...state,
         loading: false,
@@ -128,7 +127,6 @@ export default (state: UserManagementState = initialState, action): UserManageme
     case SUCCESS(USER_MANAGE_ACTION_TYPES.CREATE_USER):
 
     case SUCCESS(USER_MANAGE_ACTION_TYPES.UPDATE_USER):
-      debugger;
       return {
         ...state,
         loading: false,
@@ -156,7 +154,6 @@ export default (state: UserManagementState = initialState, action): UserManageme
       };
     case SUCCESS(USER_MANAGE_ACTION_TYPES.UPLOAD_FILE):
     case SUCCESS(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILERE_SULTS):
-      console.log(action);
       const { listErrorImport, total, success, error, fileName } = action.payload.data;
       return {
         ...state,

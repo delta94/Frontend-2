@@ -121,7 +121,7 @@ const initialState = {
   campDetail: [] as ReadonlyArray<ICampaignCustomer>,
 
   loading: false,
-  showUpdateSuccessAlert: false,
+  showUpdateSuccessAlert: true,
   total: 0,
   totalActive: 0,
   totalFinish: 0,
@@ -291,7 +291,6 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
         // totalElements: action.payload.data.total
       };
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.FETCH_CAMPAIGNS_COUNT):
-      debugger;
       return {
         ...state,
         loading: false,
@@ -301,7 +300,6 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
         totalNotActive: action.payload.data.totalNotActive
       };
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.UPDATE_STATUS):
-      console.log(initialState.showUpdateSuccessAlert);
       return {
         ...state,
         loading: false,

@@ -22,12 +22,7 @@ const apiUrl = 'v1/customer';
  */
 
 export const getUsersService = (page, pageSize, category?: string, textSearch?: string) => {
-  // const urlCategory = category ? category.map(cate => cate.id) : '';
-  // if (category) {
-  //   console.log(urlCategory.join(','));
-  // }
   const requestUrl = `${apiUrl}${`?page=${page}&pageSize=${pageSize}&category=${category}&textSearch=${textSearch}`}`;
-  // const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}&category=${category ? urlCategory.join(',') : ''}` : ''}`;
   return axios.get<IUser>(requestUrl);
 };
 
@@ -60,7 +55,6 @@ export const createUserService = user => {
 };
 
 export const updateUserService = user => {
-  console.log(user);
   const urlUpdate = `${apiUrl}/${user.id}/update`;
   return axios.post(urlUpdate, user);
 };

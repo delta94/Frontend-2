@@ -183,7 +183,6 @@ export class UserDetail extends React.Component<IUserDetailProps> {
                         }
                         if (listUser.length > 10) {
                           listUser.splice(10, listUser.length);
-                          console.log(listUser.length);
                         }
                         if (event.type !== '') {
                           var tableElement = (

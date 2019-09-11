@@ -29,7 +29,6 @@ class Vocher extends React.Component<VocherProps, VocherState> {
 
   //show evoucher
   onChangeList = data => {
-    console.log(data);
     this.setState({
       value: data
     });

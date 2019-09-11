@@ -14,7 +14,6 @@ export const landingSubmit = (customerCode, campaignId) => {
 
 // put landingpage content to empty page
 export const bindingLandingPage = (customerCode, idCampaign) => {
-  console.log('code', customerCode, 'id', idCampaign);
   return {
     type: LANDING_PAGE_ACTION_TYPES.BINDING_LANDINGPAGE,
     payload: bindingLandingPageService(customerCode, idCampaign)
