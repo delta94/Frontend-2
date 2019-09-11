@@ -1,10 +1,10 @@
-import { Col, Row, CardTitle, Button, ModalBody, Table, Modal, ModalHeader, Label } from 'reactstrap';
+import React, { Fragment, Component, useState } from 'react';
+import { Col, Row, CardTitle, Button, ModalBody, Table, Modal, ModalHeader, Label, Input } from 'reactstrap';
 import '../customer-dialog/customer-dialog.scss';
 import Loader from 'react-loader-advanced';
 import { Loader as LoaderAnim } from 'react-loaders';
 import { Translate } from 'react-jhipster';
 import Ionicon from 'react-ionicons';
-import React, { Fragment, Component, useState } from 'react';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import ReactPaginate from 'react-paginate';
@@ -139,7 +139,7 @@ class CustomerDialog extends React.Component<CustomerDialogProps, CustomerDialog
             </Col>
             <Col md="3" />
             <Col md="6" className="group-btn">
-              <input type="text" className="form-control" onKeyDown={this.search} placeholder="Tìm kiếm" />
+              <Input type="text" className="form-control" onKeyDown={this.search} placeholder="Tìm kiếm" /> <i className="pe-7s-search" />
               <Button color="primary" type="submit" className="save-right" onClick={this.handlerSaveForm}>
                 <FontAwesomeIcon icon="save" />
                 &nbsp;

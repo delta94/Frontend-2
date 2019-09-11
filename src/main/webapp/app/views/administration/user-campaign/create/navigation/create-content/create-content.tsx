@@ -3,7 +3,7 @@ import '../create-content/create-content.scss';
 import Dropdown from '../../../../../../layout/DropDown/Dropdown';
 import SweetAlert from 'sweetalert-react';
 
-import { Card, Collapse, Button, Input, CardTitle, CardBody } from 'reactstrap';
+import { Card, Collapse, Button, Input, CardTitle, CardBody, Form } from 'reactstrap';
 import { connect } from 'react-redux';
 
 import 'froala-editor/css/froala_style.min.css';
@@ -12,6 +12,8 @@ import 'froala-editor/js/plugins.pkgd.min.js';
 
 import FroalaEditor from 'react-froala-wysiwyg';
 import { getContentTemplateAsType, getContentPageParams, postTestMailLanding } from '../../../../../../actions/user-campaign';
+import { getNavigationContentTemplates } from '../../../../../../actions/navigation-info';
+import { openModal, closeModal } from '../../../../../../actions/modal';
 import { IRootState } from '../../../../../../reducers/index';
 import { Translate } from 'react-jhipster';
 
@@ -34,6 +36,10 @@ export interface ICreateContentState {
   type: string;
   text: string;
   title: string;
+  emailEward: string;
+  subjectEward: string;
+  emailIntro: string;
+  subjectIntro: string;
 }
 
 class CreateContent extends React.PureComponent<ICreateContentProps, ICreateContentState, ICreateTestMailEntity> {
@@ -44,6 +50,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
     showMailForFriend: false,
     defaultValueContentEmailIntro: '',
     defaultValueContentEmailEward: '',
+
     testEmailEntityForIntro: {
       emailTo: '',
       subject: '',
@@ -55,6 +62,11 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
       subject: '',
       content: ''
     },
+
+    emailEward: '',
+    subjectEward: '',
+    emailIntro: '',
+    subjectIntro: '',
     openModal: false,
     success: false,
     type: 'error',
@@ -73,45 +85,49 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
     this.setState({ showMailForFriend });
   };
 
-  handleInput = (event, type, typeMail) => {
-    let contentData = event.target.value;
-    let { testEmailEntityForIntro, testEmailEntityForEward } = this.state;
-
-    if (typeMail === 'EMAIL_INTRO') {
-      testEmailEntityForIntro[type] = contentData;
-      this.setState({ testEmailEntityForIntro });
-    }
-
-    if (typeMail === 'EMAIL_EWARD') {
-      testEmailEntityForEward[type] = contentData;
-      this.setState({ testEmailEntityForEward });
-    }
-  };
-
   handleModelChange = (event, typeMail) => {
-    let { testEmailEntityForIntro, testEmailEntityForEward } = this.state;
+    let { listContentPageParams } = this.props;
+    let paramester = [];
+
+    listContentPageParams.forEach(item => {
+      if (event.indexOf(item.paramCode) > 0) {
+        paramester.push(item);
+      }
+    });
+
+    let newParamester = paramester.map(item => ({
+      id: item.id,
+      name: item.paramName,
+      code: item.paramCode
+    }));
 
     if (typeMail === 'EMAIL_INTRO') {
-      this.setState({ defaultValueContentEmailIntro: event, testEmailEntityForIntro });
+      this.setState({ defaultValueContentEmailIntro: event });
+      this.props.getNavigationContentTemplates(newParamester, 'INTRO_EMAIL', 'parameter');
+      this.props.getNavigationContentTemplates(event, 'INTRO_EMAIL', 'content');
     }
 
     if (typeMail === 'EMAIL_EWARD') {
-      this.setState({ defaultValueContentEmailEward: event, testEmailEntityForEward });
+      this.setState({ defaultValueContentEmailEward: event });
+      this.props.getNavigationContentTemplates(newParamester, 'REWARD_EMAIL', 'parameter');
+      this.props.getNavigationContentTemplates(event, 'REWARD_EMAIL', 'content');
     }
   };
 
   sendTestMailLanding = typeMail => {
-    let { testEmailEntityForEward, testEmailEntityForIntro, defaultValueContentEmailIntro, defaultValueContentEmailEward } = this.state;
+    let { defaultValueContentEmailIntro, defaultValueContentEmailEward, emailEward, emailIntro, subjectEward, subjectIntro } = this.state;
     let testMail: ICreateTestMailEntity = { emailTo: '', subject: '', content: '' };
 
     if (typeMail === 'EMAIL_EWARD') {
-      testEmailEntityForEward.content = defaultValueContentEmailEward;
-      testMail = testEmailEntityForEward;
+      testMail.emailTo = emailEward;
+      testMail.subject = subjectEward;
+      testMail.content = defaultValueContentEmailEward;
     }
 
     if (typeMail === 'EMAIL_INTRO') {
-      testEmailEntityForIntro.content = defaultValueContentEmailIntro;
-      testMail = testEmailEntityForIntro;
+      testMail.emailTo = emailIntro;
+      testMail.subject = subjectIntro;
+      testMail.content = defaultValueContentEmailIntro;
     }
 
     if (testMail.emailTo === '' || testMail.subject === '' || testMail.content === '') {
@@ -120,12 +136,6 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
       this.props.postTestMailLanding(testMail);
     }
   };
-
-  componentWillReceiveProps(nextProps, prevState) {
-    if (nextProps.postMailRequest.openModal === true) {
-      this.setState({ openModal: true, type: 'success', title: 'Thành công', text: 'Đã gửi đến email' });
-    }
-  }
 
   closeModal = () => {
     setTimeout(() => {
@@ -138,7 +148,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
   };
 
   addText = text => {
-    var sel, range;
+    let sel, range;
 
     if (window.getSelection()) {
       let listChildren = window.getSelection().focusNode.childNodes;
@@ -175,34 +185,52 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
 
   addContentTemplate = (id, typeMail) => {
     let { listContentTemplateAsTypeEmailEward, listContentTemplateAsTypeEmailIntro } = this.props;
-    let { defaultValueContentEmailEward, defaultValueContentEmailIntro, testEmailEntityForEward, testEmailEntityForIntro } = this.state;
+
+    let { defaultValueContentEmailEward, defaultValueContentEmailIntro, subjectIntro, subjectEward } = this.state;
 
     if (typeMail === 'EMAIL_EWARD') {
       listContentTemplateAsTypeEmailEward.forEach(item => {
         if (item.id === id) {
           defaultValueContentEmailEward = item.content;
-          testEmailEntityForEward.subject = item.subject;
+          subjectEward = item.subject;
         }
       });
 
-      this.setState({ defaultValueContentEmailEward });
+      this.setState({ defaultValueContentEmailEward, subjectEward });
+      this.props.getNavigationContentTemplates(id, 'REWARD_EMAIL', 'templateId');
+      this.props.getNavigationContentTemplates(subjectEward, 'REWARD_EMAIL', 'subject');
     }
 
     if (typeMail === 'EMAIL_INTRO') {
       listContentTemplateAsTypeEmailIntro.forEach(item => {
         if (item.id === id) {
           defaultValueContentEmailIntro = item.content;
-          testEmailEntityForIntro.subject = item.subject;
+          subjectIntro = item.subject;
         }
       });
 
-      this.setState({ defaultValueContentEmailIntro });
+      this.setState({ defaultValueContentEmailIntro, subjectIntro });
+      this.props.getNavigationContentTemplates(id, 'INTRO_EMAIL', 'templateId');
+      this.props.getNavigationContentTemplates(subjectIntro, 'INTRO_EMAIL', 'subject');
     }
   };
 
   render() {
-    let { showMailForFriend, defaultValueContentEmailEward, defaultValueContentEmailIntro, openModal, text, title, type } = this.state;
-    let { listContentPageParams, listContentTemplateAsTypeEmailEward, listContentTemplateAsTypeEmailIntro } = this.props;
+    let {
+      showMailForFriend,
+      defaultValueContentEmailEward,
+      defaultValueContentEmailIntro,
+      openModal,
+      text,
+      title,
+      type,
+      emailEward,
+      emailIntro,
+      subjectEward,
+      subjectIntro
+    } = this.state;
+
+    let { listContentPageParams, listContentTemplateAsTypeEmailEward, listContentTemplateAsTypeEmailIntro, modalState } = this.props;
 
     const listIndexParams = listContentPageParams.map(item => {
       return {
@@ -223,12 +251,12 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
       <Fragment>
         <div style={{ position: 'fixed', top: '100px', right: '300px', zIndex: 2 }}>
           <SweetAlert
-            title={title}
+            title={modalState.title}
             confirmButtonColor=""
-            show={openModal}
-            text={text}
-            type={type}
-            onConfirm={() => this.setState({ openModal: false })}
+            show={modalState.show}
+            text={modalState.text}
+            type={modalState.show}
+            onConfirm={() => this.props.closeModal}
           />
         </div>
         <div className="create-content">
@@ -254,9 +282,11 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                   <div className="interactive" style={{ display: showMailForFriend ? 'none' : 'inline-block' }}>
                     <div className="test-mail">
                       <Input
+                        type="text"
                         placeHolder="Điền email test"
+                        value={emailIntro}
                         onChange={event => {
-                          this.handleInput(event, 'emailTo', 'EMAIL_INTRO');
+                          this.setState({ emailIntro: event.target.value });
                         }}
                       />
                       <Button color="primary" onClick={() => this.sendTestMailLanding('EMAIL_INTRO')}>
@@ -281,9 +311,13 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                       {/* mail data */}
                       <div className="input-mail-and-more">
                         <Input
+                          type="text"
                           placeHolder={'Tiêu đề mail'}
+                          name="subject"
+                          value={subjectIntro}
                           onChange={event => {
-                            this.handleInput(event, 'subject', 'EMAIL_INTRO');
+                            this.setState({ subjectIntro: event.target.value });
+                            this.props.getNavigationContentTemplates(event.target.value, 'INTRO_EMAIL', 'subject');
                           }}
                         />
                         <Dropdown
@@ -319,10 +353,12 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                   <div className="interactive" style={{ display: showMailForFriend ? 'inline-block' : 'none' }}>
                     <div className="test-mail">
                       <Input
+                        type="text"
                         placeHolder="Điền email test"
                         onChange={event => {
-                          this.handleInput(event, 'emailTo', 'EMAIL_EWARD');
+                          this.setState({ emailEward: event.target.value });
                         }}
+                        value={emailEward}
                       />
                       <Button color="primary" onClick={() => this.sendTestMailLanding('EMAIL_EWARD')}>
                         Test
@@ -340,17 +376,20 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                         <Dropdown
                           selection={true}
                           defaultValue={'Chọn mẫu mail'}
-                          listArray={listContentTemplateAsTypeEmailEward}
+                          listArray={listTemplateEmailEward}
                           toggleDropdown={event => this.toggleLanding(event, 'EMAIL_EWARD')}
                         />
                       </div>
                       {/* mail data */}
                       <div className="input-mail-and-more">
                         <Input
+                          type="text"
                           placeHolder={'Tiêu đề mail'}
                           onChange={event => {
-                            this.handleInput(event, 'subject', 'EMAIL_EWARD');
+                            this.setState({ subjectEward: event.target.value });
+                            this.props.getNavigationContentTemplates(event.target.value, 'REWARD_EMAIL', 'subject');
                           }}
+                          value={subjectEward}
                         />
                         <Dropdown
                           selection={true}
@@ -359,6 +398,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                           toggleDropdown={event => this.toggleDropdownParams(event, 'EMAIL_EWARD')}
                         />
                       </div>
+                      {/* Editor */}
                       <div className="content-fixing">
                         <FroalaEditor
                           tag="textarea"
@@ -385,19 +425,23 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-const mapStateToProps = ({ userCampaign }: IRootState) => {
+const mapStateToProps = ({ userCampaign, handleModal }: IRootState) => {
   return {
     listContentPageParams: userCampaign.listCampainContentParams,
     postMailRequest: userCampaign.postMailRequest,
     listContentTemplateAsTypeEmailIntro: userCampaign.listContentTemplateAsTypeEmailIntro,
-    listContentTemplateAsTypeEmailEward: userCampaign.listContentTemplateAsTypeEmailEward
+    listContentTemplateAsTypeEmailEward: userCampaign.listContentTemplateAsTypeEmailEward,
+    modalState: handleModal
   };
 };
 
 const mapDispatchToProps = {
   getContentPageParams,
   postTestMailLanding,
-  getContentTemplateAsType
+  getContentTemplateAsType,
+  getNavigationContentTemplates,
+  openModal,
+  closeModal
 };
 export default connect(
   mapStateToProps,

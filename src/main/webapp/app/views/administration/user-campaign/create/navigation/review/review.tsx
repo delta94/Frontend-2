@@ -7,9 +7,7 @@ import { ISaveDataCampain } from 'app/common/model/campaign-navigation.model';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 
-export interface ReviewProps {
-  navigationValue?: ISaveDataCampain;
-}
+export interface ReviewProps extends StateProps, DispatchProps {}
 
 export interface ReviewState {
   activeTab: string;
@@ -68,7 +66,7 @@ class Review extends React.Component<ReviewProps, ReviewState> {
                       <div className="title-contact">
                         <div className="camp-titles">{item.name}</div>
                         <div className="camp-titles">
-                          <label>Tổng contact:</label> {item.contact}
+                          <label>Tổng contact:</label> {}
                         </div>
                       </div>
                     </Col>
@@ -79,24 +77,28 @@ class Review extends React.Component<ReviewProps, ReviewState> {
               <Row>
                 <Col md="6" className="b-r">
                   <div className="content-review b-b">
-                    <span className="c-b">Quà tặng: </span>E - voucher
+                    <span className="c-b">Quà tặng: </span>
+                    {navigationInfo.reward.type === 2 ? 'E- voucher' : 'Không có'}
                   </div>
                 </Col>
                 <Col md="6">
                   <div className="content-review b-b">
-                    <span className="c-b">Landingpage: </span>Landingpage M2M
+                    <span className="c-b">Landingpage: </span>
+                    {navigationInfo.contentTemplates[0].subject}
                   </div>
                 </Col>
               </Row>
               <Row>
                 <Col md="6" className="b-r">
                   <div className="content-review ">
-                    <span className="c-b">Giới thiệu bạn bè: </span>Email template 5
+                    <span className="c-b">Giới thiệu bạn bè: </span>
+                    {navigationInfo.contentTemplates[1].subject}
                   </div>
                 </Col>
                 <Col md="6">
                   <div className="content-review">
-                    <span className="c-b">Nhận quà tặng: </span>Email template 2
+                    <span className="c-b">Nhận quà tặng: </span>
+                    {navigationInfo.contentTemplates[2].subject}
                   </div>
                 </Col>
               </Row>

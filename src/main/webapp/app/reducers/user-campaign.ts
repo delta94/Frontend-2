@@ -7,6 +7,10 @@ import { ICampaignInfo } from 'app/common/model/campaign-infomation.model';
 import { ICampaign } from 'app/common/model/campaign.model';
 import { ICampaignId, defaultValue } from 'app/common/model/campaign-id.model';
 import { ICampaignCustomer } from 'app/common/model/campaign-customer';
+import { openModal } from 'app/actions/modal';
+import store from 'react-redux';
+import { registerLocale } from 'app/config/translation';
+import { createStore } from 'redux';
 
 export interface IlistCampaignInfo {
   id?: string;
@@ -136,7 +140,7 @@ const initialState = {
   listContentTemplateAsTypeLanding: [],
   listContentTemplateAsTypeEmailEward: [],
   listContentTemplateAsTypeEmailIntro: [],
-  postMailRequest: { code: 202, name: 'ok', openModal: false },
+  postMailRequest: {},
   postSaveDataCampainService: { code: 202, name: 'ok', openModal: false }
 };
 
@@ -209,12 +213,14 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.POST_TEST_MAIL):
       return {
         ...state,
-        postMailRequest: { code: 500, name: 'fail', openModal: false }
+        loading: false,
+        postMailRequest: 'Success'
       };
 
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.POST_SAVE_DATA_CAMPAIN):
       return {
         ...state,
+        loading: false,
         postMailRequest: { code: 500, name: 'fail', openModal: false }
       };
 
@@ -332,7 +338,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
       return {
         ...state,
         loading: false,
-        postMailRequest: { code: 202, name: 'Đã gửi mail thành công', openModal: true }
+        postMailRequest: 'Success'
       };
     // success on get content template
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE):

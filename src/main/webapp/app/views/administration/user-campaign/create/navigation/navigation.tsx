@@ -12,9 +12,10 @@ import CreateContent from './create-content/create-content';
 import Review from './review/review';
 import { TabContent, TabPane, DropdownItem, Card, Col, Row, Button } from 'reactstrap';
 import classnames from 'classnames';
-import { getContentPageParams } from 'app/actions/user-campaign';
+import { getContentPageParams, postSaveDataCampain } from 'app/actions/user-campaign';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import navigationInfo from 'app/reducers/navigation-info';
 
 export interface INavigationProps extends StateProps, DispatchProps {
   onClick: Function;
@@ -62,7 +63,8 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
   }
 
   onHandletTab = (param: number) => {
-    let activeTab: number = this.state.activeTab;
+    let { navigationInfo } = this.props;
+    let { activeTab, endTab } = this.state;
     let activeTabNumber: number = activeTab;
     activeTabNumber += param;
 
@@ -75,18 +77,9 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
     }
   };
 
-  //function get value Customer group
-  handlerValueCustomer = list => {
-    this.state.listCustomerGroup.push(list);
-  };
-  //function get value Reward
-  handlerValueReward = list => {
-    console.info(list);
-  };
-
   render() {
     const { endTab, activeTab } = this.state;
-    const { listStep } = this.props;
+    const { listStep, navigationInfo } = this.props;
     return (
       <Fragment>
         <ReactCSSTransitionGroup
@@ -135,7 +128,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
               {/* Tab Content */}
               <TabContent activeTab={this.state.activeTab}>
                 <TabPane tabId={1}>
-                  <SelectCustomer onClick={this.handlerValueCustomer} />
+                  <SelectCustomer />
                   <div className="mt-5" />
                   <div className="clearfix" />
                 </TabPane>
@@ -181,6 +174,9 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
                   style={{ float: 'right', color: 'white', backgroundColor: activeTab === 5 ? 'green' : '#3866dd' }}
                   onClick={() => {
                     this.onHandletTab(1);
+                    if (endTab) {
+                      this.props.postSaveDataCampain(navigationInfo);
+                    }
                   }}
                 >
                   {endTab ? <FontAwesomeIcon icon={faCheck} /> : ''}
@@ -194,13 +190,14 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
     );
   }
 }
-const mapStateToProps = ({ userCampaign }: IRootState) => ({
+const mapStateToProps = ({ userCampaign, navigationInfo }: IRootState) => ({
   loading: userCampaign.loading,
   listStep: userCampaign.listStepCampaign,
-  listContentParams: userCampaign.listCampainContentParams
+  listContentParams: userCampaign.listCampainContentParams,
+  navigationInfo
 });
 
-const mapDispatchToProps = { getContentPageParams };
+const mapDispatchToProps = { getContentPageParams, postSaveDataCampain };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

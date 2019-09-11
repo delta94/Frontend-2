@@ -12,9 +12,7 @@ import { getNavigationCustomerCampaign } from 'app/actions/navigation-info';
 import CustomerDialog from './customer-dialog/customer-dialog';
 import { ITEMS_PER_PAGE, ULTILS_TYPES, ACTIVE_PAGE } from '../../../../../../constants/ultils';
 
-export interface SelectCustomerProps extends StateProps, DispatchProps {
-  onClick: Function;
-}
+export interface SelectCustomerProps extends StateProps, DispatchProps {}
 
 export interface SelectCustomerState {
   listUser: any[];
@@ -55,6 +53,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
 
   // function event button submit
   handlerModal = async (modal, categories, isSubmit, idCategory) => {
+    let { listUser } = this.state;
     this.setState({
       modal: modal
     });
@@ -70,17 +69,30 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
         zalo: 0,
         categories: idCategory
       };
-      this.state.listUser.push(elements);
+
+      listUser.push(elements);
       // get list from component select customer - to navigation
-      this.props.onClick(elements);
-      await this.props.getNavigationCustomerCampaign(elements);
+      let listCustomer = listUser.map(item => {
+        let arrayCategories = item.categories;
+        let listCategories: Array<string> = [];
+
+        if (arrayCategories.includes(',')) {
+          listCategories = arrayCategories.split(',');
+        } else {
+          listCategories.push(arrayCategories);
+        }
+
+        return { name: item.nameGroup, categories: listCategories };
+      });
+
+      this.props.getNavigationCustomerCampaign(listCustomer);
 
       let cate = this.state.listUser.map(event => {
         let cate = event.categories;
         return cate;
       });
       this.props.getSumAllContact(cate);
-      cate = [];
+      this.setState({ listUser });
     }
   };
 
