@@ -52,7 +52,7 @@ class Review extends React.Component<ReviewProps, ReviewState> {
           <div className="b-dashed">
             <div className="preview-title">
               <div className="info-title">
-                <span className="c-b">Đối tượng:</span> Tổng contact: <span className="c-g">{navigationInfo.customerCampaigns.length}</span>
+                <span className="c-b">Đối tượng:</span> Tổng contact: <span className="c-g">{sumcontact ? sumcontact : 0}</span>
               </div>
               <div className="info-title">
                 Contact trùng: <span className="c-b">36</span>
@@ -66,7 +66,7 @@ class Review extends React.Component<ReviewProps, ReviewState> {
                       <div className="title-contact">
                         <div className="camp-titles">{item.name}</div>
                         <div className="camp-titles">
-                          <label>Tổng contact:{sumcontact}</label> {}
+                          <label>Tổng contact:</label>
                         </div>
                       </div>
                     </Col>
@@ -123,7 +123,7 @@ class Review extends React.Component<ReviewProps, ReviewState> {
 
 const mapStateToProps = ({ navigationInfo, userCampaign }: IRootState) => ({
   navigationInfo,
-  sumcontact: userCampaign.totalContact
+  sumcontact: userCampaign.totalContact.totalContact
 });
 
 const mapDispatchToProps = {};

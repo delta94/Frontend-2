@@ -110,9 +110,9 @@ module.exports = options => ({
         // (see the `jhipster.cors` common JHipster property in the `application-*.yml` configurations)
         // SERVER_API_URL: options.env === 'development' ? `'http://interview-test.topica.vn:8080/'` : `'http://interview.topica.vn:8080/'`
         // SERVER_API_URL: `'http://192.168.0.102:8088/'`
-        SERVER_API_URL: `'http://171.244.40.91:8088/'`
+        // SERVER_API_URL: `'http://171.244.40.91:8088/'`
         // SERVER_API_URL: options.env === 'development' ? `'http://5d521fdf3432e70014e6b5ae.mockapi.io/'` : `'http://5d521fdf3432e70014e6b5ae.mockapi.io/'`
-        // SERVER_API_URL: `'http://192.168.0.107:8088/'`
+        SERVER_API_URL: `'http://192.168.1.63:8088/'`
         // SERVER_API_URL: `''`
       }
     }),

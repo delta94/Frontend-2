@@ -224,7 +224,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
           type: 'success',
           text: 'Email không hợp lệ',
           title: 'Thông báo',
-          show: true
+          show: false
         }
       };
 
@@ -236,7 +236,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
           type: 'warning',
           text: 'Thiếu trường thông tin',
           title: 'Thông báo',
-          show: true
+          show: false
         }
       };
 
