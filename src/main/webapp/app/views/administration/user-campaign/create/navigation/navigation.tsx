@@ -16,6 +16,7 @@ import { getContentPageParams, postSaveDataCampain } from 'app/actions/user-camp
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { openModal } from '../../../../../actions/modal';
+import { postSaveDataCampainService } from 'app/services/user-campaign';
 
 export interface INavigationProps extends StateProps, DispatchProps {
   onClick: Function;
@@ -83,10 +84,26 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
     if (navigationInfo.campaignTypeId === '' || navigationInfo.contentTemplates === null || navigationInfo.customerCampaigns === []) {
       this.props.openModal({ show: false, type: 'warning', text: 'Thiếu trường thông tin', title: 'Thông báo' });
     } else {
-      this.props.postSaveDataCampain(navigationInfo);
+      postSaveDataCampainService(navigationInfo)
+        .then(item => {
+          if (item) {
+            this.props.openModal({
+              show: true,
+              type: 'success',
+              title: 'Thành công',
+              text: 'Đã tạo chiến dịch thành công'
+            });
+          }
+        })
+        .catch(err => {
+          this.props.openModal({
+            show: true,
+            type: 'error',
+            title: 'Thất bại',
+            text: 'Danh sách khách hàng bị thiếu'
+          });
+        });
     }
-
-    this.props.openModal(postMailRequest);
   }
 
   render() {

@@ -16,6 +16,8 @@ import { getNavigationContentTemplates } from '../../../../../../actions/navigat
 import { openModal, closeModal } from '../../../../../../actions/modal';
 import { IRootState } from '../../../../../../reducers/index';
 import { Translate } from 'react-jhipster';
+import { postTestMailLandingService } from 'app/services/user-campaign';
+import { INTRO_MAIL, REWARD_MAIL } from 'app/constants/common';
 
 export interface ICreateTestMailEntity {
   emailTo?: string;
@@ -103,14 +105,14 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
 
     if (typeMail === 'EMAIL_INTRO') {
       this.setState({ defaultValueContentEmailIntro: event });
-      this.props.getNavigationContentTemplates(newParamester, 'INTRO_EMAIL', 'parameter');
-      this.props.getNavigationContentTemplates(event, 'INTRO_EMAIL', 'content');
+      this.props.getNavigationContentTemplates(newParamester, INTRO_MAIL, 'parameter');
+      this.props.getNavigationContentTemplates(event, INTRO_MAIL, 'content');
     }
 
     if (typeMail === 'EMAIL_EWARD') {
       this.setState({ defaultValueContentEmailEward: event });
-      this.props.getNavigationContentTemplates(newParamester, 'REWARD_EMAIL', 'parameter');
-      this.props.getNavigationContentTemplates(event, 'REWARD_EMAIL', 'content');
+      this.props.getNavigationContentTemplates(newParamester, REWARD_MAIL, 'parameter');
+      this.props.getNavigationContentTemplates(event, REWARD_MAIL, 'content');
     }
   };
 
@@ -133,12 +135,33 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
     }
 
     if (testMail.emailTo === '' || testMail.subject === '' || testMail.content === '') {
-      this.props.openModal({ show: true, type: 'warning', title: 'Thiếu trường thông tin', text: 'vui lòng nhập trường bị thiếu' });
+      this.props.openModal({
+        show: true,
+        type: 'warning',
+        title: 'Thiếu trường thông tin',
+        text: 'vui lòng nhập trường bị thiếu'
+      });
     } else {
-      this.props.postTestMailLanding(testMail);
+      postTestMailLandingService(testMail)
+        .then(item => {
+          if (item) {
+            this.props.openModal({
+              show: true,
+              type: 'success',
+              title: 'Thành công',
+              text: 'Đã gửi mail thành công'
+            });
+          }
+        })
+        .catch(err => {
+          this.props.openModal({
+            show: true,
+            type: 'error',
+            title: 'Thất bại',
+            text: 'Email không hợp lệ'
+          });
+        });
     }
-
-    this.props.openModal(postMailRequest);
   };
 
   closeModal = () => {
@@ -201,8 +224,8 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
       });
 
       this.setState({ defaultValueContentEmailEward, subjectEward });
-      this.props.getNavigationContentTemplates(id, 'REWARD_EMAIL', 'templateId');
-      this.props.getNavigationContentTemplates(subjectEward, 'REWARD_EMAIL', 'subject');
+      this.props.getNavigationContentTemplates(id, REWARD_MAIL, 'templateId');
+      this.props.getNavigationContentTemplates(subjectEward, REWARD_MAIL, 'subject');
     }
 
     if (typeMail === 'EMAIL_INTRO') {
@@ -214,8 +237,8 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
       });
 
       this.setState({ defaultValueContentEmailIntro, subjectIntro });
-      this.props.getNavigationContentTemplates(id, 'INTRO_EMAIL', 'templateId');
-      this.props.getNavigationContentTemplates(subjectIntro, 'INTRO_EMAIL', 'subject');
+      this.props.getNavigationContentTemplates(id, INTRO_MAIL, 'templateId');
+      this.props.getNavigationContentTemplates(subjectIntro, INTRO_MAIL, 'subject');
     }
   };
 

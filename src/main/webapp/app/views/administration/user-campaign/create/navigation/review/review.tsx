@@ -45,6 +45,11 @@ class Review extends React.Component<ReviewProps, ReviewState> {
   render() {
     const { testMail } = this.state;
     const { navigationInfo, sumcontact } = this.props;
+    let listUser = JSON.parse(localStorage.getItem('listUser'));
+    let duplicate = parseInt(localStorage.getItem('duplicate'));
+    if (duplicate < 0) {
+      duplicate = 0;
+    }
     return (
       <Fragment>
         <div className="preview">
@@ -55,7 +60,7 @@ class Review extends React.Component<ReviewProps, ReviewState> {
                 <span className="c-b">Đối tượng:</span> Tổng contact: <span className="c-g">{sumcontact ? sumcontact : 0}</span>
               </div>
               <div className="info-title">
-                Contact trùng: <span className="c-b">36</span>
+                Contact trùng: <span className="c-b">{duplicate}</span>
               </div>
             </div>
             <Row>
@@ -66,7 +71,7 @@ class Review extends React.Component<ReviewProps, ReviewState> {
                       <div className="title-contact">
                         <div className="camp-titles">{item.name}</div>
                         <div className="camp-titles">
-                          <label>Tổng contact:</label>
+                          <label>Tổng contact: {listUser[index].totalContact}</label>
                         </div>
                       </div>
                     </Col>

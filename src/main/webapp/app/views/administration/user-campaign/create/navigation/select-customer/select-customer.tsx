@@ -85,6 +85,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
         return { name: item.nameGroup, categories: listCategories };
       });
 
+      localStorage.setItem('listUser', JSON.stringify(listUser));
       this.props.getNavigationCustomerCampaign(listCustomer);
       this.props.getSumAllContact(listCustomer);
       this.setState({ listUser });
@@ -123,8 +124,8 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
     for (var i = 0; i < listUser.length; i++) {
       sumContact += listUser[i].totalContact;
     }
-    var duplicate = 0;
-    duplicate = sumContact - totalContact.totalContact;
+    var duplicate = sumContact - totalContact.totalContact;
+    localStorage.setItem('duplicate', duplicate.toString());
     return (
       <Loader message={spinner} show={loading} priority={10}>
         <Fragment>

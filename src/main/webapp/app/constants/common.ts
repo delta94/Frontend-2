@@ -4,3 +4,6 @@ export const DISPLAY_STATUS_ACTION = 1;
 export const DISPLAY_STATUS_COMPLETE = 2;
 export const DISPLAY_STATUS_NULL = null;
 export const ITEMS_PER_MODAL_TABLE = 3;
+export const REWARD_MAIL = 'REWARD_MAIL';
+export const FORM_LANDING = 'FORM_LANDING';
+export const INTRO_MAIL = 'INTRO_MAIL';
