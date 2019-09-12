@@ -59,9 +59,15 @@
       "day": "vui lòng nhập ngày",
       "des": "vui lòng nhập mô tả"
     },
-
     "send-mail": {
       "success": "Gửi Email thành công"
-    }
+    },
+    "type-mail": "Mẫu mail gửi",
+    "send-intro": "GỬI MAIL GIỚI THIỆU BẠN BÈ",
+    "send-eward": "GỬI MAIL TẶNG QUÁ",
+    "create-content": "Tạo nội dung",
+    "type-interactive": "Hình thức tương tác",
+    "create-landing": "Tạo landing",
+    "chose-landing": "Chọn landingpage"
   }
 }

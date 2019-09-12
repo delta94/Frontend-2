@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import '../create-content/create-content.scss';
 import Dropdown from '../../../../../../layout/DropDown/Dropdown';
 import SweetAlert from 'sweetalert-react';
@@ -17,7 +17,7 @@ import { openModal, closeModal } from '../../../../../../actions/modal';
 import { IRootState } from '../../../../../../reducers/index';
 import { Translate } from 'react-jhipster';
 import { postTestMailLandingService } from 'app/services/user-campaign';
-import { INTRO_MAIL, REWARD_MAIL } from 'app/constants/common';
+import { INTRO_MAIL, REWARD_MAIL, EMAIL_EWARD, EMAIL_INTRO } from 'app/constants/common';
 
 export interface ICreateTestMailEntity {
   emailTo?: string;
@@ -78,8 +78,8 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
 
   componentDidMount() {
     this.props.getContentPageParams();
-    this.props.getContentTemplateAsType('EMAIL_INTRO');
-    this.props.getContentTemplateAsType('EMAIL_EWARD');
+    this.props.getContentTemplateAsType(EMAIL_INTRO);
+    this.props.getContentTemplateAsType(EMAIL_EWARD);
   }
 
   handleshowMailForFriendState = () => {
@@ -103,13 +103,13 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
       code: item.paramCode
     }));
 
-    if (typeMail === 'EMAIL_INTRO') {
+    if (typeMail === EMAIL_INTRO) {
       this.setState({ defaultValueContentEmailIntro: event });
       this.props.getNavigationContentTemplates(newParamester, INTRO_MAIL, 'parameter');
       this.props.getNavigationContentTemplates(event, INTRO_MAIL, 'content');
     }
 
-    if (typeMail === 'EMAIL_EWARD') {
+    if (typeMail === EMAIL_EWARD) {
       this.setState({ defaultValueContentEmailEward: event });
       this.props.getNavigationContentTemplates(newParamester, REWARD_MAIL, 'parameter');
       this.props.getNavigationContentTemplates(event, REWARD_MAIL, 'content');
@@ -122,13 +122,13 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
     let { postMailRequest } = this.props;
     let testMail: ICreateTestMailEntity = { emailTo: '', subject: '', content: '' };
 
-    if (typeMail === 'EMAIL_EWARD') {
+    if (typeMail === EMAIL_EWARD) {
       testMail.emailTo = emailEward;
       testMail.subject = subjectEward;
       testMail.content = defaultValueContentEmailEward;
     }
 
-    if (typeMail === 'EMAIL_INTRO') {
+    if (typeMail === EMAIL_INTRO) {
       testMail.emailTo = emailIntro;
       testMail.subject = subjectIntro;
       testMail.content = defaultValueContentEmailIntro;
@@ -215,7 +215,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
 
     let { defaultValueContentEmailEward, defaultValueContentEmailIntro, subjectIntro, subjectEward } = this.state;
 
-    if (typeMail === 'EMAIL_EWARD') {
+    if (typeMail === EMAIL_EWARD) {
       listContentTemplateAsTypeEmailEward.forEach(item => {
         if (item.id === id) {
           defaultValueContentEmailEward = item.content;
@@ -228,7 +228,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
       this.props.getNavigationContentTemplates(subjectEward, REWARD_MAIL, 'subject');
     }
 
-    if (typeMail === 'EMAIL_INTRO') {
+    if (typeMail === EMAIL_INTRO) {
       listContentTemplateAsTypeEmailIntro.forEach(item => {
         if (item.id === id) {
           defaultValueContentEmailIntro = item.content;
@@ -286,9 +286,13 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
           <div className="add-content">
             {/* Title */}
             <div className="add-content-title">
-              <CardTitle>Tạo nội dung</CardTitle>
+              <CardTitle>
+                <Translate contentKey="campaign.create-content" />
+              </CardTitle>
               <div className="interactive">
-                <label>Hình thức tương tác</label>
+                <label>
+                  <Translate contentKey="campaign.type-interactive" />
+                </label>
                 <Dropdown selection={true} defaultValue="Chọn hình thức" listArray={[{ id: 2, name: 'EMAIL' }]} />
               </div>
             </div>
@@ -301,7 +305,9 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                   <Button color="primary" style={{ marginBottom: '1rem', width: '40px' }} onClick={this.handleshowMailForFriendState}>
                     1
                   </Button>
-                  <label>GỬI MAIL GIỚI THIỆU BẠN BÈ</label>
+                  <label>
+                    <Translate contentKey="campaign.send-intro" />
+                  </label>
                   <div className="interactive" style={{ display: showMailForFriend ? 'none' : 'inline-block' }}>
                     <div className="test-mail">
                       <Input
@@ -312,7 +318,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                           this.setState({ emailIntro: event.target.value });
                         }}
                       />
-                      <Button color="primary" onClick={() => this.sendTestMailLanding('EMAIL_INTRO')}>
+                      <Button color="primary" onClick={() => this.sendTestMailLanding(EMAIL_INTRO)}>
                         Test
                       </Button>
                     </div>
@@ -323,12 +329,14 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                   <Card>
                     <CardBody>
                       <div className="template-add">
-                        <label>Mẫu email gửi</label>
+                        <label>
+                          <Translate contentKey="campaign.type-mail" />
+                        </label>
                         <Dropdown
                           selection={true}
                           defaultValue={'Chọn mẫu email'}
                           listArray={listTemplateMailIntro}
-                          toggleDropdown={event => this.toggleLanding(event, 'EMAIL_INTRO')}
+                          toggleDropdown={event => this.toggleLanding(event, EMAIL_INTRO)}
                         />
                       </div>
                       {/* mail data */}
@@ -340,14 +348,14 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                           value={subjectIntro}
                           onChange={event => {
                             this.setState({ subjectIntro: event.target.value });
-                            this.props.getNavigationContentTemplates(event.target.value, 'INTRO_EMAIL', 'subject');
+                            this.props.getNavigationContentTemplates(event.target.value, INTRO_MAIL, 'subject');
                           }}
                         />
                         <Dropdown
                           selection={true}
                           defaultValue="Tham số"
                           listArray={listIndexParams}
-                          toggleDropdown={event => this.toggleDropdownParams(event, 'EMAIL_INTRO')}
+                          toggleDropdown={event => this.toggleDropdownParams(event, EMAIL_INTRO)}
                         />
                       </div>
                       <div className="content-fixing">
@@ -358,7 +366,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                             events: {}
                           }}
                           model={defaultValueContentEmailIntro}
-                          onModelChange={event => this.handleModelChange(event, 'EMAIL_INTRO')}
+                          onModelChange={event => this.handleModelChange(event, EMAIL_INTRO)}
                         />
                       </div>
                     </CardBody>
@@ -372,7 +380,9 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                   <Button color="primary" style={{ marginBottom: '1rem', width: '40px' }} onClick={this.handleshowMailForFriendState}>
                     2
                   </Button>
-                  <label>GỬI MAIL TẶNG QUÀ</label>
+                  <label>
+                    <Translate contentKey="campaign.send-eward" />
+                  </label>
                   <div className="interactive" style={{ display: showMailForFriend ? 'inline-block' : 'none' }}>
                     <div className="test-mail">
                       <Input
@@ -383,7 +393,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                         }}
                         value={emailEward}
                       />
-                      <Button color="primary" onClick={() => this.sendTestMailLanding('EMAIL_EWARD')}>
+                      <Button color="primary" onClick={() => this.sendTestMailLanding(EMAIL_EWARD)}>
                         Test
                       </Button>
                     </div>
@@ -395,12 +405,14 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                   <Card>
                     <CardBody>
                       <div className="template-add">
-                        <label>Mẫu email gửi</label>
+                        <label>
+                          <Translate contentKey="campaign.type-mail" />
+                        </label>
                         <Dropdown
                           selection={true}
                           defaultValue={'Chọn mẫu mail'}
                           listArray={listTemplateEmailEward}
-                          toggleDropdown={event => this.toggleLanding(event, 'EMAIL_EWARD')}
+                          toggleDropdown={event => this.toggleLanding(event, EMAIL_EWARD)}
                         />
                       </div>
                       {/* mail data */}
@@ -410,7 +422,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                           placeHolder={'Tiêu đề mail'}
                           onChange={event => {
                             this.setState({ subjectEward: event.target.value });
-                            this.props.getNavigationContentTemplates(event.target.value, 'REWARD_EMAIL', 'subject');
+                            this.props.getNavigationContentTemplates(event.target.value, REWARD_MAIL, 'subject');
                           }}
                           value={subjectEward}
                         />
@@ -418,7 +430,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                           selection={true}
                           defaultValue="Tham số"
                           listArray={listIndexParams}
-                          toggleDropdown={event => this.toggleDropdownParams(event, 'EMAIL_EWARD')}
+                          toggleDropdown={event => this.toggleDropdownParams(event, EMAIL_EWARD)}
                         />
                       </div>
                       {/* Editor */}
@@ -430,7 +442,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                             events: {}
                           }}
                           model={defaultValueContentEmailEward}
-                          onModelChange={event => this.handleModelChange(event, 'EMAIL_EWARD')}
+                          onModelChange={event => this.handleModelChange(event, EMAIL_EWARD)}
                         />
                       </div>
                     </CardBody>

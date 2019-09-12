@@ -7,3 +7,5 @@ export const ITEMS_PER_MODAL_TABLE = 5;
 export const REWARD_MAIL = 'REWARD_MAIL';
 export const FORM_LANDING = 'FORM_LANDING';
 export const INTRO_MAIL = 'INTRO_MAIL';
+export const EMAIL_EWARD = 'EMAIL_EWARD';
+export const EMAIL_INTRO = 'EMAIL_INTRO';

@@ -17,6 +17,7 @@ import { getContentTemplate, getContentTemplateAsType } from '../../../../../../
 import { getNavigationContentTemplates } from 'app/actions/navigation-info';
 import PreviewLanding from './preview-landing/preview-landing';
 import { IParamester } from 'app/common/model/campaign-navigation.model';
+import { Translate } from 'react-jhipster';
 
 // export interface I
 
@@ -178,7 +179,9 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
           <div className="add-content">
             {/* Title */}
             <div className="add-content-title">
-              <CardTitle>Tạo landingpage</CardTitle>
+              <CardTitle>
+                <Translate contentKey="campaign.create-landing" />
+              </CardTitle>
               <div className="interactive">
                 <label onClick={this.openModalPreview} style={{ textDecoration: 'underline' }}>
                   <FontAwesomeIcon icon={faEye} />
@@ -197,7 +200,9 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
                     <CardBody>
                       <div className="input-mail-and-more">
                         <div style={{ width: 'calc(100% - 150px)', display: 'flex', marginBottom: '5px' }}>
-                          <div style={{ padding: '0px 5px', lineHeight: '40px' }}>Chọn landingpage</div>
+                          <div style={{ padding: '0px 5px', lineHeight: '40px' }}>
+                            <Translate contentKey="campaign.chose-landing" />
+                          </div>
                           <div>
                             <Dropdown
                               selection={true}
