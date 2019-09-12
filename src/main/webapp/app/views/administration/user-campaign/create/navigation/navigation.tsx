@@ -9,13 +9,13 @@ import SelectCustomer from './select-customer/select-customer';
 import SelectReward from './select-reward/select-reward';
 import CreateLandingPage from './create-landingpage/create-landingpage';
 import CreateContent from './create-content/create-content';
-import Review from './select-customer/review';
+import Review from './review/review';
 import { TabContent, TabPane, DropdownItem, Card, Col, Row, Button } from 'reactstrap';
 import classnames from 'classnames';
 import { getContentPageParams, postSaveDataCampain } from 'app/actions/user-campaign';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import navigationInfo from 'app/reducers/navigation-info';
+import { openModal } from '../../../../../actions/modal';
 
 export interface INavigationProps extends StateProps, DispatchProps {
   onClick: Function;
@@ -77,9 +77,21 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
     }
   };
 
+  createNewCampain() {
+    let { navigationInfo, postMailRequest } = this.props;
+
+    if (navigationInfo.campaignTypeId === '' || navigationInfo.contentTemplates === null || navigationInfo.customerCampaigns === []) {
+      this.props.openModal({ show: false, type: 'warning', text: 'Thiếu trường thông tin', title: 'Thông báo' });
+    } else {
+      this.props.postSaveDataCampain(navigationInfo);
+    }
+
+    this.props.openModal(postMailRequest);
+  }
+
   render() {
     const { endTab, activeTab } = this.state;
-    const { listStep, navigationInfo } = this.props;
+    const { listStep, navigationInfo, postMailRequest } = this.props;
     return (
       <Fragment>
         <ReactCSSTransitionGroup
@@ -157,33 +169,35 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
                 </TabPane>
               </TabContent>
             </Row>
-            <Row className="b-t footer" style={{ padding: '10px' }}>
-              <Col xs="8" sm="6" md="6">
-                <Button
-                  className="btnBack"
-                  onClick={() => {
-                    this.onHandletTab(-1);
-                  }}
-                >
-                  Quay lại
-                </Button>
-              </Col>
-              <Col xs="8" sm="6" md="6">
-                <Button
-                  className="btnNext"
-                  style={{ float: 'right', color: 'white', backgroundColor: activeTab === 5 ? 'green' : '#3866dd' }}
-                  onClick={() => {
-                    this.onHandletTab(1);
-                    if (endTab) {
-                      this.props.postSaveDataCampain(navigationInfo);
-                    }
-                  }}
-                >
-                  {endTab ? <FontAwesomeIcon icon={faCheck} /> : ''}
-                  {endTab ? 'Tạo chiến dịch' : 'Tiếp tục'}
-                </Button>
-              </Col>
-            </Row>
+            <div className="b-t" style={{ padding: '10px' }}>
+              <Row className=" footer">
+                <Col xs="8" sm="6" md="6">
+                  <Button
+                    className="btnBack"
+                    onClick={() => {
+                      this.onHandletTab(-1);
+                    }}
+                  >
+                    Quay lại
+                  </Button>
+                </Col>
+                <Col xs="8" sm="6" md="6">
+                  <Button
+                    className="btnNext"
+                    style={{ float: 'right', color: 'white', backgroundColor: activeTab === 5 ? 'green' : '#3866dd' }}
+                    onClick={() => {
+                      this.onHandletTab(1);
+                      if (endTab) {
+                        this.createNewCampain();
+                      }
+                    }}
+                  >
+                    {endTab ? <FontAwesomeIcon icon={faCheck} /> : ''}
+                    {endTab ? 'Tạo chiến dịch' : 'Tiếp tục'}
+                  </Button>
+                </Col>
+              </Row>
+            </div>
           </Card>
         </ReactCSSTransitionGroup>
       </Fragment>
@@ -194,10 +208,11 @@ const mapStateToProps = ({ userCampaign, navigationInfo }: IRootState) => ({
   loading: userCampaign.loading,
   listStep: userCampaign.listStepCampaign,
   listContentParams: userCampaign.listCampainContentParams,
-  navigationInfo
+  navigationInfo,
+  postMailRequest: userCampaign.postMailRequest
 });
 
-const mapDispatchToProps = { getContentPageParams, postSaveDataCampain };
+const mapDispatchToProps = { getContentPageParams, postSaveDataCampain, openModal };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

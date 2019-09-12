@@ -142,10 +142,10 @@ const initialState = {
   listContentTemplateAsTypeEmailEward: [],
   listContentTemplateAsTypeEmailIntro: [],
   postMailRequest: {
-    type: 'success',
-    text: 'Gửi mail thành công',
+    type: 'warning',
+    text: 'Thiếu trường thông tin',
     title: 'Thông báo',
-    show: true,
+    show: false,
     payload: {}
   } as IOpenModal
 };
@@ -222,7 +222,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
         loading: false,
         postMailRequest: {
           type: 'success',
-          text: 'Gửi mail thất bại',
+          text: 'Email không hợp lệ',
           title: 'Thông báo',
           show: true
         }
@@ -233,8 +233,8 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
         ...state,
         loading: false,
         postMailRequest: {
-          type: 'error',
-          text: 'Gửi mail thất bại',
+          type: 'warning',
+          text: 'Thiếu trường thông tin',
           title: 'Thông báo',
           show: true
         }
@@ -376,9 +376,9 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
         loading: false,
         postMailRequest: {
           type: 'success',
-          text: 'Gửi mail thành công',
+          text: 'Tạo mới thành công',
           title: 'Thông báo',
-          show: false
+          show: true
         }
       };
 

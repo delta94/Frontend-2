@@ -35,8 +35,9 @@
   // Enable `flex-grow: 1` for decks and groups so that card blocks take up
   // as much space as possible, ensuring footers are aligned to the bottom.
   flex: 1 1 auto;
-  padding: $card-spacer-x;
+  padding: 10px 10px;
   color: $card-color;
+  height: auto;
 }
 
 .card-title {
@@ -94,7 +95,6 @@
   }
 }
 
-
 //
 // Header navs
 //
@@ -137,7 +137,6 @@
   @include border-bottom-radius($card-inner-border-radius);
 }
 
-
 // Card deck
 
 .card-deck {
@@ -164,7 +163,6 @@
     }
   }
 }
-
 
 //
 // Card groups
@@ -230,7 +228,6 @@
   }
 }
 
-
 //
 // Columns
 //
@@ -252,7 +249,6 @@
     }
   }
 }
-
 
 //
 // Accordion

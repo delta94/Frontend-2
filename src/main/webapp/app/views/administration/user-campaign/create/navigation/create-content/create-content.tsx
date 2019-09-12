@@ -136,8 +136,9 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
       this.props.openModal({ show: true, type: 'warning', title: 'Thiếu trường thông tin', text: 'vui lòng nhập trường bị thiếu' });
     } else {
       this.props.postTestMailLanding(testMail);
-      this.props.openModal(postMailRequest);
     }
+
+    this.props.openModal(postMailRequest);
   };
 
   closeModal = () => {

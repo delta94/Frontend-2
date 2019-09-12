@@ -278,7 +278,7 @@
 #userCreate .app-inner-layout__sidebar {
   float: left;
   width: 24%;
-  height: 654px;
+  height: 674px;
   position: relative;
 }
 
@@ -338,6 +338,11 @@
   iframe {
     height: 248px !important;
   }
+
+  .fr-code {
+    height: 248px !important;
+  }
+
   .fr-wrapper {
     height: 250px;
     .fr-element {
@@ -347,13 +352,17 @@
   }
 }
 
-.add-content {
+.create-content {
   .fr-wrapper {
     height: 190px;
     .fr-element {
       height: 188px;
       width: 98%;
     }
+  }
+
+  .fr-code {
+    height: 248px !important;
   }
 }
 
