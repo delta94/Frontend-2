@@ -211,7 +211,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
                 <Col xs="8" sm="6" md="6">
                   <Button
                     className="btnNext"
-                    style={{ float: 'right', color: 'white', backgroundColor: activeTab === 5 ? 'green' : '#3866dd' }}
+                    style={{ float: 'right', color: 'white', backgroundColor: activeTab === 5 ? '#23C00A' : '#3866dd' }}
                     onClick={() => {
                       this.onHandletTab(1);
                       if (endTab) {

@@ -14,36 +14,12 @@ const spinner = <LoaderAnim color="#ffffff" type="ball-pulse" />;
 export interface ReviewProps extends StateProps, DispatchProps {}
 
 export interface ReviewState {
-  activeTab: string;
-  displayVoucher: string;
-  gift: Object;
   testMail: string;
 }
-class Review extends React.Component<ReviewProps, ReviewState> {
+
+class Review extends React.PureComponent<ReviewProps, ReviewState> {
   state: ReviewState = {
-    activeTab: '1',
-    displayVoucher: 'display-voucher',
-    gift: {},
     testMail: ''
-  };
-
-  toggle = tab => {
-    if (this.state.activeTab !== tab) {
-      this.setState({
-        activeTab: tab
-      });
-    }
-  };
-
-  onClickVoucher = () => {
-    this.setState({
-      displayVoucher: ''
-    });
-  };
-  onClickNoVoucher = () => {
-    this.setState({
-      displayVoucher: 'display-voucher'
-    });
   };
 
   render() {
