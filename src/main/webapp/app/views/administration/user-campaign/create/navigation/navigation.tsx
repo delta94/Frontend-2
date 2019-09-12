@@ -15,7 +15,8 @@ import classnames from 'classnames';
 import { getContentPageParams, postSaveDataCampain } from 'app/actions/user-campaign';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { openModal } from '../../../../../actions/modal';
+import { openModal, closeModal } from '../../../../../actions/modal';
+import { openLoading, closeLoading } from '../../../../../actions/loading';
 import { postSaveDataCampainService } from 'app/services/user-campaign';
 
 export interface INavigationProps extends StateProps, DispatchProps {
@@ -81,14 +82,14 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
   };
 
   createNewCampain() {
-    let { navigationInfo, postMailRequest } = this.props;
-
+    let { navigationInfo } = this.props;
     if (navigationInfo.campaignTypeId === '' || navigationInfo.contentTemplates === null || navigationInfo.customerCampaigns === []) {
       this.props.openModal({ show: false, type: 'warning', text: 'Thiếu trường thông tin', title: 'Thông báo' });
     } else {
-      this.props.postSaveDataCampain(navigationInfo);
+      this.props.openLoading();
       postSaveDataCampainService(navigationInfo)
         .then(item => {
+          this.props.closeLoading();
           if (item) {
             this.props.openModal({
               show: true,
@@ -97,8 +98,14 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
               text: 'Đã tạo chiến dịch thành công'
             });
           }
+
+          setTimeout(() => {
+            this.props.closeModal();
+            window.location.assign('/#/admin/user-campaign');
+          }, 500);
         })
         .catch(err => {
+          this.props.closeLoading();
           this.props.openModal({
             show: true,
             type: 'error',
@@ -224,7 +231,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
     );
   }
 }
-const mapStateToProps = ({ userCampaign, navigationInfo }: IRootState) => ({
+const mapStateToProps = ({ userCampaign, navigationInfo, loadingState }: IRootState) => ({
   loading: userCampaign.loading,
   listStep: userCampaign.listStepCampaign,
   listContentParams: userCampaign.listCampainContentParams,
@@ -232,7 +239,14 @@ const mapStateToProps = ({ userCampaign, navigationInfo }: IRootState) => ({
   postMailRequest: userCampaign.postMailRequest
 });
 
-const mapDispatchToProps = { getContentPageParams, postSaveDataCampain, openModal };
+const mapDispatchToProps = {
+  getContentPageParams,
+  postSaveDataCampain,
+  openModal,
+  closeModal,
+  openLoading,
+  closeLoading
+};
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

@@ -10,6 +10,7 @@ import landingPage, { LandingPageState } from './landing-page';
 import themeOptions, { ThemeOptionsState } from './theme-options';
 import navigationInfo, { NavigationInfo } from './navigation-info';
 import handleModal, { HandleModal } from './modal';
+import loadingState, { LoadingState } from './loading';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -23,6 +24,7 @@ export interface IRootState {
   readonly loadingBar: any;
   readonly navigationInfo: NavigationInfo;
   readonly handleModal: HandleModal;
+  readonly loadingState: LoadingState;
 }
 
 const rootReducer = combineReducers<IRootState>({
@@ -35,7 +37,8 @@ const rootReducer = combineReducers<IRootState>({
   userCampaign,
   landingPage,
   navigationInfo,
-  handleModal
+  handleModal,
+  loadingState
 });
 
 export default rootReducer;

@@ -132,10 +132,10 @@ class Review extends React.Component<ReviewProps, ReviewState> {
   }
 }
 
-const mapStateToProps = ({ navigationInfo, userCampaign }: IRootState) => ({
+const mapStateToProps = ({ navigationInfo, userCampaign, loadingState }: IRootState) => ({
   navigationInfo,
   sumcontact: userCampaign.totalContact.totalContact,
-  loading: userCampaign.loading
+  loading: loadingState.loading
 });
 
 const mapDispatchToProps = {};
