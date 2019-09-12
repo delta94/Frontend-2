@@ -34,14 +34,19 @@ class Review extends React.PureComponent<ReviewProps, ReviewState> {
       <Loader message={spinner} show={loading} priority={10}>
         <Fragment>
           <div className="preview">
-            <CardTitle>Tổng quan</CardTitle>
+            <CardTitle>
+              <Translate contentKey="campaign.review" />
+            </CardTitle>
             <div className="b-dashed">
               <div className="preview-title">
                 <div className="info-title">
-                  <span className="c-b">Đối tượng:</span> Tổng contact: <span className="c-g">{sumcontact ? sumcontact : 0}</span>
+                  <span className="c-b">
+                    <Translate contentKey="campaign.entity" />
+                  </span>
+                  <Translate contentKey="campaign.all-contract" /> <span className="c-g">{sumcontact ? sumcontact : 0}</span>
                 </div>
                 <div className="info-title">
-                  Contact trùng: <span className="c-b">{duplicate}</span>
+                  <Translate contentKey="campaign.duplicate-contract" /> <span className="c-b">{duplicate}</span>
                 </div>
               </div>
               <Row>
@@ -52,7 +57,10 @@ class Review extends React.PureComponent<ReviewProps, ReviewState> {
                         <div className="title-contact">
                           <div className="camp-titles">{item.name}</div>
                           <div className="camp-titles">
-                            <label>Tổng contact: {listUser[index].totalContact}</label>
+                            <label>
+                              {' '}
+                              <Translate contentKey="campaign.sum-contact" /> {listUser[index].totalContact}
+                            </label>
                           </div>
                         </div>
                       </Col>
@@ -63,13 +71,17 @@ class Review extends React.PureComponent<ReviewProps, ReviewState> {
                 <Row>
                   <Col md="6" className="b-r">
                     <div className="content-review b-b">
-                      <span className="c-b">Quà tặng: </span>
+                      <span className="c-b">
+                        <Translate contentKey="campaign.gift" />
+                      </span>
                       {navigationInfo.reward.type === 2 ? 'E- voucher' : 'Không có'}
                     </div>
                   </Col>
                   <Col md="6">
                     <div className="content-review b-b">
-                      <span className="c-b">Landingpage: </span>
+                      <span className="c-b">
+                        <Translate contentKey="campaign.landing-page" />
+                      </span>
                       {navigationInfo.contentTemplates[0].subject ? navigationInfo.contentTemplates[0].subject : 'Không có'}
                     </div>
                   </Col>
@@ -77,13 +89,17 @@ class Review extends React.PureComponent<ReviewProps, ReviewState> {
                 <Row>
                   <Col md="6" className="b-r">
                     <div className="content-review ">
-                      <span className="c-b">Giới thiệu bạn bè: </span>
+                      <span className="c-b">
+                        <Translate contentKey="campaign.invite" />
+                      </span>
                       {navigationInfo.contentTemplates[2].subject ? navigationInfo.contentTemplates[2].subject : 'Không có'}
                     </div>
                   </Col>
                   <Col md="6">
                     <div className="content-review">
-                      <span className="c-b">Nhận quà tặng: </span>
+                      <span className="c-b">
+                        <Translate contentKey="campaign.get-reward" />
+                      </span>
                       {navigationInfo.contentTemplates[1].subject ? navigationInfo.contentTemplates[1].subject : 'Không có'}
                     </div>
                   </Col>
@@ -91,7 +107,9 @@ class Review extends React.PureComponent<ReviewProps, ReviewState> {
               </div>
             </div>
             <div className="test-commitsion">
-              <label>Test chiến dịch</label>
+              <label>
+                <Translate contentKey="campaign.test-campaign" />
+              </label>
               <input
                 value={testMail}
                 placeholder="Nhập email test"
@@ -99,7 +117,9 @@ class Review extends React.PureComponent<ReviewProps, ReviewState> {
                   this.setState({ testMail: event.target.value });
                 }}
               />
-              <button>Test</button>
+              <button>
+                <Translate contentKey="campaign.test" />
+              </button>
             </div>
           </div>
         </Fragment>
