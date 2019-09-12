@@ -44,7 +44,12 @@ class Review extends React.Component<ReviewProps, ReviewState> {
 
   render() {
     const { testMail } = this.state;
-    const { navigationInfo } = this.props;
+    const { navigationInfo, sumcontact } = this.props;
+    let listUser = JSON.parse(localStorage.getItem('listUser'));
+    let duplicate = parseInt(localStorage.getItem('duplicate'));
+    if (duplicate < 0) {
+      duplicate = 0;
+    }
     return (
       <Fragment>
         <div className="preview">
@@ -52,10 +57,10 @@ class Review extends React.Component<ReviewProps, ReviewState> {
           <div className="b-dashed">
             <div className="preview-title">
               <div className="info-title">
-                <span className="c-b">Đối tượng:</span> Tổng contact: <span className="c-g">{navigationInfo.customerCampaigns.length}</span>
+                <span className="c-b">Đối tượng:</span> Tổng contact: <span className="c-g">{sumcontact ? sumcontact : 0}</span>
               </div>
               <div className="info-title">
-                Contact trùng: <span className="c-b">36</span>
+                Contact trùng: <span className="c-b">{duplicate}</span>
               </div>
             </div>
             <Row>
@@ -66,7 +71,7 @@ class Review extends React.Component<ReviewProps, ReviewState> {
                       <div className="title-contact">
                         <div className="camp-titles">{item.name}</div>
                         <div className="camp-titles">
-                          <label>Tổng contact:</label> {}
+                          <label>Tổng contact: {listUser[index].totalContact}</label>
                         </div>
                       </div>
                     </Col>
@@ -84,7 +89,7 @@ class Review extends React.Component<ReviewProps, ReviewState> {
                 <Col md="6">
                   <div className="content-review b-b">
                     <span className="c-b">Landingpage: </span>
-                    {navigationInfo.contentTemplates[0].subject}
+                    {navigationInfo.contentTemplates[0].subject ? navigationInfo.contentTemplates[0].subject : 'Không có'}
                   </div>
                 </Col>
               </Row>
@@ -92,13 +97,13 @@ class Review extends React.Component<ReviewProps, ReviewState> {
                 <Col md="6" className="b-r">
                   <div className="content-review ">
                     <span className="c-b">Giới thiệu bạn bè: </span>
-                    {navigationInfo.contentTemplates[1].subject}
+                    {navigationInfo.contentTemplates[2].subject ? navigationInfo.contentTemplates[2].subject : 'Không có'}
                   </div>
                 </Col>
                 <Col md="6">
                   <div className="content-review">
                     <span className="c-b">Nhận quà tặng: </span>
-                    {navigationInfo.contentTemplates[2].subject}
+                    {navigationInfo.contentTemplates[1].subject ? navigationInfo.contentTemplates[1].subject : 'Không có'}
                   </div>
                 </Col>
               </Row>
@@ -121,8 +126,9 @@ class Review extends React.Component<ReviewProps, ReviewState> {
   }
 }
 
-const mapStateToProps = ({ navigationInfo }: IRootState) => ({
-  navigationInfo
+const mapStateToProps = ({ navigationInfo, userCampaign }: IRootState) => ({
+  navigationInfo,
+  sumcontact: userCampaign.totalContact.totalContact
 });
 
 const mapDispatchToProps = {};

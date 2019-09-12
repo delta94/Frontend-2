@@ -220,7 +220,7 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
                         <FroalaEditor
                           tag="textarea"
                           config={{
-                            placeholderText: 'Tạo nội dung của bạn',
+                            placeholderText: '',
                             iframe: true,
                             events: {}
                           }}

@@ -24,6 +24,9 @@ export interface IUserUpdateState {
 class CategoryDialog extends React.Component<IUserUpdateProps, IUserUpdateState> {
   handleChange = data => {
     this.props.handleChange(data);
+    if (data.length < 1) {
+      this.props.getUserCategories('');
+    }
   };
 
   componentDidMount() {

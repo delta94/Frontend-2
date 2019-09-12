@@ -54,7 +54,7 @@ export const getInformationService = () => {
 };
 
 export const getSumAllContactService = categories => {
-  return axios.get(`v1/customer/summary-statistics?categories=${categories}`);
+  return axios.post(`v1/customer/summary-statistics`, categories);
 };
 export const getStep = id => {
   return axios.get(`v1/campaign-types/${id}/step`);

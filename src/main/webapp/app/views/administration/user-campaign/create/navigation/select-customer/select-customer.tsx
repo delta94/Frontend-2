@@ -85,12 +85,9 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
         return { name: item.nameGroup, categories: listCategories };
       });
 
+      localStorage.setItem('listUser', JSON.stringify(listUser));
       this.props.getNavigationCustomerCampaign(listCustomer);
-
-      let cate = this.state.listUser.map(event => {
-        return event.categories;
-      });
-      this.props.getSumAllContact(cate);
+      this.props.getSumAllContact(listCustomer);
       this.setState({ listUser });
     }
   };
@@ -103,10 +100,19 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
       listUser: deleteItem
     });
     if (this.state.listUser.length > 0) {
-      let cate = this.state.listUser.map(event => {
-        return event.categories;
+      let listCustomer = this.state.listUser.map(item => {
+        let arrayCategories = item.categories;
+        let listCategories: Array<string> = [];
+
+        if (arrayCategories.includes(',')) {
+          listCategories = arrayCategories.split(',');
+        } else {
+          listCategories.push(arrayCategories);
+        }
+
+        return { name: item.nameGroup, categories: listCategories };
       });
-      this.props.getSumAllContact(cate);
+      this.props.getSumAllContact(listCustomer);
     }
   };
 
@@ -118,8 +124,8 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
     for (var i = 0; i < listUser.length; i++) {
       sumContact += listUser[i].totalContact;
     }
-    var duplicate = 0;
-    duplicate = sumContact - totalContact.totalContact;
+    var duplicate = sumContact - totalContact.totalContact;
+    localStorage.setItem('duplicate', duplicate.toString());
     return (
       <Loader message={spinner} show={loading} priority={10}>
         <Fragment>

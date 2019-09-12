@@ -1,6 +1,7 @@
 import { ULTILS_TYPES } from './../constants/ultils';
 import { NAVIGATION_INFO } from './../constants/navigation-info';
 import { ISaveDataCampain } from './../common/model/campaign-navigation.model';
+import { FORM_LADING, FORM_LANDING, REWARD_MAIL, INTRO_MAIL } from 'app/constants/common';
 
 const initialState: ISaveDataCampain = {
   campaignTypeId: '',
@@ -16,7 +17,7 @@ const initialState: ISaveDataCampain = {
       content: '',
       templateId: '',
       channelId: '2',
-      contentType: 'FORM_LANDING',
+      contentType: FORM_LANDING,
       parameter: []
     },
     {
@@ -24,7 +25,7 @@ const initialState: ISaveDataCampain = {
       content: '',
       templateId: '',
       channelId: '1',
-      contentType: 'REWARD_EMAIL',
+      contentType: REWARD_MAIL,
       parameter: []
     },
     {
@@ -32,7 +33,7 @@ const initialState: ISaveDataCampain = {
       content: '',
       templateId: '',
       channelId: '1',
-      contentType: 'INTRO_EMAIL',
+      contentType: INTRO_MAIL,
       parameter: []
     }
   ]
