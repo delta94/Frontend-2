@@ -28,6 +28,7 @@ export interface INavigationState {
   activeTab: number;
   active: boolean;
   endTab: boolean;
+  loading: boolean;
 }
 export class Navigation extends Component<INavigationProps, INavigationState> {
   constructor(props) {
@@ -36,7 +37,8 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
       listCustomerGroup: [],
       activeTab: 0,
       active: false,
-      endTab: false
+      endTab: false,
+      loading: false
     };
   }
 
@@ -84,6 +86,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
     if (navigationInfo.campaignTypeId === '' || navigationInfo.contentTemplates === null || navigationInfo.customerCampaigns === []) {
       this.props.openModal({ show: false, type: 'warning', text: 'Thiếu trường thông tin', title: 'Thông báo' });
     } else {
+      this.props.postSaveDataCampain(navigationInfo);
       postSaveDataCampainService(navigationInfo)
         .then(item => {
           if (item) {

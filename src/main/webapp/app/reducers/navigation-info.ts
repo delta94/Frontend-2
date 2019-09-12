@@ -1,7 +1,7 @@
 import { ULTILS_TYPES } from './../constants/ultils';
 import { NAVIGATION_INFO } from './../constants/navigation-info';
 import { ISaveDataCampain } from './../common/model/campaign-navigation.model';
-import { FORM_LADING, FORM_LANDING, REWARD_MAIL, INTRO_MAIL } from 'app/constants/common';
+import { FORM_LANDING, REWARD_MAIL, INTRO_MAIL } from 'app/constants/common';
 
 const initialState: ISaveDataCampain = {
   campaignTypeId: '',
