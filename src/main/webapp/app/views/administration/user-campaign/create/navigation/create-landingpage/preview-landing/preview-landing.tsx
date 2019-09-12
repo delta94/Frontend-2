@@ -31,7 +31,7 @@ class PreviewLanding extends React.PureComponent<IPreviewLandingProps, IPreviewL
       <div>
         <style>{styleForDOM}</style>
         <script type="text/css">{scriptDOM}</script>
-        <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(htmlDOM) }} />
+        <div dangerouslySetInnerHTML={{ __html: htmlDOM }} />
       </div>
     );
   }

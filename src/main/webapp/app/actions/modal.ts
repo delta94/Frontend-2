@@ -1,7 +1,6 @@
 import { MODAL_ACTION } from 'app/constants/modal';
-import { IOpenModal } from 'app/reducers/modal';
 
-export const openModal = (data: IOpenModal) => {
+export const openModal = data => {
   return {
     type: MODAL_ACTION.OPEN_MODAL,
     data
@@ -10,6 +9,9 @@ export const openModal = (data: IOpenModal) => {
 
 export const closeModal = () => {
   return {
-    type: MODAL_ACTION.CLOSE_MODAL
+    type: MODAL_ACTION.CLOSE_MODAL,
+    data: {
+      show: false
+    }
   };
 };

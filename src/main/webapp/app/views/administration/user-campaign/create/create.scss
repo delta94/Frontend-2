@@ -278,13 +278,12 @@
 #userCreate .app-inner-layout__sidebar {
   float: left;
   width: 24%;
-  height: 654px;
+  height: 674px;
   position: relative;
 }
 
 #userCreate .app-inner-layout__content {
   height: 700px;
-  overflow-y: auto;
   float: right;
   height: auto;
 }
@@ -333,6 +332,38 @@
 
 #userCreate .row-nav {
   margin-bottom: 2px;
+}
+
+.create-landing {
+  iframe {
+    height: 248px !important;
+  }
+
+  .fr-code {
+    height: 248px !important;
+  }
+
+  .fr-wrapper {
+    height: 250px;
+    .fr-element {
+      height: 248px;
+      width: 98%;
+    }
+  }
+}
+
+.create-content {
+  .fr-wrapper {
+    height: 190px;
+    .fr-element {
+      height: 188px;
+      width: 98%;
+    }
+  }
+
+  .fr-code {
+    height: 248px !important;
+  }
 }
 
 #userCreate .label-icon {
@@ -630,7 +661,6 @@ $color_border: rgba(206, 206, 206, 0.687);
 .row-content-info {
   height: 620px;
   background-color: white;
-  overflow-x: auto;
 }
 #userCreate .app-inner-layout {
   display: flex;

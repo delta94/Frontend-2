@@ -116,6 +116,8 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
 
   sendTestMailLanding = typeMail => {
     let { defaultValueContentEmailIntro, defaultValueContentEmailEward, emailEward, emailIntro, subjectEward, subjectIntro } = this.state;
+
+    let { postMailRequest } = this.props;
     let testMail: ICreateTestMailEntity = { emailTo: '', subject: '', content: '' };
 
     if (typeMail === 'EMAIL_EWARD') {
@@ -131,10 +133,12 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
     }
 
     if (testMail.emailTo === '' || testMail.subject === '' || testMail.content === '') {
-      this.setState({ openModal: true, type: 'warning', title: 'Thiếu trường thông tin', text: 'vui lòng nhập trường bị thiếu' });
+      this.props.openModal({ show: true, type: 'warning', title: 'Thiếu trường thông tin', text: 'vui lòng nhập trường bị thiếu' });
     } else {
       this.props.postTestMailLanding(testMail);
     }
+
+    this.props.openModal(postMailRequest);
   };
 
   closeModal = () => {
@@ -220,10 +224,6 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
       showMailForFriend,
       defaultValueContentEmailEward,
       defaultValueContentEmailIntro,
-      openModal,
-      text,
-      title,
-      type,
       emailEward,
       emailIntro,
       subjectEward,
@@ -251,12 +251,12 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
       <Fragment>
         <div style={{ position: 'fixed', top: '100px', right: '300px', zIndex: 2 }}>
           <SweetAlert
-            title={modalState.title}
+            title={modalState.title ? modalState.title : 'No title'}
             confirmButtonColor=""
-            show={modalState.show}
-            text={modalState.text}
-            type={modalState.show}
-            onConfirm={() => this.props.closeModal}
+            show={modalState.show ? modalState.show : false}
+            text={modalState.text ? modalState.text : 'No'}
+            type={modalState.type ? modalState.type : 'error'}
+            onConfirm={() => this.props.closeModal()}
           />
         </div>
         <div className="create-content">
@@ -331,7 +331,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                         <FroalaEditor
                           tag="textarea"
                           config={{
-                            placeholderText: 'Tạo nội dung của bạn',
+                            placeholderText: '',
                             events: {}
                           }}
                           model={defaultValueContentEmailIntro}
@@ -403,7 +403,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                         <FroalaEditor
                           tag="textarea"
                           config={{
-                            placeholderText: 'Tạo nội dung của bạn',
+                            placeholderText: '',
                             events: {}
                           }}
                           model={defaultValueContentEmailEward}
@@ -431,7 +431,7 @@ const mapStateToProps = ({ userCampaign, handleModal }: IRootState) => {
     postMailRequest: userCampaign.postMailRequest,
     listContentTemplateAsTypeEmailIntro: userCampaign.listContentTemplateAsTypeEmailIntro,
     listContentTemplateAsTypeEmailEward: userCampaign.listContentTemplateAsTypeEmailEward,
-    modalState: handleModal
+    modalState: handleModal.data
   };
 };
 

@@ -137,7 +137,7 @@ export const getContentTemplate = id => ({
   payload: getContentTemplateService(id)
 });
 
-//TODO: post save data campain
+//post save data campain
 export const postSaveDataCampain = data => ({
   type: USER_CAMPAIGN_ACTION_TYPES.POST_SAVE_DATA_CAMPAIN,
   payload: postSaveDataCampainService(data)
