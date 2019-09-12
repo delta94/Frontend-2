@@ -17,7 +17,7 @@ import { ITEMS_PER_MODAL_TABLE } from 'app/constants/common';
 import SweetAlert from 'sweetalert-react';
 
 export interface IAllCampProps extends StateProps, DispatchProps {
-  history: Object;
+  // value from campaign-management's tabs
   value: any;
 }
 export interface IAllCampState {
@@ -30,7 +30,7 @@ export interface IAllCampState {
   activePage: number;
   itemsPerPage: number;
   id: string;
-  displayPause: string;
+  displayIcon: string;
   isConfirm: boolean;
 }
 class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
@@ -40,7 +40,7 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
     this.state = {
       loading: false,
       modal: false,
-      displayPause: '',
+      displayIcon: '',
       activePage: ACTIVE_PAGE,
       itemsPerPage: ITEMS_PER_MODAL_TABLE,
       textSearch: '',
@@ -67,15 +67,15 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
 
     if (camp.status === 1) {
       this.setState({
-        displayPause: 'ios-square'
+        displayIcon: 'ios-square'
       });
     } else if (camp.status === 0) {
       this.setState({
-        displayPause: 'ios-play'
+        displayIcon: 'ios-play'
       });
     } else {
       this.setState({
-        displayPause: ''
+        displayIcon: ''
       });
     }
     // this.props.getCampaignDetailById(id);
@@ -93,9 +93,9 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
           value={this.props.value}
           isOpen={this.state.modal}
           id={this.state.id}
-          showIcon={this.state.displayPause}
+          showIcon={this.state.displayIcon}
           onClick={this.handerModal}
-          history={this.props.history}
+          // history={this.props.history}
         />
         <Loader message={spinner1} show={loading} priority={5}>
           <SweetAlert

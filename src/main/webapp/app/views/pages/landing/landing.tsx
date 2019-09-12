@@ -43,6 +43,7 @@ export class Landing extends React.Component<ILandingProps, ILandingState> {
 
     script.innerHTML = this.props.script;
     script.innerHTML = `
+    
     function onSubmit() {
       var path = window.location.href;
       var arr = path.split("/");
@@ -70,10 +71,46 @@ export class Landing extends React.Component<ILandingProps, ILandingState> {
         customerEl.setAttribute('type', 'hidden')//set the type
       form.appendChild(customerEl);
       }
-       form.action= 'http://192.168.1.63:8088/v1/campaign/'+ campaign+'/customer/'+customer;
+
+      var successToRq = true;
+      var valueName = document.getElementsByName('name')[0].value;
+      var valueEmail = document.getElementsByName('email')[0].value;
+      var valuePhone = document.getElementsByName('phone')[0].value;
+      var re = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}/igm;
+      var vnfont = /((09|03|07|08|05)+([0-9]{8})\b)/g;
+      if(valueName===""||valueEmail===""||valuePhone===""){
+        alert('Bạn chưa nhập đủ thông tin');
+        successToRq = false;
+      } else {
+        if ( !re.test(valueEmail)){ 
+          alert('sai dinh dang email');
+          successToRq = false;
+        }
+
+        let phoneLen = valuePhone.length;
+        if (phoneLen !== 10) {
+          alert ('Phone length is not success');
+          successToRq = false
+        } else {
+          for (let i = 0 ;i < phoneLen; i++) {
+            if (!parseInt(valuePhone)){
+              alert('Phone type is not success');
+              successToRq = false;
+            }
+          }
+        }
+
+        // if (vnfont.test(valuePhone) === false){
+        //   alert('Số điện thoại của bạn không đúng định dạng!');
+        // }
+      }
+   
+      if(successToRq) {
+        form.action= 'http://171.244.40.91:8088/v1/campaign/'+ campaign+'/customer/'+customer; 
+      }
+      
       form.submit();
     }
-    
   `;
     script.async = true;
 

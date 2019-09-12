@@ -39,8 +39,7 @@ export interface IModalDisplayState {
   activePage: number;
   itemsPerPage: number;
 
-  displayPause: string;
-  displayPlay: string;
+  displayIcon: string;
 
   //handler show alert complete or error
   isUpdate: boolean;
@@ -57,8 +56,7 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
       itemsPerPage: ITEMS_PER_MODAL_TABLE,
       textSearch: '',
       categories: '',
-      displayPause: '',
-      displayPlay: '',
+      displayIcon: '',
       isUpdate: false,
       isConfirm: false
     };
@@ -95,7 +93,7 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
         status: 0
       };
       this.setState({
-        displayPause: 'ios-play'
+        displayIcon: 'ios-play'
       });
     } else if (camp.status === 0) {
       data = {
@@ -103,7 +101,7 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
         status: 1
       };
       this.setState({
-        displayPause: 'ios-square'
+        displayIcon: 'ios-square'
       });
     } else {
       data = {
