@@ -50,7 +50,7 @@
 #userCreate #exampleText {
   margin-top: 0px;
   margin-bottom: 0px;
-  height: 83% !important;
+  height: 85% !important;
   border-radius: 3px;
   resize: none;
 }
@@ -130,7 +130,6 @@
 #userCreate .grid-items {
   background-color: rgba(255, 255, 255, 0.8);
   padding: 20px;
-  border: solid 1px gray;
   word-break: break-word;
 }
 
@@ -256,6 +255,7 @@
 //event Click
 #userCreate .image-tites {
   width: 17px;
+  margin-top: 10px;
   float: right;
 }
 #userCreate .camp-title-click {

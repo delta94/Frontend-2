@@ -4,6 +4,7 @@ import SweetAlert from 'sweetalert-react';
 import { IRootState } from './../../../../../../reducers/index';
 import { connect } from 'react-redux';
 import { getNavigationId, getNavigationName } from './../../../../../../actions/navigation-info';
+import { openModal, closeModal } from './../../../../../../actions/modal';
 import { getInformation, getStepCampaign, getContentPageParams } from './../../../../../../actions/user-campaign';
 import { ULTILS_TYPES } from '../../../../../../constants/ultils';
 import './script.scss';
@@ -38,14 +39,13 @@ export class ScriptsCampaign extends Component<IScriptsCampaignProps, IScriptsCa
   }
 
   onClick = (name, id) => {
+    let { value } = this.props;
+
     this.setState({
       nameScript: name
     });
-    if (
-      this.props.value.valueDay !== ULTILS_TYPES.EMPTY &&
-      this.props.value.valueName !== ULTILS_TYPES.EMPTY &&
-      this.props.value.valueDes !== ULTILS_TYPES.EMPTY
-    ) {
+
+    if (value.startDate && value.endDate && value.valueName && value.valueDes) {
       this.setState({
         disableDocument: ULTILS_TYPES.DISABLE_DOCUMENT
       });
@@ -53,10 +53,12 @@ export class ScriptsCampaign extends Component<IScriptsCampaignProps, IScriptsCa
       this.props.onClick(name, id);
       this.props.getNavigationId(id);
     } else {
-      this.setState({
-        disableDocument: ULTILS_TYPES.EMPTY
+      this.props.openModal({
+        show: true,
+        title: 'Thông báo',
+        text: 'Thiếu trường thông tin ',
+        type: 'warning'
       });
-      this.props.onClick(null, id);
     }
   };
   render() {
@@ -88,15 +90,18 @@ export class ScriptsCampaign extends Component<IScriptsCampaignProps, IScriptsCa
     );
   }
 }
-const mapStateToProps = ({ userCampaign }: IRootState) => ({
+const mapStateToProps = ({ userCampaign, handleModal }: IRootState) => ({
   loading: userCampaign.loading,
-  listCampaignInfo: userCampaign.listCampaignInfo
+  listCampaignInfo: userCampaign.listCampaignInfo,
+  modalState: handleModal.data
 });
 
 const mapDispatchToProps = {
   getInformation,
   getStepCampaign,
-  getNavigationId
+  getNavigationId,
+  openModal,
+  closeModal
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

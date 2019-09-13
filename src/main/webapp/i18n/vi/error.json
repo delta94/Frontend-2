@@ -22,6 +22,12 @@
       "10404": "Lỗi không tồn tại người phỏng vấn",
       "50000": "Lỗi hệ thống",
       "10403": "Lỗi không có quyền truy cập"
+    },
+
+    "none-data": {
+      "name-campaign": "vui lòng nhập tên chiến dịch",
+      "name-description": "vui lòng nhập mô tả chiến dịch",
+      "time": "Thiếu trường thời gian"
     }
   }
 }

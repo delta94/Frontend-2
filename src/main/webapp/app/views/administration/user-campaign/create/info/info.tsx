@@ -50,8 +50,8 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
     valueDes: ULTILS_TYPES.EMPTY,
 
     //set default date & time
-    startDate: moment(),
-    endDate: moment(),
+    startDate: moment(new Date()),
+    endDate: moment(new Date()),
     focusedInput: ULTILS_TYPES.EMPTY
   };
 
@@ -62,58 +62,50 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
   };
 
   onChangeField = event => {
-    if (event.target.value) {
-      this.setState({
-        valueDes: event.target.value
-      });
-    }
+    this.setState({
+      valueDes: event.target.value
+    });
   };
 
+  componentDidMount() {
+    let { startDate, endDate } = this.state;
+    this.props.getNavigationFromDate(new Date(startDate._d).toISOString());
+    this.props.getNavigationFromDate(new Date(endDate._d).toISOString());
+  }
   //function show text scripts
   onClick = (event, id) => {
-    let { valueName, valueDes } = this.state;
+    let { valueName, valueDes, startDate, endDate } = this.state;
 
     if (event !== null) {
       this.setState({
         displayTable: ULTILS_TYPES.EMPTY,
         showNameScripts: event
       });
-
-      let listInfo = {
-        campaignTypeId: id,
-        name: event,
-        fromDate: this.state.startDate,
-        toDate: this.state.endDate,
-        description: this.state.valueDes
-      };
-      this.props.onClick(ULTILS_TYPES.EMPTY, listInfo);
+      this.props.getNavigationName(valueName);
+      this.props.getNavigationDescription(valueDes);
+      this.props.getNavigationFromDate(new Date(startDate._d).toISOString());
+      this.props.getNavigationFromDate(new Date(endDate._d).toISOString());
+      this.props.onClick(id);
     } else {
       this.setState({
         displayTable: ULTILS_TYPES.DISPLAY_TABLE
       });
     }
-
-    this.props.getNavigationName(valueName);
-    this.props.getNavigationDescription(valueDes);
   };
 
   onDatesChange = ({ startDate, endDate }) => {
     if (startDate) {
       this.setState({
         startDate,
-        endDate,
-        valueDay: startDate
+        endDate
       });
-      this.props.getNavigationFromDate(new Date(startDate._d).toISOString());
-    }
-
-    if (endDate) {
-      this.props.getNavigationToDate(new Date(endDate._d).toISOString());
     }
   };
 
   render() {
     const { loading } = this.props;
+    let { showNameScripts, valueName, startDate, endDate, valueDes } = this.state;
+
     return (
       <Loader message={spinner1} show={loading} priority={1}>
         <div id="userCreate">
@@ -128,53 +120,87 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
                     <Col sm={12}>
                       <Input
                         type="text"
-                        value={this.state.valueName}
+                        value={valueName}
                         placeholder={ULTILS_TYPES.PLACEHODER_NAME}
                         onChange={this.onChangeName}
                         maxLength="160"
                       />
+                      <label
+                        className="must-type"
+                        id="bottom_show"
+                        style={{
+                          display: valueName && valueName.length >= 1 ? 'none' : 'block',
+                          fontSize: '12px!important'
+                        }}
+                      >
+                        * <Translate contentKey="error.none-data.name-campaign" />
+                      </label>
                     </Col>
                   </div>
                   <Col>
                     <Label className="name-titles">
                       <Translate contentKey="campaign.time-create" />
                     </Label>
-
                     <Col sm={15}>
                       <DateRangePicker
                         showDefaultInputIcon
                         required={true}
-                        startDatePlaceholderText={'dd/mm'}
-                        displayFormat="DD/MM"
-                        startDate={this.state.startDate} // momentPropTypes.momentObj or null,
+                        startDatePlaceholderText={'dd/mm/yy'}
+                        displayFormat="DD/MM/YY"
+                        startDate={startDate} // momentPropTypes.momentObj or null,
                         startDateId="dateStart" // PropTypes.string.isRequired,
-                        endDate={this.state.endDate} // momentPropTypes.momentObj or null,
+                        endDate={endDate} // momentPropTypes.momentObj or null,
                         endDateId="dateEnd" // PropTypes.string.isRequired,
                         onDatesChange={this.onDatesChange} // PropTypes.func.isRequired,
                         focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
                         onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
                       />
+                      <label
+                        className="must-type"
+                        style={{
+                          display: startDate && endDate ? 'none' : 'block',
+                          fontSize: '12px!important'
+                        }}
+                      >
+                        * <Translate contentKey="error.none-data.time" />
+                      </label>
                     </Col>
-                    <div className={this.state.displayTable}>
-                      <div className="reOpen-doc">
-                        <div className="grid-items-Click">
-                          <div className="camp-top">
-                            <label className="camp-title-click"> {this.state.showNameScripts}</label>
-                            <img className="image-tites" src={ULTILS_TYPES.LINK_IMAGE} />
-                          </div>
-                        </div>
+                    <div style={{ display: showNameScripts && showNameScripts !== '' ? 'block' : 'none' }}>
+                      <div className="chose-campain">
+                        <label className="camp-title-click"> {showNameScripts}</label>
+                        <img className="image-tites" src={ULTILS_TYPES.LINK_IMAGE} />
                       </div>
                     </div>
                   </Col>
                 </Col>
                 <Col md={8}>
-                  <Label className="name-title-des">
-                    <Translate contentKey="campaign.descrition" />
-                  </Label>
-                  <Input type="textarea" name="text" id="exampleText" onChange={this.onChangeField} maxLength="640" />
+                  <div style={{ margin: '0px 15px 0px -15px', height: '100%', paddingBottom: '10px' }}>
+                    <div style={{ position: 'relative' }}>
+                      <Label className="name-title-des">
+                        <Translate contentKey="campaign.descrition" />
+                      </Label>
+                      <label
+                        className="must-type"
+                        id="right_show"
+                        style={{
+                          display: valueDes && valueDes.length >= 1 ? 'none' : 'block',
+                          position: 'absolute',
+                          top: '0px',
+                          right: '30px',
+                          fontSize: '12px!important'
+                        }}
+                      >
+                        * <Translate contentKey="error.none-data.name-campaign" />
+                      </label>
+                    </div>
+
+                    <Input type="textarea" name="text" id="exampleText" onChange={this.onChangeField} maxLength="640" />
+                  </div>
                 </Col>
               </Row>
-              <Script value={this.state} onClick={this.onClick} />
+              <div style={{ padding: '0px 15px' }}>
+                <Script value={this.state} onClick={this.onClick} />
+              </div>
             </Card>
           </div>
         </div>

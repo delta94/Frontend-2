@@ -1,7 +1,7 @@
 import React, { Fragment, Component } from 'react';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
-import InformationCampaign from './info/info';
+import Info from './info/info';
 import Navigation from './navigation/navigation';
 import { Container, Collapse, Card, CardTitle } from 'reactstrap';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
@@ -23,7 +23,7 @@ export interface ICreateState {
   collapse: boolean;
 
   //display componemt navigation
-  isDisplayTable: string;
+  isDisplayTable: boolean;
 
   //change icon
   changeIcon: string;
@@ -36,7 +36,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
   state: ICreateState = {
     listInfo: {},
     collapse: true,
-    isDisplayTable: ULTILS_TYPES.DISPLAY_NAVIGATION,
+    isDisplayTable: false,
     changeIcon: ULTILS_TYPES.ICON_DOWN,
     campaignTypeId: ULTILS_TYPES.EMPTY
   };
@@ -60,11 +60,10 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
   };
 
   //function handler display componemt navigation
-  isDisPlayInfo = (e, list) => {
+  isDisPlayInfo = event => {
     this.setState({
-      isDisplayTable: e
+      isDisplayTable: event
     });
-    this.state.listInfo = list;
   };
 
   //function handler collapse table detail
@@ -83,8 +82,8 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
   };
 
   render() {
-    const { listInfo } = this.state;
     const { modalState } = this.props;
+    const { isDisplayTable } = this.state;
     return (
       <Fragment>
         <SweetAlert
@@ -122,12 +121,12 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
               </Card>
               <Collapse isOpen={this.state.collapse}>
                 {/* info campaign */}
-                <InformationCampaign onClick={this.isDisPlayInfo} />
+                <Info onClick={this.isDisPlayInfo} />
               </Collapse>
               <br />
               {/* navigation campaign */}
-              <div className={this.state.isDisplayTable}>
-                <Navigation valueListInfo={listInfo} onClick={this.isDisable} />
+              <div style={{ display: isDisplayTable ? 'block' : 'none' }}>
+                <Navigation onClick={this.isDisable} />
               </div>
             </Container>
           </ReactCSSTransitionGroup>
