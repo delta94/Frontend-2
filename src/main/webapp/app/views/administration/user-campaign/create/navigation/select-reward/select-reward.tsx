@@ -6,6 +6,7 @@ import React from 'react';
 import Voucher from '../select-reward/voucher/voucher';
 import { connect } from 'react-redux';
 import { getNavigationReward } from 'app/actions/navigation-info';
+import { openModal, closeModal } from 'app/actions/modal';
 import { IRootState } from 'app/reducers';
 
 export interface SelectRewardProps extends StateProps, DispatchProps {}
@@ -26,6 +27,7 @@ class SelectReward extends React.Component<SelectRewardProps, SelectRewardState>
       displayVoucher: ULTILS_TYPES.EMPTY,
       type: ULTILS_TYPES.SELECT_REWARD
     });
+    this.props.getNavigationReward({ type: parseInt(ULTILS_TYPES.SELECT_REWARD) });
   };
 
   //function no select evoucher
@@ -71,9 +73,11 @@ class SelectReward extends React.Component<SelectRewardProps, SelectRewardState>
   }
 }
 
-const mapStateToProps = ({ navigationInfo }: IRootState) => ({});
+const mapStateToProps = ({ navigationInfo }: IRootState) => ({
+  selectRewards: navigationInfo.reward.voucherId
+});
 
-const mapDispatchToProps = { getNavigationReward };
+const mapDispatchToProps = { getNavigationReward, openModal, closeModal };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

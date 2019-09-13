@@ -55,30 +55,28 @@ class Vocher extends React.Component<VocherProps, VocherState> {
       <Loader message={spinner} show={loading} priority={10}>
         <Container fluid>
           <Row>
-            <Col md="6">
-              <Card className="main-card mb-3">
-                <CardBody>
-                  <CardTitle>
-                    {' '}
-                    <Translate contentKey="campaign.evoucher" />
-                  </CardTitle>
-                  <Row form>
-                    <Col md={12}>
-                      <DropdownList
-                        data={listEvoucher}
-                        value={value}
-                        allowCreate="onFilter"
-                        onChange={data => this.onChangeList(data)}
-                        textField="name"
-                      />
-                    </Col>
-                  </Row>
-                </CardBody>
-              </Card>
-            </Col>
+            <Card className="main-card mb-3">
+              <CardBody>
+                <CardTitle>
+                  {' '}
+                  <Translate contentKey="campaign.evoucher" />
+                </CardTitle>
+                <Row form>
+                  <Col md={12}>
+                    <DropdownList
+                      data={listEvoucher}
+                      value={value}
+                      allowCreate="onFilter"
+                      onChange={data => this.onChangeList(data)}
+                      textField="name"
+                    />
+                  </Col>
+                </Row>
+              </CardBody>
+            </Card>
           </Row>
           <div className={this.state.displayTable}>
-            <Table>
+            <table className="table-voucher">
               <thead>
                 <tr>
                   <th>
@@ -102,7 +100,7 @@ class Vocher extends React.Component<VocherProps, VocherState> {
                   <td>{evoucherDetail.totalCode}</td>
                 </tr>
               </tbody>
-            </Table>
+            </table>
           </div>
         </Container>
       </Loader>
@@ -110,10 +108,11 @@ class Vocher extends React.Component<VocherProps, VocherState> {
   }
 }
 
-const mapStateToProps = ({ userCampaign }: IRootState) => ({
+const mapStateToProps = ({ userCampaign, navigationInfo }: IRootState) => ({
   loading: userCampaign.loading,
   listEvoucher: userCampaign.listEvoucher,
-  evoucherDetail: userCampaign.EvoucherDetail
+  evoucherDetail: userCampaign.EvoucherDetail,
+  navigationInfo
 });
 
 const mapDispatchToProps = { getListEvoucher, getDetailEvoucher, getNavigationReward };
