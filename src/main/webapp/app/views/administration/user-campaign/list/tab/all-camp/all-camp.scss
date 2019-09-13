@@ -322,3 +322,32 @@ h3 {
     padding-left: 0px;
   }
 }
+
+.sa-button-container {
+  .cancel {
+    background: #3866dd !important;
+    box-shadow: none !important;
+    color: #ffffff !important;
+    text-decoration: none;
+  }
+
+  .cancel:hover {
+    color: #ffffff !important;
+    text-decoration: none !important;
+    background-color: #3866dd !important;
+    border-color: #3866dd !important;
+  }
+  .confirm {
+    background: #3866dd !important;
+    box-shadow: none !important;
+    color: #ffffff !important;
+    text-decoration: none;
+  }
+
+  .confirm:hover {
+    color: #ffffff !important;
+    text-decoration: none !important;
+    background-color: #3866dd !important;
+    border-color: #3866dd !important;
+  }
+}
