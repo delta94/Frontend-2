@@ -71,26 +71,27 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
         zalo: 0,
         categories: idCategory
       };
+      if (this.props.total > 0) {
+        listUser.push(elements);
+        // get list from component select customer - to navigation
+        let listCustomer = listUser.map(item => {
+          let arrayCategories = item.categories;
+          let listCategories: Array<string> = [];
 
-      listUser.push(elements);
-      // get list from component select customer - to navigation
-      let listCustomer = listUser.map(item => {
-        let arrayCategories = item.categories;
-        let listCategories: Array<string> = [];
+          if (arrayCategories.includes(',')) {
+            listCategories = arrayCategories.split(',');
+          } else {
+            listCategories.push(arrayCategories);
+          }
 
-        if (arrayCategories.includes(',')) {
-          listCategories = arrayCategories.split(',');
-        } else {
-          listCategories.push(arrayCategories);
-        }
+          return { name: item.nameGroup, categories: listCategories };
+        });
 
-        return { name: item.nameGroup, categories: listCategories };
-      });
-
-      localStorage.setItem('listUser', JSON.stringify(listUser));
-      this.props.getNavigationCustomerCampaign(listCustomer);
-      this.props.getSumAllContact(listCustomer);
-      this.setState({ listUser });
+        localStorage.setItem('listUser', JSON.stringify(listUser));
+        this.props.getNavigationCustomerCampaign(listCustomer);
+        this.props.getSumAllContact(listCustomer);
+        this.setState({ listUser });
+      }
     }
   };
 

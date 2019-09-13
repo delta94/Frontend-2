@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ITEMS_PER_PAGE, ULTILS_TYPES, ACTIVE_PAGE } from '../../../../../../../constants/ultils';
 import CategoryDialog from './../customer-dialog/categories/categories';
 import SweetAlert from 'sweetalert-react';
+import { openModal, closeModal } from '../../../../../../../actions/modal';
 import { faKeybase } from '@fortawesome/free-brands-svg-icons';
 
 export interface CustomerDialogProps extends StateProps, DispatchProps {
@@ -51,15 +52,33 @@ class CustomerDialog extends React.Component<CustomerDialogProps, CustomerDialog
   //function submit
   handlerSaveForm = () => {
     const { modal, nameCategory, categories } = this.state;
-    if (categories) {
+    const { total } = this.props;
+    if (!categories) {
+      this.props.openModal({
+        show: true,
+        type: 'error',
+        title: 'Lỗi',
+        text: 'Vui lòng chọn phân loại'
+      });
+      this.setState({
+        modal: true
+      });
+    } else if (total === 0) {
+      this.props.openModal({
+        show: true,
+        type: 'error',
+        title: 'Lỗi',
+        text: 'vui lòng chọn contact > 0'
+      });
+      this.setState({
+        modal: true
+      });
+    } else {
+      //count contact
+      this.props.onClick(false, nameCategory, true, categories);
+
       this.setState({
         modal: false
-      });
-      //count contact
-      this.props.onClick(modal, nameCategory, true, categories);
-    } else {
-      this.setState({
-        isError: true
       });
     }
   };
@@ -108,20 +127,9 @@ class CustomerDialog extends React.Component<CustomerDialogProps, CustomerDialog
     const { listCustomer, loading, total } = this.props;
     return (
       <Loader message={spinner} show={loading} priority={10}>
-        <SweetAlert
-          title={ULTILS_TYPES.MESSAGE_SWEET_ERROR}
-          confirmButtonColor={ULTILS_TYPES.EMPTY}
-          show={this.state.isError}
-          text={ULTILS_TYPES.EMPTY}
-          type="error"
-          onConfirm={() => this.setState({ isError: false })}
-        />
         <ModalHeader
           toggle={() => {
-            this.setState({
-              modal: false
-            });
-            this.props.onClick(this.state.modal);
+            this.props.onClick(this.props.showModal);
           }}
         >
           <span>
@@ -223,14 +231,15 @@ class CustomerDialog extends React.Component<CustomerDialogProps, CustomerDialog
     );
   }
 }
-const mapStateToProps = ({ userCampaign }: IRootState) => ({
+const mapStateToProps = ({ userCampaign, handleModal }: IRootState) => ({
   loading: userCampaign.loading,
   listCustomer: userCampaign.listNewCustomer,
   pageCount: Math.ceil(userCampaign.totalElements / ITEMS_PER_PAGE),
-  total: userCampaign.totalElements
+  total: userCampaign.totalElements,
+  showModal: handleModal.data.show
 });
 
-const mapDispatchToProps = { getCustomer, getStatistic };
+const mapDispatchToProps = { getCustomer, getStatistic, openModal, closeModal };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
