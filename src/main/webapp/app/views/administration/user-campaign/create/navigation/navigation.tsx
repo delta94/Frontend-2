@@ -46,11 +46,41 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
   }
 
   toggle = tab => {
-    this.props.onClick(tab);
-    if (this.state.activeTab !== tab) {
-      this.setState({
-        activeTab: tab
+    let valueVoucher = this.props.evoucherDetail.value;
+    let isError = false;
+    let countContact = this.props.totalContact ? this.props.totalContact : 0;
+    console.log(this.props.totalContact);
+    if (countContact < 1) {
+      this.props.openModal({
+        show: true,
+        type: 'error',
+        title: 'Lỗi',
+        text: 'Vui lòng chọn tệp khách hàng'
       });
+      isError = true;
+    } else {
+      isError = false;
+    }
+    if (this.props.navigationInfo.reward.type === 2) {
+      if (!valueVoucher) {
+        this.props.openModal({
+          show: true,
+          type: 'error',
+          title: 'Lỗi',
+          text: 'Vui lòng chọn evoucher'
+        });
+        isError = true;
+      } else {
+        isError = false;
+      }
+    }
+    if (!isError) {
+      this.props.onClick(tab);
+      if (this.state.activeTab !== tab) {
+        this.setState({
+          activeTab: tab
+        });
+      }
     }
   };
 
@@ -244,7 +274,9 @@ const mapStateToProps = ({ userCampaign, navigationInfo, loadingState }: IRootSt
   listStep: userCampaign.listStepCampaign,
   listContentParams: userCampaign.listCampainContentParams,
   navigationInfo,
-  postMailRequest: userCampaign.postMailRequest
+  postMailRequest: userCampaign.postMailRequest,
+  evoucherDetail: userCampaign.EvoucherDetail,
+  totalContact: userCampaign.totalContact.totalContact
 });
 
 const mapDispatchToProps = {
