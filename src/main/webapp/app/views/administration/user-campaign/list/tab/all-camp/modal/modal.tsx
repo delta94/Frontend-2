@@ -119,8 +119,6 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
 
     this.props.onClick(false, this.state.isConfirm);
   };
-  // window.location.reload(false)
-  // window.location.reload();
 
   render() {
     const { loading, camp, campDetail, isOpen, showAlert } = this.props;
@@ -133,7 +131,7 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
             <Translate contentKey="campaign.modal.title" />
           </span>
 
-          <button className="close" onClick={() => this.props.onClick(false)}>
+          <button className="close" onClick={() => this.props.onClick(this.state.isUpdate)}>
             &times;
           </button>
         </ModalHeader>

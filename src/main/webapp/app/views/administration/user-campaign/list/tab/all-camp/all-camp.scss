@@ -113,9 +113,6 @@
 .modal-grid-child1 {
   display: flex;
 }
-.modal-grid-child {
-  margin-bottom: 5px;
-}
 
 .modal-grid-child1-bottom {
   font-weight: 500;
@@ -176,9 +173,7 @@
 .modal-grid-child1 {
   display: flex;
 }
-.modal-grid-child {
-  margin-bottom: 10px;
-}
+
 .right-info {
   width: auto;
 }
@@ -327,3 +322,45 @@ h3 {
     padding-left: 0px;
   }
 }
+
+.sa-button-container {
+  .cancel {
+    background: #3866dd !important;
+    box-shadow: none !important;
+    color: #ffffff !important;
+    text-decoration: none;
+  }
+
+  .cancel:hover {
+    color: #ffffff !important;
+    text-decoration: none !important;
+    background-color: #3866dd !important;
+    border-color: #3866dd !important;
+  }
+  .confirm {
+    background: #3866dd !important;
+    box-shadow: none !important;
+    color: #ffffff !important;
+    text-decoration: none;
+  }
+
+  .confirm:hover {
+    color: #ffffff !important;
+    text-decoration: none !important;
+    background-color: #3866dd !important;
+    border-color: #3866dd !important;
+  }
+}
+
+// .pagination {
+//    li {
+//     .active {
+//       a {
+//               z-index: 1;
+//               color: #fff;
+//               background-color: #3866DD !important;
+//               border-color: #3866DD !important;
+//         }
+//     }
+//    }
+// }

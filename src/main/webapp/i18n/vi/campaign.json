@@ -1,7 +1,9 @@
 {
   "campaign": {
     "modal": {
-      "title": "Thông tin chiến dịch"
+      "title": "Thông tin chiến dịch",
+      "sweetAlert-title": "Update status",
+      "sweetAlert-success": "Updated"
     },
     "choose-folder": "CHỌN TỆP",
     "value": "giá trị",
@@ -51,7 +53,7 @@
     "title-create-screen": "Danh sách chiến dịch > Tạo chiến dịch M2M",
     "status": {
       "action": "đang hoạt động",
-      "pause": "chưa kích hoạt/tạm dừng",
+      "pause": "dừng hoạt động/tạm dừng",
       "complete": "đã hoàn thành"
     },
     "message-error": {
