@@ -11,6 +11,7 @@
     "time-voucher": "thời gian",
     "amount": "số lượng",
     "total-contract": "Tổng số contact : ",
+    "review": " Tổng quan",
     "sum-contact": "Tổng contact",
     "phone": "Số điện thoại",
     "sdt": "SĐT",
@@ -35,12 +36,18 @@
     "quantity": "Số lượng:",
     "time": "Thời gian:",
     "content": "Nội dung:",
-    "description": "Mô tả chiến dịch:",
+    "description": "Mô tả chiến dịch: ",
     "ladi": "Landing Page:",
-    "contact": "Số lượng contact:",
+    "contact": "Số lượng contact: ",
     "gift": "Quà tặng:",
+    "landing-page": "Landingpage: ",
+    "invite": "Giới thiệu bạn bè: ",
+    "get-reward": "Nhận quà tặng: ",
+    "test-campaign": "Test chiến dịch: ",
+    "test": "Test",
     "info-campaign": "THÔNG TIN CHIẾN DỊCH",
     "title-contact": "contact",
+    "entity": "Đối tượng :",
     "title-create-screen": "Danh sách chiến dịch > Tạo chiến dịch M2M",
     "status": {
       "action": "đang hoạt động",
@@ -52,9 +59,15 @@
       "day": "vui lòng nhập ngày",
       "des": "vui lòng nhập mô tả"
     },
-
     "send-mail": {
       "success": "Gửi Email thành công"
-    }
+    },
+    "type-mail": "Mẫu mail gửi",
+    "send-intro": "GỬI MAIL GIỚI THIỆU BẠN BÈ",
+    "send-eward": "GỬI MAIL TẶNG QUÁ",
+    "create-content": "Tạo nội dung",
+    "type-interactive": "Hình thức tương tác",
+    "create-landing": "Tạo landing",
+    "chose-landing": "Chọn landingpage"
   }
 }

@@ -12,6 +12,8 @@ import { getNavigationCustomerCampaign } from 'app/actions/navigation-info';
 import CustomerDialog from './customer-dialog/customer-dialog';
 import { ITEMS_PER_PAGE, ULTILS_TYPES, ACTIVE_PAGE } from '../../../../../../constants/ultils';
 
+const spinner = <LoaderAnim color="#ffffff" type="ball-pulse" />;
+
 export interface SelectCustomerProps extends StateProps, DispatchProps {}
 
 export interface SelectCustomerState {
@@ -117,7 +119,6 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
   };
 
   render() {
-    const spinner = <LoaderAnim color="#ffffff" type="ball-pulse" />;
     const { listUser } = this.state;
     const { loading, totalContact } = this.props;
     var sumContact = 0;

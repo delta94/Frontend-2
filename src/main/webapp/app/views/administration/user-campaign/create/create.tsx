@@ -10,6 +10,8 @@ import '../create/create.scss';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Translate, translate } from 'react-jhipster';
 import { ULTILS_TYPES } from '../../../../constants/ultils';
+import { openModal, closeModal } from 'app/actions/modal';
+import SweetAlert from 'sweetalert-react';
 
 export interface ICreateProps extends StateProps, DispatchProps {}
 
@@ -82,8 +84,17 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
 
   render() {
     const { listInfo } = this.state;
+    const { modalState } = this.props;
     return (
       <Fragment>
+        <SweetAlert
+          title={modalState.title ? modalState.title : 'No title'}
+          confirmButtonColor=""
+          show={modalState.show ? modalState.show : false}
+          text={modalState.text ? modalState.text : 'No'}
+          type={modalState.type ? modalState.type : 'error'}
+          onConfirm={() => this.props.closeModal()}
+        />
         <div id="userCreate">
           <ReactCSSTransitionGroup
             className={cx('app-inner-layout chat-layout')}
@@ -126,11 +137,12 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
   }
 }
 
-const mapStateToProps = ({ userCampaign }: IRootState) => ({
-  loading: userCampaign.loading
+const mapStateToProps = ({ userCampaign, handleModal }: IRootState) => ({
+  loading: userCampaign.loading,
+  modalState: handleModal.data
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { openModal, closeModal };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

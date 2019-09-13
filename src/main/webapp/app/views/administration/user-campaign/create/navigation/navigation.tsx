@@ -15,7 +15,8 @@ import classnames from 'classnames';
 import { getContentPageParams, postSaveDataCampain } from 'app/actions/user-campaign';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { openModal } from '../../../../../actions/modal';
+import { openModal, closeModal } from '../../../../../actions/modal';
+import { openLoading, closeLoading } from '../../../../../actions/loading';
 import { postSaveDataCampainService } from 'app/services/user-campaign';
 
 export interface INavigationProps extends StateProps, DispatchProps {
@@ -28,6 +29,7 @@ export interface INavigationState {
   activeTab: number;
   active: boolean;
   endTab: boolean;
+  loading: boolean;
 }
 export class Navigation extends Component<INavigationProps, INavigationState> {
   constructor(props) {
@@ -36,7 +38,8 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
       listCustomerGroup: [],
       activeTab: 0,
       active: false,
-      endTab: false
+      endTab: false,
+      loading: false
     };
   }
 
@@ -79,13 +82,14 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
   };
 
   createNewCampain() {
-    let { navigationInfo, postMailRequest } = this.props;
-
+    let { navigationInfo } = this.props;
     if (navigationInfo.campaignTypeId === '' || navigationInfo.contentTemplates === null || navigationInfo.customerCampaigns === []) {
       this.props.openModal({ show: false, type: 'warning', text: 'Thiếu trường thông tin', title: 'Thông báo' });
     } else {
+      this.props.openLoading();
       postSaveDataCampainService(navigationInfo)
         .then(item => {
+          this.props.closeLoading();
           if (item) {
             this.props.openModal({
               show: true,
@@ -94,8 +98,14 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
               text: 'Đã tạo chiến dịch thành công'
             });
           }
+
+          setTimeout(() => {
+            this.props.closeModal();
+            window.location.assign('/#/admin/user-campaign');
+          }, 500);
         })
         .catch(err => {
+          this.props.closeLoading();
           this.props.openModal({
             show: true,
             type: 'error',
@@ -201,7 +211,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
                 <Col xs="8" sm="6" md="6">
                   <Button
                     className="btnNext"
-                    style={{ float: 'right', color: 'white', backgroundColor: activeTab === 5 ? 'green' : '#3866dd' }}
+                    style={{ float: 'right', color: 'white', backgroundColor: activeTab === 5 ? '#23C00A' : '#3866dd' }}
                     onClick={() => {
                       this.onHandletTab(1);
                       if (endTab) {
@@ -221,7 +231,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
     );
   }
 }
-const mapStateToProps = ({ userCampaign, navigationInfo }: IRootState) => ({
+const mapStateToProps = ({ userCampaign, navigationInfo, loadingState }: IRootState) => ({
   loading: userCampaign.loading,
   listStep: userCampaign.listStepCampaign,
   listContentParams: userCampaign.listCampainContentParams,
@@ -229,7 +239,14 @@ const mapStateToProps = ({ userCampaign, navigationInfo }: IRootState) => ({
   postMailRequest: userCampaign.postMailRequest
 });
 
-const mapDispatchToProps = { getContentPageParams, postSaveDataCampain, openModal };
+const mapDispatchToProps = {
+  getContentPageParams,
+  postSaveDataCampain,
+  openModal,
+  closeModal,
+  openLoading,
+  closeLoading
+};
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

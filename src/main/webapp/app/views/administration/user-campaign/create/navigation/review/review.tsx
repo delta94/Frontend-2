@@ -4,131 +4,134 @@ import '../review/review.scss';
 import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
 import React, { Fragment, Component, useState } from 'react';
 import { ISaveDataCampain } from 'app/common/model/campaign-navigation.model';
+import Loader from 'react-loader-advanced';
+import { Loader as LoaderAnim } from 'react-loaders';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
+
+const spinner = <LoaderAnim color="#ffffff" type="ball-pulse" />;
 
 export interface ReviewProps extends StateProps, DispatchProps {}
 
 export interface ReviewState {
-  activeTab: string;
-  displayVoucher: string;
-  gift: Object;
   testMail: string;
 }
-class Review extends React.Component<ReviewProps, ReviewState> {
+
+class Review extends React.PureComponent<ReviewProps, ReviewState> {
   state: ReviewState = {
-    activeTab: '1',
-    displayVoucher: 'display-voucher',
-    gift: {},
     testMail: ''
-  };
-
-  toggle = tab => {
-    if (this.state.activeTab !== tab) {
-      this.setState({
-        activeTab: tab
-      });
-    }
-  };
-
-  onClickVoucher = () => {
-    this.setState({
-      displayVoucher: ''
-    });
-  };
-  onClickNoVoucher = () => {
-    this.setState({
-      displayVoucher: 'display-voucher'
-    });
   };
 
   render() {
     const { testMail } = this.state;
-    const { navigationInfo, sumcontact } = this.props;
+    const { navigationInfo, sumcontact, loading } = this.props;
     let listUser = JSON.parse(localStorage.getItem('listUser'));
     let duplicate = parseInt(localStorage.getItem('duplicate'));
     if (duplicate < 0) {
       duplicate = 0;
     }
     return (
-      <Fragment>
-        <div className="preview">
-          <CardTitle>Tổng quan</CardTitle>
-          <div className="b-dashed">
-            <div className="preview-title">
-              <div className="info-title">
-                <span className="c-b">Đối tượng:</span> Tổng contact: <span className="c-g">{sumcontact ? sumcontact : 0}</span>
+      <Loader message={spinner} show={loading} priority={10}>
+        <Fragment>
+          <div className="preview">
+            <CardTitle>
+              <Translate contentKey="campaign.review" />
+            </CardTitle>
+            <div className="b-dashed">
+              <div className="preview-title">
+                <div className="info-title">
+                  <span className="c-b">
+                    <Translate contentKey="campaign.entity" />
+                  </span>
+                  <Translate contentKey="campaign.all-contract" /> <span className="c-g">{sumcontact ? sumcontact : 0}</span>
+                </div>
+                <div className="info-title">
+                  <Translate contentKey="campaign.duplicate-contract" /> <span className="c-b">{duplicate}</span>
+                </div>
               </div>
-              <div className="info-title">
-                Contact trùng: <span className="c-b">{duplicate}</span>
-              </div>
-            </div>
-            <Row>
-              {navigationInfo.customerCampaigns.length > 0 &&
-                navigationInfo.customerCampaigns.map((item, index) => {
-                  return (
-                    <Col md="4" key={item.name + index}>
-                      <div className="title-contact">
-                        <div className="camp-titles">{item.name}</div>
-                        <div className="camp-titles">
-                          <label>Tổng contact: {listUser[index].totalContact}</label>
+              <Row>
+                {navigationInfo.customerCampaigns.length > 0 &&
+                  navigationInfo.customerCampaigns.map((item, index) => {
+                    return (
+                      <Col md="4" key={item.name + index}>
+                        <div className="title-contact">
+                          <div className="camp-titles">{item.name}</div>
+                          <div className="camp-titles">
+                            <label>
+                              {' '}
+                              <Translate contentKey="campaign.sum-contact" /> {listUser[index].totalContact}
+                            </label>
+                          </div>
                         </div>
-                      </div>
-                    </Col>
-                  );
-                })}
-            </Row>
-            <div className="b-b b-t all-content-review">
-              <Row>
-                <Col md="6" className="b-r">
-                  <div className="content-review b-b">
-                    <span className="c-b">Quà tặng: </span>
-                    {navigationInfo.reward.type === 2 ? 'E- voucher' : 'Không có'}
-                  </div>
-                </Col>
-                <Col md="6">
-                  <div className="content-review b-b">
-                    <span className="c-b">Landingpage: </span>
-                    {navigationInfo.contentTemplates[0].subject ? navigationInfo.contentTemplates[0].subject : 'Không có'}
-                  </div>
-                </Col>
+                      </Col>
+                    );
+                  })}
               </Row>
-              <Row>
-                <Col md="6" className="b-r">
-                  <div className="content-review ">
-                    <span className="c-b">Giới thiệu bạn bè: </span>
-                    {navigationInfo.contentTemplates[2].subject ? navigationInfo.contentTemplates[2].subject : 'Không có'}
-                  </div>
-                </Col>
-                <Col md="6">
-                  <div className="content-review">
-                    <span className="c-b">Nhận quà tặng: </span>
-                    {navigationInfo.contentTemplates[1].subject ? navigationInfo.contentTemplates[1].subject : 'Không có'}
-                  </div>
-                </Col>
-              </Row>
+              <div className="b-b b-t all-content-review">
+                <Row>
+                  <Col md="6" className="b-r">
+                    <div className="content-review b-b">
+                      <span className="c-b">
+                        <Translate contentKey="campaign.gift" />
+                      </span>
+                      {navigationInfo.reward.type === 2 ? 'E- voucher' : 'Không có'}
+                    </div>
+                  </Col>
+                  <Col md="6">
+                    <div className="content-review b-b">
+                      <span className="c-b">
+                        <Translate contentKey="campaign.landing-page" />
+                      </span>
+                      {navigationInfo.contentTemplates[0].subject ? navigationInfo.contentTemplates[0].subject : 'Không có'}
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col md="6" className="b-r">
+                    <div className="content-review ">
+                      <span className="c-b">
+                        <Translate contentKey="campaign.invite" />
+                      </span>
+                      {navigationInfo.contentTemplates[2].subject ? navigationInfo.contentTemplates[2].subject : 'Không có'}
+                    </div>
+                  </Col>
+                  <Col md="6">
+                    <div className="content-review">
+                      <span className="c-b">
+                        <Translate contentKey="campaign.get-reward" />
+                      </span>
+                      {navigationInfo.contentTemplates[1].subject ? navigationInfo.contentTemplates[1].subject : 'Không có'}
+                    </div>
+                  </Col>
+                </Row>
+              </div>
+            </div>
+            <div className="test-commitsion">
+              <label>
+                <Translate contentKey="campaign.test-campaign" />
+              </label>
+              <input
+                value={testMail}
+                placeholder="Nhập email test"
+                onChange={event => {
+                  this.setState({ testMail: event.target.value });
+                }}
+              />
+              <button>
+                <Translate contentKey="campaign.test" />
+              </button>
             </div>
           </div>
-          <div className="test-commitsion">
-            <label>Test chiến dịch</label>
-            <input
-              value={testMail}
-              placeholder="Nhập email test"
-              onChange={event => {
-                this.setState({ testMail: event.target.value });
-              }}
-            />
-            <button>Test</button>
-          </div>
-        </div>
-      </Fragment>
+        </Fragment>
+      </Loader>
     );
   }
 }
 
-const mapStateToProps = ({ navigationInfo, userCampaign }: IRootState) => ({
+const mapStateToProps = ({ navigationInfo, userCampaign, loadingState }: IRootState) => ({
   navigationInfo,
-  sumcontact: userCampaign.totalContact.totalContact
+  sumcontact: userCampaign.totalContact.totalContact,
+  loading: loadingState.loading
 });
 
 const mapDispatchToProps = {};
