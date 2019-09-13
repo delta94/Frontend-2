@@ -178,19 +178,6 @@
   margin-top: 7px;
 }
 
-// .camp-bottom {
-//   display: grid;
-//   grid-auto-columns: 33% auto;
-// }
-
-// .modal-grid{
-// // .modal-grid-child1,
-// // .modal-grid-child1-top {
-//   display: grid;
-// }
-// .modal-grid {
-//   grid-auto-rows: auto auto;
-// }
 .modal-header,
 .modal-footer {
   background: white;
@@ -198,24 +185,13 @@
 .modal-grid-child1 {
   display: flex;
 }
-.modal-grid-child {
-  margin-bottom: 10px;
-}
 
-// .modal-grid-child1-bottom1,
-// .modal-grid-child1-bottom2,
-// .modal-grid-child1-bottom3,
-// .modal-grid-child1-bottom4 {
-//   grid-auto-rows: 50% auto;
-// }
 .modal-grid-child1-bottom {
   font-weight: 500;
   color: black;
   margin-left: 21px;
 }
-//   grid-auto-columns: 15% 30% 30% 25%;
-//   grid-column-start: 5px;
-// }
+
 .modal-info {
   display: flex;
 }
@@ -490,9 +466,7 @@
 .modal-grid-child1 {
   display: flex;
 }
-.modal-grid-child {
-  margin-bottom: 10px;
-}
+
 .right-info {
   width: auto;
 }
@@ -676,4 +650,13 @@ $color_border: rgba(206, 206, 206, 0.687);
 }
 #userCreate .mb-4 {
   margin-bottom: 0px !important;
+}
+
+.show {
+  .rw-state-focus,
+  .rw-state-focus:hover {
+    background-color: #3866dd !important;
+    border-color: #3866dd !important;
+    color: #e0f3ff;
+  }
 }
