@@ -119,8 +119,6 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
 
     this.props.onClick(false, this.state.isConfirm);
   };
-  // window.location.reload(false)
-  // window.location.reload();
 
   render() {
     const { loading, camp, campDetail, isOpen, showAlert } = this.props;

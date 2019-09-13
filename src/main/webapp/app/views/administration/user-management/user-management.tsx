@@ -29,14 +29,6 @@ export interface IUserManagementState {
   itemsPerPage: number;
 }
 
-// const contentBoxStyle = {
-//   backgroundColor: 'white',
-//   position: 'relative',
-//   padding: 20,
-//   border: '1px solid lightgrey',
-//   borderRadius: '5px'
-// };
-
 export class UserManagement extends React.Component<IUserManagementProps, IUserManagementState> {
   state: IUserManagementState = {
     activePage: ACTIVE_PAGE,
@@ -52,12 +44,6 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
   componentDidMount() {
     const { activePage, itemsPerPage, textSearch, categories } = this.state;
     this.props.getUsers(activePage, itemsPerPage, categories, textSearch);
-    // this.props.getUserCategories('');
-  }
-
-  componentWillReceiveProps(nextProps) {
-    // const { users } = nextProps;
-    // const { activePage, itemsPerPage } = this.state;
   }
 
   handlePagination = activePage => {
