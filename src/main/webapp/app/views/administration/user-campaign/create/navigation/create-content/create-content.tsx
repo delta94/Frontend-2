@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import '../create-content/create-content.scss';
 import Dropdown from '../../../../../../layout/DropDown/Dropdown';
-import SweetAlert from 'sweetalert-react';
 
 import { Card, Collapse, Button, Input, CardTitle, CardBody, Form } from 'reactstrap';
 import { connect } from 'react-redux';
@@ -272,16 +271,6 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
 
     return (
       <Fragment>
-        <div style={{ position: 'fixed', top: '100px', right: '300px', zIndex: 2 }}>
-          <SweetAlert
-            title={modalState.title ? modalState.title : 'No title'}
-            confirmButtonColor=""
-            show={modalState.show ? modalState.show : false}
-            text={modalState.text ? modalState.text : 'No'}
-            type={modalState.type ? modalState.type : 'error'}
-            onConfirm={() => this.props.closeModal()}
-          />
-        </div>
         <div className="create-content">
           <div className="add-content">
             {/* Title */}

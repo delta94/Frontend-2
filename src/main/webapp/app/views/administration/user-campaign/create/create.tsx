@@ -11,7 +11,7 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import { Translate, translate } from 'react-jhipster';
 import { ULTILS_TYPES } from '../../../../constants/ultils';
 import { openModal, closeModal } from 'app/actions/modal';
-import SweetAlerts from 'app/DemoPages/Components/Notifications/Examples/SweetAlerts';
+import SweetAlert from 'sweetalert-react';
 
 export interface ICreateProps extends StateProps, DispatchProps {}
 
@@ -87,7 +87,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
     const { modalState } = this.props;
     return (
       <Fragment>
-        <SweetAlerts
+        <SweetAlert
           title={modalState.title ? modalState.title : 'No title'}
           confirmButtonColor=""
           show={modalState.show ? modalState.show : false}
