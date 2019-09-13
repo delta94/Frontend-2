@@ -20,9 +20,6 @@ export interface IScriptsCampaignState {
   //set name table chosse scripts
   nameScript: string;
 
-  //set display sweet alert
-  isError: boolean;
-
   //set disable Document
   disableDocument: string;
 }
@@ -32,11 +29,7 @@ export class ScriptsCampaign extends Component<IScriptsCampaignProps, IScriptsCa
   }
   state: IScriptsCampaignState = {
     urlImage: ULTILS_TYPES.EMPTY,
-
     nameScript: ULTILS_TYPES.EMPTY,
-
-    isError: false,
-
     disableDocument: ULTILS_TYPES.EMPTY
   };
 
@@ -51,13 +44,9 @@ export class ScriptsCampaign extends Component<IScriptsCampaignProps, IScriptsCa
     if (
       this.props.value.valueDay !== ULTILS_TYPES.EMPTY &&
       this.props.value.valueName !== ULTILS_TYPES.EMPTY &&
-      this.props.value.valueDes !== ULTILS_TYPES.EMPTY &&
-      this.props.value.validateName === ULTILS_TYPES.EMPTY &&
-      this.props.value.validateField === ULTILS_TYPES.EMPTY &&
-      this.props.value.validateDay === ULTILS_TYPES.EMPTY
+      this.props.value.valueDes !== ULTILS_TYPES.EMPTY
     ) {
       this.setState({
-        isError: false,
         disableDocument: ULTILS_TYPES.DISABLE_DOCUMENT
       });
       this.props.getStepCampaign(id);
@@ -65,7 +54,6 @@ export class ScriptsCampaign extends Component<IScriptsCampaignProps, IScriptsCa
       this.props.getNavigationId(id);
     } else {
       this.setState({
-        isError: true,
         disableDocument: ULTILS_TYPES.EMPTY
       });
       this.props.onClick(null, id);
@@ -75,14 +63,6 @@ export class ScriptsCampaign extends Component<IScriptsCampaignProps, IScriptsCa
     const { listCampaignInfo } = this.props;
     return (
       <Fragment>
-        <SweetAlert
-          title={ULTILS_TYPES.MESSAGE_SWEET_ALER}
-          confirmButtonColor={ULTILS_TYPES.EMPTY}
-          show={this.state.isError}
-          text={ULTILS_TYPES.EMPTY}
-          type="error"
-          onConfirm={() => this.setState({ isError: false })}
-        />
         <Row className={this.state.disableDocument}>
           {listCampaignInfo
             ? listCampaignInfo.map((item, index) => {

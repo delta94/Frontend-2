@@ -18,16 +18,13 @@ export interface IinfoProps extends StateProps, DispatchProps {
   onClick: Function;
 }
 
+const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
+
 export interface IinfoPropsState {
   //value info
   valueDay: string;
-  valueName: string;
+  valueName?: string;
   valueDes: string;
-
-  //message error
-  validateName: any;
-  validateField: any;
-  validateDay: any;
 
   //handler show table
   showNameScripts: string;
@@ -42,18 +39,13 @@ export interface IinfoPropsState {
 
 export class Info extends React.Component<IinfoProps, IinfoPropsState> {
   state: IinfoPropsState = {
-    //set defaul value message error
-    validateDay: ULTILS_TYPES.EMPTY,
-    validateField: ULTILS_TYPES.EMPTY,
-    validateName: ULTILS_TYPES.EMPTY,
-
     //set style class table default
     disableScreen: ULTILS_TYPES.EMPTY,
     displayTable: ULTILS_TYPES.DISPLAY_TABLE,
     showNameScripts: ULTILS_TYPES.EMPTY,
 
     // set default value info
-    valueName: ULTILS_TYPES.EMPTY,
+    valueName: '',
     valueDay: ULTILS_TYPES.EMPTY,
     valueDes: ULTILS_TYPES.EMPTY,
 
@@ -64,42 +56,29 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
   };
 
   onChangeName = event => {
-    if (event.target.value) {
-      this.setState({
-        validateName: ULTILS_TYPES.EMPTY,
-        valueName: event.target.value
-      });
-
-      this.props.getNavigationName(event.target.value);
-    } else {
-      this.setState({
-        validateName: <Translate contentKey="campaign.message-error.name" />
-      });
-    }
+    let { valueName } = this.state;
+    valueName = event.target.value;
+    this.setState({ valueName });
   };
 
   onChangeField = event => {
     if (event.target.value) {
       this.setState({
-        validateField: ULTILS_TYPES.EMPTY,
         valueDes: event.target.value
-      });
-
-      this.props.getNavigationDescription(event.target.value);
-    } else {
-      this.setState({
-        validateField: <Translate contentKey="campaign.message-error.des" />
       });
     }
   };
 
   //function show text scripts
   onClick = (event, id) => {
+    let { valueName, valueDes } = this.state;
+
     if (event !== null) {
       this.setState({
         displayTable: ULTILS_TYPES.EMPTY,
         showNameScripts: event
       });
+
       let listInfo = {
         campaignTypeId: id,
         name: event,
@@ -113,22 +92,19 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
         displayTable: ULTILS_TYPES.DISPLAY_TABLE
       });
     }
+
+    this.props.getNavigationName(valueName);
+    this.props.getNavigationDescription(valueDes);
   };
 
   onDatesChange = ({ startDate, endDate }) => {
     if (startDate) {
       this.setState({
-        validateDay: ULTILS_TYPES.EMPTY,
         startDate,
         endDate,
         valueDay: startDate
       });
-
       this.props.getNavigationFromDate(new Date(startDate._d).toISOString());
-    } else {
-      this.setState({
-        validateDay: <Translate contentKey="campaign.message-error.day" />
-      });
     }
 
     if (endDate) {
@@ -138,7 +114,6 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
 
   render() {
     const { loading } = this.props;
-    const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
     return (
       <Loader message={spinner1} show={loading} priority={1}>
         <div id="userCreate">
@@ -152,14 +127,12 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
                   <div>
                     <Col sm={12}>
                       <Input
-                        type="email"
+                        type="text"
                         value={this.state.valueName}
-                        name="email"
                         placeholder={ULTILS_TYPES.PLACEHODER_NAME}
                         onChange={this.onChangeName}
                         maxLength="160"
                       />
-                      <p>{this.state.validateName}</p>
                     </Col>
                   </div>
                   <Col>
@@ -181,8 +154,6 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
                         focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
                         onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
                       />
-
-                      <p>{this.state.validateDay}</p>
                     </Col>
                     <div className={this.state.displayTable}>
                       <div className="reOpen-doc">
@@ -203,7 +174,6 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
                   <Input type="textarea" name="text" id="exampleText" onChange={this.onChangeField} maxLength="640" />
                 </Col>
               </Row>
-              <p>{this.state.validateField}</p>
               <Script value={this.state} onClick={this.onClick} />
             </Card>
           </div>
