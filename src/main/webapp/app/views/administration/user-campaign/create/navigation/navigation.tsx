@@ -29,6 +29,7 @@ export interface INavigationState {
   activeTab: number;
   active: boolean;
   endTab: boolean;
+  startTab: boolean;
   loading: boolean;
 }
 export class Navigation extends Component<INavigationProps, INavigationState> {
@@ -39,7 +40,8 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
       activeTab: 1,
       active: false,
       endTab: false,
-      loading: false
+      loading: false,
+      startTab: false
     };
   }
 
@@ -57,18 +59,23 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
     if (activeTab === 5) {
       this.setState({ endTab: true });
     }
+
+    if (activeTab === 1) {
+      this.setState({ startTab: true });
+    }
   }
   static getDerivedStateFromProps(nextProps, prevState) {
     if (prevState.activeTab === 5) {
       return { endTab: true };
+    } else if (prevState.activeTab === 1) {
+      return { startTab: true };
     } else {
-      return { endTab: false };
+      return { endTab: false, startTab: false };
     }
   }
 
   onHandletTab = (param: number) => {
-    let { navigationInfo } = this.props;
-    let { activeTab, endTab } = this.state;
+    let { activeTab } = this.state;
     let activeTabNumber: number = activeTab;
     activeTabNumber += param;
 
@@ -117,8 +124,8 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
   }
 
   render() {
-    const { endTab, activeTab } = this.state;
-    const { listStep, navigationInfo, postMailRequest } = this.props;
+    const { endTab, activeTab, startTab } = this.state;
+    const { listStep } = this.props;
     return (
       <Fragment>
         <ReactCSSTransitionGroup
@@ -201,6 +208,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
                 <Col xs="8" sm="6" md="6">
                   <Button
                     className="btnBack"
+                    style={{ display: startTab ? 'none' : 'block' }}
                     onClick={() => {
                       this.onHandletTab(-1);
                     }}
