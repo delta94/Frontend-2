@@ -6,6 +6,7 @@ import { ToastContainer } from 'react-toastify';
 
 const Admin = lazy(() => import('app/views/administration'));
 const Pages = lazy(() => import('app/views/pages'));
+const Login = lazy(() => import('app/views/login'));
 
 const UserPages = lazy(() => import('app/DemoPages/UserPages'));
 const Applications = lazy(() => import('app/DemoPages/Applications'));
@@ -21,6 +22,24 @@ const Tables = lazy(() => import('app/DemoPages/Tables'));
 const AppRoutes = () => {
   return (
     <Fragment>
+      {/* Login */}
+      <Suspense
+        fallback={
+          <div className="loader-container">
+            <div className="loader-container-inner">
+              <div className="text-center">{/* <Loader type="ball-pulse-rise" /> */}</div>
+              <h6 className="mt-5">
+                Please wait while we load all the Components examples
+                <small>
+                  Because this is a demonstration we load at once all the Components examples. This wouldn't happen in a real live app!
+                </small>
+              </h6>
+            </div>
+          </div>
+        }
+      >
+        <Route path="/login" component={Login} />
+      </Suspense>
       {/* Admin */}
       <Suspense
         fallback={
@@ -200,7 +219,7 @@ const AppRoutes = () => {
         <Route path="/dashboards" component={Dashboards} />
       </Suspense>
 
-      <Route exact path="/" render={() => <Redirect to="/admin/user-management" />} />
+      <Route exact path="/" render={() => <Redirect to="/login" />} />
       <ToastContainer />
     </Fragment>
   );

@@ -1,5 +1,21 @@
 export const MainNav = [
     {
+        icon: 'pe-7s-power',
+        label: 'Login',
+        content: [
+            {
+                label: 'Login Service',
+                to: '#/login',
+            },
+
+            {
+                label: 'Logout Service',
+                to: '#/login/logout',
+            },
+          
+        ],
+    },
+    {
         icon: 'pe-7s-rocket',
         label: 'Admin',
         content: [
@@ -13,23 +29,6 @@ export const MainNav = [
                 to: '#/admin/user-campaign',
             },
           
-            {
-                label: 'Minimal',
-                content: [
-                    {
-                        label: 'Variation 1',
-                        to: '#/dashboards/minimal-dashboard-1',
-                    },
-                    {
-                        label: 'Variation 2',
-                        to: '#/dashboards/minimal-dashboard-2',
-                    },
-                ],
-            },
-            {
-                label: 'CRM',
-                to: '#/dashboards/crm',
-            }
         ],
     },
     {
