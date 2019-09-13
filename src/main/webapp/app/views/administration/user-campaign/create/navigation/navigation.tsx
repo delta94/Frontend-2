@@ -36,7 +36,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
     super(props);
     this.state = {
       listCustomerGroup: [],
-      activeTab: 0,
+      activeTab: 1,
       active: false,
       endTab: false,
       loading: false
