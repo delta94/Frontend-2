@@ -74,7 +74,7 @@ class Review extends React.PureComponent<ReviewProps, ReviewState> {
                       <span className="c-b">
                         <Translate contentKey="campaign.gift" />
                       </span>
-                      {navigationInfo.reward.type === 2 ? 'E- voucher' : 'Không có'}
+                      {navigationInfo.reward.type === 2 ? ' E- voucher' : ' Không có'}
                     </div>
                   </Col>
                   <Col md="6">
@@ -82,7 +82,7 @@ class Review extends React.PureComponent<ReviewProps, ReviewState> {
                       <span className="c-b">
                         <Translate contentKey="campaign.landing-page" />
                       </span>
-                      {navigationInfo.contentTemplates[0].subject ? navigationInfo.contentTemplates[0].subject : 'Không có'}
+                      {navigationInfo.contentTemplates[0].subject ? navigationInfo.contentTemplates[0].subject : ' Không có'}
                     </div>
                   </Col>
                 </Row>
@@ -92,7 +92,7 @@ class Review extends React.PureComponent<ReviewProps, ReviewState> {
                       <span className="c-b">
                         <Translate contentKey="campaign.invite" />
                       </span>
-                      {navigationInfo.contentTemplates[2].subject ? navigationInfo.contentTemplates[2].subject : 'Không có'}
+                      {navigationInfo.contentTemplates[2].subject ? navigationInfo.contentTemplates[2].subject : ' Không có'}
                     </div>
                   </Col>
                   <Col md="6">
