@@ -59,18 +59,21 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
     let { valueName } = this.state;
     valueName = event.target.value;
     this.setState({ valueName });
+    this.props.getNavigationName(valueName);
   };
 
   onChangeField = event => {
     this.setState({
       valueDes: event.target.value
     });
+
+    this.props.getNavigationDescription(event.target.value);
   };
 
   componentDidMount() {
     let { startDate, endDate } = this.state;
     this.props.getNavigationFromDate(new Date(startDate._d).toISOString());
-    this.props.getNavigationFromDate(new Date(endDate._d).toISOString());
+    this.props.getNavigationToDate(new Date(endDate._d).toISOString());
   }
   //function show text scripts
   onClick = (event, id) => {
@@ -81,10 +84,7 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
         displayTable: ULTILS_TYPES.EMPTY,
         showNameScripts: event
       });
-      this.props.getNavigationName(valueName);
-      this.props.getNavigationDescription(valueDes);
-      this.props.getNavigationFromDate(new Date(startDate._d).toISOString());
-      this.props.getNavigationFromDate(new Date(endDate._d).toISOString());
+
       this.props.onClick(id);
     } else {
       this.setState({
@@ -96,9 +96,16 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
   onDatesChange = ({ startDate, endDate }) => {
     if (startDate) {
       this.setState({
-        startDate,
+        startDate
+      });
+      this.props.getNavigationFromDate(new Date(startDate._d).toISOString());
+    }
+
+    if (endDate) {
+      this.setState({
         endDate
       });
+      this.props.getNavigationToDate(new Date(endDate._d).toISOString());
     }
   };
 
