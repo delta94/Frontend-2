@@ -124,10 +124,6 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
     const { loading, camp, campDetail, isOpen, showAlert } = this.props;
     const { activePage, isConfirm } = this.state;
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
-    // console.log("camp.name", camp.name)
-    // var firstLetter = (camp.name).charAt(0);
-    // console.log("chữ đầu tiên", firstLetter)
-
     return (
       <Modal isOpen={isOpen} fade={false}>
         <ModalHeader>
@@ -135,7 +131,7 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
             <Translate contentKey="campaign.modal.title" />
           </span>
 
-          <button className="close" onClick={() => this.props.onClick(false)}>
+          <button className="close" onClick={() => this.props.onClick(this.state.isUpdate)}>
             &times;
           </button>
         </ModalHeader>
@@ -145,7 +141,7 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
             <Loader message={spinner1} show={loading} priority={2}>
               <Row className="modal-name">
                 <Col md="7">
-                  <span className="modal-campaign-name"> {camp.name}</span>
+                  <span className="modal-campaign-name">{camp.name}</span>
                 </Col>
                 <Col md="2">
                   <span className="modal-icon" style={{ float: 'right' }}>
@@ -162,7 +158,7 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
                       beat={true}
                     />
                     <SweetAlert
-                      title="Update status?"
+                      title="Cập nhật trạng thái ?"
                       confirmButtonColor=""
                       // text="Mục đã xoá sẽ không thể khôi phục !"
                       show={this.state.isUpdate}

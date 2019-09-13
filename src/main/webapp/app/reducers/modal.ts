@@ -5,6 +5,7 @@ export interface IOpenModal {
   type?: string;
   title?: string;
   text?: string;
+  showCancelButton?: boolean;
 }
 
 const initialModalState = {
@@ -12,7 +13,8 @@ const initialModalState = {
     show: false,
     type: '',
     title: '',
-    text: ''
+    text: '',
+    showCancelButton: false
   } as Readonly<IOpenModal>
 };
 

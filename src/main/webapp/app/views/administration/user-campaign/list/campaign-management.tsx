@@ -9,11 +9,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, CardHeader, Card, Container } from 'reactstrap';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import classnames from 'classnames';
-
+import SweetAlert from 'sweetalert-react';
 import { DISPLAY_STATUS_ALL, DISPLAY_STATUS_PAUSE, DISPLAY_STATUS_ACTION, DISPLAY_STATUS_COMPLETE } from 'app/constants/common';
 import './../list/campaign-management.scss';
 import { getCampaignInfoByStatus, getCampaignInfoById, getCountCampaignByStatus } from 'app/actions/user-campaign';
 import AllCamp from './tab/all-camp/all-camp';
+import { openModal, closeModal } from 'app/actions/modal';
 
 export interface ICreateCampaignProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
 
@@ -59,10 +60,18 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
   };
 
   render() {
-    const { match, loading, camps, total, totalActive, totalFinish, totalNotActive } = this.props;
+    const { match, loading, camps, total, totalActive, totalFinish, totalNotActive, modalState } = this.props;
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
     return (
       <div id="campaign-management">
+        <SweetAlert
+          title={modalState.title ? modalState.title : 'No title'}
+          confirmButtonColor=""
+          show={modalState.show ? modalState.show : false}
+          text={modalState.text ? modalState.text : 'No'}
+          type={modalState.type ? modalState.type : 'error'}
+          onConfirm={() => this.props.closeModal()}
+        />
         {/* day la trang quan ly user */}
         <h3 id="user-management-page-heading">
           <Translate contentKey="campaign.title" />
@@ -161,16 +170,17 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
   }
 }
 
-const mapStateToProps = ({ userCampaign }: IRootState) => ({
+const mapStateToProps = ({ userCampaign, handleModal }: IRootState) => ({
   camps: userCampaign.camps,
   loading: userCampaign.loading,
   total: userCampaign.total,
   totalActive: userCampaign.totalActive,
   totalFinish: userCampaign.totalFinish,
-  totalNotActive: userCampaign.totalNotActive
+  totalNotActive: userCampaign.totalNotActive,
+  modalState: handleModal.data
 });
 
-const mapDispatchToProps = { getCampaignInfoByStatus, getCampaignInfoById, getCountCampaignByStatus };
+const mapDispatchToProps = { getCampaignInfoByStatus, getCampaignInfoById, getCountCampaignByStatus, openModal, closeModal };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
