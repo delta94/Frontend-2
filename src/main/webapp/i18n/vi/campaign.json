@@ -1,7 +1,9 @@
 {
   "campaign": {
     "modal": {
-      "title": "Thông tin chiến dịch"
+      "title": "Thông tin chiến dịch",
+      "sweetAlert-title": "Update status",
+      "sweetAlert-success": "Updated"
     },
     "choose-folder": "CHỌN TỆP",
     "value": "giá trị",
