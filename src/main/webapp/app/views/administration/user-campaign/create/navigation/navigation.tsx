@@ -47,41 +47,11 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
   }
 
   toggle = tab => {
-    let valueVoucher = this.props.evoucherDetail.value;
-    let isError = false;
-    let countContact = this.props.totalContact ? this.props.totalContact : 0;
-    console.log(this.props.totalContact);
-    if (countContact < 1) {
-      this.props.openModal({
-        show: true,
-        type: 'error',
-        title: 'Lỗi',
-        text: 'Vui lòng chọn tệp khách hàng'
+    let { activeTab } = this.state;
+    if (!this.checkThrowStep(activeTab, null, tab).isError && tab !== activeTab) {
+      this.setState({
+        activeTab: tab
       });
-      isError = true;
-    } else {
-      isError = false;
-    }
-    if (this.props.navigationInfo.reward.type === 2) {
-      if (!valueVoucher) {
-        this.props.openModal({
-          show: true,
-          type: 'error',
-          title: 'Lỗi',
-          text: 'Vui lòng chọn evoucher'
-        });
-        isError = true;
-      } else {
-        isError = false;
-      }
-    }
-    if (!isError) {
-      this.props.onClick(tab);
-      if (this.state.activeTab !== tab) {
-        this.setState({
-          activeTab: tab
-        });
-      }
     }
   };
 
@@ -95,6 +65,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
       this.setState({ startTab: true });
     }
   }
+
   static getDerivedStateFromProps(nextProps, prevState) {
     if (prevState.activeTab === 5) {
       return { endTab: true };
@@ -105,17 +76,130 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
     }
   }
 
+  checkThrowStep = (activeTab, param, nextStep) => {
+    let { navigationInfo, totalContact, evoucherDetail } = this.props;
+    let modalState: IOpenModal = { show: false, title: '', text: '', type: '' };
+    let rollBack = activeTab < nextStep;
+    let isError = false;
+    let countContact = totalContact ? totalContact : 0;
+    let valueVoucher = evoucherDetail.value;
+    debugger;
+    switch (activeTab) {
+      case 1:
+        if (countContact < 1) {
+          modalState = {
+            show: true,
+            type: 'warning',
+            title: 'Thiếu trường thông tin',
+            text: 'Vui lòng chọn tệp khách hàng'
+          };
+        }
+        break;
+      case 2:
+        if (navigationInfo.reward.type === 2 && rollBack) {
+          if (!valueVoucher) {
+            modalState = {
+              show: true,
+              type: 'warning',
+              title: 'Thiếu trường thông tin',
+              text: 'Vui lòng chọn evoucher'
+            };
+          }
+        }
+        break;
+      case 3:
+        if (navigationInfo.contentTemplates[0].templateId === '' && rollBack) {
+          modalState = {
+            show: true,
+            title: 'Thiếu trường thông tin',
+            text: 'Bạn cần chọn landingpage',
+            type: 'warning'
+          };
+        }
+        break;
+      case 4:
+        if (navigationInfo.contentTemplates[1].templateId === '' && rollBack) {
+          modalState = {
+            show: true,
+            title: 'Thiếu trường thông tin',
+            text: 'Bạn cần chọn mail qùa tặng',
+            type: 'warning'
+          };
+        } else if (navigationInfo.contentTemplates[2].templateId === '') {
+          modalState = {
+            show: true,
+            title: 'Thiếu trường thông tin',
+            text: 'Bạn cần chọn mail giới thiệu',
+            type: 'warning'
+          };
+        }
+        break;
+
+      default:
+        break;
+    }
+
+    if (modalState.show === true) {
+      param = 0;
+      isError = true;
+      this.props.openModal(modalState);
+    }
+
+    return { param, isError };
+  };
+
   onHandletTab = (param: number) => {
+    let { navigationInfo, totalContact, evoucherDetail } = this.props;
     let { activeTab } = this.state;
     let activeTabNumber: number = activeTab;
     activeTabNumber += param;
-    if (activeTabNumber === 6) {
-      this.setState({ activeTab: 5, endTab: true });
-    } else if (activeTabNumber === 0) {
-      this.setState({ activeTab: 1 });
-    } else {
-      this.setState({ activeTab: activeTabNumber });
+
+    let modalState: IOpenModal = { show: false, title: '', text: '', type: '' };
+    let isError = false;
+    let countContact = totalContact ? totalContact : 0;
+    let valueVoucher = evoucherDetail.value;
+    switch (activeTab) {
+      case 1:
+        if (countContact < 1) {
+          modalState = {
+            show: true,
+            type: 'warning',
+            title: 'Thiếu trường thông tin',
+            text: 'Vui lòng chọn tệp khách hàng'
+          };
+        }
+        break;
+      case 2:
+        if (navigationInfo.reward.type === 2) {
+          if (!valueVoucher) {
+            modalState = {
+              show: true,
+              type: 'warning',
+              title: 'Thiếu trường thông tin',
+              text: 'Vui lòng chọn evoucher'
+            };
+          }
+        }
+        break;
+      default:
+        break;
     }
+
+    if (modalState.show === true) {
+      param = 0;
+      isError = true;
+      this.props.openModal(modalState);
+    } else {
+      if (activeTabNumber === 6) {
+        this.setState({ activeTab: 5, endTab: true });
+      } else if (activeTabNumber === 0) {
+        this.setState({ activeTab: 1 });
+      } else {
+        this.setState({ activeTab: activeTabNumber });
+      }
+    }
+
+    return { param, isError };
   };
 
   createNewCampain() {

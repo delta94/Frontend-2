@@ -14,28 +14,32 @@ export interface SelectRewardProps extends StateProps, DispatchProps {}
 export interface SelectRewardState {
   displayVoucher: string;
   type: string;
+  isCheck: boolean;
 }
 class SelectReward extends React.Component<SelectRewardProps, SelectRewardState> {
   state: SelectRewardState = {
     displayVoucher: ULTILS_TYPES.DISPLAY_VOUCHER_TICKET,
-    type: ULTILS_TYPES.EMPTY
+    type: ULTILS_TYPES.EMPTY,
+    isCheck: true
   };
 
   //function select evoucher
   onClickVoucher = () => {
-    this.setState({
+    this.setState(prevState => ({
       displayVoucher: ULTILS_TYPES.EMPTY,
-      type: ULTILS_TYPES.SELECT_REWARD
-    });
+      type: ULTILS_TYPES.SELECT_REWARD,
+      isCheck: !prevState.isCheck
+    }));
     this.props.getNavigationReward({ type: parseInt(ULTILS_TYPES.SELECT_REWARD) });
   };
 
   //function no select evoucher
   onClickNoVoucher = () => {
-    this.setState({
+    this.setState(prevState => ({
       displayVoucher: ULTILS_TYPES.DISPLAY_VOUCHER_TICKET,
-      type: ULTILS_TYPES.NO_SELECT_REWARD
-    });
+      type: ULTILS_TYPES.NO_SELECT_REWARD,
+      isCheck: !prevState.isCheck
+    }));
 
     this.props.getNavigationReward({ type: parseInt(ULTILS_TYPES.NO_SELECT_REWARD) });
   };
@@ -52,15 +56,16 @@ class SelectReward extends React.Component<SelectRewardProps, SelectRewardState>
           <CardBody>
             <FormGroup tag="fieldset">
               <FormGroup check>
-                <Label check>
-                  <Input type="radio" name="radio1" onClick={this.onClickNoVoucher} /> <Translate contentKey="campaign.notifi-reward" />
-                </Label>
+                <label className="radio">
+                  <input type="radio" name="radio1" onClick={this.onClickNoVoucher} checked={this.state.isCheck} />{' '}
+                  <Translate contentKey="campaign.notifi-reward" />
+                </label>
               </FormGroup>
               <FormGroup check>
-                <Label check>
-                  <Input type="radio" name="radio1" onClick={this.onClickVoucher} />
+                <label className="radio">
+                  <input type="radio" name="radio1" onClick={this.onClickVoucher} />
                   <Translate contentKey="campaign.evoucher" />
-                </Label>
+                </label>
               </FormGroup>
             </FormGroup>
             <div className={this.state.displayVoucher}>

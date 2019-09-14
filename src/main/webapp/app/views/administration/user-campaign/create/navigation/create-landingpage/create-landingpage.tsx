@@ -14,6 +14,7 @@ import { connect } from 'react-redux';
 import { getContentPageParams, postTestMailLanding } from 'app/actions/user-campaign';
 import { IRootState } from 'app/reducers';
 import { getContentTemplate, getContentTemplateAsType } from '../../../../../../actions/user-campaign';
+import { openModal } from '../../../../../../actions/modal';
 import { getNavigationContentTemplates } from 'app/actions/navigation-info';
 import PreviewLanding from './preview-landing/preview-landing';
 import { IParamester } from 'app/common/model/campaign-navigation.model';
@@ -248,11 +249,12 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-const mapStateToProps = ({ userCampaign }: IRootState) => {
+const mapStateToProps = ({ userCampaign, navigationInfo }: IRootState) => {
   return {
     listCampainContentParams: userCampaign.listCampainContentParams,
     postMailRequest: userCampaign.postMailRequest,
-    listContentTemplateAsTypeLanding: userCampaign.listContentTemplateAsTypeLanding
+    listContentTemplateAsTypeLanding: userCampaign.listContentTemplateAsTypeLanding,
+    navigationInfo
   };
 };
 
@@ -261,7 +263,8 @@ const mapDispatchToProps = {
   postTestMailLanding,
   getContentTemplate,
   getContentTemplateAsType,
-  getNavigationContentTemplates
+  getNavigationContentTemplates,
+  openModal
 };
 export default connect(
   mapStateToProps,

@@ -58,7 +58,6 @@ export default (state: AuthenticationState = initialState, action): Authenticati
         showModalLogin: true
       };
     case SUCCESS(AUTH_ACTION_TYPES.GET_SESSION): {
-      console.info(action.payload);
       const isAdmin = action.payload.data.roles.some(role => role === ROLE_ADMIN);
       return {
         ...state,
