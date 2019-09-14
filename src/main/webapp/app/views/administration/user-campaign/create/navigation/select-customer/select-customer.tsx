@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import { getCustomer, getStatistic, getSumAllContact } from '../../../../../../actions/user-campaign';
 import { getNavigationCustomerCampaign } from 'app/actions/navigation-info';
+import { openModal, closeModal } from 'app/actions/modal';
 import CustomerDialog from './customer-dialog/customer-dialog';
 import { ITEMS_PER_PAGE, ULTILS_TYPES, ACTIVE_PAGE } from '../../../../../../constants/ultils';
 
@@ -71,7 +72,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
         zalo: 0,
         categories: idCategory
       };
-      if (this.props.total > 0) {
+      if (this.isDuplicateList(elements.nameGroup)) {
         listUser.push(elements);
         // get list from component select customer - to navigation
         let listCustomer = listUser.map(item => {
@@ -91,6 +92,29 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
         this.props.getNavigationCustomerCampaign(listCustomer);
         this.props.getSumAllContact(listCustomer);
         this.setState({ listUser });
+      }
+    }
+  };
+
+  //check duplicate
+  isDuplicateList = nameCategories => {
+    let { listUser } = this.state;
+    if (listUser.length < 1) {
+      return true;
+    } else {
+      let newCategories = listUser.map(event => {
+        return event.nameGroup;
+      });
+      if (nameCategories === newCategories[0]) {
+        this.props.openModal({
+          show: true,
+          type: 'error',
+          title: 'Lỗi',
+          text: 'phân loại đã tồn tại, xin chọn phân loại khác'
+        });
+        return false;
+      } else {
+        return true;
       }
     }
   };
@@ -211,7 +235,9 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
                               <Translate contentKey="campaign.email" />
                             </span>
                           </i>
-                          <label className="label-icon">{item.email}</label>
+                          <label className="label-icon">
+                            {item.email > totalContact.totalContact ? totalContact.totalContact : item.email}
+                          </label>
                         </div>
                         <div>
                           <i className="pe-7s-call">
@@ -268,7 +294,14 @@ const mapStateToProps = ({ userCampaign }: IRootState) => ({
   totalContact: userCampaign.totalContact
 });
 
-const mapDispatchToProps = { getCustomer, getStatistic, getNavigationCustomerCampaign, getSumAllContact };
+const mapDispatchToProps = {
+  getCustomer,
+  getStatistic,
+  getNavigationCustomerCampaign,
+  getSumAllContact,
+  openModal,
+  closeModal
+};
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

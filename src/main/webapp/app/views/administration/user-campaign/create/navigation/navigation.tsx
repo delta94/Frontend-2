@@ -18,6 +18,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { openModal, closeModal } from '../../../../../actions/modal';
 import { openLoading, closeLoading } from '../../../../../actions/loading';
 import { postSaveDataCampainService } from 'app/services/user-campaign';
+import { IOpenModal } from 'app/reducers/modal';
 
 export interface INavigationProps extends StateProps, DispatchProps {
   onClick: Function;
@@ -108,7 +109,6 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
     let { activeTab } = this.state;
     let activeTabNumber: number = activeTab;
     activeTabNumber += param;
-
     if (activeTabNumber === 6) {
       this.setState({ activeTab: 5, endTab: true });
     } else if (activeTabNumber === 0) {

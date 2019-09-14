@@ -133,14 +133,20 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
                     <Row form>
                       <Col md={6}>
                         <FormGroup>
-                          <Label for="exampleEmail">Email</Label>
-                          <Input type="email" name="email" id="exampleEmail" placeholder="Email here..." />
+                          <Label for="Email">Email</Label>
+                          <Input type="email" name="email" id="Email" placeholder="Email here..." />
                         </FormGroup>
                       </Col>
                       <Col md={6}>
                         <FormGroup>
-                          <Label for="examplePassword">Password</Label>
-                          <Input type="password" name="password" id="examplePassword" placeholder="Password here..." />
+                          <Label for="Password">Password</Label>
+                          <Input type="password" name="password" id="Password" placeholder="Password here..." />
+                        </FormGroup>
+                      </Col>
+                      <Col md={6}>
+                        <FormGroup>
+                          <Label for="merchantCode">Merchant Code</Label>
+                          <Input type="merchantCode" name="merchantCode" id="merchantCode" placeholder="Merchant Code here..." />
                         </FormGroup>
                       </Col>
                     </Row>
