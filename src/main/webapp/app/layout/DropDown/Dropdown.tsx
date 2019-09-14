@@ -68,6 +68,10 @@ class Dropdown extends PureComponent<IDropdownProps, IDropdownState> {
       });
     }
 
+    document.body.addEventListener('mousedown', () => {
+      this.setState({ isShow: false });
+    });
+
     this.setState({ value });
   }
 
