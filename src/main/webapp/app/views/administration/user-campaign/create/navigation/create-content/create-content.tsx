@@ -5,11 +5,7 @@ import Dropdown from '../../../../../../layout/DropDown/Dropdown';
 import { Card, Collapse, Button, Input, CardTitle, CardBody, Form } from 'reactstrap';
 import { connect } from 'react-redux';
 
-import 'froala-editor/css/froala_style.min.css';
-import 'froala-editor/css/froala_editor.pkgd.min.css';
-import 'froala-editor/js/plugins.pkgd.min.js';
-
-import FroalaEditor from 'react-froala-wysiwyg';
+import CKEditor from 'ckeditor4-react';
 import { getContentTemplateAsType, getContentPageParams, postTestMailLanding } from '../../../../../../actions/user-campaign';
 import { getNavigationContentTemplates } from '../../../../../../actions/navigation-info';
 import { openModal, closeModal } from '../../../../../../actions/modal';
@@ -348,14 +344,12 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                         />
                       </div>
                       <div className="content-fixing">
-                        <FroalaEditor
-                          tag="textarea"
+                        <CKEditor
+                          data={defaultValueContentEmailIntro}
                           config={{
-                            placeholderText: '',
-                            events: {}
+                            extraPlugins: 'stylesheetparser'
                           }}
-                          model={defaultValueContentEmailIntro}
-                          onModelChange={event => this.handleModelChange(event, EMAIL_INTRO)}
+                          onBlur={event => this.handleModelChange(event, EMAIL_INTRO)}
                         />
                       </div>
                     </CardBody>
@@ -424,14 +418,12 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                       </div>
                       {/* Editor */}
                       <div className="content-fixing">
-                        <FroalaEditor
-                          tag="textarea"
+                        <CKEditor
+                          data={defaultValueContentEmailEward}
                           config={{
-                            placeholderText: '',
-                            events: {}
+                            extraPlugins: 'stylesheetparser'
                           }}
-                          model={defaultValueContentEmailEward}
-                          onModelChange={event => this.handleModelChange(event, EMAIL_EWARD)}
+                          onBlur={event => this.handleModelChange(event, EMAIL_EWARD)}
                         />
                       </div>
                     </CardBody>

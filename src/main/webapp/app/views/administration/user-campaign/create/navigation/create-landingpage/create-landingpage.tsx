@@ -3,13 +3,10 @@ import '../create-landingpage/create-landingpage.scss';
 
 import { Card, Collapse, Button, CardTitle, CardBody, Modal, ModalBody, ModalFooter, ModalHeader, Alert } from 'reactstrap';
 import Dropdown from '../../../../../../layout/DropDown/Dropdown';
-import 'froala-editor/css/froala_style.min.css';
-import 'froala-editor/css/froala_editor.pkgd.min.css';
-import 'froala-editor/js/plugins.pkgd.min.js';
+import CKEditor from 'ckeditor4-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 
-import FroalaEditor from 'react-froala-wysiwyg';
 import { connect } from 'react-redux';
 import { getContentPageParams, postTestMailLanding } from 'app/actions/user-campaign';
 import { IRootState } from 'app/reducers';
@@ -19,6 +16,7 @@ import { getNavigationContentTemplates } from 'app/actions/navigation-info';
 import PreviewLanding from './preview-landing/preview-landing';
 import { IParamester } from 'app/common/model/campaign-navigation.model';
 import { Translate } from 'react-jhipster';
+import { FORM_LANDING } from 'app/constants/common';
 
 // export interface I
 
@@ -82,7 +80,8 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
 
   toggleLanding = event => {
     this.addContentTemplate(event.id);
-    this.props.getNavigationContentTemplates(event.id, 'FORM_LANDING', 'templateId');
+    console.log(event.id);
+    this.props.getNavigationContentTemplates(event.id, FORM_LANDING, 'templateId');
   };
 
   handleModelChange = event => {
@@ -101,8 +100,8 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
     }));
 
     this.setState({ defaultValueContent: event, paramester });
-    this.props.getNavigationContentTemplates(newParamester, 'FORM_LANDING', 'parameter');
-    this.props.getNavigationContentTemplates(event, 'FORM_LANDING', 'content');
+    this.props.getNavigationContentTemplates(newParamester, FORM_LANDING, 'parameter');
+    this.props.getNavigationContentTemplates(event, FORM_LANDING, 'content');
     this.setValueForPopUp(event);
   };
 
@@ -137,7 +136,7 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
     });
 
     this.setState({ defaultValueContent });
-    this.props.getNavigationContentTemplates(subjectLanding, 'FORM_LANDING', 'subject');
+    this.props.getNavigationContentTemplates(subjectLanding, FORM_LANDING, 'subject');
   };
 
   openModalPreview = () => {
@@ -183,12 +182,12 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
               <CardTitle>
                 <Translate contentKey="campaign.create-landing" />
               </CardTitle>
-              <div className="interactive">
-                <label onClick={this.openModalPreview} style={{ textDecoration: 'underline' }}>
-                  <FontAwesomeIcon icon={faEye} />
-                  Preview
-                </label>
-              </div>
+            </div>
+            <div className="interactive">
+              <label onClick={this.openModalPreview} style={{ textDecoration: 'underline', color: '#3866DD' }}>
+                <FontAwesomeIcon icon={faEye} />
+                <span style={{ paddingLeft: '10px' }}>Preview</span>
+              </label>
             </div>
 
             {/* Detail */}
@@ -223,15 +222,12 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
                         </div>
                       </div>
                       <div className="content-fixing">
-                        <FroalaEditor
-                          tag="textarea"
+                        <CKEditor
+                          data={defaultValueContent}
                           config={{
-                            placeholderText: '',
-                            iframe: true,
-                            events: {}
+                            extraPlugins: 'stylesheetparser'
                           }}
-                          model={defaultValueContent}
-                          onModelChange={this.handleModelChange}
+                          onBlur={this.handleModelChange}
                         />
                       </div>
                     </CardBody>

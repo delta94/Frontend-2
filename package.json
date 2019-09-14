@@ -30,6 +30,7 @@
     "bootstrap-daterangepicker": "^3.0.5",
     "chart.js": "^2.8.0",
     "chroma-js": "^2.0.3",
+    "ckeditor4-react": "^1.0.0-beta.2",
     "classnames": "^2.2.6",
     "date-arithmetic": "^3.1.0",
     "date-fns": "^1.30.1",

@@ -310,38 +310,6 @@
   margin-bottom: 2px;
 }
 
-.create-landing {
-  iframe {
-    height: 248px !important;
-  }
-
-  .fr-code {
-    height: 248px !important;
-  }
-
-  .fr-wrapper {
-    height: 250px;
-    .fr-element {
-      height: 248px;
-      width: 98%;
-    }
-  }
-}
-
-.create-content {
-  .fr-wrapper {
-    height: 190px;
-    .fr-element {
-      height: 188px;
-      width: 98%;
-    }
-  }
-
-  .fr-code {
-    height: 248px !important;
-  }
-}
-
 #userCreate .label-icon {
   float: right;
   margin-right: 10px;
@@ -663,7 +631,4 @@ $color_border: rgba(206, 206, 206, 0.687);
 .sweet-alert {
   width: 23%;
   height: 35%;
-}
-.row-content-info {
-  overflow: auto;
 }

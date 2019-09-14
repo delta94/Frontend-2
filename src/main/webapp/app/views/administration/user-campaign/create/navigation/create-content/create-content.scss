@@ -1,7 +1,10 @@
 .create-content {
+  height: 99%;
+  position: absolute;
+  width: calc(100% - 30px);
+  top: 30px;
+
   .add-content {
-    padding: 20px;
-    position: relative;
     .btn-primary {
       margin: 0px !important;
     }
@@ -24,8 +27,8 @@
       .interactive {
         position: absolute;
         display: flex;
-        top: 21px;
-        right: 21px;
+        top: -10px;
+        right: 25px;
         line-height: 43px;
 
         .form-group {
@@ -87,6 +90,7 @@
 
         .content-fixing {
           margin-bottom: 10px;
+          border: solid #8080804d 1px;
         }
       }
     }
