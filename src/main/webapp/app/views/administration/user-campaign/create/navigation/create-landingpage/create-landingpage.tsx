@@ -80,7 +80,6 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
 
   toggleLanding = event => {
     this.addContentTemplate(event.id);
-    console.log(event.id);
     this.props.getNavigationContentTemplates(event.id, FORM_LANDING, 'templateId');
   };
 
@@ -100,9 +99,9 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
     }));
 
     this.setState({ defaultValueContent: event, paramester });
+    this.setValueForPopUp(event);
     this.props.getNavigationContentTemplates(newParamester, FORM_LANDING, 'parameter');
     this.props.getNavigationContentTemplates(event, FORM_LANDING, 'content');
-    this.setValueForPopUp(event);
   };
 
   setValueForPopUp = event => {
@@ -167,7 +166,7 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
         <Modal isOpen={openModal} toggle={this.toggleModal}>
           <ModalHeader toggle={this.toggleModal}>Landing preview</ModalHeader>
           <ModalBody>
-            <PreviewLanding htmlDOM={defaultValueContentPopup} styleForDOM={''} />
+            <PreviewLanding htmlDOM={defaultValueContent} styleForDOM={''} />
           </ModalBody>
           <ModalFooter>
             <Button color="primary" onClick={this.toggleModal}>
@@ -262,6 +261,7 @@ const mapDispatchToProps = {
   getNavigationContentTemplates,
   openModal
 };
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps

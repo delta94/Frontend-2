@@ -1,6 +1,10 @@
 import React, { CSSProperties } from 'react';
 import DOMPurify from 'dompurify';
 import './preview-landing.scss';
+import { connect } from 'react-redux';
+import { IRootState } from 'app/reducers';
+
+export interface IPreviewLandingProps extends StateProps, DispatchProps {}
 
 export interface IPreviewLandingProps {
   htmlDOM?: string;
@@ -25,16 +29,45 @@ class PreviewLanding extends React.PureComponent<IPreviewLandingProps, IPreviewL
     scriptDOM: 'function test(){alert("test")}'
   };
 
+  setValueForPopUp = event => {};
+
   render() {
-    let { htmlDOM, styleForDOM, scriptDOM } = this.props;
+    let { listCampainContentParams, htmlDOM } = this.props;
+    let newValue: string = '';
+
+    let listParam = listCampainContentParams.map(item => {
+      return { paramCode: item.paramCode, sampleValue: item.sampleValue };
+    });
+
+    for (let i = 0; i < listParam.length; i++) {
+      let item = listParam[i];
+      let paramCode = item.paramCode;
+      let sampleValue = item.sampleValue;
+
+      newValue = htmlDOM.replace(paramCode, sampleValue);
+      htmlDOM = newValue;
+    }
+
     return (
       <div>
-        <style>{styleForDOM}</style>
-        <script type="text/css">{scriptDOM}</script>
         <div dangerouslySetInnerHTML={{ __html: htmlDOM }} />
       </div>
     );
   }
 }
 
-export default PreviewLanding;
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
+
+const mapStateToProps = ({ userCampaign }: IRootState) => {
+  return {
+    listCampainContentParams: userCampaign.listCampainContentParams
+  };
+};
+
+const mapDispatchToProps = {};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PreviewLanding);
