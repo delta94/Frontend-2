@@ -57,6 +57,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
   // function event button submit
   handlerModal = async (modal, categories, isSubmit, idCategory) => {
     let { listUser } = this.state;
+    let { total, totalEmail, totalPhone } = this.props;
     this.setState({
       modal: modal
     });
@@ -65,9 +66,9 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
       elements = {
         id: Math.random(),
         nameGroup: categories,
-        totalContact: this.props.total,
-        email: this.props.totalEmail,
-        phone: this.props.totalPhone,
+        totalContact: total < totalEmail ? totalEmail : total,
+        email: totalEmail,
+        phone: totalPhone,
         facebook: 0,
         zalo: 0,
         categories: idCategory
