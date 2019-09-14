@@ -58,14 +58,14 @@ export default (state: AuthenticationState = initialState, action): Authenticati
         showModalLogin: true
       };
     case SUCCESS(AUTH_ACTION_TYPES.GET_SESSION): {
-      const isAdmin = action.payload.data.roles.some(role => role === ROLE_ADMIN);
+      // const isAdmin = action.payload.data.roles.some(role => role === ROLE_ADMIN);
       return {
         ...state,
         isAuthenticated: true,
         loading: false,
         sessionHasBeenFetched: true,
-        account: action.payload.data,
-        isAdmin
+        account: action.payload.data
+        // isAdmin
       };
     }
     case AUTH_ACTION_TYPES.ERROR_MESSAGE:

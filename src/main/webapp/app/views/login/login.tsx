@@ -89,17 +89,17 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
   };
 
   render() {
-    const { location, isAuthenticated, isAdmin, isConverter, isInterviewer } = this.props;
-    console.info(this.props.account);
-    let pathName = '/';
-    if (isAdmin) pathName = '/tracking-schedule/plan';
-    else if (isInterviewer) pathName = '/management-schedule';
-    else if (isConverter) pathName = '/book-schedule/list';
+    // const { location, isAuthenticated, /*isAdmin,*/ isConverter, isInterviewer } = this.props;
+    // console.info(this.props.account);
+    // let pathName = '/';
+    // if (isAdmin) pathName = '/tracking-schedule/plan';
+    // else if (isInterviewer) pathName = '/management-schedule';
+    // else if (isConverter) pathName = '/book-schedule/list';
     // const { from } = location.state || { from: { pathname: pathName, search: location.search } };
-    const { from } = { from: { pathname: pathName, search: location.search } };
-    if (isAuthenticated) {
-      return <Redirect to={from} />;
-    }
+    // const { from } = { from: { pathname: pathName, search: location.search } };
+    // if (isAuthenticated) {
+    //   return <Redirect to={from} />;
+    // }
     return (
       <Fragment>
         <div className="h-100">
