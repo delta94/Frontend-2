@@ -56,20 +56,12 @@ class Dropdown extends PureComponent<IDropdownProps, IDropdownState> {
       value = defaultValue;
     }
 
-    if (this.props.selection) {
-      var allDropSelection = document.querySelectorAll(
-        `div.topica-dropdown, div.toggle-dropdown, div.topica-dropdown-menu , div.topica-dropdown-item`
-      );
+    let listDiv = document.querySelectorAll('div:not(.topica-dropdown):not(.topica-dropdown-menu):not(.topica-dropdown-item');
 
-      allDropSelection.forEach((item, index) => {
-        item.addEventListener('mousedown', e => {
-          e.preventDefault();
-        });
-      });
-    }
+    console.log(listDiv);
 
-    document.body.addEventListener('mousedown', () => {
-      this.setState({ isShow: false });
+    listDiv.forEach(item => {
+      item.addEventListener('mousedown', event => {});
     });
 
     this.setState({ value });
