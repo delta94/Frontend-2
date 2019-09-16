@@ -31,7 +31,7 @@ class PreviewLanding extends React.PureComponent<IPreviewLandingProps, IPreviewL
 
   setValueForPopUp = event => {};
 
-  render() {
+  componentDidMount() {
     let { listCampainContentParams, htmlDOM } = this.props;
     let newValue: string = '';
 
@@ -48,11 +48,11 @@ class PreviewLanding extends React.PureComponent<IPreviewLandingProps, IPreviewL
       htmlDOM = newValue;
     }
 
-    return (
-      <div>
-        <div dangerouslySetInnerHTML={{ __html: htmlDOM }} />
-      </div>
-    );
+    document.getElementById('fred').contentWindow.document.write(htmlDOM);
+  }
+
+  render() {
+    return <iframe id="fred" width="100%" height="500px" />;
   }
 }
 

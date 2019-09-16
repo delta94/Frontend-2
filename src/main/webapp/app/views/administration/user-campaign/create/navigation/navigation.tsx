@@ -83,7 +83,6 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
     let isError = false;
     let countContact = totalContact ? totalContact : 0;
     let valueVoucher = evoucherDetail.value;
-    debugger;
     switch (activeTab) {
       case 1:
         if (countContact < 1) {
@@ -122,10 +121,10 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
           modalState = {
             show: true,
             title: 'Thiếu trường thông tin',
-            text: 'Bạn cần chọn mail qùa tặng',
+            text: 'Bạn cần chọn mail qq tặng',
             type: 'warning'
           };
-        } else if (navigationInfo.contentTemplates[2].templateId === '') {
+        } else if (navigationInfo.contentTemplates[2].templateId === '' && rollBack) {
           modalState = {
             show: true,
             title: 'Thiếu trường thông tin',

@@ -56,7 +56,7 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
   };
 
   toggleDropdownParams = event => {
-    let { listCampainContentParams } = this.props;
+    const { listCampainContentParams } = this.props;
     listCampainContentParams.forEach(item => {
       if (event.id === item.id) {
         this.addText(item.paramCode);
@@ -65,8 +65,8 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
   };
 
   addText = text => {
-    let { defaultValueContent } = this.state;
-    var sel, range;
+    const { defaultValueContent } = this.state;
+    let sel, range;
     let newWindow = document.getElementsByTagName('iframe')[0].contentWindow;
 
     if (newWindow.getSelection()) {
@@ -97,7 +97,7 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
       }
     });
 
-    let newParamester = paramester.map(item => ({
+    const newParamester = paramester.map(item => ({
       id: item.id,
       name: item.paramName,
       code: item.paramCode
@@ -235,12 +235,6 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
                           }}
                           onChange={event => {
                             this.handleModelChange(event.editor.getData());
-                          }}
-                          onFocus={event => {
-                            console.log(event);
-                          }}
-                          onBlur={event => {
-                            console.log(event);
                           }}
                         />
                       </div>
