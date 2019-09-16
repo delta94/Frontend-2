@@ -4,11 +4,13 @@ import { Redirect, RouteComponentProps } from 'react-router-dom';
 import { Col, Row, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { IRootState } from 'app/reducers';
 import { login } from 'app/actions/authentication';
-import LoginModal from './login-modal';
 import './login.scss';
 import { hasAnyAuthority } from 'app/common/auth/private-route';
 import { AUTHORITIES } from 'app/config/constants';
-import { string } from 'prop-types';
+import SweetAlert from 'sweetalert-react';
+import { openModal, closeModal } from 'app/actions/modal';
+import { Loader as LoaderAnim } from 'react-loaders';
+import Loader from 'react-loader-advanced';
 
 export interface ILoginProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
@@ -35,6 +37,7 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
 
   submitForm = () => {
     let { valueEmail, valuePassword, valueMerchantCode } = this.state;
+    let { loginError, openModal, login } = this.props;
     let submitValue = {
       email: valueEmail,
       password: valuePassword,
@@ -42,7 +45,15 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
     };
     this.validateForm();
     if (valueEmail && valuePassword && valueMerchantCode) {
-      this.props.login(submitValue);
+      login(submitValue);
+      if (loginError) {
+        openModal({
+          show: true,
+          type: 'error',
+          title: 'Lỗi',
+          text: 'tài khoản hoặc mật khẩu không đúng'
+        });
+      }
     }
   };
 
@@ -89,120 +100,134 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
   };
 
   render() {
-    // const { location, isAuthenticated, /*isAdmin,*/ isConverter, isInterviewer } = this.props;
+    const { location, isAuthenticated, /*isAdmin,*/ isConverter, loading, isInterviewer, loginError, modalState } = this.props;
+
     // console.info(this.props.account);
-    // let pathName = '/';
+    let pathName = '/admin/user-management';
     // if (isAdmin) pathName = '/tracking-schedule/plan';
     // else if (isInterviewer) pathName = '/management-schedule';
     // else if (isConverter) pathName = '/book-schedule/list';
     // const { from } = location.state || { from: { pathname: pathName, search: location.search } };
-    // const { from } = { from: { pathname: pathName, search: location.search } };
-    // if (isAuthenticated) {
-    //   return <Redirect to={from} />;
-    // }
+    const { from } = { from: { pathname: pathName, search: location.search } };
+    if (isAuthenticated) {
+      return <Redirect to={from} />;
+    }
+    const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
     return (
-      <Fragment>
-        <div className="h-100">
-          <Row className="h-100 no-gutters">
-            <Col lg="12" md="12" className="h-100 d-flex bg-white justify-content-center align-items-center">
-              <Col lg="9" md="10" sm="12" className="mx-auto app-login-box">
-                <div className="app-logo" />
-                <h4 className="mb-0">
-                  <div>Welcome to my service,</div>
-                  <span>Please sign in to your account.</span>
-                </h4>
-                <h6 className="mt-3">
-                  No account?{' '}
-                  <a href="javascript:void(0);" className="text-primary">
-                    Sign up now
-                  </a>
-                </h6>
-                <Row className="divider" />
-                <div>
-                  <Form>
-                    <Row form>
-                      <Col lg={7}>
-                        <FormGroup>
-                          <Label for="Email">Email </Label>
-                          <Input
-                            type="email"
-                            name="email"
-                            value={this.state.valueEmail}
-                            onChange={this.handleChangeEmail}
-                            id="Email"
-                            placeholder="Email here..."
-                          />
-                          {this.state.messageErrorEmail}
-                        </FormGroup>
-                      </Col>
-                      <Col lg={7}>
-                        <FormGroup>
-                          <Label for="Password">Password</Label>
-                          <Input
-                            type="password"
-                            name="password"
-                            value={this.state.valuePassword}
-                            onChange={this.handleChangePass}
-                            id="Password"
-                            placeholder="Password here..."
-                          />
-                          {this.state.messageErrorPassword}
-                        </FormGroup>
-                      </Col>
-                      <Col lg={7}>
-                        <FormGroup>
-                          <Label for="merchantCode">Merchant Code</Label>
-                          <Input
-                            type="merchantCode"
-                            name="merchantCode"
-                            value={this.state.valueMerchantCode}
-                            onChange={this.handleChangeMerchantCode}
-                            id="merchantCode"
-                            placeholder="Merchant Code here..."
-                          />
-                          {this.state.messageErrorMerchantCode}
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <FormGroup check>
-                      <Input type="checkbox" name="check" id="exampleCheck" />
-                      <Label for="exampleCheck" check>
-                        Keep me logged in
-                      </Label>
-                    </FormGroup>
-                    <Row className="divider" />
-                    <div className="d-flex align-items-center">
-                      <div className="ml-auto">
-                        <a href="javascript:void(0);" className="btn-lg btn btn-link">
-                          Recover Password
-                        </a>{' '}
+      <Loader message={spinner1} show={loading} priority={1}>
+        <Fragment>
+          <SweetAlert
+            title={modalState.title ? modalState.title : 'No title'}
+            confirmButtonColor=""
+            show={modalState.show ? modalState.show : false}
+            text={modalState.text ? modalState.text : 'No'}
+            type={modalState.type ? modalState.type : 'error'}
+            onConfirm={() => this.props.closeModal()}
+          />
+          <div className="h-100">
+            <Row className="h-100 no-gutters">
+              <Col lg="12" md="12" className="h-100 d-flex bg-white justify-content-center align-items-center">
+                <Col lg="9" md="10" sm="12" className="mx-auto app-login-box">
+                  <div className="app-logo" />
+                  <h4 className="mb-0">
+                    <div>Welcome to my service,</div>
+                    <span>Please sign in to your account.</span>
+                  </h4>
+                  <h6 className="mt-3">
+                    No account?{' '}
+                    <a href="javascript:void(0);" className="text-primary">
+                      Sign up now
+                    </a>
+                  </h6>
+                  <Row className="divider" />
+                  <div>
+                    <Form>
+                      <Row form>
+                        <Col lg={7}>
+                          <FormGroup>
+                            <Label for="Email">Email </Label>
+                            <Input
+                              type="email"
+                              name="email"
+                              value={this.state.valueEmail}
+                              onChange={this.handleChangeEmail}
+                              id="Email"
+                              placeholder="Email here..."
+                            />
+                            {this.state.messageErrorEmail}
+                          </FormGroup>
+                        </Col>
+                        <Col lg={7}>
+                          <FormGroup>
+                            <Label for="Password">Password</Label>
+                            <Input
+                              type="password"
+                              name="password"
+                              value={this.state.valuePassword}
+                              onChange={this.handleChangePass}
+                              id="Password"
+                              placeholder="Password here..."
+                            />
+                            {this.state.messageErrorPassword}
+                          </FormGroup>
+                        </Col>
+                        <Col lg={7}>
+                          <FormGroup>
+                            <Label for="merchantCode">Merchant Code</Label>
+                            <Input
+                              type="merchantCode"
+                              name="merchantCode"
+                              value={this.state.valueMerchantCode}
+                              onChange={this.handleChangeMerchantCode}
+                              id="merchantCode"
+                              placeholder="Merchant Code here..."
+                            />
+                            {this.state.messageErrorMerchantCode}
+                          </FormGroup>
+                        </Col>
+                      </Row>
+                      <FormGroup check>
+                        <Input type="checkbox" name="check" id="exampleCheck" />
+                        <Label for="exampleCheck" check>
+                          Keep me logged in
+                        </Label>
+                      </FormGroup>
+                      <Row className="divider" />
+                      <div className="d-flex align-items-center">
+                        <div className="ml-auto">
+                          <a href="javascript:void(0);" className="btn-lg btn btn-link">
+                            Recover Password
+                          </a>{' '}
+                        </div>
                       </div>
-                    </div>
-                  </Form>
-                  <Button color="primary" size="lg" onClick={this.submitForm}>
-                    Login to Dashboard
-                  </Button>
-                </div>
+                    </Form>
+                    <Button color="primary" size="lg" onClick={this.submitForm}>
+                      Login to Dashboard
+                    </Button>
+                  </div>
+                </Col>
               </Col>
-            </Col>
-          </Row>
-        </div>
-      </Fragment>
+            </Row>
+          </div>
+        </Fragment>
+      </Loader>
     );
   }
 }
 
-const mapStateToProps = ({ authentication }: IRootState) => ({
+const mapStateToProps = ({ authentication, handleModal }: IRootState) => ({
   isAuthenticated: authentication.isAuthenticated,
   loginError: authentication.loginError,
   showModal: authentication.showModalLogin,
   isAdmin: hasAnyAuthority(authentication.account.roles, [AUTHORITIES.ADMIN]),
   isConverter: hasAnyAuthority(authentication.account.roles, [AUTHORITIES.CONVERTER]),
   isInterviewer: hasAnyAuthority(authentication.account.roles, [AUTHORITIES.INTERVIEWER]),
-  account: authentication.account
+  account: authentication.account,
+  modalState: handleModal.data,
+  loading: authentication.loading
 });
 
-const mapDispatchToProps = { login };
+const mapDispatchToProps = { login, openModal, closeModal };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

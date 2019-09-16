@@ -8,10 +8,10 @@ export const MainNav = [
                 to: '#/login',
             },
 
-            {
-                label: 'Logout Service',
-                to: '#/login/logout',
-            },
+            // {
+            //     label: 'Logout Service',
+            //     to: '#/login/logout',
+            // },
           
         ],
     },

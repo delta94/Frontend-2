@@ -79,16 +79,13 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
         let listCustomer = listUser.map(item => {
           let arrayCategories = item.categories;
           let listCategories: Array<string> = [];
-
           if (arrayCategories.includes(',')) {
             listCategories = arrayCategories.split(',');
           } else {
             listCategories.push(arrayCategories);
           }
-
           return { name: item.nameGroup, categories: listCategories };
         });
-
         localStorage.setItem('listUser', JSON.stringify(listUser));
         this.props.getNavigationCustomerCampaign(listCustomer);
         this.props.getSumAllContact(listCustomer);
@@ -100,24 +97,19 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
   //check duplicate
   isDuplicateList = nameCategories => {
     let { listUser } = this.state;
-    if (listUser.length < 1) {
-      return true;
-    } else {
-      let newCategories = listUser.map(event => {
-        return event.nameGroup;
-      });
-      if (nameCategories === newCategories[0]) {
+    let count = true;
+    listUser.forEach(element => {
+      if (element.nameGroup == nameCategories) {
         this.props.openModal({
           show: true,
           type: 'error',
           title: 'Lỗi',
           text: 'phân loại đã tồn tại, xin chọn phân loại khác'
         });
-        return false;
-      } else {
-        return true;
+        count = false;
       }
-    }
+    });
+    return count;
   };
 
   //close element group
@@ -286,13 +278,14 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
     );
   }
 }
-const mapStateToProps = ({ userCampaign }: IRootState) => ({
+const mapStateToProps = ({ userCampaign, handleModal }: IRootState) => ({
   loading: userCampaign.loading,
   listCustomer: userCampaign.listNewCustomer,
   total: userCampaign.totalElements,
   totalEmail: userCampaign.totalEmail,
   totalPhone: userCampaign.totalPhone,
-  totalContact: userCampaign.totalContact
+  totalContact: userCampaign.totalContact,
+  modalState: handleModal.data
 });
 
 const mapDispatchToProps = {
