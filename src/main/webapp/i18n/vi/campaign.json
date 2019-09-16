@@ -33,7 +33,7 @@
     "descrition": "MÔ TẢ",
     "allCamps": "Tất cả",
     "onAction": "Chiến dịch đang hoạt động",
-    "onPause": "Chiến dịch dừng hoạt động/tạm dừng",
+    "onPause": "Chiến dịch chưa kích hoạt/tạm dừng",
     "complete": "Chiến dịch đã hoàn thành",
     "quantity": "Số lượng:",
     "time": "Thời gian:",
@@ -52,9 +52,9 @@
     "entity": "Đối tượng : ",
     "title-create-screen": "Danh sách chiến dịch > Tạo chiến dịch M2M",
     "status": {
-      "action": "đang hoạt động",
-      "pause": "dừng hoạt động/tạm dừng",
-      "complete": "đã hoàn thành"
+      "action": "Đang hoạt động",
+      "pause": "Dừng hoạt động/tạm dừng",
+      "complete": "Đã hoàn thành"
     },
     "message-error": {
       "name": "vui lòng nhập tên chiến dịch",
