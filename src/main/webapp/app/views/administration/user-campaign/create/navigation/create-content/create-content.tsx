@@ -113,8 +113,20 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
 
   sendTestMailLanding = typeMail => {
     let { defaultValueContentEmailIntro, defaultValueContentEmailEward, emailEward, emailIntro, subjectEward, subjectIntro } = this.state;
+    let { postMailRequest, listContentPageParams } = this.props;
 
-    let { postMailRequest } = this.props;
+    let listParam = listContentPageParams.map(item => {
+      return { paramCode: item.paramCode, sampleValue: item.sampleValue };
+    });
+
+    for (let i = 0; i < listParam.length; i++) {
+      let item = listParam[i];
+      let paramCode = item.paramCode;
+      let sampleValue = item.sampleValue;
+
+      defaultValueContentEmailEward = defaultValueContentEmailEward.replace(paramCode, sampleValue);
+      defaultValueContentEmailIntro = defaultValueContentEmailIntro.replace(paramCode, sampleValue);
+    }
     let testMail: ICreateTestMailEntity = { emailTo: '', subject: '', content: '' };
 
     if (typeMail === EMAIL_EWARD) {

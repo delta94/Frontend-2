@@ -107,7 +107,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
         }
         break;
       case 3:
-        if (navigationInfo.contentTemplates[0].templateId === '' && rollBack) {
+        if (navigationInfo.contentTemplates[0].content === '' && rollBack) {
           modalState = {
             show: true,
             title: 'Thiếu trường thông tin',
@@ -121,7 +121,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
           modalState = {
             show: true,
             title: 'Thiếu trường thông tin',
-            text: 'Bạn cần chọn mail qq tặng',
+            text: 'Bạn cần chọn mail quà tặng',
             type: 'warning'
           };
         } else if (navigationInfo.contentTemplates[2].templateId === '' && rollBack) {
