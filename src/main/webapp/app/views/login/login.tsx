@@ -103,7 +103,7 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
     const { location, isAuthenticated, /*isAdmin,*/ isConverter, loading, isInterviewer, loginError, modalState } = this.props;
 
     // console.info(this.props.account);
-    let pathName = '/admin/user-management';
+    let pathName = 'app/views/administration/user-management';
     // if (isAdmin) pathName = '/tracking-schedule/plan';
     // else if (isInterviewer) pathName = '/management-schedule';
     // else if (isConverter) pathName = '/book-schedule/list';

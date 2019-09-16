@@ -56,7 +56,7 @@ const AppRoutes = () => {
           </div>
         }
       >
-        <Route path="/admin" component={Admin} />
+        <Route path="/app/views/administration" component={Admin} />
       </Suspense>
       {/* Pages */}
 

@@ -10,10 +10,30 @@ class Nav extends Component {
     state = {};
 
     render() {
+        console.log(this.props.menu)
+        let nameNav ;
+        nameNav = this.props.menu.map(event => {
+            let mainContent = event.permissions.map(item =>{
+              let  mainNav = {
+                   label : String(item.name),
+                   to : '#/' + String(item.path)
+               }
+               return mainNav
+            })
+          
+            console.log(mainContent)
+            let nav ={
+                icon : 'pe-7s-rocket',
+                label : String(event.name),
+                content :mainContent
+            }
+            return nav 
+        })
+        
         return (
             <Fragment>
                 <h5 className="app-sidebar__heading">Menu</h5>
-                <MetisMenu content={MainNav} activeLinkFromLocation className="vertical-nav-menu" iconNamePrefix="" classNameStateIcon="pe-7s-angle-down"/>
+                <MetisMenu content={nameNav} activeLinkFromLocation className="vertical-nav-menu" iconNamePrefix="" classNameStateIcon="pe-7s-angle-down"/>
             </Fragment>
         );
     }

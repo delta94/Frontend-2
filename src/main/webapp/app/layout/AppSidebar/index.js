@@ -30,11 +30,12 @@ class AppSidebar extends Component {
             enableSidebarShadow,
             backgroundImage,
             backgroundImageOpacity,
+            menu
         } = this.props;
         
         return (
             <Fragment>
-                <div className="sidebar-mobile-overlay" onClick={this.toggleMobileSidebar}/>
+                {/* <div className="sidebar-mobile-overlay" onClick={this.toggleMobileSidebar}/> */}
                 <ReactCSSTransitionGroup
                     component="div"
                     className={cx("app-sidebar", backgroundColor, {'sidebar-shadow': enableSidebarShadow})}
@@ -46,7 +47,7 @@ class AppSidebar extends Component {
                     <HeaderLogo/>
                     <PerfectScrollbar>
                         <div className="app-sidebar__inner">
-                            <Nav/>
+                            <Nav menu = {this.props.menu}/>
                         </div>
                     </PerfectScrollbar>
                     <div
@@ -61,13 +62,14 @@ class AppSidebar extends Component {
     }
 }
 
-const mapStateToProps = (state, authentication) => ({
+const mapStateToProps = (state) => ({
     enableBackgroundImage: state.themeOptions.enableBackgroundImage,
     enableSidebarShadow: state.themeOptions.enableSidebarShadow,
     enableMobileMenu: state.themeOptions.enableMobileMenu,
     backgroundColor: state.themeOptions.backgroundColor,
     backgroundImage: state.themeOptions.backgroundImage,
     backgroundImageOpacity: state.themeOptions.backgroundImageOpacity,
+    menu : state.authentication.account
     
 });
 
