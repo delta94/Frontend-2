@@ -56,14 +56,6 @@ class Dropdown extends PureComponent<IDropdownProps, IDropdownState> {
       value = defaultValue;
     }
 
-    let listDiv = document.querySelectorAll('div:not(.topica-dropdown):not(.topica-dropdown-menu):not(.topica-dropdown-item');
-
-    console.log(listDiv);
-
-    listDiv.forEach(item => {
-      item.addEventListener('mousedown', event => {});
-    });
-
     this.setState({ value });
   }
 
@@ -91,7 +83,6 @@ class Dropdown extends PureComponent<IDropdownProps, IDropdownState> {
           className="toggle-dropdown"
           style={{ boxShadow: isShow ? '0px 0px 4px 1px rgba(97,192,255,1)' : 'none' }}
           onClick={() => {
-            event.preventDefault();
             this.setState({ isShow: !isShow });
           }}
         >

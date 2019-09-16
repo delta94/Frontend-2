@@ -55,7 +55,17 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
     }, 5000);
   };
 
+  toggleDropdownParams = event => {
+    let { listCampainContentParams } = this.props;
+    listCampainContentParams.forEach(item => {
+      if (event.id === item.id) {
+        this.addText(item.paramCode);
+      }
+    });
+  };
+
   addText = text => {
+    let { defaultValueContent } = this.state;
     var sel, range;
     let newWindow = document.getElementsByTagName('iframe')[0].contentWindow;
 
@@ -64,18 +74,12 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
       if (sel.rangeCount) {
         range = sel.getRangeAt(0);
         range.deleteContents();
-        range.insertNode(document.createTextNode(text));
+        range.insertNode(document.createTextNode(text + ' '));
       }
     }
-  };
 
-  toggleDropdownParams = event => {
-    let { listCampainContentParams } = this.props;
-    listCampainContentParams.forEach(item => {
-      if (event.id === item.id) {
-        this.addText(item.paramCode);
-      }
-    });
+    let newValue = document.getElementsByTagName('iframe')[0].contentWindow.document;
+    this.setState({ defaultValueContent: newValue.documentElement.outerHTML });
   };
 
   toggleLanding = event => {
@@ -86,8 +90,9 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
   handleModelChange = event => {
     let { listCampainContentParams } = this.props;
     let paramester = [];
+
     listCampainContentParams.forEach(item => {
-      if (event.indexOf(item.paramCode) > 0) {
+      if (event && event.indexOf(item.paramCode) > 0) {
         paramester.push(item);
       }
     });
@@ -147,17 +152,17 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
   };
 
   render() {
-    const { showMailForFriend, defaultValueContent, openModal, defaultValueContentPopup } = this.state;
-    const { listCampainContentParams, listContentTemplateAsTypeLanding } = this.props;
+    let { showMailForFriend, defaultValueContent, openModal, defaultValueContentPopup } = this.state;
+    let { listCampainContentParams, listContentTemplateAsTypeLanding } = this.props;
 
-    const listIndexParams = listCampainContentParams.map(item => {
+    let listIndexParams = listCampainContentParams.map(item => {
       return {
         id: item.id,
         name: item.paramName
       };
     });
 
-    const listTemplate = listContentTemplateAsTypeLanding.map(item => {
+    let listTemplate = listContentTemplateAsTypeLanding.map(item => {
       return { id: item.id, name: item.name };
     });
 
@@ -223,10 +228,20 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
                       <div className="content-fixing">
                         <CKEditor
                           data={defaultValueContent}
+                          editorName="landing editor"
+                          id="editor0"
                           config={{
                             extraPlugins: 'stylesheetparser'
                           }}
-                          onBlur={this.handleModelChange}
+                          onChange={event => {
+                            this.handleModelChange(event.editor.getData());
+                          }}
+                          onFocus={event => {
+                            console.log(event);
+                          }}
+                          onBlur={event => {
+                            console.log(event);
+                          }}
                         />
                       </div>
                     </CardBody>

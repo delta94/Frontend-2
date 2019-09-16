@@ -290,7 +290,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                   <Button color="primary" style={{ marginBottom: '1rem', width: '40px' }} onClick={this.handleshowMailForFriendState}>
                     1
                   </Button>
-                  <label>
+                  <label onClick={this.handleshowMailForFriendState}>
                     <Translate contentKey="campaign.send-intro" />
                   </label>
                   <div className="interactive" style={{ display: showMailForFriend ? 'none' : 'inline-block' }}>
@@ -345,11 +345,15 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                       </div>
                       <div className="content-fixing">
                         <CKEditor
+                          editorName="email Intro"
+                          id="email intro"
                           data={defaultValueContentEmailIntro}
                           config={{
                             extraPlugins: 'stylesheetparser'
                           }}
-                          onBlur={event => this.handleModelChange(event, EMAIL_INTRO)}
+                          onChange={event => {
+                            this.handleModelChange(event.editor.getData(), EMAIL_INTRO);
+                          }}
                         />
                       </div>
                     </CardBody>
@@ -363,7 +367,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                   <Button color="primary" style={{ marginBottom: '1rem', width: '40px' }} onClick={this.handleshowMailForFriendState}>
                     2
                   </Button>
-                  <label>
+                  <label onClick={this.handleshowMailForFriendState}>
                     <Translate contentKey="campaign.send-eward" />
                   </label>
                   <div className="interactive" style={{ display: showMailForFriend ? 'inline-block' : 'none' }}>
@@ -419,11 +423,15 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                       {/* Editor */}
                       <div className="content-fixing">
                         <CKEditor
+                          editorName="email eward"
+                          id="email eward"
                           data={defaultValueContentEmailEward}
                           config={{
                             extraPlugins: 'stylesheetparser'
                           }}
-                          onBlur={event => this.handleModelChange(event, EMAIL_EWARD)}
+                          onChange={event => {
+                            this.handleModelChange(event.editor.getData(), EMAIL_EWARD);
+                          }}
                         />
                       </div>
                     </CardBody>

@@ -197,7 +197,7 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
                           fontSize: '12px!important'
                         }}
                       >
-                        * <Translate contentKey="error.none-data.name-campaign" />
+                        * <Translate contentKey="error.none-data.name-description" />
                       </label>
                     </div>
 
