@@ -20,6 +20,7 @@ class AppSidebar extends Component {
     toggleMobileSidebar = () => {
         let {enableMobileMenu, setEnableMobileMenu} = this.props;
         setEnableMobileMenu(!enableMobileMenu);
+    
     }
 
     render() {
@@ -30,7 +31,7 @@ class AppSidebar extends Component {
             backgroundImage,
             backgroundImageOpacity,
         } = this.props;
-
+        
         return (
             <Fragment>
                 <div className="sidebar-mobile-overlay" onClick={this.toggleMobileSidebar}/>
@@ -60,13 +61,14 @@ class AppSidebar extends Component {
     }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, authentication) => ({
     enableBackgroundImage: state.themeOptions.enableBackgroundImage,
     enableSidebarShadow: state.themeOptions.enableSidebarShadow,
     enableMobileMenu: state.themeOptions.enableMobileMenu,
     backgroundColor: state.themeOptions.backgroundColor,
     backgroundImage: state.themeOptions.backgroundImage,
     backgroundImageOpacity: state.themeOptions.backgroundImageOpacity,
+    
 });
 
 const mapDispatchToProps = dispatch => ({

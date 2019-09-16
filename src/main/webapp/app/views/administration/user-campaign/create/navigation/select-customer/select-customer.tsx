@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import { getCustomer, getStatistic, getSumAllContact } from '../../../../../../actions/user-campaign';
 import { getNavigationCustomerCampaign } from 'app/actions/navigation-info';
+import { openModal, closeModal } from 'app/actions/modal';
 import CustomerDialog from './customer-dialog/customer-dialog';
 import { ITEMS_PER_PAGE, ULTILS_TYPES, ACTIVE_PAGE } from '../../../../../../constants/ultils';
 
@@ -56,6 +57,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
   // function event button submit
   handlerModal = async (modal, categories, isSubmit, idCategory) => {
     let { listUser } = this.state;
+    let { total, totalEmail, totalPhone } = this.props;
     this.setState({
       modal: modal
     });
@@ -64,35 +66,50 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
       elements = {
         id: Math.random(),
         nameGroup: categories,
-        totalContact: this.props.total,
-        email: this.props.totalEmail,
-        phone: this.props.totalPhone,
+        totalContact: total < totalEmail ? totalEmail : total,
+        email: totalEmail,
+        phone: totalPhone,
         facebook: 0,
         zalo: 0,
         categories: idCategory
       };
-      if (this.props.total > 0) {
+      if (this.isDuplicateList(elements.nameGroup)) {
         listUser.push(elements);
         // get list from component select customer - to navigation
         let listCustomer = listUser.map(item => {
           let arrayCategories = item.categories;
           let listCategories: Array<string> = [];
-
           if (arrayCategories.includes(',')) {
             listCategories = arrayCategories.split(',');
           } else {
             listCategories.push(arrayCategories);
           }
-
           return { name: item.nameGroup, categories: listCategories };
         });
-
         localStorage.setItem('listUser', JSON.stringify(listUser));
         this.props.getNavigationCustomerCampaign(listCustomer);
         this.props.getSumAllContact(listCustomer);
         this.setState({ listUser });
       }
     }
+  };
+
+  //check duplicate
+  isDuplicateList = nameCategories => {
+    let { listUser } = this.state;
+    let count = true;
+    listUser.forEach(element => {
+      if (element.nameGroup == nameCategories) {
+        this.props.openModal({
+          show: true,
+          type: 'error',
+          title: 'Lỗi',
+          text: 'phân loại đã tồn tại, xin chọn phân loại khác'
+        });
+        count = false;
+      }
+    });
+    return count;
   };
 
   //close element group
@@ -211,7 +228,9 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
                               <Translate contentKey="campaign.email" />
                             </span>
                           </i>
-                          <label className="label-icon">{item.email}</label>
+                          <label className="label-icon">
+                            {item.email > totalContact.totalContact ? totalContact.totalContact : item.email}
+                          </label>
                         </div>
                         <div>
                           <i className="pe-7s-call">
@@ -259,16 +278,24 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
     );
   }
 }
-const mapStateToProps = ({ userCampaign }: IRootState) => ({
+const mapStateToProps = ({ userCampaign, handleModal }: IRootState) => ({
   loading: userCampaign.loading,
   listCustomer: userCampaign.listNewCustomer,
   total: userCampaign.totalElements,
   totalEmail: userCampaign.totalEmail,
   totalPhone: userCampaign.totalPhone,
-  totalContact: userCampaign.totalContact
+  totalContact: userCampaign.totalContact,
+  modalState: handleModal.data
 });
 
-const mapDispatchToProps = { getCustomer, getStatistic, getNavigationCustomerCampaign, getSumAllContact };
+const mapDispatchToProps = {
+  getCustomer,
+  getStatistic,
+  getNavigationCustomerCampaign,
+  getSumAllContact,
+  openModal,
+  closeModal
+};
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

@@ -312,7 +312,7 @@
 
 #userCreate .label-icon {
   float: right;
-  margin-right: 10px;
+  margin-right: 0px;
 }
 
 // #userCreate .page-title-icon{
@@ -628,7 +628,7 @@ $color_border: rgba(206, 206, 206, 0.687);
     color: #e0f3ff;
   }
 }
-.sweet-alert {
-  width: 23%;
-  height: 35%;
+
+.row-content-info {
+  overflow: auto;
 }

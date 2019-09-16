@@ -62,7 +62,7 @@ class Vocher extends React.Component<VocherProps, VocherState> {
                   <Translate contentKey="campaign.evoucher" />
                 </CardTitle>
                 <Row form>
-                  <Col md={12}>
+                  <Col md={12} className="width-voucher">
                     <DropdownList
                       data={listEvoucher}
                       value={value}
