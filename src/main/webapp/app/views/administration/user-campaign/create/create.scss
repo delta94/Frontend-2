@@ -265,7 +265,7 @@
   font-size: 34px;
 }
 #userCreate .grid-items-cus {
-  height: 167px;
+  height: 175px;
   border: dashed 1px#AEC1F0;
   background-color: rgba(255, 255, 255, 0.8);
   padding: 10%;
@@ -623,4 +623,7 @@ $color_border: rgba(206, 206, 206, 0.687);
 
 .row-content-info {
   overflow: auto;
+}
+.chat-layout.app-inner-layout .app-inner-layout__sidebar {
+  flex: auto;
 }

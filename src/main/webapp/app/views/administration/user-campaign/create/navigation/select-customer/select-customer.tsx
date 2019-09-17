@@ -151,7 +151,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
     return (
       <Loader message={spinner} show={loading} priority={10}>
         <Fragment>
-          <Modal isOpen={this.state.modal} fade={false}>
+          <Modal isOpen={this.state.modal} fade={false} className="handler-modal">
             <CustomerDialog onClick={this.handlerModal} />
           </Modal>
           <Row>

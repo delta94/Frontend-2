@@ -53,7 +53,7 @@
     "title-create-screen": "Danh sách chiến dịch > Tạo chiến dịch M2M",
     "status": {
       "action": "Đang hoạt động",
-      "pause": "Dừng hoạt động/tạm dừng",
+      "pause": "Chưa kích hoạt/tạm dừng",
       "complete": "Đã hoàn thành"
     },
     "message-error": {

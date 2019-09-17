@@ -54,6 +54,7 @@
   font-weight: 500;
   color: black;
   margin-bottom: 5px;
+  word-break: break-word;
 }
 
 .camp-status {
@@ -136,7 +137,6 @@
 .modal-content {
   width: 200% !important;
   margin-left: -260px !important;
-  height: 500px !important;
 }
 
 .modal-title {

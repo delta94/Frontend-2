@@ -76,10 +76,18 @@
   font-weight: normal;
   font-size: 13px;
   line-height: 22px;
+  margin-left: 5px;
   /* identical to box height, or 169% */
 
   color: #97a3b4;
 }
 .name-group .lnr-cross-circle {
   float: right;
+}
+.boder-customer .pe-7s-mail,
+.pe-7s-call {
+  margin-left: 5px;
+}
+.img-facebook .name-icon {
+  margin-left: 0px;
 }
