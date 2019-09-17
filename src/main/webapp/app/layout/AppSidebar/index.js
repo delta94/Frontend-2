@@ -1,9 +1,10 @@
-import React, {Component, Fragment} from 'react';
-import {connect} from 'react-redux';
+import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
 import cx from 'classnames';
+import { Redirect } from 'react-router-dom';
 
 import Nav from '../AppNav/VerticalNavWrapper';
-
+import SweetAlert from 'sweetalert-react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -18,9 +19,9 @@ class AppSidebar extends Component {
     state = {};
 
     toggleMobileSidebar = () => {
-        let {enableMobileMenu, setEnableMobileMenu} = this.props;
+        let { enableMobileMenu, setEnableMobileMenu } = this.props;
         setEnableMobileMenu(!enableMobileMenu);
-    
+
     }
 
     render() {
@@ -30,24 +31,28 @@ class AppSidebar extends Component {
             enableSidebarShadow,
             backgroundImage,
             backgroundImageOpacity,
-            menu
-        } = this.props;
-        
+            menu,
+            isAuthenticated } = this.props;
+        let pathName = '/login';
+        const { from } = { from: { pathname: pathName, search: location.search } };
+        if (!isAuthenticated) {
+            return <Redirect to={from} />;
+        }
         return (
             <Fragment>
                 {/* <div className="sidebar-mobile-overlay" onClick={this.toggleMobileSidebar}/> */}
                 <ReactCSSTransitionGroup
                     component="div"
-                    className={cx("app-sidebar", backgroundColor, {'sidebar-shadow': enableSidebarShadow})}
+                    className={cx("app-sidebar", backgroundColor, { 'sidebar-shadow': enableSidebarShadow })}
                     transitionName="SidebarAnimation"
                     transitionAppear={true}
                     transitionAppearTimeout={1500}
                     transitionEnter={false}
                     transitionLeave={false}>
-                    <HeaderLogo/>
+                    <HeaderLogo />
                     <PerfectScrollbar>
                         <div className="app-sidebar__inner">
-                            <Nav menu = {this.props.menu}/>
+                            <Nav menu={menu} />
                         </div>
                     </PerfectScrollbar>
                     <div
@@ -69,13 +74,16 @@ const mapStateToProps = (state) => ({
     backgroundColor: state.themeOptions.backgroundColor,
     backgroundImage: state.themeOptions.backgroundImage,
     backgroundImageOpacity: state.themeOptions.backgroundImageOpacity,
-    menu : state.authentication.account
-    
+    menu: state.authentication.account,
+    isAuthenticated: state.authentication.isAuthenticated
+
+
 });
 
 const mapDispatchToProps = dispatch => ({
 
     setEnableMobileMenu: enable => dispatch(setEnableMobileMenu(enable)),
+
 
 });
 

@@ -161,8 +161,8 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
                     <SweetAlert
                       className="sweet-alert"
                       title="Cập nhật trạng thái ?"
-                      cancelButtonText="Không"
-                      confirmButtonText="Có"
+                      cancelButtonText="Hủy bỏ"
+                      confirmButtonText="Đồng ý"
                       confirmButtonColor=""
                       // text="Mục đã xoá sẽ không thể khôi phục !"
                       show={this.state.isUpdate}

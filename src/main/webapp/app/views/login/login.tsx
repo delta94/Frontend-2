@@ -6,11 +6,12 @@ import { IRootState } from 'app/reducers';
 import { login } from 'app/actions/authentication';
 import './login.scss';
 import { hasAnyAuthority } from 'app/common/auth/private-route';
-import { AUTHORITIES } from 'app/config/constants';
+import { AUTHORITIES, messages } from 'app/config/constants';
 import SweetAlert from 'sweetalert-react';
 import { openModal, closeModal } from 'app/actions/modal';
 import { Loader as LoaderAnim } from 'react-loaders';
 import Loader from 'react-loader-advanced';
+import { Translate } from 'react-jhipster';
 
 export interface ILoginProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
@@ -35,7 +36,7 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
     messageErrorMerchantCode: ''
   };
 
-  submitForm = () => {
+  submitForm = message => {
     let { valueEmail, valuePassword, valueMerchantCode } = this.state;
     let { loginError, openModal, login } = this.props;
     let submitValue = {
@@ -46,14 +47,6 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
     this.validateForm();
     if (valueEmail && valuePassword && valueMerchantCode) {
       login(submitValue);
-      if (loginError) {
-        openModal({
-          show: true,
-          type: 'error',
-          title: 'Lỗi',
-          text: 'tài khoản hoặc mật khẩu không đúng'
-        });
-      }
     }
   };
 
@@ -100,8 +93,7 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
   };
 
   render() {
-    const { location, isAuthenticated, /*isAdmin,*/ isConverter, loading, isInterviewer, loginError, modalState } = this.props;
-
+    const { location, isAuthenticated, /*isAdmin,*/ isConverter, loading, isInterviewer, loginError, modalState, message } = this.props;
     // console.info(this.props.account);
     let pathName = 'app/views/administration/user-management';
     // if (isAdmin) pathName = '/tracking-schedule/plan';
@@ -128,11 +120,6 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
             <Row className="h-100 no-gutters">
               <Col lg="12" md="12" className="h-100 d-flex bg-white justify-content-center align-items-center">
                 <Col lg="9" md="10" sm="12" className="mx-auto app-login-box">
-                  <div className="app-logo" />
-                  <h4 className="mb-0">
-                    <div>Welcome to my service,</div>
-                    <span>Please sign in to your account.</span>
-                  </h4>
                   <h6 className="mt-3">
                     No account?{' '}
                     <a href="javascript:void(0);" className="text-primary">
@@ -145,7 +132,25 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
                       <Row form>
                         <Col lg={7}>
                           <FormGroup>
-                            <Label for="Email">Email </Label>
+                            <Label for="merchantCode">
+                              <Translate contentKey="login.form.merchant" />
+                            </Label>
+                            <Input
+                              type="merchantCode"
+                              name="merchantCode"
+                              value={this.state.valueMerchantCode}
+                              onChange={this.handleChangeMerchantCode}
+                              id="merchantCode"
+                              placeholder="Merchant Code here..."
+                            />
+                            {this.state.messageErrorMerchantCode}
+                          </FormGroup>
+                        </Col>
+                        <Col lg={7}>
+                          <FormGroup>
+                            <Label for="Email">
+                              <Translate contentKey="login.form.email" />{' '}
+                            </Label>
                             <Input
                               type="email"
                               name="email"
@@ -159,7 +164,9 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
                         </Col>
                         <Col lg={7}>
                           <FormGroup>
-                            <Label for="Password">Password</Label>
+                            <Label for="Password">
+                              <Translate contentKey="login.form.password" />
+                            </Label>
                             <Input
                               type="password"
                               name="password"
@@ -169,20 +176,7 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
                               placeholder="Password here..."
                             />
                             {this.state.messageErrorPassword}
-                          </FormGroup>
-                        </Col>
-                        <Col lg={7}>
-                          <FormGroup>
-                            <Label for="merchantCode">Merchant Code</Label>
-                            <Input
-                              type="merchantCode"
-                              name="merchantCode"
-                              value={this.state.valueMerchantCode}
-                              onChange={this.handleChangeMerchantCode}
-                              id="merchantCode"
-                              placeholder="Merchant Code here..."
-                            />
-                            {this.state.messageErrorMerchantCode}
+                            <label className="message-error">{loginError ? '* Vui lòng kiểm tra lại email hoặc mật khẩu' : ''}</label>
                           </FormGroup>
                         </Col>
                       </Row>
@@ -224,7 +218,8 @@ const mapStateToProps = ({ authentication, handleModal }: IRootState) => ({
   isInterviewer: hasAnyAuthority(authentication.account.roles, [AUTHORITIES.INTERVIEWER]),
   account: authentication.account,
   modalState: handleModal.data,
-  loading: authentication.loading
+  loading: authentication.loading,
+  message: authentication.errorMessage
 });
 
 const mapDispatchToProps = { login, openModal, closeModal };

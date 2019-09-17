@@ -26,8 +26,8 @@ export const login = (accessToken, rememberMe = false) => async (dispatch, getSt
     // payload: axios.post(`login-google/${accessToken.accessToken}`, { headers: { ['Content-Type']: 'application/json' } })
     payload: loginService(accessToken)
   });
-  // const bearerToken = result.value.data.jwt;
-  // Storage.local.set(AUTH_TOKEN_KEY, bearerToken);
+  const bearerToken = result.value.data.jwt;
+  Storage.local.set(AUTH_TOKEN_KEY, bearerToken);
 
   // if (rememberMe) {
   //   Storage.local.set(AUTH_TOKEN_KEY, bearerToken);

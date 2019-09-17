@@ -1,14 +1,11 @@
 import React, { Fragment } from 'react';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircle, faClock, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Loader as LoaderAnim } from 'react-loaders';
 import Loader from 'react-loader-advanced';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Table } from 'reactstrap';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
-import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
+import { Translate } from 'react-jhipster';
 import { getCampaignInfoByStatus, getCampaignInfoById, getCampaignDetailById, updateCampStatus } from 'app/actions/user-campaign';
 import './../all-camp/all-camp.scss';
 import ModalDisplay from './modal/modal';
@@ -125,7 +122,7 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
                         }}
                       >
                         <div className="camp-top">
-                          <div className="camp-title"> {item.name}</div>
+                          <div className="camp-title"> {item.name.length > 40 ? item.name.slice(0, 33) + ' ...' : item.name}</div>
                           <div className="camp-status">
                             {item.status && item.status === 2 ? (
                               <span style={{ color: '#02B3FF' }}>
