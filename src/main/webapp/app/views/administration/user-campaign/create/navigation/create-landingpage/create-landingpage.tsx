@@ -152,7 +152,7 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
   };
 
   render() {
-    let { showMailForFriend, defaultValueContent, openModal, defaultValueContentPopup } = this.state;
+    let { showMailForFriend, defaultValueContent, openModal } = this.state;
     let { listCampainContentParams, listContentTemplateAsTypeLanding } = this.props;
 
     let listIndexParams = listCampainContentParams.map(item => {

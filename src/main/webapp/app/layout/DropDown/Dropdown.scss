@@ -4,11 +4,13 @@
   height: 40px;
   min-width: 150px;
   $color_border: #ced4da;
+
   &:hover {
     cursor: pointer;
+    box-shadow: '0px 0px 4px 1px rgba(97,192,255,1)';
   }
 
-  .toggle-dropdown {
+  .toggle-dropdown-btn {
     width: 100%;
     height: 40px;
     border: solid $color_border 1px;
@@ -19,15 +21,10 @@
       right: 10px;
       top: 15px;
     }
-
-    .toggle-data {
-    }
-
-    .toggle-icon {
-    }
   }
 
   .topica-dropdown-menu {
+    display: none;
     position: relative;
     bottom: -5px;
     border: solid $color_border 1px;
@@ -71,5 +68,9 @@
         cursor: pointer;
       }
     }
+  }
+
+  .show {
+    display: block;
   }
 }

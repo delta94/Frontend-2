@@ -44,7 +44,7 @@ class Vocher extends React.Component<VocherProps, VocherState> {
     //get value from voucher to select - reward component
     // call api get detail voucher
     this.props.getDetailEvoucher(data.id);
-    this.props.getNavigationReward({ type: parseInt(ULTILS_TYPES.SELECT_REWARD), id: data.id });
+    this.props.getNavigationReward({ type: parseInt(ULTILS_TYPES.SELECT_REWARD), voucherId: data.id });
   };
 
   render() {

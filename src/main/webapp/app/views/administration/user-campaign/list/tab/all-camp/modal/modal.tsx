@@ -238,7 +238,13 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
                     </div>
                     <div className="modal-grid-child1-bottom">
                       <div className="modal-grid-child1-bottom2">{camp && camp.landingPageName}</div>
-                      <div className="modal-grid-child1-bottom3">{camp && camp.rewardName}</div>
+                      <div className="modal-grid-child1-bottom3">
+                        {camp && camp.rewardType === 2 ? (
+                          <Translate contentKey="campaign.have-gift" />
+                        ) : (
+                          <Translate contentKey="campaign.no-gift" />
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>

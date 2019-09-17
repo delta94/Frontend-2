@@ -69,7 +69,9 @@
     "send-eward": "GỬI MAIL TẶNG QUÀ",
     "create-content": "Tạo nội dung",
     "type-interactive": "Hình thức tương tác",
-    "create-landing": "Tạo landing",
-    "chose-landing": "Chọn landingpage"
+    "create-landing": "Tạo landingpage",
+    "chose-landing": "Chọn landingpage",
+    "have-gift": "Có quà tặng",
+    "no-gift": "Không có quà tặng"
   }
 }

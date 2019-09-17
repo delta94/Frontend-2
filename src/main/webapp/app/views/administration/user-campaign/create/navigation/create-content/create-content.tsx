@@ -111,22 +111,27 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
     }
   };
 
+  escapeRegExp = string => {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  };
+
+  replaceAll = (str, term, replacement) => {
+    return str.replace(new RegExp(this.escapeRegExp(term), 'g'), replacement);
+  };
+
   sendTestMailLanding = typeMail => {
     let { defaultValueContentEmailIntro, defaultValueContentEmailEward, emailEward, emailIntro, subjectEward, subjectIntro } = this.state;
-    let { postMailRequest, listContentPageParams } = this.props;
 
-    let listParam = listContentPageParams.map(item => {
-      return { paramCode: item.paramCode, sampleValue: item.sampleValue };
-    });
+    let { listContentPageParams } = this.props;
 
-    for (let i = 0; i < listParam.length; i++) {
-      let item = listParam[i];
+    listContentPageParams.forEach(item => {
       let paramCode = item.paramCode;
       let sampleValue = item.sampleValue;
 
-      defaultValueContentEmailEward = defaultValueContentEmailEward.replace(paramCode, sampleValue);
-      defaultValueContentEmailIntro = defaultValueContentEmailIntro.replace(paramCode, sampleValue);
-    }
+      defaultValueContentEmailEward = this.replaceAll(defaultValueContentEmailEward, paramCode, sampleValue);
+      defaultValueContentEmailIntro = this.replaceAll(defaultValueContentEmailIntro, paramCode, sampleValue);
+    });
+
     let testMail: ICreateTestMailEntity = { emailTo: '', subject: '', content: '' };
 
     if (typeMail === EMAIL_EWARD) {
@@ -181,25 +186,29 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
     this.setState({ openModal: false });
   };
 
-  addText = text => {
+  addText = (text, typeMail) => {
     let sel, range;
+    let param = 1;
+    if (typeMail === EMAIL_EWARD) {
+      param = 2;
+    }
+    let newWindow = document.getElementsByTagName('iframe')[param].contentWindow;
 
-    if (window.getSelection()) {
-      let listChildren = window.getSelection().focusNode.childNodes;
-      let canFix = true;
-
-      listChildren.forEach(item => {
-        if (item.nodeName === 'INPUT') {
-          canFix = false;
-        }
-      });
-
-      sel = window.getSelection();
-      if (sel.rangeCount && canFix) {
+    if (newWindow.getSelection()) {
+      sel = newWindow.getSelection();
+      if (sel.rangeCount) {
         range = sel.getRangeAt(0);
         range.deleteContents();
-        range.insertNode(document.createTextNode(text));
+        range.insertNode(document.createTextNode(text + ' '));
       }
+    }
+
+    let newValue = document.getElementsByTagName('iframe')[param].contentWindow.document;
+
+    if (param === 1) {
+      this.setState({ defaultValueContentEmailIntro: newValue.documentElement.outerHTML });
+    } else {
+      this.setState({ defaultValueContentEmailEward: newValue.documentElement.outerHTML });
     }
   };
 
@@ -208,7 +217,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
 
     listContentPageParams.forEach(item => {
       if (event.id === item.id) {
-        this.addText(item.paramCode);
+        this.addText(item.paramCode, typeMail);
       }
     });
   };
@@ -308,7 +317,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                   <div className="interactive" style={{ display: showMailForFriend ? 'none' : 'inline-block' }}>
                     <div className="test-mail">
                       <Input
-                        type="text"
+                        type="email"
                         placeHolder="Điền email test"
                         value={emailIntro}
                         onChange={event => {
@@ -417,7 +426,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                       {/* mail data */}
                       <div className="input-mail-and-more">
                         <Input
-                          type="text"
+                          type="email"
                           placeHolder={'Tiêu đề mail'}
                           onChange={event => {
                             this.setState({ subjectEward: event.target.value });
