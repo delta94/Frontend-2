@@ -96,10 +96,10 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
         />
         <Loader message={spinner1} show={loading} priority={5}>
           <SweetAlert
-            title="Updated"
+            title="Thành công"
             confirmButtonColor=""
             show={this.state.isConfirm}
-            // text="Cập nhật thành công."
+            text="Cập nhật thành công."
             type="success"
             onConfirm={() =>
               this.setState({

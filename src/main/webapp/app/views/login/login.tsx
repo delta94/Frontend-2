@@ -104,6 +104,8 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
     if (isAuthenticated) {
       return <Redirect to={from} />;
     }
+    console.log('login err', loginError);
+    console.log('authen', isAuthenticated);
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
     return (
       <Loader message={spinner1} show={loading} priority={1}>
@@ -177,6 +179,9 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
                             />
                             {this.state.messageErrorPassword}
                             <label className="message-error">{loginError ? '* Vui lòng kiểm tra lại email hoặc mật khẩu' : ''}</label>
+                            {/* <div>
+                            <label className="message-error">{loginError && !isAuthenticated ? '* Vui lòng đăng nhập lại để tiếp tục' : ''}</label>
+                            </div> */}
                           </FormGroup>
                         </Col>
                       </Row>
