@@ -75,7 +75,7 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
       });
     } else {
       this.setState({
-        messageErrorPassword: <label className="message-error">* Vui lòng nhập Email</label>
+        messageErrorPassword: <label className="message-error">* Vui lòng nhập Password</label>
       });
     }
     if (valueMerchantCode) {

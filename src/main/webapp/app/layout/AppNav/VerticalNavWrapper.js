@@ -10,9 +10,9 @@ class Nav extends Component {
     state = {};
 
     render() {
-        let menu = this.props;
+        const{ menu } = this.props
         let nameNav ;
-        menu && menu.length ? nameNav = menu.map(event => {
+        menu && menu.length ? nameNav =  this.props.menu.map(event => {
             let mainContent = event.permissions.map(item =>{
               let  mainNav = {
                    label : String(item.name),
@@ -28,7 +28,7 @@ class Nav extends Component {
                 content :mainContent
             }
             return nav 
-        }) : null;
+        }): null
         
         return (
             <Fragment>

@@ -204,11 +204,6 @@
   width: auto;
 }
 
-.modal-content {
-  width: 200% !important;
-  margin-left: -260px !important;
-}
-
 .modal-title {
   width: 100%;
   color: black;
@@ -270,7 +265,7 @@
   font-size: 34px;
 }
 #userCreate .grid-items-cus {
-  height: 167px;
+  height: 175px;
   border: dashed 1px#AEC1F0;
   background-color: rgba(255, 255, 255, 0.8);
   padding: 10%;
@@ -443,10 +438,7 @@
   margin-top: 20px !important;
   width: 33%;
 }
-.modal-content {
-  width: 200% !important;
-  margin-left: -260px !important;
-}
+
 .modal-grid .table-responsive {
   display: block;
   width: 100%;

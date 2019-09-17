@@ -124,6 +124,7 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
     const { loading, camp, campDetail, isOpen, showAlert } = this.props;
     const { activePage, isConfirm } = this.state;
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
+
     return (
       <Modal isOpen={isOpen} fade={false}>
         <ModalHeader>
@@ -160,6 +161,8 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
                     <SweetAlert
                       className="sweet-alert"
                       title="Cập nhật trạng thái ?"
+                      cancelButtonText="Không"
+                      confirmButtonText="Có"
                       confirmButtonColor=""
                       // text="Mục đã xoá sẽ không thể khôi phục !"
                       show={this.state.isUpdate}

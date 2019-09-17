@@ -108,7 +108,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
               <div className="title-page">
                 <div className="title-head">
                   <Translate contentKey="campaign.title-create-screen" />
-                  <Link to={'/admin/user-campaign'} className="pe-7s-close-circle" />
+                  <Link to={'/app/views/administration/user-campaign/'} className="pe-7s-close-circle" />
                 </div>
               </div>
               <Card className="card-info">

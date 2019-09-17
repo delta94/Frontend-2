@@ -68,7 +68,7 @@ export class UserCreate extends React.Component<IUserCreateProps, IUserCreateSta
 
   onClick = async () => {
     await this.props.uploadFileExcel(this.state.fileImport);
-    this.props.history.push('/admin/user-management/results-files');
+    this.props.history.push('app/views/administration/user-management/results-files');
   };
 
   validated = () => {
@@ -105,7 +105,7 @@ export class UserCreate extends React.Component<IUserCreateProps, IUserCreateSta
                   </div>
                 </Col>
                 <Col md="6">
-                  <Button tag={Link} to="/admin/user-management" replace color="info">
+                  <Button tag={Link} to="/app/views/administration/user-management" replace color="info">
                     <FontAwesomeIcon icon="arrow-left" />
                     &nbsp;
                     <span className="d-none d-md-inline">
