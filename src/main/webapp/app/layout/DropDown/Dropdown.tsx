@@ -1,7 +1,7 @@
 import { PureComponent } from 'react';
 import React from 'react';
 import './Dropdown.scss';
-import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faWindowMinimize } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export interface IArrayEntity {
@@ -12,6 +12,7 @@ export interface IArrayEntity {
 export interface IDropdownState {
   isShow: boolean;
   value: string;
+  classNameMenu: string;
 }
 
 export interface IDropdownProps {
@@ -30,8 +31,6 @@ const styleDropdown = (width?: number, height?: number, display?: string): Objec
   display
 });
 
-const id = (Date.now() / 1000).toString();
-
 class Dropdown extends PureComponent<IDropdownProps, IDropdownState> {
   constructor(props) {
     super(props);
@@ -39,13 +38,16 @@ class Dropdown extends PureComponent<IDropdownProps, IDropdownState> {
 
   state = {
     isShow: false,
-    value: 'Chọn giá trị'
+    value: 'Chọn giá trị',
+    classNameMenu: 'topica-dropdown-menu show'
   };
 
+  timeNew = new Date().getTime();
+  id = this.timeNew.toString();
+
   toggleDropdown = item => {
-    let isShow: boolean = this.state.isShow;
     let data: IArrayEntity = item;
-    this.props.toggleDropdown(data, isShow);
+    this.props.toggleDropdown(data);
   };
 
   componentDidMount() {
@@ -55,6 +57,21 @@ class Dropdown extends PureComponent<IDropdownProps, IDropdownState> {
     if (defaultValue) {
       value = defaultValue;
     }
+
+    window.onclick = function(event) {
+      let match = event.target.className;
+      if (match !== 'toggle-data') {
+        var dropdowns = document.getElementsByClassName('topica-dropdown-menu show');
+        for (let i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+          }
+        }
+      } else {
+        event.stopImmediatePropagation();
+      }
+    };
 
     this.setState({ value });
   }
@@ -75,13 +92,20 @@ class Dropdown extends PureComponent<IDropdownProps, IDropdownState> {
 
   render() {
     const { listArray, defaultValue, width } = this.props;
-    const { value, isShow } = this.state;
+    const { value, isShow, classNameMenu } = this.state;
+
     return (
-      <div id={id} className="topica-dropdown" style={{ width: width ? width + 'px' : '150px' }}>
+      <div
+        className="topica-dropdown"
+        style={{
+          width: width ? width + 'px' : '150px'
+        }}
+        onClick={() => {
+          this.setState({ classNameMenu: 'topica-dropdown-menu show' });
+        }}
+      >
         <div
-          id={id}
-          className="toggle-dropdown"
-          style={{ boxShadow: isShow ? '0px 0px 4px 1px rgba(97,192,255,1)' : 'none' }}
+          className={isShow ? 'toggle-dropdown-btn active' : 'toggle-dropdown-btn'}
           onClick={() => {
             this.setState({ isShow: !isShow });
           }}
@@ -91,16 +115,19 @@ class Dropdown extends PureComponent<IDropdownProps, IDropdownState> {
             <FontAwesomeIcon icon={faAngleDown} size="1x" />
           </div>
         </div>
-        <div id={id} className="topica-dropdown-menu" style={{ display: isShow ? 'block' : 'none' }}>
+        <div id={this.id} className={isShow ? 'topica-dropdown-menu show' : 'topica-dropdown-menu'}>
           {listArray &&
             listArray.map((item, index) => {
               return (
                 <div
-                  id={id}
                   key={index}
                   onClick={event => {
-                    event.preventDefault();
-                    this.setState({ isShow: false, value: item.name }), this.toggleDropdown(item);
+                    this.toggleDropdown(item);
+                    this.setState({ isShow: false, value: item.name });
+                  }}
+                  style={{
+                    color: value === item.name ? 'white' : 'black',
+                    backgroundColor: value === item.name ? 'rgb(56, 102, 221)' : ''
                   }}
                   className="topica-dropdown-item"
                 >

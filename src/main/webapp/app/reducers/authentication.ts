@@ -33,13 +33,13 @@ export default (state: AuthenticationState = initialState, action): Authenticati
         ...initialState,
         errorMessage: action.payload,
         showModalLogin: true,
-        loginError: true
+        loginError: false
       };
     case FAILURE(AUTH_ACTION_TYPES.GET_SESSION):
       return {
         ...state,
         loading: false,
-        isAuthenticated: false,
+        isAuthenticated: true,
         sessionHasBeenFetched: true,
         showModalLogin: true,
         errorMessage: action.payload

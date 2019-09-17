@@ -31,6 +31,14 @@ class PreviewLanding extends React.PureComponent<IPreviewLandingProps, IPreviewL
 
   setValueForPopUp = event => {};
 
+  escapeRegExp = string => {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  };
+
+  replaceAll = (str, term, replacement) => {
+    return str.replace(new RegExp(this.escapeRegExp(term), 'g'), replacement);
+  };
+
   componentDidMount() {
     let { listCampainContentParams, htmlDOM } = this.props;
     let newValue: string = '';
@@ -44,8 +52,7 @@ class PreviewLanding extends React.PureComponent<IPreviewLandingProps, IPreviewL
       let paramCode = item.paramCode;
       let sampleValue = item.sampleValue;
 
-      newValue = htmlDOM.replace(paramCode, sampleValue);
-      htmlDOM = newValue;
+      htmlDOM = this.replaceAll(htmlDOM, paramCode, sampleValue);
     }
 
     document.getElementById('fred').contentWindow.document.write(htmlDOM);

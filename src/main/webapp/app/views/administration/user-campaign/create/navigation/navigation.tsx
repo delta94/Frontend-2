@@ -155,6 +155,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
 
     let modalState: IOpenModal = { show: false, title: '', text: '', type: '' };
     let isError = false;
+    let rollBack = activeTab < activeTabNumber;
     let countContact = totalContact ? totalContact : 0;
     let valueVoucher = evoucherDetail.value;
     switch (activeTab) {
@@ -178,6 +179,33 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
               text: 'Vui lòng chọn evoucher'
             };
           }
+        }
+        break;
+      case 3:
+        if (navigationInfo.contentTemplates[0].content === '' && rollBack) {
+          modalState = {
+            show: true,
+            title: 'Thiếu trường thông tin',
+            text: 'Bạn cần chọn landingpage',
+            type: 'warning'
+          };
+        }
+        break;
+      case 4:
+        if (navigationInfo.contentTemplates[1].templateId === '' && rollBack) {
+          modalState = {
+            show: true,
+            title: 'Thiếu trường thông tin',
+            text: 'Bạn cần chọn mail quà tặng',
+            type: 'warning'
+          };
+        } else if (navigationInfo.contentTemplates[2].templateId === '' && rollBack) {
+          modalState = {
+            show: true,
+            title: 'Thiếu trường thông tin',
+            text: 'Bạn cần chọn mail giới thiệu',
+            type: 'warning'
+          };
         }
         break;
       default:
