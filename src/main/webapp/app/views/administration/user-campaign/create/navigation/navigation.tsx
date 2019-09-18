@@ -76,6 +76,10 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
     }
   }
 
+  checkDeitalCampaign = () => {
+    console.log(this.props.navigationInfo);
+  };
+
   checkThrowStep = (activeTab, param, nextStep) => {
     let { navigationInfo, totalContact, evoucherDetail } = this.props;
     let modalState: IOpenModal = { show: false, title: '', text: '', type: '' };
@@ -83,6 +87,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
     let isError = false;
     let countContact = totalContact ? totalContact : 0;
     let valueVoucher = evoucherDetail.value;
+    this.checkDeitalCampaign();
     switch (activeTab) {
       case 1:
         if (countContact < 1) {

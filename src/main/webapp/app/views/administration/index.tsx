@@ -4,6 +4,7 @@ import ErrorBoundaryRoute from 'app/common/error/error-boundary-route';
 import UserManagement from './user-management';
 import AppHeader from 'app/layout/AppHeader/';
 import AppSidebar from 'app/layout/AppSidebar/';
+import PrivateRoute from '../../common/auth/private-route';
 
 const Routes = ({ match }) => (
   <Fragment>

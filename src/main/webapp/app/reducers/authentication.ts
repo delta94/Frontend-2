@@ -39,7 +39,7 @@ export default (state: AuthenticationState = initialState, action): Authenticati
       return {
         ...state,
         loading: false,
-        isAuthenticated: true,
+        isAuthenticated: false,
         sessionHasBeenFetched: true,
         showModalLogin: true,
         errorMessage: action.payload
@@ -58,14 +58,14 @@ export default (state: AuthenticationState = initialState, action): Authenticati
         showModalLogin: true
       };
     case SUCCESS(AUTH_ACTION_TYPES.GET_SESSION): {
-      // const isAdmin = action.payload.data.roles.some(role => role === ROLE_ADMIN);
+      const isAdmin = action.payload.data.name;
       return {
         ...state,
         isAuthenticated: true,
         loading: false,
         sessionHasBeenFetched: true,
-        account: action.payload.data
-        // isAdmin
+        account: action.payload.data,
+        isAdmin
       };
     }
     case AUTH_ACTION_TYPES.ERROR_MESSAGE:

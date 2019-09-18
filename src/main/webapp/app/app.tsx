@@ -34,6 +34,10 @@ export class App extends React.Component<IAppProps, IAppState> {
     closedSmallerSidebar: false
   };
 
+  componentDidMount() {
+    this.props.getSession();
+  }
+
   render() {
     const { isAuthenticated } = this.props;
     let {
