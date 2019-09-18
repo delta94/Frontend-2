@@ -3,7 +3,7 @@
     "title": "Đăng nhập",
     "form": {
       "password": "Mật khẩu",
-      "email": "email",
+      "email": "Email",
       "merchant": "Thương Hiệu",
       "password.placeholder": "Nhập mật khầu của bạn",
       "rememberme": "Nhớ tài khoản",
