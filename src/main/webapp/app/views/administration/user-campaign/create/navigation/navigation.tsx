@@ -49,10 +49,20 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
 
   toggle = tab => {
     let { activeTab } = this.state;
+    let { openModal } = this.props;
     if (!this.checkThrowStep(activeTab, null, tab).isError && tab !== activeTab) {
-      this.setState({
-        activeTab: tab
-      });
+      if (this.checkDeitalCampaign()) {
+        this.setState({
+          activeTab: tab
+        });
+      } else {
+        openModal({
+          show: true,
+          type: 'warning',
+          title: 'Thông báo',
+          text: 'Thiếu trường thông tin'
+        });
+      }
     }
   };
 
@@ -78,7 +88,14 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
   }
 
   checkDeitalCampaign = () => {
-    console.log(this.props.navigationInfo);
+    let { navigationInfo } = this.props;
+    let isErr = false;
+    if (navigationInfo.fromDate && navigationInfo.description && navigationInfo.name) {
+      isErr = true;
+    } else {
+      isErr = false;
+    }
+    return isErr;
   };
 
   checkThrowStep = (activeTab, param, nextStep) => {
@@ -88,7 +105,8 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
     let isError = false;
     let countContact = totalContact ? totalContact : 0;
     let valueVoucher = evoucherDetail.value;
-    this.checkDeitalCampaign();
+    let isEmptyDetailCampaign = false;
+    isEmptyDetailCampaign = this.checkDeitalCampaign();
     switch (activeTab) {
       case 1:
         if (countContact < 1) {

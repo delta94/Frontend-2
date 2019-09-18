@@ -47,7 +47,7 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
     };
   }
 
-  // handler close modal
+  //handler close modal
   handerModal = (event, confirm) => {
     this.setState({
       modal: event,
@@ -112,8 +112,9 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
               {/* day la trang camp*/}
               {camps &&
                 camps.map((item, index) => {
-                  let list = (
-                    <div key={index}>
+                  var list;
+                  list = (
+                    <div>
                       <div
                         className="grid-item"
                         onClick={() => {
@@ -121,7 +122,10 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
                         }}
                       >
                         <div className="camp-top">
-                          <div className="camp-title"> {item.name.length > 40 ? item.name.slice(0, 33) + ' ...' : item.name}</div>
+                          <div className="camp-title">
+                            {' '}
+                            {item.name.trim().length > 40 ? item.name.trim().slice(0, 33) + ' ...' : item.name.trim()}
+                          </div>
                           <div className="camp-status">
                             {item.status && item.status === 2 ? (
                               <span style={{ color: '#02B3FF' }}>
