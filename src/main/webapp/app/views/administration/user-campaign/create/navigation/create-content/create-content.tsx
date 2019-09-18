@@ -43,7 +43,8 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
   constructor(props) {
     super(props);
   }
-  state: ICreateContentState = {
+
+  public state = {
     showMailForFriend: false,
     defaultValueContentEmailIntro: '',
     defaultValueContentEmailEward: '',
@@ -271,20 +272,20 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
 
     let { listContentPageParams, listContentTemplateAsTypeEmailEward, listContentTemplateAsTypeEmailIntro, modalState } = this.props;
 
-    const listIndexParams = listContentPageParams.map(item => {
-      return {
-        id: item.id,
-        name: item.paramName
-      };
-    });
+    const listIndexParams = listContentPageParams.map(item => ({
+      id: item.id,
+      name: item.paramName
+    }));
 
-    const listTemplateEmailEward = listContentTemplateAsTypeEmailEward.map(item => {
-      return { id: item.id, name: item.name };
-    });
+    const listTemplateEmailEward = listContentTemplateAsTypeEmailEward.map(item => ({
+      id: item.id,
+      name: item.name
+    }));
 
-    const listTemplateMailIntro = listContentTemplateAsTypeEmailIntro.map(item => {
-      return { id: item.id, name: item.name };
-    });
+    const listTemplateMailIntro = listContentTemplateAsTypeEmailIntro.map(item => ({
+      id: item.id,
+      name: item.name
+    }));
 
     return (
       <Fragment>
@@ -366,7 +367,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                       </div>
                       <div className="content-fixing">
                         <CKEditor
-                          editorName="email Intro"
+                          editorName="editor2"
                           id="email intro"
                           data={defaultValueContentEmailIntro}
                           config={{
@@ -444,7 +445,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                       {/* Editor */}
                       <div className="content-fixing">
                         <CKEditor
-                          editorName="email eward"
+                          editorName="editor3"
                           id="email eward"
                           data={defaultValueContentEmailEward}
                           config={{
@@ -470,15 +471,13 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-const mapStateToProps = ({ userCampaign, handleModal }: IRootState) => {
-  return {
-    listContentPageParams: userCampaign.listCampainContentParams,
-    postMailRequest: userCampaign.postMailRequest,
-    listContentTemplateAsTypeEmailIntro: userCampaign.listContentTemplateAsTypeEmailIntro,
-    listContentTemplateAsTypeEmailEward: userCampaign.listContentTemplateAsTypeEmailEward,
-    modalState: handleModal.data
-  };
-};
+const mapStateToProps = ({ userCampaign, handleModal }: IRootState) => ({
+  listContentPageParams: userCampaign.listCampainContentParams,
+  postMailRequest: userCampaign.postMailRequest,
+  listContentTemplateAsTypeEmailIntro: userCampaign.listContentTemplateAsTypeEmailIntro,
+  listContentTemplateAsTypeEmailEward: userCampaign.listContentTemplateAsTypeEmailEward,
+  modalState: handleModal.data
+});
 
 const mapDispatchToProps = {
   getContentPageParams,

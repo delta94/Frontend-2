@@ -47,7 +47,7 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
     };
   }
 
-  //handler close modal
+  // handler close modal
   handerModal = (event, confirm) => {
     this.setState({
       modal: event,
@@ -112,9 +112,8 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
               {/* day la trang camp*/}
               {camps &&
                 camps.map((item, index) => {
-                  var list;
-                  list = (
-                    <div>
+                  let list = (
+                    <div key={index}>
                       <div
                         className="grid-item"
                         onClick={() => {
