@@ -106,9 +106,20 @@ export class Landing extends React.Component<ILandingProps, ILandingState> {
       }
    
       if(successToRq) {
-        form.action= 'http://171.244.40.91:8088/v1/campaign/'+ campaign+'/customer/'+customer; 
-      }
-      
+        var xhttp = new XMLHttpRequest();
+              xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && (this.status == 400 || this.status == 200))   {
+                 alert(this.responseText);
+                }
+            };
+            xhttp.open("POST", 'http://171.244.40.91:8088/v1/campaign/'+ campaign+'/customer/'+customer, true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            var postString = 'campaign='+document.getElementsByName('campaign')[0].value + '&customer='+document.getElementsByName('customer')[0].value
+                      + '&name='+document.getElementsByName('name')[0].value
+                      + '&email='+document.getElementsByName('email')[0].value
+                      + '&phone='+document.getElementsByName('phone')[0].value
+            xhttp.send(postString);
+              }
       form.submit();
     }
   `;

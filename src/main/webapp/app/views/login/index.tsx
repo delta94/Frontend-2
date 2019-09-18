@@ -6,7 +6,7 @@ import Logout from './logout';
 const Routes = ({ match }) => (
   <Fragment>
     <ErrorBoundaryRoute path={`${match.url}`} exact={true} component={Login} />
-    <ErrorBoundaryRoute path={`${match.url}/logout`} exact={true} component={Logout} />
+    <ErrorBoundaryRoute path={`${match.url}/logout`} component={Logout} />
   </Fragment>
 );
 

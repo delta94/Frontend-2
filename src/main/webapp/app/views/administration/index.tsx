@@ -15,6 +15,7 @@ const Routes = ({ match }) => (
         <div className="app-main__inner">
           <ErrorBoundaryRoute path={`${match.url}/user-management`} component={UserManagement} />
           <ErrorBoundaryRoute path={`${match.url}/user-campaign`} component={CampaignManagement} />
+          {/* <PrivateRoute path={`${match.url}/user-management`} component={UserManagement} hasAnyAuthorities={['Admin']} /> */}
         </div>
       </div>
     </div>

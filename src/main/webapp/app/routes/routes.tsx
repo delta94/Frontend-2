@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import React, { Suspense, lazy, Fragment } from 'react';
-import Loader from 'react-loaders';
 
 import { ToastContainer } from 'react-toastify';
 
