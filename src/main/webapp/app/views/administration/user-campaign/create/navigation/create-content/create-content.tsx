@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 
 import CKEditor from 'ckeditor4-react';
 import { getContentTemplateAsType, getContentPageParams, postTestMailLanding } from '../../../../../../actions/user-campaign';
-import { getNavigationContentTemplates } from '../../../../../../actions/navigation-info';
+import { getNavigationContentTemplates, refreshNavigationInfo } from '../../../../../../actions/navigation-info';
 import { openModal, closeModal } from '../../../../../../actions/modal';
 import { IRootState } from '../../../../../../reducers/index';
 import { Translate } from 'react-jhipster';

@@ -19,6 +19,7 @@ import { openModal, closeModal } from '../../../../../actions/modal';
 import { openLoading, closeLoading } from '../../../../../actions/loading';
 import { postSaveDataCampainService } from 'app/services/user-campaign';
 import { IOpenModal } from 'app/reducers/modal';
+import { refreshNavigationInfo } from '../../../../../actions/navigation-info';
 
 export interface INavigationProps extends StateProps, DispatchProps {
   onClick: Function;
@@ -245,11 +246,12 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
               title: 'Thành công',
               text: 'Đã tạo chiến dịch thành công'
             });
+            this.props.refreshNavigationInfo();
           }
 
           setTimeout(() => {
             this.props.closeModal();
-            window.location.assign('/#/admin/user-campaign');
+            window.location.assign('/#/app/views/administration/user-campaign');
           }, 500);
         })
         .catch(err => {
@@ -396,7 +398,8 @@ const mapDispatchToProps = {
   openModal,
   closeModal,
   openLoading,
-  closeLoading
+  closeLoading,
+  refreshNavigationInfo
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

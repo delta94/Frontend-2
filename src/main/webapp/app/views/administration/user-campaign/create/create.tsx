@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import Info from './info/info';
 import Navigation from './navigation/navigation';
-import { Container, Collapse, Card, CardTitle } from 'reactstrap';
+import { Container, Collapse, Card, CardTitle, Button } from 'reactstrap';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import cx from 'classnames';
 import '../create/create.scss';
@@ -12,6 +12,7 @@ import { Translate, translate } from 'react-jhipster';
 import { ULTILS_TYPES } from '../../../../constants/ultils';
 import { openModal, closeModal } from 'app/actions/modal';
 import SweetAlert from 'sweetalert-react';
+import { refreshNavigationInfo } from '../../../../actions/navigation-info';
 
 export interface ICreateProps extends StateProps, DispatchProps {}
 
@@ -108,7 +109,14 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
               <div className="title-page">
                 <div className="title-head">
                   <Translate contentKey="campaign.title-create-screen" />
-                  <Link to={'/app/views/administration/user-campaign/'} className="pe-7s-close-circle" />
+                  <Button
+                    onClick={() => {
+                      this.props.refreshNavigationInfo();
+                      window.location.assign('/#/app/views/administration/user-campaign/');
+                    }}
+                  >
+                    <i className="pe-7s-close-circle" />
+                  </Button>
                 </div>
               </div>
               <Card className="card-info">
@@ -141,7 +149,7 @@ const mapStateToProps = ({ userCampaign, handleModal }: IRootState) => ({
   modalState: handleModal.data
 });
 
-const mapDispatchToProps = { openModal, closeModal };
+const mapDispatchToProps = { openModal, closeModal, refreshNavigationInfo };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
