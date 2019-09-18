@@ -5,7 +5,7 @@ import { Translate } from 'react-jhipster';
 import { IRootState } from 'app/reducers';
 import { Loader as LoaderAnim } from 'react-loaders';
 import Loader from 'react-loader-advanced';
-import '../info/info.scss';
+import './info.scss';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import moment, { Moment } from 'moment';
@@ -21,17 +21,17 @@ export interface IinfoProps extends StateProps, DispatchProps {
 const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
 
 export interface IinfoPropsState {
-  //value info
+  // value info
   valueDay: string;
   valueName?: string;
   valueDes: string;
 
-  //handler show table
+  // handler show table
   showNameScripts: string;
   disableScreen: string;
   displayTable: string;
 
-  //set date & time
+  // set date & time
   startDate: Moment;
   endDate: Moment;
   focusedInput: string;
@@ -39,7 +39,7 @@ export interface IinfoPropsState {
 
 export class Info extends React.Component<IinfoProps, IinfoPropsState> {
   state: IinfoPropsState = {
-    //set style class table default
+    // set style class table default
     disableScreen: ULTILS_TYPES.EMPTY,
     displayTable: ULTILS_TYPES.DISPLAY_TABLE,
     showNameScripts: ULTILS_TYPES.EMPTY,
@@ -49,7 +49,7 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
     valueDay: ULTILS_TYPES.EMPTY,
     valueDes: ULTILS_TYPES.EMPTY,
 
-    //set default date & time
+    // set default date & time
     startDate: moment(new Date()),
     endDate: moment(new Date()),
     focusedInput: ULTILS_TYPES.EMPTY
@@ -75,7 +75,7 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
     this.props.getNavigationFromDate(new Date(startDate._d).toISOString());
     this.props.getNavigationToDate(new Date(endDate._d).toISOString());
   }
-  //function show text scripts
+  // function show text scripts
   onClick = (event, id) => {
     let { valueName, valueDes, startDate, endDate } = this.state;
 
@@ -154,13 +154,13 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
                         required={true}
                         startDatePlaceholderText={'dd/mm/yy'}
                         displayFormat="DD/MM/YY"
-                        startDate={startDate} // momentPropTypes.momentObj or null,
-                        startDateId="dateStart" // PropTypes.string.isRequired,
-                        endDate={endDate} // momentPropTypes.momentObj or null,
-                        endDateId="dateEnd" // PropTypes.string.isRequired,
-                        onDatesChange={this.onDatesChange} // PropTypes.func.isRequired,
-                        focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-                        onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
+                        startDate={startDate}
+                        startDateId="dateStart"
+                        endDate={endDate}
+                        endDateId="dateEnd"
+                        onDatesChange={this.onDatesChange}
+                        focusedInput={this.state.focusedInput}
+                        onFocusChange={focusedInput => this.setState({ focusedInput })}
                       />
                       <label
                         className="must-type"

@@ -11,7 +11,6 @@ import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pag
 import { getUser, getUsers, updateUser, getUserCategories, deleteUser } from 'app/actions/user-management';
 import UserCategoryTag from './user-categories-tags';
 import { IRootState } from 'app/reducers';
-import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
 import ReactPaginate from 'react-paginate';
 import SweetAlert from 'sweetalert-react';
 import { Loader as LoaderAnim } from 'react-loaders';

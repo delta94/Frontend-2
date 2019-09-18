@@ -616,7 +616,7 @@ class ThemeOptions extends Component {
                                                 className={cx("swatch-holder bg-grow-early", {active: backgroundColor === 'bg-grow-early sidebar-text-light'})}
                                                 onClick={() => setBackgroundColor("bg-grow-early sidebar-text-light")}/>
                                             <div
-                                                className={cx("swatch-holder bg-love-kiss", {active: backgroundColor === 'bg-love-kiss sidebar-text-light'})}
+                                                className={cx('swatch-holder bg-love-kiss', {active: backgroundColor === 'bg-love-kiss sidebar-text-light'})}
                                                 onClick={() => setBackgroundColor("bg-love-kiss sidebar-text-light")}/>
                                             <div
                                                 className={cx("swatch-holder bg-premium-dark", {active: backgroundColor === 'bg-premium-dark sidebar-text-light'})}
@@ -901,7 +901,6 @@ const mapStateToProps = state => ({
     enableSidebarShadow: state.themeOptions.enableSidebarShadow,
     enableFixedSidebar: state.themeOptions.enableFixedSidebar,
     enableFixedFooter: state.themeOptions.enableFixedFooter,
-
 
     enablePageTitleIcon: state.themeOptions.enablePageTitleIcon,
     enablePageTitleSubheading: state.themeOptions.enablePageTitleSubheading,

@@ -65,3 +65,9 @@ export const getNavigationDescription = (data: any) => {
     data
   };
 };
+
+export const refreshNavigationInfo = () => {
+  return {
+    type: NAVIGATION_INFO.REFRESH_NAVIGATION_INFO
+  };
+};

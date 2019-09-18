@@ -228,7 +228,7 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
                       <div className="content-fixing">
                         <CKEditor
                           data={defaultValueContent}
-                          editorName="landing editor"
+                          editorName="editor1"
                           id="editor0"
                           config={{
                             extraPlugins: 'stylesheetparser'
