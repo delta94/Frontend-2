@@ -96,7 +96,6 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
     const { location, isAuthenticated, /*isAdmin,*/ isConverter, loading, isInterviewer, loginError, modalState, account } = this.props;
     let pathName = 'app/views/administration/user-management';
     const { from } = { from: { pathname: pathName, search: location.search } };
-
     if (isAuthenticated) {
       return <Redirect to={from} />;
     }
