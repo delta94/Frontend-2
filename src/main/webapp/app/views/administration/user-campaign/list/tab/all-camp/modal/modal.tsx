@@ -156,7 +156,7 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
                     />
                     <SweetAlert
                       className="sweet-alert"
-                      title={translate('alert.update.is-update')}
+                      title={translate('alert.update.change-status')}
                       cancelButtonText={translate('alert.canler')}
                       confirmButtonText={translate('alert.ok')}
                       confirmButtonColor=""
