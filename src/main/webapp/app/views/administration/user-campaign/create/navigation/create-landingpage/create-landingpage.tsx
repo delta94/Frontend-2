@@ -16,7 +16,9 @@ import { getNavigationContentTemplates } from 'app/actions/navigation-info';
 import PreviewLanding from './preview-landing/preview-landing';
 import { IParamester } from 'app/common/model/campaign-navigation.model';
 import { Translate } from 'react-jhipster';
-import { FORM_LANDING } from 'app/constants/common';
+import { FORM_LANDING, TEMPLATE_ID } from 'app/constants/common';
+import CkeditorFixed from 'app/layout/ckeditor/CkeditorFixed';
+import { SUBJECT } from '../../../../../../constants/common';
 
 // export interface I
 
@@ -65,7 +67,6 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
   };
 
   addText = text => {
-    const { defaultValueContent } = this.state;
     let sel, range;
     let newWindow = document.getElementsByTagName('iframe')[0].contentWindow;
 
@@ -84,29 +85,7 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
 
   toggleLanding = event => {
     this.addContentTemplate(event.id);
-    this.props.getNavigationContentTemplates(event.id, FORM_LANDING, 'templateId');
-  };
-
-  handleModelChange = event => {
-    let { listCampainContentParams } = this.props;
-    let paramester = [];
-
-    listCampainContentParams.forEach(item => {
-      if (event && event.indexOf(item.paramCode) > 0) {
-        paramester.push(item);
-      }
-    });
-
-    const newParamester = paramester.map(item => ({
-      id: item.id,
-      name: item.paramName,
-      code: item.paramCode
-    }));
-
-    this.setState({ defaultValueContent: event, paramester });
-    this.setValueForPopUp(event);
-    this.props.getNavigationContentTemplates(newParamester, FORM_LANDING, 'parameter');
-    this.props.getNavigationContentTemplates(event, FORM_LANDING, 'content');
+    this.props.getNavigationContentTemplates(event.id, FORM_LANDING, TEMPLATE_ID);
   };
 
   setValueForPopUp = event => {
@@ -132,15 +111,16 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
   addContentTemplate = id => {
     let { listContentTemplateAsTypeLanding } = this.props;
     let { defaultValueContent, subjectLanding } = this.state;
+
     listContentTemplateAsTypeLanding.forEach(item => {
-      if (item.id === id) {
+      if (item.id === id.toString()) {
         defaultValueContent = item.content;
         subjectLanding = item.name;
       }
     });
 
     this.setState({ defaultValueContent });
-    this.props.getNavigationContentTemplates(subjectLanding, FORM_LANDING, 'subject');
+    this.props.getNavigationContentTemplates(subjectLanding, FORM_LANDING, SUBJECT);
   };
 
   openModalPreview = () => {
@@ -225,19 +205,7 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
                           />
                         </div>
                       </div>
-                      <div className="content-fixing">
-                        <CKEditor
-                          data={defaultValueContent}
-                          editorName="editor1"
-                          id="editor0"
-                          config={{
-                            extraPlugins: 'stylesheetparser'
-                          }}
-                          onChange={event => {
-                            this.handleModelChange(event.editor.getData());
-                          }}
-                        />
-                      </div>
+                      <CkeditorFixed id="editorLanding" data={defaultValueContent} type={FORM_LANDING} />
                     </CardBody>
                   </Card>
                 </Collapse>

@@ -68,9 +68,8 @@ export class ScriptsCampaign extends Component<IScriptsCampaignProps, IScriptsCa
         <Row className={this.state.disableDocument}>
           {listCampaignInfo
             ? listCampaignInfo.map((item, index) => {
-                let elements;
-                elements = (
-                  <Col onClick={() => this.onClick(item.name, item.id)}>
+                return (
+                  <Col key={index} onClick={() => this.onClick(item.name, item.id)}>
                     <div className="grid-items" key={index + 1}>
                       <div className="camp-top">
                         <label className="camp-titles"> {item.name}</label>
@@ -82,7 +81,6 @@ export class ScriptsCampaign extends Component<IScriptsCampaignProps, IScriptsCa
                     </div>
                   </Col>
                 );
-                return elements;
               })
             : ''}
         </Row>

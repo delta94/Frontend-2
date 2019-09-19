@@ -46,11 +46,12 @@ class Review extends React.PureComponent<ReviewProps, ReviewState> {
                   <Translate contentKey="campaign.all-contract" /> <span className="c-g">{sumcontact ? sumcontact : 0}</span>
                 </div>
                 <div className="info-title">
-                  <Translate contentKey="campaign.duplicate-contract" /> <span className="c-b">{duplicate}</span>
+                  <Translate contentKey="campaign.duplicate-contract" /> <span className="c-b">{duplicate ? duplicate : 0}</span>
                 </div>
               </div>
               <Row>
-                {navigationInfo.customerCampaigns.length > 0 &&
+                {navigationInfo.customerCampaigns &&
+                  navigationInfo.customerCampaigns.length > 0 &&
                   navigationInfo.customerCampaigns.map((item, index) => {
                     return (
                       <Col md="4" key={item.name + index}>

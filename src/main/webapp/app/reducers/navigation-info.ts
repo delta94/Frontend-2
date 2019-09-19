@@ -66,7 +66,42 @@ export default (state: ISaveDataCampain = initialState, action): ISaveDataCampai
       });
       return { ...state, contentTemplates: newListContentTemplate };
     case NAVIGATION_INFO.REFRESH_NAVIGATION_INFO:
-      return { ...initialState };
+      return {
+        ...state,
+        campaignTypeId: '',
+        name: '',
+        fromDate: '',
+        toDate: '',
+        description: '',
+        customerCampaigns: [],
+        reward: { type: 1, voucherId: null },
+        contentTemplates: [
+          {
+            subject: '',
+            content: '',
+            templateId: '',
+            channelId: '2',
+            contentType: FORM_LANDING,
+            parameter: []
+          },
+          {
+            subject: '',
+            content: '',
+            templateId: '',
+            channelId: '1',
+            contentType: REWARD_MAIL,
+            parameter: []
+          },
+          {
+            subject: '',
+            content: '',
+            templateId: '',
+            channelId: '1',
+            contentType: INTRO_MAIL,
+            parameter: []
+          }
+        ]
+      };
     default:
       return state;
   }

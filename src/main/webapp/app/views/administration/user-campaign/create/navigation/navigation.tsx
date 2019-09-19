@@ -99,17 +99,16 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
   };
 
   checkThrowStep = (activeTab, param, nextStep) => {
-    let { navigationInfo, totalContact, evoucherDetail } = this.props;
+    let { navigationInfo, evoucherDetail } = this.props;
     let modalState: IOpenModal = { show: false, title: '', text: '', type: '' };
     let rollBack = activeTab < nextStep;
     let isError = false;
-    let countContact = totalContact ? totalContact : 0;
     let valueVoucher = evoucherDetail.value;
     let isEmptyDetailCampaign = false;
     isEmptyDetailCampaign = this.checkDeitalCampaign();
     switch (activeTab) {
       case 1:
-        if (countContact < 1) {
+        if (navigationInfo.customerCampaigns && navigationInfo.customerCampaigns.length < 1) {
           modalState = {
             show: true,
             type: 'warning',
@@ -172,7 +171,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
   };
 
   onHandletTab = (param: number) => {
-    let { navigationInfo, totalContact, evoucherDetail } = this.props;
+    let { navigationInfo, evoucherDetail } = this.props;
     let { activeTab } = this.state;
     let activeTabNumber: number = activeTab;
     activeTabNumber += param;
@@ -180,11 +179,10 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
     let modalState: IOpenModal = { show: false, title: '', text: '', type: '' };
     let isError = false;
     let rollBack = activeTab < activeTabNumber;
-    let countContact = totalContact ? totalContact : 0;
     let valueVoucher = evoucherDetail.value;
     switch (activeTab) {
       case 1:
-        if (countContact < 1) {
+        if (navigationInfo.customerCampaigns && navigationInfo.customerCampaigns.length === 0) {
           modalState = {
             show: true,
             type: 'warning',
@@ -307,10 +305,12 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
           <Card className="col-md-3 app-inner-layout__sidebar b-r">
             <div className="p-3">
               <div className="dropdown-menu p-0 dropdown-menu-inline dropdown-menu-rounded dropdown-menu-hover-primary">
-                {listStep.map(event => {
+                {listStep.map((event, index) => {
                   let isPass = event.step && parseInt(event.step, 0) < activeTab;
-                  var elements = (
+
+                  return (
                     <DropdownItem
+                      key={index}
                       toggle={false}
                       className={classnames('mb-1', { active: this.state.activeTab === parseInt(event.step) })}
                       onClick={() => {
@@ -326,7 +326,6 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
                       </label>
                     </DropdownItem>
                   );
-                  return elements;
                 })}
               </div>
             </div>

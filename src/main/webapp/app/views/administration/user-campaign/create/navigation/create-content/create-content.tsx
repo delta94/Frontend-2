@@ -7,12 +7,13 @@ import { connect } from 'react-redux';
 
 import CKEditor from 'ckeditor4-react';
 import { getContentTemplateAsType, getContentPageParams, postTestMailLanding } from '../../../../../../actions/user-campaign';
-import { getNavigationContentTemplates, refreshNavigationInfo } from '../../../../../../actions/navigation-info';
+import { getNavigationContentTemplates } from '../../../../../../actions/navigation-info';
 import { openModal, closeModal } from '../../../../../../actions/modal';
 import { IRootState } from '../../../../../../reducers/index';
 import { Translate } from 'react-jhipster';
 import { postTestMailLandingService } from 'app/services/user-campaign';
 import { INTRO_MAIL, REWARD_MAIL, EMAIL_EWARD, EMAIL_INTRO } from 'app/constants/common';
+import CkeditorFixed from 'app/layout/ckeditor/CkeditorFixed';
 
 export interface ICreateTestMailEntity {
   emailTo?: string;
@@ -81,35 +82,6 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
   handleshowMailForFriendState = () => {
     let showMailForFriend: boolean = !this.state.showMailForFriend;
     this.setState({ showMailForFriend });
-  };
-
-  handleModelChange = (event, typeMail) => {
-    let { listContentPageParams } = this.props;
-    let paramester = [];
-
-    listContentPageParams.forEach(item => {
-      if (event.indexOf(item.paramCode) > 0) {
-        paramester.push(item);
-      }
-    });
-
-    let newParamester = paramester.map(item => ({
-      id: item.id,
-      name: item.paramName,
-      code: item.paramCode
-    }));
-
-    if (typeMail === EMAIL_INTRO) {
-      this.setState({ defaultValueContentEmailIntro: event });
-      this.props.getNavigationContentTemplates(newParamester, INTRO_MAIL, 'parameter');
-      this.props.getNavigationContentTemplates(event, INTRO_MAIL, 'content');
-    }
-
-    if (typeMail === EMAIL_EWARD) {
-      this.setState({ defaultValueContentEmailEward: event });
-      this.props.getNavigationContentTemplates(newParamester, REWARD_MAIL, 'parameter');
-      this.props.getNavigationContentTemplates(event, REWARD_MAIL, 'content');
-    }
   };
 
   escapeRegExp = string => {
@@ -300,7 +272,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                 <label>
                   <Translate contentKey="campaign.type-interactive" />
                 </label>
-                <Dropdown selection={true} defaultValue="Chọn hình thức" listArray={[{ id: 2, name: 'EMAIL' }]} />
+                <Dropdown selection={false} defaultValue={'Chọn hình thức'} listArray={[{ id: 1, name: 'EMAIL' }]} />
               </div>
             </div>
 
@@ -319,7 +291,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                     <div className="test-mail">
                       <Input
                         type="email"
-                        placeHolder="Điền email test"
+                        placeholder="Điền email test"
                         value={emailIntro}
                         onChange={event => {
                           this.setState({ emailIntro: event.target.value });
@@ -350,7 +322,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                       <div className="input-mail-and-more">
                         <Input
                           type="text"
-                          placeHolder={'Tiêu đề mail'}
+                          placeholder={'Tiêu đề mail'}
                           name="subject"
                           value={subjectIntro}
                           onChange={event => {
@@ -365,19 +337,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                           toggleDropdown={event => this.toggleDropdownParams(event, EMAIL_INTRO)}
                         />
                       </div>
-                      <div className="content-fixing">
-                        <CKEditor
-                          editorName="editor2"
-                          id="email intro"
-                          data={defaultValueContentEmailIntro}
-                          config={{
-                            extraPlugins: 'stylesheetparser'
-                          }}
-                          onChange={event => {
-                            this.handleModelChange(event.editor.getData(), EMAIL_INTRO);
-                          }}
-                        />
-                      </div>
+                      <CkeditorFixed id={'email mail intro'} data={defaultValueContentEmailIntro} type={INTRO_MAIL} />
                     </CardBody>
                   </Card>
                 </Collapse>
@@ -396,7 +356,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                     <div className="test-mail">
                       <Input
                         type="text"
-                        placeHolder="Điền email test"
+                        placeholder="Điền email test"
                         onChange={event => {
                           this.setState({ emailEward: event.target.value });
                         }}
@@ -428,7 +388,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                       <div className="input-mail-and-more">
                         <Input
                           type="email"
-                          placeHolder={'Tiêu đề mail'}
+                          placeholder={'Tiêu đề mail'}
                           onChange={event => {
                             this.setState({ subjectEward: event.target.value });
                             this.props.getNavigationContentTemplates(event.target.value, REWARD_MAIL, 'subject');
@@ -443,19 +403,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                         />
                       </div>
                       {/* Editor */}
-                      <div className="content-fixing">
-                        <CKEditor
-                          editorName="editor3"
-                          id="email eward"
-                          data={defaultValueContentEmailEward}
-                          config={{
-                            extraPlugins: 'stylesheetparser'
-                          }}
-                          onChange={event => {
-                            this.handleModelChange(event.editor.getData(), EMAIL_EWARD);
-                          }}
-                        />
-                      </div>
+                      <CkeditorFixed id={'email mail intro'} data={defaultValueContentEmailEward} type={REWARD_MAIL} />
                     </CardBody>
                   </Card>
                 </Collapse>

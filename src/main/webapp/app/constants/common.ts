@@ -9,3 +9,7 @@ export const FORM_LANDING = 'FORM_LANDING';
 export const INTRO_MAIL = 'INTRO_MAIL';
 export const EMAIL_EWARD = 'EMAIL_EWARD';
 export const EMAIL_INTRO = 'EMAIL_INTRO';
+export const CONTENT = 'content';
+export const SUBJECT = 'subject';
+export const PARAMESTER = 'paramester';
+export const TEMPLATE_ID = 'templateId';

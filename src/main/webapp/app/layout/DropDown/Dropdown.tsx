@@ -5,8 +5,8 @@ import { faAngleDown, faWindowMinimize } from '@fortawesome/free-solid-svg-icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export interface IArrayEntity {
-  id?: number;
-  name?: string;
+  id: number;
+  name: string;
 }
 
 export interface IDropdownState {
@@ -46,8 +46,11 @@ class Dropdown extends PureComponent<IDropdownProps, IDropdownState> {
   id = this.timeNew.toString();
 
   toggleDropdown = item => {
-    let data: IArrayEntity = item;
-    this.props.toggleDropdown(data);
+    let { selection } = this.props;
+
+    if (selection) {
+      this.props.toggleDropdown(item);
+    }
   };
 
   componentDidMount() {
@@ -121,7 +124,8 @@ class Dropdown extends PureComponent<IDropdownProps, IDropdownState> {
               return (
                 <div
                   key={index}
-                  onClick={event => {
+                  onClick={() => {
+                    console.log(item);
                     this.toggleDropdown(item);
                     this.setState({ isShow: false, value: item.name });
                   }}
