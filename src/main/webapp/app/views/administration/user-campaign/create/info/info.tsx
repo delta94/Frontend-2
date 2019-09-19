@@ -13,6 +13,7 @@ import { DateRangePicker } from 'react-dates';
 import Script from './scripts/script';
 import { ULTILS_TYPES } from '../../../../../constants/ultils';
 import { getNavigationFromDate, getNavigationToDate, getNavigationName, getNavigationDescription } from 'app/actions/navigation-info';
+import { string } from 'prop-types';
 
 export interface IinfoProps extends StateProps, DispatchProps {
   onClick: Function;
@@ -52,7 +53,7 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
     // set default date & time
     startDate: moment(new Date()),
     endDate: moment(new Date()),
-    focusedInput: ULTILS_TYPES.EMPTY
+    focusedInput: null
   };
 
   onChangeName = event => {
@@ -111,7 +112,7 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
 
   render() {
     const { loading } = this.props;
-    let { showNameScripts, valueName, startDate, endDate, valueDes } = this.state;
+    let { showNameScripts, valueName, startDate, endDate, valueDes, focusedInput } = this.state;
 
     return (
       <Loader message={spinner1} show={loading} priority={1}>
@@ -159,7 +160,7 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
                         endDate={endDate}
                         endDateId="dateEnd"
                         onDatesChange={this.onDatesChange}
-                        focusedInput={this.state.focusedInput}
+                        focusedInput={focusedInput}
                         onFocusChange={focusedInput => this.setState({ focusedInput })}
                       />
                       <label
