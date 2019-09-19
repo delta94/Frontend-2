@@ -68,7 +68,7 @@ export class UserCreate extends React.Component<IUserCreateProps, IUserCreateSta
 
   onClick = async () => {
     await this.props.uploadFileExcel(this.state.fileImport);
-    this.props.history.push('app/views/administration/user-management/results-files');
+    this.props.history.push('results-files');
   };
 
   validated = () => {

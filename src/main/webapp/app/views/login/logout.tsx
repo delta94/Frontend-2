@@ -26,10 +26,10 @@ export class Logout extends React.Component<ILogoutProps> {
     }
 
     return (
-      // <Redirect to="/login" />
-      <div className="p-5">
-        <h4>Logged out successfully!</h4>
-      </div>
+      <Redirect to="/login" />
+      // <div className="p-5">
+      //   <h4>Logged out successfully!</h4>
+      // </div>
     );
   }
 }

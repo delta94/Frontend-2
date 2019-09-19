@@ -33,11 +33,12 @@ class AppSidebar extends Component {
             backgroundImageOpacity,
             menu,
             isAuthenticated } = this.props;
-        let pathName = '/login';
-        const { from } = { from: { pathname: pathName, search: location.search } };
-        if (!isAuthenticated) {
-            return <Redirect to={from} />;
-        }
+        // let pathName = '/login';
+        // const { from } = { from: { pathname: pathName, search: location.search } };
+        // // let listUser = JSON.parse(localStorage.getItem('listUser'));
+        // if (!isAuthenticated) {
+        //     return <Redirect to={from} />;
+        // }
         return (
             <Fragment>
                 {/* <div className="sidebar-mobile-overlay" onClick={this.toggleMobileSidebar}/> */}

@@ -36,9 +36,9 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
     messageErrorMerchantCode: ''
   };
 
-  submitForm = message => {
+  submitForm = () => {
     let { valueEmail, valuePassword, valueMerchantCode } = this.state;
-    let { loginError, openModal, login } = this.props;
+    let { login } = this.props;
     let submitValue = {
       email: valueEmail,
       password: valuePassword,
@@ -59,7 +59,7 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
       });
     } else {
       this.setState({
-        messageErrorEmail: <label className="message-error">* Vui lòng nhập Email</label>
+        messageErrorEmail: <label className="message-error">* Vui lòng nhập email</label>
       });
     }
     if (valuePassword) {
@@ -68,7 +68,7 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
       });
     } else {
       this.setState({
-        messageErrorPassword: <label className="message-error">* Vui lòng nhập Password</label>
+        messageErrorPassword: <label className="message-error">* Vui lòng nhập mật khẩu</label>
       });
     }
     if (valueMerchantCode) {
@@ -77,7 +77,7 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
       });
     } else {
       this.setState({
-        messageErrorMerchantCode: <label className="message-error">* Vui lòng nhập MerchantCode</label>
+        messageErrorMerchantCode: <label className="message-error">* Vui lòng nhập thương hiệu</label>
       });
     }
   };
@@ -93,19 +93,12 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
   };
 
   render() {
-    const { location, isAuthenticated, /*isAdmin,*/ isConverter, loading, isInterviewer, loginError, modalState, message } = this.props;
-    // console.info(this.props.account);
+    const { location, isAuthenticated, /*isAdmin,*/ isConverter, loading, isInterviewer, loginError, modalState, account } = this.props;
     let pathName = 'app/views/administration/user-management';
-    // if (isAdmin) pathName = '/tracking-schedule/plan';
-    // else if (isInterviewer) pathName = '/management-schedule';
-    // else if (isConverter) pathName = '/book-schedule/list';
-    // const { from } = location.state || { from: { pathname: pathName, search: location.search } };
     const { from } = { from: { pathname: pathName, search: location.search } };
     if (isAuthenticated) {
       return <Redirect to={from} />;
     }
-    console.log('login err', loginError);
-    console.log('authen', isAuthenticated);
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
     return (
       <Loader message={spinner1} show={loading} priority={1}>
@@ -122,12 +115,6 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
             <Row className="h-100 no-gutters">
               <Col lg="12" md="12" className="h-100 d-flex bg-white justify-content-center align-items-center">
                 <Col lg="9" md="10" sm="12" className="mx-auto app-login-box">
-                  <h6 className="mt-3">
-                    No account?{' '}
-                    <a href="javascript:void(0);" className="text-primary">
-                      Sign up now
-                    </a>
-                  </h6>
                   <Row className="divider" />
                   <div>
                     <Form>
@@ -138,12 +125,13 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
                               <Translate contentKey="login.form.merchant" />
                             </Label>
                             <Input
+                              maxLength="160"
                               type="merchantCode"
                               name="merchantCode"
                               value={this.state.valueMerchantCode}
                               onChange={this.handleChangeMerchantCode}
                               id="merchantCode"
-                              placeholder="Merchant Code here..."
+                              placeholder="Nhập thương hiệu..."
                             />
                             {this.state.messageErrorMerchantCode}
                           </FormGroup>
@@ -154,12 +142,13 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
                               <Translate contentKey="login.form.email" />{' '}
                             </Label>
                             <Input
+                              maxLength="160"
                               type="email"
                               name="email"
                               value={this.state.valueEmail}
                               onChange={this.handleChangeEmail}
                               id="Email"
-                              placeholder="Email here..."
+                              placeholder="Nhập email..."
                             />
                             {this.state.messageErrorEmail}
                           </FormGroup>
@@ -170,12 +159,13 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
                               <Translate contentKey="login.form.password" />
                             </Label>
                             <Input
+                              maxLength="160"
                               type="password"
                               name="password"
                               value={this.state.valuePassword}
                               onChange={this.handleChangePass}
                               id="Password"
-                              placeholder="Password here..."
+                              placeholder="Nhập mật khẩu..."
                             />
                             {this.state.messageErrorPassword}
                             <label className="message-error">{loginError ? '* Vui lòng kiểm tra lại email hoặc mật khẩu' : ''}</label>
@@ -188,20 +178,20 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
                       <FormGroup check>
                         <Input type="checkbox" name="check" id="exampleCheck" />
                         <Label for="exampleCheck" check>
-                          Keep me logged in
+                          Luôn giữ đăng nhập
                         </Label>
                       </FormGroup>
                       <Row className="divider" />
                       <div className="d-flex align-items-center">
                         <div className="ml-auto">
                           <a href="javascript:void(0);" className="btn-lg btn btn-link">
-                            Recover Password
+                            Quên mật khẩu
                           </a>{' '}
                         </div>
                       </div>
                     </Form>
                     <Button color="primary" size="lg" onClick={this.submitForm}>
-                      Login to Dashboard
+                      Đăng nhập
                     </Button>
                   </div>
                 </Col>
