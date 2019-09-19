@@ -20,6 +20,8 @@ import { openLoading, closeLoading } from '../../../../../actions/loading';
 import { postSaveDataCampainService } from 'app/services/user-campaign';
 import { IOpenModal } from 'app/reducers/modal';
 import { refreshNavigationInfo } from '../../../../../actions/navigation-info';
+import { translate } from 'react-jhipster';
+import { WARNING, SUCCESS, ERROR } from '../../../../../constants/common';
 
 export interface INavigationProps extends StateProps, DispatchProps {
   onClick: Function;
@@ -58,9 +60,9 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
       } else {
         openModal({
           show: true,
-          type: 'warning',
-          title: 'Thông báo',
-          text: 'Thiếu trường thông tin'
+          type: WARNING,
+          title: translate('modal-data.title.warning'),
+          text: translate('text.none-info')
         });
       }
     }
@@ -104,16 +106,14 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
     let rollBack = activeTab < nextStep;
     let isError = false;
     let valueVoucher = evoucherDetail.value;
-    let isEmptyDetailCampaign = false;
-    isEmptyDetailCampaign = this.checkDeitalCampaign();
     switch (activeTab) {
       case 1:
         if (navigationInfo.customerCampaigns && navigationInfo.customerCampaigns.length < 1) {
           modalState = {
             show: true,
-            type: 'warning',
-            title: 'Thiếu trường thông tin',
-            text: 'Vui lòng chọn tệp khách hàng'
+            type: WARNING,
+            title: translate('modal-data.title.none-info'),
+            text: translate('text.select-customer-campain')
           };
         }
         break;
@@ -122,9 +122,9 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
           if (!valueVoucher) {
             modalState = {
               show: true,
-              type: 'warning',
-              title: 'Thiếu trường thông tin',
-              text: 'Vui lòng chọn evoucher'
+              type: WARNING,
+              title: translate('modal-data.title.none-info'),
+              text: translate('text.select-e-voucher')
             };
           }
         }
@@ -133,9 +133,9 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
         if (navigationInfo.contentTemplates[0].content === '' && rollBack) {
           modalState = {
             show: true,
-            title: 'Thiếu trường thông tin',
-            text: 'Bạn cần chọn landingpage',
-            type: 'warning'
+            type: WARNING,
+            title: translate('modal-data.title.none-info'),
+            text: translate('text.select-landing-page')
           };
         }
         break;
@@ -143,16 +143,16 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
         if (navigationInfo.contentTemplates[1].templateId === '' && rollBack) {
           modalState = {
             show: true,
-            title: 'Thiếu trường thông tin',
-            text: 'Bạn cần chọn mail quà tặng',
-            type: 'warning'
+            type: WARNING,
+            title: translate('modal-data.title.none-info'),
+            text: translate('text.select-mail-reward')
           };
         } else if (navigationInfo.contentTemplates[2].templateId === '' && rollBack) {
           modalState = {
             show: true,
-            title: 'Thiếu trường thông tin',
-            text: 'Bạn cần chọn mail giới thiệu',
-            type: 'warning'
+            type: WARNING,
+            title: translate('modal-data.title.none-info'),
+            text: translate('text.select-mail-intro')
           };
         }
         break;
@@ -185,20 +185,20 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
         if (navigationInfo.customerCampaigns && navigationInfo.customerCampaigns.length === 0) {
           modalState = {
             show: true,
-            type: 'warning',
-            title: 'Thiếu trường thông tin',
-            text: 'Vui lòng chọn tệp khách hàng'
+            type: WARNING,
+            title: translate('modal-data.title.none-info'),
+            text: translate('text.select-customer-campain')
           };
         }
         break;
       case 2:
-        if (navigationInfo.reward.type === 2) {
+        if (navigationInfo.reward.type === 2 && rollBack) {
           if (!valueVoucher) {
             modalState = {
               show: true,
-              type: 'warning',
-              title: 'Thiếu trường thông tin',
-              text: 'Vui lòng chọn evoucher'
+              type: WARNING,
+              title: translate('modal-data.title.none-info'),
+              text: translate('text.select-e-voucher')
             };
           }
         }
@@ -207,9 +207,9 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
         if (navigationInfo.contentTemplates[0].content === '' && rollBack) {
           modalState = {
             show: true,
-            title: 'Thiếu trường thông tin',
-            text: 'Bạn cần chọn landingpage',
-            type: 'warning'
+            type: WARNING,
+            title: translate('modal-data.title.none-info'),
+            text: translate('text.select-landing-page')
           };
         }
         break;
@@ -217,16 +217,16 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
         if (navigationInfo.contentTemplates[1].templateId === '' && rollBack) {
           modalState = {
             show: true,
-            title: 'Thiếu trường thông tin',
-            text: 'Bạn cần chọn mail quà tặng',
-            type: 'warning'
+            type: WARNING,
+            title: translate('modal-data.title.none-info'),
+            text: translate('text.select-mail-reward')
           };
         } else if (navigationInfo.contentTemplates[2].templateId === '' && rollBack) {
           modalState = {
             show: true,
-            title: 'Thiếu trường thông tin',
-            text: 'Bạn cần chọn mail giới thiệu',
-            type: 'warning'
+            type: WARNING,
+            title: translate('modal-data.title.none-info'),
+            text: translate('text.select-mail-intro')
           };
         }
         break;
@@ -254,7 +254,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
   createNewCampain() {
     let { navigationInfo } = this.props;
     if (navigationInfo.campaignTypeId === '' || navigationInfo.contentTemplates === null || navigationInfo.customerCampaigns === []) {
-      this.props.openModal({ show: false, type: 'warning', text: 'Thiếu trường thông tin', title: 'Thông báo' });
+      this.props.openModal({ show: false, type: WARNING, text: 'Thiếu trường thông tin', title: 'Thông báo' });
     } else {
       this.props.openLoading();
       postSaveDataCampainService(navigationInfo)
@@ -263,9 +263,9 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
           if (item) {
             this.props.openModal({
               show: true,
-              type: 'success',
-              title: 'Thành công',
-              text: 'Đã tạo chiến dịch thành công'
+              type: SUCCESS,
+              title: translate('modal-data.title.success'),
+              text: translate('text.success-create-campaign')
             });
             this.props.refreshNavigationInfo();
           }
@@ -279,9 +279,9 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
           this.props.closeLoading();
           this.props.openModal({
             show: true,
-            type: 'error',
-            title: 'Thất bại',
-            text: 'Danh sách khách hàng bị thiếu'
+            type: ERROR,
+            title: translate('modal-data.title.error'),
+            text: translate('text.error-create-campaign')
           });
         });
     }

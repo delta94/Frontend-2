@@ -13,3 +13,6 @@ export const CONTENT = 'content';
 export const SUBJECT = 'subject';
 export const PARAMESTER = 'paramester';
 export const TEMPLATE_ID = 'templateId';
+export const SUCCESS = 'success';
+export const ERROR = 'error';
+export const WARNING = 'warning';
