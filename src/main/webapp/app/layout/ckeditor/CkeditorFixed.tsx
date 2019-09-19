@@ -58,6 +58,10 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
         config={{
           extraPlugins: 'stylesheetparser'
         }}
+        onBeforeLoad={CKEDITOR => (CKEDITOR.disableAutoInline = true)}
+        onInit={event => {
+          console.log(event);
+        }}
         onChange={event => {
           this.handleModelChange(event.editor.getData());
         }}
