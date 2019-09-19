@@ -112,7 +112,7 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
                 camps.map((item, index) => {
                   var list;
                   list = (
-                    <div>
+                    <div key={index}>
                       <div
                         className="grid-item"
                         onClick={() => {

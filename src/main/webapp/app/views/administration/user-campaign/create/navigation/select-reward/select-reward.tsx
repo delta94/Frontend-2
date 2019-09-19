@@ -57,7 +57,7 @@ class SelectReward extends React.Component<SelectRewardProps, SelectRewardState>
             <FormGroup tag="fieldset">
               <FormGroup check>
                 <label className="radio">
-                  <input type="radio" name="radio1" onClick={this.onClickNoVoucher} checked={this.state.isCheck} />{' '}
+                  <input type="radio" name="radio1" onClick={this.onClickNoVoucher} defaultChecked={this.state.isCheck} />{' '}
                   <Translate contentKey="campaign.notifi-reward" />
                 </label>
               </FormGroup>

@@ -161,7 +161,7 @@ export class UserCreate extends React.Component<IUserCreateProps, IUserCreateSta
                   </Col>
 
                   <div>
-                    <Button replace color="info" onClick={this.onClick} disabled={!this.validated()}>
+                    <Button color="info" onClick={this.onClick} disabled={!this.validated()}>
                       &nbsp;
                       <span className="d-none d-md-inline">
                         <Translate contentKey="entity.action.upload" />

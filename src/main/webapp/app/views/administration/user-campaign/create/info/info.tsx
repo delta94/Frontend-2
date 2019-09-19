@@ -137,7 +137,7 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
                         className="must-type"
                         id="bottom_show"
                         style={{
-                          display: valueName && valueName.length >= 1 ? 'none' : 'block',
+                          display: valueName && valueName.trim() !== '' ? 'none' : 'block',
                           fontSize: '12px!important'
                         }}
                       >
@@ -191,7 +191,7 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
                         className="must-type"
                         id="right_show"
                         style={{
-                          display: valueDes && valueDes.length >= 1 ? 'none' : 'block',
+                          display: valueDes && valueDes.trim() !== '' ? 'none' : 'block',
                           position: 'absolute',
                           top: '0px',
                           right: '30px',

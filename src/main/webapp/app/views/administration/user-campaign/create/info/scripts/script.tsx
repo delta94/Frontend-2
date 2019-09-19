@@ -45,7 +45,10 @@ export class ScriptsCampaign extends Component<IScriptsCampaignProps, IScriptsCa
       nameScript: name
     });
 
-    if (value.startDate && value.endDate && value.valueName && value.valueDes) {
+    let cutName = value.valueName.trim();
+    let cutDes = value.valueDes.trim();
+
+    if (value.startDate && value.endDate && cutName !== '' && cutDes !== '') {
       this.setState({
         disableDocument: ULTILS_TYPES.DISABLE_DOCUMENT
       });
