@@ -50,7 +50,8 @@ class Review extends React.PureComponent<ReviewProps, ReviewState> {
                 </div>
               </div>
               <Row>
-                {navigationInfo.customerCampaigns.length > 0 &&
+                {navigationInfo.customerCampaigns &&
+                  navigationInfo.customerCampaigns.length > 0 &&
                   navigationInfo.customerCampaigns.map((item, index) => {
                     return (
                       <Col md="4" key={item.name + index}>

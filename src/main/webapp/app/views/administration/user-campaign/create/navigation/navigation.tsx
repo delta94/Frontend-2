@@ -99,17 +99,16 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
   };
 
   checkThrowStep = (activeTab, param, nextStep) => {
-    let { navigationInfo, totalContact, evoucherDetail } = this.props;
+    let { navigationInfo, evoucherDetail } = this.props;
     let modalState: IOpenModal = { show: false, title: '', text: '', type: '' };
     let rollBack = activeTab < nextStep;
     let isError = false;
-    let countContact = totalContact ? totalContact : 0;
     let valueVoucher = evoucherDetail.value;
     let isEmptyDetailCampaign = false;
     isEmptyDetailCampaign = this.checkDeitalCampaign();
     switch (activeTab) {
       case 1:
-        if (countContact < 1) {
+        if (navigationInfo.customerCampaigns && navigationInfo.customerCampaigns.length < 1) {
           modalState = {
             show: true,
             type: 'warning',
@@ -172,7 +171,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
   };
 
   onHandletTab = (param: number) => {
-    let { navigationInfo, totalContact, evoucherDetail } = this.props;
+    let { navigationInfo, evoucherDetail } = this.props;
     let { activeTab } = this.state;
     let activeTabNumber: number = activeTab;
     activeTabNumber += param;
@@ -180,11 +179,10 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
     let modalState: IOpenModal = { show: false, title: '', text: '', type: '' };
     let isError = false;
     let rollBack = activeTab < activeTabNumber;
-    let countContact = totalContact ? totalContact : 0;
     let valueVoucher = evoucherDetail.value;
     switch (activeTab) {
       case 1:
-        if (countContact < 1) {
+        if (navigationInfo.customerCampaigns && navigationInfo.customerCampaigns.length === 0) {
           modalState = {
             show: true,
             type: 'warning',
