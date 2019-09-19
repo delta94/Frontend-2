@@ -1,0 +1,20 @@
+{
+  "alert": {
+    "title-delete": "Bạn muốn xoá ?",
+    "text-delete": "Mục đã xoá sẽ không thể khôi phục !",
+    "complete-delete": "Xoá thành công. ",
+    "success": "Thành công",
+    "ok": "Đồng ý",
+    "canler": "Hủy bỏ",
+    "update": {
+      "is-update": "Bạn có muốn cập nhật ?",
+      "complete-update": "Cập nhật thành công",
+      "title-update": "Cập nhật"
+    },
+    "info": {
+      "info": "Thông báo",
+      "not-empty-info": "Thiếu trường thông tin",
+      "title-update": "Cập nhật"
+    }
+  }
+}

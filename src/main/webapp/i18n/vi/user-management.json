@@ -2,6 +2,7 @@
   "userManagement": {
     "home": {
       "title": "Tài khoản",
+      "search-placer": "Tìm kiếm",
       "createLabel": "Tạo tài khoản mới",
       "createOrEditLabel": "Tạo mới dữ liệu khách hàng",
       "import-result-detail": "Kết quả import chi tiết",
@@ -12,6 +13,7 @@
       "type": "Phân loại",
       "reason-error": "Lý do không thành công",
       "no-record": "Không tìm thấy bản ghi phù hợp",
+      "total-element": "Tổng số {{ element }} bản ghi",
       "line-error": "{{ number }} dòng không thành công đầu tiên ",
       "editLabel": "Cập nhật thông tin khách hàng"
     },
@@ -38,6 +40,7 @@
     "activated": "Kích hoạt",
     "deactivated": "Khóa",
     "categories": "Phân loại",
+    "choose-categories": "Chọn phân loại",
     "langKey": "Ngôn ngữ",
     "createdBy": "Người tạo",
     "createdDate": "Ngày tạo",

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Label, Row, Col } from 'reactstrap';
 import { AvForm, AvGroup, AvInput, AvField, AvFeedback } from 'availity-reactstrap-validation';
-import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
+import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SweetAlert from 'sweetalert-react';
 
@@ -44,7 +44,6 @@ export class UserUpdate extends React.Component<IUserUpdateProps, IUserUpdateSta
       this.props.getUser(this.props.match.params.id);
     }
     this.props.getRoles();
-    // this.props.getUserCategories('');
   }
 
   componentWillUnmount() {
@@ -79,25 +78,8 @@ export class UserUpdate extends React.Component<IUserUpdateProps, IUserUpdateSta
     this.props.updateUser(data);
   };
 
-  // saveUser = (event, values) => {
-  //   const { user } = this.props;
-  //   let data = {
-  //     id: user.id,
-  //     name: values.name,
-  //     phone: values.mobile,
-  //     email: values.email,
-  //     categorys: user.categorys
-  //   };
-  //   this.props.updateUser(data);
-  //   this.props.getUser(user.id);
-  // };
-
   handleClose = () => {
-    this.props.history.push('/admin/user-management');
-  };
-
-  handleCreate = name => {
-    // this.props.getUserCategories(name);
+    this.props.history.push('app/views/administration/user-management');
   };
 
   handleChange = category => {
@@ -105,12 +87,8 @@ export class UserUpdate extends React.Component<IUserUpdateProps, IUserUpdateSta
   };
 
   render() {
-    const isInvalid = false;
-
-    const { user, users, loading, updating, listCategory, roles, usuccess } = this.props;
-    let { Category, isUpdate } = this.state;
-    console.info('isUpdate', isUpdate);
-    console.info('usuccess', usuccess);
+    const { user } = this.props;
+    let { isUpdate } = this.state;
     return (
       <div>
         <Row className="updateTitle">
@@ -220,10 +198,11 @@ export class UserUpdate extends React.Component<IUserUpdateProps, IUserUpdateSta
                   }}
                 >
                   <SweetAlert
-                    title="Updated"
+                    title={translate('alert.update.title-update')}
                     confirmButtonColor=""
+                    confirmButtonText={translate('alert.ok')}
                     show={isUpdate}
-                    text="Sửa thành công"
+                    text={translate('alert.update.complete-update')}
                     type="success"
                     onConfirm={() =>
                       this.setState({
@@ -237,7 +216,7 @@ export class UserUpdate extends React.Component<IUserUpdateProps, IUserUpdateSta
                   <Translate contentKey="entity.action.save" />
                 </Button>
 
-                <Button replace color="info" tag={Link} to="/admin/user-management" className="back-left">
+                <Button replace color="info" tag={Link} to="/app/views/administration/user-management" className="back-left">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline ">

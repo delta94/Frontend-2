@@ -5,7 +5,7 @@ import { Loader as LoaderAnim } from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
-import { Translate } from 'react-jhipster';
+import { Translate, translate } from 'react-jhipster';
 import { getCampaignInfoByStatus, getCampaignInfoById, getCampaignDetailById, updateCampStatus } from 'app/actions/user-campaign';
 import './../all-camp/all-camp.scss';
 import ModalDisplay from './modal/modal';
@@ -75,8 +75,7 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
         displayIcon: ''
       });
     }
-    // this.props.getCampaignDetailById(id);
-    const { activePage, itemsPerPage, textSearch, isConfirm } = this.state;
+    const { activePage, itemsPerPage, textSearch } = this.state;
     this.props.getCampaignDetailById(id, activePage, itemsPerPage, textSearch);
   };
 
@@ -92,14 +91,13 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
           id={this.state.id}
           showIcon={this.state.displayIcon}
           onClick={this.handerModal}
-          // history={this.props.history}
         />
         <Loader message={spinner1} show={loading} priority={5}>
           <SweetAlert
-            title="Thành công"
+            title={translate('alert.success')}
             confirmButtonColor=""
             show={this.state.isConfirm}
-            text="Cập nhật thành công."
+            text={translate('alert.update.complete-update')}
             type="success"
             onConfirm={() =>
               this.setState({

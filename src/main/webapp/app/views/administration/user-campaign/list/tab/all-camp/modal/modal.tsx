@@ -1,6 +1,4 @@
 import React, { Fragment } from 'react';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircle, faClock, faUser, faSearch, faKaaba } from '@fortawesome/free-solid-svg-icons';
 import { Loader as LoaderAnim } from 'react-loaders';
@@ -9,14 +7,12 @@ import { Modal, ModalHeader, ModalBody, ModalFooter, Table, Row, Col } from 'rea
 import ReactPaginate from 'react-paginate';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
-import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
+import { Translate, translate } from 'react-jhipster';
 import { getCampaignInfoByStatus, getCampaignInfoById, getCampaignDetailById, updateCampStatus } from 'app/actions/user-campaign';
-import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
+import { ACTIVE_PAGE } from 'app/constants/pagination.constants';
 import { ITEMS_PER_MODAL_TABLE } from 'app/constants/common';
-import { Route, RouteComponentProps, Router } from 'react-router-dom';
 import Ionicon from 'react-ionicons';
 import SweetAlert from 'sweetalert-react';
-import { Button } from 'app/DemoPages/Components/GuidedTours/Examples/Button';
 
 export const KEY_ENTER = 'Enter';
 
@@ -160,11 +156,10 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
                     />
                     <SweetAlert
                       className="sweet-alert"
-                      title="Cập nhật trạng thái ?"
-                      cancelButtonText="Hủy bỏ"
-                      confirmButtonText="Đồng ý"
+                      title={translate('alert.update.is-update')}
+                      cancelButtonText={translate('alert.canler')}
+                      confirmButtonText={translate('alert.ok')}
                       confirmButtonColor=""
-                      // text="Mục đã xoá sẽ không thể khôi phục !"
                       show={this.state.isUpdate}
                       showCancelButton
                       onCancel={() => {

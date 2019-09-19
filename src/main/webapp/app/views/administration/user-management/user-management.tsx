@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Table, Row, Badge, Col } from 'reactstrap';
 
-import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
+import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './styles/user-management.scss';
 
@@ -73,7 +73,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
   search = event => {
     if (event.key === 'Enter') {
       const textSearch = event.target.value;
-      const { activePage, itemsPerPage, categories } = this.state;
+      const { itemsPerPage, categories } = this.state;
       this.setState({
         ...this.state,
         textSearch,
@@ -84,14 +84,13 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
   };
 
   render() {
-    const { users, match, totalElements, pageCount, loading, success, error } = this.props;
+    const { users, match, totalElements, loading, success } = this.props;
     const { itemsPerPage, activePage, idUser, textSearch, categories, isConfirm } = this.state;
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
 
     return (
       <div>
         <Loader message={spinner1} show={loading} priority={1}>
-          {/* day la trang quan ly user */}
           <h3 id="user-management-page-heading">
             <Translate contentKey="userManagement.home.title" />
             <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity">
@@ -102,7 +101,10 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
           <div className="panel">
             <Row>
               <Col md="3">
-                <div className="totalItems">Tổng số {totalElements} bản ghi</div>
+                <div className="totalItems">
+                  {' '}
+                  <Translate contentKey="userManagement.home.total-element" interpolate={{ element: totalElements }} />
+                </div>
               </Col>
               <Col md="6">
                 <UserCategoryTag handleChange={this.handleChange} />
@@ -110,7 +112,12 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
               <Col md="3">
                 <div className="has-search">
                   <span className=" form-control-feedback" />
-                  <input type="text" className="form-control" onKeyDown={this.search} placeholder="Tìm kiếm" />
+                  <input
+                    type="text"
+                    className="form-control"
+                    onKeyDown={this.search}
+                    placeholder={translate('userManagement.home.search-placer')}
+                  />
                 </div>
               </Col>
             </Row>
@@ -139,7 +146,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
 
               <tbody>
                 {users
-                  ? users.map((event, index, listUser?) => {
+                  ? users.map((event, index) => {
                       return (
                         <tr id={event.id} key={`user-${index}`}>
                           <td>{this.state.activePage * this.state.itemsPerPage + index + 1}</td>
@@ -177,10 +184,12 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                                 }}
                               >
                                 <SweetAlert
-                                  title="Bạn muốn xoá ?"
+                                  title={translate('alert.title-delete')}
                                   confirmButtonColor=""
-                                  text="Mục đã xoá sẽ không thể khôi phục !"
+                                  text={translate('alert.text-delete')}
                                   show={this.state.isDelete}
+                                  cancelButtonText={translate('alert.canler')}
+                                  confirmButtonText={translate('alert.ok')}
                                   showCancelButton
                                   onCancel={() => {
                                     this.setState({
@@ -198,10 +207,9 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                                   }}
                                 />
                                 <SweetAlert
-                                  title="Deleted"
-                                  confirmButtonColor=""
                                   show={isConfirm}
-                                  text="Xoá thành công."
+                                  title=""
+                                  text={translate('alert.complete-delete')}
                                   type="success"
                                   onConfirm={() =>
                                     this.setState({

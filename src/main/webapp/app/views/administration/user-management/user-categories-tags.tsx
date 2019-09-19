@@ -1,8 +1,7 @@
 import React, { Fragment } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import { Row, Col, Card, CardBody, CardTitle, FormGroup, Label, Input } from 'reactstrap';
-
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { Row, Col, Card } from 'reactstrap';
+import { translate } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { Multiselect } from 'react-widgets';
 import { IRootState } from 'app/reducers';
@@ -44,7 +43,6 @@ class UserCategoryTag extends React.Component<IUserUpdateProps, IUserUpdateState
         <ReactCSSTransitionGroup
           component="div"
           transitionName="TabsAnimation"
-          // transitionAppear={true}
           transitionAppearTimeout={0}
           transitionEnter={false}
           transitionLeave={false}
@@ -55,7 +53,7 @@ class UserCategoryTag extends React.Component<IUserUpdateProps, IUserUpdateState
                 <Row form>
                   <Col md={12}>
                     <Multiselect
-                      placeholder="Chọn phân loại"
+                      placeholder={translate('userManagement.choose-categories')}
                       data={listCategory}
                       value={defaultCate}
                       className="Select-holder"
