@@ -46,7 +46,7 @@ class Review extends React.PureComponent<ReviewProps, ReviewState> {
                   <Translate contentKey="campaign.all-contract" /> <span className="c-g">{sumcontact ? sumcontact : 0}</span>
                 </div>
                 <div className="info-title">
-                  <Translate contentKey="campaign.duplicate-contract" /> <span className="c-b">{duplicate}</span>
+                  <Translate contentKey="campaign.duplicate-contract" /> <span className="c-b">{duplicate ? duplicate : 0}</span>
                 </div>
               </div>
               <Row>

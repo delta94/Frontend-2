@@ -284,10 +284,12 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
           <Card className="col-md-3 app-inner-layout__sidebar b-r">
             <div className="p-3">
               <div className="dropdown-menu p-0 dropdown-menu-inline dropdown-menu-rounded dropdown-menu-hover-primary">
-                {listStep.map(event => {
+                {listStep.map((event, index) => {
                   let isPass = event.step && parseInt(event.step, 0) < activeTab;
-                  var elements = (
+
+                  return (
                     <DropdownItem
+                      key={index}
                       toggle={false}
                       className={classnames('mb-1', { active: this.state.activeTab === parseInt(event.step) })}
                       onClick={() => {
@@ -303,7 +305,6 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
                       </label>
                     </DropdownItem>
                   );
-                  return elements;
                 })}
               </div>
             </div>

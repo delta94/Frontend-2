@@ -66,7 +66,8 @@ export default (state: ISaveDataCampain = initialState, action): ISaveDataCampai
       });
       return { ...state, contentTemplates: newListContentTemplate };
     case NAVIGATION_INFO.REFRESH_NAVIGATION_INFO:
-      return { ...initialState };
+      let newState = initialState;
+      return newState;
     default:
       return state;
   }
