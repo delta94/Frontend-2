@@ -62,7 +62,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
           show: true,
           type: WARNING,
           title: translate('modal-data.title.warning'),
-          text: translate('text.none-info')
+          text: translate('modal-data.text.none-info')
         });
       }
     }
@@ -92,7 +92,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
   checkDeitalCampaign = () => {
     let { navigationInfo } = this.props;
     let isErr = false;
-    if (navigationInfo.fromDate.trim() && navigationInfo.description.trim() && navigationInfo.name.trim()) {
+    if (navigationInfo.fromDate && navigationInfo.description && navigationInfo.name) {
       isErr = true;
     } else {
       isErr = false;
@@ -113,7 +113,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
             show: true,
             type: WARNING,
             title: translate('modal-data.title.none-info'),
-            text: translate('text.select-customer-campain')
+            text: translate('modal-data.text.select-customer-campain')
           };
         }
         break;
@@ -124,7 +124,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
               show: true,
               type: WARNING,
               title: translate('modal-data.title.none-info'),
-              text: translate('text.select-e-voucher')
+              text: translate('modal-data.text.select-e-voucher')
             };
           }
         }
@@ -135,7 +135,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
             show: true,
             type: WARNING,
             title: translate('modal-data.title.none-info'),
-            text: translate('text.select-landing-page')
+            text: translate('modal-data.text.select-landing-page')
           };
         }
         break;
@@ -145,14 +145,14 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
             show: true,
             type: WARNING,
             title: translate('modal-data.title.none-info'),
-            text: translate('text.select-mail-reward')
+            text: translate('modal-data.text.select-mail-reward')
           };
         } else if (navigationInfo.contentTemplates[2].templateId === '' && rollBack) {
           modalState = {
             show: true,
             type: WARNING,
             title: translate('modal-data.title.none-info'),
-            text: translate('text.select-mail-intro')
+            text: translate('modal-data.text.select-mail-intro')
           };
         }
         break;
@@ -187,7 +187,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
             show: true,
             type: WARNING,
             title: translate('modal-data.title.none-info'),
-            text: translate('text.select-customer-campain')
+            text: translate('modal-data.text.select-customer-campain')
           };
         }
         break;
@@ -198,7 +198,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
               show: true,
               type: WARNING,
               title: translate('modal-data.title.none-info'),
-              text: translate('text.select-e-voucher')
+              text: translate('modal-data.text.select-e-voucher')
             };
           }
         }
@@ -209,7 +209,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
             show: true,
             type: WARNING,
             title: translate('modal-data.title.none-info'),
-            text: translate('text.select-landing-page')
+            text: translate('modal-data.text.select-landing-page')
           };
         }
         break;
@@ -219,14 +219,14 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
             show: true,
             type: WARNING,
             title: translate('modal-data.title.none-info'),
-            text: translate('text.select-mail-reward')
+            text: translate('modal-data.text.select-mail-reward')
           };
         } else if (navigationInfo.contentTemplates[2].templateId === '' && rollBack) {
           modalState = {
             show: true,
             type: WARNING,
             title: translate('modal-data.title.none-info'),
-            text: translate('text.select-mail-intro')
+            text: translate('modal-data.text.select-mail-intro')
           };
         }
         break;
@@ -265,7 +265,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
               show: true,
               type: SUCCESS,
               title: translate('modal-data.title.success'),
-              text: translate('text.success-create-campaign')
+              text: translate('modal-data.text.success-create-campaign')
             });
             this.props.refreshNavigationInfo();
           }
@@ -281,7 +281,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
             show: true,
             type: ERROR,
             title: translate('modal-data.title.error'),
-            text: translate('text.error-create-campaign')
+            text: translate('modal-data.text.error-create-campaign')
           });
         });
     }
