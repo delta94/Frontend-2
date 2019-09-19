@@ -12,6 +12,7 @@ import moment, { Moment } from 'moment';
 import { DateRangePicker } from 'react-dates';
 import Script from './scripts/script';
 import { ULTILS_TYPES } from '../../../../../constants/ultils';
+import CalendarWeek from 'react-dates/lib/components/CalendarWeek';
 import { getNavigationFromDate, getNavigationToDate, getNavigationName, getNavigationDescription } from 'app/actions/navigation-info';
 
 export interface IinfoProps extends StateProps, DispatchProps {
@@ -50,10 +51,14 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
     valueDes: ULTILS_TYPES.EMPTY,
 
     // set default date & time
-    startDate: moment(new Date()),
-    endDate: moment(new Date()),
-    focusedInput: ULTILS_TYPES.EMPTY
+    startDate: moment(),
+    endDate: moment().add(1, 'days'),
+    focusedInput: null
   };
+
+  componentWillMount() {
+    CalendarWeek && CalendarWeek.propTypes && delete CalendarWeek.propTypes['children'];
+  }
 
   onChangeName = event => {
     let { valueName } = this.state;
