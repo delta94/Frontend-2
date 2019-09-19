@@ -92,7 +92,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
   checkDeitalCampaign = () => {
     let { navigationInfo } = this.props;
     let isErr = false;
-    if (navigationInfo.fromDate && navigationInfo.description && navigationInfo.name) {
+    if (navigationInfo.fromDate.trim() && navigationInfo.description.trim() && navigationInfo.name.trim()) {
       isErr = true;
     } else {
       isErr = false;

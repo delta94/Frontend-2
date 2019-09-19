@@ -1,17 +1,23 @@
 {
   "login": {
     "title": "Đăng nhập",
+    "get-login": "Luôn giữ đăng nhập",
     "form": {
       "password": "Mật khẩu",
       "email": "Email",
       "merchant": "Thương hiệu",
-      "password.placeholder": "Nhập mật khầu của bạn",
+      "password-placeholder": "Nhập mật khầu ...",
+      "email-placeholder": "Nhập email ...",
+      "code-placeholder": "Nhập thương hiệu ...",
       "rememberme": "Nhớ tài khoản",
       "button": "Đăng nhập"
     },
     "messages": {
       "error": {
-        "authentication": "Bạn phải dùng email Topica để đăng nhập vào hệ thống"
+        "authentication": "Bạn phải dùng email Topica để đăng nhập vào hệ thống",
+        "mail-error": "* Vui lòng nhập email",
+        "code-error": "* Vui lòng nhập thương hiệu",
+        "pass-error": "* Vui lòng nhập mật khẩu"
       },
       "guide-user-login": "Vui lòng sử dụng email TOPICA"
     },

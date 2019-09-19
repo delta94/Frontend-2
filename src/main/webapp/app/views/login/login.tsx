@@ -7,11 +7,10 @@ import { login } from 'app/actions/authentication';
 import './login.scss';
 import { hasAnyAuthority } from 'app/common/auth/private-route';
 import { AUTHORITIES, messages } from 'app/config/constants';
-import SweetAlert from 'sweetalert-react';
 import { openModal, closeModal } from 'app/actions/modal';
 import { Loader as LoaderAnim } from 'react-loaders';
 import Loader from 'react-loader-advanced';
-import { Translate } from 'react-jhipster';
+import { Translate, translate } from 'react-jhipster';
 
 export interface ILoginProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
@@ -59,7 +58,11 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
       });
     } else {
       this.setState({
-        messageErrorEmail: <label className="message-error">* Vui lòng nhập email</label>
+        messageErrorEmail: (
+          <label className="message-error">
+            <Translate contentKey="login.messages.error.mail-error" />
+          </label>
+        )
       });
     }
     if (valuePassword) {
@@ -68,7 +71,11 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
       });
     } else {
       this.setState({
-        messageErrorPassword: <label className="message-error">* Vui lòng nhập mật khẩu</label>
+        messageErrorPassword: (
+          <label className="message-error">
+            <Translate contentKey="login.messages.error.pass-error" />
+          </label>
+        )
       });
     }
     if (valueMerchantCode) {
@@ -77,7 +84,12 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
       });
     } else {
       this.setState({
-        messageErrorMerchantCode: <label className="message-error">* Vui lòng nhập thương hiệu</label>
+        messageErrorMerchantCode: (
+          <label className="message-error">
+            {' '}
+            <Translate contentKey="login.messages.error.code-error" />
+          </label>
+        )
       });
     }
   };
@@ -103,14 +115,6 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
     return (
       <Loader message={spinner1} show={loading} priority={1}>
         <Fragment>
-          <SweetAlert
-            title={modalState.title ? modalState.title : 'No title'}
-            confirmButtonColor=""
-            show={modalState.show ? modalState.show : false}
-            text={modalState.text ? modalState.text : 'No'}
-            type={modalState.type ? modalState.type : 'error'}
-            onConfirm={() => this.props.closeModal()}
-          />
           <div className="h-100">
             <Row className="h-100 no-gutters">
               <Col lg="12" md="12" className="h-100 d-flex bg-white justify-content-center align-items-center">
@@ -131,7 +135,7 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
                               value={this.state.valueMerchantCode}
                               onChange={this.handleChangeMerchantCode}
                               id="merchantCode"
-                              placeholder="Nhập thương hiệu..."
+                              placeholder={translate('login.form.code-placeholder')}
                             />
                             {this.state.messageErrorMerchantCode}
                           </FormGroup>
@@ -148,7 +152,7 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
                               value={this.state.valueEmail}
                               onChange={this.handleChangeEmail}
                               id="Email"
-                              placeholder="Nhập email..."
+                              placeholder={translate('login.form.email-placeholder')}
                             />
                             {this.state.messageErrorEmail}
                           </FormGroup>
@@ -165,33 +169,29 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
                               value={this.state.valuePassword}
                               onChange={this.handleChangePass}
                               id="Password"
-                              placeholder="Nhập mật khẩu..."
+                              placeholder={translate('login.form.password-placeholder')}
                             />
                             {this.state.messageErrorPassword}
-                            <label className="message-error">{loginError ? '* Vui lòng kiểm tra lại email hoặc mật khẩu' : ''}</label>
-                            {/* <div>
-                            <label className="message-error">{loginError && !isAuthenticated ? '* Vui lòng đăng nhập lại để tiếp tục' : ''}</label>
-                            </div> */}
                           </FormGroup>
                         </Col>
                       </Row>
                       <FormGroup check>
                         <Input type="checkbox" name="check" id="exampleCheck" />
                         <Label for="exampleCheck" check>
-                          Luôn giữ đăng nhập
+                          <Translate contentKey="login.get-login" />
                         </Label>
                       </FormGroup>
                       <Row className="divider" />
                       <div className="d-flex align-items-center">
                         <div className="ml-auto">
                           <a href="javascript:void(0);" className="btn-lg btn btn-link">
-                            Quên mật khẩu
+                            <Translate contentKey="login.password.forgot" />
                           </a>{' '}
                         </div>
                       </div>
                     </Form>
                     <Button color="primary" size="lg" onClick={this.submitForm}>
-                      Đăng nhập
+                      <Translate contentKey="login.form.button" />
                     </Button>
                   </div>
                 </Col>

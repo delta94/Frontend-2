@@ -18,7 +18,6 @@ import { toast } from 'react-toastify';
 import Dropzone from 'react-dropzone';
 
 export interface IUserCreateProps extends StateProps, DispatchProps, RouteComponentProps<{ login: string }> {}
-//todo : sửa tên biến local
 export interface IUserCreateState {
   isNew: boolean;
   isActive: boolean;
@@ -44,7 +43,6 @@ export class UserCreate extends React.Component<IUserCreateProps, IUserCreateSta
   onDrop = (acceptedFiles, rejectedFiles) => {
     var checkFile = acceptedFiles[0].name;
     var file = checkFile.split('.')[1];
-    //todo: khong duoc hard code
     if (file === USER_MANAGE_ACTION_TYPES.XLS || file === USER_MANAGE_ACTION_TYPES.XLSX) {
       this.setState({
         ...this.state,
@@ -57,7 +55,6 @@ export class UserCreate extends React.Component<IUserCreateProps, IUserCreateSta
     } else {
       this.setState({
         ...this.state,
-        //todo : dua vao the translate
         isActive: false,
         isError: true,
         file: '',
@@ -72,7 +69,6 @@ export class UserCreate extends React.Component<IUserCreateProps, IUserCreateSta
   };
 
   validated = () => {
-    //todo return isActive
     if (this.state.isActive) {
       return this.state.isActive;
     } else {
@@ -81,7 +77,7 @@ export class UserCreate extends React.Component<IUserCreateProps, IUserCreateSta
   };
 
   render() {
-    const { downloadFileExcel, loading, downloadTemplate } = this.props;
+    const { loading } = this.props;
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
     return (
       <Container fluid>
@@ -98,7 +94,6 @@ export class UserCreate extends React.Component<IUserCreateProps, IUserCreateSta
                     <legend>
                       <Translate contentKey="entity.action.reinstall" />
                       <a className="myButton" href={USER_MANAGE_ACTION_TYPES.URL_TEMPLATE}>
-                        {/* them cac translate vao cac hard code*/}
                         <Translate contentKey="entity.action.at-this" />
                       </a>
                     </legend>
@@ -114,7 +109,6 @@ export class UserCreate extends React.Component<IUserCreateProps, IUserCreateSta
                   </Button>
                 </Col>
               </Row>
-
               <div className="container">
                 <Row className="justify-content-center">
                   <Col md="12">
@@ -167,15 +161,7 @@ export class UserCreate extends React.Component<IUserCreateProps, IUserCreateSta
                   </Col>
 
                   <div>
-                    {/* sua lai phan chuyen trang */}
-                    <Button
-                      // to="/admin/user-management/results-files"
-                      replace
-                      color="info"
-                      onClick={this.onClick}
-                      // tag={Link}
-                      disabled={!this.validated()}
-                    >
+                    <Button replace color="info" onClick={this.onClick} disabled={!this.validated()}>
                       &nbsp;
                       <span className="d-none d-md-inline">
                         <Translate contentKey="entity.action.upload" />

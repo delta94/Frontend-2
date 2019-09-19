@@ -7,7 +7,6 @@ import { Container, Collapse, Card, CardTitle, Button } from 'reactstrap';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import cx from 'classnames';
 import '../create/create.scss';
-import { Link, RouteComponentProps } from 'react-router-dom';
 import { Translate, translate } from 'react-jhipster';
 import { ULTILS_TYPES } from '../../../../constants/ultils';
 import { openModal, closeModal } from 'app/actions/modal';
@@ -18,8 +17,6 @@ export interface ICreateProps extends StateProps, DispatchProps {}
 
 export interface ICreateEntity {}
 export interface ICreateState {
-  //list value info
-  listInfo: {};
   //collapse componemt table detail
   collapse: boolean;
 
@@ -35,7 +32,6 @@ export interface ICreateState {
 
 export class Create extends React.Component<ICreateProps, ICreateState> {
   state: ICreateState = {
-    listInfo: {},
     collapse: true,
     isDisplayTable: false,
     changeIcon: ULTILS_TYPES.ICON_DOWN,

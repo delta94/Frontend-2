@@ -2,8 +2,6 @@ import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Loader as LoaderAnim } from 'react-loaders';
-import Loader from 'react-loader-advanced';
 import { Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, CardHeader, Card, Container } from 'reactstrap';
@@ -60,8 +58,7 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
   };
 
   render() {
-    const { match, loading, camps, total, totalActive, totalFinish, totalNotActive, modalState } = this.props;
-    const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
+    const { modalState } = this.props;
     return (
       <div id="campaign-management">
         <SweetAlert
@@ -72,7 +69,6 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
           type={modalState.type ? modalState.type : 'error'}
           onConfirm={() => this.props.closeModal()}
         />
-        {/* day la trang quan ly user */}
         <h3 id="user-management-page-heading">
           <Translate contentKey="campaign.title" />
           <Link to={`/app/views/administration/user-campaign/new`} className="btn btn-primary float-right jh-create-entity">
@@ -84,7 +80,6 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
           <ReactCSSTransitionGroup
             component="div"
             transitionName="TabsAnimation"
-            // transitionAppear={true}
             transitionAppearTimeout={0}
             transitionEnter={false}
             transitionLeave={false}
