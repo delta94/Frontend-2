@@ -3,7 +3,7 @@ import { Col, Row, CardTitle, Button, ModalBody, Table, Modal, ModalHeader, Labe
 import '../customer-dialog/customer-dialog.scss';
 import Loader from 'react-loader-advanced';
 import { Loader as LoaderAnim } from 'react-loaders';
-import { Translate } from 'react-jhipster';
+import { Translate, translate } from 'react-jhipster';
 import Ionicon from 'react-ionicons';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
@@ -57,8 +57,8 @@ class CustomerDialog extends React.Component<CustomerDialogProps, CustomerDialog
       this.props.openModal({
         show: true,
         type: 'error',
-        title: 'Lỗi',
-        text: 'Vui lòng chọn phân loại'
+        title: translate('alert.error.title-error'),
+        text: translate('alert.error.empty-categorires')
       });
       this.setState({
         modal: true
@@ -67,8 +67,8 @@ class CustomerDialog extends React.Component<CustomerDialogProps, CustomerDialog
       this.props.openModal({
         show: true,
         type: 'error',
-        title: 'Lỗi',
-        text: 'vui lòng chọn contact > 0'
+        title: translate('alert.error.title-error'),
+        text: translate('alert.error.contact-greater-0')
       });
       this.setState({
         modal: true

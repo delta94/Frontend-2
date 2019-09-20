@@ -3,7 +3,7 @@ import { Col, Row, CardTitle, Modal, Label } from 'reactstrap';
 import '../select-customer/select-customer.scss';
 import Loader from 'react-loader-advanced';
 import { Loader as LoaderAnim } from 'react-loaders';
-import { Translate } from 'react-jhipster';
+import { Translate, translate } from 'react-jhipster';
 import Ionicon from 'react-ionicons';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
@@ -103,8 +103,8 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
         this.props.openModal({
           show: true,
           type: 'error',
-          title: 'Lỗi',
-          text: 'phân loại đã tồn tại, xin chọn phân loại khác'
+          title: translate('alert.error.title-error'),
+          text: translate('alert.error.text-error-duplicate')
         });
         count = false;
       }

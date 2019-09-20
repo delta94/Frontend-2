@@ -10,7 +10,7 @@ import { getContentTemplateAsType, getContentPageParams, postTestMailLanding } f
 import { getNavigationContentTemplates } from '../../../../../../actions/navigation-info';
 import { openModal, closeModal } from '../../../../../../actions/modal';
 import { IRootState } from '../../../../../../reducers/index';
-import { Translate } from 'react-jhipster';
+import { Translate, translate } from 'react-jhipster';
 import { postTestMailLandingService } from 'app/services/user-campaign';
 import { INTRO_MAIL, REWARD_MAIL, EMAIL_EWARD, EMAIL_INTRO } from 'app/constants/common';
 import CkeditorFixed from 'app/layout/ckeditor/CkeditorFixed';
@@ -69,8 +69,8 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
     openModal: false,
     success: false,
     type: 'error',
-    text: 'Thiếu trường thông tin',
-    title: 'Cảnh báo'
+    text: translate('alert.info.not-empty-info'),
+    title: translate('alert.warning')
   };
 
   componentDidMount() {
@@ -123,8 +123,8 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
       this.props.openModal({
         show: true,
         type: 'warning',
-        title: 'Thiếu trường thông tin',
-        text: 'vui lòng nhập trường bị thiếu'
+        title: translate('alert.info.not-empty-info'),
+        text: translate('alert.info.input-info')
       });
     } else {
       postTestMailLandingService(testMail)
@@ -133,8 +133,8 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
             this.props.openModal({
               show: true,
               type: 'success',
-              title: 'Thành công',
-              text: 'Đã gửi mail thành công'
+              title: translate('alert.success'),
+              text: translate('alert.success-modal.email')
             });
           }
         })
@@ -142,8 +142,8 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
           this.props.openModal({
             show: true,
             type: 'error',
-            title: 'Thất bại',
-            text: 'Email không hợp lệ'
+            title: translate('alert.failed'),
+            text: translate('alert.success-modal.valid-email')
           });
         });
     }

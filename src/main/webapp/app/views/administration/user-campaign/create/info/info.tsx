@@ -82,8 +82,6 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
   }
   // function show text scripts
   onClick = (event, id) => {
-    let { valueName, valueDes, startDate, endDate } = this.state;
-
     if (event !== null) {
       this.setState({
         displayTable: ULTILS_TYPES.EMPTY,
