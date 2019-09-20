@@ -20,8 +20,8 @@ import { openLoading, closeLoading } from '../../../../../actions/loading';
 import { postSaveDataCampainService } from 'app/services/user-campaign';
 import { IOpenModal } from 'app/reducers/modal';
 import { refreshNavigationInfo } from '../../../../../actions/navigation-info';
-import { translate } from 'react-jhipster';
 import { WARNING, SUCCESS, ERROR } from '../../../../../constants/common';
+import { Translate, translate } from 'react-jhipster';
 
 export interface INavigationProps extends StateProps, DispatchProps {
   onClick: Function;
@@ -278,75 +278,83 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
               </div>
             </div>
           </Card>
+          {listStep.length > 0 ? (
+            <Card className="col-md-9 app-inner-layout__content">
+              <Row className="row-content-info">
+                <div className="mobile-app-menu-btn mb-3">
+                  <Hamburger active={this.state.active} type="elastic" onClick={() => this.setState({ active: !this.state.active })} />
+                </div>
+                {/* Tab Content */}
 
-          <Card className="col-md-9 app-inner-layout__content">
-            <Row className="row-content-info">
-              <div className="mobile-app-menu-btn mb-3">
-                <Hamburger active={this.state.active} type="elastic" onClick={() => this.setState({ active: !this.state.active })} />
-              </div>
-              {/* Tab Content */}
-              <TabContent activeTab={this.state.activeTab}>
-                <TabPane tabId={1}>
-                  <SelectCustomer />
-                  <div className="mt-5" />
-                  <div className="clearfix" />
-                </TabPane>
-                {/* task 2  */}
-                <TabPane tabId={2}>
-                  <SelectReward />
-                  <div className="mt-5" />
-                  <div className="clearfix" />
-                </TabPane>
-                {/* task 3 */}
-                <TabPane tabId={3}>
-                  <CreateLandingPage />
-                  <div className="mt-5" />
-                  <div className="clearfix" />
-                </TabPane>
-                {/* task 4  */}
-                <TabPane tabId={4}>
-                  <div className="add-content">
-                    <CreateContent />
-                  </div>
-                  <div className="mt-5" />
-                  <div className="clearfix" />
-                </TabPane>
-                <TabPane tabId={5}>
-                  <Review />
-                </TabPane>
-              </TabContent>
-            </Row>
-            <div className="b-t" style={{ padding: '10px' }}>
-              <Row className=" footer">
-                <Col xs="8" sm="6" md="6">
-                  <Button
-                    className="btnBack"
-                    style={{ display: startTab ? 'none' : 'block' }}
-                    onClick={() => {
-                      this.onHandletTab(-1);
-                    }}
-                  >
-                    Quay lại
-                  </Button>
-                </Col>
-                <Col xs="8" sm="6" md="6">
-                  <Button
-                    className="btnNext"
-                    style={{ float: 'right', color: 'white', backgroundColor: activeTab === 5 ? '#23C00A' : '#3866dd' }}
-                    onClick={() => {
-                      this.onHandletTab(1);
-                      if (endTab) {
-                        this.createNewCampain();
-                      }
-                    }}
-                  >
-                    {endTab ? <FontAwesomeIcon icon={faCheck} /> : ''}
-                    {endTab ? 'Tạo chiến dịch' : 'Tiếp tục'}
-                  </Button>
-                </Col>
+                <TabContent activeTab={this.state.activeTab}>
+                  <TabPane tabId={1}>
+                    <SelectCustomer />
+                    <div className="mt-5" />
+                    <div className="clearfix" />
+                  </TabPane>
+                  {/* task 2  */}
+                  <TabPane tabId={2}>
+                    <SelectReward />
+                    <div className="mt-5" />
+                    <div className="clearfix" />
+                  </TabPane>
+                  {/* task 3 */}
+                  <TabPane tabId={3}>
+                    <CreateLandingPage />
+                    <div className="mt-5" />
+                    <div className="clearfix" />
+                  </TabPane>
+                  {/* task 4  */}
+                  <TabPane tabId={4}>
+                    <div className="add-content">
+                      <CreateContent />
+                    </div>
+                    <div className="mt-5" />
+                    <div className="clearfix" />
+                  </TabPane>
+                  <TabPane tabId={5}>
+                    <Review />
+                  </TabPane>
+                </TabContent>
               </Row>
-            </div>
-          </Card>
+              <div className="b-t" style={{ padding: '10px' }}>
+                <Row className=" footer">
+                  <Col xs="8" sm="6" md="6">
+                    <Button
+                      className="btnBack"
+                      style={{ display: startTab ? 'none' : 'block' }}
+                      onClick={() => {
+                        this.onHandletTab(-1);
+                      }}
+                    >
+                      Quay lại
+                    </Button>
+                  </Col>
+                  <Col xs="8" sm="6" md="6">
+                    <Button
+                      className="btnNext"
+                      style={{ float: 'right', color: 'white', backgroundColor: activeTab === 5 ? '#23C00A' : '#3866dd' }}
+                      onClick={() => {
+                        this.onHandletTab(1);
+                        if (endTab) {
+                          this.createNewCampain();
+                        }
+                      }}
+                    >
+                      {endTab ? <FontAwesomeIcon icon={faCheck} /> : ''}
+                      {endTab ? 'Tạo chiến dịch' : 'Tiếp tục'}
+                    </Button>
+                  </Col>
+                </Row>
+              </div>
+            </Card>
+          ) : (
+            <Card className="navigator-handler">
+              <label className="text-no-campaign">
+                <Translate contentKey="campaign.campaign-not-exist" />
+              </label>
+            </Card>
+          )}
         </ReactCSSTransitionGroup>
       </Fragment>
     );
