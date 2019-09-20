@@ -13,7 +13,7 @@ import { DateRangePicker } from 'react-dates';
 import Script from './scripts/script';
 import { ULTILS_TYPES } from '../../../../../constants/ultils';
 import { getNavigationFromDate, getNavigationToDate, getNavigationName, getNavigationDescription } from 'app/actions/navigation-info';
-import { string } from 'prop-types';
+import CalendarWeek from 'react-dates/lib/components/CalendarWeek';
 
 export interface IinfoProps extends StateProps, DispatchProps {
   onClick: Function;
@@ -55,6 +55,10 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
     endDate: moment(new Date()),
     focusedInput: null
   };
+
+  componentWillMount() {
+    CalendarWeek && CalendarWeek.propTypes && delete CalendarWeek.propTypes['children'];
+  }
 
   onChangeName = event => {
     let { valueName } = this.state;
