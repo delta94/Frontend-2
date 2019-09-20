@@ -250,34 +250,38 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
           transitionEnter={false}
           transitionLeave={false}
         >
-          <Card className="col-md-3 app-inner-layout__sidebar b-r">
-            <div className="p-3">
-              <div className="dropdown-menu p-0 dropdown-menu-inline dropdown-menu-rounded dropdown-menu-hover-primary">
-                {listStep.map((event, index) => {
-                  let isPass = event.step && parseInt(event.step, 0) < activeTab;
+          {listStep.length > 0 ? (
+            <Card className="col-md-3 app-inner-layout__sidebar b-r">
+              <div className="p-3">
+                <div className="dropdown-menu p-0 dropdown-menu-inline dropdown-menu-rounded dropdown-menu-hover-primary">
+                  {listStep.map((event, index) => {
+                    let isPass = event.step && parseInt(event.step, 0) < activeTab;
 
-                  return (
-                    <DropdownItem
-                      key={index}
-                      toggle={false}
-                      className={classnames('mb-1', { active: this.state.activeTab === parseInt(event.step) })}
-                      onClick={() => {
-                        this.toggle(event.step);
-                      }}
-                    >
-                      <div id="circle" style={{ backgroundColor: isPass ? '#3866DD' : '' }}>
-                        <label className="step-icon"> {event.step}</label>
-                      </div>
-                      <label className="descrition-item" style={{ color: isPass ? '#3866DD' : '#CED4DA' }}>
-                        {' '}
-                        {event.description}
-                      </label>
-                    </DropdownItem>
-                  );
-                })}
+                    return (
+                      <DropdownItem
+                        key={index}
+                        toggle={false}
+                        className={classnames('mb-1', { active: this.state.activeTab === parseInt(event.step) })}
+                        onClick={() => {
+                          this.toggle(event.step);
+                        }}
+                      >
+                        <div id="circle" style={{ backgroundColor: isPass ? '#3866DD' : '' }}>
+                          <label className="step-icon"> {event.step}</label>
+                        </div>
+                        <label className="descrition-item" style={{ color: isPass ? '#3866DD' : '#CED4DA' }}>
+                          {' '}
+                          {event.description}
+                        </label>
+                      </DropdownItem>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          </Card>
+            </Card>
+          ) : (
+            ''
+          )}
           {listStep.length > 0 ? (
             <Card className="col-md-9 app-inner-layout__content">
               <Row className="row-content-info">
