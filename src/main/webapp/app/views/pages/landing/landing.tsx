@@ -42,6 +42,16 @@ export class Landing extends React.Component<ILandingProps, ILandingState> {
     script.innerHTML = this.props.script;
 
     script.innerHTML = `
+
+    $(document).on("keypress", "#phone", function(evt) {
+      evt = (evt) ? evt : window.event;
+      var charCode = (evt.which) ? evt.which : evt.keyCode;
+      if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+          return false;
+      }
+      return true;
+  });
+
     toastr.options = {
       "closeButton": true,
       "debug": false,
