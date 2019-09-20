@@ -8,6 +8,8 @@ import { openModal, closeModal } from './../../../../../../actions/modal';
 import { getInformation, getStepCampaign, getContentPageParams } from './../../../../../../actions/user-campaign';
 import { ULTILS_TYPES } from '../../../../../../constants/ultils';
 import './script.scss';
+import { WARNING } from '../../../../../../constants/common';
+import { translate } from 'react-jhipster';
 
 export interface IScriptsCampaignProps extends StateProps, DispatchProps {
   value: any;
@@ -58,9 +60,9 @@ export class ScriptsCampaign extends Component<IScriptsCampaignProps, IScriptsCa
     } else {
       this.props.openModal({
         show: true,
-        title: 'Thông báo',
-        text: 'Thiếu trường thông tin ',
-        type: 'warning'
+        title: translate('modal-data.title.warning'),
+        text: translate('modal-data.text.none-info'),
+        type: WARNING
       });
     }
   };

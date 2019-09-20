@@ -108,7 +108,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
     let valueVoucher = evoucherDetail.value;
     switch (activeTab) {
       case 1:
-        if (navigationInfo.customerCampaigns && navigationInfo.customerCampaigns.length < 1) {
+        if (navigationInfo.customerCampaigns.length === 0) {
           modalState = {
             show: true,
             type: WARNING,
@@ -171,90 +171,38 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
   };
 
   onHandletTab = (param: number) => {
-    let { navigationInfo, evoucherDetail } = this.props;
     let { activeTab } = this.state;
-    let activeTabNumber: number = activeTab;
-    activeTabNumber += param;
+    let isErr = this.checkThrowStep(activeTab, param, activeTab + param).isError;
 
-    let modalState: IOpenModal = { show: false, title: '', text: '', type: '' };
-    let isError = false;
-    let rollBack = activeTab < activeTabNumber;
-    let valueVoucher = evoucherDetail.value;
-    switch (activeTab) {
-      case 1:
-        if (navigationInfo.customerCampaigns && navigationInfo.customerCampaigns.length === 0) {
-          modalState = {
-            show: true,
-            type: WARNING,
-            title: translate('modal-data.title.none-info'),
-            text: translate('modal-data.text.select-customer-campain')
-          };
-        }
-        break;
-      case 2:
-        if (navigationInfo.reward.type === 2 && rollBack) {
-          if (!valueVoucher) {
-            modalState = {
-              show: true,
-              type: WARNING,
-              title: translate('modal-data.title.none-info'),
-              text: translate('modal-data.text.select-e-voucher')
-            };
-          }
-        }
-        break;
-      case 3:
-        if (navigationInfo.contentTemplates[0].content === '' && rollBack) {
-          modalState = {
-            show: true,
-            type: WARNING,
-            title: translate('modal-data.title.none-info'),
-            text: translate('modal-data.text.select-landing-page')
-          };
-        }
-        break;
-      case 4:
-        if (navigationInfo.contentTemplates[1].templateId === '' && rollBack) {
-          modalState = {
-            show: true,
-            type: WARNING,
-            title: translate('modal-data.title.none-info'),
-            text: translate('modal-data.text.select-mail-reward')
-          };
-        } else if (navigationInfo.contentTemplates[2].templateId === '' && rollBack) {
-          modalState = {
-            show: true,
-            type: WARNING,
-            title: translate('modal-data.title.none-info'),
-            text: translate('modal-data.text.select-mail-intro')
-          };
-        }
-        break;
-      default:
-        break;
-    }
-
-    if (modalState.show === true) {
+    if (isErr === true) {
       param = 0;
-      isError = true;
-      this.props.openModal(modalState);
     } else {
-      if (activeTabNumber === 6) {
+      if (activeTab + param === 6) {
         this.setState({ activeTab: 5, endTab: true });
-      } else if (activeTabNumber === 0) {
+      } else if (activeTab + param === 0) {
         this.setState({ activeTab: 1 });
       } else {
-        this.setState({ activeTab: activeTabNumber });
+        activeTab += param;
+        this.setState({ activeTab });
       }
     }
-
-    return { param, isError };
   };
 
   createNewCampain() {
     let { navigationInfo } = this.props;
-    if (navigationInfo.campaignTypeId === '' || navigationInfo.contentTemplates === null || navigationInfo.customerCampaigns === []) {
-      this.props.openModal({ show: false, type: WARNING, text: 'Thiếu trường thông tin', title: 'Thông báo' });
+    if (
+      navigationInfo.campaignTypeId === '' ||
+      navigationInfo.contentTemplates === null ||
+      navigationInfo.customerCampaigns === [] ||
+      navigationInfo.name.trim() === '' ||
+      navigationInfo.description.trim() === ''
+    ) {
+      this.props.openModal({
+        show: true,
+        type: WARNING,
+        title: translate('modal-data.title.warning'),
+        text: translate('modal-data.text.none-info')
+      });
     } else {
       this.props.openLoading();
       postSaveDataCampainService(navigationInfo)
