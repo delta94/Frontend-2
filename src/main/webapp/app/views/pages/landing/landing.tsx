@@ -42,25 +42,27 @@ export class Landing extends React.Component<ILandingProps, ILandingState> {
     script.innerHTML = this.props.script;
     script.innerHTML = `
     
-   toastr.options = {
-    		  "closeButton": true,
-    		  "debug": false,
-    		  "newestOnTop": false,
-    		  "progressBar": false,
-    		  "positionClass": "toast-bottom-right",
-    		  "preventDuplicates": false,
-    		  "onclick": null,
-    		  "showDuration": "300",
-    		  "hideDuration": "1000",
-    		  "timeOut": "5000",
-    		  "extendedTimeOut": "1000",
-    		  "showEasing": "swing",
-    		  "hideEasing": "linear",
-    		  "showMethod": "fadeIn",
-    		  "hideMethod": "fadeOut"
-    		}
+  
 	
     function onSubmit() {
+      toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-bottom-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+      }
+
       var path = window.location.href;
       var arr = path.split("/");
       var campaign = arr[arr.indexOf("mgm")+ 1];
