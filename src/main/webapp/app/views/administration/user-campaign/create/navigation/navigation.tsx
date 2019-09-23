@@ -101,14 +101,14 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
   };
 
   checkThrowStep = (activeTab, param, nextStep) => {
-    let { navigationInfo, evoucherDetail, totalContact } = this.props;
+    let { navigationInfo, evoucherDetail } = this.props;
     let modalState: IOpenModal = { show: false, title: '', text: '', type: '' };
     let rollBack = activeTab < nextStep;
     let isError = false;
     let valueVoucher = evoucherDetail.value;
     switch (activeTab) {
       case 1:
-        if (navigationInfo.customerCampaigns.length === 0 || totalContact === 0) {
+        if (navigationInfo.customerCampaigns.length === 0) {
           modalState = {
             show: true,
             type: WARNING,

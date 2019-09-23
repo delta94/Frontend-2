@@ -136,6 +136,7 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
     } else {
       let resetSum = [{ name: '', categories: [''] }];
       this.props.getSumAllContact(resetSum);
+      this.props.getNavigationCustomerCampaign(['']);
     }
   };
 
