@@ -2,6 +2,9 @@
   "login": {
     "title": "Đăng nhập",
     "get-login": "Luôn giữ đăng nhập",
+    "title-out-form": "Đăng nhập vào tài khoản của bạn",
+    "have-account": "Bạn chưa có tài khoản ?",
+    "register": "Đăng ký ngay",
     "form": {
       "password": "Mật khẩu",
       "email": "Email",

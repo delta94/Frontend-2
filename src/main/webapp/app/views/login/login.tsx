@@ -105,6 +105,9 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
   };
 
   render() {
+    const backGround = require('app/assets/utils/images/login/Rectangle.png');
+    const imageBg = require('app/assets/utils/images/login/sales-marketing-automation.png');
+    const title = require('app/assets/utils/images/login/title.png');
     const { location, isAuthenticated, /*isAdmin,*/ isConverter, loading, isInterviewer, loginError, modalState, account } = this.props;
     let pathName = 'app/views/administration/user-management';
     const { from } = { from: { pathname: pathName, search: location.search } };
@@ -117,13 +120,42 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
         <Fragment>
           <div className="h-100">
             <Row className="h-100 no-gutters">
-              <Col lg="12" md="12" className="h-100 d-flex bg-white justify-content-center align-items-center">
+              <Col lg="4" className="d-none d-lg-block">
+                <div className="slider-light">
+                  <div
+                    className="h-100 d-flex justify-content-center align-items-center"
+                    style={{
+                      backgroundImage: 'url(' + backGround + ')'
+                    }}
+                  >
+                    <div className="slide-img-bg opacity-6" />
+                    <div className="slider-content">
+                      <img src={imageBg} />
+                    </div>
+                  </div>
+                </div>
+              </Col>
+              <Col lg="8" md="12" className="h-100 d-flex bg-white justify-content-center align-items-center">
                 <Col lg="9" md="10" sm="12" className="mx-auto app-login-box">
+                  <img src={title} />
+                  <div>
+                    <Label className="login-acc">
+                      {' '}
+                      <Translate contentKey="login.title-out-form" />
+                    </Label>
+                  </div>
+                  <br />
+                  <div className="title-acc">
+                    <Translate contentKey="login.have-account" />{' '}
+                    <a href="javascript:void(0);" className="text-primary">
+                      <Translate contentKey="login.register" />
+                    </a>
+                  </div>
                   <Row className="divider" />
                   <div>
                     <Form>
                       <Row form>
-                        <Col lg={7}>
+                        <Col lg={12}>
                           <FormGroup>
                             <Label for="merchantCode">
                               <Translate contentKey="login.form.merchant" />
@@ -140,7 +172,7 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
                             {this.state.messageErrorMerchantCode}
                           </FormGroup>
                         </Col>
-                        <Col lg={7}>
+                        <Col lg={6}>
                           <FormGroup>
                             <Label for="Email">
                               <Translate contentKey="login.form.email" />{' '}
@@ -157,7 +189,7 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
                             {this.state.messageErrorEmail}
                           </FormGroup>
                         </Col>
-                        <Col lg={7}>
+                        <Col lg={6}>
                           <FormGroup>
                             <Label for="Password">
                               <Translate contentKey="login.form.password" />
@@ -182,17 +214,17 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
                         </Label>
                       </FormGroup>
                       <Row className="divider" />
-                      <div className="d-flex align-items-center">
-                        <div className="ml-auto">
-                          <a href="javascript:void(0);" className="btn-lg btn btn-link">
-                            <Translate contentKey="login.password.forgot" />
-                          </a>{' '}
-                        </div>
-                      </div>
                     </Form>
-                    <Button color="primary" size="lg" onClick={this.submitForm}>
-                      <Translate contentKey="login.form.button" />
-                    </Button>
+                    <div className="d-flex align-items-center">
+                      <div className="ml-auto">
+                        <a href="javascript:void(0);" className="btn-lg btn btn-link">
+                          <Translate contentKey="login.password.forgot" />
+                        </a>{' '}
+                        <Button color="primary" size="lg" onClick={this.submitForm}>
+                          <Translate contentKey="login.form.button" />
+                        </Button>
+                      </div>
+                    </div>
                   </div>
                 </Col>
               </Col>

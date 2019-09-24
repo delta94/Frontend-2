@@ -1,8 +1,7 @@
 import React, { Fragment } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { Row, Col, Card, CardBody, CardTitle, FormGroup, Label, Input } from 'reactstrap';
-
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { Grid, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Typography, Button, MenuItem } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { Multiselect } from 'react-widgets';
 import { IRootState } from 'app/reducers';
@@ -77,7 +76,8 @@ class CategoryDialog extends React.Component<IUserUpdateProps, IUserUpdateState>
 
 const mapStateToProps = (storeState: IRootState) => ({
   user: storeState.userManagement.user,
-  listCategory: storeState.userManagement.listCategory
+  listCategory: storeState.userManagement.listCategory,
+  camps: storeState.userCampaign.camps
 });
 
 const mapDispatchToProps = { getUser, getUserCategories };
