@@ -144,13 +144,6 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
                       <Translate contentKey="login.title-out-form" />
                     </Label>
                   </div>
-                  <br />
-                  <div className="title-acc">
-                    <Translate contentKey="login.have-account" />{' '}
-                    <a href="javascript:void(0);" className="text-primary">
-                      <Translate contentKey="login.register" />
-                    </a>
-                  </div>
                   <Row className="divider" />
                   <div>
                     <Form>
