@@ -144,6 +144,7 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
                       <Translate contentKey="login.title-out-form" />
                     </Label>
                   </div>
+
                   <Row className="divider" />
                   <div>
                     <Form>
