@@ -115,6 +115,7 @@ export class Landing extends React.Component<ILandingProps, ILandingState> {
        successToRq = false;
       }
         if(successToRq) {
+          $("#btnSubmit").attr("disabled", "disabled");
           var xhttp = new XMLHttpRequest();      
               xhttp.open("POST", 'http://171.244.40.91:8088/v1/campaign/'+ campaign+'/customer/'+customer, true);
               xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -130,6 +131,7 @@ export class Landing extends React.Component<ILandingProps, ILandingState> {
               toastr.success(this.responseText);
             }
           }
+          $("#btnSubmit").removeAttr("disabled");
               };		  
               xhttp.send(postString);
           }
