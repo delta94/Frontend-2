@@ -5,7 +5,7 @@ import { Button, Table, Row, Badge, Col } from 'reactstrap';
 
 import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import './styles/user-management.scss';
+import './user-management.scss';
 
 import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
 import { getUser, getUsers, updateUser, getUserCategories, deleteUser } from 'app/actions/user-management';
@@ -91,12 +91,12 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     return (
       <div>
         <Loader message={spinner1} show={loading} priority={1}>
-          <h3 id="user-management-page-heading">
+          <div id="user-management-title">
             <Translate contentKey="userManagement.home.title" />
             <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity">
               <FontAwesomeIcon icon="plus" /> <Translate contentKey="userManagement.home.createLabel" />
             </Link>
-          </h3>
+          </div>
           <div />
           <div className="panel">
             <Row>
