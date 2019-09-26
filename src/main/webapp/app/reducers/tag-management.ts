@@ -1,0 +1,172 @@
+import { ITags } from './tag-management';
+import { IOpenModal } from './modal';
+import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
+import { TAG_MANAGEMENT } from '../constants/tag-management';
+
+export interface IPostRequestReturn {
+  code?: number;
+  name?: number;
+  openModal?: boolean;
+}
+
+export interface ITags {
+  id?: number;
+  name?: string;
+  contacts?: string;
+}
+
+const initialDataState = {
+  loading: false,
+  list_tags: [] as ITags[],
+  postMailRequest: {
+    type: 'warning',
+    text: 'Thiếu trường thông tin',
+    title: 'Thông báo',
+    show: false,
+    payload: {}
+  } as IOpenModal
+};
+
+export type TagDataState = Readonly<typeof initialDataState>;
+
+// Reducer
+
+export default (state: TagDataState = initialDataState, action): TagDataState => {
+  switch (action.type) {
+    case REQUEST(TAG_MANAGEMENT.GET_LIST_TAG):
+    case REQUEST(TAG_MANAGEMENT.POST_DELETE_TAG):
+    case REQUEST(TAG_MANAGEMENT.POST_INSERT_TAG):
+    case REQUEST(TAG_MANAGEMENT.POST_MERGE_TAG):
+    case REQUEST(TAG_MANAGEMENT.POST_UPDATE_TAG):
+      return {
+        ...state,
+        loading: true
+      };
+
+    case FAILURE(TAG_MANAGEMENT.POST_DELETE_TAG):
+      return {
+        ...state,
+        loading: false,
+        postMailRequest: {
+          type: 'success',
+          text: 'Email không hợp lệ',
+          title: 'Thông báo',
+          show: false
+        }
+      };
+
+    case FAILURE(TAG_MANAGEMENT.GET_LIST_TAG):
+      return {
+        ...state,
+        loading: false
+      };
+
+    case FAILURE(TAG_MANAGEMENT.POST_INSERT_TAG):
+      return {
+        ...state,
+        loading: false,
+        postMailRequest: {
+          type: 'warning',
+          text: 'Thiếu trường thông tin',
+          title: 'Thông báo',
+          show: false
+        }
+      };
+
+    case FAILURE(TAG_MANAGEMENT.POST_MERGE_TAG):
+      return {
+        ...state,
+        loading: false,
+        postMailRequest: {
+          type: 'success',
+          text: 'Email không hợp lệ',
+          title: 'Thông báo',
+          show: false
+        }
+      };
+
+    case FAILURE(TAG_MANAGEMENT.POST_UPDATE_TAG):
+      return {
+        ...state,
+        loading: false,
+        postMailRequest: {
+          type: 'success',
+          text: 'Email không hợp lệ',
+          title: 'Thông báo',
+          show: false
+        }
+      };
+
+    case SUCCESS(TAG_MANAGEMENT.GET_LIST_TAG):
+      return {
+        ...state,
+        loading: false,
+        list_tags: action.payload.data
+      };
+
+    // success on post mail Test action
+    case SUCCESS(TAG_MANAGEMENT.GET_LIST_TAG):
+      return {
+        ...state,
+        loading: false,
+        postMailRequest: {
+          type: 'success',
+          text: 'Gửi mail thành công',
+          title: 'Thông báo',
+          show: true
+        }
+      };
+    // success on get content template
+    case SUCCESS(TAG_MANAGEMENT.POST_UPDATE_TAG):
+      return {
+        ...state,
+        loading: false,
+        postMailRequest: {
+          type: 'success',
+          text: 'Gửi mail thành công',
+          title: 'Thông báo',
+          show: true
+        }
+      };
+    // success on post mail Test action
+    case SUCCESS(TAG_MANAGEMENT.POST_INSERT_TAG):
+      return {
+        ...state,
+        loading: false,
+        postMailRequest: {
+          type: 'success',
+          text: 'Tạo mới thành công',
+          title: 'Thông báo',
+          show: true
+        }
+      };
+
+    // success on post merge tage
+    case SUCCESS(TAG_MANAGEMENT.POST_MERGE_TAG):
+      return {
+        ...state,
+        loading: false,
+        postMailRequest: {
+          type: 'success',
+          text: 'Gửi mail thành công',
+          title: 'Thông báo',
+          show: true
+        }
+      };
+
+    // success on post merge tage
+    case SUCCESS(TAG_MANAGEMENT.POST_DELETE_TAG):
+      return {
+        ...state,
+        loading: false,
+        postMailRequest: {
+          type: 'success',
+          text: 'Gửi mail thành công',
+          title: 'Thông báo',
+          show: true
+        }
+      };
+    default:
+      return state;
+  }
+};

@@ -1,19 +1,18 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Button, Table, Row, Badge, Col } from 'reactstrap';
 
 import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import '../tag-mangament/tag-mangament.scss';
+import './tag-list.scss';
 import { IRootState } from 'app/reducers';
 import { Loader as LoaderAnim } from 'react-loaders';
 import Loader from 'react-loader-advanced';
-import TagAddNew from './tag-add-new/tag-add-new';
-import TagList from './tag-list/tag-list';
 
-export interface ITagManagementProps extends StateProps, DispatchProps {}
-export interface ITagManagementState {}
-class TagManagement extends React.Component<ITagManagementProps, ITagManagementState> {
+export interface ITagListProps extends StateProps, DispatchProps {}
+export interface ITagListState {}
+
+class TagList extends React.Component<ITagListProps, ITagListState> {
   state = {};
 
   render() {
@@ -21,16 +20,8 @@ class TagManagement extends React.Component<ITagManagementProps, ITagManagementS
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
 
     return (
-      <div className="tag-management">
-        <div id="user-management-title">
-          <Translate contentKey="tag-management.header" />
-        </div>
-        <Loader message={spinner1} show={loading} priority={1}>
-          <Fragment>
-            <TagAddNew />
-            <TagList />
-          </Fragment>
-        </Loader>
+      <div>
+        <Loader message={spinner1} show={loading} priority={1} />
       </div>
     );
   }
@@ -49,4 +40,4 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(TagManagement);
+)(TagList);
