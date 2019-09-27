@@ -3,8 +3,9 @@ import axios from 'axios';
 
 const tagUrl = 'v1/tags';
 
-export const getListTags = () => {
-  return axios.get(tagUrl, { headers: authHeaders });
+export const getListTags = (textSearch: string, page: number, pageSize: number) => {
+  return axios.get('http://localhost:9000/content/json_data/tag_data.json');
+  // return axios.get(tagUrl+`?page?${page}&pageSize=${pageSize}&textSearch=${textSearch}`);
 };
 
 export const postMergeTag = (id: number) => {

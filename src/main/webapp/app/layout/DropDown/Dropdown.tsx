@@ -3,6 +3,7 @@ import React from 'react';
 import './Dropdown.scss';
 import { faAngleDown, faWindowMinimize } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Input } from 'antd';
 
 export interface IArrayEntity {
   id: number;

@@ -12,6 +12,7 @@ import ErrorBoundary from './common/error/error-boundary';
 import AppComponent from './app';
 import { loadIcons } from './config/icon-loader';
 import './assets/base.scss';
+import 'antd/dist/antd.css';
 import Popup from 'react-popup';
 
 const devTools = process.env.NODE_ENV === 'development' ? <DevTools /> : null;
@@ -31,10 +32,10 @@ const render = Component =>
     <ErrorBoundary>
       <Provider store={store}>
         {/* <div> */}
-          {/* If this slows down the app in dev disable it and enable when required  */}
-          {devTools}
-          <Component />
-          <Popup />
+        {/* If this slows down the app in dev disable it and enable when required  */}
+        {devTools}
+        <Component />
+        <Popup />
         {/* </div> */}
       </Provider>
     </ErrorBoundary>,

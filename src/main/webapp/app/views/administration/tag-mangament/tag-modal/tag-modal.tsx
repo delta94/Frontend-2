@@ -1,20 +1,17 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Button, Table, Row, Badge, Col } from 'reactstrap';
-
+import { Button, Table, Row, Badge, Col, Modal } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../tag-mangament/tag-mangament.scss';
 import { IRootState } from 'app/reducers';
 import { Loader as LoaderAnim } from 'react-loaders';
 import Loader from 'react-loader-advanced';
-import TagAddNew from './tag-add-new/tag-add-new';
-import TagList from './tag-list/tag-list';
 import { getListTags } from '../../../services/tag-management';
 
-export interface ITagManagementProps extends StateProps, DispatchProps {}
-export interface ITagManagementState {}
-class TagManagement extends React.Component<ITagManagementProps, ITagManagementState> {
+export interface ITagModalProps extends StateProps, DispatchProps {}
+export interface ITagModalState {}
+class TagModal extends React.Component<ITagModalProps, ITagModalState> {
   state = {};
 
   componentDidMount() {}
@@ -23,19 +20,7 @@ class TagManagement extends React.Component<ITagManagementProps, ITagManagementS
     const { loading } = this.props;
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
 
-    return (
-      <div className="tag-management">
-        <div id="user-management-title">
-          <Translate contentKey="tag-management.header" />
-        </div>
-        <Fragment>
-          <Row>
-            <TagAddNew />
-            <TagList />
-          </Row>
-        </Fragment>
-      </div>
-    );
+    return <Modal />;
   }
 }
 
@@ -52,4 +37,4 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(TagManagement);
+)(TagModal);

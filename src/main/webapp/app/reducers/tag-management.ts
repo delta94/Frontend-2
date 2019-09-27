@@ -10,14 +10,18 @@ export interface IPostRequestReturn {
 }
 
 export interface ITags {
-  id?: number;
+  id?: string;
   name?: string;
-  contacts?: string;
+  contactNumbers?: string;
+  description?: string;
 }
 
 const initialDataState = {
   loading: false,
   list_tags: [] as ITags[],
+  totalElements: 0,
+  totalPages: 0,
+  size: 0,
   postMailRequest: {
     type: 'warning',
     text: 'Thiếu trường thông tin',
@@ -98,24 +102,16 @@ export default (state: TagDataState = initialDataState, action): TagDataState =>
       };
 
     case SUCCESS(TAG_MANAGEMENT.GET_LIST_TAG):
+      let data = action.payload.data;
       return {
         ...state,
         loading: false,
-        list_tags: action.payload.data
+        list_tags: data.content,
+        size: data.size,
+        totalElements: data.totalElements,
+        totalPages: data.totalPages
       };
 
-    // success on post mail Test action
-    case SUCCESS(TAG_MANAGEMENT.GET_LIST_TAG):
-      return {
-        ...state,
-        loading: false,
-        postMailRequest: {
-          type: 'success',
-          text: 'Gửi mail thành công',
-          title: 'Thông báo',
-          show: true
-        }
-      };
     // success on get content template
     case SUCCESS(TAG_MANAGEMENT.POST_UPDATE_TAG):
       return {

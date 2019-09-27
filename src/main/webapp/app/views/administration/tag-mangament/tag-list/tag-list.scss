@@ -1,0 +1,33 @@
+.tag-list {
+  padding: 30px 10px;
+  background-color: #fff;
+  width: 75%;
+  height: 600px;
+
+  .block-out {
+    display: flex;
+    padding: 10px 0px;
+    position: relative;
+
+    .button-action {
+      width: 30%;
+      button {
+        margin-right: 5px;
+      }
+    }
+
+    .search {
+      width: 70%;
+      .ant-input-affix-wrapper {
+        height: 33px;
+        position: absolute;
+        right: 0px;
+        width: 200px;
+      }
+    }
+  }
+
+  .checkbox-td {
+    width: 40px;
+  }
+}
