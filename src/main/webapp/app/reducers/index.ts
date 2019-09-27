@@ -12,6 +12,7 @@ import navigationInfo, { NavigationInfo } from './navigation-info';
 import handleModal, { HandleModal } from './modal';
 import loadingState, { LoadingState } from './loading';
 import tagDataState, { TagDataState } from './tag-management';
+import propertiesState, { PropertiesDataState } from './properties-customer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -27,6 +28,7 @@ export interface IRootState {
   readonly handleModal: HandleModal;
   readonly loadingState: LoadingState;
   readonly tagDataState: TagDataState;
+  readonly propertiesState: PropertiesDataState;
 }
 
 const rootReducer = combineReducers<IRootState>({
@@ -41,7 +43,8 @@ const rootReducer = combineReducers<IRootState>({
   navigationInfo,
   handleModal,
   loadingState,
-  tagDataState
+  tagDataState,
+  propertiesState
 });
 
 export default rootReducer;

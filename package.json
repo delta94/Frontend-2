@@ -114,6 +114,7 @@
     "react-map-gl": "^4.1.2",
     "react-metismenu": "^1.4.0",
     "react-motion-drawer": "^3.1.0",
+    "react-movable": "^2.2.0",
     "react-multistep": "^3.6.4",
     "react-native-search-bar": "^3.4.2",
     "react-nouislider": "^2.0.1",
