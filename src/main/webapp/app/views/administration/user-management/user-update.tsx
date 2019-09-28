@@ -75,7 +75,6 @@ export class UserUpdate extends React.Component<IUserUpdateProps, IUserUpdateSta
       email: values.email,
       categorys: user.categorys
     };
-    console.log(data.categorys);
     this.props.updateUser(data);
   };
 

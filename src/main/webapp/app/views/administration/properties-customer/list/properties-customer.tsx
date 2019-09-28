@@ -2,44 +2,64 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Table, Row, Badge, Col } from 'reactstrap';
-
+import Create from '../create/create';
 import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import '../properties-customer/properties-customer.scss';
-import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
+import '../../properties-customer/list/properties-customer.scss';
+import { openModal, closeModal } from 'app/actions/modal';
 import { getListProp } from 'app/actions/properties-customer';
 import { IRootState } from 'app/reducers';
 import { Loader as LoaderAnim } from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import Select from 'react-select';
-import { List, arrayMove } from 'react-movable';
+import { List } from 'react-movable';
+import SweetAlert from 'sweetalert-react';
+import Delete from '../delete/delete';
 
 export const option = [
-  { value: 'chocolate', label: 'text' },
-  { value: 'strawberry', label: 'radio' },
-  { value: 'vanilla', label: 'button' }
+  { value: 'Date', label: 'Date' },
+  { value: 'Dropdown List', label: 'Dropdown List' },
+  { value: 'Checkbox', label: 'Checkbox' },
+  { value: 'Text Input', label: 'Text Input' },
+  { value: 'Radio', label: 'Radio' },
+  { value: null, label: 'Any Thing' }
 ];
 export interface IPropertiesCustomerProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
 
 export interface IPropertiesCustomerState {
-  selectedOption: string;
+  selectedOption: {
+    value: string;
+    label: string;
+  };
   dropItem: any[];
+  openModalField: boolean;
+  openModalGroup: boolean;
+  textSearch: string;
+  addComplete: boolean;
+  openModalDelete: boolean;
+  propsId: string;
+  ramdomID: number;
 }
 
 export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps, IPropertiesCustomerState> {
   state: IPropertiesCustomerState = {
-    selectedOption: '',
-    dropItem: []
+    selectedOption: {
+      value: '',
+      label: ''
+    },
+    dropItem: [],
+    openModalField: false,
+    openModalGroup: false,
+    textSearch: '',
+    addComplete: false,
+    openModalDelete: false,
+    propsId: '',
+    ramdomID: 0
   };
 
   componentDidMount() {
     const { getListProp } = this.props;
     getListProp();
-    let { getList } = this.props;
-
-    this.setState({
-      dropItem: getList
-    });
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -51,15 +71,50 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
     return null;
   }
   handleChange = selectedOption => {
-    this.setState({ selectedOption: selectedOption });
+    let { textSearch } = this.state;
+    const { getListProp } = this.props;
+    getListProp(selectedOption.value, textSearch);
+    this.setState({
+      selectedOption: {
+        value: selectedOption.value,
+        label: selectedOption.label
+      }
+    });
+  };
+
+  searchText = event => {
+    if (event.key === 'Enter') {
+      const text = event.target.value;
+      const { selectedOption } = this.state;
+      this.props.getListProp(selectedOption.value ? selectedOption.value : null, text);
+    }
+  };
+  openModalCreate = e => {
+    if (this.props.isComplete) {
+      this.props.openModal({
+        show: true,
+        type: 'success',
+        title: translate('modal-data.title.success'),
+        text: translate('alert.success-properties')
+      });
+    }
   };
 
   render() {
-    const { loading, match } = this.props;
-    let { dropItem } = this.state;
+    const { loading, modalState, match } = this.props;
+    let { dropItem, selectedOption } = this.state;
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
+
     return (
       <div>
+        <SweetAlert
+          title={modalState.title ? modalState.title : 'No title'}
+          confirmButtonColor=""
+          show={modalState.show ? modalState.show : false}
+          text={modalState.text ? modalState.text : 'No'}
+          type={modalState.type ? modalState.type : 'error'}
+          onConfirm={() => this.props.closeModal()}
+        />
         <Loader message={spinner1} show={loading} priority={1}>
           <div id="properties-management-title">
             <Translate contentKey="properties-management.title" />
@@ -72,14 +127,19 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
                 <Select
                   className="select-bar"
                   placeholder="Any type"
-                  value={this.state.selectedOption}
+                  value={selectedOption.label ? selectedOption : ''}
                   onChange={this.handleChange}
                   options={option}
                 />
                 <Col md="9">
                   <div className="has-search">
                     <span className=" form-control-feedback" />
-                    <input type="text" className="form-control" placeholder={translate('userManagement.home.search-placer')} />
+                    <input
+                      type="text"
+                      className="form-control"
+                      onKeyDown={this.searchText}
+                      placeholder={translate('userManagement.home.search-placer')}
+                    />
                   </div>
                 </Col>
               </Col>
@@ -90,9 +150,7 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
                   </Button>
                 </Col>
                 <Col md="5">
-                  <Button to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity">
-                    <FontAwesomeIcon icon="plus" /> <Translate contentKey="properties-management.button-field" />
-                  </Button>
+                  <Create onClick={this.openModalCreate} />
                 </Col>
               </Col>
             </Row>
@@ -135,7 +193,7 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
                   </tbody>
                 </Table>
               )}
-              renderItem={({ value, props, isDragged, isSelected }) => {
+              renderItem={({ value, props, isDragged }) => {
                 const row = (
                   <tr
                     {...props}
@@ -144,9 +202,9 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
                       cursor: isDragged ? 'grabbing' : 'grab'
                     }}
                   >
-                    <td>{value.name}</td>
+                    <td>{value.title}</td>
                     <td>{value.type}</td>
-                    <td>{value.personalization}</td>
+                    <td>{value.personalizationTag}</td>
                     <td className="text-center">
                       <div className="btn-group flex-btn-group-container">
                         <Button className="buttonUpdate" color="primary" size="sm">
@@ -155,7 +213,18 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
                             <Translate contentKey="entity.action.edit" />
                           </span>
                         </Button>
-                        <Button color="danger" size="sm">
+                        <Button
+                          color="danger"
+                          size="sm"
+                          onClick={() => {
+                            this.state.openModalDelete = true;
+                            this.setState({
+                              openModalDelete: true,
+                              propsId: value.id,
+                              ramdomID: Math.random()
+                            });
+                          }}
+                        >
                           <FontAwesomeIcon icon="trash" />{' '}
                           <span className="d-none d-md-inline">
                             <Translate contentKey="entity.action.delete" />
@@ -174,6 +243,7 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
                 );
               }}
             />
+            <Delete isOpen={this.state.openModalDelete} id={this.state.propsId} ramdomId={this.state.ramdomID} />
           </div>
         </Loader>
       </div>
@@ -183,10 +253,12 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
 
 const mapStateToProps = (storeState: IRootState) => ({
   getList: storeState.propertiesState.list_prop,
-  loading: storeState.userManagement.loading
+  loading: storeState.propertiesState.loading,
+  modalState: storeState.handleModal.data,
+  isComplete: storeState.propertiesState.isCompelete
 });
 
-const mapDispatchToProps = { getListProp };
+const mapDispatchToProps = { getListProp, openModal, closeModal };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

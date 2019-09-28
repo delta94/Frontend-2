@@ -5,7 +5,7 @@ import UserManagement from './user-management';
 import AppHeader from 'app/layout/AppHeader/';
 import AppSidebar from 'app/layout/AppSidebar/';
 import TagManagament from './tag-mangament/tag-mangament';
-import PropertiesCustomer from './properties-customer/properties-customer';
+import PropertiesCustomer from './properties-customer';
 import PrivateRoute from '../../common/auth/private-route';
 
 const Routes = ({ match }) => (

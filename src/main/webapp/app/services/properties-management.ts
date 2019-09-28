@@ -1,10 +1,11 @@
 import { authHeaders } from './header';
 import axios from 'axios';
 
-const tagUrl = 'v1/props';
+const tagUrl = 'v1/fields';
 
 export const getListProps = (type?, textSearch?) => {
-  return axios.get('http://localhost:9000/content/json_data/prop-cus.json', { headers: authHeaders });
+  const mergePropApi = `${tagUrl}${`?${type ? `type=` + type : ''}&textSearch=${textSearch ? textSearch : ''}`}`;
+  return axios.get(mergePropApi, { headers: authHeaders });
 };
 
 export const postMergeProp = (id: number) => {
@@ -13,7 +14,7 @@ export const postMergeProp = (id: number) => {
 };
 
 export const postInsertProp = (data: any) => {
-  const insertPropApi = `${tagUrl}/insert`;
+  const insertPropApi = `${tagUrl}`;
   return axios.post(insertPropApi, data, { headers: authHeaders });
 };
 

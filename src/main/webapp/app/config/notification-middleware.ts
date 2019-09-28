@@ -44,6 +44,8 @@ export default () => next => action => {
       } else if (error && error.response) {
         const response = error.response;
         const data = response.data;
+        debugger;
+        const details = data.detailErrors[0].errorMessage;
         if (!(response.status === 401 && (error.message === '' || (data && data.path && data.path.includes('/api/account'))))) {
           let i;
           switch (response.status) {
@@ -53,6 +55,7 @@ export default () => next => action => {
               break;
 
             case 400:
+              debugger;
               const headers = Object.entries(response.headers);
               let errorHeader = null;
               let entityKey = null;
@@ -82,8 +85,8 @@ export default () => next => action => {
                 // toast.error(data.errorMessage);
                 // addErrorAlert(data.errorMessage, `error.response.${data.errorCode}`);
               } else {
-                addErrorAlert(data.message);
-                toast.error(data.message);
+                addErrorAlert(details ? details : data.message);
+                toast.error(details ? details : data.message);
               }
               break;
 
