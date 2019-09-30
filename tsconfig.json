@@ -26,5 +26,5 @@
     "allowSyntheticDefaultImports": true
   },
   "include": ["src/main/webapp/app/typing.d.ts", "src/main/webapp/app/**/*", "src/test/javascript/spec/**/*"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules/**", "src/main/webapp/app/DemoPages/*"]
 }

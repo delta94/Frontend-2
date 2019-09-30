@@ -1,0 +1,23 @@
+{
+  "properties-management": {
+    "title": "Danh sách các trường thuộc tính",
+    "button-template": "Thêm từ template",
+    "button-add": "Thêm option",
+    "button-field": "Thêm 1 field",
+    "function": "Chức năng",
+    "form": {
+      "name": "Field Name",
+      "type": "Type",
+      "persionalization": "Persionalization Tag"
+    },
+    "delete": {
+      "title": "Xóa thuộc tính"
+    },
+    "add": {
+      "properties": "Thêm mới thuộc tính"
+    },
+    "error": {
+      "name": "* Vui lòng nhập tên"
+    }
+  }
+}

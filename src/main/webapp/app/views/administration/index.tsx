@@ -5,6 +5,7 @@ import UserManagement from './user-management';
 import AppHeader from 'app/layout/AppHeader/';
 import AppSidebar from 'app/layout/AppSidebar/';
 import TagManagament from './tag-mangament/tag-mangament';
+import PropertiesCustomer from './properties-customer';
 import PrivateRoute from '../../common/auth/private-route';
 
 const Routes = ({ match }) => (
@@ -17,6 +18,8 @@ const Routes = ({ match }) => (
           <ErrorBoundaryRoute path={`${match.url}/user-management`} component={UserManagement} />
           <ErrorBoundaryRoute path={`${match.url}/user-campaign`} component={CampaignManagement} />
           <ErrorBoundaryRoute path={`${match.url}/tag-management`} component={TagManagament} />
+          <ErrorBoundaryRoute path={`${match.url}/user-properties`} component={PropertiesCustomer} />
+
           {/* <PrivateRoute path={`${match.url}/user-management`} component={UserManagement} hasAnyAuthorities={['Admin']} /> */}
         </div>
       </div>
