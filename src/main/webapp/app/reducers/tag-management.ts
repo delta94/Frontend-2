@@ -2,6 +2,7 @@ import { ITags } from './tag-management';
 import { IOpenModal } from './modal';
 import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
 import { TAG_MANAGEMENT } from '../constants/tag-management';
+import { ERROR } from '../constants/common';
 
 export interface IPostRequestReturn {
   code?: number;
@@ -33,8 +34,6 @@ const initialDataState = {
 
 export type TagDataState = Readonly<typeof initialDataState>;
 
-// Reducer
-
 export default (state: TagDataState = initialDataState, action): TagDataState => {
   switch (action.type) {
     case REQUEST(TAG_MANAGEMENT.GET_LIST_TAG):
@@ -47,6 +46,12 @@ export default (state: TagDataState = initialDataState, action): TagDataState =>
         loading: true
       };
 
+    case FAILURE(TAG_MANAGEMENT.GET_LIST_TAG):
+      return {
+        ...state,
+        loading: false
+      };
+
     case FAILURE(TAG_MANAGEMENT.POST_DELETE_TAG):
       return {
         ...state,
@@ -55,14 +60,8 @@ export default (state: TagDataState = initialDataState, action): TagDataState =>
           type: 'success',
           text: 'Email không hợp lệ',
           title: 'Thông báo',
-          show: false
+          show: true
         }
-      };
-
-    case FAILURE(TAG_MANAGEMENT.GET_LIST_TAG):
-      return {
-        ...state,
-        loading: false
       };
 
     case FAILURE(TAG_MANAGEMENT.POST_INSERT_TAG):
@@ -70,10 +69,10 @@ export default (state: TagDataState = initialDataState, action): TagDataState =>
         ...state,
         loading: false,
         postMailRequest: {
-          type: 'warning',
-          text: 'Thiếu trường thông tin',
+          type: ERROR,
+          text: 'Thêm mới tag không thành công',
           title: 'Thông báo',
-          show: false
+          show: true
         }
       };
 
@@ -82,10 +81,10 @@ export default (state: TagDataState = initialDataState, action): TagDataState =>
         ...state,
         loading: false,
         postMailRequest: {
-          type: 'success',
-          text: 'Email không hợp lệ',
-          title: 'Thông báo',
-          show: false
+          type: ERROR,
+          text: 'Gộp tag thất bại',
+          title: 'Thất bại',
+          show: true
         }
       };
 
@@ -103,11 +102,12 @@ export default (state: TagDataState = initialDataState, action): TagDataState =>
 
     case SUCCESS(TAG_MANAGEMENT.GET_LIST_TAG):
       let data = action.payload.data;
+      console.log(data);
       return {
         ...state,
         loading: false,
         list_tags: data.content,
-        size: data.size,
+        size: data.totalPages,
         totalElements: data.totalElements,
         totalPages: data.totalPages
       };
@@ -144,7 +144,7 @@ export default (state: TagDataState = initialDataState, action): TagDataState =>
         loading: false,
         postMailRequest: {
           type: 'success',
-          text: 'Gửi mail thành công',
+          text: 'Gộp thông tin tag thành công',
           title: 'Thông báo',
           show: true
         }
@@ -157,7 +157,7 @@ export default (state: TagDataState = initialDataState, action): TagDataState =>
         loading: false,
         postMailRequest: {
           type: 'success',
-          text: 'Gửi mail thành công',
+          text: 'Xóa thông tin tag thành công',
           title: 'Thông báo',
           show: true
         }

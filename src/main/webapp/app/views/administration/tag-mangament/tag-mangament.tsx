@@ -1,18 +1,18 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Button, Table, Row, Badge, Col } from 'reactstrap';
+import { Row } from 'reactstrap';
 
 import { Translate, translate } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../tag-mangament/tag-mangament.scss';
 import { IRootState } from 'app/reducers';
 import { Loader as LoaderAnim } from 'react-loaders';
-import Loader from 'react-loader-advanced';
-import TagAddNew from './tag-add-new/tag-add-new';
 import TagList from './tag-list/tag-list';
-import { getListTags } from '../../../services/tag-management';
+import SweetAlert from 'sweetalert-react';
+import { openModal, closeModal } from '../../../actions/modal';
+import TagAddNew from './tag-add-new/tag-add-new';
 
 export interface ITagManagementProps extends StateProps, DispatchProps {}
+
 export interface ITagManagementState {}
 class TagManagement extends React.Component<ITagManagementProps, ITagManagementState> {
   state = {};
@@ -20,8 +20,7 @@ class TagManagement extends React.Component<ITagManagementProps, ITagManagementS
   componentDidMount() {}
 
   render() {
-    const { loading } = this.props;
-    const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
+    const { modalState } = this.props;
 
     return (
       <div className="tag-management">
@@ -29,6 +28,14 @@ class TagManagement extends React.Component<ITagManagementProps, ITagManagementS
           <Translate contentKey="tag-management.header" />
         </div>
         <Fragment>
+          <SweetAlert
+            title={modalState.title ? modalState.title : 'No title'}
+            confirmButtonColor=""
+            show={modalState.show ? modalState.show : false}
+            text={modalState.text ? modalState.text : 'No'}
+            type={modalState.type ? modalState.type : 'error'}
+            onConfirm={() => this.props.closeModal()}
+          />
           <Row>
             <TagAddNew />
             <TagList />
@@ -39,12 +46,16 @@ class TagManagement extends React.Component<ITagManagementProps, ITagManagementS
   }
 }
 
-const mapStateToProps = ({ tagDataState }: IRootState) => ({
+const mapStateToProps = ({ tagDataState, handleModal }: IRootState) => ({
   loading: tagDataState.loading,
-  list_tags: tagDataState.list_tags
+  list_tags: tagDataState.list_tags,
+  modalState: handleModal.data
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  openModal,
+  closeModal
+};
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

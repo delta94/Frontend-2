@@ -2,19 +2,13 @@
   "content": [
     {
       "id": "1",
-      "name": "Học sinh",
+      "name": "Học sinh giỏi",
       "contactNumbers": 12,
       "description": null
     },
     {
       "id": "2",
-      "name": "Học sinh",
-      "contactNumbers": 12,
-      "description": null
-    },
-    {
-      "id": "3",
-      "name": "Học sinh",
+      "name": "Thanh niên tình nguyện",
       "contactNumbers": 12,
       "description": null
     },

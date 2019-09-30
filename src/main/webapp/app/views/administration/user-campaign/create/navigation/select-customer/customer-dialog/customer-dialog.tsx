@@ -12,7 +12,6 @@ import { getCustomer, getStatistic } from '../../../../../../../actions/user-cam
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ITEMS_PER_PAGE, ULTILS_TYPES, ACTIVE_PAGE } from '../../../../../../../constants/ultils';
 import CategoryDialog from './../customer-dialog/categories/categories';
-import SweetAlert from 'sweetalert-react';
 import { openModal, closeModal } from '../../../../../../../actions/modal';
 import { faKeybase } from '@fortawesome/free-brands-svg-icons';
 
