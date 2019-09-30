@@ -7,6 +7,7 @@ import AppSidebar from 'app/layout/AppSidebar/';
 import TagManagament from './tag-mangament/tag-mangament';
 import PropertiesCustomer from './properties-customer';
 import PrivateRoute from '../../common/auth/private-route';
+import GroupAttributeCustomer from './group-attribute-customer/group-atrribute-customer';
 
 const Routes = ({ match }) => (
   <Fragment>
@@ -19,6 +20,7 @@ const Routes = ({ match }) => (
           <ErrorBoundaryRoute path={`${match.url}/user-campaign`} component={CampaignManagement} />
           <ErrorBoundaryRoute path={`${match.url}/tag-management`} component={TagManagament} />
           <ErrorBoundaryRoute path={`${match.url}/user-properties`} component={PropertiesCustomer} />
+          <ErrorBoundaryRoute path={`${match.url}/user-group`} component={GroupAttributeCustomer} />
 
           {/* <PrivateRoute path={`${match.url}/user-management`} component={UserManagement} hasAnyAuthorities={['Admin']} /> */}
         </div>
