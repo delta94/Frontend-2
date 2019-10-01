@@ -42,7 +42,7 @@ export class Edit extends React.Component<IEditProps, IEditState> {
   };
 
   render() {
-    const { postDeleteProp } = this.props;
+    const { getList, id } = this.props;
     return (
       <span className="d-inline-block mb-2 mr-2">
         <Modal isOpen={this.state.modal} id="content-properties">
@@ -51,22 +51,29 @@ export class Edit extends React.Component<IEditProps, IEditState> {
           </ModalHeader>
           <ModalBody>
             <AvForm>
-              <Row>
-                <Col md="12">
-                  <div className="option-create">
-                    <Label>Field Name</Label>
-                    <Input />
-                  </div>
-                  <div className="option-create">
-                    <Translate contentKey="properties-management.form.persionalization" />
-                    <Input addonBefore="%" addonAfter="%" onChange={this.handlerChange} />
-                  </div>
-                  <div className="option-create">
-                    <Label>Default value</Label>
-                    <Input />
-                  </div>
-                </Col>
-              </Row>
+              {getList.map((event, index) => {
+                if (event.id === id) {
+                  return (
+                    <Row>
+                      <Col md="12">
+                        <div className="option-create">
+                          <Label>Field Name</Label>
+                          <Input defaultValue={event.title} />
+                        </div>
+                        <div className="option-create">
+                          <Translate contentKey="properties-management.form.persionalization" />
+                          <Input addonBefore="%" addonAfter="%" defaultValue={event.type} onChange={this.handlerChange} />
+                        </div>
+                        <div className="option-create">
+                          <Label>Default value</Label>
+                          <Input defaultValue={event.fieldValue} />
+                        </div>
+                      </Col>
+                    </Row>
+                  );
+                }
+                return '';
+              })}
             </AvForm>
           </ModalBody>
           <ModalFooter>

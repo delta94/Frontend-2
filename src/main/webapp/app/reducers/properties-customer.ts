@@ -127,12 +127,14 @@ export default (state: PropertiesDataState = initialDataState, action): Properti
     case PROPS_MANAGEMENT.OPEN_MODAL_PROPS:
       return {
         ...state,
-        openModalDelete: true
+        openModalDelete: true,
+        openModalEdit: false
       };
     case PROPS_MANAGEMENT.OPEN_MODAL_EDIT_PROPS:
       return {
         ...state,
-        openModalEdit: true
+        openModalEdit: true,
+        openModalDelete: false
       };
     default:
       return state;

@@ -17,7 +17,7 @@ export interface IDeleteProps extends StateProps, DispatchProps {
 }
 
 export interface IDeleteState {
-  modal: boolean;
+  modalDelete: boolean;
   valueBtn1: string;
   valueBtn2: string;
   valueBtn3: string;
@@ -25,21 +25,21 @@ export interface IDeleteState {
 
 export class Delete extends React.Component<IDeleteProps, IDeleteState> {
   state: IDeleteState = {
-    modal: false,
+    modalDelete: false,
     valueBtn1: '',
     valueBtn2: '',
     valueBtn3: ''
   };
   componentWillReceiveProps(nextProps) {
-    this.state.modal = nextProps.CloseModal;
+    this.state.modalDelete = nextProps.CloseModal;
     this.setState({
-      modal: nextProps.CloseModal
+      modalDelete: nextProps.CloseModal
     });
   }
 
   toggle = () => {
     this.setState({
-      modal: !this.state.modal,
+      modalDelete: !this.state.modalDelete,
       valueBtn1: '',
       valueBtn2: '',
       valueBtn3: ''
@@ -49,7 +49,7 @@ export class Delete extends React.Component<IDeleteProps, IDeleteState> {
     const { postDeleteProp, id } = this.props;
     return (
       <span className="d-inline-block mb-2 mr-2">
-        <Modal isOpen={this.state.modal} id="content-properties">
+        <Modal isOpen={this.state.modalDelete} id="content-properties">
           <ModalHeader toggle={this.toggle} id="create-properties">
             <Translate contentKey="properties-management.delete.title" />
           </ModalHeader>
@@ -117,7 +117,7 @@ export class Delete extends React.Component<IDeleteProps, IDeleteState> {
               color="link"
               onClick={() => {
                 this.setState({
-                  modal: false,
+                  modalDelete: false,
                   valueBtn1: '',
                   valueBtn2: '',
                   valueBtn3: ''
@@ -134,7 +134,7 @@ export class Delete extends React.Component<IDeleteProps, IDeleteState> {
                 this.props.getListProp();
                 if (this.props.isDelete) {
                   this.setState({
-                    modal: false,
+                    modalDelete: false,
                     valueBtn1: '',
                     valueBtn2: '',
                     valueBtn3: ''
