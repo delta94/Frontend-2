@@ -6,7 +6,7 @@ import { Tooltip, Icon, Input } from 'antd';
 import { Translate, translate } from 'react-jhipster';
 import $ from 'jquery';
 import './edit.scss';
-import { postDeleteProp, getListProp } from 'app/actions/properties-customer';
+import { updateProp, getListProp } from 'app/actions/properties-customer';
 import { IRootState } from 'app/reducers';
 import { openModal, closeModal } from 'app/actions/modal';
 
@@ -121,7 +121,7 @@ const mapStateToProps = (storeState: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  postDeleteProp,
+  updateProp,
   getListProp,
   openModal,
   closeModal

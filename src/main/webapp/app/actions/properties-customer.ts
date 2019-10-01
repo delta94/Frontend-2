@@ -1,5 +1,5 @@
 import { PROPS_MANAGEMENT } from 'app/constants/props-management';
-import { getListProps, postInsertProp, deleteProp } from 'app/services/properties-management';
+import { getListProps, postInsertProp, deleteProp, postUpdateProp } from 'app/services/properties-management';
 
 export const getListProp = (type?, textsearch?) => {
   return {
@@ -12,6 +12,13 @@ export const insertProp = data => {
   return {
     type: PROPS_MANAGEMENT.POST_INSERT_PROPS,
     payload: postInsertProp(data)
+  };
+};
+
+export const updateProp = (id, data) => {
+  return {
+    type: PROPS_MANAGEMENT.POST_INSERT_PROPS,
+    payload: postUpdateProp(id, data)
   };
 };
 

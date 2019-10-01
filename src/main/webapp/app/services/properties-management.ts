@@ -18,7 +18,7 @@ export const postInsertProp = (data: any) => {
   return axios.post(insertPropApi, data, { headers: authHeaders });
 };
 
-export const postUpdateProp = (id: number, data: any) => {
+export const postUpdateProp = (id, data: any) => {
   const updatePropApi = `${tagUrl}/${id}/update`;
   return axios.post(updatePropApi, data, { headers: authHeaders });
 };
