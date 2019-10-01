@@ -78,7 +78,9 @@ export default (state: PropertiesDataState = initialDataState, action): Properti
       return {
         ...state,
         loading: false,
-        list_prop: action.payload.data
+        list_prop: action.payload.data,
+        openModalEdit: false,
+        openModalDelete: false
       };
 
     // success on post mail Test action

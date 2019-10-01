@@ -58,15 +58,15 @@ export class Edit extends React.Component<IEditProps, IEditState> {
                       <Col md="12">
                         <div className="option-create">
                           <Label>Field Name</Label>
-                          <Input defaultValue={event.title} />
+                          <Input defaultValue={event.title} id="field-name" />
                         </div>
                         <div className="option-create">
                           <Translate contentKey="properties-management.form.persionalization" />
-                          <Input addonBefore="%" addonAfter="%" defaultValue={event.type} onChange={this.handlerChange} />
+                          <Input addonBefore="%" addonAfter="%" defaultValue={event.type} onChange={this.handlerChange} id="tag" />
                         </div>
                         <div className="option-create">
                           <Label>Default value</Label>
-                          <Input defaultValue={event.fieldValue} />
+                          <Input id="default-value" defaultValue={event.fieldValue} />
                         </div>
                       </Col>
                     </Row>
@@ -90,18 +90,19 @@ export class Edit extends React.Component<IEditProps, IEditState> {
             <Button
               color="primary"
               onClick={async () => {
-                this.props.getListProp();
-                if (this.props.isUpdate) {
-                  this.setState({
-                    modal: false
-                  });
-                  this.props.openModal({
-                    show: true,
-                    type: 'success',
-                    title: translate('modal-data.title.success'),
-                    text: translate('alert.success-properties')
-                  });
-                }
+                console.log($(`input#field-name`).val());
+                // this.props.getListProp();
+                // if (this.props.isUpdate) {
+                //   this.setState({
+                //     modal: false
+                //   });
+                //   this.props.openModal({
+                //     show: true,
+                //     type: 'success',
+                //     title: translate('modal-data.title.success'),
+                //     text: translate('alert.success-properties')
+                //   });
+                // }
               }}
             >
               Add
