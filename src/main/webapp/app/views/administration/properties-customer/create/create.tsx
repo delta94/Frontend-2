@@ -217,8 +217,12 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
                         <td>
                           <Input name={value.name} id={value.id} defaultValue={$(`input#${value.id}`).val()} placeholder={value.type} />
                         </td>
-                        <td className="text-center">
+                        <td className="text-center" id="function">
                           <div className="btn-group flex-btn-group-container">
+                            <i className="pe-7s-menu icon-gradient bg-ripe-malin" id="icon">
+                              {' '}
+                            </i>
+                            &nbsp;
                             <Button onClick={() => this.deleteField(value.id)} color="danger" size="sm">
                               <FontAwesomeIcon icon="trash" />{' '}
                               <span className="d-none d-md-inline">

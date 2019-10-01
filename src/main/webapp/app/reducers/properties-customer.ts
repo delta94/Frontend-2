@@ -78,7 +78,9 @@ export default (state: PropertiesDataState = initialDataState, action): Properti
       return {
         ...state,
         loading: false,
-        list_prop: action.payload.data
+        list_prop: action.payload.data,
+        openModalEdit: false,
+        openModalDelete: false
       };
 
     // success on post mail Test action
@@ -127,12 +129,14 @@ export default (state: PropertiesDataState = initialDataState, action): Properti
     case PROPS_MANAGEMENT.OPEN_MODAL_PROPS:
       return {
         ...state,
-        openModalDelete: true
+        openModalDelete: true,
+        openModalEdit: false
       };
     case PROPS_MANAGEMENT.OPEN_MODAL_EDIT_PROPS:
       return {
         ...state,
-        openModalEdit: true
+        openModalEdit: true,
+        openModalDelete: false
       };
     default:
       return state;

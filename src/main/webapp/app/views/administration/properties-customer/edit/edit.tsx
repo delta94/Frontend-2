@@ -6,7 +6,7 @@ import { Tooltip, Icon, Input } from 'antd';
 import { Translate, translate } from 'react-jhipster';
 import $ from 'jquery';
 import './edit.scss';
-import { postDeleteProp, getListProp } from 'app/actions/properties-customer';
+import { updateProp, getListProp } from 'app/actions/properties-customer';
 import { IRootState } from 'app/reducers';
 import { openModal, closeModal } from 'app/actions/modal';
 
@@ -42,7 +42,7 @@ export class Edit extends React.Component<IEditProps, IEditState> {
   };
 
   render() {
-    const { postDeleteProp } = this.props;
+    const { getList, id } = this.props;
     return (
       <span className="d-inline-block mb-2 mr-2">
         <Modal isOpen={this.state.modal} id="content-properties">
@@ -51,22 +51,29 @@ export class Edit extends React.Component<IEditProps, IEditState> {
           </ModalHeader>
           <ModalBody>
             <AvForm>
-              <Row>
-                <Col md="12">
-                  <div className="option-create">
-                    <Label>Field Name</Label>
-                    <Input />
-                  </div>
-                  <div className="option-create">
-                    <Translate contentKey="properties-management.form.persionalization" />
-                    <Input addonBefore="%" addonAfter="%" onChange={this.handlerChange} />
-                  </div>
-                  <div className="option-create">
-                    <Label>Default value</Label>
-                    <Input />
-                  </div>
-                </Col>
-              </Row>
+              {getList.map((event, index) => {
+                if (event.id === id) {
+                  return (
+                    <Row>
+                      <Col md="12">
+                        <div className="option-create">
+                          <Label>Field Name</Label>
+                          <Input defaultValue={event.title} id="field-name" />
+                        </div>
+                        <div className="option-create">
+                          <Translate contentKey="properties-management.form.persionalization" />
+                          <Input addonBefore="%" addonAfter="%" defaultValue={event.type} onChange={this.handlerChange} id="tag" />
+                        </div>
+                        <div className="option-create">
+                          <Label>Default value</Label>
+                          <Input id="default-value" defaultValue={event.fieldValue} />
+                        </div>
+                      </Col>
+                    </Row>
+                  );
+                }
+                return '';
+              })}
             </AvForm>
           </ModalBody>
           <ModalFooter>
@@ -83,18 +90,19 @@ export class Edit extends React.Component<IEditProps, IEditState> {
             <Button
               color="primary"
               onClick={async () => {
-                this.props.getListProp();
-                if (this.props.isUpdate) {
-                  this.setState({
-                    modal: false
-                  });
-                  this.props.openModal({
-                    show: true,
-                    type: 'success',
-                    title: translate('modal-data.title.success'),
-                    text: translate('alert.success-properties')
-                  });
-                }
+                console.log($(`input#field-name`).val());
+                // this.props.getListProp();
+                // if (this.props.isUpdate) {
+                //   this.setState({
+                //     modal: false
+                //   });
+                //   this.props.openModal({
+                //     show: true,
+                //     type: 'success',
+                //     title: translate('modal-data.title.success'),
+                //     text: translate('alert.success-properties')
+                //   });
+                // }
               }}
             >
               Add
@@ -114,7 +122,7 @@ const mapStateToProps = (storeState: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  postDeleteProp,
+  updateProp,
   getListProp,
   openModal,
   closeModal
