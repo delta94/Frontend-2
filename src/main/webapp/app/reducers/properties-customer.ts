@@ -1,6 +1,7 @@
 import { IOpenModal } from './modal';
 import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
 import { PROPS_MANAGEMENT } from '../constants/props-management';
+import { faSleigh } from '@fortawesome/free-solid-svg-icons';
 
 export interface IPropertiesCustomer {
   id?: string;
@@ -13,7 +14,11 @@ export interface IPropertiesCustomer {
 const initialDataState = {
   loading: false,
   list_prop: [] as IPropertiesCustomer[],
-  isCompelete: false
+  isCompelete: false,
+  isDelete: false,
+  openModalDelete: false,
+  openModalEdit: false,
+  isUpdate: false
 };
 
 export type PropertiesDataState = Readonly<typeof initialDataState>;
@@ -63,6 +68,12 @@ export default (state: PropertiesDataState = initialDataState, action): Properti
         loading: false
       };
 
+    case FAILURE(PROPS_MANAGEMENT.POST_DELETE_PROPS):
+      return {
+        ...state,
+        loading: false
+      };
+
     case SUCCESS(PROPS_MANAGEMENT.GET_LIST_PROPS):
       return {
         ...state,
@@ -80,7 +91,9 @@ export default (state: PropertiesDataState = initialDataState, action): Properti
     case SUCCESS(PROPS_MANAGEMENT.POST_UPDATE_PROPS):
       return {
         ...state,
-        loading: false
+        loading: false,
+        openModalEdit: false,
+        isUpdate: true
       };
     // success on post mail Test action
     case SUCCESS(PROPS_MANAGEMENT.POST_INSERT_PROPS):
@@ -101,7 +114,25 @@ export default (state: PropertiesDataState = initialDataState, action): Properti
     case SUCCESS(PROPS_MANAGEMENT.POST_DELETE_PROPS):
       return {
         ...state,
-        loading: false
+        loading: false,
+        isDelete: true,
+        openModalDelete: false
+      };
+
+    case PROPS_MANAGEMENT.RESET_PROPS:
+      return {
+        ...state,
+        isDelete: false
+      };
+    case PROPS_MANAGEMENT.OPEN_MODAL_PROPS:
+      return {
+        ...state,
+        openModalDelete: true
+      };
+    case PROPS_MANAGEMENT.OPEN_MODAL_EDIT_PROPS:
+      return {
+        ...state,
+        openModalEdit: true
       };
     default:
       return state;

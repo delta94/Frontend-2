@@ -23,7 +23,7 @@ export const postUpdateProp = (id: number, data: any) => {
   return axios.post(updatePropApi, data, { headers: authHeaders });
 };
 
-export const postDeleteProp = id => {
+export const deleteProp = id => {
   const mergePropApi = `${tagUrl}/${id}/delete`;
   return axios.post(mergePropApi, null, { headers: authHeaders });
 };

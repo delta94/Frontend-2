@@ -44,8 +44,7 @@ export default () => next => action => {
       } else if (error && error.response) {
         const response = error.response;
         const data = response.data;
-        debugger;
-        const details = data.detailErrors[0].errorMessage;
+        const details = data.detailErrors ? data.detailErrors[0].errorMessage : '';
         if (!(response.status === 401 && (error.message === '' || (data && data.path && data.path.includes('/api/account'))))) {
           let i;
           switch (response.status) {

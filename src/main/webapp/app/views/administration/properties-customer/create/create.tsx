@@ -95,6 +95,10 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
       this.setState({
         validateName: translate('properties-management.error.name')
       });
+    } else if (valueName === 'Frist Name' || valueName === 'Last Name' || valueName === 'Email' || valueName === 'Phone') {
+      this.setState({
+        validateName: 'Không được nhập tên trùng '
+      });
     } else {
       let valueTextbox = options.map(event => {
         let arrayCategories = $(`input#${event.id}`).val();

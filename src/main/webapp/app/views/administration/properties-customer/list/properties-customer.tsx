@@ -7,7 +7,7 @@ import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../../properties-customer/list/properties-customer.scss';
 import { openModal, closeModal } from 'app/actions/modal';
-import { getListProp } from 'app/actions/properties-customer';
+import { getListProp, openModalDel, openModalEdit } from 'app/actions/properties-customer';
 import { IRootState } from 'app/reducers';
 import { Loader as LoaderAnim } from 'react-loaders';
 import Loader from 'react-loader-advanced';
@@ -15,6 +15,7 @@ import Select from 'react-select';
 import { List } from 'react-movable';
 import SweetAlert from 'sweetalert-react';
 import Delete from '../delete/delete';
+import Edit from '../edit/edit';
 
 export const option = [
   { value: 'Date', label: 'Date' },
@@ -37,6 +38,7 @@ export interface IPropertiesCustomerState {
   textSearch: string;
   addComplete: boolean;
   openModalDelete: boolean;
+  openModalEdit: boolean;
   propsId: string;
   ramdomID: number;
 }
@@ -53,6 +55,7 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
     textSearch: '',
     addComplete: false,
     openModalDelete: false,
+    openModalEdit: false,
     propsId: '',
     ramdomID: 0
   };
@@ -206,31 +209,49 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
                     <td>{value.type}</td>
                     <td>{value.personalizationTag}</td>
                     <td className="text-center">
-                      <div className="btn-group flex-btn-group-container">
-                        <Button className="buttonUpdate" color="primary" size="sm">
-                          <FontAwesomeIcon icon="pencil-alt" />{' '}
-                          <span className="d-none d-md-inline">
-                            <Translate contentKey="entity.action.edit" />
-                          </span>
-                        </Button>
-                        <Button
-                          color="danger"
-                          size="sm"
-                          onClick={() => {
-                            this.state.openModalDelete = true;
-                            this.setState({
-                              openModalDelete: true,
-                              propsId: value.id,
-                              ramdomID: Math.random()
-                            });
-                          }}
-                        >
-                          <FontAwesomeIcon icon="trash" />{' '}
-                          <span className="d-none d-md-inline">
-                            <Translate contentKey="entity.action.delete" />
-                          </span>
-                        </Button>
-                      </div>
+                      {value.title === 'Frist Name' || value.title === 'Last Name' || value.title === 'Email' || value.title === 'Phone' ? (
+                        ''
+                      ) : (
+                        <div className="btn-group flex-btn-group-container">
+                          <Button
+                            className="buttonUpdate"
+                            onClick={() => {
+                              this.props.openModalEdit();
+                              this.state.openModalEdit = this.props.openEdit;
+                              this.setState({
+                                openModalEdit: this.props.openEdit,
+                                propsId: value.id,
+                                ramdomID: Math.random()
+                              });
+                            }}
+                            color="primary"
+                            size="sm"
+                          >
+                            <FontAwesomeIcon icon="pencil-alt" />{' '}
+                            <span className="d-none d-md-inline">
+                              <Translate contentKey="entity.action.edit" />
+                            </span>
+                          </Button>
+                          <Button
+                            color="danger"
+                            size="sm"
+                            onClick={() => {
+                              this.props.openModalDel();
+                              this.state.openModalDelete = this.props.openDelete;
+                              this.setState({
+                                openModalDelete: this.props.openDelete,
+                                propsId: value.id,
+                                ramdomID: Math.random()
+                              });
+                            }}
+                          >
+                            <FontAwesomeIcon icon="trash" />{' '}
+                            <span className="d-none d-md-inline">
+                              <Translate contentKey="entity.action.delete" />
+                            </span>
+                          </Button>
+                        </div>
+                      )}
                     </td>
                   </tr>
                 );
@@ -244,6 +265,7 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
               }}
             />
             <Delete isOpen={this.state.openModalDelete} id={this.state.propsId} ramdomId={this.state.ramdomID} />
+            <Edit isOpen={this.state.openModalEdit} id={this.state.propsId} ramdomId={this.state.ramdomID} />
           </div>
         </Loader>
       </div>
@@ -255,10 +277,13 @@ const mapStateToProps = (storeState: IRootState) => ({
   getList: storeState.propertiesState.list_prop,
   loading: storeState.propertiesState.loading,
   modalState: storeState.handleModal.data,
-  isComplete: storeState.propertiesState.isCompelete
+  isComplete: storeState.propertiesState.isCompelete,
+  isDelete: storeState.propertiesState.isDelete,
+  openDelete: storeState.propertiesState.openModalDelete,
+  openEdit: storeState.propertiesState.openModalEdit
 });
 
-const mapDispatchToProps = { getListProp, openModal, closeModal };
+const mapDispatchToProps = { getListProp, openModal, closeModal, openModalDel, openModalEdit };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

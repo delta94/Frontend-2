@@ -6,7 +6,7 @@ import { AvForm } from 'availity-reactstrap-validation';
 import { Translate, translate } from 'react-jhipster';
 import $ from 'jquery';
 import './delete.scss';
-import { getListProp, insertProp } from 'app/actions/properties-customer';
+import { postDeleteProp, getListProp } from 'app/actions/properties-customer';
 import { IRootState } from 'app/reducers';
 import { openModal, closeModal } from 'app/actions/modal';
 
@@ -31,9 +31,9 @@ export class Delete extends React.Component<IDeleteProps, IDeleteState> {
     valueBtn3: ''
   };
   componentWillReceiveProps(nextProps) {
-    this.state.modal = nextProps.isOpen;
+    this.state.modal = nextProps.CloseModal;
     this.setState({
-      modal: nextProps.isOpen
+      modal: nextProps.CloseModal
     });
   }
 
@@ -46,6 +46,7 @@ export class Delete extends React.Component<IDeleteProps, IDeleteState> {
     });
   };
   render() {
+    const { postDeleteProp, id } = this.props;
     return (
       <span className="d-inline-block mb-2 mr-2">
         <Modal isOpen={this.state.modal} id="content-properties">
@@ -128,14 +129,23 @@ export class Delete extends React.Component<IDeleteProps, IDeleteState> {
             <Button
               color="primary"
               disabled={this.state.valueBtn1 && this.state.valueBtn2 && this.state.valueBtn3 ? false : true}
-              onClick={() => {
-                this.setState({
-                  modal: false,
-                  valueBtn1: '',
-                  valueBtn2: '',
-                  valueBtn3: ''
-                });
-                console.log(this.props.id);
+              onClick={async () => {
+                await postDeleteProp(id);
+                this.props.getListProp();
+                if (this.props.isDelete) {
+                  this.setState({
+                    modal: false,
+                    valueBtn1: '',
+                    valueBtn2: '',
+                    valueBtn3: ''
+                  });
+                  this.props.openModal({
+                    show: true,
+                    type: 'success',
+                    title: translate('modal-data.title.success'),
+                    text: translate('alert.success-properties')
+                  });
+                }
               }}
             >
               Add
@@ -149,12 +159,14 @@ export class Delete extends React.Component<IDeleteProps, IDeleteState> {
 const mapStateToProps = (storeState: IRootState) => ({
   getList: storeState.propertiesState.list_prop,
   loading: storeState.propertiesState.loading,
-  isComplete: storeState.propertiesState.isCompelete
+  isComplete: storeState.propertiesState.isCompelete,
+  isDelete: storeState.propertiesState.isDelete,
+  CloseModal: storeState.propertiesState.openModalDelete
 });
 
 const mapDispatchToProps = {
+  postDeleteProp,
   getListProp,
-  insertProp,
   openModal,
   closeModal
 };
