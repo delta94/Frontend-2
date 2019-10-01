@@ -1,8 +1,9 @@
 .tag-list {
-  padding: 30px 10px;
+  padding: 30px 10px 20px 10px;
   background-color: #fff;
   width: 75%;
   height: auto;
+  position: relative;
 
   .block-out {
     display: flex;
@@ -27,7 +28,27 @@
     }
   }
 
+  table {
+    max-width: 100%;
+    position: relative;
+  }
+
   .checkbox-td {
     width: 40px;
+  }
+
+  #name {
+    max-width: 100px;
+  }
+
+  #description {
+    max-width: 100px;
+  }
+
+  .navigation {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
   }
 }

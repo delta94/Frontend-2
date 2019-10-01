@@ -49,6 +49,7 @@ interface ITagModalState {
     id: string;
     name: string;
   };
+  modalTitle?: string;
 }
 
 class TagModal extends React.Component<ITagModalProps, ITagModalState> {
@@ -64,37 +65,34 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
     singleModalData: null,
     param: '',
     listIdtag: [],
-    targetTag: null
+    targetTag: null,
+    modalTitle: null
   };
 
   static getDerivedStateFromProps(props, state) {
     let option = state.option;
+    let { modalTitle } = state;
 
     if (props.param !== state.param || props.dataModal !== state.dataModal) {
+      option.rightButton = translate('tag-management.cancel');
       switch (props.param) {
         case DELETE_TAG:
-          option.rightButton = 'Cancel';
-          option.leftButton = 'Delete Selected tags';
+          option.leftButton = translate('tag-management.btn-tag-delete');
+          modalTitle = translate('tag-management.tag-delete-title');
           break;
         case MERGE_TAG:
-          option.rightButton = 'Cancel';
-          option.leftButton = 'Merge Selected tags';
+          option.leftButton = translate('tag-management.btn-tag-merge');
+          modalTitle = translate('tag-management.tag-merge-title');
           break;
 
         case EDIT_TAG:
-          option.rightButton = 'Cancel';
-          option.leftButton = 'Save';
+          option.leftButton = translate('tag-management.btn-tag-edit');
+          modalTitle = translate('tag-management.tag-edit-title');
           break;
         default:
           break;
       }
-      return { option };
-    }
-
-    if (!state.targetTag && props.dataModal) {
-      return {
-        targetTag: props.dataModal[0]
-      };
+      return { option, modalTitle };
     }
 
     return null;
@@ -164,7 +162,7 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
 
   render() {
     let { openFixModal, param, dataModal, singleModalData } = this.props;
-    let { option, targetTag } = this.state;
+    let { option, targetTag, modalTitle } = this.state;
     let extendComponent: any = null;
 
     switch (param) {
@@ -188,7 +186,7 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
     return (
       <div className="tag-modal">
         <Modal isOpen={openFixModal} toggle={this.props.toggleFixModal}>
-          <ModalHeader>Modal title</ModalHeader>
+          <ModalHeader>{modalTitle}</ModalHeader>
           <ModalBody>{extendComponent}</ModalBody>
           <ModalFooter>
             <Button color="primary" onClick={this.reUseFunction}>

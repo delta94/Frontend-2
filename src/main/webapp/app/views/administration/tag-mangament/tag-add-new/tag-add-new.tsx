@@ -59,7 +59,6 @@ class TagAddNew extends React.Component<ITagAddNewProps, ITagAddNewState> {
 
   componentDidMount() {
     var textAreas = document.getElementsByTagName('textarea');
-
     Array.prototype.forEach.call(textAreas, function(elem) {
       elem.placeholder = elem.placeholder.replace(/\\n/g, '\n');
     });
@@ -68,18 +67,34 @@ class TagAddNew extends React.Component<ITagAddNewProps, ITagAddNewState> {
   render() {
     let { textNew } = this.state;
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
+    let tagInputHolder = translate('tag-management.tag-1') + '\n' + translate('tag-management.tag-2');
 
     return (
       <div className="tag-add-new b-r">
-        <p>Thêm tags</p>
-        <p style={{ fontSize: '0.8rem' }}>
-          <label style={{ fontWeight: 500 }}>Add tags here:</label>
-          <label>(one per line or separated by a comma)</label>
+        <p>
+          <Translate contentKey="tag-management.tag-add" />
         </p>
-        <Input type="textarea" name="text" id="add-new-tag" placeholder="tag1\ntag2" value={textNew} onChange={this.handleNewTag} />
+        <p style={{ fontSize: '0.8rem' }}>
+          <label style={{ fontWeight: 500 }}>
+            <Translate contentKey="tag-management.tag-add-here" />
+          </label>
+          <label>
+            <Translate contentKey="tag-management.tag-add-rule" />
+          </label>
+        </p>
+        <Input
+          type="textarea"
+          name="text"
+          id="add-new-tag"
+          placeholder={`${tagInputHolder}`}
+          value={textNew}
+          onChange={this.handleNewTag}
+          maxLength={160}
+          row={4}
+        />
         <div className="btn-add-tag">
           <Button color="success" size="small" onClick={this.insertNewTag} disabled={!(textNew && textNew.length > 0)}>
-            Add tags
+            <Translate contentKey="tag-management.tag-add-new" />
           </Button>
         </div>
       </div>

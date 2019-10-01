@@ -15,7 +15,6 @@ import { ITags } from '../../../../reducers/tag-management';
 import TagModal from '../tag-modal/tag-modal';
 import { DELETE_TAG, MERGE_TAG, EDIT_TAG } from '../../../../constants/tag-management';
 import $ from 'jquery';
-import { KEY_ENTER } from '../../user-campaign/list/tab/all-camp/modal/modal';
 
 interface ITagListProps extends StateProps, DispatchProps {}
 
@@ -47,6 +46,24 @@ interface IItemCheckBox {
   ITags;
   checked: boolean;
 }
+let limitString = (value: string) => {
+  let newValue = '';
+
+  if (value === null) {
+    return '';
+  } else {
+    if (value.length > 20) {
+      for (let i = 0; i < 20; i++) {
+        newValue += value[i];
+      }
+
+      newValue += '...';
+    } else {
+      newValue = value;
+    }
+    return newValue;
+  }
+};
 
 class TagList extends React.Component<ITagListProps, ITagListState> {
   state = {
@@ -144,7 +161,7 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
     return (
       <Menu>
         <Menu.Item key="1" onClick={() => this.openFixModalWithData(DELETE_TAG, item)}>
-          <Icon type="delete" /> Delete
+          <Icon type="delete" /> <Translate contentKey="tag-management.delete" />
         </Menu.Item>
       </Menu>
     );
@@ -172,15 +189,17 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
         />
         <Loader message={spinner1} show={loading} priority={1}>
           <div>
-            <p>Tags</p>
+            <p>
+              <Translate contentKey="tag-management.tag-list" />
+            </p>
             {/* Block out */}
             <div className="block-out">
               <div className="button-action">
                 <Button color="primary" onClick={() => this.openFixModalWithData(MERGE_TAG, null)}>
-                  Merge
+                  <Translate contentKey="tag-management.merge" />
                 </Button>
-                <Button color="primary" onClick={() => this.openFixModalWithData(DELETE_TAG, null)}>
-                  Delete
+                <Button color="danger" onClick={() => this.openFixModalWithData(DELETE_TAG, null)}>
+                  <Translate contentKey="tag-management.delete" />
                 </Button>
               </div>
               <div className="search">
@@ -188,7 +207,7 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
                   id="searchText"
                   prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
                   value={textSearch}
-                  placeholder="Search tags"
+                  placeholder={translate('tag-management.tag-search')}
                   onChange={this.handleSearchTags}
                 />
               </div>
@@ -197,13 +216,19 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
             <Table striped>
               <thead>
                 <tr className="text-center">
-                  <th className="checkbox-td">
+                  <th className="checkbox-td" colSpan={5}>
                     <Checkbox id="add-all" onChange={event => this.onCheckAllChange('add-all', event.target.checked)} />
                   </th>
-                  <th>Name</th>
-                  <th>Contacts</th>
-                  <th>Description</th>
-                  <th />
+                  <th colSpan={30} id="name">
+                    <Translate contentKey="tag-management.tag-name" />
+                  </th>
+                  <th colSpan={20}>
+                    <Translate contentKey="tag-management.tag-contact" />
+                  </th>
+                  <th colSpan={30} id="description">
+                    <Translate contentKey="tag-management.tag-description" />
+                  </th>
+                  <th colSpan={15} />
                 </tr>
               </thead>
               <tbody>
@@ -211,17 +236,21 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
                   listCheckBox.map((item, index) => {
                     return (
                       <tr key={index}>
-                        <td>
+                        <td colSpan={5}>
                           <Checkbox
                             id={item.id}
                             onChange={event => this.onCheckAllChange(item.id, event.target.checked)}
                             checked={item.checked}
                           />
                         </td>
-                        <td>{item.name}</td>
-                        <td>{item.contactNumbers}</td>
-                        <td>{item.description}</td>
-                        <td>
+                        <td colSpan={30} id="name">
+                          <span> {limitString(item.name)}</span>
+                        </td>
+                        <td colSpan={20}>{item.contactNumbers}</td>
+                        <td colSpan={30} id="description">
+                          <span> {limitString(item.description)}</span>
+                        </td>
+                        <td colSpan={15}>
                           <Dropdown.Button
                             overlay={() => this.menu(item)}
                             icon={<Icon type="caret-down" />}
@@ -229,7 +258,7 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
                           >
                             <span>
                               <Icon type="edit" />
-                              Edit
+                              <Translate contentKey="tag-management.edit" />
                             </span>
                           </Dropdown.Button>
                         </td>
@@ -239,26 +268,26 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
               </tbody>
             </Table>
             {/* Blockout */}
-            <div>
-              <Row className="justify-content-center">
-                <ReactPaginate
-                  previousLabel={'<'}
-                  nextLabel={'>'}
-                  breakLabel={'...'}
-                  breakClassName={'break-me'}
-                  pageCount={size}
-                  marginPagesDisplayed={1}
-                  pageRangeDisplayed={totalPages}
-                  onPageChange={event => this.props.getListTagDataAction(textSearch, event.selected, 6)}
-                  containerClassName={'pagination'}
-                  subContainerClassName={'pages pagination'}
-                  activeClassName={'active'}
-                  forcePage={activePage}
-                />
-              </Row>
-            </div>
           </div>
         </Loader>
+        <div className="navigation ">
+          <Row className="justify-content-center">
+            <ReactPaginate
+              previousLabel={'<'}
+              nextLabel={'>'}
+              breakLabel={'...'}
+              breakClassName={'break-me'}
+              pageCount={size}
+              marginPagesDisplayed={1}
+              pageRangeDisplayed={4}
+              onPageChange={event => this.props.getListTagDataAction(textSearch, event.selected, 6)}
+              containerClassName={'pagination'}
+              subContainerClassName={'pages pagination'}
+              activeClassName={'active'}
+              forcePage={activePage}
+            />
+          </Row>
+        </div>
       </div>
     );
   }

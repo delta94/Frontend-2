@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Input } from 'antd';
+import { Input, AutoComplete } from 'antd';
+import { Translate } from 'react-jhipster';
 
 interface ITagEditProps extends StateProps, DispatchProps {
   dataModal: any;
@@ -47,9 +48,12 @@ class TagEdit extends React.Component<ITagEditProps, ITagEditState> {
     let { singleModalData } = this.state;
 
     return (
-      <div className="tag-delete">
+      <div className="tag-edit">
         <div className="tag-modal-content no-color">
-          <p>Name</p>
+          <p>
+            {' '}
+            <Translate contentKey="tag-management.tag-name" />
+          </p>
           <Input
             id="name"
             type="text"
@@ -57,7 +61,10 @@ class TagEdit extends React.Component<ITagEditProps, ITagEditState> {
             value={singleModalData.name}
             onChange={event => this.handleInput(event.target.value, 'name')}
           />
-          <p>Descrition</p>
+          <p>
+            {' '}
+            <Translate contentKey="tag-management.tag-description" />
+          </p>
           <Input
             id="decription"
             type="text"

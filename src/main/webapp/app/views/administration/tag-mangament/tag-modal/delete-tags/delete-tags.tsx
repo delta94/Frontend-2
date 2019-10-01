@@ -64,9 +64,13 @@ class TagDelete extends React.PureComponent<ITagDeleteProps, ITagDeleteState> {
 
     return (
       <div className="tag-delete">
-        <p>Are you want to delete these tags ?Your action cannot be undone.</p>
+        <p>
+          <Translate contentKey="tag-management.tag-delete-rule" />
+        </p>
         <div className="tag-modal-content">
-          <h6>The following would be deleted</h6>
+          <h6>
+            <Translate contentKey="tag-management.tag-delete-to" />
+          </h6>
           {listContentData &&
             listContentData.map((item, index) => {
               return (

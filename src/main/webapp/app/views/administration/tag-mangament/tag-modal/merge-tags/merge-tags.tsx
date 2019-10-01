@@ -1,61 +1,87 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Loader as LoaderAnim } from 'react-loaders';
-import { Menu, Dropdown, Icon } from 'antd';
+import { Menu, AutoComplete, Icon } from 'antd';
+import { getListTagDataAction } from '../../../../../actions/tag-management';
+import { getListTags } from '../../../../../services/tag-management';
+import { Translate } from 'react-jhipster';
+import Select from 'react-select';
+import { FormGroup } from 'reactstrap';
 
-export interface ITagMergeProps extends StateProps, DispatchProps {
+const options = [
+  { label: '1', value: 'test' },
+  { label: '1', value: 'test' },
+  { label: '1', value: 'test' },
+  { label: '1', value: 'test' }
+];
+
+interface ITagMergeProps extends StateProps, DispatchProps {
   dataModal: any;
   updateTargetTagFromTagMerge: Function;
 }
 
-export interface ITagMergeState {
+interface ITagMergeState {
   targetTag?: {
     id?: string;
     name?: string;
   };
+  result?: Array<{ label: string; value: string }>[];
+  isSearching: boolean;
 }
 
 class TagMerge extends React.PureComponent<ITagMergeProps, ITagMergeState> {
-  state = {
+  state: ITagMergeState = {
     targetTag: {
       id: null,
       name: null
-    }
-  };
-
-  menuMergeTag = () => {
-    let { dataModal } = this.props;
-    return (
-      <Menu>
-        {dataModal &&
-          dataModal.map((item, index) => {
-            if (item.checked) {
-              return (
-                <Menu.Item
-                  key={index}
-                  onClick={() => {
-                    this.props.updateTargetTagFromTagMerge(item), console.log(item);
-                  }}
-                >
-                  <Icon type="delete" /> {item.name}
-                </Menu.Item>
-              );
-            }
-          })}
-      </Menu>
-    );
+    },
+    result: [],
+    isSearching: false
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.targetTag) {
-      console.log(nextProps.targetTag);
       return { targetTag: nextProps.targetTag };
     }
   }
 
+  setTargetTag = item => {
+    let { targetTag } = this.state;
+    console.log(item);
+    targetTag['name'] = item.label;
+    targetTag['id'] = item.value;
+    this.setState({ targetTag });
+    this.props.updateTargetTagFromTagMerge(item);
+  };
+
+  handleSearch = value => {
+    let result;
+    if (!value || value.length === 0) {
+      result = [];
+    } else {
+      Promise.resolve(getListTags(value, 0, 10))
+        .then(item => {
+          console.log(item);
+          let listTagRes = item.data.content;
+          if (listTagRes && listTagRes.length > 0) {
+            result = listTagRes.map(item => ({ label: item.name, value: item.id }));
+          }
+
+          console.log(result);
+          this.setState({ result });
+        })
+        .catch(err => {
+          throw err;
+        });
+    }
+  };
+
+  handleInput = value => {
+    console.log(value);
+  };
+
   render() {
     let { dataModal } = this.props;
-    let { targetTag } = this.state;
+    let { targetTag, result } = this.state;
     let listContentData = [];
 
     dataModal &&
@@ -68,7 +94,10 @@ class TagMerge extends React.PureComponent<ITagMergeProps, ITagMergeState> {
     return (
       <div className="tag-merge">
         <div className="tag-modal-content">
-          <h6>The tags will be merged</h6>
+          <h6>
+            {' '}
+            <Translate contentKey="tag-management.tag-will-merge" />
+          </h6>
           {listContentData &&
             listContentData.map((item, index) => {
               return (
@@ -79,11 +108,19 @@ class TagMerge extends React.PureComponent<ITagMergeProps, ITagMergeState> {
             })}
         </div>
         <div className="tag-merge">
-          <p style={{ fontWeight: 500 }}>Merge into tag</p>
+          <p style={{ fontWeight: 500 }}>
+            <Translate contentKey="tag-management.tag-merge-to" />
+          </p>
           {listContentData && listContentData.length > 0 ? (
-            <Dropdown.Button overlay={this.menuMergeTag} placement="bottomCenter" icon={<Icon type="caret-down" />}>
-              {targetTag ? targetTag.name : null}
-            </Dropdown.Button>
+            <FormGroup>
+              <Select
+                value={targetTag.name}
+                onChange={this.setTargetTag}
+                options={result}
+                onInputChange={this.handleSearch}
+                style={{ width: '100px' }}
+              />
+            </FormGroup>
           ) : null}
         </div>
       </div>
@@ -93,7 +130,7 @@ class TagMerge extends React.PureComponent<ITagMergeProps, ITagMergeState> {
 
 const mapStateToProps = () => ({});
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { getListTagDataAction };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

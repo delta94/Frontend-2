@@ -1,12 +1,6 @@
 .modal-content {
   width: 100% !important;
-}
-
-.modal-content {
   margin-left: 0px !important;
-}
-
-.tag-modal {
 }
 
 .tag-modal-content {
@@ -31,6 +25,12 @@
   }
 }
 
+.tag-edit {
+  margin: 10px 0px;
+  p {
+    margin: 10px 0px;
+  }
+}
 .no-color {
   background: #fff !important;
   border: none !important;
