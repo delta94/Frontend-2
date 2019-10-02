@@ -58,13 +58,12 @@ export class Delete extends React.Component<IDeleteProps, IDeleteState> {
               <Row>
                 <Col md="12">
                   <div>
-                    <Label>
-                      this field could be used within automation or campaigns. Delete this field will also delete any data contained in the
-                      fields from your contacts. The fields and any data will be permanently deleted and can not be undone.
+                    <Label className="head-text">
+                      <Translate contentKey="properties-management.delete.head-title" />
                     </Label>
                   </div>
                   <div>
-                    <Col md="5" className="group-btn-delete">
+                    <Col md="12" className="group-btn-delete">
                       <Input
                         type="checkbox"
                         onClick={() => {
@@ -74,12 +73,12 @@ export class Delete extends React.Component<IDeleteProps, IDeleteState> {
                         id="btn1"
                       />{' '}
                       <Label for="btn1" className="text">
-                        aaa
+                        <Translate contentKey="properties-management.delete.content-title-1" />
                       </Label>
                     </Col>
                   </div>
                   <div>
-                    <Col md="5" className="group-btn-delete">
+                    <Col md="12" className="group-btn-delete">
                       <Input
                         type="checkbox"
                         onClick={() => {
@@ -89,12 +88,12 @@ export class Delete extends React.Component<IDeleteProps, IDeleteState> {
                         id="btn2"
                       />{' '}
                       <Label for="btn2" className="text">
-                        aaa
+                        <Translate contentKey="properties-management.delete.content-title-2" />
                       </Label>
                     </Col>
                   </div>
                   <div>
-                    <Col md="5" className="group-btn-delete">
+                    <Col md="12" className="group-btn-delete">
                       <Input
                         type="checkbox"
                         onClick={() => {
@@ -104,7 +103,7 @@ export class Delete extends React.Component<IDeleteProps, IDeleteState> {
                         id="btn3"
                       />{' '}
                       <Label for="btn3" className="text">
-                        aaa
+                        <Translate contentKey="properties-management.delete.content-title-3" />
                       </Label>
                     </Col>
                   </div>
@@ -124,7 +123,7 @@ export class Delete extends React.Component<IDeleteProps, IDeleteState> {
                 });
               }}
             >
-              Cancel
+              Hủy bỏ
             </Button>
             <Button
               color="primary"
@@ -143,12 +142,12 @@ export class Delete extends React.Component<IDeleteProps, IDeleteState> {
                     show: true,
                     type: 'success',
                     title: translate('modal-data.title.success'),
-                    text: translate('alert.success-properties')
+                    text: translate('alert.complete-delete')
                   });
                 }
               }}
             >
-              Add
+              Xóa
             </Button>{' '}
           </ModalFooter>
         </Modal>

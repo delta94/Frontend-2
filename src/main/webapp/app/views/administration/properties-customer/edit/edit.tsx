@@ -54,7 +54,7 @@ export class Edit extends React.Component<IEditProps, IEditState> {
               {getList.map((event, index) => {
                 if (event.id === id) {
                   return (
-                    <Row>
+                    <Row key={index}>
                       <Col md="12">
                         <div className="option-create">
                           <Label>Field Name</Label>
@@ -85,27 +85,28 @@ export class Edit extends React.Component<IEditProps, IEditState> {
                 });
               }}
             >
-              Cancel
+              Hủy bỏ
             </Button>
             <Button
               color="primary"
               onClick={async () => {
-                console.log($(`input#field-name`).val());
-                // this.props.getListProp();
-                // if (this.props.isUpdate) {
-                //   this.setState({
-                //     modal: false
-                //   });
-                //   this.props.openModal({
-                //     show: true,
-                //     type: 'success',
-                //     title: translate('modal-data.title.success'),
-                //     text: translate('alert.success-properties')
-                //   });
-                // }
+                let data = {
+                  id: id,
+                  title: $(`input#field-name`).val(),
+                  type: $(`input#tag`).val(),
+                  fieldValue: $(`input#default-value`).val()
+                };
+                await this.props.updateProp(id, data);
+                this.props.getListProp();
+                this.props.openModal({
+                  show: true,
+                  type: 'success',
+                  title: translate('modal-data.title.success'),
+                  text: translate('alert.success-properties')
+                });
               }}
             >
-              Add
+              Sửa
             </Button>{' '}
           </ModalFooter>
         </Modal>

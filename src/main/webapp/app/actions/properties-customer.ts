@@ -1,10 +1,24 @@
 import { PROPS_MANAGEMENT } from 'app/constants/props-management';
-import { getListProps, postInsertProp, deleteProp, postUpdateProp } from 'app/services/properties-management';
+import { getListProps, postInsertProp, deleteProp, postUpdateProp, getTemp, getId } from 'app/services/properties-management';
 
 export const getListProp = (type?, textsearch?) => {
   return {
     type: PROPS_MANAGEMENT.GET_LIST_PROPS,
     payload: getListProps(type, textsearch)
+  };
+};
+
+export const getListTemp = (textsearch?) => {
+  return {
+    type: PROPS_MANAGEMENT.GET_LIST_TEMP,
+    payload: getTemp(textsearch)
+  };
+};
+
+export const getTempId = id => {
+  return {
+    type: PROPS_MANAGEMENT.GET_TEMP,
+    payload: getId(id)
   };
 };
 

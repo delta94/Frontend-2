@@ -16,6 +16,7 @@ import { List } from 'react-movable';
 import SweetAlert from 'sweetalert-react';
 import Delete from '../delete/delete';
 import Edit from '../edit/edit';
+import CreateGroup from '../create-group/create-group';
 
 export const option = [
   { value: 'Date', label: 'Date' },
@@ -148,9 +149,7 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
               </Col>
               <Col md="4" className="form-button">
                 <Col md="6">
-                  <Button className="btn btn-primary float-right jh-create-entity">
-                    <FontAwesomeIcon icon="plus" /> <Translate contentKey="properties-management.button-template" />
-                  </Button>
+                  <CreateGroup />
                 </Col>
                 <Col md="5">
                   <Create onClick={this.openModalCreate} />

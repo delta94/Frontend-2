@@ -8,6 +8,15 @@ export const getListProps = (type?, textSearch?) => {
   return axios.get(mergePropApi, { headers: authHeaders });
 };
 
+export const getTemp = (textSearch?) => {
+  const mergePropApi = `v1/field-templates${`?$textSearch=${textSearch}`}`;
+  return axios.get(mergePropApi, { headers: authHeaders });
+};
+export const getId = (id?) => {
+  const mergePropApi = `v1/field-templates/${id}/fields`;
+  return axios.get(mergePropApi, { headers: authHeaders });
+};
+
 export const postMergeProp = (id: number) => {
   const mergePropApi = `${tagUrl}/${id}/merge`;
   return axios.post(mergePropApi, null, { headers: authHeaders });

@@ -3,12 +3,26 @@
 #btn3 {
   width: 19px;
   height: 16px;
-  margin-top: 10px;
+  margin-top: 0px;
 }
 .group-btn-delete {
   padding: 0px 21px;
-  font-size: 20px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
 }
 .text {
   margin-left: 5px;
+}
+.head-text {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  /* or 129% */
+
+  color: #495057;
 }

@@ -104,11 +104,13 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
         let arrayCategories = $(`input#${event.id}`).val();
         return arrayCategories.toString();
       });
-      let addText = {
-        title: valueName,
-        type: selectedOptionType.value,
-        fieldValue: selectedOptionType.value === 'Date' || selectedOptionType.value === 'Text Input' ? '' : valueTextbox.join('||')
-      };
+      let addText = [
+        {
+          title: valueName,
+          type: selectedOptionType.value,
+          fieldValue: selectedOptionType.value === 'Date' || selectedOptionType.value === 'Text Input' ? '' : valueTextbox.join('||')
+        }
+      ];
       await insertProp(addText);
       await getListProp();
 
@@ -156,13 +158,13 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
               <Row>
                 <Col md="12">
                   <div className="option-create">
-                    <Label>Field Name</Label>
+                    <Label>Tên trường</Label>
                     <Input name="name" label="Field Name" onChange={this.getValueName} required />
                     <p className="error">{this.state.validateName}</p>
                   </div>
                   <div>
                     <Col md="5" className="option-create">
-                      <Label>Field Type</Label>
+                      <Label>Kểu Type</Label>
                       <Select
                         className="select-type"
                         placeholder="Dropdown"
@@ -209,6 +211,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
                     const row = (
                       <tr
                         {...props}
+                        {...props.onKeyDown}
                         style={{
                           ...props.style,
                           cursor: isDragged ? 'grabbing' : 'grab'
@@ -254,10 +257,10 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
           </ModalBody>
           <ModalFooter>
             <Button color="link" onClick={this.toggle}>
-              Cancel
+              Hủy bỏ
             </Button>
             <Button onClick={this.addField} color="primary">
-              Add
+              Tạo mới
             </Button>{' '}
           </ModalFooter>
         </Modal>

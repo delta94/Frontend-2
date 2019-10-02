@@ -11,6 +11,19 @@ export interface IPropertiesCustomer {
   fieldValue?: string;
 }
 
+export interface IListTemp {
+  id?: string;
+  title?: string;
+}
+
+export interface ITemp {
+  id: string;
+  type?: string;
+  title?: string;
+  personalizationTag?: boolean;
+  fieldValue?: string;
+}
+
 const initialDataState = {
   loading: false,
   list_prop: [] as IPropertiesCustomer[],
@@ -18,7 +31,9 @@ const initialDataState = {
   isDelete: false,
   openModalDelete: false,
   openModalEdit: false,
-  isUpdate: false
+  isUpdate: false,
+  ListTemp: [] as IListTemp[],
+  Temp: [] as ITemp[]
 };
 
 export type PropertiesDataState = Readonly<typeof initialDataState>;
@@ -32,11 +47,14 @@ export default (state: PropertiesDataState = initialDataState, action): Properti
     case REQUEST(PROPS_MANAGEMENT.POST_INSERT_PROPS):
     case REQUEST(PROPS_MANAGEMENT.POST_MERGE_PROPS):
     case REQUEST(PROPS_MANAGEMENT.POST_UPDATE_PROPS):
+    case REQUEST(PROPS_MANAGEMENT.GET_LIST_TEMP):
+    case REQUEST(PROPS_MANAGEMENT.GET_TEMP):
       return {
         ...state,
         loading: true
       };
-
+    case FAILURE(PROPS_MANAGEMENT.GET_LIST_TEMP):
+    case FAILURE(PROPS_MANAGEMENT.GET_TEMP):
     case FAILURE(PROPS_MANAGEMENT.POST_DELETE_PROPS):
       return {
         ...state,
@@ -72,6 +90,24 @@ export default (state: PropertiesDataState = initialDataState, action): Properti
       return {
         ...state,
         loading: false
+      };
+
+    case SUCCESS(PROPS_MANAGEMENT.GET_LIST_TEMP):
+      return {
+        ...state,
+        loading: false,
+        ListTemp: action.payload.data,
+        openModalEdit: false,
+        openModalDelete: false
+      };
+
+    case SUCCESS(PROPS_MANAGEMENT.GET_TEMP):
+      return {
+        ...state,
+        loading: false,
+        Temp: action.payload.data,
+        openModalEdit: false,
+        openModalDelete: false
       };
 
     case SUCCESS(PROPS_MANAGEMENT.GET_LIST_PROPS):

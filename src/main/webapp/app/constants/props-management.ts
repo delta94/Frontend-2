@@ -6,5 +6,7 @@ export const PROPS_MANAGEMENT = {
   POST_DELETE_PROPS: 'tagManagement/POST_DELETE_PROPS',
   RESET_PROPS: 'tagManagement/RESET_PROPS',
   OPEN_MODAL_PROPS: 'tagManagement/OPEN_MODAL_PROPS',
-  OPEN_MODAL_EDIT_PROPS: 'tagManagement/OPEN_MODAL_EDIT_PROPS'
+  OPEN_MODAL_EDIT_PROPS: 'tagManagement/OPEN_MODAL_EDIT_PROPS',
+  GET_LIST_TEMP: 'tagManagement/GET_LIST_TEMP',
+  GET_TEMP: 'tagManagement/GET_TEMP'
 };

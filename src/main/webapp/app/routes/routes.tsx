@@ -15,7 +15,7 @@ const Widgets = lazy(() => import('app/DemoPages/Widgets'));
 const Elements = lazy(() => import('app/DemoPages/Elements'));
 const Components = lazy(() => import('app/DemoPages/Components'));
 const Charts = lazy(() => import('app/DemoPages/Charts'));
-const Forms = lazy(() => import('app/DemoPages/Forms'));
+const Forms = lazy(() => import('app/views/administration/user-campaign'));
 const Tables = lazy(() => import('app/DemoPages/Tables'));
 
 const AppRoutes = () => {
@@ -94,7 +94,7 @@ const AppRoutes = () => {
           </div>
         }
       >
-        <Route path="/forms" component={Forms} />
+        <Route path="/app/views/campaigns/user-campaign" component={Forms} />
       </Suspense>
 
       {/* Charts */}

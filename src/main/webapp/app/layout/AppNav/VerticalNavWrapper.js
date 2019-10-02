@@ -21,7 +21,7 @@ class Nav extends Component {
                 return mainNav
             })
             let nav = {
-                icon: 'pe-7s-rocket',
+                icon: event.icon,
                 label: String(event.name),
                 content: mainContent
             }
