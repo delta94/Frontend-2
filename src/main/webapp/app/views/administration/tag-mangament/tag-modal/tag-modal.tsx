@@ -50,6 +50,7 @@ interface ITagModalState {
     name: string;
   };
   modalTitle?: string;
+  tagResponse?: any;
 }
 
 class TagModal extends React.Component<ITagModalProps, ITagModalState> {
@@ -66,7 +67,8 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
     param: '',
     listIdtag: [],
     targetTag: null,
-    modalTitle: null
+    modalTitle: null,
+    tagResponse: null
   };
 
   static getDerivedStateFromProps(props, state) {
@@ -95,6 +97,12 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
       return { option, modalTitle };
     }
 
+    if (props.tagResponse) {
+      return {
+        tagResponse: props.tagResponse
+      };
+    }
+
     return null;
   }
 
@@ -115,9 +123,6 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
     }
 
     this.props.closeFixModalData();
-    setTimeout(() => {
-      this.props.getListTagDataAction('', 0, 6);
-    }, 250);
   };
 
   updateValueFromTagEdit = singleModalData => {
@@ -153,8 +158,12 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
 
     if (singleModalData) {
       listIdTag = [{ id: singleModalData.id }];
-    } else if (dataModal) {
-      listIdTag = dataModal.map(item => ({ id: item.id }));
+    } else if (dataModal && dataModal.length > 0) {
+      dataModal.forEach(item => {
+        if (item.checked) {
+          listIdTag.push({ id: item.id });
+        }
+      });
     }
 
     this.props.postMergeTagAction(targetTag.id, listIdTag);
@@ -164,20 +173,24 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
     let { openFixModal, param, dataModal, singleModalData } = this.props;
     let { option, targetTag, modalTitle } = this.state;
     let extendComponent: any = null;
+    let color: string = 'primary';
 
     switch (param) {
       case DELETE_TAG:
         extendComponent = <TagDeleteComponent dataModal={dataModal} singleModalData={singleModalData} />;
+        color = 'danger';
         break;
       case MERGE_TAG:
         extendComponent = (
           <TagMergeComponent dataModal={dataModal} updateTargetTagFromTagMerge={this.updateTargetTagFromTagMerge} targetTag={targetTag} />
         );
+        color = 'primary';
         break;
       case EDIT_TAG:
         extendComponent = (
           <TagEditComponent dataModal={dataModal} singleModalData={singleModalData} updateValueFromTagEdit={this.updateValueFromTagEdit} />
         );
+        color = 'primary';
         break;
       default:
         break;
@@ -189,11 +202,11 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
           <ModalHeader>{modalTitle}</ModalHeader>
           <ModalBody>{extendComponent}</ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={this.reUseFunction}>
-              {option.leftButton ? option.leftButton : 'Cancel'}
-            </Button>
             <Button color="none" onClick={this.props.closeFixModalData}>
               {option.rightButton ? option.rightButton : 'Next'}
+            </Button>
+            <Button color={color} onClick={this.reUseFunction}>
+              {option.leftButton ? option.leftButton : 'Cancel'}
             </Button>
           </ModalFooter>
         </Modal>
@@ -202,9 +215,10 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
   }
 }
 
-const mapStateToProps = ({ tagDataState }: IRootState) => ({
+const mapStateToProps = ({ tagDataState, handleModal }: IRootState) => ({
   loading: tagDataState.loading,
-  list_tags: tagDataState.list_tags
+  list_tags: tagDataState.list_tags,
+  tagResponse: tagDataState.tagResponse
 });
 
 const mapDispatchToProps = {

@@ -4,7 +4,6 @@ import { Button, Modal, ModalHeader, ModalFooter, ModalBody } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/reducers';
-import { Loader as LoaderAnim } from 'react-loaders';
 import TagMerge from './merge-tags/merge-tags';
 import TagDelete from './delete-tags/delete-tags';
 import TagEdit from './edit-tags/edit-tags';
@@ -191,11 +190,11 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
           <ModalHeader>Modal title</ModalHeader>
           <ModalBody>{extendComponent}</ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={this.reUseFunction}>
-              {option.leftButton ? option.leftButton : 'Cancel'}
-            </Button>
             <Button color="none" onClick={this.props.closeFixModalData}>
               {option.rightButton ? option.rightButton : 'Next'}
+            </Button>
+            <Button color="primary" onClick={this.reUseFunction}>
+              {option.leftButton ? option.leftButton : 'Cancel'}
             </Button>
           </ModalFooter>
         </Modal>

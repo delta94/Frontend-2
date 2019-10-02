@@ -2,14 +2,15 @@
   width: 100% !important;
   margin-left: 0px !important;
 }
-
 .tag-modal-content {
   border-radius: 3px;
   border: solid gray 1px;
-  background: #fdf1d4;
-  border: 1px solid #fceac4;
+  background: #edf1fc;
+  border: 1px solid #8da7ec;
   padding: 10px;
-
+  span {
+    color: #576b9d;
+  }
   .label-delete {
     color: white;
     background-color: orange;
@@ -24,14 +25,44 @@
     margin: 5px;
   }
 }
-
 .tag-edit {
   margin: 10px 0px;
   p {
     margin: 10px 0px;
   }
+
+  .tag-edit-attribute {
+    display: flex;
+    margin: 10px 0px;
+
+    span {
+      width: 25%;
+      line-height: 30px;
+    }
+    input {
+      width: 75%;
+    }
+  }
+}
+
+.tag-merge {
+  .form-group {
+    width: calc(100% - 90px);
+  }
+  .tag-search-merge {
+    display: flex;
+    margin: 10px 0px;
+    height: 40px;
+    span {
+      line-height: 30px;
+      margin-right: 14px;
+    }
+  }
 }
 .no-color {
   background: #fff !important;
   border: none !important;
+}
+.modal-header {
+  text-transform: uppercase;
 }

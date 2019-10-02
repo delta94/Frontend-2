@@ -3,6 +3,7 @@ import { IOpenModal } from './modal';
 import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
 import { TAG_MANAGEMENT } from '../constants/tag-management';
 import { ERROR } from '../constants/common';
+import { MODAL_ACTION } from '../constants/modal';
 
 export interface IPostRequestReturn {
   code?: number;
@@ -23,7 +24,7 @@ const initialDataState = {
   totalElements: 0,
   totalPages: 0,
   size: 0,
-  postMailRequest: {
+  tagResponse: {
     type: 'warning',
     text: 'Thiếu trường thông tin',
     title: 'Thông báo',
@@ -56,7 +57,7 @@ export default (state: TagDataState = initialDataState, action): TagDataState =>
       return {
         ...state,
         loading: false,
-        postMailRequest: {
+        tagResponse: {
           type: 'success',
           text: 'Email không hợp lệ',
           title: 'Thông báo',
@@ -68,7 +69,7 @@ export default (state: TagDataState = initialDataState, action): TagDataState =>
       return {
         ...state,
         loading: false,
-        postMailRequest: {
+        tagResponse: {
           type: ERROR,
           text: 'Thêm mới tag không thành công',
           title: 'Thông báo',
@@ -80,7 +81,7 @@ export default (state: TagDataState = initialDataState, action): TagDataState =>
       return {
         ...state,
         loading: false,
-        postMailRequest: {
+        tagResponse: {
           type: ERROR,
           text: 'Gộp tag thất bại',
           title: 'Thất bại',
@@ -92,7 +93,7 @@ export default (state: TagDataState = initialDataState, action): TagDataState =>
       return {
         ...state,
         loading: false,
-        postMailRequest: {
+        tagResponse: {
           type: 'success',
           text: 'Email không hợp lệ',
           title: 'Thông báo',
@@ -117,9 +118,9 @@ export default (state: TagDataState = initialDataState, action): TagDataState =>
       return {
         ...state,
         loading: false,
-        postMailRequest: {
+        tagResponse: {
           type: 'success',
-          text: 'Gửi mail thành công',
+          text: 'Sửa tag thành công',
           title: 'Thông báo',
           show: true
         }
@@ -129,7 +130,7 @@ export default (state: TagDataState = initialDataState, action): TagDataState =>
       return {
         ...state,
         loading: false,
-        postMailRequest: {
+        tagResponse: {
           type: 'success',
           text: 'Tạo mới thành công',
           title: 'Thông báo',
@@ -142,7 +143,7 @@ export default (state: TagDataState = initialDataState, action): TagDataState =>
       return {
         ...state,
         loading: false,
-        postMailRequest: {
+        tagResponse: {
           type: 'success',
           text: 'Gộp thông tin tag thành công',
           title: 'Thông báo',
@@ -155,11 +156,19 @@ export default (state: TagDataState = initialDataState, action): TagDataState =>
       return {
         ...state,
         loading: false,
-        postMailRequest: {
+        tagResponse: {
           type: 'success',
           text: 'Xóa thông tin tag thành công',
           title: 'Thông báo',
           show: true
+        }
+      };
+    case MODAL_ACTION.CLOSE_MODAL:
+      return {
+        ...state,
+        loading: false,
+        tagResponse: {
+          show: false
         }
       };
     default:

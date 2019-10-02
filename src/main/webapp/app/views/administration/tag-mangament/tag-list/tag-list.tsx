@@ -103,7 +103,6 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
 
   static getDerivedStateFromProps(props, state) {
     if (props.list_tags !== state.list_tags) {
-      console.log(props.list_tags);
       let listCheckBox = props.list_tags && props.list_tags.map(item => ({ ...item, checked: false }));
       return {
         list_tags: props.list_tags,
@@ -173,8 +172,14 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
   };
 
   render() {
-    let { loading, size, totalPages } = this.props;
+    let { loading, size, totalPages, list_tags } = this.props;
     let { activePage, listCheckBox, textSearch, openFixModal, dataModal, param, singleModalData } = this.state;
+    let isDisable = true;
+    listCheckBox.forEach(item => {
+      if (item.checked) {
+        isDisable = false;
+      }
+    });
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
 
     return (
@@ -195,10 +200,10 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
             {/* Block out */}
             <div className="block-out">
               <div className="button-action">
-                <Button color="primary" onClick={() => this.openFixModalWithData(MERGE_TAG, null)}>
+                <Button color="primary" onClick={() => this.openFixModalWithData(MERGE_TAG, null)} disabled={isDisable}>
                   <Translate contentKey="tag-management.merge" />
                 </Button>
-                <Button color="danger" onClick={() => this.openFixModalWithData(DELETE_TAG, null)}>
+                <Button color="danger" onClick={() => this.openFixModalWithData(DELETE_TAG, null)} disabled={isDisable}>
                   <Translate contentKey="tag-management.delete" />
                 </Button>
               </div>
@@ -232,7 +237,7 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
                 </tr>
               </thead>
               <tbody>
-                {listCheckBox &&
+                {listCheckBox && list_tags && list_tags.length > 0 ? (
                   listCheckBox.map((item, index) => {
                     return (
                       <tr key={index}>
@@ -264,7 +269,10 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
                         </td>
                       </tr>
                     );
-                  })}
+                  })
+                ) : (
+                  <div className="none-data">None Data</div>
+                )}
               </tbody>
             </Table>
             {/* Blockout */}

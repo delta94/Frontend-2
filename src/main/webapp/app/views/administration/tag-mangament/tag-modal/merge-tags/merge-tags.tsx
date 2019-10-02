@@ -7,50 +7,37 @@ import { Translate } from 'react-jhipster';
 import Select from 'react-select';
 import { FormGroup } from 'reactstrap';
 
-const options = [
-  { label: '1', value: 'test' },
-  { label: '1', value: 'test' },
-  { label: '1', value: 'test' },
-  { label: '1', value: 'test' }
-];
-
 interface ITagMergeProps extends StateProps, DispatchProps {
   dataModal: any;
   updateTargetTagFromTagMerge: Function;
-}
-
-interface ITagMergeState {
   targetTag?: {
     id?: string;
     name?: string;
   };
+}
+
+interface ITagMergeState {
   result?: Array<{ label: string; value: string }>[];
-  isSearching: boolean;
 }
 
 class TagMerge extends React.PureComponent<ITagMergeProps, ITagMergeState> {
   state: ITagMergeState = {
-    targetTag: {
-      id: null,
-      name: null
-    },
-    result: [],
-    isSearching: false
+    result: []
   };
 
-  static getDerivedStateFromProps(nextProps, prevState) {
+  static getDerivedStateFromProps(nextProps) {
     if (nextProps.targetTag) {
       return { targetTag: nextProps.targetTag };
     }
+
+    return null;
   }
 
   setTargetTag = item => {
-    let { targetTag } = this.state;
-    console.log(item);
+    let targetTag = { id: null, name: null };
     targetTag['name'] = item.label;
     targetTag['id'] = item.value;
-    this.setState({ targetTag });
-    this.props.updateTargetTagFromTagMerge(item);
+    this.props.updateTargetTagFromTagMerge(targetTag);
   };
 
   handleSearch = value => {
@@ -75,13 +62,9 @@ class TagMerge extends React.PureComponent<ITagMergeProps, ITagMergeState> {
     }
   };
 
-  handleInput = value => {
-    console.log(value);
-  };
-
   render() {
-    let { dataModal } = this.props;
-    let { targetTag, result } = this.state;
+    let { dataModal, targetTag } = this.props;
+    let { result } = this.state;
     let listContentData = [];
 
     dataModal &&
@@ -108,20 +91,14 @@ class TagMerge extends React.PureComponent<ITagMergeProps, ITagMergeState> {
             })}
         </div>
         <div className="tag-merge">
-          <p style={{ fontWeight: 500 }}>
+          <div className="tag-search-merge" style={{ fontWeight: 500 }}>
             <Translate contentKey="tag-management.tag-merge-to" />
-          </p>
-          {listContentData && listContentData.length > 0 ? (
-            <FormGroup>
-              <Select
-                value={targetTag.name}
-                onChange={this.setTargetTag}
-                options={result}
-                onInputChange={this.handleSearch}
-                style={{ width: '100px' }}
-              />
-            </FormGroup>
-          ) : null}
+            {listContentData && listContentData.length > 0 ? (
+              <FormGroup>
+                <Select onChange={this.setTargetTag} options={result} onInputChange={this.handleSearch} style={{ width: '100px' }} />
+              </FormGroup>
+            ) : null}
+          </div>
         </div>
       </div>
     );

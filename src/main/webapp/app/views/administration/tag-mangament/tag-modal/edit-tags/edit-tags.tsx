@@ -50,28 +50,26 @@ class TagEdit extends React.Component<ITagEditProps, ITagEditState> {
     return (
       <div className="tag-edit">
         <div className="tag-modal-content no-color">
-          <p>
-            {' '}
+          <div className="tag-edit-attribute">
             <Translate contentKey="tag-management.tag-name" />
-          </p>
-          <Input
-            id="name"
-            type="text"
-            placeholder="Tên"
-            value={singleModalData.name}
-            onChange={event => this.handleInput(event.target.value, 'name')}
-          />
-          <p>
-            {' '}
+            <Input
+              id="name"
+              type="text"
+              placeholder="Tên"
+              value={singleModalData.name}
+              onChange={event => this.handleInput(event.target.value, 'name')}
+            />
+          </div>
+          <div className="tag-edit-attribute">
             <Translate contentKey="tag-management.tag-description" />
-          </p>
-          <Input
-            id="decription"
-            type="text"
-            placeholder="Mô tả"
-            value={singleModalData.description}
-            onChange={event => this.handleInput(event.target.value, 'description')}
-          />
+            <Input
+              id="decription"
+              type="text"
+              placeholder="Mô tả"
+              value={singleModalData.description}
+              onChange={event => this.handleInput(event.target.value, 'description')}
+            />
+          </div>
         </div>
       </div>
     );

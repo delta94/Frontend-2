@@ -1,5 +1,6 @@
 import { TAG_MANAGEMENT } from '../constants/tag-management';
 import { getListTags, postInsertTag, postUpdateTag, postMergeTag, postDeleteTag } from '../services/tag-management';
+import { MODAL_ACTION } from '../../../webapp/app/constants/modal';
 
 export const getListTagDataAction = (textSearch?: string, page?: number, pageSize?: number) => ({
   type: TAG_MANAGEMENT.GET_LIST_TAG,

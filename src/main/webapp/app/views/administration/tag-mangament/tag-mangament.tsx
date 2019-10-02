@@ -13,14 +13,24 @@ import TagAddNew from './tag-add-new/tag-add-new';
 
 export interface ITagManagementProps extends StateProps, DispatchProps {}
 
-export interface ITagManagementState {}
+export interface ITagManagementState {
+  modalState: any;
+}
 class TagManagement extends React.Component<ITagManagementProps, ITagManagementState> {
   state = {};
 
-  componentDidMount() {}
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.modalState) {
+      return {
+        modalState: nextProps.modalState
+      };
+    }
+
+    return null;
+  }
 
   render() {
-    const { modalState } = this.props;
+    let { modalState } = this.props;
 
     return (
       <div className="tag-management">
@@ -49,7 +59,7 @@ class TagManagement extends React.Component<ITagManagementProps, ITagManagementS
 const mapStateToProps = ({ tagDataState, handleModal }: IRootState) => ({
   loading: tagDataState.loading,
   list_tags: tagDataState.list_tags,
-  modalState: handleModal.data
+  modalState: tagDataState.tagResponse
 });
 
 const mapDispatchToProps = {

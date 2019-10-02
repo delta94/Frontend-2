@@ -15,6 +15,7 @@ interface ITagAddNewProps extends StateProps, DispatchProps {}
 interface ITagAddNewState {
   listNewTag: INewTag[];
   textNew?: string;
+  modalState: any;
 }
 
 interface INewTag {
@@ -23,31 +24,34 @@ interface INewTag {
 class TagAddNew extends React.Component<ITagAddNewProps, ITagAddNewState> {
   state = {
     listNewTag: [],
-    textNew: ''
+    textNew: '',
+    modalState: null
   };
 
   handleNewTag = event => {
     event.preventDefault();
     let { listNewTag } = this.state;
     let textNew = event.target.value;
+    if (!textNew.trim()) {
+      textNew = '';
+    }
+
     let listTextSplit = textNew.split('\n');
     listNewTag =
       listTextSplit.length > 0 &&
-      listTextSplit.map(item => ({
-        name: item
-      }));
+      listTextSplit.map(item => {
+        if (item.trim())
+          return {
+            name: item
+          };
+      });
     this.setState({ textNew, listNewTag });
   };
 
   insertNewTag = () => {
     let { listNewTag } = this.state;
-    let { modalState } = this.props;
     if (listNewTag && listNewTag.length > 0) {
       this.props.postInsertTagAction(listNewTag);
-      setTimeout(() => {
-        this.props.getListTagDataAction('', 0, 6);
-        this.props.openModal(modalState);
-      }, 250);
       this.setState({ textNew: '' });
     } else {
       this.props.openModal({
@@ -56,6 +60,15 @@ class TagAddNew extends React.Component<ITagAddNewProps, ITagAddNewState> {
       });
     }
   };
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.modalState) {
+      console.log(nextProps.modalState);
+      return {
+        modalState: nextProps.modalState
+      };
+    }
+  }
 
   componentDidMount() {
     var textAreas = document.getElementsByTagName('textarea');
@@ -105,7 +118,7 @@ class TagAddNew extends React.Component<ITagAddNewProps, ITagAddNewState> {
 const mapStateToProps = ({ tagDataState }: IRootState) => ({
   loading: tagDataState.loading,
   list_tags: tagDataState.list_tags,
-  modalState: tagDataState.postMailRequest
+  modalState: tagDataState.tagResponse
 });
 
 const mapDispatchToProps = {
