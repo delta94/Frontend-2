@@ -44,3 +44,7 @@
 #function {
   width: 25%;
 }
+.input-drag {
+  position: absolute;
+  z-index: 99;
+}

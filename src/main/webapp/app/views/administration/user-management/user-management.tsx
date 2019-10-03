@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Table, Row, Badge, Col } from 'reactstrap';
+import { Button, Table, Row, Label, Col } from 'reactstrap';
 
 import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -101,17 +101,14 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
           <div className="panel">
             <Row>
               <Col md="3">
-                <div className="totalItems">
+                <Label>
                   {' '}
-                  <Translate contentKey="userManagement.home.total-element" interpolate={{ element: totalElements }} />
-                </div>
-              </Col>
-              <Col md="6">
+                  <Translate contentKey="userManagement.home.type" /> :
+                </Label>
                 <UserCategoryTag handleChange={this.handleChange} />
               </Col>
               <Col md="3">
                 <div className="has-search">
-                  <span className=" form-control-feedback" />
                   <input
                     type="text"
                     className="form-control"
@@ -150,7 +147,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                       return (
                         <tr id={event.id} key={`user-${index}`}>
                           <td>{this.state.activePage * this.state.itemsPerPage + index + 1}</td>
-                          <td>{event.name}</td>
+                          <td> {event.name}</td>
                           <td>{event.phone}</td>
                           <td>{event.email}</td>
                           <td>
@@ -172,6 +169,11 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                                   <Translate contentKey="entity.action.edit" />
                                 </span>
                               </Button>
+                              &nbsp;
+                              <Button className="buttonUpdate" tag={Link} to={`${match.url}/${event.id}/update`} color="primary" size="sm">
+                                <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Thông tin</span>
+                              </Button>
+                              &nbsp;
                               <Button
                                 color="danger"
                                 size="sm"

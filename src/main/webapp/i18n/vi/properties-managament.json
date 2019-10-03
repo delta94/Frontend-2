@@ -5,14 +5,21 @@
     "button-add": "Thêm option",
     "button-field": "Thêm mới",
     "function": "Chức năng",
+    "no-record": "Không tìm thấy recrod nào",
+    "cancel": "Hủy bỏ",
+    "recommand": "Đề xuất cho bạn",
+    "search": "Tìm kiếm",
     "form": {
       "name": "Tên trường",
       "type": "Phân loại",
-      "persionalization": "Tham số"
+      "persionalization": "Tham số",
+      "default-value": "Giá trị mặc định",
+      "type-create": "Kiểu dữ liệu"
     },
     "delete": {
+      "button": "Xóa",
       "title": "Xóa thuộc tính",
-      "head-title": "lĩnh vực này có thể được sử dụng trong tự động hóa hoặc chiến dịch. Xóa trường này cũng sẽ xóa bất kỳ dữ liệu nào có trong các trường từ danh bạ của bạn. Các trường và bất kỳ dữ liệu nào sẽ bị xóa vĩnh viễn và không thể hoàn tác",
+      "head-title": "Lĩnh vực này có thể được sử dụng trong tự động hóa hoặc chiến dịch. Xóa trường này cũng sẽ xóa bất kỳ dữ liệu nào có trong các trường từ danh bạ của bạn. Các trường và bất kỳ dữ liệu nào sẽ bị xóa vĩnh viễn và không thể hoàn tác",
       "content-title-1": "Tôi biết rằng tôi đang xóa bất kỳ dữ liệu liên lạc nào trong trường này",
       "content-title-2": "Tôi biết rằng lĩnh vực này có thể được sử dụng trong tự động hóa hoặc chiến dịch. Bằng cách xóa trường này, tôi sẽ xóa chúng khỏi các chiến dịch và tự động hóa tiềm năng",
       "content-title-3": "Tôi biết hành động này không thể hoàn tác"
@@ -21,10 +28,15 @@
       "properties": "Thêm mới thuộc tính"
     },
     "error": {
-      "name": "* Vui lòng nhập tên"
+      "name": "* Vui lòng nhập tên",
+      "option": "* Vui lòng nhập giá trị vào Option",
+      "empty-option": "* Vui lòng thêm Option",
+      "empty-type": " * Vui lòng chọn kiểu dữ liệu"
     },
     "edit": {
-      "complete": " Sửa thuộc tính thành công"
+      "button": "Sửa",
+      "complete": " Sửa thuộc tính thành công",
+      "title": "Sửa thuộc tính"
     }
   }
 }

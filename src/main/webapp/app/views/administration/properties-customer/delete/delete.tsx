@@ -46,7 +46,7 @@ export class Delete extends React.Component<IDeleteProps, IDeleteState> {
     });
   };
   render() {
-    const { postDeleteProp, id } = this.props;
+    const { postDeleteProp, id, loading } = this.props;
     return (
       <span className="d-inline-block mb-2 mr-2">
         <Modal isOpen={this.state.modalDelete} id="content-properties">
@@ -123,11 +123,11 @@ export class Delete extends React.Component<IDeleteProps, IDeleteState> {
                 });
               }}
             >
-              Hủy bỏ
+              <Translate contentKey="properties-management.cancel" />
             </Button>
             <Button
               color="primary"
-              disabled={this.state.valueBtn1 && this.state.valueBtn2 && this.state.valueBtn3 ? false : true}
+              disabled={this.state.valueBtn1 && this.state.valueBtn2 && this.state.valueBtn3 && !loading ? false : true}
               onClick={async () => {
                 await postDeleteProp(id);
                 this.props.getListProp();
@@ -147,7 +147,7 @@ export class Delete extends React.Component<IDeleteProps, IDeleteState> {
                 }
               }}
             >
-              Xóa
+              <Translate contentKey="properties-management.delete.button" />
             </Button>{' '}
           </ModalFooter>
         </Modal>

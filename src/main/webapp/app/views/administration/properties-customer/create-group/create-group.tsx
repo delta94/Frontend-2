@@ -119,7 +119,7 @@ export class CreateGroup extends React.Component<ICreateGroupProps, ICreateGroup
   };
 
   render() {
-    const { listTemp, temp } = this.props;
+    const { listTemp, loading } = this.props;
     let { listCheckBox } = this.state;
     return (
       <span className="d-inline-block mb-2 mr-2">
@@ -134,8 +134,15 @@ export class CreateGroup extends React.Component<ICreateGroupProps, ICreateGroup
             <AvForm>
               <Row>
                 <Col md=" 4" id="has-search">
-                  <Search placeholder="tìm kiếm" onSearch={value => this.props.getListTemp(value)} size="large" enterButton />
-                  <div id="recomand">Recommended for you</div>
+                  <Search
+                    placeholder={translate('properties-management.search')}
+                    onSearch={value => this.props.getListTemp(value)}
+                    size="large"
+                    enterButton
+                  />
+                  <div id="recomand">
+                    <Translate contentKey="properties-management.recommand" />
+                  </div>
                   <div>
                     {listTemp
                       ? listTemp.map((event, index) => {
@@ -160,15 +167,28 @@ export class CreateGroup extends React.Component<ICreateGroupProps, ICreateGroup
                 <Col md="8" id="table-group">
                   <Col md="6">
                     <div>
-                      <Checkbox className="checkbox-all" onChange={event => this.onCheckAllChange('add-all', event.target.checked)}>
-                        Check all
+                      <Checkbox
+                        id="addAll"
+                        className="checkbox-all"
+                        onChange={event => this.onCheckAllChange('add-all', event.target.checked)}
+                      >
+                        <Label for="addAll" className="text-temp">
+                          <Translate contentKey="properties-management.form.name" />
+                        </Label>
                       </Checkbox>
                       {listCheckBox
                         ? listCheckBox.map((item, index) => {
                             return (
                               <div key={index}>
-                                <Checkbox onChange={event => this.onCheckAllChange(item.id, event.target.checked)} checked={item.checked} />
-                                <Label className="text-temp">{item.title}</Label>
+                                <Checkbox
+                                  id={String(item.id)}
+                                  onChange={event => this.onCheckAllChange(item.id, event.target.checked)}
+                                  checked={item.checked}
+                                >
+                                  <Label for={String(item.id)} className="text-temp">
+                                    {item.title}
+                                  </Label>{' '}
+                                </Checkbox>
                               </div>
                             );
                           })
@@ -178,7 +198,10 @@ export class CreateGroup extends React.Component<ICreateGroupProps, ICreateGroup
                     </div>
                   </Col>
                   <Col md="6" id="table-right">
-                    <Label className="type-temp"> Type</Label>
+                    <Label className="type-temp">
+                      {' '}
+                      <Translate contentKey="properties-management.form.type" />
+                    </Label>
                     {listCheckBox
                       ? listCheckBox.map((event, index) => {
                           return (
@@ -195,9 +218,10 @@ export class CreateGroup extends React.Component<ICreateGroupProps, ICreateGroup
           </ModalBody>
           <ModalFooter>
             <Button color="link" onClick={this.toggle}>
-              Hủy bỏ
+              <Translate contentKey="properties-management.cancel" />
             </Button>
             <Button
+              disabled={loading}
               onClick={async () => {
                 let addText;
                 let list = listCheckBox
@@ -232,7 +256,7 @@ export class CreateGroup extends React.Component<ICreateGroupProps, ICreateGroup
               }}
               color="primary"
             >
-              Tạo mới
+              <Translate contentKey="properties-management.button-field" />
             </Button>{' '}
           </ModalFooter>
         </Modal>

@@ -19,7 +19,7 @@ export const optionType = [
   { value: 'Text Input', label: 'Text Input' },
   { value: 'Dropdown List', label: 'Dropdown' },
   { value: 'Radio', label: 'Radio Buttons' },
-  { value: 'Checkbox', label: 'Check Box(es)' },
+  { value: 'Checkbox', label: 'Check Boxes' },
   { value: 'Date', label: 'Date' }
 ];
 
@@ -38,6 +38,7 @@ export interface ICreateState {
   options: any[];
   addComplete: boolean;
   validateOption: string;
+  textError: string;
 }
 
 export class Create extends React.Component<ICreateProps, ICreateState> {
@@ -51,7 +52,8 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
     validateName: '',
     options: [],
     addComplete: false,
-    validateOption: ''
+    validateOption: '',
+    textError: ''
   };
   componentWillReceiveProps(nextProps) {
     this.setState({
@@ -65,7 +67,13 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
       modal: !this.state.modal,
       validateName: '',
       options: [],
-      validateOption: ''
+      validateOption: '',
+      valueName: '',
+      textError: '',
+      selectedOptionType: {
+        value: '',
+        label: ''
+      }
     });
   };
 
@@ -88,13 +96,11 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
           type: selectedOptionType.value
         };
         options.push(listOptions);
-        this.setState({ options });
+        this.setState({ options, textError: '' });
       }
     }
     if (selectedOption.value === 'Text Input' || selectedOption.value === 'Date' || selectedOption.value === '') {
-      this.setState({
-        options: []
-      });
+      this.setState({ options: [], validateOption: '', textError: '' });
     }
   };
 
@@ -105,23 +111,16 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
     if (!valueName.trim()) {
       this.setState({ validateName: translate('properties-management.error.name') });
     } else {
-      this.setState({
-        validateName: ''
-      });
+      this.setState({ validateName: '' });
     }
   };
 
-  addField = async () => {
-    let { valueName, options, selectedOptionType, addComplete } = this.state;
-    const { insertProp, getListProp } = this.props;
+  addField = () => {
+    let { valueName, options, selectedOptionType, validateOption } = this.state;
     if (!valueName.trim()) {
-      this.setState({
-        validateName: translate('properties-management.error.name')
-      });
-    } else if (valueName === 'Frist Name' || valueName === 'Last Name' || valueName === 'Email' || valueName === 'Phone') {
-      this.setState({
-        validateName: 'Không được nhập tên trùng '
-      });
+      this.setState({ validateName: translate('properties-management.error.name') });
+    } else if (validateOption) {
+      this.setState({ validateOption: translate('properties-management.error.option') });
     } else {
       let valueTextbox = options.map(event => {
         let arrayCategories = $(`input#${event.id}`).val();
@@ -134,13 +133,31 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
           fieldValue: selectedOptionType.value === 'Date' || selectedOptionType.value === 'Text Input' ? '' : valueTextbox.join('||')
         }
       ];
+      this.handleSubmit(valueTextbox, addText);
+    }
+  };
+
+  handleSubmit = async (valueTextbox, addText) => {
+    let { selectedOptionType, addComplete } = this.state;
+    const { insertProp, getListProp } = this.props;
+    if (!(selectedOptionType.value === 'Text Input' || selectedOptionType.value === 'Date' || selectedOptionType.value === '')) {
+      if (!String(valueTextbox)) {
+        this.setState({ textError: translate('properties-management.error.empty-option') });
+      } else {
+        await insertProp(addText);
+        await getListProp();
+        this.props.onClick(addComplete);
+        this.setState({ modal: !this.state.modal, valueName: '' });
+      }
+    } else if (!selectedOptionType.value) {
+      this.setState({ textError: translate('properties-management.error.empty-type') });
+    } else {
       await insertProp(addText);
       await getListProp();
-
       this.props.onClick(addComplete);
-
       this.setState({
-        modal: !this.state.modal
+        modal: !this.state.modal,
+        valueName: ''
       });
     }
   };
@@ -156,7 +173,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
       type: selectedOptionType.value
     };
     options.push(listOptions);
-    this.setState({ options });
+    this.setState({ options, textError: '' });
   };
 
   deleteField = id => {
@@ -167,11 +184,13 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
 
   render() {
     let { options, selectedOptionType } = this.state;
+    const { loading } = this.props;
     return (
       <span className="d-inline-block mb-2 mr-2">
         <Button className="btn btn-primary float-right jh-create-entity" color="primary" onClick={this.toggle}>
           <FontAwesomeIcon icon="plus" /> <Translate contentKey="properties-management.button-field" />
         </Button>
+
         <Modal isOpen={this.state.modal} id="content-properties">
           <ModalHeader toggle={this.toggle} id="create-properties">
             <Translate contentKey="properties-management.add.properties" />
@@ -181,16 +200,20 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
               <Row>
                 <Col md="12">
                   <div className="option-create">
-                    <Label>Tên trường</Label>
+                    <Label>
+                      <Translate contentKey="properties-management.form.name" />
+                    </Label>
                     <Input maxLength={160} name="name" label="Field Name" onChange={this.getValueName} required />
                     <p className="error">{this.state.validateName}</p>
                   </div>
                   <div>
                     <Col md="5" className="option-create">
-                      <Label>Kểu dữ liệu</Label>
+                      <Label>
+                        <Translate contentKey="properties-management.form.type-create" />
+                      </Label>
                       <Select
                         className="select-type"
-                        placeholder="Dropdown"
+                        placeholder="Chọn kiểu"
                         value={selectedOptionType.value ? selectedOptionType : ''}
                         onChange={this.handleChangeType}
                         options={optionType}
@@ -199,6 +222,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
                   </div>
                 </Col>
               </Row>
+              <p className="error-text">{this.state.textError}</p>
               {selectedOptionType.value === 'Text Input' || selectedOptionType.value === 'Date' || selectedOptionType.value === '' ? (
                 ''
               ) : (
@@ -245,13 +269,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
                         </td>
                       </tr>
                     );
-                    return isDragged ? (
-                      <Table responsive striped>
-                        <tbody className="table-drag">{row}</tbody>
-                      </Table>
-                    ) : (
-                      row
-                    );
+                    return isDragged ? <div className="input-drag">{row}</div> : row;
                   }}
                 />
               )}
@@ -267,9 +285,10 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
           </ModalBody>
           <ModalFooter>
             <Button color="link" onClick={this.toggle}>
-              Hủy bỏ
+              <Translate contentKey="properties-management.cancel" />
             </Button>
             <Button
+              disabled={loading}
               onClick={() => {
                 let valueOption = options
                   .map(event => {
@@ -294,7 +313,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
               }}
               color="primary"
             >
-              Tạo mới
+              <Translate contentKey="properties-management.button-field" />
             </Button>{' '}
           </ModalFooter>
         </Modal>

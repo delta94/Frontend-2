@@ -42,12 +42,12 @@ export class Edit extends React.Component<IEditProps, IEditState> {
   };
 
   render() {
-    const { getList, id } = this.props;
+    const { getList, id, loading } = this.props;
     return (
       <span className="d-inline-block mb-2 mr-2">
         <Modal isOpen={this.state.modal} id="content-properties">
           <ModalHeader toggle={this.toggle} id="create-properties">
-            sửa thuộc tính
+            <Translate contentKey="properties-management.no-record" />
           </ModalHeader>
           <ModalBody>
             <AvForm>
@@ -57,11 +57,15 @@ export class Edit extends React.Component<IEditProps, IEditState> {
                     <Row key={index}>
                       <Col md="12">
                         <div className="option-create">
-                          <Label>Field Name</Label>
+                          <Label>
+                            <Translate contentKey="properties-management.form.name" />{' '}
+                          </Label>
                           <Input maxLength={160} defaultValue={event.title} id="field-name" />
                         </div>
                         <div className="option-create">
-                          <Translate contentKey="properties-management.form.persionalization" />
+                          <Label>
+                            <Translate contentKey="properties-management.form.persionalization" />
+                          </Label>
                           <Input
                             maxLength={160}
                             addonBefore="%"
@@ -72,7 +76,9 @@ export class Edit extends React.Component<IEditProps, IEditState> {
                           />
                         </div>
                         <div className="option-create">
-                          <Label>Default value</Label>
+                          <Label>
+                            <Translate contentKey="properties-management.form.default-value" />
+                          </Label>
                           <Input maxLength={160} id="default-value" defaultValue={event.fieldValue} />
                         </div>
                       </Col>
@@ -92,9 +98,10 @@ export class Edit extends React.Component<IEditProps, IEditState> {
                 });
               }}
             >
-              Hủy bỏ
+              <Translate contentKey="properties-management.cancel" />
             </Button>
             <Button
+              disabled={loading}
               color="primary"
               onClick={async () => {
                 let data = {
@@ -113,7 +120,7 @@ export class Edit extends React.Component<IEditProps, IEditState> {
                 });
               }}
             >
-              Sửa
+              <Translate contentKey="properties-management.edit.button" />
             </Button>{' '}
           </ModalFooter>
         </Modal>

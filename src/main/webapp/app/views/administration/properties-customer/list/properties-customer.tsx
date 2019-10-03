@@ -185,9 +185,19 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
                       </th>
                     </tr>
                   </thead>
-                  <tbody key={Math.random()} {...props}>
-                    {children}
-                  </tbody>
+                  {this.props.getList.length < 1 ? (
+                    <tbody>
+                      <tr>
+                        <td colSpan={4}>
+                          <Translate contentKey="properties-management.no-record" />
+                        </td>{' '}
+                      </tr>{' '}
+                    </tbody>
+                  ) : (
+                    <tbody key={Math.random()} {...props}>
+                      {children}
+                    </tbody>
+                  )}
                 </Table>
               )}
               renderItem={({ value, props, isDragged }) => {
@@ -246,6 +256,7 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
                 return isDragged ? <div className="table-drag">{row}</div> : row;
               }}
             />
+
             <Delete isOpen={this.state.openModalDelete} id={this.state.propsId} ramdomId={this.state.ramdomID} />
             <Edit isOpen={this.state.openModalEdit} id={this.state.propsId} ramdomId={this.state.ramdomID} />
           </div>
