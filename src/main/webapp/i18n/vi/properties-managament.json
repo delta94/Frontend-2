@@ -8,7 +8,7 @@
     "form": {
       "name": "Tên trường",
       "type": "Phân loại",
-      "persionalization": "Persionalization Tag"
+      "persionalization": "Tham số"
     },
     "delete": {
       "title": "Xóa thuộc tính",

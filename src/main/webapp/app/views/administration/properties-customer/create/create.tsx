@@ -64,17 +64,38 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
     this.setState({
       modal: !this.state.modal,
       validateName: '',
-      options: []
+      options: [],
+      validateOption: ''
     });
   };
 
   handleChangeType = selectedOption => {
+    let { options, selectedOptionType } = this.state;
     this.setState({
       selectedOptionType: {
         value: selectedOption.value,
         label: selectedOption.label
       }
     });
+    if (options.length < 1) {
+      if (!(selectedOption.value === 'Text Input' || selectedOption.value === 'Date' || selectedOption.value === '')) {
+        let listOptions = {
+          id: Math.random()
+            .toString(36)
+            .replace(/[^a-z]+/g, '')
+            .substr(0, 5),
+          name: selectedOptionType.label,
+          type: selectedOptionType.value
+        };
+        options.push(listOptions);
+        this.setState({ options });
+      }
+    }
+    if (selectedOption.value === 'Text Input' || selectedOption.value === 'Date' || selectedOption.value === '') {
+      this.setState({
+        options: []
+      });
+    }
   };
 
   getValueName = event => {
@@ -166,7 +187,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
                   </div>
                   <div>
                     <Col md="5" className="option-create">
-                      <Label>Kểu Type</Label>
+                      <Label>Kểu dữ liệu</Label>
                       <Select
                         className="select-type"
                         placeholder="Dropdown"
@@ -178,13 +199,6 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
                   </div>
                 </Col>
               </Row>
-              <div className="option-add">
-                {selectedOptionType.value === 'Text Input' || selectedOptionType.value === 'Date' || selectedOptionType.value === '' ? (
-                  ''
-                ) : (
-                  <Label>Group</Label>
-                )}
-              </div>
               {selectedOptionType.value === 'Text Input' || selectedOptionType.value === 'Date' || selectedOptionType.value === '' ? (
                 ''
               ) : (
@@ -197,13 +211,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
                     this.setState({ options });
                   }}
                   renderList={({ children, props, isDragged }) => (
-                    <Table
-                      responsive
-                      striped
-                      style={{
-                        cursor: isDragged ? 'grabbing' : undefined
-                      }}
-                    >
+                    <Table responsive striped style={{ cursor: isDragged ? 'grabbing' : undefined }}>
                       <tbody key={Math.random()} {...props}>
                         {children}
                       </tbody>
@@ -211,14 +219,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
                   )}
                   renderItem={({ value, props, isDragged }) => {
                     const row = (
-                      <tr
-                        {...props}
-                        {...props.onKeyDown}
-                        style={{
-                          ...props.style,
-                          cursor: isDragged ? 'grabbing' : 'grab'
-                        }}
-                      >
+                      <tr {...props} style={{ ...props.style, cursor: isDragged ? 'grabbing' : 'grab' }}>
                         <td>
                           <Input
                             maxLength={160}
