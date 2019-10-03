@@ -103,6 +103,7 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
       }
     });
 
+    localStorage.setItem('pageIndex', '0');
     this.getListTagDataAction(0, 6, textSearch);
   }
 
@@ -184,7 +185,7 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
   callData = () => {
     let { textSearch } = this.state;
     let pageIndex = localStorage.getItem('pageIndex');
-    this.props.getListTagDataAction(textSearch, pageIndex, 6);
+    this.props.getListTagDataAction(textSearch, parseInt(pageIndex), 6);
   };
 
   render() {
