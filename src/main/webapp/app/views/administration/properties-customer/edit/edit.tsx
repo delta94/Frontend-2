@@ -58,15 +58,22 @@ export class Edit extends React.Component<IEditProps, IEditState> {
                       <Col md="12">
                         <div className="option-create">
                           <Label>Field Name</Label>
-                          <Input defaultValue={event.title} id="field-name" />
+                          <Input maxLength={160} defaultValue={event.title} id="field-name" />
                         </div>
                         <div className="option-create">
                           <Translate contentKey="properties-management.form.persionalization" />
-                          <Input addonBefore="%" addonAfter="%" defaultValue={event.type} onChange={this.handlerChange} id="tag" />
+                          <Input
+                            maxLength={160}
+                            addonBefore="%"
+                            addonAfter="%"
+                            defaultValue={event.type}
+                            onChange={this.handlerChange}
+                            id="tag"
+                          />
                         </div>
                         <div className="option-create">
                           <Label>Default value</Label>
-                          <Input id="default-value" defaultValue={event.fieldValue} />
+                          <Input maxLength={160} id="default-value" defaultValue={event.fieldValue} />
                         </div>
                       </Col>
                     </Row>
@@ -102,7 +109,7 @@ export class Edit extends React.Component<IEditProps, IEditState> {
                   show: true,
                   type: 'success',
                   title: translate('modal-data.title.success'),
-                  text: translate('alert.success-properties')
+                  text: translate('properties-management.edit.complete')
                 });
               }}
             >

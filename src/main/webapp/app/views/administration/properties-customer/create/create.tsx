@@ -37,6 +37,7 @@ export interface ICreateState {
   validateName: string;
   options: any[];
   addComplete: boolean;
+  validateOption: string;
 }
 
 export class Create extends React.Component<ICreateProps, ICreateState> {
@@ -49,7 +50,8 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
     valueName: '',
     validateName: '',
     options: [],
-    addComplete: false
+    addComplete: false,
+    validateOption: ''
   };
   componentWillReceiveProps(nextProps) {
     this.setState({
@@ -91,7 +93,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
   addField = async () => {
     let { valueName, options, selectedOptionType, addComplete } = this.state;
     const { insertProp, getListProp } = this.props;
-    if (!valueName) {
+    if (!valueName.trim()) {
       this.setState({
         validateName: translate('properties-management.error.name')
       });
@@ -159,7 +161,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
                 <Col md="12">
                   <div className="option-create">
                     <Label>Tên trường</Label>
-                    <Input name="name" label="Field Name" onChange={this.getValueName} required />
+                    <Input maxLength={160} name="name" label="Field Name" onChange={this.getValueName} required />
                     <p className="error">{this.state.validateName}</p>
                   </div>
                   <div>
@@ -218,7 +220,13 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
                         }}
                       >
                         <td>
-                          <Input name={value.name} id={value.id} defaultValue={$(`input#${value.id}`).val()} placeholder={value.type} />
+                          <Input
+                            maxLength={160}
+                            name={value.name}
+                            id={value.id}
+                            defaultValue={$(`input#${value.id}`).val()}
+                            placeholder={'Option'}
+                          />
                         </td>
                         <td className="text-center" id="function">
                           <div className="btn-group flex-btn-group-container">
@@ -246,6 +254,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
                   }}
                 />
               )}
+              <p className="error-text">{this.state.validateOption}</p>
               {selectedOptionType.value === 'Text Input' || selectedOptionType.value === 'Date' || selectedOptionType.value === '' ? (
                 ''
               ) : (
@@ -259,7 +268,31 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
             <Button color="link" onClick={this.toggle}>
               Hủy bỏ
             </Button>
-            <Button onClick={this.addField} color="primary">
+            <Button
+              onClick={() => {
+                let valueOption = options
+                  .map(event => {
+                    if ($(`input#${event.id}`).val() === '') {
+                      return event.id;
+                    }
+                  })
+                  .filter(function(obj) {
+                    return obj;
+                  });
+                let removeDuplicate = String(Array.from(new Set(valueOption)));
+                if (removeDuplicate.trim()) {
+                  this.setState({
+                    validateOption: ' * Vui lòng nhập giá trị vào Option'
+                  });
+                } else {
+                  this.addField();
+                  this.setState({
+                    validateOption: ''
+                  });
+                }
+              }}
+              color="primary"
+            >
               Tạo mới
             </Button>{' '}
           </ModalFooter>

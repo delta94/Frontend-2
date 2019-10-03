@@ -56,7 +56,7 @@ export class CreateGroup extends React.Component<ICreateGroupProps, ICreateGroup
   };
 
   componentDidMount() {
-    this.props.getListTemp();
+    this.props.getListTemp('');
     this.props.getTempId(this.state.activeTab);
   }
 
@@ -134,7 +134,7 @@ export class CreateGroup extends React.Component<ICreateGroupProps, ICreateGroup
             <AvForm>
               <Row>
                 <Col md=" 4" id="has-search">
-                  <Search placeholder="input search text" onSearch={value => console.log(value)} size="large" enterButton />
+                  <Search placeholder="tìm kiếm" onSearch={value => this.props.getListTemp(value)} size="large" enterButton />
                   <div id="recomand">Recommended for you</div>
                   <div>
                     {listTemp

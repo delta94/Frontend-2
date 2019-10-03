@@ -3,11 +3,11 @@
     "title": "Danh sách các trường thuộc tính",
     "button-template": "Thêm từ template",
     "button-add": "Thêm option",
-    "button-field": "Thêm 1 field",
+    "button-field": "Thêm mới",
     "function": "Chức năng",
     "form": {
-      "name": "Field Name",
-      "type": "Type",
+      "name": "Tên trường",
+      "type": "Phân loại",
       "persionalization": "Persionalization Tag"
     },
     "delete": {
@@ -22,6 +22,9 @@
     },
     "error": {
       "name": "* Vui lòng nhập tên"
+    },
+    "edit": {
+      "complete": " Sửa thuộc tính thành công"
     }
   }
 }

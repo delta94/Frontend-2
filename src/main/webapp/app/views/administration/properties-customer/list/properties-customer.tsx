@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Table, Row, Badge, Col } from 'reactstrap';
+import { Button, Table, Row, Input, Col } from 'reactstrap';
 import Create from '../create/create';
 import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -130,7 +130,7 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
               <Col md="5" className="search-bar-properties">
                 <Select
                   className="select-bar"
-                  placeholder="Any type"
+                  placeholder="Chọn type"
                   value={selectedOption.label ? selectedOption : ''}
                   onChange={this.handleChange}
                   options={option}
@@ -138,7 +138,8 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
                 <Col md="9">
                   <div className="has-search">
                     <span className=" form-control-feedback" />
-                    <input
+                    <Input
+                      maxLength={160}
                       type="text"
                       className="form-control"
                       onKeyDown={this.searchText}
@@ -167,16 +168,10 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
                 this.setState({ dropItem });
               }}
               renderList={({ children, props, isDragged }) => (
-                <Table
-                  responsive
-                  striped
-                  style={{
-                    cursor: isDragged ? 'grabbing' : undefined
-                  }}
-                >
+                <Table responsive striped>
                   <thead>
                     <tr className="text-center">
-                      <th className="hand">
+                      <th className="hand" id="first-head">
                         <Translate contentKey="properties-management.form.name" />
                       </th>
                       <th className="hand">
@@ -197,13 +192,7 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
               )}
               renderItem={({ value, props, isDragged }) => {
                 const row = (
-                  <tr
-                    {...props}
-                    style={{
-                      ...props.style,
-                      cursor: isDragged ? 'grabbing' : 'grab'
-                    }}
-                  >
+                  <tr {...props}>
                     <td>{value.title}</td>
                     <td>{value.type}</td>
                     <td>{value.personalizationTag}</td>
@@ -254,13 +243,7 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
                     </td>
                   </tr>
                 );
-                return isDragged ? (
-                  <Table responsive striped>
-                    <tbody className="table-drag">{row}</tbody>
-                  </Table>
-                ) : (
-                  row
-                );
+                return isDragged ? <div className="table-drag">{row}</div> : row;
               }}
             />
             <Delete isOpen={this.state.openModalDelete} id={this.state.propsId} ramdomId={this.state.ramdomID} />
