@@ -3,10 +3,7 @@ import { connect } from 'react-redux';
 import { Button, Table, Row, Badge, Col } from 'reactstrap';
 
 import { Translate, translate } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Loader as LoaderAnim } from 'react-loaders';
-import Loader from 'react-loader-advanced';
-import SweetAlert from 'sweetalert-react';
+import { limitString } from './../../tag-list/tag-list';
 
 export interface ITagDeleteProps extends StateProps, DispatchProps {
   dataModal?: any;
@@ -72,7 +69,7 @@ class TagDelete extends React.PureComponent<ITagDeleteProps, ITagDeleteState> {
             listContentData.map((item, index) => {
               return (
                 <label className="label-delete" id={item.id} key={index}>
-                  {item.name}
+                  {limitString(item.name)}
                 </label>
               );
             })}

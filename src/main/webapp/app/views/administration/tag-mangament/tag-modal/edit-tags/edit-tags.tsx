@@ -39,7 +39,7 @@ class TagEdit extends React.Component<ITagEditProps, ITagEditState> {
   handleInput = (value, type) => {
     let { singleModalData } = this.state;
     singleModalData[type] = value;
-    let updateTag = { id: singleModalData.id, description: singleModalData.description, name: singleModalData.name };
+    let updateTag = singleModalData;
     this.setState({ singleModalData });
     this.props.updateValueFromTagEdit(updateTag);
   };
@@ -58,6 +58,7 @@ class TagEdit extends React.Component<ITagEditProps, ITagEditState> {
               placeholder="Tên"
               value={singleModalData.name}
               onChange={event => this.handleInput(event.target.value, 'name')}
+              maxLength={160}
             />
           </div>
           <div className="tag-edit-attribute">
@@ -68,6 +69,7 @@ class TagEdit extends React.Component<ITagEditProps, ITagEditState> {
               placeholder="Mô tả"
               value={singleModalData.description}
               onChange={event => this.handleInput(event.target.value, 'description')}
+              maxLength={160}
             />
           </div>
         </div>

@@ -34,6 +34,8 @@ interface ITagModalProps extends StateProps, DispatchProps {
   closeFixModalData: Function;
   title?: string;
   singleModalData?: any;
+  callData: Function;
+  activePage?: number;
 }
 
 interface ITagModalState {
@@ -106,39 +108,46 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
     return null;
   }
 
-  reUseFunction = () => {
-    let { param } = this.props;
+  async reUseFunction() {
+    let { param, activePage } = this.props;
     switch (param) {
       case DELETE_TAG:
-        this.deleteTagFunction();
+        await this.deleteTagFunction();
         break;
       case MERGE_TAG:
-        this.mergeTagFunction();
+        await this.mergeTagFunction();
         break;
       case EDIT_TAG:
-        this.updateTagFunction();
+        await this.updateTagFunction();
         break;
       default:
         break;
     }
 
+    await this.props.callData();
     this.props.closeFixModalData();
-  };
+  }
 
   updateValueFromTagEdit = singleModalData => {
     this.setState({ singleModalData });
+  };
+
+  removeSingleData = () => {
+    this.setState({
+      singleModalData: null
+    });
   };
 
   updateTargetTagFromTagMerge = targetTag => {
     this.setState({ targetTag });
   };
 
-  updateTagFunction = () => {
+  async updateTagFunction() {
     let { singleModalData } = this.state;
-    this.props.postUpdateTagAction(singleModalData);
-  };
+    await this.props.postUpdateTagAction(singleModalData);
+  }
 
-  deleteTagFunction = () => {
+  async deleteTagFunction() {
     let { singleModalData, dataModal } = this.props;
     let listIdTag = [];
 
@@ -148,10 +157,10 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
       listIdTag = dataModal.map(item => ({ id: item.id }));
     }
 
-    this.props.postDeleteTagAction(listIdTag);
-  };
+    await this.props.postDeleteTagAction(listIdTag);
+  }
 
-  mergeTagFunction = () => {
+  async mergeTagFunction() {
     let { singleModalData, dataModal } = this.props;
     let { targetTag } = this.state;
     let listIdTag = [];
@@ -166,11 +175,11 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
       });
     }
 
-    this.props.postMergeTagAction(targetTag.id, listIdTag);
-  };
+    await this.props.postMergeTagAction(targetTag.id, listIdTag);
+  }
 
   render() {
-    let { openFixModal, param, dataModal, singleModalData } = this.props;
+    let { openFixModal, param, dataModal, singleModalData, activePage } = this.props;
     let { option, targetTag, modalTitle } = this.state;
     let extendComponent: any = null;
     let color: string = 'primary';
@@ -202,10 +211,16 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
           <ModalHeader>{modalTitle}</ModalHeader>
           <ModalBody>{extendComponent}</ModalBody>
           <ModalFooter>
-            <Button color="none" onClick={this.props.closeFixModalData}>
+            <Button
+              color="none"
+              onClick={() => {
+                this.props.closeFixModalData();
+                this.removeSingleData();
+              }}
+            >
               {option.rightButton ? option.rightButton : 'Next'}
             </Button>
-            <Button color={color} onClick={this.reUseFunction}>
+            <Button color={color} onClick={() => this.reUseFunction()}>
               {option.leftButton ? option.leftButton : 'Cancel'}
             </Button>
           </ModalFooter>

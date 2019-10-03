@@ -40,34 +40,42 @@ class TagAddNew extends React.Component<ITagAddNewProps, ITagAddNewState> {
     listNewTag =
       listTextSplit.length > 0 &&
       listTextSplit.map(item => {
-        if (item.trim())
+        if (item.trim() !== '') {
           return {
-            name: item
+            name: item.trim()
           };
+        }
+
+        return {
+          name: ''
+        };
       });
+
     this.setState({ textNew, listNewTag });
   };
 
-  insertNewTag = () => {
+  async insertNewTag() {
     let { listNewTag } = this.state;
     if (listNewTag && listNewTag.length > 0) {
-      this.props.postInsertTagAction(listNewTag);
       this.setState({ textNew: '' });
+      await this.props.postInsertTagAction(listNewTag);
+      await this.props.getListTagDataAction('', 0, 6);
     } else {
       this.props.openModal({
         type: WARNING,
-        title: 'Bạn cần nhập tên tags'
+        title: 'Bạn cần nhập tên thẻ'
       });
     }
-  };
+  }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.modalState) {
-      console.log(nextProps.modalState);
       return {
         modalState: nextProps.modalState
       };
     }
+
+    return null;
   }
 
   componentDidMount() {
@@ -79,8 +87,6 @@ class TagAddNew extends React.Component<ITagAddNewProps, ITagAddNewState> {
 
   render() {
     let { textNew } = this.state;
-    const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
-    let tagInputHolder = translate('tag-management.tag-1') + '\n' + translate('tag-management.tag-2');
 
     return (
       <div className="tag-add-new b-r">
@@ -99,14 +105,14 @@ class TagAddNew extends React.Component<ITagAddNewProps, ITagAddNewState> {
           type="textarea"
           name="text"
           id="add-new-tag"
-          placeholder={`${tagInputHolder}`}
+          placeholder="Thẻ thứ nhất \nThẻ thứ hai"
           value={textNew}
           onChange={this.handleNewTag}
           maxLength={160}
           row={4}
         />
         <div className="btn-add-tag">
-          <Button color="success" size="small" onClick={this.insertNewTag} disabled={!(textNew && textNew.length > 0)}>
+          <Button color="success" size="small" onClick={() => this.insertNewTag()} disabled={!(textNew && textNew.length > 0)}>
             <Translate contentKey="tag-management.tag-add-new" />
           </Button>
         </div>

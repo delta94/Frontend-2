@@ -46,14 +46,19 @@ interface IItemCheckBox {
   ITags;
   checked: boolean;
 }
-let limitString = (value: string) => {
+
+export const limitString = (value: string, numberLimit?: number) => {
   let newValue = '';
+  let newNumberLimit = 18;
+  if (numberLimit) {
+    numberLimit = numberLimit;
+  }
 
   if (value === null) {
     return '';
   } else {
-    if (value.length > 20) {
-      for (let i = 0; i < 20; i++) {
+    if (value.length > newNumberLimit) {
+      for (let i = 0; i < newNumberLimit; i++) {
         newValue += value[i];
       }
 
@@ -67,7 +72,7 @@ let limitString = (value: string) => {
 
 class TagList extends React.Component<ITagListProps, ITagListState> {
   state = {
-    activePage: 2,
+    activePage: 0,
     pageCount: 1,
     textSearch: '',
     checkAll: false,
@@ -171,9 +176,20 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
     this.setState({ openFixModal: !openFixModal });
   };
 
+  setPageIndex = event => {
+    localStorage.setItem('pageIndex', event);
+    this.callData();
+  };
+
+  callData = () => {
+    let { textSearch } = this.state;
+    let pageIndex = localStorage.getItem('pageIndex');
+    this.props.getListTagDataAction(textSearch, pageIndex, 6);
+  };
+
   render() {
-    let { loading, size, totalPages, list_tags } = this.props;
-    let { activePage, listCheckBox, textSearch, openFixModal, dataModal, param, singleModalData } = this.state;
+    let { loading, totalPages, list_tags } = this.props;
+    let { listCheckBox, textSearch, openFixModal, dataModal, param, singleModalData, activePage } = this.state;
     let isDisable = true;
     listCheckBox.forEach(item => {
       if (item.checked) {
@@ -191,6 +207,7 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
           dataModal={dataModal}
           closeFixModalData={this.closeFixModalData}
           singleModalData={singleModalData}
+          callData={this.callData}
         />
         <Loader message={spinner1} show={loading} priority={1}>
           <div>
@@ -249,7 +266,7 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
                           />
                         </td>
                         <td colSpan={30} id="name">
-                          <span> {limitString(item.name)}</span>
+                          <span> {limitString(item.name, 16)}</span>
                         </td>
                         <td colSpan={20}>{item.contactNumbers}</td>
                         <td colSpan={30} id="description">
@@ -271,7 +288,9 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
                     );
                   })
                 ) : (
-                  <div className="none-data">None Data</div>
+                  <div className="none-data">
+                    <Translate contentKey="tag-management.none-tag-data" />
+                  </div>
                 )}
               </tbody>
             </Table>
@@ -279,22 +298,23 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
           </div>
         </Loader>
         <div className="navigation ">
-          <Row className="justify-content-center">
-            <ReactPaginate
-              previousLabel={'<'}
-              nextLabel={'>'}
-              breakLabel={'...'}
-              breakClassName={'break-me'}
-              pageCount={size}
-              marginPagesDisplayed={1}
-              pageRangeDisplayed={4}
-              onPageChange={event => this.props.getListTagDataAction(textSearch, event.selected, 6)}
-              containerClassName={'pagination'}
-              subContainerClassName={'pages pagination'}
-              activeClassName={'active'}
-              forcePage={activePage}
-            />
-          </Row>
+          {totalPages && totalPages >= 1 ? (
+            <Row className="justify-content-center">
+              <ReactPaginate
+                previousLabel={'<'}
+                nextLabel={'>'}
+                breakLabel={'...'}
+                breakClassName={'break-me'}
+                pageCount={totalPages}
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={5}
+                onPageChange={event => this.setPageIndex(event.selected)}
+                containerClassName={'pagination'}
+                subContainerClassName={'pages pagination'}
+                activeClassName={'active'}
+              />
+            </Row>
+          ) : null}
         </div>
       </div>
     );
@@ -304,9 +324,8 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
 const mapStateToProps = ({ tagDataState }: IRootState) => ({
   loading: tagDataState.loading,
   list_tags: tagDataState.list_tags,
-  size: tagDataState.size,
-  totalElements: tagDataState.totalElements,
-  totalPages: tagDataState.totalPages
+  totalPages: tagDataState.totalPages,
+  totalElements: tagDataState.totalElements
 });
 
 const mapDispatchToProps = { getListTagDataAction };

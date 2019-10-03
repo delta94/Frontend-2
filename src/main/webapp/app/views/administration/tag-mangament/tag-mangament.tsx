@@ -13,9 +13,7 @@ import TagAddNew from './tag-add-new/tag-add-new';
 
 export interface ITagManagementProps extends StateProps, DispatchProps {}
 
-export interface ITagManagementState {
-  modalState: any;
-}
+export interface ITagManagementState {}
 class TagManagement extends React.Component<ITagManagementProps, ITagManagementState> {
   state = {};
 

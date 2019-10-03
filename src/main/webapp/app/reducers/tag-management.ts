@@ -58,8 +58,8 @@ export default (state: TagDataState = initialDataState, action): TagDataState =>
         ...state,
         loading: false,
         tagResponse: {
-          type: 'success',
-          text: 'Email không hợp lệ',
+          type: ERROR,
+          text: 'Xóa thẻ thất bại',
           title: 'Thông báo',
           show: true
         }
@@ -71,7 +71,7 @@ export default (state: TagDataState = initialDataState, action): TagDataState =>
         loading: false,
         tagResponse: {
           type: ERROR,
-          text: 'Thêm mới tag không thành công',
+          text: 'Thêm mới thẻ không thành công',
           title: 'Thông báo',
           show: true
         }
@@ -83,8 +83,8 @@ export default (state: TagDataState = initialDataState, action): TagDataState =>
         loading: false,
         tagResponse: {
           type: ERROR,
-          text: 'Gộp tag thất bại',
-          title: 'Thất bại',
+          text: 'Gộp thẻ thất bại',
+          title: 'Thông báo',
           show: true
         }
       };
@@ -94,21 +94,20 @@ export default (state: TagDataState = initialDataState, action): TagDataState =>
         ...state,
         loading: false,
         tagResponse: {
-          type: 'success',
-          text: 'Email không hợp lệ',
+          type: ERROR,
+          text: 'Sửa thẻ thất bại',
           title: 'Thông báo',
-          show: false
+          show: true
         }
       };
 
     case SUCCESS(TAG_MANAGEMENT.GET_LIST_TAG):
       let data = action.payload.data;
-      console.log(data);
       return {
         ...state,
         loading: false,
         list_tags: data.content,
-        size: data.totalPages,
+        size: data.size,
         totalElements: data.totalElements,
         totalPages: data.totalPages
       };
@@ -120,7 +119,7 @@ export default (state: TagDataState = initialDataState, action): TagDataState =>
         loading: false,
         tagResponse: {
           type: 'success',
-          text: 'Sửa tag thành công',
+          text: 'Sửa thẻ thành công',
           title: 'Thông báo',
           show: true
         }
@@ -132,7 +131,7 @@ export default (state: TagDataState = initialDataState, action): TagDataState =>
         loading: false,
         tagResponse: {
           type: 'success',
-          text: 'Tạo mới thành công',
+          text: 'Tạo mới thẻ thành công',
           title: 'Thông báo',
           show: true
         }
@@ -145,7 +144,7 @@ export default (state: TagDataState = initialDataState, action): TagDataState =>
         loading: false,
         tagResponse: {
           type: 'success',
-          text: 'Gộp thông tin tag thành công',
+          text: 'Gộp thông tin thẻ thành công',
           title: 'Thông báo',
           show: true
         }
@@ -158,7 +157,7 @@ export default (state: TagDataState = initialDataState, action): TagDataState =>
         loading: false,
         tagResponse: {
           type: 'success',
-          text: 'Xóa thông tin tag thành công',
+          text: 'Xóa thông tin thẻ thành công',
           title: 'Thông báo',
           show: true
         }
