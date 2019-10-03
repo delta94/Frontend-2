@@ -26,6 +26,10 @@
 .error {
   color: red;
 }
+.error-text {
+  color: red;
+  text-align: center;
+}
 #button-add {
   margin-left: 35%;
 }
@@ -39,4 +43,8 @@
 }
 #function {
   width: 25%;
+}
+.input-drag {
+  position: absolute;
+  z-index: 99;
 }

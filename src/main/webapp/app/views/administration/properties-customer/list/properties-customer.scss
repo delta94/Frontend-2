@@ -11,6 +11,7 @@
 }
 .form-button {
   display: flex;
+  padding-top: 15px;
 }
 .search-bar-properties {
   display: flex;
@@ -24,4 +25,13 @@
 }
 #btn-function {
   display: inline-block;
+}
+#first-head {
+  width: 25%;
+}
+td {
+  word-break: break-all;
+}
+.table-drag {
+  position: relative;
 }

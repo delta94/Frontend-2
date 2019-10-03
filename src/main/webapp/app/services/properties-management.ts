@@ -9,7 +9,7 @@ export const getListProps = (type?, textSearch?) => {
 };
 
 export const getTemp = (textSearch?) => {
-  const mergePropApi = `v1/field-templates${`?$textSearch=${textSearch}`}`;
+  const mergePropApi = `v1/field-templates${`?textSearch=${textSearch}`}`;
   return axios.get(mergePropApi, { headers: authHeaders });
 };
 export const getId = (id?) => {
