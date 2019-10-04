@@ -52,7 +52,6 @@ interface ITagModalState {
     name: string;
   };
   modalTitle?: string;
-  tagResponse?: any;
 }
 
 class TagModal extends React.Component<ITagModalProps, ITagModalState> {
@@ -68,14 +67,13 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
     singleModalData: null,
     param: '',
     listIdtag: [],
-    targetTag: null,
     modalTitle: null,
-    tagResponse: null
+    targetTag: null
   };
 
   static getDerivedStateFromProps(props, state) {
-    let option = state.option;
-    let { modalTitle } = state;
+    let { modalTitle, option } = state;
+    let { dataModal } = props;
 
     if (props.param !== state.param || props.dataModal !== state.dataModal) {
       option.rightButton = translate('tag-management.cancel');
@@ -96,20 +94,14 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
         default:
           break;
       }
-      return { option, modalTitle };
-    }
-
-    if (props.tagResponse) {
-      return {
-        tagResponse: props.tagResponse
-      };
+      return { option, modalTitle, dataModal };
     }
 
     return null;
   }
 
   async reUseFunction() {
-    let { param, activePage } = this.props;
+    let { param } = this.props;
     switch (param) {
       case DELETE_TAG:
         await this.deleteTagFunction();
@@ -134,7 +126,7 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
 
   removeSingleData = () => {
     this.setState({
-      singleModalData: null
+      singleModalData: { id: null, description: null, name: null }
     });
   };
 
@@ -151,11 +143,12 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
     let { singleModalData, dataModal } = this.props;
     let listIdTag = [];
 
-    if (singleModalData) {
-      listIdTag = [{ id: singleModalData.id }];
-    } else if (dataModal) {
-      listIdTag = dataModal.map(item => ({ id: item.id }));
-    }
+    singleModalData && singleModalData.id
+      ? (listIdTag = [{ id: singleModalData.id }])
+      : dataModal &&
+        dataModal.forEach(element => {
+          element.checked && listIdTag.push({ id: element.id });
+        });
 
     await this.props.postDeleteTagAction(listIdTag);
   }
@@ -169,9 +162,7 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
       listIdTag = [{ id: singleModalData.id }];
     } else if (dataModal && dataModal.length > 0) {
       dataModal.forEach(item => {
-        if (item.checked) {
-          listIdTag.push({ id: item.id });
-        }
+        item.checked && listIdTag.push({ id: item.id });
       });
     }
 

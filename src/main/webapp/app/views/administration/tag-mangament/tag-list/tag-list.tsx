@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Button, Table, Row, Badge, Col } from 'reactstrap';
 
 import { Translate, translate } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './tag-list.scss';
 import { IRootState } from 'app/reducers';
 import { Loader as LoaderAnim } from 'react-loaders';
@@ -26,7 +25,6 @@ interface ITagListState {
   listCheckBox?: IItemCheckBox[];
   openModal?: boolean;
   testChecked: boolean;
-  list_tags?: ITags[];
   textSearch?: string;
   openFixModal?: boolean;
   param?: string;
@@ -79,7 +77,6 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
     indeterminate: null,
     listCheckBox: [],
     testChecked: false,
-    list_tags: [],
     openFixModal: false,
     param: '',
     dataModal: null,
@@ -110,9 +107,11 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
   static getDerivedStateFromProps(props, state) {
     if (props.list_tags !== state.list_tags) {
       let listCheckBox = props.list_tags && props.list_tags.map(item => ({ ...item, checked: false }));
+
       return {
-        list_tags: props.list_tags,
-        listCheckBox
+        listCheckBox,
+        checkAll: false,
+        singleDataModal: null
       };
     }
 
@@ -129,6 +128,8 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
 
   openFixModalWithData = (param, item) => {
     let { listCheckBox } = this.state;
+    console.log('im fixing', param, item);
+
     this.setState({
       param,
       dataModal: listCheckBox,
@@ -138,28 +139,15 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
   };
 
   closeFixModalData = () => {
-    this.setState({ openFixModal: false });
+    this.setState({ openFixModal: false, singleModalData: { id: null, decription: '', name: '' } });
   };
 
   onCheckAllChange = (id, checked) => {
     let { listCheckBox } = this.state;
-
-    if (id === 'add-all') {
-      let newListCheckBox = listCheckBox.map(item => {
-        item.checked = checked;
-        return item;
-      });
-      this.setState({ listCheckBox: newListCheckBox });
-    } else {
-      listCheckBox = listCheckBox.map(item => {
-        if (item.id === id) {
-          item.checked = checked;
-        }
-        return item;
-      });
-
-      this.setState({ listCheckBox });
-    }
+    id === 'add-all'
+      ? listCheckBox.forEach(item => (item.checked = checked))
+      : listCheckBox && listCheckBox.forEach(item => (id === item.id ? (item.checked = checked) : item));
+    this.setState({ listCheckBox });
   };
 
   menu = item => {
@@ -190,13 +178,14 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
 
   render() {
     let { loading, totalPages, list_tags } = this.props;
-    let { listCheckBox, textSearch, openFixModal, dataModal, param, singleModalData, activePage } = this.state;
+    const { listCheckBox, textSearch, openFixModal, dataModal, param, singleModalData } = this.state;
     let isDisable = true;
     listCheckBox.forEach(item => {
       if (item.checked) {
         isDisable = false;
       }
     });
+    console.log(singleModalData, listCheckBox);
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
 
     return (

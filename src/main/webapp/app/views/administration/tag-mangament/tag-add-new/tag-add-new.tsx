@@ -96,10 +96,10 @@ class TagAddNew extends React.Component<ITagAddNewProps, ITagAddNewState> {
         <p style={{ fontSize: '0.8rem' }}>
           <label style={{ fontWeight: 500 }}>
             <Translate contentKey="tag-management.tag-add-here" />
-          </label>
-          <div>
+          </label>{' '}
+          <label>
             <Translate contentKey="tag-management.tag-add-rule" />
-          </div>
+          </label>
         </p>
         <Input
           type="textarea"
