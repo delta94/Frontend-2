@@ -36,7 +36,7 @@ interface ITagListState {
   singleModalData: {
     id?: string;
     name?: string;
-    decription?: string;
+    description?: string;
   };
 }
 
@@ -87,7 +87,7 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
     singleModalData: {
       id: null,
       name: '',
-      decription: ''
+      description: ''
     }
   };
 
@@ -105,13 +105,14 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (props.list_tags !== state.list_tags) {
+    if (props.list_tags !== state.list_tags && state.listCheckBox) {
       let listCheckBox = props.list_tags && props.list_tags.map(item => ({ ...item, checked: false }));
 
       return {
+        list_tags: props.list_tags,
         listCheckBox,
         checkAll: false,
-        singleDataModal: null
+        singleModalData: { id: null, name: null, description: null }
       };
     }
 
@@ -127,18 +128,16 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
   };
 
   openFixModalWithData = (param, item) => {
-    let { listCheckBox } = this.state;
-
+    console.log(item);
     this.setState({
       param,
-      dataModal: listCheckBox,
       openFixModal: true,
-      singleModalData: item
+      singleModalData: { id: item.id, name: item.name, description: item.description }
     });
   };
 
   closeFixModalData = () => {
-    this.setState({ openFixModal: false, singleModalData: { id: null, decription: '', name: '' } });
+    this.setState({ openFixModal: false, singleModalData: { id: null, description: null, name: null } });
   };
 
   onCheckAllChange = (id, checked) => {
@@ -173,11 +172,12 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
     let { textSearch } = this.state;
     let pageIndex = localStorage.getItem('pageIndex');
     this.props.getListTagDataAction(textSearch, parseInt(pageIndex), 6);
+    this.setState({ checkAll: false });
   };
 
   render() {
     let { loading, totalPages, list_tags } = this.props;
-    const { listCheckBox, textSearch, openFixModal, dataModal, param, singleModalData } = this.state;
+    const { listCheckBox, textSearch, openFixModal, param, singleModalData } = this.state;
     let isDisable = true;
     listCheckBox.forEach(item => {
       if (item.checked) {
@@ -192,7 +192,7 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
           toggleFixModal={this.toogleFixModal}
           openFixModal={openFixModal}
           param={param}
-          dataModal={dataModal}
+          listCheckBox={listCheckBox}
           closeFixModalData={this.closeFixModalData}
           singleModalData={singleModalData}
           callData={this.callData}

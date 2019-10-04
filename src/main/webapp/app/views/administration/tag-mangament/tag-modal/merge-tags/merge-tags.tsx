@@ -9,7 +9,7 @@ import { FormGroup } from 'reactstrap';
 import { limitString } from './../../tag-list/tag-list';
 
 interface ITagMergeProps extends StateProps, DispatchProps {
-  dataModal: any;
+  listCheckBox: any;
   updateTargetTagFromTagMerge: Function;
   targetTag?: {
     id?: string;
@@ -64,12 +64,12 @@ class TagMerge extends React.PureComponent<ITagMergeProps, ITagMergeState> {
   };
 
   render() {
-    let { dataModal, targetTag } = this.props;
+    let { listCheckBox } = this.props;
     let { result } = this.state;
     let listContentData = [];
 
-    dataModal &&
-      dataModal.forEach(item => {
+    listCheckBox &&
+      listCheckBox.forEach(item => {
         if (item.checked) {
           listContentData.push(item);
         }

@@ -30,7 +30,7 @@ interface ITagModalProps extends StateProps, DispatchProps {
   param?: string;
   openFixModal?: boolean;
   toggleFixModal?: Function;
-  dataModal?: any;
+  listCheckBox?: any;
   closeFixModalData: Function;
   title?: string;
   singleModalData?: any;
@@ -73,9 +73,9 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
 
   static getDerivedStateFromProps(props, state) {
     let { modalTitle, option } = state;
-    let { dataModal } = props;
+    let { listCheckBox } = props;
 
-    if (props.param !== state.param || props.dataModal !== state.dataModal) {
+    if (props.param !== state.param || props.listCheckBox !== state.listCheckBox) {
       option.rightButton = translate('tag-management.cancel');
       switch (props.param) {
         case DELETE_TAG:
@@ -94,7 +94,7 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
         default:
           break;
       }
-      return { option, modalTitle, dataModal };
+      return { option, modalTitle, listCheckBox };
     }
 
     return null;
@@ -120,10 +120,6 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
     this.props.closeFixModalData();
   }
 
-  updateValueFromTagEdit = singleModalData => {
-    this.setState({ singleModalData });
-  };
-
   removeSingleData = () => {
     this.setState({
       singleModalData: { id: null, description: null, name: null }
@@ -133,20 +129,25 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
   updateTargetTagFromTagMerge = targetTag => {
     this.setState({ targetTag });
   };
+  // UpdateTag
+  updateValueFromTagEdit = singleModalData => {
+    this.setState({ singleModalData });
+  };
 
   async updateTagFunction() {
     let { singleModalData } = this.state;
     await this.props.postUpdateTagAction(singleModalData);
   }
 
+  // Delete Tag
   async deleteTagFunction() {
-    let { singleModalData, dataModal } = this.props;
+    let { singleModalData, listCheckBox } = this.props;
     let listIdTag = [];
 
     singleModalData && singleModalData.id
       ? (listIdTag = [{ id: singleModalData.id }])
-      : dataModal &&
-        dataModal.forEach(element => {
+      : listCheckBox &&
+        listCheckBox.forEach(element => {
           element.checked && listIdTag.push({ id: element.id });
         });
 
@@ -154,14 +155,14 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
   }
 
   async mergeTagFunction() {
-    let { singleModalData, dataModal } = this.props;
+    let { singleModalData, listCheckBox } = this.props;
     let { targetTag } = this.state;
     let listIdTag = [];
 
     if (singleModalData) {
       listIdTag = [{ id: singleModalData.id }];
-    } else if (dataModal && dataModal.length > 0) {
-      dataModal.forEach(item => {
+    } else if (listCheckBox && listCheckBox.length > 0) {
+      listCheckBox.forEach(item => {
         item.checked && listIdTag.push({ id: item.id });
       });
     }
@@ -170,26 +171,30 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
   }
 
   render() {
-    let { openFixModal, param, dataModal, singleModalData, activePage } = this.props;
+    let { openFixModal, param, listCheckBox, singleModalData } = this.props;
     let { option, targetTag, modalTitle } = this.state;
     let extendComponent: any = null;
     let color: string = 'primary';
+    let isDisable = true;
 
     switch (param) {
       case DELETE_TAG:
-        extendComponent = <TagDeleteComponent dataModal={dataModal} singleModalData={singleModalData} />;
+        extendComponent = <TagDeleteComponent listCheckBox={listCheckBox} singleModalData={singleModalData} />;
         color = 'danger';
         break;
       case MERGE_TAG:
         extendComponent = (
-          <TagMergeComponent dataModal={dataModal} updateTargetTagFromTagMerge={this.updateTargetTagFromTagMerge} targetTag={targetTag} />
+          <TagMergeComponent
+            listCheckBox={listCheckBox}
+            updateTargetTagFromTagMerge={this.updateTargetTagFromTagMerge}
+            targetTag={targetTag}
+          />
         );
         color = 'primary';
         break;
       case EDIT_TAG:
-        extendComponent = (
-          <TagEditComponent dataModal={dataModal} singleModalData={singleModalData} updateValueFromTagEdit={this.updateValueFromTagEdit} />
-        );
+        singleModalData.name && singleModalData.name !== '' ? (isDisable = false) : null;
+        extendComponent = <TagEditComponent singleModalData={singleModalData} updateValueFromTagEdit={this.updateValueFromTagEdit} />;
         color = 'primary';
         break;
       default:
@@ -211,7 +216,7 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
             >
               {option.rightButton ? option.rightButton : 'Next'}
             </Button>
-            <Button color={color} onClick={() => this.reUseFunction()}>
+            <Button color={color} onClick={() => this.reUseFunction()} disabled={isDisable}>
               {option.leftButton ? option.leftButton : 'Cancel'}
             </Button>
           </ModalFooter>

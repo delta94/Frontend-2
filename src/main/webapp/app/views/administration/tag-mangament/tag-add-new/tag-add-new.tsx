@@ -37,19 +37,10 @@ class TagAddNew extends React.Component<ITagAddNewProps, ITagAddNewState> {
     }
 
     let listTextSplit = textNew.split('\n');
-    listNewTag =
-      listTextSplit.length > 0 &&
-      listTextSplit.map(item => {
-        if (item.trim() !== '') {
-          return {
-            name: item.trim()
-          };
-        }
 
-        return {
-          name: ''
-        };
-      });
+    listTextSplit.forEach(item => {
+      item && item !== '' ? listNewTag.push({ name: item }) : null;
+    });
 
     this.setState({ textNew, listNewTag });
   };

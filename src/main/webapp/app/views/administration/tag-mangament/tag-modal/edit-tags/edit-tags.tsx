@@ -4,13 +4,11 @@ import { Input, AutoComplete } from 'antd';
 import { Translate } from 'react-jhipster';
 
 interface ITagEditProps extends StateProps, DispatchProps {
-  singleModalData: any;
+  singleModalData: ITagEditUpdateEntity;
   updateValueFromTagEdit: Function;
 }
 
-interface ITagEditState {
-  singleModalData: ITagEditUpdateEntity;
-}
+interface ITagEditState {}
 
 interface ITagEditUpdateEntity {
   name?: string;
@@ -19,13 +17,7 @@ interface ITagEditUpdateEntity {
 }
 
 class TagEdit extends React.Component<ITagEditProps, ITagEditState> {
-  state = {
-    singleModalData: {
-      name: '',
-      description: '',
-      id: ''
-    }
-  };
+  state = {};
 
   componentDidMount() {
     let { singleModalData } = this.props;
@@ -33,7 +25,7 @@ class TagEdit extends React.Component<ITagEditProps, ITagEditState> {
   }
 
   handleInput = (value, type) => {
-    let { singleModalData } = this.state;
+    let { singleModalData } = this.props;
 
     singleModalData[type] = value;
     this.setState({ singleModalData });
