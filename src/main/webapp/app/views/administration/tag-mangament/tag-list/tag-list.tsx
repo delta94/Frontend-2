@@ -128,7 +128,6 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
 
   openFixModalWithData = (param, item) => {
     let { listCheckBox } = this.state;
-    console.log('im fixing', param, item);
 
     this.setState({
       param,
@@ -185,7 +184,6 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
         isDisable = false;
       }
     });
-    console.log(singleModalData, listCheckBox);
     const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
 
     return (
