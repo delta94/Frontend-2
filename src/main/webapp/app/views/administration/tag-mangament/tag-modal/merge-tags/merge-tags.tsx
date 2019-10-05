@@ -6,9 +6,10 @@ import { getListTags } from '../../../../../services/tag-management';
 import { Translate } from 'react-jhipster';
 import Select from 'react-select';
 import { FormGroup } from 'reactstrap';
+import { limitString } from './../../tag-list/tag-list';
 
 interface ITagMergeProps extends StateProps, DispatchProps {
-  dataModal: any;
+  listCheckBox: any;
   updateTargetTagFromTagMerge: Function;
   targetTag?: {
     id?: string;
@@ -63,12 +64,12 @@ class TagMerge extends React.PureComponent<ITagMergeProps, ITagMergeState> {
   };
 
   render() {
-    let { dataModal, targetTag } = this.props;
+    let { listCheckBox } = this.props;
     let { result } = this.state;
     let listContentData = [];
 
-    dataModal &&
-      dataModal.forEach(item => {
+    listCheckBox &&
+      listCheckBox.forEach(item => {
         if (item.checked) {
           listContentData.push(item);
         }
@@ -85,7 +86,7 @@ class TagMerge extends React.PureComponent<ITagMergeProps, ITagMergeState> {
             listContentData.map((item, index) => {
               return (
                 <label className="label-merge" key={index}>
-                  {item.name}
+                  {limitString(item.name, 25)}
                 </label>
               );
             })}

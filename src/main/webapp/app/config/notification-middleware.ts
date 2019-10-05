@@ -54,7 +54,6 @@ export default () => next => action => {
               break;
 
             case 400:
-              debugger;
               const headers = Object.entries(response.headers);
               let errorHeader = null;
               let entityKey = null;

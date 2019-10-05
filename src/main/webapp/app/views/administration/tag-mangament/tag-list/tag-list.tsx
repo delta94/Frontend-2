@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Button, Table, Row, Badge, Col } from 'reactstrap';
 
 import { Translate, translate } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './tag-list.scss';
 import { IRootState } from 'app/reducers';
 import { Loader as LoaderAnim } from 'react-loaders';
@@ -26,7 +25,6 @@ interface ITagListState {
   listCheckBox?: IItemCheckBox[];
   openModal?: boolean;
   testChecked: boolean;
-  list_tags?: ITags[];
   textSearch?: string;
   openFixModal?: boolean;
   param?: string;
@@ -38,7 +36,7 @@ interface ITagListState {
   singleModalData: {
     id?: string;
     name?: string;
-    decription?: string;
+    description?: string;
   };
 }
 
@@ -46,14 +44,19 @@ interface IItemCheckBox {
   ITags;
   checked: boolean;
 }
-let limitString = (value: string) => {
+
+export const limitString = (value: string, numberLimit?: number) => {
   let newValue = '';
+  let newNumberLimit = 18;
+  if (numberLimit) {
+    numberLimit = numberLimit;
+  }
 
   if (value === null) {
     return '';
   } else {
-    if (value.length > 20) {
-      for (let i = 0; i < 20; i++) {
+    if (value.length > newNumberLimit) {
+      for (let i = 0; i < newNumberLimit; i++) {
         newValue += value[i];
       }
 
@@ -67,14 +70,13 @@ let limitString = (value: string) => {
 
 class TagList extends React.Component<ITagListProps, ITagListState> {
   state = {
-    activePage: 2,
+    activePage: 0,
     pageCount: 1,
     textSearch: '',
     checkAll: false,
     indeterminate: null,
     listCheckBox: [],
     testChecked: false,
-    list_tags: [],
     openFixModal: false,
     param: '',
     dataModal: null,
@@ -85,7 +87,7 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
     singleModalData: {
       id: null,
       name: '',
-      decription: ''
+      description: ''
     }
   };
 
@@ -98,15 +100,19 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
       }
     });
 
+    localStorage.setItem('pageIndex', '0');
     this.getListTagDataAction(0, 6, textSearch);
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (props.list_tags !== state.list_tags) {
+    if (props.list_tags !== state.list_tags && state.listCheckBox) {
       let listCheckBox = props.list_tags && props.list_tags.map(item => ({ ...item, checked: false }));
+
       return {
         list_tags: props.list_tags,
-        listCheckBox
+        listCheckBox,
+        checkAll: false,
+        singleModalData: { id: null, name: null, description: null }
       };
     }
 
@@ -122,38 +128,27 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
   };
 
   openFixModalWithData = (param, item) => {
-    let { listCheckBox } = this.state;
+    let { singleModalData } = this.state;
+    if (item) {
+      singleModalData = { id: item.id, name: item.name, description: item.description };
+    }
     this.setState({
       param,
-      dataModal: listCheckBox,
       openFixModal: true,
-      singleModalData: item
+      singleModalData
     });
   };
 
   closeFixModalData = () => {
-    this.setState({ openFixModal: false });
+    this.setState({ openFixModal: false, singleModalData: { id: null, description: null, name: null } });
   };
 
   onCheckAllChange = (id, checked) => {
     let { listCheckBox } = this.state;
-
-    if (id === 'add-all') {
-      let newListCheckBox = listCheckBox.map(item => {
-        item.checked = checked;
-        return item;
-      });
-      this.setState({ listCheckBox: newListCheckBox });
-    } else {
-      listCheckBox = listCheckBox.map(item => {
-        if (item.id === id) {
-          item.checked = checked;
-        }
-        return item;
-      });
-
-      this.setState({ listCheckBox });
-    }
+    id === 'add-all'
+      ? (listCheckBox.forEach(item => (item.checked = checked)), this.setState({ checkAll: checked }))
+      : listCheckBox && listCheckBox.forEach(item => (id === item.id ? (item.checked = checked) : item));
+    this.setState({ listCheckBox });
   };
 
   menu = item => {
@@ -171,9 +166,21 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
     this.setState({ openFixModal: !openFixModal });
   };
 
+  setPageIndex = event => {
+    localStorage.setItem('pageIndex', event);
+    this.callData();
+  };
+
+  callData = () => {
+    let { textSearch } = this.state;
+    let pageIndex = localStorage.getItem('pageIndex');
+    this.props.getListTagDataAction(textSearch, parseInt(pageIndex), 6);
+    this.setState({ checkAll: false });
+  };
+
   render() {
-    let { loading, size, totalPages, list_tags } = this.props;
-    let { activePage, listCheckBox, textSearch, openFixModal, dataModal, param, singleModalData } = this.state;
+    let { loading, totalPages, list_tags } = this.props;
+    const { listCheckBox, textSearch, openFixModal, param, singleModalData, checkAll } = this.state;
     let isDisable = true;
     listCheckBox.forEach(item => {
       if (item.checked) {
@@ -188,13 +195,14 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
           toggleFixModal={this.toogleFixModal}
           openFixModal={openFixModal}
           param={param}
-          dataModal={dataModal}
+          listCheckBox={listCheckBox}
           closeFixModalData={this.closeFixModalData}
           singleModalData={singleModalData}
+          callData={this.callData}
         />
         <Loader message={spinner1} show={loading} priority={1}>
           <div>
-            <p>
+            <p style={{ textTransform: 'uppercase', color: '#595C82' }}>
               <Translate contentKey="tag-management.tag-list" />
             </p>
             {/* Block out */}
@@ -222,7 +230,7 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
               <thead>
                 <tr className="text-center">
                   <th className="checkbox-td" colSpan={5}>
-                    <Checkbox id="add-all" onChange={event => this.onCheckAllChange('add-all', event.target.checked)} />
+                    <Checkbox id="add-all" onChange={event => this.onCheckAllChange('add-all', event.target.checked)} checked={checkAll} />
                   </th>
                   <th colSpan={30} id="name">
                     <Translate contentKey="tag-management.tag-name" />
@@ -249,7 +257,7 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
                           />
                         </td>
                         <td colSpan={30} id="name">
-                          <span> {limitString(item.name)}</span>
+                          <span> {limitString(item.name, 16)}</span>
                         </td>
                         <td colSpan={20}>{item.contactNumbers}</td>
                         <td colSpan={30} id="description">
@@ -271,7 +279,9 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
                     );
                   })
                 ) : (
-                  <div className="none-data">None Data</div>
+                  <div className="none-data">
+                    <Translate contentKey="tag-management.none-tag-data" />
+                  </div>
                 )}
               </tbody>
             </Table>
@@ -279,22 +289,23 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
           </div>
         </Loader>
         <div className="navigation ">
-          <Row className="justify-content-center">
-            <ReactPaginate
-              previousLabel={'<'}
-              nextLabel={'>'}
-              breakLabel={'...'}
-              breakClassName={'break-me'}
-              pageCount={size}
-              marginPagesDisplayed={1}
-              pageRangeDisplayed={4}
-              onPageChange={event => this.props.getListTagDataAction(textSearch, event.selected, 6)}
-              containerClassName={'pagination'}
-              subContainerClassName={'pages pagination'}
-              activeClassName={'active'}
-              forcePage={activePage}
-            />
-          </Row>
+          {totalPages && totalPages >= 1 ? (
+            <Row className="justify-content-center">
+              <ReactPaginate
+                previousLabel={'<'}
+                nextLabel={'>'}
+                breakLabel={'...'}
+                breakClassName={'break-me'}
+                pageCount={totalPages}
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={5}
+                onPageChange={event => this.setPageIndex(event.selected)}
+                containerClassName={'pagination'}
+                subContainerClassName={'pages pagination'}
+                activeClassName={'active'}
+              />
+            </Row>
+          ) : null}
         </div>
       </div>
     );
@@ -304,9 +315,8 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
 const mapStateToProps = ({ tagDataState }: IRootState) => ({
   loading: tagDataState.loading,
   list_tags: tagDataState.list_tags,
-  size: tagDataState.size,
-  totalElements: tagDataState.totalElements,
-  totalPages: tagDataState.totalPages
+  totalPages: tagDataState.totalPages,
+  totalElements: tagDataState.totalElements
 });
 
 const mapDispatchToProps = { getListTagDataAction };

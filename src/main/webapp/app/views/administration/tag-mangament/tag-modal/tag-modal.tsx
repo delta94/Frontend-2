@@ -30,10 +30,12 @@ interface ITagModalProps extends StateProps, DispatchProps {
   param?: string;
   openFixModal?: boolean;
   toggleFixModal?: Function;
-  dataModal?: any;
+  listCheckBox?: any;
   closeFixModalData: Function;
   title?: string;
   singleModalData?: any;
+  callData: Function;
+  activePage?: number;
 }
 
 interface ITagModalState {
@@ -50,7 +52,6 @@ interface ITagModalState {
     name: string;
   };
   modalTitle?: string;
-  tagResponse?: any;
 }
 
 class TagModal extends React.Component<ITagModalProps, ITagModalState> {
@@ -66,16 +67,15 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
     singleModalData: null,
     param: '',
     listIdtag: [],
-    targetTag: null,
     modalTitle: null,
-    tagResponse: null
+    targetTag: null
   };
 
   static getDerivedStateFromProps(props, state) {
-    let option = state.option;
-    let { modalTitle } = state;
+    let { modalTitle, option } = state;
+    let { listCheckBox } = props;
 
-    if (props.param !== state.param || props.dataModal !== state.dataModal) {
+    if (props.param !== state.param || props.listCheckBox !== state.listCheckBox) {
       option.rightButton = translate('tag-management.cancel');
       switch (props.param) {
         case DELETE_TAG:
@@ -94,102 +94,107 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
         default:
           break;
       }
-      return { option, modalTitle };
-    }
-
-    if (props.tagResponse) {
-      return {
-        tagResponse: props.tagResponse
-      };
+      return { option, modalTitle, listCheckBox };
     }
 
     return null;
   }
 
-  reUseFunction = () => {
+  async reUseFunction() {
     let { param } = this.props;
     switch (param) {
       case DELETE_TAG:
-        this.deleteTagFunction();
+        await this.deleteTagFunction();
         break;
       case MERGE_TAG:
-        this.mergeTagFunction();
+        await this.mergeTagFunction();
         break;
       case EDIT_TAG:
-        this.updateTagFunction();
+        await this.updateTagFunction();
         break;
       default:
         break;
     }
 
+    await this.props.callData();
     this.props.closeFixModalData();
-  };
+  }
 
-  updateValueFromTagEdit = singleModalData => {
-    this.setState({ singleModalData });
+  removeSingleData = () => {
+    this.setState({
+      singleModalData: { id: null, description: null, name: null }
+    });
   };
 
   updateTargetTagFromTagMerge = targetTag => {
     this.setState({ targetTag });
   };
-
-  updateTagFunction = () => {
-    let { singleModalData } = this.state;
-    this.props.postUpdateTagAction(singleModalData);
+  // UpdateTag
+  updateValueFromTagEdit = singleModalData => {
+    this.setState({ singleModalData });
   };
 
-  deleteTagFunction = () => {
-    let { singleModalData, dataModal } = this.props;
+  async updateTagFunction() {
+    let { singleModalData } = this.state;
+    await this.props.postUpdateTagAction(singleModalData);
+  }
+
+  // Delete Tag
+  async deleteTagFunction() {
+    let { singleModalData, listCheckBox } = this.props;
     let listIdTag = [];
 
-    if (singleModalData) {
-      listIdTag = [{ id: singleModalData.id }];
-    } else if (dataModal) {
-      listIdTag = dataModal.map(item => ({ id: item.id }));
-    }
+    singleModalData && singleModalData.id
+      ? (listIdTag = [{ id: singleModalData.id }])
+      : listCheckBox &&
+        listCheckBox.forEach(element => {
+          element.checked && listIdTag.push({ id: element.id });
+        });
 
-    this.props.postDeleteTagAction(listIdTag);
-  };
+    await this.props.postDeleteTagAction(listIdTag);
+  }
 
-  mergeTagFunction = () => {
-    let { singleModalData, dataModal } = this.props;
+  async mergeTagFunction() {
+    let { singleModalData, listCheckBox } = this.props;
     let { targetTag } = this.state;
     let listIdTag = [];
 
     if (singleModalData) {
       listIdTag = [{ id: singleModalData.id }];
-    } else if (dataModal && dataModal.length > 0) {
-      dataModal.forEach(item => {
-        if (item.checked) {
-          listIdTag.push({ id: item.id });
-        }
+    } else if (listCheckBox && listCheckBox.length > 0) {
+      listCheckBox.forEach(item => {
+        item.checked && listIdTag.push({ id: item.id });
       });
     }
 
-    this.props.postMergeTagAction(targetTag.id, listIdTag);
-  };
+    await this.props.postMergeTagAction(targetTag.id, listIdTag);
+  }
 
   render() {
-    let { openFixModal, param, dataModal, singleModalData } = this.props;
+    let { openFixModal, param, listCheckBox, singleModalData } = this.props;
     let { option, targetTag, modalTitle } = this.state;
     let extendComponent: any = null;
     let color: string = 'primary';
+    let isDisable = false;
 
     switch (param) {
       case DELETE_TAG:
-        extendComponent = <TagDeleteComponent dataModal={dataModal} singleModalData={singleModalData} />;
+        extendComponent = <TagDeleteComponent listCheckBox={listCheckBox} singleModalData={singleModalData} />;
         color = 'danger';
         break;
       case MERGE_TAG:
         extendComponent = (
-          <TagMergeComponent dataModal={dataModal} updateTargetTagFromTagMerge={this.updateTargetTagFromTagMerge} targetTag={targetTag} />
+          <TagMergeComponent
+            listCheckBox={listCheckBox}
+            updateTargetTagFromTagMerge={this.updateTargetTagFromTagMerge}
+            targetTag={targetTag}
+          />
         );
         color = 'primary';
         break;
       case EDIT_TAG:
-        extendComponent = (
-          <TagEditComponent dataModal={dataModal} singleModalData={singleModalData} updateValueFromTagEdit={this.updateValueFromTagEdit} />
-        );
+        !singleModalData.name && singleModalData.name === '' ? (isDisable = true) : null;
+        extendComponent = <TagEditComponent singleModalData={singleModalData} updateValueFromTagEdit={this.updateValueFromTagEdit} />;
         color = 'primary';
         break;
       default:
@@ -202,10 +207,16 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
           <ModalHeader>{modalTitle}</ModalHeader>
           <ModalBody>{extendComponent}</ModalBody>
           <ModalFooter>
-            <Button color="none" onClick={this.props.closeFixModalData}>
+            <Button
+              color="none"
+              onClick={() => {
+                this.props.closeFixModalData();
+                this.removeSingleData();
+              }}
+            >
               {option.rightButton ? option.rightButton : 'Next'}
             </Button>
-            <Button color={color} onClick={this.reUseFunction}>
+            <Button color={color} onClick={() => this.reUseFunction()} disabled={isDisable}>
               {option.leftButton ? option.leftButton : 'Cancel'}
             </Button>
           </ModalFooter>
