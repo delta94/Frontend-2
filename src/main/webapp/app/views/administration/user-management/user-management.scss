@@ -82,6 +82,7 @@ thead th {
 }
 .has-search {
   margin-bottom: 12px;
+  display: flex;
 }
 .totalItems {
   margin-bottom: 10px;
@@ -127,4 +128,24 @@ thead th {
   background: #f9fafb;
   margin: 0px -10px 0px;
   padding: 20px;
+}
+.catelogry-search {
+  display: flex;
+}
+#catelogry-text {
+  margin-top: 16px;
+}
+#search-text {
+  width: 100px;
+  margin-top: 7px;
+}
+#btn-import {
+  background: white;
+  color: black;
+  margin-left: 50%;
+}
+
+#btn-export {
+  background: white;
+  color: black;
 }

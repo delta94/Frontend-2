@@ -1,7 +1,7 @@
 {
   "userManagement": {
     "home": {
-      "title": "Tài khoản",
+      "title": "Danh sách khách hàng  ",
       "search-placer": "Tìm kiếm",
       "createLabel": "Tạo tài khoản mới",
       "createOrEditLabel": "Tạo mới dữ liệu khách hàng",

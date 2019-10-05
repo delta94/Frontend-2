@@ -93,6 +93,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
         <Loader message={spinner1} show={loading} priority={1}>
           <div id="user-management-title">
             <Translate contentKey="userManagement.home.title" />
+
             <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity">
               <FontAwesomeIcon icon="plus" /> <Translate contentKey="userManagement.home.createLabel" />
             </Link>
@@ -100,15 +101,18 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
           <div />
           <div className="panel">
             <Row>
-              <Col md="3">
-                <Label>
+              <Col md="3" className="catelogry-search">
+                <Label id="catelogry-text">
                   {' '}
-                  <Translate contentKey="userManagement.home.type" /> :
+                  <Translate contentKey="userManagement.home.type" />{' '}
                 </Label>
                 <UserCategoryTag handleChange={this.handleChange} />
               </Col>
-              <Col md="3">
+              <Col md="4" className="catelogry-search">
                 <div className="has-search">
+                  <Label id="search-text">
+                    <Translate contentKey="userManagement.home.search-placer" />
+                  </Label>
                   <input
                     type="text"
                     className="form-control"
@@ -116,6 +120,15 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                     placeholder={translate('userManagement.home.search-placer')}
                   />
                 </div>
+              </Col>
+              <Col md="5">
+                <Button id="btn-import" tag={Link} to={`${match.url}/new`}>
+                  Export
+                </Button>
+                &nbsp;
+                <Button id="btn-export" tag={Link} to={`${match.url}/new`}>
+                  Import
+                </Button>
               </Col>
             </Row>
             <hr />
