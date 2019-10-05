@@ -85,7 +85,7 @@ class TagAddNew extends React.Component<ITagAddNewProps, ITagAddNewState> {
 
     return (
       <div className="tag-add-new b-r">
-        <p>
+        <p style={{ textTransform: 'uppercase', color: '#595C82' }}>
           <Translate contentKey="tag-management.tag-add" />
         </p>
         <p style={{ fontSize: '0.8rem' }}>
@@ -107,7 +107,7 @@ class TagAddNew extends React.Component<ITagAddNewProps, ITagAddNewState> {
           row={4}
         />
         <div className="btn-add-tag">
-          <Button color="success" size="small" onClick={() => this.insertNewTag()} disabled={!(textNew && textNew.length > 0)}>
+          <Button color="primary" size="small" onClick={() => this.insertNewTag()} disabled={!(textNew && textNew.length > 0)}>
             <Translate contentKey="tag-management.tag-add-new" />
           </Button>
         </div>

@@ -202,7 +202,7 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
         />
         <Loader message={spinner1} show={loading} priority={1}>
           <div>
-            <p>
+            <p style={{ textTransform: 'uppercase', color: '#595C82' }}>
               <Translate contentKey="tag-management.tag-list" />
             </p>
             {/* Block out */}
