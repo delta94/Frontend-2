@@ -175,7 +175,7 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
     let { option, targetTag, modalTitle } = this.state;
     let extendComponent: any = null;
     let color: string = 'primary';
-    let isDisable = true;
+    let isDisable = false;
 
     switch (param) {
       case DELETE_TAG:
@@ -193,7 +193,7 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
         color = 'primary';
         break;
       case EDIT_TAG:
-        singleModalData.name && singleModalData.name !== '' ? (isDisable = false) : null;
+        !singleModalData.name && singleModalData.name === '' ? (isDisable = true) : null;
         extendComponent = <TagEditComponent singleModalData={singleModalData} updateValueFromTagEdit={this.updateValueFromTagEdit} />;
         color = 'primary';
         break;

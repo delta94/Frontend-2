@@ -30,7 +30,7 @@ class TagAddNew extends React.Component<ITagAddNewProps, ITagAddNewState> {
 
   handleNewTag = event => {
     event.preventDefault();
-    let { listNewTag } = this.state;
+    let choseNewTag = [];
     let textNew = event.target.value;
     if (!textNew.trim()) {
       textNew = '';
@@ -38,10 +38,14 @@ class TagAddNew extends React.Component<ITagAddNewProps, ITagAddNewState> {
 
     let listTextSplit = textNew.split('\n');
 
-    listTextSplit.forEach(item => {
-      item && item !== '' ? listNewTag.push({ name: item }) : null;
-    });
+    choseNewTag =
+      listTextSplit &&
+      listTextSplit.map(item => {
+        return item && item !== '' ? { name: item } : null;
+      });
 
+    let listNewTag = [];
+    choseNewTag.forEach(item => item && listNewTag.push(item));
     this.setState({ textNew, listNewTag });
   };
 

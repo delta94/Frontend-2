@@ -128,11 +128,14 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
   };
 
   openFixModalWithData = (param, item) => {
-    console.log(item);
+    let { singleModalData } = this.state;
+    if (item) {
+      singleModalData = { id: item.id, name: item.name, description: item.description };
+    }
     this.setState({
       param,
       openFixModal: true,
-      singleModalData: { id: item.id, name: item.name, description: item.description }
+      singleModalData
     });
   };
 
@@ -143,7 +146,7 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
   onCheckAllChange = (id, checked) => {
     let { listCheckBox } = this.state;
     id === 'add-all'
-      ? listCheckBox.forEach(item => (item.checked = checked))
+      ? (listCheckBox.forEach(item => (item.checked = checked)), this.setState({ checkAll: checked }))
       : listCheckBox && listCheckBox.forEach(item => (id === item.id ? (item.checked = checked) : item));
     this.setState({ listCheckBox });
   };
@@ -177,7 +180,7 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
 
   render() {
     let { loading, totalPages, list_tags } = this.props;
-    const { listCheckBox, textSearch, openFixModal, param, singleModalData } = this.state;
+    const { listCheckBox, textSearch, openFixModal, param, singleModalData, checkAll } = this.state;
     let isDisable = true;
     listCheckBox.forEach(item => {
       if (item.checked) {
@@ -227,7 +230,7 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
               <thead>
                 <tr className="text-center">
                   <th className="checkbox-td" colSpan={5}>
-                    <Checkbox id="add-all" onChange={event => this.onCheckAllChange('add-all', event.target.checked)} />
+                    <Checkbox id="add-all" onChange={event => this.onCheckAllChange('add-all', event.target.checked)} checked={checkAll} />
                   </th>
                   <th colSpan={30} id="name">
                     <Translate contentKey="tag-management.tag-name" />
