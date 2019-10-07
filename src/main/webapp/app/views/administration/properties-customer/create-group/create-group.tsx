@@ -13,7 +13,7 @@ import Loader from 'react-loader-advanced';
 import { openModal, closeModal } from 'app/actions/modal';
 import Select from 'react-select';
 import classnames from 'classnames';
-import { List } from 'react-movable';
+import PerfectScrollbar from 'react-perfect-scrollbar';
 import $ from 'jquery';
 import { Input } from 'antd';
 import { ITemp } from 'app/reducers/properties-customer';
@@ -131,8 +131,8 @@ export class CreateGroup extends React.Component<ICreateGroupProps, ICreateGroup
             <Translate contentKey="properties-management.add.properties" />
           </ModalHeader>
           <ModalBody>
-            <AvForm>
-              <Row>
+            <PerfectScrollbar>
+              <Row id="row-create-group">
                 <Col md=" 4" id="has-search">
                   <Search
                     placeholder={translate('properties-management.search')}
@@ -143,25 +143,27 @@ export class CreateGroup extends React.Component<ICreateGroupProps, ICreateGroup
                   <div id="recomand">
                     <Translate contentKey="properties-management.recommand" />
                   </div>
-                  <div>
-                    {listTemp
-                      ? listTemp.map((event, index) => {
-                          return (
-                            <DropdownItem
-                              key={index}
-                              toggle={false}
-                              className={classnames({ active: this.state.activeTab === event.id })}
-                              onClick={() => {
-                                this.Changetab(event.id);
-                              }}
-                            >
-                              <div>
-                                <label>{event.title}</label>
-                              </div>
-                            </DropdownItem>
-                          );
-                        })
-                      : ''}
+                  <div id="nav-group">
+                    <PerfectScrollbar>
+                      {listTemp
+                        ? listTemp.map((event, index) => {
+                            return (
+                              <DropdownItem
+                                key={index}
+                                toggle={false}
+                                className={classnames({ active: this.state.activeTab === event.id })}
+                                onClick={() => {
+                                  this.Changetab(event.id);
+                                }}
+                              >
+                                <div>
+                                  <label>{event.title}</label>
+                                </div>
+                              </DropdownItem>
+                            );
+                          })
+                        : ''}
+                    </PerfectScrollbar>
                   </div>
                 </Col>
                 <Col md="8" id="table-group">
@@ -214,7 +216,7 @@ export class CreateGroup extends React.Component<ICreateGroupProps, ICreateGroup
                   </Col>
                 </Col>
               </Row>
-            </AvForm>
+            </PerfectScrollbar>
           </ModalBody>
           <ModalFooter>
             <Button color="link" onClick={this.toggle}>

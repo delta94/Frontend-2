@@ -1,5 +1,5 @@
 import React from 'react';
-import './styles/user-management.scss';
+import './list/user-management.scss';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps, Router, Route } from 'react-router-dom';
 import SweetAlert from 'sweetalert-react';
@@ -8,7 +8,7 @@ import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import FileDownload from 'js-file-download';
 import Loader from 'react-loader-advanced';
-// import { Loader as LoaderAnim } from 'react-loaders';
+import { Loader as LoaderAnim } from 'react-loaders';
 
 import { downloadFileExcel, uploadFileExcel } from 'app/actions/user-management';
 import { IRootState } from 'app/reducers';

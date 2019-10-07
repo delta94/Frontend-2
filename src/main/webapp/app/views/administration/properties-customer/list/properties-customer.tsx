@@ -130,7 +130,7 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
               <Col md="5" className="search-bar-properties">
                 <Select
                   className="select-bar"
-                  placeholder="Chọn type"
+                  placeholder="Chọn loại"
                   value={selectedOption.label ? selectedOption : ''}
                   onChange={this.handleChange}
                   options={option}

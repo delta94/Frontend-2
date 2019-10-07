@@ -1,7 +1,7 @@
 {
   "userManagement": {
     "home": {
-      "title": "Tài khoản",
+      "title": "Danh sách khách hàng  ",
       "search-placer": "Tìm kiếm",
       "createLabel": "Tạo tài khoản mới",
       "createOrEditLabel": "Tạo mới dữ liệu khách hàng",
@@ -15,7 +15,9 @@
       "no-record": "Không tìm thấy bản ghi phù hợp",
       "total-element": "Tổng số {{ element }} bản ghi",
       "line-error": "{{ number }} dòng không thành công đầu tiên ",
-      "editLabel": "Cập nhật thông tin khách hàng"
+      "editLabel": "Cập nhật thông tin khách hàng",
+      "export": "Export",
+      "import": "Import"
     },
     "deleteAlert": {
       "title": "Bạn muốn xoá ?",

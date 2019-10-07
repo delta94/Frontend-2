@@ -2,19 +2,18 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Table, Row, Label, Col } from 'reactstrap';
-
 import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './user-management.scss';
-
 import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
 import { getUser, getUsers, updateUser, getUserCategories, deleteUser } from 'app/actions/user-management';
-import UserCategoryTag from './user-categories-tags';
+import UserCategoryTag from '../user-categories-tags';
 import { IRootState } from 'app/reducers';
 import ReactPaginate from 'react-paginate';
 import SweetAlert from 'sweetalert-react';
 import { Loader as LoaderAnim } from 'react-loaders';
 import Loader from 'react-loader-advanced';
+import CreateUser from './../create/create';
 
 export interface IUserManagementProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
 
@@ -93,22 +92,24 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
         <Loader message={spinner1} show={loading} priority={1}>
           <div id="user-management-title">
             <Translate contentKey="userManagement.home.title" />
-            <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity">
-              <FontAwesomeIcon icon="plus" /> <Translate contentKey="userManagement.home.createLabel" />
-            </Link>
+
+            <CreateUser />
           </div>
           <div />
           <div className="panel">
             <Row>
-              <Col md="3">
-                <Label>
+              <Col md="3" className="catelogry-search">
+                <Label id="catelogry-text">
                   {' '}
-                  <Translate contentKey="userManagement.home.type" /> :
+                  <Translate contentKey="userManagement.home.type" />{' '}
                 </Label>
                 <UserCategoryTag handleChange={this.handleChange} />
               </Col>
-              <Col md="3">
+              <Col md="4" className="catelogry-search">
                 <div className="has-search">
+                  <Label id="search-text">
+                    <Translate contentKey="userManagement.home.search-placer" />
+                  </Label>
                   <input
                     type="text"
                     className="form-control"
@@ -116,6 +117,15 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                     placeholder={translate('userManagement.home.search-placer')}
                   />
                 </div>
+              </Col>
+              <Col md="5">
+                <Button id="btn-import" tag={Link} to={`${match.url}/new`}>
+                  <Translate contentKey="userManagement.home.export" />
+                </Button>
+                &nbsp;
+                <Button id="btn-export" tag={Link} to={`${match.url}/new`}>
+                  <Translate contentKey="userManagement.home.import" />
+                </Button>
               </Col>
             </Row>
             <hr />
@@ -163,13 +173,6 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                           </td>
                           <td className="text-center">
                             <div className="btn-group flex-btn-group-container">
-                              <Button className="buttonUpdate" tag={Link} to={`${match.url}/${event.id}/update`} color="primary" size="sm">
-                                <FontAwesomeIcon icon="pencil-alt" />{' '}
-                                <span className="d-none d-md-inline">
-                                  <Translate contentKey="entity.action.edit" />
-                                </span>
-                              </Button>
-                              &nbsp;
                               <Button className="buttonUpdate" tag={Link} to={`${match.url}/${event.id}/update`} color="primary" size="sm">
                                 <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Thông tin</span>
                               </Button>
