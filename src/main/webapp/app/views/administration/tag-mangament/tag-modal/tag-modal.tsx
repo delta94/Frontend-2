@@ -127,6 +127,7 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
   };
 
   updateTargetTagFromTagMerge = targetTag => {
+    console.log(targetTag);
     this.setState({ targetTag });
   };
   // UpdateTag
@@ -159,13 +160,13 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
     let { targetTag } = this.state;
     let listIdTag = [];
 
-    if (singleModalData) {
-      listIdTag = [{ id: singleModalData.id }];
-    } else if (listCheckBox && listCheckBox.length > 0) {
+    listCheckBox &&
+      listCheckBox.length > 0 &&
       listCheckBox.forEach(item => {
         item.checked && listIdTag.push({ id: item.id });
       });
-    }
+
+    console.log(targetTag, listIdTag);
 
     await this.props.postMergeTagAction(targetTag.id, listIdTag);
   }
@@ -183,6 +184,7 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
         color = 'danger';
         break;
       case MERGE_TAG:
+        !targetTag || !targetTag.id ? (isDisable = true) : null;
         extendComponent = (
           <TagMergeComponent
             listCheckBox={listCheckBox}
