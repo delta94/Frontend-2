@@ -3,7 +3,14 @@
   height: 100%;
   background-color: #fff;
   width: 40%;
-  height: 600px;
+  height: auto;
+
+  p {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 21px;
+    color: #2d3843;
+  }
 
   .block-out {
     padding: 10px 0px;

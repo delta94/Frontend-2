@@ -1,11 +1,11 @@
 import { authHeaders } from './header';
 import axios from 'axios';
 
-const customerGroup = 'v1/customer-group';
+const customerGroup = 'v1/category-customers';
 
-export const getListCustomerGroups = (textSearch: string, page: number, pageSize: number) => {
-  // return axios.get(customerGroup, { params: { textSearch, page, pageSize, type: 'pagingEnable' } });
-  return axios.get('http://localhost:9000/content/json_data/group-attribute-customer.json');
+export const getListCustomerGroups = (textSearch: string) => {
+  return axios.get(customerGroup, { params: { textSearch } });
+  // return axios.get('http://localhost:9000/content/json_data/group-attribute-customer.json');
 };
 
 export const postMergeCustomerGroup = (id?: string, data?: any) => {

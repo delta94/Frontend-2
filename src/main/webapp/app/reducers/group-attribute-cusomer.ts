@@ -4,22 +4,21 @@ import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
 import { CUSTOMER_GROUP_ATTRIBUTE } from '../constants/group-atrribute-customer';
 import { ERROR } from '../constants/common';
 
-export interface IPostRequestReturn {
+interface IPostRequestReturn {
   code?: number;
   name?: number;
   openModal?: boolean;
 }
 
-export interface ITags {
+interface ICatagoryGroup {
   id?: string;
-  name?: string;
+  typeName?: string;
   contactNumbers?: string;
-  description?: string;
 }
 
 const initialDataState = {
   loading: false,
-  list_group_customer: [] as ITags[],
+  list_group_customer: [] as ICatagoryGroup[],
   totalElements: 0,
   totalPages: 0,
   size: 0,
@@ -106,9 +105,8 @@ export default (state: GroupCustomerState = initialDataState, action): GroupCust
       return {
         ...state,
         loading: false,
-        list_group_customer: data.content,
+        list_group_customer: data,
         size: data.totalPages,
-        totalElements: data.totalElements,
         totalPages: data.totalPages
       };
 

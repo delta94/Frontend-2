@@ -111,10 +111,11 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
           <Icon type="delete" /> Delete
         </Menu.Item>
         <Menu.Item key="1">
-          <Icon type="delete" /> Chỉnh sửa
+          <Icon type="edit" />
+          Chỉnh sửa
         </Menu.Item>
         <Menu.Item key="1">
-          <Icon type="delete" /> Copy
+          <Icon type="copy" /> Copy
         </Menu.Item>
       </Menu>
     );
@@ -155,13 +156,11 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
                         <td>
                           <Checkbox id={item.id} checked={item.checked} />
                         </td>
-                        <td>{item.name}</td>
+                        <td>{item.typeName}</td>
+                        <td>{item.contactNumbers}</td>
                         <td>
                           <Dropdown.Button overlay={() => this.menu(item)} icon={<Icon type="caret-down" />}>
-                            <span>
-                              <Icon type="edit" />
-                              Edit
-                            </span>
+                            ...
                           </Dropdown.Button>
                         </td>
                       </tr>

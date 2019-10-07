@@ -7,9 +7,9 @@ import {
   postDeleteCustomerGroup
 } from '../services/group-atrribute-customer';
 
-export const getListCustomerGroupDataAction = (textSearch?: string, page?: number, pageSize?: number) => ({
+export const getListCustomerGroupDataAction = (textSearch?: string) => ({
   type: CUSTOMER_GROUP_ATTRIBUTE.GET_LIST_CUSTOMER_GROUP,
-  payload: getListCustomerGroups(textSearch, page, pageSize)
+  payload: getListCustomerGroups(textSearch)
 });
 
 export const postInsertCustomerGroupAction = data => ({
