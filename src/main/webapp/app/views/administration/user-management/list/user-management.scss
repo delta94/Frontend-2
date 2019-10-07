@@ -1,3 +1,155 @@
+.container {
+  text-align: center;
+}
+.btn-button {
+  float: right;
+  margin: 12px 10px;
+}
+.btn-info {
+  float: right;
+  margin: 8px;
+}
+.multi-row {
+  margin: 12px 4px;
+}
+.table {
+  width: 100% !important;
+}
+.span-line {
+  margin: 2%;
+}
+.table-details {
+  width: 100%;
+}
+.label-table {
+  width: 100%;
+}
+.table-responsive {
+  display: block;
+  width: 94%;
+  overflow-x: auto;
+  margin: 30px;
+}
+.table-striped {
+  margin-top: 0px !important;
+}
+
+.panel {
+  border: 1px solid #dedede;
+  border-radius: 5px;
+  background-color: #ffffff;
+  width: 100%;
+}
+
+.searchUser {
+  border-radius: 5px;
+  width: 100px;
+  height: 30px;
+  margin-left: 20px;
+  padding: 3px;
+  font-size: 15px;
+}
+.profilesTag {
+  float: right;
+  width: 100%;
+  border-radius: 3px;
+}
+
+thead th,
+tbody td,
+tbody td .badge {
+  border-right: 1px solid #dedede;
+}
+thead th {
+  color: #545cd8;
+}
+
+.panel .row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 9px 19px -10px 19px;
+}
+.searchUser {
+  float: right;
+  width: 60%;
+}
+.updatePanel {
+  background-color: #ffffff;
+}
+.card {
+  box-shadow: none;
+}
+.has-search {
+  margin-bottom: 12px;
+  display: flex;
+}
+.totalItems {
+  margin-bottom: 10px;
+  font-size: 17px;
+}
+.badge {
+  border-right: 1px solid #dedede;
+  margin-top: 11px;
+  margin-left: 7px;
+}
+.updateTitle {
+  font-size: 2rem;
+}
+.fullNameContent {
+  margin-top: 30px;
+}
+
+.form-group label {
+  font-size: 17px;
+}
+.buttonUpdate {
+  border-radius: 3px;
+}
+
+.rowUpdate .row {
+  margin-right: -15px;
+  margin-left: -15px;
+}
+.save-right {
+  float: right;
+  margin-bottom: 15px;
+}
+.back-left {
+  float: left !important;
+  margin: 0 !important;
+}
+.Toastify__toast-body {
+  margin-top: 50px;
+}
+#user-management-title {
+  font-size: 18px;
+  background: #f9fafb;
+  margin: 0px 0px 10px;
+  padding: 20px;
+}
+.catelogry-search {
+  display: flex;
+  padding-top: 5px;
+}
+#catelogry-text {
+  margin-top: 16px;
+}
+#search-text {
+  width: 100px;
+  margin-top: 7px;
+}
+#btn-import {
+  background: white;
+  color: black;
+  margin-left: 50%;
+}
+
+#btn-export {
+  background: white;
+  color: black;
+  margin-left: 5%;
+}
 .btn-button {
   float: right;
   margin: 12px 10px;

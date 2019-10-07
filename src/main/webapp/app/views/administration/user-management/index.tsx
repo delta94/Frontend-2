@@ -3,9 +3,9 @@ import { Switch } from 'react-router-dom';
 
 import ErrorBoundaryRoute from 'app/common/error/error-boundary-route';
 import UserUpdate from 'app/views/administration/user-management/user-update';
-import UserManagement from './user-management';
+import UserManagement from './list/user-management';
 import UserDetail from 'app/views/administration/user-management/user-detail';
-import CreateUser from 'app/views/administration/user-management/user-create';
+import CreateUser from 'app/views/administration/user-management/import';
 
 //todo rename cho router
 const Routes = ({ match }) => (

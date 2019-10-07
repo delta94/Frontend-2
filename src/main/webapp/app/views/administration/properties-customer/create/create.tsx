@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Button, Table, Row, Badge, Col, Modal, ModalHeader, ModalBody, ModalFooter, Input, Form, FormGroup, Label } from 'reactstrap';
 import { AvForm } from 'availity-reactstrap-validation';
-
+import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './create.scss';
@@ -222,57 +222,61 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
                   </div>
                 </Col>
               </Row>
-              <p className="error-text">{this.state.textError}</p>
-              {selectedOptionType.value === 'Text Input' || selectedOptionType.value === 'Date' || selectedOptionType.value === '' ? (
-                ''
-              ) : (
-                <List
-                  values={options}
-                  onChange={({ oldIndex, newIndex }) => {
-                    let tempArray = options[oldIndex];
-                    options[oldIndex] = options[newIndex];
-                    options[newIndex] = tempArray;
-                    this.setState({ options });
-                  }}
-                  renderList={({ children, props, isDragged }) => (
-                    <Table responsive striped style={{ cursor: isDragged ? 'grabbing' : undefined }}>
-                      <tbody key={Math.random()} {...props}>
-                        {children}
-                      </tbody>
-                    </Table>
+              <div id="list-input">
+                <PerfectScrollbar>
+                  <p className="error-text">{this.state.textError}</p>
+                  {selectedOptionType.value === 'Text Input' || selectedOptionType.value === 'Date' || selectedOptionType.value === '' ? (
+                    ''
+                  ) : (
+                    <List
+                      values={options}
+                      onChange={({ oldIndex, newIndex }) => {
+                        let tempArray = options[oldIndex];
+                        options[oldIndex] = options[newIndex];
+                        options[newIndex] = tempArray;
+                        this.setState({ options });
+                      }}
+                      renderList={({ children, props, isDragged }) => (
+                        <Table responsive striped style={{ cursor: isDragged ? 'grabbing' : undefined }}>
+                          <tbody key={Math.random()} {...props}>
+                            {children}
+                          </tbody>
+                        </Table>
+                      )}
+                      renderItem={({ value, props, isDragged }) => {
+                        const row = (
+                          <tr {...props} style={{ ...props.style, cursor: isDragged ? 'grabbing' : 'grab' }}>
+                            <td>
+                              <Input
+                                maxLength={160}
+                                name={value.name}
+                                id={value.id}
+                                defaultValue={$(`input#${value.id}`).val()}
+                                placeholder={'Option'}
+                              />
+                            </td>
+                            <td className="text-center" id="function">
+                              <div className="btn-group flex-btn-group-container">
+                                <i className="pe-7s-menu icon-gradient bg-ripe-malin" id="icon">
+                                  {' '}
+                                </i>
+                                &nbsp;
+                                <Button onClick={() => this.deleteField(value.id)} color="danger" size="sm">
+                                  <FontAwesomeIcon icon="trash" />{' '}
+                                  <span className="d-none d-md-inline">
+                                    <Translate contentKey="entity.action.delete" />
+                                  </span>
+                                </Button>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                        return isDragged ? <div className="input-drag">{row}</div> : row;
+                      }}
+                    />
                   )}
-                  renderItem={({ value, props, isDragged }) => {
-                    const row = (
-                      <tr {...props} style={{ ...props.style, cursor: isDragged ? 'grabbing' : 'grab' }}>
-                        <td>
-                          <Input
-                            maxLength={160}
-                            name={value.name}
-                            id={value.id}
-                            defaultValue={$(`input#${value.id}`).val()}
-                            placeholder={'Option'}
-                          />
-                        </td>
-                        <td className="text-center" id="function">
-                          <div className="btn-group flex-btn-group-container">
-                            <i className="pe-7s-menu icon-gradient bg-ripe-malin" id="icon">
-                              {' '}
-                            </i>
-                            &nbsp;
-                            <Button onClick={() => this.deleteField(value.id)} color="danger" size="sm">
-                              <FontAwesomeIcon icon="trash" />{' '}
-                              <span className="d-none d-md-inline">
-                                <Translate contentKey="entity.action.delete" />
-                              </span>
-                            </Button>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                    return isDragged ? <div className="input-drag">{row}</div> : row;
-                  }}
-                />
-              )}
+                </PerfectScrollbar>
+              </div>
               <p className="error-text">{this.state.validateOption}</p>
               {selectedOptionType.value === 'Text Input' || selectedOptionType.value === 'Date' || selectedOptionType.value === '' ? (
                 ''

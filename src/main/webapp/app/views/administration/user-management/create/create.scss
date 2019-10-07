@@ -1,0 +1,55 @@
+#btn-modal-create {
+  float: right;
+}
+#btn-collapse {
+  border: none;
+  background-color: inherit;
+  cursor: pointer;
+  color: #3866dd;
+  text-decoration: underline;
+}
+#has-collapse {
+  text-align: center;
+}
+.option-create {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+
+  color: #495057;
+}
+#marrigare-text legend {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+
+  color: #495057;
+}
+#marrigare-text .form-control {
+  text-align: center;
+  margin-top: -5%;
+}
+#content-user .modal-content {
+  height: 550px;
+}
+#marrigare-text .custom-control-label {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 19px;
+  /* identical to box height */
+  color: #343a40;
+}
+.text-radio {
+  display: inherit;
+  margin-right: 1rem;
+}
+#btn-radio-yes .custom-control-label {
+  margin-left: 4px;
+  margin-bottom: 15px;
+}

@@ -1,5 +1,5 @@
 import React from 'react';
-import './styles/user-management.scss';
+import './list/user-management.scss';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps, Router, Route } from 'react-router-dom';
 import SweetAlert from 'sweetalert-react';

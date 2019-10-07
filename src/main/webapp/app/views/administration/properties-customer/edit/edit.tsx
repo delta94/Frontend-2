@@ -47,7 +47,7 @@ export class Edit extends React.Component<IEditProps, IEditState> {
       <span className="d-inline-block mb-2 mr-2">
         <Modal isOpen={this.state.modal} id="content-properties">
           <ModalHeader toggle={this.toggle} id="create-properties">
-            <Translate contentKey="properties-management.no-record" />
+            <Translate contentKey="properties-management.edit.title" />
           </ModalHeader>
           <ModalBody>
             <AvForm>
