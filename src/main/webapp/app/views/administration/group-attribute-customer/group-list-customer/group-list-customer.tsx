@@ -168,7 +168,7 @@ class GroupListCustomer extends React.Component<IGroupListCustomerProps, IGroupL
         /> */}
         <Loader message={spinner1} show={loading} priority={1}>
           <div>
-            <p>Danh sách khách hàng</p>
+            <p className="group-header">Danh sách khách hàng</p>
             {/* Block out */}
             <div className="block-out">
               <Input

@@ -53,7 +53,8 @@ class TagAddNew extends React.Component<ITagAddNewProps, ITagAddNewState> {
     let { listNewTag } = this.state;
     if (listNewTag && listNewTag.length > 0) {
       this.setState({ textNew: '' });
-      await this.props.postInsertTagAction(listNewTag);
+
+      await this.props.postInsertTagAction({ tags: listNewTag });
       await this.props.getListTagDataAction('', 0, 6);
     } else {
       this.props.openModal({
