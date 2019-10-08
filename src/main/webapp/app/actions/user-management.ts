@@ -16,7 +16,7 @@ import {
   downloadFile,
   UploaddFile,
   listUserService,
-  getUserCategoriesService,
+  postInsertUser,
   getDoSearch
 } from 'app/services/user-management';
 import { IFileList } from 'app/common/model/sucess-file';
@@ -72,13 +72,6 @@ export const updateUser: ICrudPutAction<IUser> = user => async dispatch => {
   return result;
 };
 
-// export const updateUser: ICrudPutAction<IUser> = user  => {
-//   return {
-//     type: USER_MANAGE_ACTION_TYPES.UPDATE_USER,
-//     payload: updateUserService(user)
-//   };
-// };
-
 export const deleteUser = (id, page, size, category?: string, textSearch?: string) => async dispatch => {
   // const requestUrl = `${apiUrl}/delete/${id}`;
   const result = await dispatch({
@@ -101,9 +94,6 @@ export const getUserSearch = (page, pageSize, category, textSearch) => {
   return {
     type: USER_MANAGE_ACTION_TYPES.FETCH_SEARCH_USER,
     payload: getDoSearch(page, pageSize, category, textSearch)
-    // payload: axios.get(apiUrl)
-
-    // payload: axios.get('./content/json_data/account.json')
   };
 };
 export const reset = () => ({
@@ -134,11 +124,10 @@ export const uploadFileExcel = data => async dispatch => {
   } else {
   }
 };
-export const resetDownloadInterview = () => {
+export const insertUser = data => {
   return {
-    type: USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILE,
-    payload: '',
-    meta: {}
+    type: USER_MANAGE_ACTION_TYPES.CREATE_USER,
+    payload: postInsertUser(data)
   };
 };
 export const resetMessage = () => ({

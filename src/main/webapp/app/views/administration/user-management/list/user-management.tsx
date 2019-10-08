@@ -176,58 +176,6 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                               <Button className="buttonUpdate" tag={Link} to={`${match.url}/${event.id}/update`} color="primary" size="sm">
                                 <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Thông tin</span>
                               </Button>
-                              &nbsp;
-                              <Button
-                                color="danger"
-                                size="sm"
-                                onClick={() => {
-                                  this.setState({
-                                    ...this.state,
-                                    isDelete: true,
-                                    idUser: event.id
-                                  });
-                                }}
-                              >
-                                <SweetAlert
-                                  title={translate('alert.title-delete')}
-                                  confirmButtonColor=""
-                                  text={translate('alert.text-delete')}
-                                  show={this.state.isDelete}
-                                  cancelButtonText={translate('alert.canler')}
-                                  confirmButtonText={translate('alert.ok')}
-                                  showCancelButton
-                                  onCancel={() => {
-                                    this.setState({
-                                      ...this.state,
-                                      isDelete: false
-                                    });
-                                  }}
-                                  onConfirm={() => {
-                                    this.props.deleteUser(idUser, activePage, itemsPerPage, categories, textSearch);
-                                    this.setState({
-                                      ...this.state,
-                                      isDelete: false,
-                                      isConfirm: success
-                                    });
-                                  }}
-                                />
-                                <SweetAlert
-                                  show={isConfirm}
-                                  title=""
-                                  text={translate('alert.complete-delete')}
-                                  type="success"
-                                  onConfirm={() =>
-                                    this.setState({
-                                      ...this.state,
-                                      isConfirm: false
-                                    })
-                                  }
-                                />
-                                <FontAwesomeIcon icon="trash" />{' '}
-                                <span className="d-none d-md-inline">
-                                  <Translate contentKey="entity.action.delete" />
-                                </span>
-                              </Button>
                             </div>
                           </td>
                         </tr>

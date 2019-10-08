@@ -5,7 +5,7 @@ import { AvForm, AvRadioGroup, AvRadio } from 'availity-reactstrap-validation';
 import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './create.scss';
-import { getListProp, insertProp } from 'app/actions/properties-customer';
+import { insertUser } from 'app/actions/user-management';
 import { IRootState } from 'app/reducers';
 import { Loader as LoaderAnim } from 'react-loaders';
 import Loader from 'react-loader-advanced';
@@ -18,24 +18,31 @@ export interface ICreateProps extends StateProps, DispatchProps {}
 export interface ICreateState {
   modal: boolean;
   collapse: boolean;
-  firstName: string;
-  lastName: string;
-  phone: string;
-  number: string;
+  validFirstName: string;
+  validLastName: string;
+  validPhone: string;
+  validEmail: string;
 }
 
 export class Create extends React.Component<ICreateProps, ICreateState> {
   state: ICreateState = {
     modal: false,
     collapse: false,
-    firstName: '',
-    lastName: '',
-    phone: '',
-    number: ''
+    validFirstName: '',
+    validLastName: '',
+    validPhone: '',
+    validEmail: ''
   };
 
   toggle = () => {
-    this.setState({ modal: !this.state.modal, collapse: false });
+    this.setState({
+      modal: !this.state.modal,
+      collapse: false,
+      validFirstName: '',
+      validLastName: '',
+      validPhone: '',
+      validEmail: ''
+    });
   };
 
   showCollapse = () => {
@@ -43,15 +50,61 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
   };
 
   handleSubmit = () => {
+    const { insertUser } = this.props;
+    let data = {
+      firstName: $(`input#first-name`).val(),
+      lastName: $(`input#last-name`).val(),
+      email: $(`input#email`).val(),
+      phone: $(`input#phone`).val(),
+      tag: $(`input#name-tag`).val(),
+      title: $(`input#name-title`).val(),
+      param: $(`input#name-param`).val(),
+      update: $(`input#update`).val(),
+      marrigare: $('input[name=radio]:checked').val()
+    };
     if (this.IsValidateForm()) {
+      insertUser(data);
+      this.props.openModal({
+        show: true,
+        type: 'success',
+        title: translate('modal-data.title.success'),
+        text: translate('alert.success-properties')
+      });
+      this.toggle();
     }
   };
 
   IsValidateForm = () => {
+    let countError = 0;
     if ($(`input#first-name`).val() === '') {
-      this.setState({});
+      this.setState({ validFirstName: '* Vui lòng nhập tên' });
+      countError++;
+    } else {
+      this.setState({ validFirstName: '' });
     }
-    return true;
+    if ($(`input#last-name`).val() === '') {
+      this.setState({ validLastName: '* Vui lòng nhập họ' });
+      countError++;
+    } else {
+      this.setState({ validLastName: '' });
+    }
+    if ($(`input#email`).val() === '') {
+      this.setState({ validEmail: '* Vui lòng nhập số điện thoại' });
+      countError++;
+    } else {
+      this.setState({ validEmail: '' });
+    }
+    if ($(`input#phone`).val() === '') {
+      this.setState({ validPhone: '* Vui lòng nhập số điện thoại' });
+      countError++;
+    } else {
+      this.setState({ validPhone: '' });
+    }
+    if (countError > 0) {
+      return false;
+    } else {
+      return true;
+    }
   };
 
   render() {
@@ -78,47 +131,51 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
                       </Label>
                       <Input maxLength={160} id="first-name" name="name" label="Field Name" />
                     </div>
+                    <p className="error">{this.state.validFirstName}</p>
                     <div className="option-create">
                       <Label>
                         <Translate contentKey="userManagement.lastName" />
                       </Label>
                       <Input maxLength={160} id="last-name" name="name" label="Field Name" />
                     </div>
+                    <p className="error">{this.state.validLastName}</p>
                     <div className="option-create">
                       <Label>
                         <Translate contentKey="userManagement.email" />
                       </Label>
                       <Input maxLength={160} id="email" name="name" label="Field Name" />
                     </div>
+                    <p className="error">{this.state.validEmail}</p>
                     <div className="option-create">
                       <Label>
                         <Translate contentKey="userManagement.mobile" />
                       </Label>
                       <Input maxLength={160} id="phone" name="name" label="Field Name" />
                     </div>
+                    <p className="error">{this.state.validPhone}</p>
                     <Collapse isOpen={this.state.collapse}>
                       <div className="option-create">
                         <Label>Tên tổ chức</Label>
-                        <Input maxLength={160} name="name" label="Field Name" />
+                        <Input maxLength={160} id="name-tag" name="name" label="Field Name" />
                       </div>
                       <div className="option-create">
                         <Label>Chức danh tổ chức</Label>
-                        <Input maxLength={160} name="name" label="Field Name" />
+                        <Input maxLength={160} id="name-title" name="name" label="Field Name" />
                       </div>
                       <div className="option-create">
                         <Label>Organization name</Label>
-                        <Input maxLength={160} name="name" label="Field Name" />
+                        <Input maxLength={160} id="name-param" name="name" label="Field Name" />
                       </div>
                       <div className="option-create">
                         <Label>Update</Label>
-                        <Input maxLength={160} name="name" label="Field Name" />
+                        <Input maxLength={160} id="update" name="name" label="Field Name" />
                       </div>
                       <div className="option-create">
                         <AvRadioGroup inline id="marrigare-text" name="radioCustomInputExample" label="Marrigare">
                           <div id="btn-radio-yes">
-                            <AvRadio className="text-radio" customInput label="Yes" value="Bulbasaur" />
+                            <AvRadio className="text-radio" customInput name="radio" label="Yes" value="Yes" />
                           </div>
-                          <AvRadio className="text-radio" customInput label="No" value="Squirtle" />
+                          <AvRadio className="text-radio" customInput name="radio" label="No" value="No" />
                         </AvRadioGroup>
                       </div>
                     </Collapse>
@@ -153,8 +210,7 @@ const mapStateToProps = (storeState: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  getListProp,
-  insertProp,
+  insertUser,
   openModal,
   closeModal
 };

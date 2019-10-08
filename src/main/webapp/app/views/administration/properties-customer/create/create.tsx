@@ -126,13 +126,15 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
         let arrayCategories = $(`input#${event.id}`).val();
         return arrayCategories.toString();
       });
-      let addText = [
-        {
-          title: valueName,
-          type: selectedOptionType.value,
-          fieldValue: selectedOptionType.value === 'Date' || selectedOptionType.value === 'Text Input' ? '' : valueTextbox.join('||')
-        }
-      ];
+      let addText = {
+        fields: [
+          {
+            title: valueName,
+            type: selectedOptionType.value,
+            fieldValue: selectedOptionType.value === 'Date' || selectedOptionType.value === 'Text Input' ? '' : valueTextbox.join('||')
+          }
+        ]
+      };
       this.handleSubmit(valueTextbox, addText);
     }
   };

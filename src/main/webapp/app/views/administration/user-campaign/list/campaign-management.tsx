@@ -71,7 +71,7 @@ export class CreateCampaign extends React.Component<ICreateCampaignProps, ICreat
         />
         <h3 id="user-management-page-heading">
           <Translate contentKey="campaign.title" />
-          <Link to={`/app/views/administration/user-campaign/new`} className="btn btn-primary float-right jh-create-entity">
+          <Link to={`/app/views/campaigns/user-campaign/new`} className="btn btn-primary float-right jh-create-entity">
             <FontAwesomeIcon icon="plus" /> <Translate contentKey="campaign.createCamp" />
           </Link>
         </h3>

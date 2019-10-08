@@ -2,6 +2,7 @@ import axios from 'axios';
 import { IUser, defaultValue } from 'app/common/model/user.model';
 import { ICategory } from 'app/common/model/category.model';
 import { toast } from 'react-toastify';
+import { authHeaders } from './header';
 
 const apiUrl = 'v1/customer';
 
@@ -90,4 +91,9 @@ export const UploaddFile = data => {
       'Content-Type': 'multipart/form-data'
     }
   });
+};
+
+export const postInsertUser = (data: any) => {
+  const insertPropApi = `${apiUrl}`;
+  return axios.post(insertPropApi, data, { headers: authHeaders });
 };
