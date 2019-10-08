@@ -12,7 +12,7 @@ import {
   getUserService,
   getUsersService,
   updateUserService,
-  getFile,
+  getInfoUser,
   downloadFile,
   UploaddFile,
   listUserService,
@@ -128,6 +128,13 @@ export const insertUser = data => {
   return {
     type: USER_MANAGE_ACTION_TYPES.CREATE_USER,
     payload: postInsertUser(data)
+  };
+};
+
+export const getDetailUser = id => {
+  return {
+    type: USER_MANAGE_ACTION_TYPES.UPDATE_USER,
+    payload: getInfoUser(id)
   };
 };
 export const resetMessage = () => ({

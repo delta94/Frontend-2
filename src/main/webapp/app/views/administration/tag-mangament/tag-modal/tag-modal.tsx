@@ -4,7 +4,7 @@ import { Button, Modal, ModalHeader, ModalFooter, ModalBody } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/reducers';
-import { Loader as LoaderAnim } from 'react-loaders';
+import LoaderAnim from 'react-loaders';
 import TagMerge from './merge-tags/merge-tags';
 import TagDelete from './delete-tags/delete-tags';
 import TagEdit from './edit-tags/edit-tags';

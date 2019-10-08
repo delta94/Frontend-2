@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './create-group.scss';
 import { getListProp, insertProp, getTempId, getListTemp } from 'app/actions/properties-customer';
 import { IRootState } from 'app/reducers';
-import { Loader as LoaderAnim } from 'react-loaders';
+import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import { openModal, closeModal } from 'app/actions/modal';
 import Select from 'react-select';

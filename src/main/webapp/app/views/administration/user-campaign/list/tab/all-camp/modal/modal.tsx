@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircle, faClock, faUser, faSearch, faKaaba } from '@fortawesome/free-solid-svg-icons';
-import { Loader as LoaderAnim } from 'react-loaders';
+import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Table, Row, Col } from 'reactstrap';
 import ReactPaginate from 'react-paginate';
@@ -119,7 +119,7 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
   render() {
     const { loading, camp, campDetail, isOpen, showAlert } = this.props;
     const { activePage, isConfirm } = this.state;
-    const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
+    const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
 
     return (
       <Modal isOpen={isOpen} fade={false}>

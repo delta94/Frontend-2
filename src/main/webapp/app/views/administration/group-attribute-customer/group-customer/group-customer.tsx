@@ -4,7 +4,7 @@ import { Table } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import './group-customer.scss';
 import { IRootState } from 'app/reducers';
-import { Loader as LoaderAnim } from 'react-loaders';
+import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import { Input, Icon, Menu } from 'antd';
 import $ from 'jquery';
@@ -90,7 +90,7 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
     let { textSearch, listPopOver } = this.state;
     let { loading, list_group_customer } = this.props;
     console.log(listPopOver);
-    const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
+    const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
 
     const content = (
       <ul style={{ listStyleType: 'none', padding: '0px', cursor: 'pointer', fontSize: '0.8rem' }}>

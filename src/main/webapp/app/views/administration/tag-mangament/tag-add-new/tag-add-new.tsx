@@ -5,7 +5,7 @@ import { Button, Table, Row, Badge, Col, Input } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import './tag-add-new.scss';
 import { IRootState } from 'app/reducers';
-import { Loader as LoaderAnim } from 'react-loaders';
+import LoaderAnim from 'react-loaders';
 import { postInsertTag } from '../../../../services/tag-management';
 import { postInsertTagAction, getListTagDataAction } from '../../../../actions/tag-management';
 import { openModal } from '../../../../actions/modal';

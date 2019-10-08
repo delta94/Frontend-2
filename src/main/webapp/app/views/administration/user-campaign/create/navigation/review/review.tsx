@@ -5,11 +5,11 @@ import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPagi
 import React, { Fragment, Component, useState } from 'react';
 import { ISaveDataCampain } from 'app/common/model/campaign-navigation.model';
 import Loader from 'react-loader-advanced';
-import { Loader as LoaderAnim } from 'react-loaders';
+import LoaderAnim from 'react-loaders';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 
-const spinner = <LoaderAnim color="#ffffff" type="ball-pulse" />;
+const spinner = <LoaderAnim type="ball-pulse" active={true} />;
 
 export interface ReviewProps extends StateProps, DispatchProps {}
 

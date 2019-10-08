@@ -2,7 +2,7 @@ import React, { Fragment, Component, useState } from 'react';
 import { Col, Row, CardTitle, Button, ModalBody, Table, Modal, ModalHeader, Label, Input } from 'reactstrap';
 import '../customer-dialog/customer-dialog.scss';
 import Loader from 'react-loader-advanced';
-import { Loader as LoaderAnim } from 'react-loaders';
+import LoaderAnim from 'react-loaders';
 import { Translate, translate } from 'react-jhipster';
 import Ionicon from 'react-ionicons';
 import { connect } from 'react-redux';
@@ -122,7 +122,7 @@ class CustomerDialog extends React.Component<CustomerDialogProps, CustomerDialog
     }
   };
   render() {
-    const spinner = <LoaderAnim color="#ffffff" type="ball-pulse" />;
+    const spinner = <LoaderAnim type="ball-pulse" active={true} />;
     const { listCustomer, loading, total } = this.props;
     return (
       <Loader message={spinner} show={loading} priority={10}>

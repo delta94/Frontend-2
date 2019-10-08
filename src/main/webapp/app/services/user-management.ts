@@ -94,6 +94,11 @@ export const UploaddFile = data => {
 };
 
 export const postInsertUser = (data: any) => {
-  const insertPropApi = `${apiUrl}`;
+  const insertPropApi = `${apiUrl}/insert`;
   return axios.post(insertPropApi, data, { headers: authHeaders });
+};
+
+export const getInfoUser = (id: any) => {
+  const insertPropApi = `${apiUrl}/${id}`;
+  return axios.get(insertPropApi, { headers: authHeaders });
 };

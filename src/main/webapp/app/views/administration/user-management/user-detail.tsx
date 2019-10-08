@@ -7,7 +7,7 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Table, Container, CardTitle, Card, CardBody } from 'reactstrap';
 import { Translate } from 'react-jhipster';
 import Loader from 'react-loader-advanced';
-import { Loader as LoaderAnim } from 'react-loaders';
+import LoaderAnim from 'react-loaders';
 import { getUser } from 'app/actions/user-management';
 import { IRootState } from 'app/reducers';
 
@@ -46,7 +46,7 @@ export class UserDetail extends React.Component<IUserDetailProps> {
     }
 
     const url = ' http://171.244.40.91:8088/v1/customer/import-result?fileName=' + listFile.fileName;
-    const spinner = <LoaderAnim color="#ffffff" type="ball-pulse" />;
+    const spinner = <LoaderAnim type="ball-pulse" active={true} />;
     return (
       <Container fluid>
         <Loader message={spinner} show={loading} priority={10}>

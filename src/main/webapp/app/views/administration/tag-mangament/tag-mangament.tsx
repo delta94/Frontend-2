@@ -5,7 +5,7 @@ import { Row } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import '../tag-mangament/tag-mangament.scss';
 import { IRootState } from 'app/reducers';
-import { Loader as LoaderAnim } from 'react-loaders';
+import LoaderAnim from 'react-loaders';
 import TagList from './tag-list/tag-list';
 import SweetAlert from 'sweetalert-react';
 import { openModal, closeModal } from '../../../actions/modal';

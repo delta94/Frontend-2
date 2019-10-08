@@ -9,7 +9,7 @@ import '../../properties-customer/list/properties-customer.scss';
 import { openModal, closeModal } from 'app/actions/modal';
 import { getListProp, openModalDel, openModalEdit } from 'app/actions/properties-customer';
 import { IRootState } from 'app/reducers';
-import { Loader as LoaderAnim } from 'react-loaders';
+import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import Select from 'react-select';
 import { List } from 'react-movable';
@@ -107,7 +107,7 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
   render() {
     const { loading, modalState, match } = this.props;
     let { dropItem, selectedOption } = this.state;
-    const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
+    const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
 
     return (
       <div>

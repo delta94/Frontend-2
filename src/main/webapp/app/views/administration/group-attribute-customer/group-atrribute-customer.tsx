@@ -5,7 +5,6 @@ import { Row } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import './group-attribute-customer.scss';
 import { IRootState } from 'app/reducers';
-import { Loader as LoaderAnim } from 'react-loaders';
 import SweetAlert from 'sweetalert-react';
 import { openModal, closeModal } from '../../../actions/modal';
 import GroupListCustomer from './group-list-customer/group-list-customer';

@@ -41,10 +41,10 @@ export class Infomation extends React.Component<IInfomationProps, IInfomationSta
           onConfirm={() => this.props.closeModal()}
         />
         <Row>
-          <Col span={12}>
+          <Col span={12} style={{ marginTop: '1%' }}>
             <Basic />
           </Col>
-          <Col span={12}>
+          <Col span={12} style={{ marginTop: '1%', width: '49.7%', float: 'right' }}>
             <Basic />
           </Col>
         </Row>

@@ -6,12 +6,11 @@ import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './user-management.scss';
 import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
-import { getUser, getUsers, updateUser, getUserCategories, deleteUser } from 'app/actions/user-management';
+import { getUser, getUsers, updateUser, getUserCategories, deleteUser, getDetailUser } from 'app/actions/user-management';
 import UserCategoryTag from '../user-categories-tags';
 import { IRootState } from 'app/reducers';
 import ReactPaginate from 'react-paginate';
-import SweetAlert from 'sweetalert-react';
-import { Loader as LoaderAnim } from 'react-loaders';
+import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import CreateUser from './../create/create';
 
@@ -83,9 +82,9 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
   };
 
   render() {
-    const { users, match, totalElements, loading, success } = this.props;
-    const { itemsPerPage, activePage, idUser, textSearch, categories, isConfirm } = this.state;
-    const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
+    const { users, match, loading, getDetailUser, history } = this.props;
+    const { activePage } = this.state;
+    const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
 
     return (
       <div>
@@ -173,7 +172,15 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                           </td>
                           <td className="text-center">
                             <div className="btn-group flex-btn-group-container">
-                              <Button className="buttonUpdate" tag={Link} to={`${match.url}/${event.id}/update`} color="primary" size="sm">
+                              <Button
+                                className="buttonUpdate"
+                                onClick={async () => {
+                                  await getDetailUser(event.id);
+                                  history.push('user-management/info');
+                                }}
+                                color="primary"
+                                size="sm"
+                              >
                                 <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Thông tin</span>
                               </Button>
                             </div>
@@ -220,7 +227,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   pageCount: Math.ceil(storeState.userManagement.totalElements / ITEMS_PER_PAGE)
 });
 
-const mapDispatchToProps = { getUsers, updateUser, getUserCategories, deleteUser, getUser };
+const mapDispatchToProps = { getUsers, updateUser, getUserCategories, deleteUser, getUser, getDetailUser };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

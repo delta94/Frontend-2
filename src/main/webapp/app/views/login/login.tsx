@@ -8,7 +8,7 @@ import './login.scss';
 import { hasAnyAuthority } from 'app/common/auth/private-route';
 import { AUTHORITIES, messages } from 'app/config/constants';
 import { openModal, closeModal } from 'app/actions/modal';
-import { Loader as LoaderAnim } from 'react-loaders';
+import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import { Translate, translate } from 'react-jhipster';
 
@@ -114,7 +114,7 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
     if (isAuthenticated) {
       return <Redirect to={from} />;
     }
-    const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
+    const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
     return (
       <Loader message={spinner1} show={loading} priority={1}>
         <Fragment>

@@ -7,6 +7,18 @@ import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
 import { IFileList } from 'app/common/model/sucess-file';
 import { ICategory } from 'app/common/model/category.model';
 
+export interface IUserDetails {
+  email?: string;
+  id?: string;
+  name?: string;
+  phone?: string;
+  categorys?: [];
+  personalizationTag?: string;
+  type?: string;
+  title?: string;
+  fieldValue?: string;
+}
+
 const initialState = {
   loading: false,
   errorMessage: null,
@@ -16,7 +28,7 @@ const initialState = {
   listFiles: {} as IFileList,
   listUsers: [] as ReadonlyArray<IUser>,
   authorities: [] as any[],
-  user: defaultValue,
+  user: {} as IUserDetails,
   updating: false,
   updateSuccess: false,
   getNameFile: '',
@@ -120,8 +132,7 @@ export default (state: UserManagementState = initialState, action): UserManageme
     case SUCCESS(USER_MANAGE_ACTION_TYPES.FETCH_USER):
       return {
         ...state,
-        loading: false,
-        user: action.payload.data
+        loading: false
       };
 
     case SUCCESS(USER_MANAGE_ACTION_TYPES.CREATE_USER):
@@ -132,7 +143,8 @@ export default (state: UserManagementState = initialState, action): UserManageme
         loading: false,
         updating: false,
         updateSuccess: true,
-        showUpdateSuccessAlert: true
+        showUpdateSuccessAlert: true,
+        user: action.payload.data
 
         // user: action.payload.data
       };
@@ -141,7 +153,6 @@ export default (state: UserManagementState = initialState, action): UserManageme
         ...state,
         updating: false,
         updateSuccess: true,
-        user: defaultValue,
         loading: false,
         showDeleteSuccessAlert: true
       };

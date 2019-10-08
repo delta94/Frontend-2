@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Input, Card, Col, Row, Label } from 'reactstrap';
 import { Translate } from 'react-jhipster';
 import { IRootState } from 'app/reducers';
-import { Loader as LoaderAnim } from 'react-loaders';
+import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import './info.scss';
 import 'react-dates/initialize';
@@ -19,7 +19,7 @@ export interface IinfoProps extends StateProps, DispatchProps {
   onClick: Function;
 }
 
-const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
+const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
 
 export interface IinfoPropsState {
   // value info

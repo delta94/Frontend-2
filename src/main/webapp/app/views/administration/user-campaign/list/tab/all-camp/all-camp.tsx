@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircle, faClock, faUser } from '@fortawesome/free-solid-svg-icons';
-import { Loader as LoaderAnim } from 'react-loaders';
+import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
@@ -81,7 +81,7 @@ class AllCamp extends React.Component<IAllCampProps, IAllCampState> {
 
   render() {
     const { loading, camps } = this.props;
-    const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
+    const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
 
     return (
       <div className="grid-container-total">

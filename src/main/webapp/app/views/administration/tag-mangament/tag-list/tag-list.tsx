@@ -5,7 +5,7 @@ import { Button, Table, Row, Badge, Col } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import './tag-list.scss';
 import { IRootState } from 'app/reducers';
-import { Loader as LoaderAnim } from 'react-loaders';
+import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import { getListTagDataAction } from '../../../../actions/tag-management';
 import ReactPaginate from 'react-paginate';
@@ -187,7 +187,7 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
         isDisable = false;
       }
     });
-    const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
+    const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
 
     return (
       <div className="tag-list">

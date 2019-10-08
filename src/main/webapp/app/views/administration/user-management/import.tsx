@@ -8,7 +8,7 @@ import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import FileDownload from 'js-file-download';
 import Loader from 'react-loader-advanced';
-import { Loader as LoaderAnim } from 'react-loaders';
+import LoaderAnim from 'react-loaders';
 
 import { downloadFileExcel, uploadFileExcel } from 'app/actions/user-management';
 import { IRootState } from 'app/reducers';
@@ -78,7 +78,7 @@ export class UserCreate extends React.Component<IUserCreateProps, IUserCreateSta
 
   render() {
     const { loading } = this.props;
-    const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
+    const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
     return (
       <Container fluid>
         <Loader message={spinner1} show={loading} priority={1}>

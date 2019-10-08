@@ -6,7 +6,7 @@ import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './group-list-customer.scss';
 import { IRootState } from 'app/reducers';
-import { Loader as LoaderAnim } from 'react-loaders';
+import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import { getListTagDataAction } from '../../../../actions/tag-management';
 import ReactPaginate from 'react-paginate';
@@ -154,7 +154,7 @@ class GroupListCustomer extends React.Component<IGroupListCustomerProps, IGroupL
   render() {
     let { loading, size, totalPages } = this.props;
     let { activePage, listCheckBox, textSearch, openFixModal, dataModal, param, singleModalData } = this.state;
-    const spinner1 = <LoaderAnim color="#ffffff" type="ball-pulse" />;
+    const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
 
     return (
       <div className="group-list-customer b-l">

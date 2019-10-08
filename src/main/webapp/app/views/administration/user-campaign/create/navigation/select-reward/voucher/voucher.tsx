@@ -7,7 +7,7 @@ import { IRootState } from 'app/reducers';
 import { getListEvoucher, getDetailEvoucher } from '../../../../../../../actions/user-campaign';
 import { getNavigationReward } from 'app/actions/navigation-info';
 import Loader from 'react-loader-advanced';
-import { Loader as LoaderAnim } from 'react-loaders';
+import LoaderAnim from 'react-loaders';
 import { ULTILS_TYPES } from '../../../../../../../constants/ultils';
 import { Translate } from 'react-jhipster';
 
@@ -50,7 +50,7 @@ class Vocher extends React.Component<VocherProps, VocherState> {
   render() {
     const { value } = this.state;
     const { loading, listEvoucher, evoucherDetail } = this.props;
-    const spinner = <LoaderAnim color="#ffffff" type="ball-pulse" />;
+    const spinner = <LoaderAnim type="ball-pulse" active={true} />;
     return (
       <Loader message={spinner} show={loading} priority={10}>
         <Container fluid>

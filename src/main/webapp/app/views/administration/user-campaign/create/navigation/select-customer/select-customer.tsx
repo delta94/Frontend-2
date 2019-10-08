@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { Col, Row, CardTitle, Modal, Label } from 'reactstrap';
 import '../select-customer/select-customer.scss';
 import Loader from 'react-loader-advanced';
-import { Loader as LoaderAnim } from 'react-loaders';
+import LoaderAnim from 'react-loaders';
 import { Translate, translate } from 'react-jhipster';
 import Ionicon from 'react-ionicons';
 import { connect } from 'react-redux';
@@ -13,7 +13,7 @@ import { openModal, closeModal } from 'app/actions/modal';
 import CustomerDialog from './customer-dialog/customer-dialog';
 import { ITEMS_PER_PAGE, ULTILS_TYPES, ACTIVE_PAGE } from '../../../../../../constants/ultils';
 
-const spinner = <LoaderAnim color="#ffffff" type="ball-pulse" />;
+const spinner = <LoaderAnim type="ball-pulse" active={true} />;
 
 export interface SelectCustomerProps extends StateProps, DispatchProps {}
 
