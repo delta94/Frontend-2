@@ -6,7 +6,6 @@ import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './group-modal-config.scss';
 import { IRootState } from 'app/reducers';
-import { Loader as LoaderAnim } from 'react-loaders';
 import { getListTagDataAction } from '../../../../actions/tag-management';
 import ReactPaginate from 'react-paginate';
 import { Input, Icon, Checkbox, Menu, Dropdown, Card } from 'antd';
