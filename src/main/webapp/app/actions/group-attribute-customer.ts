@@ -1,6 +1,7 @@
 import { CUSTOMER_GROUP_ATTRIBUTE } from '../constants/group-atrribute-customer';
+import { getListFieldData } from '../services/group-atrribute-customer';
 import {
-  getListCustomerGroups,
+  getCustomerGroups,
   postInsertCustomerGroup,
   postUpdateCustomerGroup,
   postMergeCustomerGroup,
@@ -9,7 +10,12 @@ import {
 
 export const getListCustomerGroupDataAction = (textSearch?: string) => ({
   type: CUSTOMER_GROUP_ATTRIBUTE.GET_LIST_CUSTOMER_GROUP,
-  payload: getListCustomerGroups(textSearch)
+  payload: getCustomerGroups(textSearch)
+});
+
+export const getListFieldDataAction = () => ({
+  type: CUSTOMER_GROUP_ATTRIBUTE.GET_LIST_FIELD_DATA,
+  payload: getListFieldData()
 });
 
 export const postInsertCustomerGroupAction = data => ({
