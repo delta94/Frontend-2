@@ -13,7 +13,7 @@ import handleModal, { HandleModal } from './modal';
 import loadingState, { LoadingState } from './loading';
 import tagDataState, { TagDataState } from './tag-management';
 import propertiesState, { PropertiesDataState } from './properties-customer';
-import groupCustomerState, { GroupCustomerState } from './group-attribute-cusomer';
+import groupCustomerState, { GroupCustomerState } from './group-attribute-customer';
 
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 

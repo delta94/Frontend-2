@@ -16,6 +16,14 @@ interface ICatagoryGroup {
   contactNumbers?: string;
 }
 
+interface IListFieldData {
+  id?: string;
+  typeName?: string;
+  title: string;
+  fieldValue?: string;
+  personalizationTag: string;
+}
+
 const initialDataState = {
   loading: false,
   list_group_customer: [] as ICatagoryGroup[],
@@ -28,7 +36,8 @@ const initialDataState = {
     title: 'Thông báo',
     show: false,
     payload: {}
-  } as IOpenModal
+  } as IOpenModal,
+  list_field_data: [] as IListFieldData[]
 };
 
 export type GroupCustomerState = Readonly<typeof initialDataState>;
@@ -46,6 +55,12 @@ export default (state: GroupCustomerState = initialDataState, action): GroupCust
       };
 
     case FAILURE(CUSTOMER_GROUP_ATTRIBUTE.GET_LIST_CUSTOMER_GROUP):
+      return {
+        ...state,
+        loading: false
+      };
+
+    case FAILURE(CUSTOMER_GROUP_ATTRIBUTE.GET_LIST_FIELD_DATA):
       return {
         ...state,
         loading: false
@@ -101,13 +116,20 @@ export default (state: GroupCustomerState = initialDataState, action): GroupCust
 
     case SUCCESS(CUSTOMER_GROUP_ATTRIBUTE.GET_LIST_CUSTOMER_GROUP):
       let data = action.payload.data;
-      console.log(data);
       return {
         ...state,
         loading: false,
         list_group_customer: data,
         size: data.totalPages,
         totalPages: data.totalPages
+      };
+
+    case SUCCESS(CUSTOMER_GROUP_ATTRIBUTE.GET_LIST_FIELD_DATA):
+      console.log(action.payload.data);
+      return {
+        ...state,
+        loading: false,
+        list_group_customer: action.payload.data
       };
 
     // success on get content template

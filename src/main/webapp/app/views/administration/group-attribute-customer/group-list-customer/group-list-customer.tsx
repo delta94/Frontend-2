@@ -13,7 +13,6 @@ import ReactPaginate from 'react-paginate';
 import { Input, Icon, Checkbox, Menu, Dropdown } from 'antd';
 // import TagModal from '../tag-modal/tag-modal';
 import { DELETE_TAG, MERGE_TAG, EDIT_TAG } from '../../../../constants/tag-management';
-import $ from 'jquery';
 
 interface IGroupListCustomerProps extends StateProps, DispatchProps {}
 
@@ -158,14 +157,6 @@ class GroupListCustomer extends React.Component<IGroupListCustomerProps, IGroupL
 
     return (
       <div className="group-list-customer b-l">
-        {/* <TagModal
-          toggleFixModal={this.toogleFixModal}
-          openFixModal={openFixModal}
-          param={param}
-          dataModal={dataModal}
-          closeFixModalData={this.closeFixModalData}
-          singleModalData={singleModalData}
-        /> */}
         <Loader message={spinner1} show={loading} priority={1}>
           <div>
             <p className="group-header">Danh sách khách hàng</p>
@@ -211,18 +202,7 @@ class GroupListCustomer extends React.Component<IGroupListCustomerProps, IGroupL
                         <td>{item.description}</td>
                         <td>{item.description}</td>
                         <td>{item.description}</td>
-                        <td>
-                          <Dropdown.Button
-                            overlay={() => this.menu(item)}
-                            icon={<Icon type="caret-down" />}
-                            onClick={() => this.openFixModalWithData(EDIT_TAG, item)}
-                          >
-                            <span>
-                              <Icon type="edit" />
-                              Edit
-                            </span>
-                          </Dropdown.Button>
-                        </td>
+                        <td>...</td>
                       </tr>
                     );
                   })}
