@@ -74,12 +74,12 @@ module.exports = options => ({
         test: /\.(tsx?|js|jsx)$/,
         loader: 'source-map-loader'
       },
-      // {
-      //   test: /\.(tsx?|js|jsx)$/,
-      //   enforce: 'pre',
-      //   loader: 'tslint-loader',
-      //   exclude: [utils.root('node_modules')]
-      // }
+      {
+        test: /\.(tsx?|js|jsx)$/,
+        enforce: 'pre',
+        loader: 'tslint-loader',
+        exclude: [utils.root('node_modules')]
+      }
     ]
   },
   stats: {

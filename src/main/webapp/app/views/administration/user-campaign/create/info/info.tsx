@@ -77,8 +77,8 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
 
   componentDidMount() {
     let { startDate, endDate } = this.state;
-    this.props.getNavigationFromDate(new Date(startDate._d).toISOString());
-    this.props.getNavigationToDate(new Date(endDate._d).toISOString());
+    this.props.getNavigationFromDate(startDate.toDate().toISOString());
+    this.props.getNavigationToDate(endDate.toDate().toISOString());
   }
   // function show text scripts
   onClick = (event, id) => {
@@ -101,14 +101,16 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
       this.setState({
         startDate
       });
-      this.props.getNavigationFromDate(new Date(startDate._d).toISOString());
+
+      this.props.getNavigationFromDate(startDate.toDate().toISOString());
     }
 
     if (endDate) {
       this.setState({
         endDate
       });
-      this.props.getNavigationToDate(new Date(endDate._d).toISOString());
+
+      this.props.getNavigationToDate(endDate.toDate().toISOString());
     }
   };
 

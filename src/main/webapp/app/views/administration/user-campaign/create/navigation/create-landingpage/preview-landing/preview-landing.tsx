@@ -55,6 +55,7 @@ class PreviewLanding extends React.PureComponent<IPreviewLandingProps, IPreviewL
       htmlDOM = this.replaceAll(htmlDOM, paramCode, sampleValue);
     }
 
+    // @ts-ignore:2339
     document.getElementById('fred').contentWindow.document.write(htmlDOM);
   }
 

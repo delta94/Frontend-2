@@ -3,7 +3,6 @@ import React from 'react';
 import './Dropdown.scss';
 import { faAngleDown, faWindowMinimize } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Input } from 'antd';
 
 export interface IArrayEntity {
   id: number;
@@ -63,17 +62,21 @@ class Dropdown extends PureComponent<IDropdownProps, IDropdownState> {
     }
 
     window.onclick = function(event) {
-      let match = event.target.className;
-      if (match !== 'toggle-data') {
-        var dropdowns = document.getElementsByClassName('topica-dropdown-menu show');
-        for (let i = 0; i < dropdowns.length; i++) {
-          var openDropdown = dropdowns[i];
-          if (openDropdown.classList.contains('show')) {
-            openDropdown.classList.remove('show');
+      // @ts-ignore:2339
+      if (event.target.className) {
+        // @ts-ignore:2339
+        let match = event.target.className;
+        if (match !== 'toggle-data') {
+          var dropdowns = document.getElementsByClassName('topica-dropdown-menu show');
+          for (let i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+              openDropdown.classList.remove('show');
+            }
           }
+        } else {
+          event.stopImmediatePropagation();
         }
-      } else {
-        event.stopImmediatePropagation();
       }
     };
 
