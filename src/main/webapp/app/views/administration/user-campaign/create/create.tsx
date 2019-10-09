@@ -108,7 +108,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
                   <Button
                     onClick={() => {
                       this.props.refreshNavigationInfo();
-                      window.location.assign('/#/app/views/administration/user-campaign/');
+                      window.location.assign('/#/app/views/campaigns/user-campaign');
                     }}
                   >
                     <i className="pe-7s-close-circle" />
