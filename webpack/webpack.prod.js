@@ -7,6 +7,8 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const path = require('path');
 const sass = require('sass');
+const nodeExternals = require('webpack-node-externals');
+
 
 const utils = require('./utils.js');
 const commonConfig = require('./webpack.common.js');
@@ -16,6 +18,8 @@ const ENV = 'production';
 module.exports = webpackMerge(commonConfig({ env: ENV }), {
   // devtool: 'source-map', // Enable source maps. Please note that this will slow down the build
   mode: ENV,
+  target: 'node', // in order to ignore built-in modules like path, fs, etc. 
+  externals: [nodeExternals()], // in order to ignore all modules in node_modules folder 
   entry: {
     main: './src/main/webapp/app/index'
   },
@@ -70,10 +74,10 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
             toplevel: true
           },
           output: {
-              comments: false,
-              beautify: false,
-              indent_level: 2,
-              ecma: 6
+            comments: false,
+            beautify: false,
+            indent_level: 2,
+            ecma: 6
           },
           mangle: {
             keep_fnames: true,

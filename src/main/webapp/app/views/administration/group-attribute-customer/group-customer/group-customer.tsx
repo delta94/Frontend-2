@@ -88,7 +88,8 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
   render() {
     let { textSearch, listPopOver } = this.state;
     let { loading, list_group_customer } = this.props;
-    const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
+    let active = true;
+    const spinner1 = <LoaderAnim type="ball-pulse" active={active} />;
 
     const content = (
       <ul style={{ listStyleType: 'none', padding: '0px', cursor: 'pointer', fontSize: '0.8rem' }}>

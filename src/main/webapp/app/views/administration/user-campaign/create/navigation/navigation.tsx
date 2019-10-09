@@ -220,7 +220,7 @@ export class Navigation extends Component<INavigationProps, INavigationState> {
 
           setTimeout(() => {
             this.props.closeModal();
-            window.location.assign('/#/app/views/administration/user-campaign');
+            window.location.assign('#/app/views/campaigns/user-campaign');
           }, 500);
         })
         .catch(err => {
