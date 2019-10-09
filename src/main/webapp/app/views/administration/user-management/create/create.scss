@@ -35,7 +35,13 @@
 }
 #content-user .modal-content {
   height: 550px;
+  width: 100% !important;
+  margin-top: 20%;
 }
+#content-user {
+  margin-left: 35%;
+}
+
 #marrigare-text .custom-control-label {
   font-family: Roboto;
   font-style: normal;

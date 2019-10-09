@@ -54,27 +54,34 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
     let data = {
       firstName: $(`input#first-name`).val(),
       lastName: $(`input#last-name`).val(),
-      email: $(`input#email`).val(),
-      phone: $(`input#phone`).val(),
-      tag: $(`input#name-tag`).val(),
-      title: $(`input#name-title`).val(),
-      param: $(`input#name-param`).val(),
-      update: $(`input#update`).val(),
-      marrigare: $('input[name=radio]:checked').val()
+      mobile: $(`input#email`).val(),
+      email: $(`input#phone`).val(),
+      fields: [
+        {
+          title: $(`input#name-title`).val(),
+          param: $(`input#name-param`).val(),
+          update: $(`input#update`).val(),
+          marrigare: $('input[name=radio]:checked').val()
+        }
+      ]
     };
     if (this.IsValidateForm()) {
       insertUser(data);
-      this.props.openModal({
-        show: true,
-        type: 'success',
-        title: translate('modal-data.title.success'),
-        text: translate('alert.success-properties')
-      });
+      // this.props.openModal({
+      //   show: true,
+      //   type: 'success',
+      //   title: translate('modal-data.title.success'),
+      //   text: translate('alert.success-properties')
+      // });
       this.toggle();
     }
   };
 
   IsValidateForm = () => {
+    let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    var vnfont = /((09|03|07|08|05)+([0-9]{8})$)/g;
+    let valueEmail = $(`input#email`).val();
+    let valuePhone = $(`input#phone`).val();
     let countError = 0;
     if ($(`input#first-name`).val() === '') {
       this.setState({ validFirstName: '* Vui lòng nhập tên' });
@@ -88,14 +95,20 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
     } else {
       this.setState({ validLastName: '' });
     }
-    if ($(`input#email`).val() === '') {
+    if (valueEmail === '') {
       this.setState({ validEmail: '* Vui lòng nhập số điện thoại' });
+      countError++;
+    } else if (!re.test(String(valueEmail))) {
+      this.setState({ validEmail: '* Vui lòng nhập đúng định dạng email' });
       countError++;
     } else {
       this.setState({ validEmail: '' });
     }
-    if ($(`input#phone`).val() === '') {
+    if (valuePhone === '') {
       this.setState({ validPhone: '* Vui lòng nhập số điện thoại' });
+      countError++;
+    } else if (!vnfont.test(String(valuePhone))) {
+      this.setState({ validPhone: '* Vui lòng nhập đúng định dạng số điện thoại' });
       countError++;
     } else {
       this.setState({ validPhone: '' });

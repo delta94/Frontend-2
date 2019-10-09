@@ -23,9 +23,7 @@ export const optionType = [
   { value: 'Date', label: 'Date' }
 ];
 
-export interface ICreateProps extends StateProps, DispatchProps {
-  onClick: Function;
-}
+export interface ICreateProps extends StateProps, DispatchProps {}
 
 export interface ICreateState {
   selectedOptionType: {
@@ -148,7 +146,12 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
       } else {
         await insertProp(addText);
         await getListProp();
-        this.props.onClick(addComplete);
+        this.props.openModal({
+          show: true,
+          type: 'success',
+          title: translate('modal-data.title.success'),
+          text: translate('alert.success-properties')
+        });
         this.setState({ modal: !this.state.modal, valueName: '' });
       }
     } else if (!selectedOptionType.value) {
@@ -156,7 +159,12 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
     } else {
       await insertProp(addText);
       await getListProp();
-      this.props.onClick(addComplete);
+      this.props.openModal({
+        show: true,
+        type: 'success',
+        title: translate('modal-data.title.success'),
+        text: translate('alert.success-properties')
+      });
       this.setState({
         modal: !this.state.modal,
         valueName: ''

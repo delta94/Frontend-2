@@ -49,7 +49,7 @@ export class Delete extends React.Component<IDeleteProps, IDeleteState> {
     const { postDeleteProp, id, loading } = this.props;
     return (
       <span className="d-inline-block mb-2 mr-2">
-        <Modal isOpen={this.state.modalDelete} id="content-properties">
+        <Modal isOpen={this.state.modalDelete} id="delete-properties">
           <ModalHeader toggle={this.toggle} id="create-properties">
             <Translate contentKey="properties-management.delete.title" />
           </ModalHeader>
