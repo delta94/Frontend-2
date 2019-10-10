@@ -3,6 +3,7 @@ import { IOpenModal } from './modal';
 import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
 import { CUSTOMER_GROUP_ATTRIBUTE } from '../constants/group-atrribute-customer';
 import { ERROR } from '../constants/common';
+import { IListFieldData } from 'app/common/model/group-attribute-customer';
 
 interface IPostRequestReturn {
   code?: number;
@@ -14,14 +15,6 @@ interface ICatagoryGroup {
   id?: string;
   typeName?: string;
   contactNumbers?: string;
-}
-
-interface IListFieldData {
-  id?: string;
-  typeName?: string;
-  title: string;
-  fieldValue?: string;
-  personalizationTag: string;
 }
 
 const initialDataState = {
@@ -129,7 +122,7 @@ export default (state: GroupCustomerState = initialDataState, action): GroupCust
       return {
         ...state,
         loading: false,
-        list_group_customer: action.payload.data
+        list_field_data: action.payload.data
       };
 
     // success on get content template

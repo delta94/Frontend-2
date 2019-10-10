@@ -27,9 +27,7 @@ class GroupAttributeCustomer extends React.Component<IGroupAttributeCustomerProp
     is_show: true
   };
 
-  componentDidMount() {
-    this.props.getListFieldDataAction();
-  }
+  componentDidMount() {}
 
   toggle = () => {
     let { is_show } = this.state;
@@ -78,8 +76,7 @@ const mapStateToProps = ({ tagDataState, handleModal }: IRootState) => ({
 
 const mapDispatchToProps = {
   openModal,
-  closeModal,
-  getListFieldDataAction
+  closeModal
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

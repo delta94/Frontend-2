@@ -14,3 +14,11 @@ export const OPERATOR = {
   EQUAL: 'EQUAL',
   LESS_OR_EQUAL: 'LESS_OR_EQUAL'
 };
+
+export const TYPE_FIELD = {
+  TEXT_INPUT: 'Text Input',
+  DATE: 'Date',
+  DROP_DOWN: 'Dropdown',
+  RADIO_BUTTON: 'Radio Button',
+  CHECK_BOX: 'Checkbox'
+};

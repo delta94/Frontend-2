@@ -5,15 +5,15 @@ const customerGroup = 'v1/category-customers';
 
 export const getCustomerGroups = (textSearch: string) => {
   return axios.get(customerGroup, { params: { textSearch } });
-  // return axios.get('http://localhost:9000/content/json_data/group-attribute-customer.json');
 };
 
 export const getListCustomerGroups = (textSearch: string, pageIndex: number, pageSize: number, id: string) => {
-  return axios.get(`v1/category/z${id}/customers`, { params: { textSearch, pageIndex, pageSize } });
+  return axios.get(`v1/category/${id}/customers`, { params: { textSearch, pageIndex, pageSize } });
 };
 
 export const getListFieldData = () => {
-  return axios.get('v1/fields');
+  return axios.get('v1/fields', { headers: authHeaders });
+  // return axios.get('http://localhost:9000/content/json-data');
 };
 
 export const postMergeCustomerGroup = (id?: string, data?: any) => {
