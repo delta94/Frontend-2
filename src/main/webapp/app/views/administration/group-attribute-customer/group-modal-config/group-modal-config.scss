@@ -10,10 +10,12 @@
 .group-modal-config {
   .input-search_group {
     display: flex;
+    margin-bottom: 10px;
 
     .input-search_label {
       width: 80px;
       line-height: 30px;
+      font-weight: 500;
     }
   }
 
@@ -36,6 +38,10 @@
 
     ul {
       list-style-type: none;
+    }
+
+    .search-table-customer {
+      padding-top: 15px;
     }
   }
 }

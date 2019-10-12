@@ -1,0 +1,58 @@
+{
+  "field-data": [
+    {
+      "id": "3cb13bf5-af85-4149-9ffe-786c361d23d0",
+      "type": "Radio",
+      "title": "Giới tính",
+      "fieldValue": "Nam||Nữ||Giới tính thứ 3",
+      "personalizationTag": "%giới-tính%",
+      "value": null,
+      "code": "gioiTinh"
+    },
+    {
+      "id": "6d061ef5-57ac-463a-9c3e-e322bb337123",
+      "type": "Checkbox",
+      "title": "Sỏ thích",
+      "fieldValue": "Đi du lịch||Chơi game",
+      "personalizationTag": "%sỏ-thích%",
+      "value": null,
+      "code": "soThich"
+    },
+    {
+      "id": "80524e85-b1b9-458f-97ee-56153ea2c88c",
+      "type": "Dropdown List",
+      "title": "dropdown",
+      "fieldValue": "a||b",
+      "personalizationTag": "%dropdown%",
+      "value": null,
+      "code": "dropdown"
+    },
+    {
+      "id": "9154bb75-18fc-4e5c-bf62-0de3d4ae0f26",
+      "type": "Text Input",
+      "title": "Tuan",
+      "fieldValue": "",
+      "personalizationTag": "%tuan%",
+      "value": null,
+      "code": "tuan"
+    },
+    {
+      "id": "c0e7c60d-3f6b-4561-b10e-e244e937bce7",
+      "type": "Checkbox",
+      "title": "cầu thủ",
+      "fieldValue": "tiền_đạo||hậu_vệ||thủ_môn",
+      "personalizationTag": "%cầu-thủ%",
+      "value": null,
+      "code": "cauThu"
+    },
+    {
+      "id": "ea53cea3-660d-49a1-8f4a-e486ad2a79a6",
+      "type": "Date",
+      "title": "timeGobaack",
+      "fieldValue": "",
+      "personalizationTag": "%timegobaack%",
+      "value": null,
+      "code": "timegobaack"
+    }
+  ]
+}
