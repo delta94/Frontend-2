@@ -18,7 +18,7 @@ export const OPERATOR = {
 export const TYPE_FIELD = {
   TEXT_INPUT: 'Text Input',
   DATE: 'Date',
-  DROP_DOWN: 'Dropdown',
-  RADIO_BUTTON: 'Radio Button',
+  DROP_DOWN: 'Dropdown List',
+  RADIO_BUTTON: 'Radio',
   CHECK_BOX: 'Checkbox'
 };

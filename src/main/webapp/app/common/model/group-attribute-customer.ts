@@ -25,3 +25,9 @@ export interface IFieldCustomer {
   fieldValue?: string;
   vlaue?: string;
 }
+
+export interface ISearchAdvanced {
+  field?: string;
+  value?: string;
+  operator?: string;
+}

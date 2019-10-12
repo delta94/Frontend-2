@@ -13,16 +13,14 @@ export const getListCustomerGroups = (textSearch: string, pageIndex: number, pag
 
 export const getListFieldData = () => {
   return axios.get('v1/fields', { headers: authHeaders });
-  // return axios.get('http://localhost:9000/content/json-data');
 };
 
-export const postMergeCustomerGroup = (id?: string, data?: any) => {
-  const mergeCustomerGroupApi = `${customerGroup}/${id}/merge`;
-  return axios.post(mergeCustomerGroupApi, data, { headers: authHeaders });
+export const postFindCustomerWithCondition = (textSearch?: string, data?: any) => {
+  return axios.post('v2/customers', data, { params: textSearch, headers: authHeaders });
 };
 
 export const postInsertCustomerGroup = (data: any) => {
-  const insertCustomerGroupApi = `${customerGroup}`;
+  const insertCustomerGroupApi = `v1/categories/insert`;
   return axios.post(insertCustomerGroupApi, data, { headers: authHeaders });
 };
 

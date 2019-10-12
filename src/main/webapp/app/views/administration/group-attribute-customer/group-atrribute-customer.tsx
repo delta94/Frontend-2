@@ -13,7 +13,6 @@ import GroupModalConfig from './group-modal-config/group-modal-config';
 import { Button } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
-import { getListFieldDataAction } from '../../../actions/group-attribute-customer';
 
 export interface IGroupAttributeCustomerProps extends StateProps, DispatchProps {}
 

@@ -3,7 +3,7 @@ import { IOpenModal } from './modal';
 import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
 import { CUSTOMER_GROUP_ATTRIBUTE } from '../constants/group-atrribute-customer';
 import { ERROR } from '../constants/common';
-import { IListFieldData } from 'app/common/model/group-attribute-customer';
+import { IListFieldData, IDataCustomer } from 'app/common/model/group-attribute-customer';
 
 interface IPostRequestReturn {
   code?: number;
@@ -20,6 +20,7 @@ interface ICatagoryGroup {
 const initialDataState = {
   loading: false,
   list_group_customer: [] as ICatagoryGroup[],
+  list_data_customer: [] as IDataCustomer[],
   totalElements: 0,
   totalPages: 0,
   size: 0,
@@ -40,7 +41,7 @@ export default (state: GroupCustomerState = initialDataState, action): GroupCust
     case REQUEST(CUSTOMER_GROUP_ATTRIBUTE.GET_LIST_CUSTOMER_GROUP):
     case REQUEST(CUSTOMER_GROUP_ATTRIBUTE.POST_UPDATE_CUSTOMER_GROUP):
     case REQUEST(CUSTOMER_GROUP_ATTRIBUTE.POST_INSERT_CUSTOMER_GROUP):
-    case REQUEST(CUSTOMER_GROUP_ATTRIBUTE.POST_MERGE_CUSTOMER_GROUP):
+    case REQUEST(CUSTOMER_GROUP_ATTRIBUTE.POST_FIND_CUSTOMER_WITH_CONDITION):
     case REQUEST(CUSTOMER_GROUP_ATTRIBUTE.POST_DELETE_CUSTOMER_GROUP):
       return {
         ...state,
@@ -65,7 +66,7 @@ export default (state: GroupCustomerState = initialDataState, action): GroupCust
         loading: false,
         postMailRequest: {
           type: 'success',
-          text: 'Email không hợp lệ',
+          text: 'Xóa nhóm khách hàng thất bại',
           title: 'Thông báo',
           show: true
         }
@@ -77,19 +78,19 @@ export default (state: GroupCustomerState = initialDataState, action): GroupCust
         loading: false,
         postMailRequest: {
           type: ERROR,
-          text: 'Thêm mới tag không thành công',
+          text: 'Thêm mới nhóm khách hàng thành công',
           title: 'Thông báo',
           show: true
         }
       };
 
-    case FAILURE(CUSTOMER_GROUP_ATTRIBUTE.POST_MERGE_CUSTOMER_GROUP):
+    case FAILURE(CUSTOMER_GROUP_ATTRIBUTE.POST_FIND_CUSTOMER_WITH_CONDITION):
       return {
         ...state,
         loading: false,
         postMailRequest: {
           type: ERROR,
-          text: 'Gộp tag thất bại',
+          text: 'Tạo nhóm khách hàng thất bại',
           title: 'Thất bại',
           show: true
         }
@@ -118,26 +119,23 @@ export default (state: GroupCustomerState = initialDataState, action): GroupCust
       };
 
     case SUCCESS(CUSTOMER_GROUP_ATTRIBUTE.GET_LIST_FIELD_DATA):
-      console.log(action.payload.data);
       return {
         ...state,
         loading: false,
         list_field_data: action.payload.data
       };
 
-    // success on get content template
     case SUCCESS(CUSTOMER_GROUP_ATTRIBUTE.POST_DELETE_CUSTOMER_GROUP):
       return {
         ...state,
         loading: false,
         postMailRequest: {
           type: 'success',
-          text: 'Gửi mail thành công',
+          text: 'Xóa nhóm khách hàng thành công',
           title: 'Thông báo',
           show: true
         }
       };
-    // success on post mail Test action
     case SUCCESS(CUSTOMER_GROUP_ATTRIBUTE.POST_INSERT_CUSTOMER_GROUP):
       return {
         ...state,
@@ -149,21 +147,12 @@ export default (state: GroupCustomerState = initialDataState, action): GroupCust
           show: true
         }
       };
-
-    // success on post merge tage
-    case SUCCESS(CUSTOMER_GROUP_ATTRIBUTE.POST_MERGE_CUSTOMER_GROUP):
+    case SUCCESS(CUSTOMER_GROUP_ATTRIBUTE.POST_FIND_CUSTOMER_WITH_CONDITION):
       return {
         ...state,
         loading: false,
-        postMailRequest: {
-          type: 'success',
-          text: 'Gộp thông tin tag thành công',
-          title: 'Thông báo',
-          show: true
-        }
+        list_data_customer: action.payload.data
       };
-
-    // success on post merge tage
     case SUCCESS(CUSTOMER_GROUP_ATTRIBUTE.POST_DELETE_CUSTOMER_GROUP):
       return {
         ...state,

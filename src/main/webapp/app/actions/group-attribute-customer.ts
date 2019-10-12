@@ -3,7 +3,7 @@ import {
   getCustomerGroups,
   postInsertCustomerGroup,
   postUpdateCustomerGroup,
-  postMergeCustomerGroup,
+  postFindCustomerWithCondition,
   postDeleteCustomerGroup,
   getListFieldData
 } from '../services/group-atrribute-customer';
@@ -28,9 +28,9 @@ export const postDeleteCustomerGroupAction = (data: any) => ({
   payload: postDeleteCustomerGroup(data)
 });
 
-export const postMergeCustomerGroupAction = (id: string, data: any) => ({
-  type: CUSTOMER_GROUP_ATTRIBUTE.POST_MERGE_CUSTOMER_GROUP,
-  payload: postMergeCustomerGroup(id, data)
+export const postFindCustomerWithConditionAction = (textSearch: string, data: any) => ({
+  type: CUSTOMER_GROUP_ATTRIBUTE.POST_FIND_CUSTOMER_WITH_CONDITION,
+  payload: postFindCustomerWithCondition(textSearch, data)
 });
 
 export const postUpdateCustomerGroupAction = (data: any) => ({
