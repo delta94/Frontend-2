@@ -97,3 +97,19 @@
 
   color: #343a40;
 }
+
+.phone-customer_span .ant-calendar-picker-input {
+  height: 31px;
+  width: 100%;
+}
+.phone-customer_span #box,
+.box {
+  margin-top: -2%;
+}
+.checkbox-update {
+  display: flex;
+  width: 300%;
+}
+.radio-group .ant-radio-wrapper {
+  white-space: unset !important;
+}

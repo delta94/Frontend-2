@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { authHeaders } from './header';
 
 const apiUrl = 'v1/customer';
-const apiUrl2 = 'v2/customer';
+const apiUrl2 = 'v2/customers';
 // <<<<<<< HEAD
 // export const getUsersServic
 //   const requestUrl = `${api
@@ -56,8 +56,8 @@ export const createUserService = user => {
 };
 
 export const updateUserService = user => {
-  const urlUpdate = `${apiUrl}/${user.id}/update`;
-  return axios.post(urlUpdate, user);
+  const urlUpdate = `${apiUrl2}/${user.id}`;
+  return axios.get(urlUpdate, user);
 };
 
 export const deleteUserService = id => {

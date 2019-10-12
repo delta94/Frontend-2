@@ -59,3 +59,24 @@
   margin-left: 4px;
   margin-bottom: 15px;
 }
+.check-box {
+  display: flex;
+}
+.text-checkbox {
+  margin-left: 15px;
+}
+.text-radio {
+  margin-left: 120px;
+}
+.date-create {
+  width: 468px;
+}
+.date-create .ant-calendar-picker-input {
+  height: 40px;
+}
+.checkbox-group {
+  width: 100%;
+}
+.radio-group {
+  width: 100%;
+}

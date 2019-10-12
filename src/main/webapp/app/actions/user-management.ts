@@ -137,6 +137,14 @@ export const getDetailUser = id => {
     payload: getInfoUser(id)
   };
 };
+
+export const updateUserAction = data => {
+  return {
+    type: USER_MANAGE_ACTION_TYPES.UPDATE_USER,
+    payload: updateUserService(data)
+  };
+};
+
 export const resetMessage = () => ({
   type: USER_MANAGE_ACTION_TYPES.RESET_MESSAGE
 });

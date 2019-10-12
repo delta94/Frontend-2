@@ -93,6 +93,16 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
       this.props.getListProp(selectedOption.value ? selectedOption.value : null, text);
     }
   };
+  openModalCreate = e => {
+    if (this.props.isComplete) {
+      this.props.openModal({
+        show: true,
+        type: 'success',
+        title: translate('modal-data.title.success'),
+        text: translate('alert.success-properties')
+      });
+    }
+  };
 
   render() {
     const { loading, modalState, match } = this.props;
@@ -143,7 +153,7 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
                   <CreateGroup />
                 </Col>
                 <Col md="5">
-                  <Create />
+                  <Create onClick={this.openModalCreate} />
                 </Col>
               </Col>
             </Row>
@@ -197,7 +207,10 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
                     <td>{value.type}</td>
                     <td>{value.personalizationTag}</td>
                     <td className="text-center">
-                      {value.title === 'Frist Name' || value.title === 'Last Name' || value.title === 'Email' || value.title === 'Phone' ? (
+                      {value.title === 'First Name' ||
+                      value.title === 'Last Name' ||
+                      value.title === 'Email' ||
+                      value.title === 'Mobile' ? (
                         ''
                       ) : (
                         <div className="btn-group flex-btn-group-container">

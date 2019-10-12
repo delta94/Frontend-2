@@ -91,7 +91,6 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
         <Loader message={spinner1} show={loading} priority={1}>
           <div id="user-management-title">
             <Translate contentKey="userManagement.home.title" />
-
             <CreateUser />
           </div>
           <div />

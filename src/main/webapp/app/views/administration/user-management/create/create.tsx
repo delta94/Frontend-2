@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Collapse, Row, Badge, Col, Modal, ModalHeader, ModalBody, ModalFooter, Input, Form, FormGroup, Label } from 'reactstrap';
+import { Button, Collapse, Modal, ModalHeader, ModalBody, ModalFooter, Input, Form, FormGroup, Label } from 'reactstrap';
 import { AvForm, AvRadioGroup, AvRadio } from 'availity-reactstrap-validation';
+import { DatePicker, Checkbox, Row, Col, Radio, Select } from 'antd';
 import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './create.scss';
@@ -12,6 +13,10 @@ import Loader from 'react-loader-advanced';
 import { openModal, closeModal } from 'app/actions/modal';
 import $ from 'jquery';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import { getListProp } from 'app/actions/properties-customer';
+import { getUsers } from 'app/actions/user-management';
+
+const { Option } = Select;
 
 export interface ICreateProps extends StateProps, DispatchProps {}
 
@@ -22,6 +27,12 @@ export interface ICreateState {
   validLastName: string;
   validPhone: string;
   validEmail: string;
+  fiedValue: [
+    {
+      id: string;
+      value: string;
+    }
+  ];
 }
 
 export class Create extends React.Component<ICreateProps, ICreateState> {
@@ -31,10 +42,21 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
     validFirstName: '',
     validLastName: '',
     validPhone: '',
-    validEmail: ''
+    validEmail: '',
+    fiedValue: [
+      {
+        id: '',
+        value: ''
+      }
+    ]
   };
 
-  toggle = () => {
+  componentDidMount() {
+    const { getListProp } = this.props;
+    getListProp();
+  }
+
+  toggle = data => {
     this.setState({
       modal: !this.state.modal,
       collapse: false,
@@ -43,38 +65,41 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
       validPhone: '',
       validEmail: ''
     });
+    if (data.length > 0) {
+      for (var member in data) delete data[member];
+    }
   };
 
   showCollapse = () => {
     this.setState({ collapse: !this.state.collapse });
   };
 
-  handleSubmit = () => {
-    const { insertUser } = this.props;
+  handleSubmit = async () => {
+    const { insertUser, getUsers } = this.props;
+    let { fiedValue } = this.state;
+    let value = fiedValue.slice(1);
     let data = {
       firstName: $(`input#first-name`).val(),
       lastName: $(`input#last-name`).val(),
-      mobile: $(`input#email`).val(),
-      email: $(`input#phone`).val(),
-      fields: [
-        {
-          title: $(`input#name-title`).val(),
-          param: $(`input#name-param`).val(),
-          update: $(`input#update`).val(),
-          marrigare: $('input[name=radio]:checked').val()
-        }
-      ]
+      email: $(`input#email`).val(),
+      mobile: $(`input#phone`).val(),
+      fields: this.removeDuplicates(value, 'id')
     };
     if (this.IsValidateForm()) {
-      insertUser(data);
-      // this.props.openModal({
-      //   show: true,
-      //   type: 'success',
-      //   title: translate('modal-data.title.success'),
-      //   text: translate('alert.success-properties')
-      // });
-      this.toggle();
+      await insertUser(data);
+      await getUsers(0, 10, '', '');
+
+      this.toggle(data);
     }
+  };
+
+  removeDuplicates = (array, key) => {
+    return array.reduce((accumulator, element, currentIndex, arr) => {
+      if (!accumulator.find(el => el[key] == element[key]) && arr.map(c => c.id).lastIndexOf(element.id) == currentIndex) {
+        accumulator.push(element);
+      }
+      return accumulator;
+    }, []);
   };
 
   IsValidateForm = () => {
@@ -120,8 +145,55 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
     }
   };
 
+  onChangeDate = (id, dateString) => {
+    let { fiedValue } = this.state;
+    let data = {
+      id: id,
+      value: String(dateString)
+    };
+    fiedValue.push(data);
+    this.setState({ fiedValue });
+  };
+  onChangeCheckbox = (id, checkedValues) => {
+    let { fiedValue } = this.state;
+    let data = {
+      id: id,
+      value: String(checkedValues)
+    };
+    fiedValue.push(data);
+    this.setState({ fiedValue });
+  };
+  onChangeRadio = (value, id) => {
+    let { fiedValue } = this.state;
+    let data = {
+      id: id,
+      value: String(value.target.value)
+    };
+    fiedValue.push(data);
+    this.setState({ fiedValue });
+  };
+
+  handleChangeDrop = (id, value) => {
+    let { fiedValue } = this.state;
+    let data = {
+      id: id,
+      value: String(value)
+    };
+    fiedValue.push(data);
+    this.setState({ fiedValue });
+  };
+  onChangeText = (id, value) => {
+    let { fiedValue } = this.state;
+    let data = {
+      id: id,
+      value: String(value.target.value)
+    };
+    fiedValue.push(data);
+    this.setState({ fiedValue });
+  };
+
   render() {
-    const { loading } = this.props;
+    const { loading, getList } = this.props;
     let { collapse } = this.state;
     return (
       <span className="d-inline-block mb-2 mr-2" id="btn-modal-create">
@@ -137,7 +209,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
             <ModalBody>
               <AvForm>
                 <Row>
-                  <Col md="12">
+                  <Col md={24}>
                     <div className="option-create">
                       <Label>
                         <Translate contentKey="userManagement.firstName" />
@@ -167,30 +239,87 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
                     </div>
                     <p className="error">{this.state.validPhone}</p>
                     <Collapse isOpen={this.state.collapse}>
-                      <div className="option-create">
-                        <Label>Tên tổ chức</Label>
-                        <Input maxLength={160} id="name-tag" name="name" label="Field Name" />
-                      </div>
-                      <div className="option-create">
-                        <Label>Chức danh tổ chức</Label>
-                        <Input maxLength={160} id="name-title" name="name" label="Field Name" />
-                      </div>
-                      <div className="option-create">
-                        <Label>Organization name</Label>
-                        <Input maxLength={160} id="name-param" name="name" label="Field Name" />
-                      </div>
-                      <div className="option-create">
-                        <Label>Update</Label>
-                        <Input maxLength={160} id="update" name="name" label="Field Name" />
-                      </div>
-                      <div className="option-create">
-                        <AvRadioGroup inline id="marrigare-text" name="radioCustomInputExample" label="Marrigare">
-                          <div id="btn-radio-yes">
-                            <AvRadio className="text-radio" customInput name="radio" label="Yes" value="Yes" />
-                          </div>
-                          <AvRadio className="text-radio" customInput name="radio" label="No" value="No" />
-                        </AvRadioGroup>
-                      </div>
+                      {getList.map((value, index) => {
+                        if (
+                          !(
+                            value.title === 'First Name' ||
+                            value.title === 'Last Name' ||
+                            value.title === 'Email' ||
+                            value.title === 'Mobile'
+                          )
+                        ) {
+                          let object = (
+                            <div className="option-create" key={index}>
+                              <Label>{value.title}</Label>
+                              {value.type === 'Checkbox' ? (
+                                <Checkbox.Group className="checkbox-group" onChange={event => this.onChangeCheckbox(value.id, event)}>
+                                  <Row>
+                                    {String(value.fieldValue)
+                                      .split('||')
+                                      .map(event => {
+                                        return (
+                                          <Col span={8}>
+                                            <Checkbox value={String(event)}>{event}</Checkbox>
+                                          </Col>
+                                        );
+                                      })}
+                                  </Row>
+                                </Checkbox.Group>
+                              ) : (
+                                ''
+                              )}
+                              {value.type === 'Radio' ? (
+                                <Radio.Group
+                                  onChange={event => this.onChangeRadio(event, value.id)}
+                                  className="radio-group"
+                                  name="radiogroup"
+                                  defaultValue={event}
+                                >
+                                  <Row>
+                                    {String(value.fieldValue)
+                                      .split('||')
+                                      .map(event => {
+                                        return (
+                                          <Col span={8}>
+                                            <Radio value={event}>{event}</Radio>
+                                          </Col>
+                                        );
+                                      })}
+                                  </Row>
+                                </Radio.Group>
+                              ) : (
+                                ''
+                              )}
+                              {value.type === 'Text Input' ? (
+                                <Input id={value.id} onChange={event => this.onChangeText(value.id, event)} />
+                              ) : (
+                                ''
+                              )}
+                              {value.type === 'Date' ? (
+                                <DatePicker
+                                  className="date-create"
+                                  onChange={(event, dateString) => this.onChangeDate(value.id, dateString)}
+                                />
+                              ) : (
+                                ''
+                              )}
+                              {value.type === 'Dropdown List' ? (
+                                <Select className="checkbox-group" onChange={event => this.handleChangeDrop(value.id, event)}>
+                                  {String(value.fieldValue)
+                                    .split('||')
+                                    .map(event => {
+                                      return <Option value={String(event)}>{event}</Option>;
+                                    })}
+                                </Select>
+                              ) : (
+                                ''
+                              )}
+                            </div>
+                          );
+                          return object;
+                        }
+                        return '';
+                      })}
                     </Collapse>
                     <div className="option-create" id="has-collapse" style={{ display: collapse ? 'none' : '' }}>
                       <p>Only required fields are being displayed </p>
@@ -218,14 +347,16 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
 }
 const mapStateToProps = (storeState: IRootState) => ({
   getList: storeState.propertiesState.list_prop,
-  loading: storeState.propertiesState.loading,
+  loading: storeState.userManagement.loading,
   isComplete: storeState.propertiesState.isCompelete
 });
 
 const mapDispatchToProps = {
   insertUser,
   openModal,
-  closeModal
+  closeModal,
+  getListProp,
+  getUsers
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
