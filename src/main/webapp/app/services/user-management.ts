@@ -56,8 +56,8 @@ export const createUserService = user => {
 };
 
 export const updateUserService = user => {
-  const urlUpdate = `${apiUrl2}/${user.id}`;
-  return axios.get(urlUpdate, user);
+  const urlUpdate = `${apiUrl2}/${user.id}/update`;
+  return axios.post(urlUpdate, user);
 };
 
 export const deleteUserService = id => {

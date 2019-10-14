@@ -19,11 +19,13 @@ export interface IEditProps extends StateProps, DispatchProps {
 
 export interface IEditState {
   modal: boolean;
+  validField: string;
 }
 
 export class Edit extends React.Component<IEditProps, IEditState> {
   state: IEditState = {
-    modal: false
+    modal: false,
+    validField: ''
   };
   componentWillReceiveProps(nextProps) {
     this.state.modal = nextProps.CloseModal;
@@ -84,6 +86,7 @@ export class Edit extends React.Component<IEditProps, IEditState> {
                             <Input maxLength={160} id="default-value" defaultValue={event.fieldValue} />
                           </div>
                         </Col>
+                        <p className="error">{this.state.validField}</p>
                       </Row>
                     );
                   }
@@ -107,20 +110,24 @@ export class Edit extends React.Component<IEditProps, IEditState> {
               disabled={loading}
               color="primary"
               onClick={async () => {
-                let data = {
-                  id: id,
-                  title: $(`input#field-name`).val(),
-                  type: $(`input#tag`).val(),
-                  fieldValue: $(`input#default-value`).val()
-                };
-                await this.props.updateProp(id, data);
-                this.props.getListProp();
-                this.props.openModal({
-                  show: true,
-                  type: 'success',
-                  title: translate('modal-data.title.success'),
-                  text: translate('properties-management.edit.complete')
-                });
+                if (String($(`input#default-value`).val()).length === 0) {
+                  this.setState({ validField: ' *Vui lòng nhập giá trị ' });
+                } else {
+                  let data = {
+                    id: id,
+                    title: $(`input#field-name`).val(),
+                    type: $(`input#tag`).val(),
+                    fieldValue: $(`input#default-value`).val()
+                  };
+                  await this.props.updateProp(id, data);
+                  this.props.getListProp();
+                  this.props.openModal({
+                    show: true,
+                    type: 'success',
+                    title: translate('modal-data.title.success'),
+                    text: translate('properties-management.edit.complete')
+                  });
+                }
               }}
             >
               <Translate contentKey="properties-management.edit.button" />
