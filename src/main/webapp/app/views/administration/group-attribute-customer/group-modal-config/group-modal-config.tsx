@@ -244,7 +244,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
                       </tr>
                     </thead>
                     <tbody>
-                      {list_data_customer &&
+                      {list_data_customer && list_data_customer.length > 0 ? (
                         list_data_customer.map((item, index) => {
                           return (
                             <tr key={index}>
@@ -258,7 +258,10 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
                               <td>...</td>
                             </tr>
                           );
-                        })}
+                        })
+                      ) : (
+                        <tr />
+                      )}
                     </tbody>
                   </Table>
                 </div>
