@@ -10,13 +10,20 @@ import { ICategory } from 'app/common/model/category.model';
 export interface IUserDetails {
   email?: string;
   id?: string;
-  name?: string;
-  phone?: string;
-  categorys?: [];
-  personalizationTag?: string;
-  type?: string;
-  title?: string;
-  fieldValue?: string;
+  firstName?: string;
+  lastName?: string;
+  mobile?: string;
+  tag?: [];
+  fields?: [
+    {
+      id?: string;
+      type?: string;
+      title?: string;
+      fieldValue?: string;
+      personalizationTag?: string;
+      value?: string;
+    }
+  ];
 }
 
 const initialState = {
@@ -40,7 +47,8 @@ const initialState = {
   totalElements: 0,
   showDeleteSuccessAlert: true,
   showDeleteErrorAlert: false,
-  showUpdateSuccessAlert: false
+  showUpdateSuccessAlert: false,
+  data: {} as IUserDetails
 };
 
 export type UserManagementState = Readonly<typeof initialState>;
@@ -136,6 +144,10 @@ export default (state: UserManagementState = initialState, action): UserManageme
       };
 
     case SUCCESS(USER_MANAGE_ACTION_TYPES.CREATE_USER):
+      return {
+        ...state,
+        loading: false
+      };
 
     case SUCCESS(USER_MANAGE_ACTION_TYPES.UPDATE_USER):
       return {
@@ -186,7 +198,7 @@ export default (state: UserManagementState = initialState, action): UserManageme
         ...state,
         user: {
           ...state.user,
-          categorys: action.payload.category
+          tag: action.payload.category
         }
       };
     case USER_MANAGE_ACTION_TYPES.RESET:
@@ -201,6 +213,12 @@ export default (state: UserManagementState = initialState, action): UserManageme
         showDeleteSuccessAlert: false,
         showDeleteErrorAlert: false,
         showUpdateSuccessAlert: false
+      };
+
+    case USER_MANAGE_ACTION_TYPES.GET_DATA:
+      return {
+        ...state,
+        data: action.data
       };
     default:
       return state;

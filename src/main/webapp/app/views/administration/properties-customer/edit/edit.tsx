@@ -9,6 +9,7 @@ import './edit.scss';
 import { updateProp, getListProp } from 'app/actions/properties-customer';
 import { IRootState } from 'app/reducers';
 import { openModal, closeModal } from 'app/actions/modal';
+import PerfectScrollbar from 'react-perfect-scrollbar';
 
 export interface IEditProps extends StateProps, DispatchProps {
   isOpen: boolean;
@@ -18,11 +19,13 @@ export interface IEditProps extends StateProps, DispatchProps {
 
 export interface IEditState {
   modal: boolean;
+  validField: string;
 }
 
 export class Edit extends React.Component<IEditProps, IEditState> {
   state: IEditState = {
-    modal: false
+    modal: false,
+    validField: ''
   };
   componentWillReceiveProps(nextProps) {
     this.state.modal = nextProps.CloseModal;
@@ -45,50 +48,53 @@ export class Edit extends React.Component<IEditProps, IEditState> {
     const { getList, id, loading } = this.props;
     return (
       <span className="d-inline-block mb-2 mr-2">
-        <Modal isOpen={this.state.modal} id="content-properties">
+        <Modal isOpen={this.state.modal} id="edit-properties">
           <ModalHeader toggle={this.toggle} id="create-properties">
             <Translate contentKey="properties-management.edit.title" />
           </ModalHeader>
-          <ModalBody>
-            <AvForm>
-              {getList.map((event, index) => {
-                if (event.id === id) {
-                  return (
-                    <Row key={index}>
-                      <Col md="12">
-                        <div className="option-create">
-                          <Label>
-                            <Translate contentKey="properties-management.form.name" />{' '}
-                          </Label>
-                          <Input maxLength={160} defaultValue={event.title} id="field-name" />
-                        </div>
-                        <div className="option-create">
-                          <Label>
-                            <Translate contentKey="properties-management.form.persionalization" />
-                          </Label>
-                          <Input
-                            maxLength={160}
-                            addonBefore="%"
-                            addonAfter="%"
-                            defaultValue={event.type}
-                            onChange={this.handlerChange}
-                            id="tag"
-                          />
-                        </div>
-                        <div className="option-create">
-                          <Label>
-                            <Translate contentKey="properties-management.form.default-value" />
-                          </Label>
-                          <Input maxLength={160} id="default-value" defaultValue={event.fieldValue} />
-                        </div>
-                      </Col>
-                    </Row>
-                  );
-                }
-                return '';
-              })}
-            </AvForm>
-          </ModalBody>
+          <PerfectScrollbar>
+            <ModalBody>
+              <AvForm>
+                {getList.map((event, index) => {
+                  if (event.id === id) {
+                    return (
+                      <Row key={index}>
+                        <Col md="12">
+                          <div className="option-create">
+                            <Label>
+                              <Translate contentKey="properties-management.form.name" />{' '}
+                            </Label>
+                            <Input maxLength={160} defaultValue={event.title} id="field-name" />
+                          </div>
+                          <div className="option-create">
+                            <Label>
+                              <Translate contentKey="properties-management.form.persionalization" />
+                            </Label>
+                            <Input
+                              maxLength={160}
+                              addonBefore="%"
+                              addonAfter="%"
+                              defaultValue={event.type}
+                              onChange={this.handlerChange}
+                              id="tag"
+                            />
+                          </div>
+                          <div className="option-create">
+                            <Label>
+                              <Translate contentKey="properties-management.form.default-value" />
+                            </Label>
+                            <Input maxLength={160} id="default-value" defaultValue={event.fieldValue} />
+                          </div>
+                        </Col>
+                        <p className="error">{this.state.validField}</p>
+                      </Row>
+                    );
+                  }
+                  return '';
+                })}
+              </AvForm>
+            </ModalBody>
+          </PerfectScrollbar>
           <ModalFooter>
             <Button
               color="link"
@@ -104,20 +110,24 @@ export class Edit extends React.Component<IEditProps, IEditState> {
               disabled={loading}
               color="primary"
               onClick={async () => {
-                let data = {
-                  id: id,
-                  title: $(`input#field-name`).val(),
-                  type: $(`input#tag`).val(),
-                  fieldValue: $(`input#default-value`).val()
-                };
-                await this.props.updateProp(id, data);
-                this.props.getListProp();
-                this.props.openModal({
-                  show: true,
-                  type: 'success',
-                  title: translate('modal-data.title.success'),
-                  text: translate('properties-management.edit.complete')
-                });
+                if (String($(`input#default-value`).val()).length === 0) {
+                  this.setState({ validField: ' *Vui lòng nhập giá trị ' });
+                } else {
+                  let data = {
+                    id: id,
+                    title: $(`input#field-name`).val(),
+                    type: $(`input#tag`).val(),
+                    fieldValue: $(`input#default-value`).val()
+                  };
+                  await this.props.updateProp(id, data);
+                  this.props.getListProp();
+                  this.props.openModal({
+                    show: true,
+                    type: 'success',
+                    title: translate('modal-data.title.success'),
+                    text: translate('properties-management.edit.complete')
+                  });
+                }
               }}
             >
               <Translate contentKey="properties-management.edit.button" />

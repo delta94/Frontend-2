@@ -16,8 +16,10 @@
       "total-element": "Tổng số {{ element }} bản ghi",
       "line-error": "{{ number }} dòng không thành công đầu tiên ",
       "editLabel": "Cập nhật thông tin khách hàng",
+      "info-cus": "Thông tin khách hàng",
       "export": "Export",
-      "import": "Import"
+      "import": "Import",
+      "edit": "Chỉnh sửa"
     },
     "deleteAlert": {
       "title": "Bạn muốn xoá ?",

@@ -207,7 +207,10 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
                     <td>{value.type}</td>
                     <td>{value.personalizationTag}</td>
                     <td className="text-center">
-                      {value.title === 'Frist Name' || value.title === 'Last Name' || value.title === 'Email' || value.title === 'Phone' ? (
+                      {value.title === 'First Name' ||
+                      value.title === 'Last Name' ||
+                      value.title === 'Email' ||
+                      value.title === 'Mobile' ? (
                         ''
                       ) : (
                         <div className="btn-group flex-btn-group-container">

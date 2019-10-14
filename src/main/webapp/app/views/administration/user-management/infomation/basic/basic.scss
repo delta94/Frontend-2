@@ -52,3 +52,61 @@
   position: absolute;
   right: 0px;
 }
+.btn-canel-popover {
+  margin-left: 25%;
+}
+.group-btn-popover {
+  margin-top: 2%;
+}
+.line-info {
+  display: flex;
+  position: relative;
+  border-top: 1px solid #e5ecf4;
+  padding-top: 20px;
+}
+.value-text {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+
+  color: #343a40;
+}
+.value-empty {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  text-align: right;
+
+  color: #9ba3b3;
+}
+.content-text {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  /* identical to box height, or 193% */
+
+  letter-spacing: 1px;
+
+  color: #343a40;
+}
+
+.phone-customer_span .ant-calendar-picker-input {
+  height: 31px;
+  width: 100%;
+}
+.phone-customer_span #box,
+.box {
+  margin-top: -2%;
+}
+.checkbox-update {
+  display: flex;
+  width: 300%;
+}

@@ -19,8 +19,6 @@ import { Input } from 'antd';
 import { ITemp } from 'app/reducers/properties-customer';
 const { Search } = Input;
 
-const plainOptions = ['Apple', 'Pear', 'Orange'];
-
 export interface ICreateGroupProps extends StateProps, DispatchProps {}
 
 export interface ICreateGroupState {
@@ -90,13 +88,6 @@ export class CreateGroup extends React.Component<ICreateGroupProps, ICreateGroup
     }
     this.props.getTempId(tab);
   }
-  onChange = checkedList => {
-    this.setState({
-      checkedList,
-      indeterminate: !!checkedList.length && checkedList.length < plainOptions.length,
-      checkAll: checkedList.length === plainOptions.length
-    });
-  };
 
   onCheckAllChange = (id, checked) => {
     let { listCheckBox } = this.state;

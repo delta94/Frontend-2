@@ -22,6 +22,7 @@ export const USER_MANAGE_ACTION_TYPES = {
   SORT_DESC: 'desc',
   FETCH_SEARCH_USER: 'userManagement/FETCH_SEARCH_USER',
   UPDATE_USER_CATEGORY: 'userManagement/UPDATE_USER_CATEGORY',
+  GET_DATA: 'userManagement/GET_DATA',
   RESET_MESSAGE: 'userManagement/RESET_MESSAGE'
 };
 

@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { authHeaders } from './header';
 
 const apiUrl = 'v1/customer';
-
+const apiUrl2 = 'v2/customers';
 // <<<<<<< HEAD
 // export const getUsersServic
 //   const requestUrl = `${api
@@ -56,7 +56,7 @@ export const createUserService = user => {
 };
 
 export const updateUserService = user => {
-  const urlUpdate = `${apiUrl}/${user.id}/update`;
+  const urlUpdate = `${apiUrl2}/${user.id}/update`;
   return axios.post(urlUpdate, user);
 };
 
@@ -94,11 +94,11 @@ export const UploaddFile = data => {
 };
 
 export const postInsertUser = (data: any) => {
-  const insertPropApi = `${apiUrl}/insert`;
+  const insertPropApi = `${apiUrl2}/insert`;
   return axios.post(insertPropApi, data, { headers: authHeaders });
 };
 
 export const getInfoUser = (id: any) => {
-  const insertPropApi = `${apiUrl}/${id}`;
+  const insertPropApi = `${apiUrl2}/${id}`;
   return axios.get(insertPropApi, { headers: authHeaders });
 };
