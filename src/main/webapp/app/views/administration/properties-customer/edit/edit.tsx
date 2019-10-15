@@ -83,7 +83,7 @@ export class Edit extends React.Component<IEditProps, IEditState> {
                             <Label>
                               <Translate contentKey="properties-management.form.default-value" />
                             </Label>
-                            <Input maxLength={160} id="default-value" defaultValue={event.fieldValue} />
+                            <Input maxLength={160} id="default-value" defaultValue={event.personalizationTag} />
                           </div>
                         </Col>
                         <p className="error">{this.state.validField}</p>
@@ -110,14 +110,14 @@ export class Edit extends React.Component<IEditProps, IEditState> {
               disabled={loading}
               color="primary"
               onClick={async () => {
-                if (String($(`input#default-value`).val()).length === 0) {
+                if (String($(`input#default-value`).val()).trim().length === 0) {
                   this.setState({ validField: ' *Vui lòng nhập giá trị ' });
                 } else {
                   let data = {
                     id: id,
                     title: $(`input#field-name`).val(),
-                    type: $(`input#tag`).val(),
-                    fieldValue: $(`input#default-value`).val()
+                    type: `${$(`input#tag`).val()}`,
+                    personalizationTag: `%${$(`input#default-value`).val()}%`
                   };
                   await this.props.updateProp(id, data);
                   this.props.getListProp();

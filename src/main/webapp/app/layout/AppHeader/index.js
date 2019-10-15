@@ -48,6 +48,7 @@ const mapStateToProps = state => ({
     closedSmallerSidebar: state.themeOptions.closedSmallerSidebar,
     headerBackgroundColor: state.themeOptions.headerBackgroundColor,
     enableMobileMenuSmall: state.themeOptions.enableMobileMenuSmall,
+    nameUser : state.authentication.account
 });
 
 const mapDispatchToProps = dispatch => ({});

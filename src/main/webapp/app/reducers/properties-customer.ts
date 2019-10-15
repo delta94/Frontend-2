@@ -4,10 +4,11 @@ import { PROPS_MANAGEMENT } from '../constants/props-management';
 import { faSleigh } from '@fortawesome/free-solid-svg-icons';
 
 export interface IPropertiesCustomer {
+  code?: string;
   id?: string;
   title?: string;
   type?: string;
-  personalizationTag?: boolean;
+  personalizationTag?: string;
   fieldValue?: string;
 }
 

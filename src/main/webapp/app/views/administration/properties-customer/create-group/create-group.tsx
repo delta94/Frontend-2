@@ -231,8 +231,11 @@ export class CreateGroup extends React.Component<ICreateGroupProps, ICreateGroup
                   .filter(function(obj) {
                     return obj;
                   });
+                let data = {
+                  fields: list
+                };
 
-                await this.props.insertProp(list);
+                await this.props.insertProp(data);
                 this.toggle();
                 this.props.getListProp();
                 let newListCheckBox = listCheckBox.map(item => {

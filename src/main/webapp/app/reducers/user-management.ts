@@ -26,6 +26,14 @@ export interface IUserDetails {
   ];
 }
 
+export interface IDuplicateUser {
+  email?: string;
+  id?: string;
+  firstName?: string;
+  lastName?: string;
+  mobile?: string;
+}
+
 const initialState = {
   loading: false,
   errorMessage: null,
@@ -45,10 +53,8 @@ const initialState = {
   categories: defaultValue,
   listCategory: [] as ReadonlyArray<ICategory>,
   totalElements: 0,
-  showDeleteSuccessAlert: true,
-  showDeleteErrorAlert: false,
-  showUpdateSuccessAlert: false,
-  data: {} as IUserDetails
+  data: {} as IUserDetails,
+  listDuplicateUser: [] as ReadonlyArray<IDuplicateUser>
 };
 
 export type UserManagementState = Readonly<typeof initialState>;
@@ -66,6 +72,7 @@ export default (state: UserManagementState = initialState, action): UserManageme
     case REQUEST(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILE):
     case REQUEST(USER_MANAGE_ACTION_TYPES.UPLOAD_FILE):
     case REQUEST(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILERE_SULTS):
+    case REQUEST(USER_MANAGE_ACTION_TYPES.GET_LIST_DUPLICATE):
       return {
         ...state,
         errorMessage: null,
@@ -81,9 +88,7 @@ export default (state: UserManagementState = initialState, action): UserManageme
         errorMessage: null,
         updateSuccess: false,
         updating: true,
-        loading: true,
-        showDeleteSuccessAlert: false,
-        showUpdateSuccessAlert: false
+        loading: true
       };
     case FAILURE(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILE):
       return {
@@ -99,14 +104,22 @@ export default (state: UserManagementState = initialState, action): UserManageme
     case FAILURE(USER_MANAGE_ACTION_TYPES.UPLOAD_FILE):
     case FAILURE(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILERE_SULTS):
     case FAILURE(USER_MANAGE_ACTION_TYPES.FETCH_SEARCH_USER):
+    case FAILURE(USER_MANAGE_ACTION_TYPES.GET_LIST_DUPLICATE):
       return {
         ...state,
         loading: false,
         updating: false,
         updateSuccess: false,
         uploadScheduleFailure: true,
-        errorMessage: action.payload,
-        showUpdateSuccessAlert: false
+        errorMessage: action.payload
+      };
+
+    case SUCCESS(USER_MANAGE_ACTION_TYPES.GET_LIST_DUPLICATE):
+      console.log(action);
+      return {
+        ...state,
+        loading: false,
+        listDuplicateUser: action.payload.data
       };
     case SUCCESS(USER_MANAGE_ACTION_TYPES.FETCH_USER_CATEGORIES):
       return {
@@ -155,7 +168,6 @@ export default (state: UserManagementState = initialState, action): UserManageme
         loading: false,
         updating: false,
         updateSuccess: true,
-        showUpdateSuccessAlert: true,
         user: action.payload.data
 
         // user: action.payload.data
@@ -165,8 +177,7 @@ export default (state: UserManagementState = initialState, action): UserManageme
         ...state,
         updating: false,
         updateSuccess: true,
-        loading: false,
-        showDeleteSuccessAlert: true
+        loading: false
       };
     case SUCCESS(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILE):
       return {
@@ -209,10 +220,7 @@ export default (state: UserManagementState = initialState, action): UserManageme
       };
     case USER_MANAGE_ACTION_TYPES.RESET_MESSAGE:
       return {
-        ...state,
-        showDeleteSuccessAlert: false,
-        showDeleteErrorAlert: false,
-        showUpdateSuccessAlert: false
+        ...state
       };
 
     case USER_MANAGE_ACTION_TYPES.GET_DATA:

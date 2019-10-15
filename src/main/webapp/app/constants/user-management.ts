@@ -11,7 +11,7 @@ export const USER_MANAGE_ACTION_TYPES = {
   URL_TEMPLATE: 'http://171.244.40.91:8088/v1/customer/template-import',
   IMG_COMPLETE: 'https://abeon-hosting.com/images/complete-png-4.png',
   IMG_ERROR: 'https://www.freeiconspng.com/uploads/error-icon-15.png',
-  MESSAGE_DROP_DEFAUL: 'Try dropping some files here, or click to select files to upload.',
+  MESSAGE_DROP_DEFAUL: 'Import file',
   MESSAGE_DROP_ERROR: 'please choose file excel',
   XLSX: 'xlsx',
   XLS: 'xls',
@@ -23,6 +23,7 @@ export const USER_MANAGE_ACTION_TYPES = {
   FETCH_SEARCH_USER: 'userManagement/FETCH_SEARCH_USER',
   UPDATE_USER_CATEGORY: 'userManagement/UPDATE_USER_CATEGORY',
   GET_DATA: 'userManagement/GET_DATA',
+  GET_LIST_DUPLICATE: 'userManagement/GET_LIST_DUPLICATE',
   RESET_MESSAGE: 'userManagement/RESET_MESSAGE'
 };
 

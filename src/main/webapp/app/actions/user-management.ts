@@ -8,7 +8,7 @@ import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
 import {
   createUserService,
   deleteUserService,
-  getRolesService,
+  getListDuplicateService,
   getUserService,
   getUsersService,
   updateUserService,
@@ -124,10 +124,18 @@ export const uploadFileExcel = data => async dispatch => {
   } else {
   }
 };
+//Version 2
 export const insertUser = data => {
   return {
     type: USER_MANAGE_ACTION_TYPES.CREATE_USER,
     payload: postInsertUser(data)
+  };
+};
+
+export const deleteUserAction = id => {
+  return {
+    type: USER_MANAGE_ACTION_TYPES.DELETE_USER,
+    payload: deleteUserService(id)
   };
 };
 
@@ -142,6 +150,13 @@ export const updateUserAction = data => {
   return {
     type: USER_MANAGE_ACTION_TYPES.UPDATE_USER,
     payload: updateUserService(data)
+  };
+};
+
+export const getListDuplicateAction = (id, email, phone) => {
+  return {
+    type: USER_MANAGE_ACTION_TYPES.GET_LIST_DUPLICATE,
+    payload: getListDuplicateService(id, email, phone)
   };
 };
 

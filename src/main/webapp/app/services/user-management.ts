@@ -45,10 +45,9 @@ export const getUserService = id => {
   return axios.get<IUser>(requestUrl);
 };
 
-export const getUserId = id => {
-  return {
-    id: id
-  };
+export const getListDuplicateService = (id, email, phone) => {
+  const requestUrl = `${apiUrl2}/${id}/duplicate?email=${email}&mobile=${phone}`;
+  return axios.get(requestUrl);
 };
 
 export const createUserService = user => {
@@ -61,7 +60,7 @@ export const updateUserService = user => {
 };
 
 export const deleteUserService = id => {
-  const requestUrl = `${apiUrl}/${id}/delete`;
+  const requestUrl = `${apiUrl2}/${id}/delete`;
   return axios.post(requestUrl);
 };
 
