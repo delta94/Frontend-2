@@ -224,7 +224,7 @@ type DispatchProps = typeof mapDispatchToProps;
 const mapStateToProps = ({ userCampaign, navigationInfo }: IRootState) => {
   return {
     listCampainContentParams: userCampaign.listCampainContentParams,
-    postMailRequest: userCampaign.postMailRequest,
+    postRequest: userCampaign.postRequest,
     listContentTemplateAsTypeLanding: userCampaign.listContentTemplateAsTypeLanding,
     navigationInfo
   };

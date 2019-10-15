@@ -141,7 +141,7 @@ const initialState = {
   listContentTemplateAsTypeLanding: [],
   listContentTemplateAsTypeEmailEward: [],
   listContentTemplateAsTypeEmailIntro: [],
-  postMailRequest: {
+  postRequest: {
     type: 'warning',
     text: 'Thiếu trường thông tin',
     title: 'Thông báo',
@@ -220,7 +220,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
       return {
         ...state,
         loading: false,
-        postMailRequest: {
+        postRequest: {
           type: 'success',
           text: 'Email không hợp lệ',
           title: 'Thông báo',
@@ -232,7 +232,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
       return {
         ...state,
         loading: false,
-        postMailRequest: {
+        postRequest: {
           type: 'warning',
           text: 'Thiếu trường thông tin',
           title: 'Thông báo',
@@ -354,7 +354,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
       return {
         ...state,
         loading: false,
-        postMailRequest: {
+        postRequest: {
           type: 'success',
           text: 'Gửi mail thành công',
           title: 'Thông báo',
@@ -374,7 +374,7 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
       return {
         ...state,
         loading: false,
-        postMailRequest: {
+        postRequest: {
           type: 'success',
           text: 'Tạo mới thành công',
           title: 'Thông báo',

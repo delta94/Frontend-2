@@ -1,12 +1,3 @@
-.modal-content {
-  width: 200% !important;
-  margin-left: -50%;
-}
-
-.modal-dialog {
-  margin-left: 20%;
-}
-
 .group-modal-config {
   .input-search_group {
     display: flex;
@@ -43,5 +34,9 @@
     .search-table-customer {
       padding-top: 15px;
     }
+  }
+
+  .pagination {
+    float: right;
   }
 }

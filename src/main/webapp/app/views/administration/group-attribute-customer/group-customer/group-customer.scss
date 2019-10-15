@@ -26,8 +26,20 @@
   .padding-popover {
     padding: 0px 20px;
   }
+}
 
-  .ant-popover-inner-content {
-    padding: 0px !important;
+.ant-popover-inner-content {
+  padding: 5px;
+  font-size: 1rem;
+}
+
+.customer-li {
+  &:hover {
+    background: rgb(226, 226, 226);
   }
+  padding: 5px 15px;
+}
+
+.tr {
+  cursor: pointer;
 }

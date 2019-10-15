@@ -18,6 +18,19 @@ export interface IDataCustomer {
   fields: IFieldCustomer[];
 }
 
+export interface IDataCustomerCondition {
+  id?: string;
+  firstName?: string;
+  lastName?: string;
+  mobile?: string;
+  email?: string;
+  merchantId?: string;
+  fields: IFieldCustomer[];
+  createdDate: Date;
+  tags: Array<any>;
+  tag: string;
+}
+
 export interface IFieldCustomer {
   id?: string;
   type?: string;
@@ -30,4 +43,15 @@ export interface ISearchAdvanced {
   field?: string;
   value?: string;
   operator?: string;
+}
+
+export interface IFieldData {
+  logicalOperator?: string;
+  advancedSearches?: Array<IAdvancedSearches>;
+}
+
+export interface IAdvancedSearches {
+  field: string;
+  value: string;
+  operator: string;
 }

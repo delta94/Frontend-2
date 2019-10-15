@@ -3,33 +3,43 @@ import axios from 'axios';
 
 const customerGroup = 'v1/category-customers';
 
-export const getCustomerGroups = (textSearch: string) => {
+export const getListCustomerGroups = (textSearch?: string) => {
   return axios.get(customerGroup, { params: { textSearch } });
 };
 
-export const getListCustomerGroups = (textSearch: string, pageIndex: number, pageSize: number, id: string) => {
-  return axios.get(`v1/category/${id}/customers`, { params: { textSearch, pageIndex, pageSize } });
+// Get list customer group for data
+export const getListCustomerWithGroupId = (textSearch: string, page: number, pageSize: number, id: string) => {
+  return axios.get(`v1/categories/${id}/customers`, { params: { textSearch, page, pageSize }, headers: authHeaders });
 };
 
 export const getListFieldData = () => {
   return axios.get('v1/fields', { headers: authHeaders });
 };
 
-export const postFindCustomerWithCondition = (textSearch?: string, data?: any) => {
-  return axios.post('v2/customers', data, { params: textSearch, headers: authHeaders });
+export const getFindCustomerWithCondition = (data?: any) => {
+  return axios.post('v2/customers', data, { headers: authHeaders });
 };
 
+// Post insert customer group
 export const postInsertCustomerGroup = (data: any) => {
   const insertCustomerGroupApi = `v1/categories/insert`;
   return axios.post(insertCustomerGroupApi, data, { headers: authHeaders });
 };
 
+// Post update customer group
 export const postUpdateCustomerGroup = (data: any) => {
   const updateCustomerGroupApi = `${customerGroup}/${data.id}/update`;
   return axios.post(updateCustomerGroupApi, data, { headers: authHeaders });
 };
 
-export const postDeleteCustomerGroup = data => {
-  const mergeCustomerGroupApi = `${customerGroup}/delete`;
-  return axios.post(mergeCustomerGroupApi, data, { headers: authHeaders });
+// Post delete customer group
+export const postDeleteCustomerGroup = (id: string) => {
+  const mergeCustomerGroupApi = `v1/categories/${id}/delete`;
+  return axios.post(mergeCustomerGroupApi, null, { headers: authHeaders });
+};
+
+// Get field of customer group
+export const getSingleCustomerGroupField = (id: string) => {
+  const customerGroup = `v1/categories/${id}/customer-filter-groups`;
+  return axios.get(customerGroup, { headers: authHeaders });
 };

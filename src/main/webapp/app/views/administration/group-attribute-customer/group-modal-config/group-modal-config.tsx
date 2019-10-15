@@ -16,15 +16,18 @@ import FieldData from './field-data/field-data';
 import {
   getListFieldDataAction,
   postInsertCustomerGroupAction,
-  postFindCustomerWithConditionAction
+  getFindCustomerWithConditionAction
 } from '../../../../actions/group-attribute-customer';
 import { ISearchAdvanced } from 'app/common/model/group-attribute-customer';
 import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
+import { openModal } from '../../../../actions/modal';
+import { getListCustomerGroupDataAction } from '../../../../actions/group-attribute-customer';
 
 interface IGroupModalConfigProps extends StateProps, DispatchProps {
   is_show: boolean;
   toggle: Function;
+  title_modal: string;
 }
 
 interface IAdvancedSearchesData {
@@ -35,11 +38,13 @@ interface IAdvancedSearchesData {
 interface IGroupModalConfigState {
   list_field_data_cpn: any;
   list_customer: Array<any>;
-  name_group?: string;
+  categoryName?: string;
   advancedSearches?: ISearchAdvanced[];
   advancedSearchesData?: IAdvancedSearchesData[];
   logicalOperator?: string;
   textSearch?: string;
+  pageIndex: number;
+  pageSize: number;
 }
 
 export function makeid(length: number): string {
@@ -56,11 +61,13 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
   state: IGroupModalConfigState = {
     list_field_data_cpn: [],
     list_customer: [],
-    name_group: '',
+    categoryName: '',
     advancedSearches: [],
     advancedSearchesData: [],
     logicalOperator: 'AND',
-    textSearch: ''
+    textSearch: '',
+    pageIndex: 0,
+    pageSize: 10
   };
 
   componentDidMount() {
@@ -144,7 +151,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
     this.setState({ logicalOperator });
   };
 
-  // RemoveAll value
+  // Remove All value
   removeDataInModal = () => {
     let list_field_data_cpn = [];
     let advancedSearches = [];
@@ -152,23 +159,36 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
     this.setState({ list_field_data_cpn, advancedSearchesData, advancedSearches });
   };
 
-  //TODO: Create new group;
-  createNewGroup = () => {
-    let { advancedSearches } = this.state;
-  };
+  //Create new group;
+  async createNewGroup() {
+    let { advancedSearches, categoryName, logicalOperator } = this.state;
+    this.props.toggle();
+    await this.props.postInsertCustomerGroupAction({ categoryName, customerAdvancedSave: { logicalOperator, advancedSearches } });
+    await this.props.getListCustomerGroupDataAction('');
+    await this.props.openModal(this.props.postRequest);
+    await this.removeDataInModal();
+  }
 
-  // TODO: GetData customer by condition
-  getDataListCustomer = () => {
-    let { advancedSearches, logicalOperator, textSearch } = this.state;
+  // GetData customer by condition
+  getDataListCustomer = (event: any) => {
+    let { advancedSearches, logicalOperator, pageIndex, pageSize } = this.state;
     if (advancedSearches.length <= 1) {
       logicalOperator = '';
     }
-    this.props.postFindCustomerWithConditionAction(textSearch, { logicalOperator, advancedSearches });
+
+    if (typeof event.selected === 'number') {
+      pageIndex = event.selected;
+    }
+
+    this.props.getFindCustomerWithConditionAction({ logicalOperator, advancedSearches, page: pageIndex, pageSize });
+    this.setState({ pageIndex });
   };
 
   render() {
-    let { is_show, list_field_data, loading, list_data_customer } = this.props;
-    let { list_field_data_cpn, logicalOperator, advancedSearches } = this.state;
+    let { is_show, list_field_data, loading, list_customer_with_condition, title_modal, totalElements } = this.props;
+
+    let { list_field_data_cpn, logicalOperator, advancedSearches, categoryName } = this.state;
+
     let list_field_render =
       list_field_data_cpn && list_field_data_cpn.length > 0
         ? list_field_data_cpn.map((item, index) => {
@@ -192,14 +212,14 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
 
     return (
       <Modal isOpen={is_show} toggle={() => this.props.toggle()}>
-        <ModalHeader>Thêm nhóm mới</ModalHeader>
+        <ModalHeader>{title_modal}</ModalHeader>
         <ModalBody>
           <div className="group-modal-config">
             <div className="input-search_group">
               <label className="input-search_label">Tên nhóm</label>
               <Input
                 placeholder="Học sinh, người nổi tiếng, quần chúng .v.v"
-                onChange={event => this.setState({ name_group: event.target.value.trim() })}
+                onChange={event => this.setState({ categoryName: event.target.value.trim() })}
               />
             </div>
             {/* Chose condition */}
@@ -244,18 +264,17 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
                       </tr>
                     </thead>
                     <tbody>
-                      {list_data_customer && list_data_customer.length > 0 ? (
-                        list_data_customer.map((item, index) => {
+                      {list_customer_with_condition && list_customer_with_condition.length > 0 ? (
+                        list_customer_with_condition.map((item, index) => {
                           return (
                             <tr key={index}>
                               <td>{index}</td>
                               <td>{item.firstName + ' ' + item.lastName}</td>
                               <td>{item.mobile}</td>
                               <td>{item.email}</td>
+                              <td>{item.tags}</td>
                               <td />
-                              <td />
-                              <td />
-                              <td>...</td>
+                              <td>{item.createdDate}</td>
                             </tr>
                           );
                         })
@@ -271,20 +290,25 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
                     nextLabel={'>'}
                     breakLabel={'...'}
                     breakClassName={'break-me'}
-                    pageCount={5}
-                    marginPagesDisplayed={1}
-                    pageRangeDisplayed={10}
-                    onPageChange={() => {}}
+                    pageCount={Math.ceil(totalElements / 10)}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={4}
+                    onPageChange={this.getDataListCustomer}
                     containerClassName={'pagination'}
                     subContainerClassName={'pages pagination'}
                     activeClassName={'active'}
-                    forcePage={5}
+                    forcePage={8}
                   />
                 </Row>
               </Loader>
             </div>
             <div className="bottom-div-btn">
-              <Button style={{ float: 'right' }} color="primary" onClick={() => this.props.postInsertCustomerGroupAction(advancedSearches)}>
+              <Button
+                style={{ float: 'right' }}
+                color="primary"
+                disabled={advancedSearches && categoryName && categoryName.trim() !== '' ? false : true}
+                onClick={() => this.createNewGroup()}
+              >
                 Lưu
               </Button>
               <Button style={{ float: 'right' }} color="none" onClick={() => this.props.toggle()}>
@@ -301,19 +325,20 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
 }
 
 const mapStateToProps = ({ tagDataState, groupCustomerState }: IRootState) => ({
-  loading: groupCustomerState.loading,
-  size: groupCustomerState.size,
-  totalElements: groupCustomerState.totalElements,
-  totalPages: groupCustomerState.totalPages,
+  loading: groupCustomerState.list_customer_with_condition_index.loading,
+  totalElements: groupCustomerState.list_customer_with_condition_index.totalElements,
   list_field_data: groupCustomerState.list_field_data,
-  list_data_customer: groupCustomerState.list_data_customer
+  list_customer_with_condition: groupCustomerState.list_customer_with_condition,
+  postRequest: groupCustomerState.postRequest
 });
 
 const mapDispatchToProps = {
   getListTagDataAction,
   getListFieldDataAction,
   postInsertCustomerGroupAction,
-  postFindCustomerWithConditionAction
+  getFindCustomerWithConditionAction,
+  getListCustomerGroupDataAction,
+  openModal
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

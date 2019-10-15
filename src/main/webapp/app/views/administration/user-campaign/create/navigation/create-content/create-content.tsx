@@ -421,7 +421,7 @@ type DispatchProps = typeof mapDispatchToProps;
 
 const mapStateToProps = ({ userCampaign, handleModal }: IRootState) => ({
   listContentPageParams: userCampaign.listCampainContentParams,
-  postMailRequest: userCampaign.postMailRequest,
+  postRequest: userCampaign.postRequest,
   listContentTemplateAsTypeEmailIntro: userCampaign.listContentTemplateAsTypeEmailIntro,
   listContentTemplateAsTypeEmailEward: userCampaign.listContentTemplateAsTypeEmailEward,
   modalState: handleModal.data

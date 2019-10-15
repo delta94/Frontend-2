@@ -369,7 +369,7 @@ const mapStateToProps = ({ userCampaign, navigationInfo, loadingState }: IRootSt
   listStep: userCampaign.listStepCampaign,
   listContentParams: userCampaign.listCampainContentParams,
   navigationInfo,
-  postMailRequest: userCampaign.postMailRequest,
+  postRequest: userCampaign.postRequest,
   evoucherDetail: userCampaign.EvoucherDetail,
   totalContact: userCampaign.totalContact.totalContact
 });

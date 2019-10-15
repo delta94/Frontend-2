@@ -17,32 +17,42 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
 export interface IGroupAttributeCustomerProps extends StateProps, DispatchProps {}
 
 export interface IGroupAttributeCustomerState {
-  id_group_customer: string;
+  id_list_customer: string;
   is_show: boolean;
+  title_modal?: string;
 }
 class GroupAttributeCustomer extends React.Component<IGroupAttributeCustomerProps, IGroupAttributeCustomerState> {
-  state = {
-    id_group_customer: null,
-    is_show: true
+  state: IGroupAttributeCustomerState = {
+    id_list_customer: null,
+    is_show: false
   };
 
   componentDidMount() {}
 
-  toggle = () => {
+  toggleModalConfig = () => {
     let { is_show } = this.state;
     is_show = !is_show;
     this.setState({ is_show });
   };
 
+  setTitleForModalConfig = (title?: string) => {
+    this.setState({ title_modal: title });
+    this.toggleModalConfig();
+  };
+  // chose id for list customer
+  setIdForListCustomer = id_list_customer => {
+    this.setState({ id_list_customer });
+  };
+
   render() {
     const { modalState } = this.props;
-    let { is_show } = this.state;
+    let { is_show, title_modal, id_list_customer } = this.state;
 
     return (
       <div className="group-attribute-customer">
         <div id="user-management-title">
           <Translate contentKey="group-attribute-customer.header" />
-          <Button color="primary" style={{ float: 'right' }} onClick={this.toggle}>
+          <Button color="primary" style={{ float: 'right' }} onClick={() => this.setTitleForModalConfig('THÊM MỚI NHÓM')}>
             <FontAwesomeIcon icon={faPlus} />
             Tạo nhóm mới
           </Button>
@@ -57,9 +67,11 @@ class GroupAttributeCustomer extends React.Component<IGroupAttributeCustomerProp
             onConfirm={() => this.props.closeModal()}
           />
           <Row>
-            <GroupCustomer />
-            <GroupListCustomer />
-            <GroupModalConfig is_show={is_show} toggle={this.toggle} />
+            <GroupCustomer setTitleForModalConfig={this.setTitleForModalConfig} setIdForListCustomer={this.setIdForListCustomer} />
+            <GroupListCustomer id_list_customer={id_list_customer} />
+            <div className="content-group-modal-attribute">
+              <GroupModalConfig is_show={is_show} toggle={this.toggleModalConfig} title_modal={title_modal} />
+            </div>
           </Row>
         </Fragment>
       </div>
@@ -67,9 +79,7 @@ class GroupAttributeCustomer extends React.Component<IGroupAttributeCustomerProp
   }
 }
 
-const mapStateToProps = ({ tagDataState, handleModal }: IRootState) => ({
-  loading: tagDataState.loading,
-  list_tags: tagDataState.list_tags,
+const mapStateToProps = ({ handleModal }: IRootState) => ({
   modalState: handleModal.data
 });
 

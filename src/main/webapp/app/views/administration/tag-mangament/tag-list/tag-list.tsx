@@ -93,13 +93,6 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
 
   componentDidMount() {
     let { textSearch } = this.state;
-    $('input#searchText').on('keypress', event => {
-      let { textSearch } = this.state;
-      if (event.which == 13) {
-        this.getListTagDataAction(0, 6, textSearch);
-      }
-    });
-
     localStorage.setItem('pageIndex', '0');
     this.getListTagDataAction(0, 6, textSearch);
   }
@@ -222,6 +215,9 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
                   value={textSearch}
                   placeholder={translate('tag-management.tag-search')}
                   onChange={this.handleSearchTags}
+                  onPressEnter={() => {
+                    this.getListTagDataAction(0, 6, textSearch);
+                  }}
                 />
               </div>
             </div>

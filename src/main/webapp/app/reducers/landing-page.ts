@@ -90,7 +90,7 @@ const initialState = {
   listContentTemplate: [],
   listContentTemplateAsEmailIntro: [],
   listContentTemplateAsEmailEward: [],
-  postMailRequest: { code: 202, name: 'ok', openModal: false }
+  postRequest: { code: 202, name: 'ok', openModal: false }
 };
 
 export type LandingPageState = Readonly<typeof initialState>;
@@ -157,7 +157,7 @@ export default (state: LandingPageState = initialState, action): LandingPageStat
     case FAILURE(USER_CAMPAIGN_ACTION_TYPES.POST_TEST_MAIL):
       return {
         ...state,
-        postMailRequest: { code: 500, name: 'fail', openModal: false }
+        postRequest: { code: 500, name: 'fail', openModal: false }
       };
 
     case SUCCESS(LANDING_PAGE_ACTION_TYPES.BINDING_LANDINGPAGE):
@@ -265,7 +265,7 @@ export default (state: LandingPageState = initialState, action): LandingPageStat
       return {
         ...state,
         loading: false,
-        postMailRequest: { code: 202, name: 'Đã gửi mail thành công', openModal: true }
+        postRequest: { code: 202, name: 'Đã gửi mail thành công', openModal: true }
       };
     // success on get content template
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE):
