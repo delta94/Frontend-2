@@ -12,15 +12,15 @@ import {
   getListCustomerGroupDataAction,
   getListCustomerWithGroupIdDataAction,
   postDeleteCustomerGroupAction,
-  postUpdateCustomerGroupAction,
   getSingleCustomerGroupFieldDataAction
 } from '../../../../actions/group-attribute-customer';
 import { openModal, closeModal } from '../../../../actions/modal';
 import GroupDeleteModal from './group-delete-modal/group-delete-modal';
+import { UPDATE_CUSTOMER_GROUP, COPY_CUSTOMER_GROUP } from '../../../../constants/group-atrribute-customer';
 
 interface IGroupCustomerProps extends StateProps, DispatchProps {
-  setTitleForModalConfig: Function;
   setIdForListCustomer: Function;
+  setStateForModal: Function;
 }
 
 interface IGroupCustomerState {
@@ -96,28 +96,30 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
   //TODO: Copy group
 
   // Render menu dropdown
-  menuDropdown = id => {
+  menuDropdown = (id?: string) => {
     return (
       <Menu>
         <Menu.Item key="1" onClick={() => this.hanldeDeleteModal(id)}>
-          <Icon type="delete" /> Delete
+          <Icon type="delete" />
+          Delete
         </Menu.Item>
-        <Menu.Item key="2" onClick={() => this.handleUpdateGroup(id)}>
+        <Menu.Item key="2" onClick={() => this.handleGroup(id, UPDATE_CUSTOMER_GROUP)}>
           <Icon type="edit" />
           Chỉnh sửa
         </Menu.Item>
-        <Menu.Item key="3">
-          <Icon type="copy" /> Copy
+        <Menu.Item key="3" onClick={() => this.handleGroup(id, COPY_CUSTOMER_GROUP)}>
+          <Icon type="copy" />
+          Copy
         </Menu.Item>
       </Menu>
     );
   };
 
-  //TODO: Update group
-  handleUpdateGroup = (id: string) => {
-    console.log('test');
+  // Update or copy group
+  handleGroup = (id: string, type_modal?: string) => {
+    this.props.setIdForListCustomer(id);
     this.props.getSingleCustomerGroupFieldDataAction(id);
-    this.props.setTitleForModalConfig('THÔNG TIN NHÓM');
+    this.props.setStateForModal(type_modal);
   };
 
   // Open delete modal
@@ -130,8 +132,6 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
 
     this.setState({ open_modal_delete: !open_modal_delete, id_delete });
   };
-
-  switchGroup = () => {};
 
   // Call list customer
   callListCustomer = (id?: string) => {

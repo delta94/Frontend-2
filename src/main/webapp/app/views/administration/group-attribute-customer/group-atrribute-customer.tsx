@@ -13,6 +13,7 @@ import GroupModalConfig from './group-modal-config/group-modal-config';
 import { Button } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
+import { INSERT_CUSTOMER_GROUP } from '../../../constants/group-atrribute-customer';
 
 export interface IGroupAttributeCustomerProps extends StateProps, DispatchProps {}
 
@@ -20,39 +21,52 @@ export interface IGroupAttributeCustomerState {
   id_list_customer: string;
   is_show: boolean;
   title_modal?: string;
+  type_modal: string;
 }
 class GroupAttributeCustomer extends React.Component<IGroupAttributeCustomerProps, IGroupAttributeCustomerState> {
   state: IGroupAttributeCustomerState = {
     id_list_customer: null,
-    is_show: false
+    is_show: false,
+    type_modal: ''
   };
 
   componentDidMount() {}
 
+  // Show modal config
   toggleModalConfig = () => {
     let { is_show } = this.state;
     is_show = !is_show;
     this.setState({ is_show });
   };
 
+  // Set title for modal
   setTitleForModalConfig = (title?: string) => {
     this.setState({ title_modal: title });
     this.toggleModalConfig();
   };
-  // chose id for list customer
+
+  // Chose id for list customer
   setIdForListCustomer = id_list_customer => {
     this.setState({ id_list_customer });
   };
 
+  // Set state of modal
+  setStateForModal = (type_modal: string, id?: string) => {
+    let { id_list_customer } = this.state;
+    if (type_modal === INSERT_CUSTOMER_GROUP) id_list_customer = '';
+    this.setState({ type_modal, id_list_customer });
+    this.toggleModalConfig();
+  };
+
   render() {
     const { modalState } = this.props;
-    let { is_show, title_modal, id_list_customer } = this.state;
+    let { is_show, title_modal, id_list_customer, type_modal } = this.state;
 
     return (
       <div className="group-attribute-customer">
         <div id="user-management-title">
           <Translate contentKey="group-attribute-customer.header" />
-          <Button color="primary" style={{ float: 'right' }} onClick={() => this.setTitleForModalConfig('THÊM MỚI NHÓM')}>
+          <Button color="primary" style={{ float: 'right' }} onClick={() => this.setStateForModal(INSERT_CUSTOMER_GROUP)}>
             <FontAwesomeIcon icon={faPlus} />
             Tạo nhóm mới
           </Button>
@@ -67,10 +81,16 @@ class GroupAttributeCustomer extends React.Component<IGroupAttributeCustomerProp
             onConfirm={() => this.props.closeModal()}
           />
           <Row>
-            <GroupCustomer setTitleForModalConfig={this.setTitleForModalConfig} setIdForListCustomer={this.setIdForListCustomer} />
+            <GroupCustomer setIdForListCustomer={this.setIdForListCustomer} setStateForModal={this.setStateForModal} />
             <GroupListCustomer id_list_customer={id_list_customer} />
             <div className="content-group-modal-attribute">
-              <GroupModalConfig is_show={is_show} toggle={this.toggleModalConfig} title_modal={title_modal} />
+              <GroupModalConfig
+                is_show={is_show}
+                type_modal={type_modal}
+                id_list_customer={id_list_customer}
+                toggle={this.toggleModalConfig}
+                title_modal={title_modal}
+              />
             </div>
           </Row>
         </Fragment>

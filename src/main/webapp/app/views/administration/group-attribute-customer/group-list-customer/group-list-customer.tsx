@@ -66,7 +66,7 @@ class GroupListCustomer extends React.Component<IGroupListCustomerProps, IGroupL
   };
 
   render() {
-    let { loading, list_customer_group_with_id, totalElements, id_list_customer } = this.props;
+    let { loading, list_customer_group_with_id, totalElements } = this.props;
     let { textSearch } = this.state;
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
 
@@ -122,8 +122,8 @@ class GroupListCustomer extends React.Component<IGroupListCustomerProps, IGroupL
                   breakLabel={'...'}
                   breakClassName={'break-me'}
                   pageCount={Math.ceil(totalElements / 10)}
-                  marginPagesDisplayed={5}
-                  pageRangeDisplayed={8}
+                  marginPagesDisplayed={3}
+                  pageRangeDisplayed={5}
                   onPageChange={event => this.handlePagination(event.selected)}
                   containerClassName={'pagination'}
                   subContainerClassName={'pages pagination'}

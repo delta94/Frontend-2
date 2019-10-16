@@ -47,9 +47,9 @@ export const getFindCustomerWithConditionAction = (data: any) => ({
 });
 
 // Post update customer group
-export const postUpdateCustomerGroupAction = (data: any) => ({
+export const postUpdateCustomerGroupAction = (id: string, data: any) => ({
   type: CUSTOMER_GROUP_ATTRIBUTE.POST_UPDATE_CUSTOMER_GROUP,
-  payload: postUpdateCustomerGroup(data)
+  payload: postUpdateCustomerGroup(id, data)
 });
 
 // Get single data group

@@ -22,12 +22,16 @@ import { ISearchAdvanced } from 'app/common/model/group-attribute-customer';
 import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import { openModal } from '../../../../actions/modal';
-import { getListCustomerGroupDataAction } from '../../../../actions/group-attribute-customer';
+import { getListCustomerGroupDataAction, postUpdateCustomerGroupAction } from '../../../../actions/group-attribute-customer';
+import { UPDATE_CUSTOMER_GROUP, COPY_CUSTOMER_GROUP, INSERT_CUSTOMER_GROUP } from '../../../../constants/group-atrribute-customer';
+import { OPERATOR } from '../../../../constants/field-data';
 
 interface IGroupModalConfigProps extends StateProps, DispatchProps {
   is_show: boolean;
   toggle: Function;
   title_modal: string;
+  type_modal?: string;
+  id_list_customer?: string;
 }
 
 interface IAdvancedSearchesData {
@@ -35,8 +39,15 @@ interface IAdvancedSearchesData {
   advancedSearch?: ISearchAdvanced;
 }
 
+interface IComponentData {
+  id: string;
+  name?: string;
+  last_index: boolean;
+  default_data?: ISearchAdvanced;
+}
+
 interface IGroupModalConfigState {
-  list_field_data_cpn: any;
+  list_field_data_cpn: IComponentData[];
   list_customer: Array<any>;
   categoryName?: string;
   advancedSearches?: ISearchAdvanced[];
@@ -45,9 +56,14 @@ interface IGroupModalConfigState {
   textSearch?: string;
   pageIndex: number;
   pageSize: number;
+  single_group_field?: {
+    categoryId?: string;
+    categoryName?: string;
+    customerAdvancedSave?: any;
+  };
 }
 
-export function makeid(length: number): string {
+export function makeRandomId(length: number): string {
   let result = '';
   let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let charactersLength = characters.length;
@@ -64,10 +80,15 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
     categoryName: '',
     advancedSearches: [],
     advancedSearchesData: [],
-    logicalOperator: 'AND',
+    logicalOperator: '',
     textSearch: '',
     pageIndex: 0,
-    pageSize: 10
+    pageSize: 10,
+    single_group_field: {
+      categoryId: '',
+      categoryName: '',
+      customerAdvancedSave: {}
+    }
   };
 
   componentDidMount() {
@@ -75,22 +96,53 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (prevState.advancedSearchesData) {
-      let advancedSearches = [];
-      prevState.advancedSearchesData.map(item => {
-        advancedSearches.push(item.advancedSearch);
-      });
+    if (nextProps.single_group_field.categoryId !== '' && nextProps.single_group_field !== prevState.single_group_field) {
+      let { customerAdvancedSave } = nextProps.single_group_field;
+      let logicalOperator = '';
+      let advancedSearchesData = [];
+      let list_field_data_cpn = [];
+
+      if (customerAdvancedSave.logicalOperator !== '') {
+        logicalOperator = customerAdvancedSave.logicalOperator;
+      }
+
+      if (customerAdvancedSave.advancedSearches && customerAdvancedSave.advancedSearches.length > 0) {
+        customerAdvancedSave.advancedSearches.forEach((item, index) => {
+          let id = makeRandomId(16);
+          advancedSearchesData.push({
+            id: makeRandomId(8),
+            advancedSearch: item
+          });
+
+          list_field_data_cpn.push({
+            id,
+            name: 'new',
+            last_index: customerAdvancedSave.advancedSearches.length - 1 === index ? true : false,
+            default_data: item
+          });
+        });
+      }
 
       return {
-        advancedSearches
+        categoryName: nextProps.single_group_field.categoryName,
+        single_group_field: nextProps.single_group_field,
+        advancedSearchesData,
+        list_field_data_cpn,
+        logicalOperator
       };
     }
+
     return null;
   }
 
   // Update value from state;
   updateValueFromState = (id: string, advancedSearch: ISearchAdvanced) => {
-    let { advancedSearchesData } = this.state;
+    let { advancedSearchesData, logicalOperator } = this.state;
+
+    let advancedSearches = [];
+    advancedSearchesData.map(item => {
+      advancedSearches.push(item.advancedSearch);
+    });
 
     advancedSearchesData.forEach(item => {
       if (item.id === id) {
@@ -98,30 +150,50 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
       }
     });
 
-    this.setState({ advancedSearchesData });
+    if (advancedSearchesData.length > 1 && logicalOperator === '') {
+      logicalOperator = OPERATOR.AND;
+    }
+
+    if (advancedSearchesData.length === 1) logicalOperator = '';
+
+    this.setState({ advancedSearchesData, advancedSearches, logicalOperator });
   };
 
   // Add new component to list_field_data_cpn
   handleAddNewComponent = () => {
     let { list_field_data_cpn, advancedSearchesData } = this.state;
-    let id = makeid(16);
-    let newCpn = { id, name: 'new', last_index: true };
+
+    let id = makeRandomId(16);
+    let newCpn = { id, name: 'new', last_index: true, default_data: {} };
 
     // Check duplicate value
     list_field_data_cpn.forEach(item => {
       if (item.id === id) {
-        id = makeid(16);
+        id = makeRandomId(16);
       }
     });
 
     list_field_data_cpn.push(newCpn);
-    advancedSearchesData.push({ id, advancedSearch: { field: '', value: '', operator: '`' } });
+
+    advancedSearchesData.push({
+      id,
+      advancedSearch: {
+        fieldId: '',
+        fieldCode: '',
+        fieldType: '',
+        fieldTittle: '',
+        value: '',
+        operator: ''
+      }
+    });
+
     this.updateLastIndex(list_field_data_cpn);
   };
 
   // Delete component by Id
   deleteComponentById = (id: string) => {
     let { list_field_data_cpn, advancedSearchesData } = this.state;
+
     list_field_data_cpn.forEach((item, index) => {
       if (item.id === id) {
         list_field_data_cpn.splice(index, 1);
@@ -156,18 +228,14 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
     let list_field_data_cpn = [];
     let advancedSearches = [];
     let advancedSearchesData = [];
-    this.setState({ list_field_data_cpn, advancedSearchesData, advancedSearches });
+    let categoryName = '';
+    this.setState({
+      list_field_data_cpn,
+      advancedSearchesData,
+      advancedSearches,
+      categoryName
+    });
   };
-
-  //Create new group;
-  async createNewGroup() {
-    let { advancedSearches, categoryName, logicalOperator } = this.state;
-    this.props.toggle();
-    await this.props.postInsertCustomerGroupAction({ categoryName, customerAdvancedSave: { logicalOperator, advancedSearches } });
-    await this.props.getListCustomerGroupDataAction('');
-    await this.props.openModal(this.props.postRequest);
-    await this.removeDataInModal();
-  }
 
   // GetData customer by condition
   getDataListCustomer = (event: any) => {
@@ -180,18 +248,75 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
       pageIndex = event.selected;
     }
 
-    this.props.getFindCustomerWithConditionAction({ logicalOperator, advancedSearches, page: pageIndex, pageSize });
+    this.props.getFindCustomerWithConditionAction({
+      logicalOperator,
+      advancedSearches,
+      page: pageIndex,
+      pageSize
+    });
+
     this.setState({ pageIndex });
   };
 
+  // Close modal
+  closeConfigModal = () => {
+    this.removeDataInModal();
+    this.props.toggle();
+  };
+
+  // Exec function request
+  async execFunctionRequest() {
+    let { type_modal, id_list_customer } = this.props;
+    let { advancedSearches, categoryName, logicalOperator } = this.state;
+    categoryName = categoryName.trim();
+    switch (type_modal) {
+      case UPDATE_CUSTOMER_GROUP:
+        await this.props.postUpdateCustomerGroupAction(id_list_customer, {
+          categoryName,
+          customerAdvancedSave: {
+            logicalOperator,
+            advancedSearches
+          }
+        });
+        break;
+
+      case COPY_CUSTOMER_GROUP:
+        await this.props.postInsertCustomerGroupAction({
+          categoryName,
+          customerAdvancedSave: {
+            logicalOperator,
+            advancedSearches
+          }
+        });
+        break;
+
+      case INSERT_CUSTOMER_GROUP:
+        await this.props.postInsertCustomerGroupAction({
+          categoryName,
+          customerAdvancedSave: {
+            logicalOperator,
+            advancedSearches
+          }
+        });
+        break;
+      default:
+        break;
+    }
+
+    await this.props.getListCustomerGroupDataAction('');
+    await this.props.openModal(this.props.postRequest);
+    await this.props.toggle();
+    await this.removeDataInModal();
+  }
+
   render() {
-    let { is_show, list_field_data, loading, list_customer_with_condition, title_modal, totalElements } = this.props;
+    let { is_show, list_field_data, loading, list_customer_with_condition, totalElements, type_modal } = this.props;
 
     let { list_field_data_cpn, logicalOperator, advancedSearches, categoryName } = this.state;
 
     let list_field_render =
       list_field_data_cpn && list_field_data_cpn.length > 0
-        ? list_field_data_cpn.map((item, index) => {
+        ? list_field_data_cpn.map(item => {
             if (item.id)
               return (
                 <FieldData
@@ -200,6 +325,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
                   list_field_data={list_field_data}
                   last_index={item.last_index}
                   logicalOperator={logicalOperator}
+                  default_data={item.default_data}
                   updateValueFromState={this.updateValueFromState}
                   deleteComponentById={this.deleteComponentById}
                   updateRelationshipFromState={this.updateRelationshipFromState}
@@ -209,9 +335,24 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
         : [];
 
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
+    let title_modal = 'THÊM MỚI NHÓM';
+
+    switch (type_modal) {
+      case UPDATE_CUSTOMER_GROUP:
+        title_modal = 'CHỈNH SỬA THÔNG TIN NHÓM';
+        break;
+      case COPY_CUSTOMER_GROUP:
+        title_modal = 'SAO CHÉP THÔNG TIN NHÓM';
+        break;
+      case INSERT_CUSTOMER_GROUP:
+        title_modal = 'THÊM MỚI NHÓM';
+        break;
+      default:
+        break;
+    }
 
     return (
-      <Modal isOpen={is_show} toggle={() => this.props.toggle()}>
+      <Modal isOpen={is_show} toggle={this.closeConfigModal}>
         <ModalHeader>{title_modal}</ModalHeader>
         <ModalBody>
           <div className="group-modal-config">
@@ -219,7 +360,8 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
               <label className="input-search_label">Tên nhóm</label>
               <Input
                 placeholder="Học sinh, người nổi tiếng, quần chúng .v.v"
-                onChange={event => this.setState({ categoryName: event.target.value.trim() })}
+                value={categoryName}
+                onChange={event => this.setState({ categoryName: event.target.value })}
               />
             </div>
             {/* Chose condition */}
@@ -307,7 +449,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
                 style={{ float: 'right' }}
                 color="primary"
                 disabled={advancedSearches && categoryName && categoryName.trim() !== '' ? false : true}
-                onClick={() => this.createNewGroup()}
+                onClick={() => this.execFunctionRequest()}
               >
                 Lưu
               </Button>
@@ -329,7 +471,9 @@ const mapStateToProps = ({ tagDataState, groupCustomerState }: IRootState) => ({
   totalElements: groupCustomerState.list_customer_with_condition_index.totalElements,
   list_field_data: groupCustomerState.list_field_data,
   list_customer_with_condition: groupCustomerState.list_customer_with_condition,
-  postRequest: groupCustomerState.postRequest
+  postRequest: groupCustomerState.postRequest,
+  single_group_field: groupCustomerState.single_customer_field,
+  list_group_customer: groupCustomerState.list_group_customer
 });
 
 const mapDispatchToProps = {
@@ -338,6 +482,7 @@ const mapDispatchToProps = {
   postInsertCustomerGroupAction,
   getFindCustomerWithConditionAction,
   getListCustomerGroupDataAction,
+  postUpdateCustomerGroupAction,
   openModal
 };
 

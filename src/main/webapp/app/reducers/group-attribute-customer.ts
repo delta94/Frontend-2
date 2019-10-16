@@ -4,7 +4,8 @@ import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
 import { CUSTOMER_GROUP_ATTRIBUTE } from '../constants/group-atrribute-customer';
 import { ERROR } from '../constants/common';
 import { IListFieldData, IDataCustomer } from 'app/common/model/group-attribute-customer';
-import { IDataCustomerCondition, IAdvancedSearches } from '../common/model/group-attribute-customer';
+import { IDataCustomerCondition, ISearchAdvanced } from '../common/model/group-attribute-customer';
+import { string } from 'prop-types';
 
 interface IPostRequestReturn {
   code?: number;
@@ -22,7 +23,15 @@ const initialDataState = {
   list_group_customer: [] as ICatagoryGroup[],
   list_customer_with_group_id: [] as IDataCustomerCondition[],
   list_customer_with_condition: [] as IDataCustomerCondition[],
-  single_customer_field: {} as IAdvancedSearches,
+  single_customer_field: {
+    categoryId: '',
+    categoryName: '',
+    customerAdvancedSave: {
+      logicalOperator: '',
+      advancedSearches: []
+    }
+  },
+
   list_group_customer_index: {
     totalElements: 0,
     loading: false
@@ -200,7 +209,6 @@ export default (state: GroupCustomerState = initialDataState, action): GroupCust
     // Get list customer with condition
     case SUCCESS(CUSTOMER_GROUP_ATTRIBUTE.GET_LIST_CUSTOMER_WITH_GROUP_ID):
       data = action.payload.data;
-      console.log(data);
       list_customer_with_group_id_index.totalElements = data.total;
       list_customer_with_group_id_index.loading = false;
       return {

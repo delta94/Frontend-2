@@ -4,42 +4,10 @@ import { Input, Icon, Checkbox, Row, Col, Select, Radio, DatePicker, Button } fr
 import './field-data.scss';
 import { OPERATOR, TYPE_FIELD } from '../../../../../constants/field-data';
 import { IListFieldData } from 'app/common/model/group-attribute-customer';
-import { makeid } from '../group-modal-config';
 import { ISearchAdvanced } from '../../../../../common/model/group-attribute-customer';
 import { Moment } from 'moment';
 import moment from 'moment';
-
 const { Option } = Select;
-
-const list_operator_relationship = [
-  {
-    label: 'And',
-    name: OPERATOR.AND
-  },
-  {
-    label: 'Or',
-    name: OPERATOR.OR
-  }
-];
-
-const list_operator_self = {
-  Equal: {
-    label: 'Equal',
-    name: OPERATOR.EQUAL
-  },
-  GreatOrEqual: {
-    label: 'Great Or Equal',
-    name: OPERATOR.GREATER_OR_EQUAL
-  },
-  Contain: {
-    label: 'Contain',
-    name: OPERATOR.CONTAIN
-  },
-  LessOrEqual: {
-    label: 'Less Or Equal',
-    name: OPERATOR.LESS_OR_EQUAL
-  }
-};
 
 const list_condition_operator = {
   textInput: [OPERATOR.EQUAL, OPERATOR.CONTAIN],
@@ -54,6 +22,7 @@ interface IFieldDataProps extends StateProps, DispatchProps {
   last_index?: boolean;
   logicalOperator?: string;
   list_field_data?: IListFieldData[];
+  default_data?: ISearchAdvanced;
   updateValueFromState: Function;
   deleteComponentById: Function;
   updateRelationshipFromState: Function;
@@ -61,12 +30,13 @@ interface IFieldDataProps extends StateProps, DispatchProps {
 
 interface IFieldDataState {
   type: string;
+  defaultValue?: string;
   list_of_operator?: Array<string>;
   operator?: string;
   render_cpn?: any;
   options?: any;
   value_input?: string;
-  value_check_box?: Array<any>[];
+  value_check_box?: Array<any>;
   value_dropdown?: string;
   value_datepicker?: string;
   value_radio?: string;
@@ -85,35 +55,88 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
     value_datepicker: '',
     value_radio: '',
     options: [],
+    defaultValue: '',
     searchAdvanced: {
-      field: '',
+      fieldId: '',
+      fieldType: '',
+      fieldCode: '',
       value: '',
       operator: ''
     }
   };
 
-  componentDidMount() {}
+  componentDidMount() {
+    let { default_data } = this.props;
+
+    let { value_input, value_check_box, value_dropdown, value_radio, value_datepicker } = this.state;
+    if (default_data !== {}) {
+      // Set field data and default value
+      let list_option = default_data.fieldValue && default_data.fieldValue.split('||');
+      let { operator } = this.state;
+      if (operator !== default_data.operator) {
+        operator === default_data.operator;
+      }
+      let type = default_data.fieldType;
+      switch (type) {
+        case TYPE_FIELD.TEXT_INPUT:
+          value_input = default_data.value;
+          break;
+
+        case TYPE_FIELD.DATE:
+          value_datepicker = default_data.value;
+          break;
+
+        case TYPE_FIELD.DROP_DOWN:
+          value_dropdown = default_data.value;
+          break;
+
+        case TYPE_FIELD.CHECK_BOX:
+          value_check_box = default_data.value.split('||');
+          break;
+
+        case TYPE_FIELD.RADIO_BUTTON:
+          value_radio = default_data.value;
+          break;
+
+        default:
+          break;
+      }
+
+      this.handleChoseTypeOfRenderCpn(type, list_option);
+      this.setState({
+        value_input,
+        value_check_box,
+        value_radio,
+        value_dropdown,
+        value_datepicker,
+        operator,
+        defaultValue: default_data.fieldTitle
+      });
+    }
+  }
 
   // Chose type of render in reuseComponent
-  handleChoseOption = (id_field: string, item: any) => {
+  handleChoseOption = (id_field: string, item?: any) => {
     let key_split = item.key;
     let { searchAdvanced } = this.state;
     let { list_field_data, id } = this.props;
     let type = '';
-    let field = '';
+    let fieldId = '';
 
     // Add field
     list_field_data.forEach(item => {
       if (item.id === id_field) {
         type = item.type;
-        field = item.code;
+        fieldId = item.code;
       }
     });
 
     let list_option = key_split.split('||');
     this.setState({ type, searchAdvanced });
     this.handleChoseTypeOfRenderCpn(type, list_option);
-    this.setSearchAdvancedData(field, 'field');
+    this.setSearchAdvancedData(fieldId, 'fieldId');
+    this.setSearchAdvancedData(fieldId, 'fieldCode');
+    this.setSearchAdvancedData(type, 'fieldType');
   };
 
   // Chose Component for reuseComponent
@@ -210,18 +233,20 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
 
   render() {
     let { list_field_data, id, last_index, logicalOperator } = this.props;
-    let { list_of_operator, type, options, value_radio, value_dropdown } = this.state;
+    let { list_of_operator, type, options, value_radio, value_dropdown, value_input, value_datepicker, value_check_box } = this.state;
     let render_cpn = null;
 
     switch (type) {
       case TYPE_FIELD.TEXT_INPUT:
-        render_cpn = <Input key={id + 'input'} onChange={this.setValueForInput} />;
+        render_cpn = <Input key={id + 'input'} onChange={this.setValueForInput} value={value_input} />;
         break;
       case TYPE_FIELD.DATE:
-        render_cpn = <DatePicker onChange={this.setValueForDatePicker} />;
+        render_cpn = (
+          <DatePicker onChange={this.setValueForDatePicker} value={value_datepicker ? moment(value_datepicker) : moment(new Date())} />
+        );
         break;
       case TYPE_FIELD.CHECK_BOX:
-        render_cpn = <Checkbox.Group options={options} onChange={this.setValueCheckBox} />;
+        render_cpn = <Checkbox.Group options={options} onChange={this.setValueCheckBox} value={value_check_box} />;
         break;
       case TYPE_FIELD.RADIO_BUTTON:
         render_cpn = <Radio.Group key={id + 'value_radio'} value={value_radio} onChange={this.setValueForRadio} options={options} />;

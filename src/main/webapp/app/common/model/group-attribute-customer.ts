@@ -40,18 +40,16 @@ export interface IFieldCustomer {
 }
 
 export interface ISearchAdvanced {
-  field?: string;
+  fieldId?: string;
+  fieldCode?: string;
+  fieldType?: string;
+  fieldTittle?: string;
+  fieldValue?: string;
   value?: string;
   operator?: string;
 }
 
 export interface IFieldData {
   logicalOperator?: string;
-  advancedSearches?: Array<IAdvancedSearches>;
-}
-
-export interface IAdvancedSearches {
-  field: string;
-  value: string;
-  operator: string;
+  advancedSearches?: Array<ISearchAdvanced>;
 }

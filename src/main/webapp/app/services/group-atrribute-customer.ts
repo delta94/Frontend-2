@@ -27,8 +27,8 @@ export const postInsertCustomerGroup = (data: any) => {
 };
 
 // Post update customer group
-export const postUpdateCustomerGroup = (data: any) => {
-  const updateCustomerGroupApi = `${customerGroup}/${data.id}/update`;
+export const postUpdateCustomerGroup = (id: string, data: any) => {
+  const updateCustomerGroupApi = `${customerGroup}/${id}/update`;
   return axios.post(updateCustomerGroupApi, data, { headers: authHeaders });
 };
 
