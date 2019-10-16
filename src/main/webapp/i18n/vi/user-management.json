@@ -8,6 +8,7 @@
       "import-result-detail": "Kết quả import chi tiết",
       "download-result": "Tải kết quả đầy đủ",
       "customer-name": "Tên khách hàng",
+      "date-create": "Ngày khởi tạo",
       "email": "Email",
       "phone-number": "Số điện thoại",
       "type": "Phân loại",
@@ -19,7 +20,17 @@
       "info-cus": "Thông tin khách hàng",
       "export": "Export",
       "import": "Import",
-      "edit": "Chỉnh sửa"
+      "edit": "Chỉnh sửa",
+      "merge": "Gộp"
+    },
+    "infomation": {
+      "delete": {
+        "title": "Xóa khách hàng "
+      },
+      "merge": {
+        "title": "Gộp thông tin khách hàng",
+        "is-merge": "Bạn có muốn gộp khách hàng không ? "
+      }
     },
     "deleteAlert": {
       "title": "Bạn muốn xoá ?",

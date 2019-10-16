@@ -5,8 +5,10 @@ import { Card, Row, Avatar, Icon, Popover, Button, Collapse, Input, DatePicker, 
 import { Translate, translate } from 'react-jhipster';
 import { openModal, closeModal } from '../../../../../actions/modal';
 import SweetAlert from 'sweetalert-react';
+import Merge from './merge/merge';
+import Delete from './delete/delete';
 import moment from 'moment';
-import { resetMessage, getDetailUser, updateCategory, updateUserAction } from 'app/actions/user-management';
+import { resetMessage, getDetailUser, updateCategory, updateUserAction, getListDuplicateAction } from 'app/actions/user-management';
 import { IRootState } from 'app/reducers';
 import './basic.scss';
 import LoaderAnim from 'react-loaders';
@@ -72,7 +74,8 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
     isOpenPopEmail: false,
     isOpenPopMobile: false
   };
-  hide = () => {
+
+  hide = type => {
     this.setState({
       visible: false,
       isOpenPopFirst: false,
@@ -120,12 +123,12 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
     await this.props.getDetailUser(this.state.user.id);
   };
 
-  contentUser = id => {
+  contentUser = (id, value) => {
     let { loading } = this.props;
     return (
       <div>
         <div style={{ marginBottom: '2%' }}>
-          <Input id={id} />
+          <Input defaultValue={value} id={id} />
         </div>
         <div>
           <Button
@@ -158,10 +161,9 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
       tag: [],
       fields: this.removeDuplicates(value, 'id')
     };
-    console.log(data);
     await updateUserAction(data);
     this.closePopover();
-    this.hide();
+    this.hide('');
     await getDetailUser(data.id);
     this.setState({ user: this.props.user, listField: this.props.user.fields });
   };
@@ -180,16 +182,13 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
   };
 
   setting = () => {
+    let { user } = this.props;
     const content = (
       <div>
         <div style={{ marginBottom: '2%' }}>
-          <Button onClick={this.hide}>
-            <i className="lnr-trash"> </i>&nbsp; Delete
-          </Button>
+          <Delete id={user.id} onClick={() => this.hide('delete')} />
         </div>
-        <Button onClick={this.hide}>
-          <Ionicon icon="md-git-merge" /> &nbsp; Merge
-        </Button>
+        <Merge id={user.id} email={user.email} phone={user.mobile} onClick={() => this.hide('merge')} />
       </div>
     );
     return content;
@@ -250,7 +249,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
 
   render() {
     const { getDetailUser, loading } = this.props;
-    let { user, isOpenPopEmail, isOpenPopFirst, isOpenPopLast, isOpenPopMobile } = this.state;
+    let { user, isOpenPopEmail, isOpenPopFirst, isOpenPopLast, isOpenPopMobile, listField } = this.state;
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
     return (
       <Fragment>
@@ -261,6 +260,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
               <Popover
                 content={this.setting()}
                 trigger="click"
+                placement="right"
                 visible={this.state.visible}
                 onVisibleChange={event => this.handleVisibleChange(event, 'admin', '')}
               >
@@ -275,13 +275,13 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
               style={{ height: '6pc', width: '10pc', fontSize: '75px', background: 'antiquewhite' }}
             />
             <div className="details-customer-name">
-              <Label>{user.firstName + ' ' + user.lastName}</Label>
+              <Label>{user ? user.firstName + ' ' + user.lastName : ''}</Label>
             </div>
             <div className="details-customer">
-              <Label>{user.email}</Label>
+              <Label>{user.email ? user.email : ''}</Label>
             </div>
             <div className="details-customer">
-              <Label>{user.mobile}</Label>
+              <Label>{user.mobile ? user.mobile : ''}</Label>
             </div>
           </Card>
           <Collapse defaultActiveKey="1" expandIconPosition="right">
@@ -292,13 +292,13 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                 </Label>
                 <label className="phone-customer_span">
                   <Popover
-                    content={this.contentUser('firstName')}
+                    content={this.contentUser('firstName', user.firstName)}
                     visible={isOpenPopFirst}
                     onVisibleChange={event => this.handleVisibleChange(event, 'fistName', '')}
                     title="Frist Name"
                     trigger="click"
                   >
-                    {user.firstName}
+                    {user.firstName ? user.firstName : ''}
                   </Popover>
                 </label>
               </div>
@@ -308,13 +308,13 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                 </Label>
                 <span className="phone-customer_span">
                   <Popover
-                    content={this.contentUser('lastName')}
+                    content={this.contentUser('lastName', user.lastName)}
                     visible={isOpenPopLast}
                     onVisibleChange={event => this.handleVisibleChange(event, 'lastName', '')}
                     title="Last Name"
                     trigger="click"
                   >
-                    {user.lastName}
+                    {user.lastName ? user.lastName : ''}
                   </Popover>
                 </span>
               </div>
@@ -325,13 +325,13 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
 
                 <span className="phone-customer_span">
                   <Popover
-                    content={this.contentUser('email')}
+                    content={this.contentUser('email', user.email)}
                     visible={isOpenPopEmail}
                     onVisibleChange={event => this.handleVisibleChange(event, 'email', '')}
                     title="Email"
                     trigger="click"
                   >
-                    {user.email}
+                    {user.email ? user.email : ''}
                   </Popover>
                 </span>
               </div>
@@ -341,123 +341,129 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                 </Label>
                 <span className="phone-customer_span">
                   <Popover
-                    content={this.contentUser('mobile')}
+                    content={this.contentUser('mobile', user.mobile)}
                     visible={isOpenPopMobile}
                     onVisibleChange={event => this.handleVisibleChange(event, 'mobile', '')}
                     title="Mobile"
                     trigger="click"
                   >
-                    {user.mobile}
+                    {user.mobile ? user.mobile : ''}
                   </Popover>
                 </span>
               </div>
-              {this.state.listField.map((value, index) => {
-                return (
-                  <div className="line-info" key={index}>
-                    <Label className="content-text" style={{ width: '50%' }}>
-                      {value.title}
-                    </Label>
-                    <div className="phone-customer_span">
-                      <Popover
-                        content={
-                          <div>
-                            {value.type === 'Checkbox' ? (
-                              <Row>
-                                <Col span={8} key={index}>
-                                  <Checkbox.Group
-                                    className="checkbox-update"
-                                    options={this.optionsCheckbox(String(value.fieldValue).split('||'))}
-                                    defaultValue={String(value.value).split(',')}
-                                    onChange={event => this.onChangeCheckbox(value.id, event)}
+              {listField
+                ? listField.map((value, index) => {
+                    return (
+                      <div className="line-info" key={index}>
+                        <Label className="content-text" style={{ width: '50%' }}>
+                          {value.title}
+                        </Label>
+                        <div className="phone-customer_span">
+                          <Popover
+                            content={
+                              <div>
+                                {value.type === 'Checkbox' ? (
+                                  <Row>
+                                    <Col span={8} key={index}>
+                                      <Checkbox.Group
+                                        className="checkbox-update"
+                                        options={this.optionsCheckbox(String(value.fieldValue).split('||'))}
+                                        defaultValue={String(value.value).split(',')}
+                                        onChange={event => this.onChangeCheckbox(value.id, event)}
+                                      />
+                                    </Col>
+                                  </Row>
+                                ) : (
+                                  ''
+                                )}
+                                {value.type === 'Radio' ? (
+                                  <Radio.Group
+                                    onChange={event => this.onChangeRadio(event, value.id)}
+                                    className="radio-group"
+                                    name="radiogroup"
+                                    defaultValue={value.value}
+                                  >
+                                    <Row>
+                                      {String(value.fieldValue)
+                                        .split('||')
+                                        .map((event, index) => {
+                                          return (
+                                            <Col span={8} key={index}>
+                                              <Radio value={event}>{event}</Radio>
+                                            </Col>
+                                          );
+                                        })}
+                                    </Row>
+                                  </Radio.Group>
+                                ) : (
+                                  ''
+                                )}
+                                {value.type === 'Text Input' ? (
+                                  <Input
+                                    defaultValue={value.value}
+                                    className="box"
+                                    onChange={event => this.onChangeText(value.id, event)}
                                   />
-                                </Col>
-                              </Row>
-                            ) : (
-                              ''
-                            )}
-                            {value.type === 'Radio' ? (
-                              <Radio.Group
-                                onChange={event => this.onChangeRadio(event, value.id)}
-                                className="radio-group"
-                                name="radiogroup"
-                                defaultValue={value.value}
-                              >
-                                <Row>
-                                  {String(value.fieldValue)
-                                    .split('||')
-                                    .map((event, index) => {
-                                      return (
-                                        <Col span={8} key={index}>
-                                          <Radio value={event}>{event}</Radio>
-                                        </Col>
-                                      );
-                                    })}
-                                </Row>
-                              </Radio.Group>
-                            ) : (
-                              ''
-                            )}
-                            {value.type === 'Text Input' ? (
-                              <Input defaultValue={value.value} className="box" onChange={event => this.onChangeText(value.id, event)} />
-                            ) : (
-                              ''
-                            )}
-                            {value.type === 'Date' ? (
-                              <DatePicker
-                                defaultValue={value.value ? moment(value.value) : null}
-                                className="date-update box"
-                                onChange={(event, dateString) => this.onChangeDate(value.id, dateString)}
-                              />
-                            ) : (
-                              ''
-                            )}
-                            {value.type === 'Dropdown List' ? (
-                              <Select
-                                className="checkbox-group"
-                                defaultValue={value.value}
-                                id="box"
-                                onChange={event => this.handleChangeDrop(value.id, event)}
-                              >
-                                {String(value.fieldValue)
-                                  .split('||')
-                                  .map((event, index) => {
-                                    return (
-                                      <Option key={index} value={String(event)}>
-                                        {event}
-                                      </Option>
-                                    );
-                                  })}
-                              </Select>
-                            ) : (
-                              ''
-                            )}
-                            <div style={{ marginTop: '5%' }}>
-                              <Button
-                                onClick={() => {
-                                  this.editUser(value.id);
-                                }}
-                                disabled={this.props.loading}
-                                type="primary"
-                              >
-                                {' '}
-                                Chỉnh sửa{' '}
-                              </Button>{' '}
-                              &nbsp;
-                              <Button onClick={this.closePopover}>Hủy bỏ</Button>
-                            </div>
-                          </div>
-                        }
-                        visible={value.check}
-                        onVisibleChange={event => this.handleVisibleChange(event, value.id, value)}
-                        title={value.type}
-                        trigger="click"
-                      >
-                        {value.value ? value.value : 'Click to add'}
-                      </Popover>
-                    </div>
-                  </div>
-                );
-              })}
+                                ) : (
+                                  ''
+                                )}
+                                {value.type === 'Date' ? (
+                                  <DatePicker
+                                    defaultValue={value.value ? moment(value.value) : null}
+                                    className="date-update box"
+                                    onChange={(event, dateString) => this.onChangeDate(value.id, dateString)}
+                                  />
+                                ) : (
+                                  ''
+                                )}
+                                {value.type === 'Dropdown List' ? (
+                                  <Select
+                                    className="checkbox-group"
+                                    defaultValue={value.value}
+                                    id="box"
+                                    onChange={event => this.handleChangeDrop(value.id, event)}
+                                  >
+                                    {String(value.fieldValue)
+                                      .split('||')
+                                      .map((event, index) => {
+                                        return (
+                                          <Option key={index} value={String(event)}>
+                                            {event}
+                                          </Option>
+                                        );
+                                      })}
+                                  </Select>
+                                ) : (
+                                  ''
+                                )}
+                                <div style={{ marginTop: '5%' }}>
+                                  <Button
+                                    onClick={() => {
+                                      this.editUser(value.id);
+                                    }}
+                                    disabled={this.props.loading}
+                                    type="primary"
+                                  >
+                                    {' '}
+                                    Chỉnh sửa{' '}
+                                  </Button>{' '}
+                                  &nbsp;
+                                  <Button onClick={this.closePopover}>Hủy bỏ</Button>
+                                </div>
+                              </div>
+                            }
+                            visible={value.check}
+                            onVisibleChange={event => this.handleVisibleChange(event, value.id, value)}
+                            title={value.type}
+                            trigger="click"
+                          >
+                            {value.value ? value.value : 'Click to add'}
+                          </Popover>
+                        </div>
+                      </div>
+                    );
+                  })
+                : ''}
               <div className="line-info">
                 <Label className="content-text" for="categories">
                   <Translate contentKey="userManagement.categories" />
@@ -481,7 +487,7 @@ const mapStateToProps = ({ handleModal, userManagement }: IRootState) => ({
   data: userManagement.data
 });
 
-const mapDispatchToProps = { resetMessage, openModal, closeModal, getDetailUser, updateCategory, updateUserAction };
+const mapDispatchToProps = { resetMessage, openModal, closeModal, getDetailUser, updateCategory, updateUserAction, getListDuplicateAction };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

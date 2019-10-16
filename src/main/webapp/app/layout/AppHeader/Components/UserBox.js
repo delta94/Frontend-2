@@ -168,7 +168,7 @@ class UserBox extends React.Component {
                             </div>
                             <div className="widget-content-left  ml-3 header-user-info">
                                 <div className="widget-heading">
-                                    Alina Mclourd
+                                    Admin
                                 </div>
                                 <div className="widget-subheading">
                                     VP People Manager

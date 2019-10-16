@@ -1,5 +1,5 @@
 import React from 'react';
-import './list/user-management.scss';
+import './import.scss';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps, Router, Route } from 'react-router-dom';
 import SweetAlert from 'sweetalert-react';
@@ -65,7 +65,7 @@ export class UserCreate extends React.Component<IUserCreateProps, IUserCreateSta
 
   onClick = async () => {
     await this.props.uploadFileExcel(this.state.fileImport);
-    this.props.history.push('results-files');
+    this.props.history.push('select-fields');
   };
 
   validated = () => {
@@ -78,7 +78,9 @@ export class UserCreate extends React.Component<IUserCreateProps, IUserCreateSta
 
   render() {
     const { loading } = this.props;
+    let { image } = this.state;
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
+    const imageFileDown = require('app/assets/utils/images/user-mangament/image-down-files.png');
     return (
       <Container fluid>
         <Loader message={spinner1} show={loading} priority={1}>
@@ -90,14 +92,7 @@ export class UserCreate extends React.Component<IUserCreateProps, IUserCreateSta
 
               <Row className="justify-content-left">
                 <Col md="6">
-                  <div className="multi-row">
-                    <legend>
-                      <Translate contentKey="entity.action.reinstall" />
-                      <a className="myButton" href={USER_MANAGE_ACTION_TYPES.URL_TEMPLATE}>
-                        <Translate contentKey="entity.action.at-this" />
-                      </a>
-                    </legend>
-                  </div>
+                  <div className="multi-row" />
                 </Col>
                 <Col md="6">
                   <Button tag={Link} to="/app/views/administration/user-management" replace color="info">
@@ -149,7 +144,8 @@ export class UserCreate extends React.Component<IUserCreateProps, IUserCreateSta
                                 />
                                 <Col md="12">
                                   {' '}
-                                  <img className="img" src={this.state.image} />
+                                  <p>chọn file để import</p>
+                                  {image ? <img className="img" src={image} /> : <img style={{ width: '255px' }} src={imageFileDown} />}
                                 </Col>
                                 {this.state.file}
                               </div>

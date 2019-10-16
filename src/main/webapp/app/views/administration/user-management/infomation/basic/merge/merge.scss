@@ -1,0 +1,35 @@
+#name-duplicate {
+  white-space: nowrap;
+}
+
+.merge-customer_chose {
+  width: 100%;
+  text-align: center;
+  height: 75px;
+  border: solid rgb(179, 179, 179) 1px;
+  border-radius: 5px;
+
+  .box-chose {
+    text-align: center;
+    padding: 10px 10px;
+    height: 100%;
+
+    p {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+  }
+
+  .left-box {
+    border-radius: 5px 0px 0px 5px;
+  }
+
+  .right-box {
+    border-radius: 0px 5px 5px 0px;
+  }
+}
+.merge-collapse {
+  .ant-collapse-item-active {
+    border-bottom: none;
+  }
+}

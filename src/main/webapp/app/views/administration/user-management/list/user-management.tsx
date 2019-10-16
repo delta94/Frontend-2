@@ -4,13 +4,15 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Table, Row, Label, Col } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { openModal, closeModal } from 'app/actions/modal';
 import './user-management.scss';
 import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
 import { getUser, getUsers, updateUser, getUserCategories, deleteUser, getDetailUser } from 'app/actions/user-management';
-import UserCategoryTag from '../user-categories-tags';
+import UserCategoryTag from './categories-tag/categories-tag';
 import { IRootState } from 'app/reducers';
 import ReactPaginate from 'react-paginate';
 import LoaderAnim from 'react-loaders';
+import SweetAlert from 'sweetalert-react';
 import Loader from 'react-loader-advanced';
 import CreateUser from './../create/create';
 
@@ -82,12 +84,20 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
   };
 
   render() {
-    const { users, match, loading, getDetailUser, history } = this.props;
+    const { users, match, loading, getDetailUser, history, modalState } = this.props;
     const { activePage } = this.state;
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
 
     return (
       <div>
+        <SweetAlert
+          title={modalState.title ? modalState.title : 'No title'}
+          confirmButtonColor=""
+          show={modalState.show ? modalState.show : false}
+          text={modalState.text ? modalState.text : 'No'}
+          type={modalState.type ? modalState.type : 'error'}
+          onConfirm={() => this.props.closeModal()}
+        />
         <Loader message={spinner1} show={loading} priority={1}>
           <div id="user-management-title">
             <Translate contentKey="userManagement.home.title" />
@@ -175,7 +185,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                                 className="buttonUpdate"
                                 onClick={async () => {
                                   await getDetailUser(event.id);
-                                  history.push('user-management/info');
+                                  history.push('/app/views/customers/user-management/info');
                                 }}
                                 color="primary"
                                 size="sm"
@@ -214,9 +224,8 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
 }
 
 const mapStateToProps = (storeState: IRootState) => ({
-  success: storeState.userManagement.showDeleteSuccessAlert,
-  error: storeState.userManagement.showDeleteErrorAlert,
   user: storeState.userManagement.user,
+  modalState: storeState.handleModal.data,
   users: storeState.userManagement.users,
   totalItems: storeState.userManagement.totalItems,
   account: storeState.authentication.account,
@@ -226,7 +235,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   pageCount: Math.ceil(storeState.userManagement.totalElements / ITEMS_PER_PAGE)
 });
 
-const mapDispatchToProps = { getUsers, updateUser, getUserCategories, deleteUser, getUser, getDetailUser };
+const mapDispatchToProps = { getUsers, updateUser, getUserCategories, deleteUser, getUser, getDetailUser, openModal, closeModal };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
