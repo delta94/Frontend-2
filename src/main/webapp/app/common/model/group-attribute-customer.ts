@@ -34,7 +34,7 @@ export interface IDataCustomerCondition {
 export interface IFieldCustomer {
   id?: string;
   type?: string;
-  titler?: string;
+  title?: string;
   fieldValue?: string;
   vlaue?: string;
 }
@@ -43,7 +43,7 @@ export interface ISearchAdvanced {
   fieldId?: string;
   fieldCode?: string;
   fieldType?: string;
-  fieldTittle?: string;
+  fieldTitle?: string;
   fieldValue?: string;
   value?: string;
   operator?: string;
