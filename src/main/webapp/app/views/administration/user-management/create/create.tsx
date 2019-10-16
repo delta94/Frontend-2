@@ -209,7 +209,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
             <ModalBody>
               <AvForm>
                 <Row>
-                  <Col md={24}>
+                  <Col span={24}>
                     <div className="option-create">
                       <Label>
                         <Translate contentKey="userManagement.firstName" />

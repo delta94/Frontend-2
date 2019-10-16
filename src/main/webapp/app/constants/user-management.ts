@@ -23,6 +23,7 @@ export const USER_MANAGE_ACTION_TYPES = {
   FETCH_SEARCH_USER: 'userManagement/FETCH_SEARCH_USER',
   UPDATE_USER_CATEGORY: 'userManagement/UPDATE_USER_CATEGORY',
   GET_DATA: 'userManagement/GET_DATA',
+  GET_FIELDS: 'userManagement/GET_FIELDS',
   GET_LIST_DUPLICATE: 'userManagement/GET_LIST_DUPLICATE',
   RESET_MESSAGE: 'userManagement/RESET_MESSAGE'
 };

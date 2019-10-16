@@ -16,6 +16,8 @@ import {
   downloadFile,
   UploaddFile,
   listUserService,
+  uploadFileExcelService,
+  getFieldsService,
   postInsertUser,
   getDoSearch
 } from 'app/services/user-management';
@@ -108,23 +110,25 @@ export const downloadFileExcel = () => {
     meta: {}
   };
 };
+
+//Version 2
+
+export const getFields = () => {
+  return {
+    type: USER_MANAGE_ACTION_TYPES.GET_FIELDS,
+    payload: getFieldsService()
+  };
+};
+
 export const uploadFileExcel = data => async dispatch => {
   const formData = new FormData();
   formData.append('file', data);
   const result = await dispatch({
     type: USER_MANAGE_ACTION_TYPES.UPLOAD_FILE,
-    payload: axios.post('v1/customer/import', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    }),
-    meta: {}
+    payload: uploadFileExcelService(formData)
   });
-  if (result.action.payload.data.success) {
-  } else {
-  }
 };
-//Version 2
+
 export const insertUser = data => {
   return {
     type: USER_MANAGE_ACTION_TYPES.CREATE_USER,

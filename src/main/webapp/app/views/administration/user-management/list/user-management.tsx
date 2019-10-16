@@ -15,6 +15,7 @@ import LoaderAnim from 'react-loaders';
 import SweetAlert from 'sweetalert-react';
 import Loader from 'react-loader-advanced';
 import CreateUser from './../create/create';
+import Import from 'app/views/administration/user-management/import/import';
 
 export interface IUserManagementProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
 
@@ -131,9 +132,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                   <Translate contentKey="userManagement.home.export" />
                 </Button>
                 &nbsp;
-                <Button id="btn-export" tag={Link} to={`${match.url}/new`}>
-                  <Translate contentKey="userManagement.home.import" />
-                </Button>
+                <Import />
               </Col>
             </Row>
             <hr />

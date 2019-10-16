@@ -2,24 +2,42 @@ import React from 'react';
 import './import.scss';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps, Router, Route } from 'react-router-dom';
-import SweetAlert from 'sweetalert-react';
-import { Button, Label, Row, Col, Modal, Container, Card, CardBody, CardTitle } from 'reactstrap';
-import { Translate, translate } from 'react-jhipster';
+import UserCategoryTag from 'app/views/administration/user-management/list/categories-tag/categories-tag';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import FileDownload from 'js-file-download';
-import Loader from 'react-loader-advanced';
-import LoaderAnim from 'react-loaders';
-
-import { downloadFileExcel, uploadFileExcel } from 'app/actions/user-management';
-import { IRootState } from 'app/reducers';
+import { downloadFileExcel, uploadFileExcel, getFields } from 'app/actions/user-management';
 import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
-import { toast } from 'react-toastify';
-
+import {
+  Button,
+  Table,
+  Badge,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Container,
+  FormGroup,
+  Label,
+  Card,
+  CardBody,
+  CardTitle
+} from 'reactstrap';
+import { Radio, Select, Row, Col, Collapse } from 'antd';
+import { AvForm } from 'availity-reactstrap-validation';
+import PerfectScrollbar from 'react-perfect-scrollbar';
+import { Translate, translate } from 'react-jhipster';
+import Ionicon from 'react-ionicons';
+import { IRootState } from 'app/reducers';
+import LoaderAnim from 'react-loaders';
+import Loader from 'react-loader-advanced';
+import { openModal, closeModal } from 'app/actions/modal';
 import Dropzone from 'react-dropzone';
 
-export interface IUserCreateProps extends StateProps, DispatchProps, RouteComponentProps<{ login: string }> {}
-export interface IUserCreateState {
-  isNew: boolean;
+const { Option } = Select;
+
+const { Panel } = Collapse;
+
+export interface IImportProps extends StateProps, DispatchProps {}
+export interface IImportState {
   isActive: boolean;
   isComplete: boolean;
   isError: boolean;
@@ -27,18 +45,25 @@ export interface IUserCreateState {
   file: string;
   fileImport: string;
   image: string;
+  modal: boolean;
+  check: boolean;
+  current: number;
+  value: string;
 }
 
-export class UserCreate extends React.Component<IUserCreateProps, IUserCreateState, Route> {
-  state: IUserCreateState = {
-    isNew: !this.props.match.params || !this.props.match.params.login,
+export class Import extends React.Component<IImportProps, IImportState, Route> {
+  state: IImportState = {
     isActive: false,
     isComplete: false,
     isError: false,
     urlImage: '',
     file: USER_MANAGE_ACTION_TYPES.MESSAGE_DROP_DEFAUL,
     fileImport: '',
-    image: ''
+    image: '',
+    modal: false,
+    check: false,
+    current: 0,
+    value: ''
   };
   onDrop = (acceptedFiles, rejectedFiles) => {
     var checkFile = acceptedFiles[0].name;
@@ -63,9 +88,15 @@ export class UserCreate extends React.Component<IUserCreateProps, IUserCreateSta
     }
   };
 
-  onClick = async () => {
-    await this.props.uploadFileExcel(this.state.fileImport);
-    this.props.history.push('select-fields');
+  toggle = () => {
+    const imageFileDown = require('app/assets/utils/images/user-mangament/image-down-files.png');
+    this.setState({
+      modal: !this.state.modal,
+      fileImport: '',
+      current: 0,
+      image: imageFileDown,
+      file: ''
+    });
   };
 
   validated = () => {
@@ -76,100 +107,234 @@ export class UserCreate extends React.Component<IUserCreateProps, IUserCreateSta
     }
   };
 
+  contentUploadFile = () => {
+    let { image, file } = this.state;
+    const imageFileDown = require('app/assets/utils/images/user-mangament/image-down-files.png');
+    let data = (
+      <Card className="main-card mb-3">
+        <CardBody>
+          <CardTitle>
+            <Translate contentKey="userManagement.home.createOrEditLabel" />
+          </CardTitle>
+          <div className="container">
+            <Row className="justify-content-center">
+              <Col span={24}>
+                <label className="label-table">
+                  <Translate contentKey="global.field.choose-file" />
+                  <div className="dropzone-wrapper dropzone-wrapper-lg">
+                    <Dropzone onDrop={this.onDrop.bind(this)}>
+                      {({ getRootProps, getInputProps }) => (
+                        <div {...getRootProps()}>
+                          <input {...getInputProps()} />
+                          <div className="dropzone-content">
+                            <Col span={24}>
+                              {' '}
+                              <p>chọn file để import</p>
+                              {image ? <img className="img" src={image} /> : <img style={{ width: '255px' }} src={imageFileDown} />}
+                            </Col>
+                            {file}
+                          </div>
+                        </div>
+                      )}
+                    </Dropzone>
+                  </div>
+                </label>
+              </Col>
+            </Row>
+          </div>
+        </CardBody>
+      </Card>
+    );
+    return data;
+  };
+
+  handleChangeSelect = (value, columnIndex) => {
+    console.log(String(value).split(','));
+    console.log(columnIndex);
+    let data = {
+      id: String(value).split(',')[0],
+      code: String(value).split(',')[1]
+    };
+    console.log(data);
+  };
+
+  handleChangeCategories = value => {
+    console.log(value);
+  };
+
+  onChangeRadio = e => {
+    console.log('radio checked', e.target.value);
+    this.setState({
+      value: e.target.value
+    });
+  };
+
+  selectFields = () => {
+    const { listFileHeader, listFields } = this.props;
+    let data = (
+      <div>
+        <Card className="main-card mb-3">
+          <CardBody>
+            <CardTitle>
+              <Translate contentKey="userManagement.home.createOrEditLabel" />
+            </CardTitle>
+            <div className="container">
+              <Row className="justify-content-center">
+                <Col span={24}>
+                  <p>Chọn trường bạn muốn đồng bộ hóa</p>
+                  <Collapse defaultActiveKey={['1']} accordion>
+                    <Panel header="Cột để import" key="1" showArrow={false} extra={'Map vào trường'}>
+                      {listFileHeader.fileName !== undefined
+                        ? listFileHeader.headerFields.map((event, index) => {
+                            return (
+                              <Row key={index} style={{ margin: '0px 0px 10px', borderBottom: '1px solid #E5ECF4' }}>
+                                <Col span={12} style={{ marginTop: '1%' }}>
+                                  <Label>{event.columnName}</Label>
+                                </Col>
+                                <Col span={12} style={{ textAlign: 'right', marginBottom: '10px' }}>
+                                  <Select
+                                    defaultValue="Do not import this fields"
+                                    style={{ width: 200 }}
+                                    onChange={e => this.handleChangeSelect(e, event.columnIndex)}
+                                  >
+                                    {listFields
+                                      ? listFields.map((value, index) => {
+                                          return (
+                                            <Option key={index} value={value.id + ',' + value.code}>
+                                              {value.code}
+                                            </Option>
+                                          );
+                                        })
+                                      : ''}
+                                  </Select>
+                                </Col>
+                              </Row>
+                            );
+                          })
+                        : ''}
+                    </Panel>
+                  </Collapse>
+                </Col>
+              </Row>
+            </div>
+          </CardBody>
+        </Card>
+        <Card>
+          <CardTitle style={{ marginLeft: '2%' }}>Thêm thẻ (tùy chọn)</CardTitle>
+          <p style={{ marginLeft: '3%' }}>
+            Thẻ cho phép bạn xác định danh bạ của bạn. Bạn có thể thêm một thẻ cho cách bạn thông tin, cho dù họ là khách hàng, v.v.
+          </p>
+          <CardBody>
+            <UserCategoryTag handleChange={this.handleChangeCategories} />
+          </CardBody>
+        </Card>
+        <Card>
+          <CardTitle style={{ marginLeft: '2%' }}>Tùy chọn import</CardTitle>
+          <CardBody style={{ marginLeft: '3%' }}>
+            <Radio.Group onChange={this.onChangeRadio} value={this.state.value}>
+              <Radio value="SKIP">Bỏ qua nếu trùng</Radio>
+              <Radio value="OVERIDE">Ghi đè nếu trùng</Radio>
+              <Radio value="DUPLICATE">Nhân đôi nếu trùng</Radio>
+              <Radio value="MERGE">Gộp nếu trùng</Radio>
+            </Radio.Group>
+          </CardBody>
+        </Card>
+      </div>
+    );
+    return data;
+  };
+
+  stepTable = () => {
+    let data = [
+      {
+        title: 'First',
+        content: this.contentUploadFile()
+      },
+      {
+        title: 'Second',
+        content: this.selectFields()
+      }
+    ];
+    return data;
+  };
+
+  next = async () => {
+    const { uploadFileExcel, getFields } = this.props;
+    const current = this.state.current + 1;
+    if (current === 1) {
+      await uploadFileExcel(this.state.fileImport);
+      await getFields();
+    }
+
+    this.setState({ current });
+  };
+
+  prev() {
+    const current = this.state.current - 1;
+    this.setState({ current, check: false });
+    if (current === 1) {
+      this.setState({ check: true });
+    }
+  }
+
   render() {
     const { loading } = this.props;
-    let { image } = this.state;
-    const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
+    let { current, fileImport } = this.state;
     const imageFileDown = require('app/assets/utils/images/user-mangament/image-down-files.png');
     return (
       <Container fluid>
-        <Loader message={spinner1} show={loading} priority={1}>
-          <Card className="main-card mb-3">
-            <CardBody>
-              <CardTitle>
-                <Translate contentKey="userManagement.home.createOrEditLabel" />
-              </CardTitle>
+        <span className="d-inline-block mb-2 mr-2">
+          <Button className="btn float-right jh-create-entity" outline color="primary" onClick={this.toggle}>
+            <Ionicon color="#343A40" icon="md-git-merge" /> &nbsp; <Translate contentKey="userManagement.home.import" />
+          </Button>
 
-              <Row className="justify-content-left">
-                <Col md="6">
-                  <div className="multi-row" />
-                </Col>
-                <Col md="6">
-                  <Button tag={Link} to="/app/views/administration/user-management" replace color="info">
-                    <FontAwesomeIcon icon="arrow-left" />
-                    &nbsp;
-                    <span className="d-none d-md-inline">
-                      <Translate contentKey="entity.action.back" />
-                    </span>
-                  </Button>
-                </Col>
-              </Row>
-              <div className="container">
-                <Row className="justify-content-center">
-                  <Col md="12">
-                    <label className="label-table">
-                      <Translate contentKey="global.field.choose-file" />
-
-                      <div className="dropzone-wrapper dropzone-wrapper-lg">
-                        <Dropzone onDrop={this.onDrop.bind(this)}>
-                          {({ getRootProps, getInputProps }) => (
-                            <div {...getRootProps()}>
-                              <input {...getInputProps()} />
-
-                              <div className="dropzone-content">
-                                <SweetAlert
-                                  title=""
-                                  confirmButtonColor=""
-                                  show={this.state.isComplete}
-                                  type="success"
-                                  onConfirm={() =>
-                                    this.setState({
-                                      ...this.state,
-                                      isComplete: false
-                                    })
-                                  }
-                                />
-                                <SweetAlert
-                                  title=""
-                                  confirmButtonColor=""
-                                  show={this.state.isError}
-                                  text=""
-                                  type="error"
-                                  onConfirm={() =>
-                                    this.setState({
-                                      ...this.state,
-                                      isError: false
-                                    })
-                                  }
-                                />
-                                <Col md="12">
-                                  {' '}
-                                  <p>chọn file để import</p>
-                                  {image ? <img className="img" src={image} /> : <img style={{ width: '255px' }} src={imageFileDown} />}
-                                </Col>
-                                {this.state.file}
-                              </div>
-                            </div>
-                          )}
-                        </Dropzone>
-                      </div>
-                    </label>
-                  </Col>
-
-                  <div>
-                    <Button color="info" onClick={this.onClick} disabled={!this.validated()}>
-                      &nbsp;
-                      <span className="d-none d-md-inline">
-                        <Translate contentKey="entity.action.upload" />
-                      </span>
+          <Modal isOpen={this.state.modal} id="modal-import">
+            <PerfectScrollbar>
+              <ModalHeader toggle={this.toggle} id="create-properties">
+                <Translate contentKey="userManagement.infomation.merge.title" />
+              </ModalHeader>
+              <ModalBody>
+                <AvForm>
+                  <div className="steps-content">{this.stepTable()[current].content}</div>
+                </AvForm>
+              </ModalBody>
+              <ModalFooter>
+                <div className="steps-action">
+                  {current > 0 && (
+                    <Button id="btn-prev" color="linkaaaaa" onClick={() => this.prev()}>
+                      Previous
                     </Button>
-                  </div>
-                  <div className="ModalLoading" />
-                </Row>
-              </div>
-            </CardBody>
-          </Card>
-        </Loader>
+                  )}
+                  <Button color="link" onClick={this.toggle}>
+                    <Translate contentKey="properties-management.cancel" />
+                  </Button>
+
+                  {current < this.stepTable().length - 1 && (
+                    <Button
+                      disabled={fileImport ? false : true}
+                      color="primary"
+                      onClick={() => {
+                        this.next();
+                      }}
+                    >
+                      Tiếp tục
+                    </Button>
+                  )}
+                  {current === this.stepTable().length - 1 && (
+                    <Button
+                      color="primary"
+                      onClick={() => {
+                        this.toggle();
+                      }}
+                    >
+                      Import File
+                    </Button>
+                  )}
+                </div>
+              </ModalFooter>
+            </PerfectScrollbar>
+          </Modal>
+        </span>
       </Container>
     );
   }
@@ -180,11 +345,13 @@ const mapStateToProps = (storeState: IRootState) => ({
   user: storeState.userManagement.user,
   roles: storeState.userManagement.authorities,
   loading: storeState.userManagement.loading,
-  updating: storeState.userManagement.updating,
-  fileList: storeState.userManagement.listFiles
+  listFileHeader: storeState.userManagement.headerFile,
+  fileList: storeState.userManagement.listFiles,
+  isComplete: storeState.userManagement.updateSuccess,
+  listFields: storeState.userManagement.listFields
 });
 
-const mapDispatchToProps = { downloadFileExcel, uploadFileExcel };
+const mapDispatchToProps = { downloadFileExcel, uploadFileExcel, getFields };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
@@ -192,4 +359,4 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(UserCreate);
+)(Import);

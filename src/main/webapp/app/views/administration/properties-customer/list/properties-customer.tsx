@@ -256,7 +256,13 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
                     </td>
                   </tr>
                 );
-                return isDragged ? <div className="table-drag">{row}</div> : row;
+                return isDragged ? (
+                  <table className="table-drag">
+                    <tbody>{row}</tbody>
+                  </table>
+                ) : (
+                  row
+                );
               }}
             />
 

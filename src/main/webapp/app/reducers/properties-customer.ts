@@ -139,6 +139,8 @@ export default (state: PropertiesDataState = initialDataState, action): Properti
       return {
         ...state,
         loading: false,
+        openModalDelete: false,
+        openModalEdit: false,
         isCompelete: true
       };
 

@@ -457,7 +457,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                             title={value.type}
                             trigger="click"
                           >
-                            {value.value ? value.value : 'Click to add'}
+                            {value.value ? value.value : <span className="empty">Click to add</span>}
                           </Popover>
                         </div>
                       </div>

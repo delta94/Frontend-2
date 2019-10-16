@@ -34,6 +34,28 @@ export interface IDuplicateUser {
   mobile?: string;
 }
 
+export interface IHeaderFile {
+  fileName?: string;
+  headerFields?: [
+    {
+      columnIndex?: number;
+      columnName?: string;
+      fieldCode?: string;
+      fieldId?: string;
+    }
+  ];
+}
+
+export interface IListFields {
+  id?: string;
+  type?: string;
+  title?: string;
+  fieldValue?: string;
+  personalizationTag?: string;
+  value?: string;
+  code?: string;
+}
+
 const initialState = {
   loading: false,
   errorMessage: null,
@@ -48,13 +70,14 @@ const initialState = {
   updateSuccess: false,
   getNameFile: '',
   dowloadTemplate: null,
-  errorTemplate: null,
   totalItems: 0,
   categories: defaultValue,
   listCategory: [] as ReadonlyArray<ICategory>,
   totalElements: 0,
   data: {} as IUserDetails,
-  listDuplicateUser: [] as ReadonlyArray<IDuplicateUser>
+  listDuplicateUser: [] as ReadonlyArray<IDuplicateUser>,
+  headerFile: {} as IHeaderFile,
+  listFields: [] as ReadonlyArray<IListFields>
 };
 
 export type UserManagementState = Readonly<typeof initialState>;
@@ -66,6 +89,7 @@ export default (state: UserManagementState = initialState, action): UserManageme
       return {
         ...state
       };
+    case REQUEST(USER_MANAGE_ACTION_TYPES.GET_FIELDS):
     case REQUEST(USER_MANAGE_ACTION_TYPES.FETCH_USER_CATEGORIES):
     case REQUEST(USER_MANAGE_ACTION_TYPES.FETCH_USERS):
     case REQUEST(USER_MANAGE_ACTION_TYPES.FETCH_USER):
@@ -94,6 +118,7 @@ export default (state: UserManagementState = initialState, action): UserManageme
       return {
         ...state
       };
+    case FAILURE(USER_MANAGE_ACTION_TYPES.GET_FIELDS):
     case FAILURE(USER_MANAGE_ACTION_TYPES.FETCH_USERS):
     case FAILURE(USER_MANAGE_ACTION_TYPES.FETCH_USER):
     case FAILURE(USER_MANAGE_ACTION_TYPES.FETCH_USER_CATEGORIES):
@@ -114,8 +139,14 @@ export default (state: UserManagementState = initialState, action): UserManageme
         errorMessage: action.payload
       };
 
+    case SUCCESS(USER_MANAGE_ACTION_TYPES.GET_FIELDS):
+      return {
+        ...state,
+        loading: false,
+        listFields: action.payload.data
+      };
+
     case SUCCESS(USER_MANAGE_ACTION_TYPES.GET_LIST_DUPLICATE):
-      console.log(action);
       return {
         ...state,
         loading: false,
@@ -187,6 +218,12 @@ export default (state: UserManagementState = initialState, action): UserManageme
         dowloadTemplate: action.payload.data
       };
     case SUCCESS(USER_MANAGE_ACTION_TYPES.UPLOAD_FILE):
+      return {
+        ...state,
+        loading: false,
+        uploadScheduleSuccess: true,
+        headerFile: action.payload.data
+      };
     case SUCCESS(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILERE_SULTS):
       const { listErrorImport, total, success, error, fileName } = action.payload.data;
       return {

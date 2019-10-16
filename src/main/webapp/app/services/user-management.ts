@@ -92,6 +92,19 @@ export const UploaddFile = data => {
   });
 };
 
+export const uploadFileExcelService = data => {
+  const insertPropApi = `${apiUrl2}/header-import`;
+  return axios.post(insertPropApi, data, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });
+};
+
+export const getFieldsService = () => {
+  return axios.get(`v1/fields`);
+};
+
 export const postInsertUser = (data: any) => {
   const insertPropApi = `${apiUrl2}/insert`;
   return axios.post(insertPropApi, data, { headers: authHeaders });
