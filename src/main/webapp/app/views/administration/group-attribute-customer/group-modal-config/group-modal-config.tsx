@@ -181,7 +181,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
         fieldId: '',
         fieldCode: '',
         fieldType: '',
-        fieldTittle: '',
+        fieldTitle: '',
         value: '',
         operator: ''
       }
