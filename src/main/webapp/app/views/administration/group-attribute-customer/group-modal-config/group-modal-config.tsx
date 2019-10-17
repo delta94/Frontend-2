@@ -1,15 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Table, ModalHeader, ModalBody, ModalFooter, Label } from 'reactstrap';
-
+import { Button, Table, Row } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './group-modal-config.scss';
 import { IRootState } from 'app/reducers';
 import { getListTagDataAction } from '../../../../actions/tag-management';
 import ReactPaginate from 'react-paginate';
-import { Input, Card, Row } from 'antd';
-import { Modal } from 'reactstrap';
+import { Input, Card, Modal } from 'antd';
 // import TagModal from '../tag-modal/tag-modal';
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
 import FieldData from './field-data/field-data';
@@ -92,7 +90,14 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
   };
 
   componentDidMount() {
+    let { logicalOperator, advancedSearches, pageIndex, pageSize } = this.state;
     this.props.getListFieldDataAction();
+    this.props.getFindCustomerWithConditionAction({
+      logicalOperator,
+      advancedSearches,
+      page: pageIndex,
+      pageSize
+    });
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -162,7 +167,6 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
   // Add new component to list_field_data_cpn
   handleAddNewComponent = () => {
     let { list_field_data_cpn, advancedSearchesData } = this.state;
-
     let id = makeRandomId(16);
     let newCpn = { id, name: 'new', last_index: true, default_data: {} };
 
@@ -352,115 +356,126 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
     }
 
     return (
-      <Modal isOpen={is_show} toggle={this.closeConfigModal}>
-        <ModalHeader>{title_modal}</ModalHeader>
-        <ModalBody>
-          <div className="group-modal-config">
-            <div className="input-search_group">
-              <label className="input-search_label">Tên nhóm</label>
-              <Input
-                placeholder="Học sinh, người nổi tiếng, quần chúng .v.v"
-                value={categoryName}
-                onChange={event => this.setState({ categoryName: event.target.value })}
-              />
-            </div>
-            {/* Chose condition */}
-            <div className="group-addition">
-              <Card style={{ padding: '0px' }}>
-                <div className="group-addition_block-out">
-                  <span style={{ textTransform: 'uppercase', fontWeight: 500 }}>CHỌN ĐIỀU KIỆN</span>
-                  <Button
-                    color="primary"
-                    style={{ float: 'right', margin: '3px' }}
-                    onClick={this.getDataListCustomer}
-                    disabled={list_field_data_cpn.length === 0 ? true : false}
-                  >
-                    Apply
+      <Modal
+        visible={is_show}
+        title={title_modal ? title_modal.toUpperCase() : ''}
+        style={{ width: '700px' }}
+        onOk={() => this.props.toggle()}
+        onCancel={this.closeConfigModal}
+        footer={[
+          <Button key="submit" color="none" onClick={() => this.props.toggle()}>
+            Hủy
+          </Button>,
+          <Button
+            key="back"
+            color="primary"
+            disabled={advancedSearches && categoryName && categoryName.trim() !== '' ? false : true}
+            onClick={() => this.execFunctionRequest()}
+          >
+            Lưu
+          </Button>
+        ]}
+      >
+        <div className="group-modal-config">
+          <div className="input-search_group">
+            <label className="input-search_label">Tên nhóm</label>
+            <Input
+              placeholder="Học sinh, người nổi tiếng, quần chúng .v.v"
+              value={categoryName}
+              onChange={event => this.setState({ categoryName: event.target.value })}
+              maxLength={160}
+            />
+          </div>
+          {/* Chose condition */}
+          <div className="group-addition">
+            <Card style={{ padding: '0px' }}>
+              <div className="group-addition_block-out">
+                <span style={{ textTransform: 'uppercase', fontWeight: 500 }}>CHỌN ĐIỀU KIỆN</span>
+                <Button
+                  color="primary"
+                  style={{ float: 'right', margin: '3px' }}
+                  onClick={this.getDataListCustomer}
+                  disabled={list_field_data_cpn.length === 0 ? true : false}
+                >
+                  Apply
+                </Button>
+              </div>
+            </Card>
+            <Card>
+              <div className="group-addition_content">
+                {list_field_render}
+                <div className="group-addition_footer">
+                  <Button color="primary" style={{ margin: '2px 14px' }} onClick={this.handleAddNewComponent}>
+                    <FontAwesomeIcon icon={faPlus} />
                   </Button>
+                  <label style={{ lineHeight: '30px', padding: '0px 14px', fontWeight: 400 }}>Thêm điều kiện khác</label>
                 </div>
-              </Card>
-              <Card>
-                <div className="group-addition_content">
-                  {list_field_render}
-                  <div className="group-addition_footer">
-                    <Button color="primary" style={{ margin: '2px 14px' }} onClick={this.handleAddNewComponent}>
-                      <FontAwesomeIcon icon={faPlus} />
-                    </Button>
-                    <label style={{ lineHeight: '30px', padding: '0px 14px', fontWeight: 400 }}>Thêm điều kiện khác</label>
-                  </div>
-                </div>
-              </Card>
-              <Loader message={spinner1} show={loading} priority={1}>
-                <div className="search-table-customer">
-                  <Table striped>
-                    <thead>
-                      <tr className="text-center">
-                        <th className="checkbox-td">Stt</th>
-                        <th>Họ và tên</th>
-                        <th>Số điện thoại</th>
-                        <th>Email</th>
-                        <th>Thẻ/tag</th>
-                        <th>Nguồn</th>
-                        <th>Ngày tạo</th>
-                        <th />
+              </div>
+            </Card>
+            <Loader message={spinner1} show={loading} priority={1}>
+              <div className="search-table-customer">
+                <Table striped>
+                  <thead>
+                    <tr className="text-center">
+                      <th className="checkbox-td">Stt</th>
+                      <th>Họ và tên</th>
+                      <th>Số điện thoại</th>
+                      <th>Email</th>
+                      <th>Thẻ/tag</th>
+                      <th>Nguồn</th>
+                      <th>Ngày tạo</th>
+                      <th />
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {list_customer_with_condition && list_customer_with_condition.length > 0 ? (
+                      list_customer_with_condition.map((item, index) => {
+                        return (
+                          <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>{item.firstName + ' ' + item.lastName}</td>
+                            <td>{item.mobile}</td>
+                            <td>{item.email}</td>
+                            <td>{item.tags}</td>
+                            <td />
+                            <td>{item.createdDate}</td>
+                            <td />
+                          </tr>
+                        );
+                      })
+                    ) : (
+                      <tr>
+                        <td className="none-data" colSpan={100}>
+                          Không có dữ liệu nhóm khách hàng
+                        </td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      {list_customer_with_condition && list_customer_with_condition.length > 0 ? (
-                        list_customer_with_condition.map((item, index) => {
-                          return (
-                            <tr key={index}>
-                              <td>{index}</td>
-                              <td>{item.firstName + ' ' + item.lastName}</td>
-                              <td>{item.mobile}</td>
-                              <td>{item.email}</td>
-                              <td>{item.tags}</td>
-                              <td />
-                              <td>{item.createdDate}</td>
-                            </tr>
-                          );
-                        })
-                      ) : (
-                        <tr />
-                      )}
-                    </tbody>
-                  </Table>
-                </div>
-                <Row style={{ textAlign: 'center' }}>
+                    )}
+                  </tbody>
+                </Table>
+              </div>
+            </Loader>
+            <div className="navigation">
+              {list_customer_with_condition && Math.ceil(totalElements / 10) > 1 ? (
+                <Row className="justify-content-center">
                   <ReactPaginate
                     previousLabel={'<'}
                     nextLabel={'>'}
                     breakLabel={'...'}
                     breakClassName={'break-me'}
                     pageCount={Math.ceil(totalElements / 10)}
-                    marginPagesDisplayed={2}
-                    pageRangeDisplayed={4}
+                    marginPagesDisplayed={3}
+                    pageRangeDisplayed={3}
                     onPageChange={this.getDataListCustomer}
                     containerClassName={'pagination'}
                     subContainerClassName={'pages pagination'}
                     activeClassName={'active'}
-                    forcePage={8}
+                    forcePage={3}
                   />
                 </Row>
-              </Loader>
+              ) : null}
             </div>
-            <div className="bottom-div-btn">
-              <Button
-                style={{ float: 'right' }}
-                color="primary"
-                disabled={advancedSearches && categoryName && categoryName.trim() !== '' ? false : true}
-                onClick={() => this.execFunctionRequest()}
-              >
-                Lưu
-              </Button>
-              <Button style={{ float: 'right' }} color="none" onClick={() => this.props.toggle()}>
-                Hủy
-              </Button>
-            </div>
-            {/* Table List Customer */}
           </div>
-        </ModalBody>
-        <ModalFooter />
+        </div>
       </Modal>
     );
   }

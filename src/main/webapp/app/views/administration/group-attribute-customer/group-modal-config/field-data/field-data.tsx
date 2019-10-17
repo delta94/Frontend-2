@@ -65,55 +65,57 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
     }
   };
 
-  componentDidMount() {
-    let { default_data } = this.props;
+  // componentDidMount() {
+  //   let { default_data } = this.props;
 
-    let { value_input, value_check_box, value_dropdown, value_radio, value_datepicker } = this.state;
-    if (default_data !== {}) {
-      // Set field data and default value
-      let list_option = default_data.fieldValue && default_data.fieldValue.split('||');
-      let { operator } = this.state;
-      if (operator !== default_data.operator) {
-        operator === default_data.operator;
-      }
-      let type = default_data.fieldType;
-      switch (type) {
-        case TYPE_FIELD.TEXT_INPUT:
-          value_input = default_data.value;
-          break;
+  //   let { value_input, value_check_box, value_dropdown, value_radio, value_datepicker } = this.state;
+  //   if (default_data !== {}) {
+  //     // Set field data and default value
+  //     let list_option = default_data.fieldValue && default_data.fieldValue.split('||');
+  //     let { operator } = this.state;
+  //     if (operator !== default_data.operator) {
+  //       operator === default_data.operator;
+  //     }
 
-        case TYPE_FIELD.DATE:
-          value_datepicker = default_data.value;
-          break;
+  //     console.log(default_data)
+  //     let type = default_data.fieldType;
+  //     switch (type) {
+  //       case TYPE_FIELD.TEXT_INPUT:
+  //         value_input = default_data.value;
+  //         break;
 
-        case TYPE_FIELD.DROP_DOWN:
-          value_dropdown = default_data.value;
-          break;
+  //       case TYPE_FIELD.DATE:
+  //         value_datepicker = default_data.value;
+  //         break;
 
-        case TYPE_FIELD.CHECK_BOX:
-          value_check_box = default_data.value.split('||');
-          break;
+  //       case TYPE_FIELD.DROP_DOWN:
+  //         value_dropdown = default_data.value;
+  //         break;
 
-        case TYPE_FIELD.RADIO_BUTTON:
-          value_radio = default_data.value;
-          break;
+  //       case TYPE_FIELD.CHECK_BOX:
+  //         value_check_box = default_data.value.split('||');
+  //         break;
 
-        default:
-          break;
-      }
+  //       case TYPE_FIELD.RADIO_BUTTON:
+  //         value_radio = default_data.value;
+  //         break;
 
-      this.handleChoseTypeOfRenderCpn(type, list_option);
-      this.setState({
-        value_input,
-        value_check_box,
-        value_radio,
-        value_dropdown,
-        value_datepicker,
-        operator,
-        defaultValue: default_data.fieldTitle
-      });
-    }
-  }
+  //       default:
+  //         break;
+  //     }
+
+  //     this.handleChoseTypeOfRenderCpn(type, list_option);
+  //     this.setState({
+  //       value_input,
+  //       value_check_box,
+  //       value_radio,
+  //       value_dropdown,
+  //       value_datepicker,
+  //       operator,
+  //       defaultValue: default_data.fieldTitle
+  //     });
+  //   }
+  // }
 
   // Chose type of render in reuseComponent
   handleChoseOption = (id_field: string, item?: any) => {
@@ -138,6 +140,60 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
     this.setSearchAdvancedData(fieldId, 'fieldCode');
     this.setSearchAdvancedData(type, 'fieldType');
   };
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.default_data) {
+      let { default_data } = nextProps;
+      let { value_input, value_check_box, value_dropdown, value_radio, value_datepicker } = prevState;
+      let list_option = default_data.fieldValue && default_data.fieldValue.split('||');
+      let { operator } = prevState;
+      if (operator !== default_data.operator) {
+        operator === default_data.operator;
+      }
+
+      console.log(default_data);
+      switch (default_data.fieldType) {
+        case TYPE_FIELD.TEXT_INPUT:
+          value_input = default_data.fieldValue;
+          break;
+
+        case TYPE_FIELD.DATE:
+          value_datepicker = default_data.fieldValue;
+
+          break;
+
+        case TYPE_FIELD.DROP_DOWN:
+          value_dropdown = default_data.fieldValue;
+
+          break;
+
+        case TYPE_FIELD.CHECK_BOX:
+          value_check_box = default_data.fieldValue.split('||');
+
+          break;
+
+        case TYPE_FIELD.RADIO_BUTTON:
+          value_radio = default_data.fieldValue;
+          break;
+
+        default:
+          break;
+      }
+
+      return {
+        type: default_data.fieldType,
+        value_input,
+        value_check_box,
+        value_radio,
+        value_dropdown,
+        value_datepicker,
+        operator,
+        defaultValue: default_data.fieldTitle
+      };
+    }
+
+    return null;
+  }
 
   // Chose Component for reuseComponent
   handleChoseTypeOfRenderCpn = (type: string, list_option: String[]) => {
@@ -232,13 +288,16 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
   };
 
   render() {
-    let { list_field_data, id, last_index, logicalOperator } = this.props;
+    let { list_field_data, id, last_index, logicalOperator, default_data } = this.props;
     let { list_of_operator, type, options, value_radio, value_dropdown, value_input, value_datepicker, value_check_box } = this.state;
     let render_cpn = null;
+    console.log(this.state);
 
     switch (type) {
       case TYPE_FIELD.TEXT_INPUT:
-        render_cpn = <Input key={id + 'input'} onChange={this.setValueForInput} value={value_input} />;
+        render_cpn = (
+          <Input key={id + 'input'} onChange={this.setValueForInput} value={value_input} defaultValue={default_data.fieldValue} />
+        );
         break;
       case TYPE_FIELD.DATE:
         render_cpn = (
@@ -246,14 +305,33 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
         );
         break;
       case TYPE_FIELD.CHECK_BOX:
-        render_cpn = <Checkbox.Group options={options} onChange={this.setValueCheckBox} value={value_check_box} />;
+        render_cpn = (
+          <Checkbox.Group
+            options={default_data.fieldValue.split('||') ? default_data.fieldValue.split('||') : options}
+            value={value_check_box}
+            onChange={this.setValueCheckBox}
+          />
+        );
         break;
       case TYPE_FIELD.RADIO_BUTTON:
-        render_cpn = <Radio.Group key={id + 'value_radio'} value={value_radio} onChange={this.setValueForRadio} options={options} />;
+        render_cpn = (
+          <Radio.Group
+            key={id + 'value_radio'}
+            value={value_radio}
+            onChange={this.setValueForRadio}
+            options={options}
+            defaultValue={default_data.fieldValue}
+          />
+        );
         break;
       case TYPE_FIELD.DROP_DOWN:
         render_cpn = (
-          <Select key={id + 'choose data'} defaultValue={'Chọn thông tin'} style={{ width: '100%' }} onChange={this.setValueForDropDown}>
+          <Select
+            key={id + 'choose data'}
+            defaultValue={default_data.fieldValue ? default_data.fieldValue : 'Chọn thông tin'}
+            style={{ width: '100%' }}
+            onChange={this.setValueForDropDown}
+          >
             {options &&
               options.map((item, index) => {
                 return (
@@ -276,7 +354,7 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
             <div>
               <Select
                 key={id}
-                defaultValue={'Chọn trường thông tin'}
+                defaultValue={default_data.fieldTitle ? default_data.fieldTitle : 'Chọn trường thông tin'}
                 style={{ width: '100%' }}
                 onChange={(type, item) => this.handleChoseOption(type, item)}
               >
@@ -295,7 +373,7 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
           <Col span={6}>
             <Select
               key={id + 'select operator'}
-              defaultValue={'Chọn toán tử'}
+              defaultValue={default_data.operator ? default_data.operator : 'Chọn toán tử'}
               style={{ width: '100%' }}
               onChange={this.handleChoseOperator}
             >

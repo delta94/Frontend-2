@@ -101,7 +101,7 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
       <Menu>
         <Menu.Item key="1" onClick={() => this.hanldeDeleteModal(id)}>
           <Icon type="delete" />
-          Delete
+          Xóa
         </Menu.Item>
         <Menu.Item key="2" onClick={() => this.handleGroup(id, UPDATE_CUSTOMER_GROUP)}>
           <Icon type="edit" />
@@ -109,7 +109,7 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
         </Menu.Item>
         <Menu.Item key="3" onClick={() => this.handleGroup(id, COPY_CUSTOMER_GROUP)}>
           <Icon type="copy" />
-          Copy
+          Sao chép
         </Menu.Item>
       </Menu>
     );
@@ -221,7 +221,11 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
                       );
                     })
                   ) : (
-                    <tr />
+                    <tr>
+                      <td className="none-data" colSpan={100}>
+                        Không có dữ liệu khách hàng
+                      </td>
+                    </tr>
                   )}
                 </tbody>
               </Table>
