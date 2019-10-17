@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { IUser, defaultValue } from 'app/common/model/user.model';
+import { IUser } from 'app/common/model/user.model';
 import { ICategory } from 'app/common/model/category.model';
 import { toast } from 'react-toastify';
-import { authHeaders } from './header';
+import { authHeaders, authHeadersForFile } from './header';
 
 const apiUrl = 'v1/customer';
 const apiUrl2 = 'v2/customers';
@@ -23,7 +23,7 @@ const apiUrl2 = 'v2/customers';
  */
 
 export const getUsersService = (page, pageSize, category?: string, textSearch?: string) => {
-  const requestUrl = `${apiUrl}${`?page=${page}&pageSize=${pageSize}&category=${category}&textSearch=${textSearch}`}`;
+  const requestUrl = `${apiUrl2}${`?page=${page}&pageSize=${pageSize}&category=${category}&textSearch=${textSearch}`}`;
   return axios.get<IUser>(requestUrl);
 };
 
@@ -48,6 +48,12 @@ export const getUserService = id => {
 export const getListDuplicateService = (id, email, phone) => {
   const requestUrl = `${apiUrl2}/${id}/duplicate?email=${email}&mobile=${phone}`;
   return axios.get(requestUrl);
+};
+
+export const exportFileService = (textSearch?: string, tagIds?: string) => {
+  const requestUrl = `${apiUrl2}/export?textSearch=${textSearch}&tagIds=${tagIds}`;
+
+  return axios.get(requestUrl, { headers: { 'content-type': 'application/vnd.ms-excel' } });
 };
 
 export const createUserService = user => {
@@ -92,8 +98,26 @@ export const UploaddFile = data => {
   });
 };
 
+export const uploadFileExcelService = data => {
+  const insertPropApi = `${apiUrl2}/header-import`;
+  return axios.post(insertPropApi, data, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });
+};
+
+export const getFieldsService = () => {
+  return axios.get(`v1/fields`);
+};
+
 export const postInsertUser = (data: any) => {
   const insertPropApi = `${apiUrl2}/insert`;
+  return axios.post(insertPropApi, data, { headers: authHeaders });
+};
+
+export const importFileService = (data: any) => {
+  const insertPropApi = `${apiUrl2}/import`;
   return axios.post(insertPropApi, data, { headers: authHeaders });
 };
 

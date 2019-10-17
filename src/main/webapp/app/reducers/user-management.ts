@@ -2,7 +2,7 @@ import axios from 'axios';
 import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } from 'react-jhipster';
 
 import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
-import { IUser, defaultValue } from 'app/common/model/user.model';
+import { IUser } from 'app/common/model/user.model';
 import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
 import { IFileList } from 'app/common/model/sucess-file';
 import { ICategory } from 'app/common/model/category.model';
@@ -34,6 +34,28 @@ export interface IDuplicateUser {
   mobile?: string;
 }
 
+export interface IHeaderFile {
+  fileName?: string;
+  headerFields?: [
+    {
+      columnIndex?: number;
+      columnName?: string;
+      fieldCode?: string;
+      fieldId?: string;
+    }
+  ];
+}
+
+export interface IListFields {
+  id?: string;
+  type?: string;
+  title?: string;
+  fieldValue?: string;
+  personalizationTag?: string;
+  value?: string;
+  code?: string;
+}
+
 const initialState = {
   loading: false,
   errorMessage: null,
@@ -48,13 +70,14 @@ const initialState = {
   updateSuccess: false,
   getNameFile: '',
   dowloadTemplate: null,
-  errorTemplate: null,
   totalItems: 0,
-  categories: defaultValue,
+  categories: '',
   listCategory: [] as ReadonlyArray<ICategory>,
   totalElements: 0,
   data: {} as IUserDetails,
-  listDuplicateUser: [] as ReadonlyArray<IDuplicateUser>
+  listDuplicateUser: [] as ReadonlyArray<IDuplicateUser>,
+  headerFile: {} as IHeaderFile,
+  listFields: [] as ReadonlyArray<IListFields>
 };
 
 export type UserManagementState = Readonly<typeof initialState>;
@@ -66,10 +89,11 @@ export default (state: UserManagementState = initialState, action): UserManageme
       return {
         ...state
       };
+    case REQUEST(USER_MANAGE_ACTION_TYPES.GET_FIELDS):
     case REQUEST(USER_MANAGE_ACTION_TYPES.FETCH_USER_CATEGORIES):
     case REQUEST(USER_MANAGE_ACTION_TYPES.FETCH_USERS):
     case REQUEST(USER_MANAGE_ACTION_TYPES.FETCH_USER):
-    case REQUEST(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILE):
+    case REQUEST(USER_MANAGE_ACTION_TYPES.EXPORT_FILE):
     case REQUEST(USER_MANAGE_ACTION_TYPES.UPLOAD_FILE):
     case REQUEST(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILERE_SULTS):
     case REQUEST(USER_MANAGE_ACTION_TYPES.GET_LIST_DUPLICATE):
@@ -90,10 +114,11 @@ export default (state: UserManagementState = initialState, action): UserManageme
         updating: true,
         loading: true
       };
-    case FAILURE(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILE):
+    case FAILURE(USER_MANAGE_ACTION_TYPES.EXPORT_FILE):
       return {
         ...state
       };
+    case FAILURE(USER_MANAGE_ACTION_TYPES.GET_FIELDS):
     case FAILURE(USER_MANAGE_ACTION_TYPES.FETCH_USERS):
     case FAILURE(USER_MANAGE_ACTION_TYPES.FETCH_USER):
     case FAILURE(USER_MANAGE_ACTION_TYPES.FETCH_USER_CATEGORIES):
@@ -114,8 +139,14 @@ export default (state: UserManagementState = initialState, action): UserManageme
         errorMessage: action.payload
       };
 
+    case SUCCESS(USER_MANAGE_ACTION_TYPES.GET_FIELDS):
+      return {
+        ...state,
+        loading: false,
+        listFields: action.payload.data
+      };
+
     case SUCCESS(USER_MANAGE_ACTION_TYPES.GET_LIST_DUPLICATE):
-      console.log(action);
       return {
         ...state,
         loading: false,
@@ -137,16 +168,16 @@ export default (state: UserManagementState = initialState, action): UserManageme
       return {
         ...state,
         loading: false,
-        users: action.payload.data.content,
-        categories: action.payload.data.content.categories,
-        totalItems: action.payload.data.content.totalItems,
-        totalElements: action.payload.data.totalElements
+        users: action.payload.data.data,
+        // categories: action.payload.data.content.categories,
+        // totalItems: action.payload.data.content.totalItems,
+        totalElements: action.payload.data.total
       };
     case SUCCESS(USER_MANAGE_ACTION_TYPES.FETCH_SEARCH_USER):
       return {
         ...state,
         loading: false,
-        users: action.payload.data.content,
+        users: action.payload.data,
         totalElements: action.payload.data.totalElements
       };
 
@@ -179,14 +210,21 @@ export default (state: UserManagementState = initialState, action): UserManageme
         updateSuccess: true,
         loading: false
       };
-    case SUCCESS(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILE):
+    case SUCCESS(USER_MANAGE_ACTION_TYPES.EXPORT_FILE):
       return {
         ...state,
         updating: false,
+        loading: false,
         updateSuccess: true,
-        dowloadTemplate: action.payload.data
+        dowloadTemplate: action.payload
       };
     case SUCCESS(USER_MANAGE_ACTION_TYPES.UPLOAD_FILE):
+      return {
+        ...state,
+        loading: false,
+        uploadScheduleSuccess: true,
+        headerFile: action.payload.data
+      };
     case SUCCESS(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILERE_SULTS):
       const { listErrorImport, total, success, error, fileName } = action.payload.data;
       return {
@@ -213,9 +251,10 @@ export default (state: UserManagementState = initialState, action): UserManageme
         }
       };
     case USER_MANAGE_ACTION_TYPES.RESET:
-    case USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILE:
+    case USER_MANAGE_ACTION_TYPES.EXPORT_FILE:
       return {
         ...initialState,
+        loading: false,
         dowloadTemplate: null
       };
     case USER_MANAGE_ACTION_TYPES.RESET_MESSAGE:

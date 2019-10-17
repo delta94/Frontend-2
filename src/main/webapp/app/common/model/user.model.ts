@@ -1,17 +1,13 @@
 export interface IUser {
   id?: string;
-  name?: string;
+  firstName?: string;
+  lastName?: string;
+  userName?: string;
+  mobile?: string;
   email?: string;
-  phone?: string;
-  categories?: string;
-  categorys?: any[];
+  merchantId?: string;
+  tag?: string;
+  createdDate?: string;
+  fields?: any[];
+  tags?: any[];
 }
-
-export const defaultValue: Readonly<IUser> = {
-  id: '',
-  name: '',
-  email: '',
-  phone: '',
-  categories: '',
-  categorys: []
-};

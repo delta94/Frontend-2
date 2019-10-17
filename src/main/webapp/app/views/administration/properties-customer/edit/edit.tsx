@@ -83,7 +83,11 @@ export class Edit extends React.Component<IEditProps, IEditState> {
                             <Label>
                               <Translate contentKey="properties-management.form.default-value" />
                             </Label>
-                            <Input maxLength={160} id="default-value" defaultValue={event.personalizationTag} />
+                            <Input
+                              maxLength={160}
+                              id="default-value"
+                              defaultValue={event.personalizationTag.substr(1, event.personalizationTag.length - 2)}
+                            />
                           </div>
                         </Col>
                         <p className="error">{this.state.validField}</p>

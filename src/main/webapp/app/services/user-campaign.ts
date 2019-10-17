@@ -1,6 +1,6 @@
 import { ICampaignTestMailLanding } from './../common/model/campaign.model';
 import axios from 'axios';
-import { IUser, defaultValue } from 'app/common/model/user.model';
+import { IUser } from 'app/common/model/user.model';
 import { ICategory } from 'app/common/model/category.model';
 import { toast } from 'react-toastify';
 import { IListNewCustomer } from 'app/common/model/campaign-new-customer.model';

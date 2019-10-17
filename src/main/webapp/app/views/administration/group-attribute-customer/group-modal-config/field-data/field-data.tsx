@@ -308,6 +308,7 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
         render_cpn = (
           <Checkbox.Group
             options={default_data.fieldValue.split('||') ? default_data.fieldValue.split('||') : options}
+            value={value_check_box}
             onChange={this.setValueCheckBox}
           />
         );
@@ -325,7 +326,12 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
         break;
       case TYPE_FIELD.DROP_DOWN:
         render_cpn = (
-          <Select key={id + 'choose data'} defaultValue={'Chọn thông tin'} style={{ width: '100%' }} onChange={this.setValueForDropDown}>
+          <Select
+            key={id + 'choose data'}
+            defaultValue={default_data.fieldValue ? default_data.fieldValue : 'Chọn thông tin'}
+            style={{ width: '100%' }}
+            onChange={this.setValueForDropDown}
+          >
             {options &&
               options.map((item, index) => {
                 return (

@@ -97,20 +97,22 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
                 </tr>
               </thead>
               <tbody>
-                {listDuplicateUser
-                  ? listDuplicateUser.map((event, index) => {
-                      return (
-                        <tr key={index}>
-                          <td>{event.firstName + event.lastName}</td>
-                          <td>{event.email}</td>
-                          <td>{event.mobile}</td>
-                          <td>
-                            <Input type="radio" name="gender" value={event.id} onChange={this.onChange} />
-                          </td>
-                        </tr>
-                      );
-                    })
-                  : ''}
+                {listDuplicateUser.length > 0 ? (
+                  listDuplicateUser.map((event, index) => {
+                    return (
+                      <tr key={index}>
+                        <td>{event.firstName + event.lastName}</td>
+                        <td>{event.email}</td>
+                        <td>{event.mobile}</td>
+                        <td>
+                          <Input type="radio" name="gender" value={event.id} onChange={this.onChange} />
+                        </td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <td colSpan={4}> không có bản ghi nào</td>
+                )}
               </tbody>
             </Table>
           </div>

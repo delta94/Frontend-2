@@ -7,14 +7,27 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { openModal, closeModal } from 'app/actions/modal';
 import './user-management.scss';
 import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
-import { getUser, getUsers, updateUser, getUserCategories, deleteUser, getDetailUser } from 'app/actions/user-management';
+import {
+  downloadFileFromResp,
+  getUser,
+  exportFile,
+  getUsers,
+  updateUser,
+  getUserCategories,
+  deleteUser,
+  getDetailUser
+} from 'app/actions/user-management';
 import UserCategoryTag from './categories-tag/categories-tag';
 import { IRootState } from 'app/reducers';
+import { Menu, Dropdown, Icon, Checkbox } from 'antd';
 import ReactPaginate from 'react-paginate';
 import LoaderAnim from 'react-loaders';
 import SweetAlert from 'sweetalert-react';
 import Loader from 'react-loader-advanced';
 import CreateUser from './../create/create';
+import Ionicon from 'react-ionicons';
+import Import from 'app/views/administration/user-management/import/import';
+import $ from 'jquery';
 
 export interface IUserManagementProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
 
@@ -26,6 +39,7 @@ export interface IUserManagementState {
   categories: string;
   activePage: number;
   itemsPerPage: number;
+  isHide: boolean;
 }
 
 export class UserManagement extends React.Component<IUserManagementProps, IUserManagementState> {
@@ -36,7 +50,8 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     isConfirm: false,
     idUser: '',
     textSearch: '',
-    categories: ''
+    categories: '',
+    isHide: false
   };
 
   //loading page
@@ -83,11 +98,44 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     }
   };
 
+  rowName = () => {
+    let data = (
+      <Menu>
+        <Menu.Item key="0">
+          <Checkbox onChange={event => this.onChangeCheckBox(event, 'name')}>Họ tên</Checkbox>
+        </Menu.Item>
+        <Menu.Item key="1">
+          <Checkbox onChange={event => this.onChangeCheckBox(event, 'mobile')}>Số điện thoại</Checkbox>
+        </Menu.Item>
+        <Menu.Item key="2">
+          <Checkbox onChange={event => this.onChangeCheckBox(event, 'email')}>Email</Checkbox>
+        </Menu.Item>
+        <Menu.Item key="3">
+          <Checkbox onChange={event => this.onChangeCheckBox(event, 'tag')}>Phân loại</Checkbox>
+        </Menu.Item>
+        <Menu.Item key="4">
+          <Checkbox onChange={event => this.onChangeCheckBox(event, 'dateCreate')}>Ngày khởi tạo</Checkbox>
+        </Menu.Item>
+      </Menu>
+    );
+    return data;
+  };
+
+  onChangeCheckBox = (e, value) => {
+    let isCheck = e.target.checked;
+    if (isCheck) {
+      $(`#${value}`).hide();
+      $(`.${value}`).hide();
+    } else {
+      $(`#${value}`).show();
+      $(`.${value}`).show();
+    }
+  };
+
   render() {
     const { users, match, loading, getDetailUser, history, modalState } = this.props;
     const { activePage } = this.state;
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
-
     return (
       <div>
         <SweetAlert
@@ -126,31 +174,53 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                   />
                 </div>
               </Col>
-              <Col md="5">
-                <Button id="btn-import" tag={Link} to={`${match.url}/new`}>
-                  <Translate contentKey="userManagement.home.export" />
-                </Button>
-                &nbsp;
-                <Button id="btn-export" tag={Link} to={`${match.url}/new`}>
-                  <Translate contentKey="userManagement.home.import" />
-                </Button>
+              <Col md="5" style={{ display: 'flex', padding: '0px 235px 0px 0px' }}>
+                <Col md="6">
+                  <span className="d-inline-block mb-2 mr-2">
+                    <Button
+                      className="btn float-right jh-create-entity"
+                      outline
+                      color="info"
+                      onClick={async () => {
+                        await this.props.exportFile(this.state.textSearch, this.state.categories);
+                        console.log(this.props.dowloadTemplate.data);
+                        let dataExport = new FormData(this.props.dowloadTemplate.data);
+                        this.props.downloadFileFromResp(dataExport, 'Customer');
+                      }}
+                    >
+                      <Ionicon color="#343A40" icon="md-arrow-up" /> &nbsp; Export
+                    </Button>
+                  </span>
+                </Col>
+                <Col md="6">
+                  <Import />
+                </Col>
               </Col>
             </Row>
-            <hr />
+
+            <Dropdown overlay={this.rowName} trigger={['click']}>
+              <Button style={{ float: 'right', margin: '0px 50px 8px' }} outline color="warning" className="ant-dropdown-link">
+                <i className="pe-7s-filter icon-gradient bg-premium-dark" style={{ fontSize: '18px' }} />
+                Lọc bảng
+              </Button>
+            </Dropdown>
             <Table responsive striped>
               <thead>
                 <tr className="text-center">
                   <th className="hand">#</th>
-                  <th className="hand ">
+                  <th className="hand " id="name">
                     <Translate contentKey="userManagement.name" />
                   </th>
-                  <th className="hand">
+                  <th className="hand" id="mobile">
                     <Translate contentKey="userManagement.mobile" />
                   </th>
-                  <th className="hand">
+                  <th className="hand" id="email">
                     <Translate contentKey="userManagement.email" />
                   </th>
-                  <th>
+                  <th className="hand" id="dateCreate">
+                    Ngày khởi tạo
+                  </th>
+                  <th id="tag">
                     <Translate contentKey="userManagement.categories" />
                   </th>
                   <th id="modified-date-sort" className="hand">
@@ -165,12 +235,13 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                       return (
                         <tr id={event.id} key={`user-${index}`}>
                           <td>{this.state.activePage * this.state.itemsPerPage + index + 1}</td>
-                          <td> {event.name}</td>
-                          <td>{event.phone}</td>
-                          <td>{event.email}</td>
-                          <td>
-                            {event.categories &&
-                              event.categories.split(',').map((category, index) => {
+                          <td className="name"> {event.userName}</td>
+                          <td className="mobile">{event.mobile}</td>
+                          <td className="email">{event.email}</td>
+                          <td className="dateCreate">{event.createdDate}</td>
+                          <td className="tag">
+                            {event.tag &&
+                              event.tag.split(',').map((category, index) => {
                                 return (
                                   <span className="badge badge-success" key={index}>
                                     {' '}
@@ -224,7 +295,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
 }
 
 const mapStateToProps = (storeState: IRootState) => ({
-  user: storeState.userManagement.user,
+  dowloadTemplate: storeState.userManagement.dowloadTemplate,
   modalState: storeState.handleModal.data,
   users: storeState.userManagement.users,
   totalItems: storeState.userManagement.totalItems,
@@ -235,7 +306,18 @@ const mapStateToProps = (storeState: IRootState) => ({
   pageCount: Math.ceil(storeState.userManagement.totalElements / ITEMS_PER_PAGE)
 });
 
-const mapDispatchToProps = { getUsers, updateUser, getUserCategories, deleteUser, getUser, getDetailUser, openModal, closeModal };
+const mapDispatchToProps = {
+  exportFile,
+  getUsers,
+  updateUser,
+  getUserCategories,
+  downloadFileFromResp,
+  deleteUser,
+  getUser,
+  getDetailUser,
+  openModal,
+  closeModal
+};
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

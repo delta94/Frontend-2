@@ -1,6 +1,6 @@
 import React from 'react';
 //todo: bo vao thu muc rieng
-import './list/user-management.scss';
+import './detail.scss';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, RouteComponentProps } from 'react-router-dom';
