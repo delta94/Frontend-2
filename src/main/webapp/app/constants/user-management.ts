@@ -5,7 +5,7 @@ export const USER_MANAGE_ACTION_TYPES = {
   CREATE_USER: 'userManagement/CREATE_USER',
   UPDATE_USER: 'userManagement/UPDATE_USER',
   DELETE_USER: 'userManagement/DELETE_USER',
-  DOWNLOAD_FILE: 'userManagement/DOWNLOAD_FILE',
+  EXPORT_FILE: 'userManagement/EXPORT_FILE',
   UPLOAD_FILE: 'userManagement/UPLOAD_FILE',
   DOWNLOAD_FILERE_SULTS: 'userManagement/UPLOAD_FILERE_SULTS',
   URL_TEMPLATE: 'http://171.244.40.91:8088/v1/customer/template-import',
@@ -25,6 +25,7 @@ export const USER_MANAGE_ACTION_TYPES = {
   GET_DATA: 'userManagement/GET_DATA',
   GET_FIELDS: 'userManagement/GET_FIELDS',
   GET_LIST_DUPLICATE: 'userManagement/GET_LIST_DUPLICATE',
+  IMPORT_FILE: 'userManagement/IMPORT_FILE',
   RESET_MESSAGE: 'userManagement/RESET_MESSAGE'
 };
 

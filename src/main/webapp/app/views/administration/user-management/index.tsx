@@ -4,7 +4,7 @@ import { Switch } from 'react-router-dom';
 import ErrorBoundaryRoute from 'app/common/error/error-boundary-route';
 import Infomation from './infomation/infomation';
 import UserManagement from './list/user-management';
-import UserDetail from 'app/views/administration/user-management/user-detail';
+import UserDetail from 'app/views/administration/user-management/import/detail/detail';
 import CreateUser from 'app/views/administration/user-management/import/import';
 
 //todo rename cho router

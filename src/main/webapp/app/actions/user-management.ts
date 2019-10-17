@@ -3,7 +3,7 @@ import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction, t
 
 import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
 import { toast } from 'react-toastify';
-import { IUser, defaultValue } from 'app/common/model/user.model';
+import { IUser } from 'app/common/model/user.model';
 import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
 import {
   createUserService,
@@ -13,8 +13,8 @@ import {
   getUsersService,
   updateUserService,
   getInfoUser,
-  downloadFile,
-  UploaddFile,
+  importFileService,
+  exportFileService,
   listUserService,
   uploadFileExcelService,
   getFieldsService,
@@ -102,15 +102,6 @@ export const reset = () => ({
   type: USER_MANAGE_ACTION_TYPES.RESET
 });
 
-export const downloadFileExcel = () => {
-  return {
-    type: USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILE,
-    // payload: downloadFile(),
-    payload: axios.get('v1/customer/template-import'),
-    meta: {}
-  };
-};
-
 //Version 2
 
 export const getFields = () => {
@@ -127,6 +118,13 @@ export const uploadFileExcel = data => async dispatch => {
     type: USER_MANAGE_ACTION_TYPES.UPLOAD_FILE,
     payload: uploadFileExcelService(formData)
   });
+};
+
+export const importFileAction = data => {
+  return {
+    type: USER_MANAGE_ACTION_TYPES.IMPORT_FILE,
+    payload: importFileService(data)
+  };
 };
 
 export const insertUser = data => {
@@ -162,6 +160,23 @@ export const getListDuplicateAction = (id, email, phone) => {
     type: USER_MANAGE_ACTION_TYPES.GET_LIST_DUPLICATE,
     payload: getListDuplicateService(id, email, phone)
   };
+};
+
+export const exportFile = (textSearch?: string, tagIds?: string) => {
+  return {
+    type: USER_MANAGE_ACTION_TYPES.EXPORT_FILE,
+    payload: exportFileService(textSearch, tagIds)
+  };
+};
+
+export const downloadFileFromResp = (data, fileName) => {
+  const blob = new Blob([data], { type: 'application/vnd.ms-excel' });
+  const link = document.createElement('a');
+  link.href = window.URL.createObjectURL(blob);
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 };
 
 export const resetMessage = () => ({

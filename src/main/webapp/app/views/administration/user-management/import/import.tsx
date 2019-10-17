@@ -4,23 +4,9 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps, Router, Route } from 'react-router-dom';
 import UserCategoryTag from 'app/views/administration/user-management/list/categories-tag/categories-tag';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { downloadFileExcel, uploadFileExcel, getFields } from 'app/actions/user-management';
+import { importFileAction, uploadFileExcel, getFields } from 'app/actions/user-management';
 import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
-import {
-  Button,
-  Table,
-  Badge,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Container,
-  FormGroup,
-  Label,
-  Card,
-  CardBody,
-  CardTitle
-} from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Container, FormGroup, Label, Card, CardBody, CardTitle } from 'reactstrap';
 import { Radio, Select, Row, Col, Collapse } from 'antd';
 import { AvForm } from 'availity-reactstrap-validation';
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -48,7 +34,9 @@ export interface IImportState {
   modal: boolean;
   check: boolean;
   current: number;
-  value: string;
+  headerFields: any[];
+  tags: any[];
+  typeImport: string;
 }
 
 export class Import extends React.Component<IImportProps, IImportState, Route> {
@@ -63,7 +51,9 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
     modal: false,
     check: false,
     current: 0,
-    value: ''
+    headerFields: [],
+    tags: [],
+    typeImport: ''
   };
   onDrop = (acceptedFiles, rejectedFiles) => {
     var checkFile = acceptedFiles[0].name;
@@ -148,24 +138,58 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
     return data;
   };
 
-  handleChangeSelect = (value, columnIndex) => {
-    console.log(String(value).split(','));
-    console.log(columnIndex);
+  removeDuplicates = (array, key) => {
+    return array.reduce((accumulator, element, currentIndex, arr) => {
+      if (!accumulator.find(el => el[key] == element[key]) && arr.map(c => c.id).lastIndexOf(element.id) == currentIndex) {
+        accumulator.push(element);
+      }
+      return accumulator;
+    }, []);
+  };
+
+  removeDuplicatesFields = (array, key) => {
+    return array.reduce((accumulator, element, currentIndex, arr) => {
+      if (
+        !accumulator.find(el => el[key] == element[key]) &&
+        arr.map(c => c.columnIndex).lastIndexOf(element.columnIndex) == currentIndex
+      ) {
+        accumulator.push(element);
+      }
+      return accumulator;
+    }, []);
+  };
+
+  handleChangeSelect = (value, columnIndex, columnName) => {
+    let { headerFields } = this.state;
     let data = {
-      id: String(value).split(',')[0],
-      code: String(value).split(',')[1]
+      fieldId: String(value).split(',')[0],
+      columnName,
+      columnIndex,
+      fieldCode: String(value).split(',')[1],
+      fieldType: String(value).split(',')[2],
+      fieldValue: String(value).split(',')[3],
+      fieldTitle: String(value).split(',')[4]
     };
-    console.log(data);
+    headerFields.push(data);
+    this.setState({ headerFields });
   };
 
   handleChangeCategories = value => {
-    console.log(value);
+    let { tags } = this.state;
+    let data = value.map(event => {
+      return {
+        id: event.id,
+        name: event.name,
+        description: event.description
+      };
+    });
+    tags.push(data);
+    this.setState({ tags });
   };
 
   onChangeRadio = e => {
-    console.log('radio checked', e.target.value);
     this.setState({
-      value: e.target.value
+      typeImport: e.target.value
     });
   };
 
@@ -195,12 +219,17 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
                                   <Select
                                     defaultValue="Do not import this fields"
                                     style={{ width: 200 }}
-                                    onChange={e => this.handleChangeSelect(e, event.columnIndex)}
+                                    onChange={e => this.handleChangeSelect(e, event.columnIndex, event.columnName)}
                                   >
                                     {listFields
                                       ? listFields.map((value, index) => {
                                           return (
-                                            <Option key={index} value={value.id + ',' + value.code}>
+                                            <Option
+                                              key={index}
+                                              value={
+                                                value.id + ',' + value.code + ',' + value.type + ',' + value.fieldValue + ',' + value.title
+                                              }
+                                            >
                                               {value.code}
                                             </Option>
                                           );
@@ -231,7 +260,7 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
         <Card>
           <CardTitle style={{ marginLeft: '2%' }}>Tùy chọn import</CardTitle>
           <CardBody style={{ marginLeft: '3%' }}>
-            <Radio.Group onChange={this.onChangeRadio} value={this.state.value}>
+            <Radio.Group onChange={this.onChangeRadio} value={this.state.typeImport}>
               <Radio value="SKIP">Bỏ qua nếu trùng</Radio>
               <Radio value="OVERIDE">Ghi đè nếu trùng</Radio>
               <Radio value="DUPLICATE">Nhân đôi nếu trùng</Radio>
@@ -285,7 +314,7 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
       <Container fluid>
         <span className="d-inline-block mb-2 mr-2">
           <Button className="btn float-right jh-create-entity" outline color="primary" onClick={this.toggle}>
-            <Ionicon color="#343A40" icon="md-git-merge" /> &nbsp; <Translate contentKey="userManagement.home.import" />
+            <Ionicon color="#343A40" icon="md-arrow-down" /> &nbsp; <Translate contentKey="userManagement.home.import" />
           </Button>
 
           <Modal isOpen={this.state.modal} id="modal-import">
@@ -323,8 +352,18 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
                   {current === this.stepTable().length - 1 && (
                     <Button
                       color="primary"
-                      onClick={() => {
+                      onClick={async () => {
+                        let { listFileHeader, importFileAction } = this.props;
+                        let { fileImport, headerFields, tags } = this.state;
+                        let data = {
+                          fileName: listFileHeader.fileName,
+                          typeImport: fileImport,
+                          headerFields: this.removeDuplicatesFields(headerFields, 'columnIndex'),
+                          tags: this.removeDuplicates(tags, 'id')
+                        };
+                        // await importFileAction(data)
                         this.toggle();
+                        window.location.assign('/#/app/views/customers/user-management/results-files');
                       }}
                     >
                       Import File
@@ -341,17 +380,12 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
 }
 
 const mapStateToProps = (storeState: IRootState) => ({
-  downloadTemplate: storeState.userManagement.dowloadTemplate,
-  user: storeState.userManagement.user,
-  roles: storeState.userManagement.authorities,
   loading: storeState.userManagement.loading,
   listFileHeader: storeState.userManagement.headerFile,
-  fileList: storeState.userManagement.listFiles,
-  isComplete: storeState.userManagement.updateSuccess,
   listFields: storeState.userManagement.listFields
 });
 
-const mapDispatchToProps = { downloadFileExcel, uploadFileExcel, getFields };
+const mapDispatchToProps = { importFileAction, uploadFileExcel, getFields };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

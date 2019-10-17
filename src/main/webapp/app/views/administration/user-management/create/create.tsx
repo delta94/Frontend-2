@@ -256,9 +256,9 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
                                   <Row>
                                     {String(value.fieldValue)
                                       .split('||')
-                                      .map(event => {
+                                      .map((event, index) => {
                                         return (
-                                          <Col span={8}>
+                                          <Col span={8} key={index}>
                                             <Checkbox value={String(event)}>{event}</Checkbox>
                                           </Col>
                                         );
@@ -278,9 +278,9 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
                                   <Row>
                                     {String(value.fieldValue)
                                       .split('||')
-                                      .map(event => {
+                                      .map((event, index) => {
                                         return (
-                                          <Col span={8}>
+                                          <Col span={8} key={index}>
                                             <Radio value={event}>{event}</Radio>
                                           </Col>
                                         );
@@ -307,8 +307,12 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
                                 <Select className="checkbox-group" onChange={event => this.handleChangeDrop(value.id, event)}>
                                   {String(value.fieldValue)
                                     .split('||')
-                                    .map(event => {
-                                      return <Option value={String(event)}>{event}</Option>;
+                                    .map((event, index) => {
+                                      return (
+                                        <Option value={String(event)} key={index}>
+                                          {event}
+                                        </Option>
+                                      );
                                     })}
                                 </Select>
                               ) : (
