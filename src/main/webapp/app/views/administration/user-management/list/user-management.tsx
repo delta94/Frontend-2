@@ -102,19 +102,29 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     let data = (
       <Menu>
         <Menu.Item key="0">
-          <Checkbox onChange={event => this.onChangeCheckBox(event, 'name')}>Họ tên</Checkbox>
+          <Checkbox defaultChecked={true} onChange={event => this.onChangeCheckBox(event, 'name')}>
+            Họ tên
+          </Checkbox>
         </Menu.Item>
         <Menu.Item key="1">
-          <Checkbox onChange={event => this.onChangeCheckBox(event, 'mobile')}>Số điện thoại</Checkbox>
+          <Checkbox defaultChecked={true} onChange={event => this.onChangeCheckBox(event, 'mobile')}>
+            Số điện thoại
+          </Checkbox>
         </Menu.Item>
         <Menu.Item key="2">
-          <Checkbox onChange={event => this.onChangeCheckBox(event, 'email')}>Email</Checkbox>
+          <Checkbox defaultChecked={true} onChange={event => this.onChangeCheckBox(event, 'email')}>
+            Email
+          </Checkbox>
         </Menu.Item>
         <Menu.Item key="3">
-          <Checkbox onChange={event => this.onChangeCheckBox(event, 'tag')}>Phân loại</Checkbox>
+          <Checkbox defaultChecked={true} onChange={event => this.onChangeCheckBox(event, 'tag')}>
+            Phân loại
+          </Checkbox>
         </Menu.Item>
         <Menu.Item key="4">
-          <Checkbox onChange={event => this.onChangeCheckBox(event, 'dateCreate')}>Ngày khởi tạo</Checkbox>
+          <Checkbox defaultChecked={true} onChange={event => this.onChangeCheckBox(event, 'dateCreate')}>
+            Ngày khởi tạo
+          </Checkbox>
         </Menu.Item>
       </Menu>
     );
@@ -124,11 +134,11 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
   onChangeCheckBox = (e, value) => {
     let isCheck = e.target.checked;
     if (isCheck) {
-      $(`#${value}`).hide();
-      $(`.${value}`).hide();
-    } else {
       $(`#${value}`).show();
       $(`.${value}`).show();
+    } else {
+      $(`#${value}`).hide();
+      $(`.${value}`).hide();
     }
   };
 
@@ -183,9 +193,6 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                       color="info"
                       onClick={async () => {
                         await this.props.exportFile(this.state.textSearch, this.state.categories);
-                        console.log(this.props.dowloadTemplate.data);
-                        let dataExport = new FormData(this.props.dowloadTemplate.data);
-                        this.props.downloadFileFromResp(dataExport, 'Customer');
                       }}
                     >
                       <Ionicon color="#343A40" icon="md-arrow-up" /> &nbsp; Export
@@ -200,7 +207,8 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
 
             <Dropdown overlay={this.rowName} trigger={['click']}>
               <Button style={{ float: 'right', margin: '0px 50px 8px' }} outline color="warning" className="ant-dropdown-link">
-                <i className="pe-7s-filter icon-gradient bg-premium-dark" style={{ fontSize: '18px' }} />Lọc bảng
+                <i className="pe-7s-filter icon-gradient bg-premium-dark" style={{ fontSize: '18px' }} />
+                Lọc bảng
               </Button>
             </Dropdown>
             <Table responsive striped>

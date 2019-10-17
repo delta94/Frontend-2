@@ -170,7 +170,7 @@ export const exportFile = (textSearch?: string, tagIds?: string) => {
 };
 
 export const downloadFileFromResp = (data, fileName) => {
-  const blob = new Blob([data], { type: 'application/vnd.ms-excel' });
+  const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
   const link = document.createElement('a');
   link.href = window.URL.createObjectURL(blob);
   link.download = fileName;

@@ -361,7 +361,7 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
                           headerFields: this.removeDuplicatesFields(headerFields, 'columnIndex'),
                           tags: this.removeDuplicates(tags, 'id')
                         };
-                        // await importFileAction(data)
+                        await importFileAction(data);
                         this.toggle();
                         window.location.assign('/#/app/views/customers/user-management/results-files');
                       }}
