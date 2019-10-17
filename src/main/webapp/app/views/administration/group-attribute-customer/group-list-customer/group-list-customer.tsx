@@ -39,8 +39,6 @@ class GroupListCustomer extends React.Component<IGroupListCustomerProps, IGroupL
     pageSize: 10
   };
 
-  componentDidMount() {}
-
   static getDerivedStateFromProps(props, state) {
     if (props.list_tags !== state.list_tags) {
       return {
@@ -98,11 +96,11 @@ class GroupListCustomer extends React.Component<IGroupListCustomerProps, IGroupL
                 </tr>
               </thead>
               <tbody>
-                {list_customer_group_with_id &&
+                {list_customer_group_with_id && list_customer_group_with_id.length > 0 ? (
                   list_customer_group_with_id.map((item, index) => {
                     return (
                       <tr key={index}>
-                        <td>{index}</td>
+                        <td>{index + 1}</td>
                         <td>{item.firstName + ' ' + item.lastName}</td>
                         <td>{item.mobile}</td>
                         <td>{item.email}</td>
@@ -110,30 +108,39 @@ class GroupListCustomer extends React.Component<IGroupListCustomerProps, IGroupL
                         <td />
                       </tr>
                     );
-                  })}
+                  })
+                ) : (
+                  <tr>
+                    <td className="none-data" colSpan={100}>
+                      Không có dữ liệu khách hàng
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </Table>
             {/* Blockout */}
-            <div>
-              <Row className="justify-content-center">
-                <ReactPaginate
-                  previousLabel={'<'}
-                  nextLabel={'>'}
-                  breakLabel={'...'}
-                  breakClassName={'break-me'}
-                  pageCount={Math.ceil(totalElements / 10)}
-                  marginPagesDisplayed={3}
-                  pageRangeDisplayed={5}
-                  onPageChange={event => this.handlePagination(event.selected)}
-                  containerClassName={'pagination'}
-                  subContainerClassName={'pages pagination'}
-                  activeClassName={'active'}
-                  forcePage={5}
-                />
-              </Row>
-            </div>
           </div>
         </Loader>
+        <div className="navigation">
+          {list_customer_group_with_id && Math.ceil(totalElements / 10) > 1 ? (
+            <Row className="justify-content-center">
+              <ReactPaginate
+                previousLabel={'<'}
+                nextLabel={'>'}
+                breakLabel={'...'}
+                breakClassName={'break-me'}
+                pageCount={Math.ceil(totalElements / 10)}
+                marginPagesDisplayed={3}
+                pageRangeDisplayed={3}
+                onPageChange={event => this.handlePagination(event.selected)}
+                containerClassName={'pagination'}
+                subContainerClassName={'pages pagination'}
+                activeClassName={'active'}
+                forcePage={5}
+              />
+            </Row>
+          ) : null}
+        </div>
       </div>
     );
   }

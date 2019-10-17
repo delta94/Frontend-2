@@ -44,19 +44,12 @@
   #description {
     max-width: 100px;
   }
+}
 
-  .navigation {
-    position: absolute;
-    bottom: 20px;
-    width: 100%;
-    text-align: center;
-  }
-
-  .none-data {
-    width: 100%;
-    line-height: 40px;
-    text-align: center;
-    position: absolute;
-    border: solid #e9ecef 1px;
-  }
+.navigation {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  width: 100%;
+  text-align: center;
 }

@@ -164,8 +164,12 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
     this.callData();
   };
 
-  callData = () => {
+  callData = (param?: string) => {
     let { textSearch } = this.state;
+
+    if (param === DELETE_TAG || param === MERGE_TAG) {
+      this.props.getListTagDataAction(textSearch, 0, 6);
+    }
     let pageIndex = localStorage.getItem('pageIndex');
     this.props.getListTagDataAction(textSearch, parseInt(pageIndex), 6);
     this.setState({ checkAll: false });
@@ -275,9 +279,11 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
                     );
                   })
                 ) : (
-                  <div className="none-data">
-                    <Translate contentKey="tag-management.none-tag-data" />
-                  </div>
+                  <tr>
+                    <td className="none-data" colSpan={100}>
+                      Không có dữ liệu khách hàng
+                    </td>
+                  </tr>
                 )}
               </tbody>
             </Table>
@@ -285,7 +291,7 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
           </div>
         </Loader>
         <div className="navigation ">
-          {totalPages && totalPages >= 1 ? (
+          {totalPages && totalPages >= 2 ? (
             <Row className="justify-content-center">
               <ReactPaginate
                 previousLabel={'<'}

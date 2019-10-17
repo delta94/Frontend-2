@@ -1,7 +1,9 @@
 import React from 'react';
-import { Button } from 'reactstrap';
-import { Checkbox, Modal } from 'antd';
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Checkbox } from 'antd';
 import './group-delete-modal.scss';
+import CheckboxGroup from 'antd/lib/checkbox/Group';
+// const listCheckbox =
 
 interface IGroupDeleteModalProps {
   is_open: boolean;
@@ -12,48 +14,103 @@ interface IGroupDeleteModalProps {
 
 interface IGroupDeleteModalState {
   is_disable: boolean;
+  listCheckBox: Array<{ key: any; description: string; checked: boolean; color: string }>;
 }
-
-const list_rule = [{}];
 
 export default class GroupDeleteModal extends React.PureComponent<IGroupDeleteModalProps, IGroupDeleteModalState> {
   state: IGroupDeleteModalState = {
-    is_disable: true
+    is_disable: true,
+    listCheckBox: [
+      {
+        key: 0,
+        description: 'Tôi hiểu rằng tất cả các liên hệ trong danh sách sẽ bị xóa',
+        checked: false,
+        color: ''
+      },
+      {
+        key: 1,
+        description: 'Tôi hiểu rằng tất cả các chiến dịch và phản hồi chiến dịch trong danh sách sẽ bị xóa',
+        checked: false,
+        color: ''
+      },
+      {
+        key: 2,
+        description: 'Tôi hiểu rằng tất cả các phản hồi về danh sách sẽ bị xóa',
+        checked: false,
+        color: ''
+      },
+      {
+        key: 3,
+        description: 'Tôi hiểu rằng tất cả các cài đặt(thành phần, các trường, v.v ) của danh sách sẽ bị xóa',
+        checked: false,
+        color: ''
+      },
+      {
+        key: 4,
+        description: 'Tôi hiểu rằng sẽ không thể hoàn tác sau khi xóa danh sách sẽ bị xóa vĩnh viễ',
+        color: 'red',
+        checked: false
+      }
+    ]
   };
 
   handleCheckBox = event => {
-    let newArray = event;
-    if (newArray.length === 5) {
-      this.setState({ is_disable: false });
-    } else {
-      this.setState({ is_disable: true });
-    }
+    let { listCheckBox, is_disable } = this.state;
+    is_disable === false;
+    listCheckBox.forEach(item => {
+      if (item.key === event.key) {
+        item.checked = event.checked;
+      }
+    });
+
+    listCheckBox.forEach(item => {
+      if (!item.checked) {
+        is_disable = true;
+      }
+    });
+
+    this.setState({ listCheckBox, is_disable });
+  };
+
+  _closeModalDelete = () => {
+    let { listCheckBox } = this.state;
+    listCheckBox.forEach(item => (item.checked = false));
+    this.setState({ listCheckBox });
   };
 
   render() {
     let { is_open, id_delete } = this.props;
-    let { is_disable } = this.state;
+    let { is_disable, listCheckBox } = this.state;
     return (
-      <Modal
-        title="Xóa nhóm này"
-        visible={is_open}
-        onOk={() => {
-          this.props.handleDeleteModal();
-        }}
-        onCancel={() => {
-          this.props.handleDeleteModal();
-        }}
-        footer={[
+      <Modal isOpen={is_open} toggle={() => this.props.handleDeleteModal()}>
+        <ModalHeader>XÓA NHÓM NÀY</ModalHeader>
+        <ModalBody>
+          {listCheckBox &&
+            listCheckBox.map(item => {
+              return (
+                <Checkbox
+                  key={item.key}
+                  checked={item.checked}
+                  onChange={() => this.handleCheckBox(item)}
+                  style={{ color: item.color, width: '100%' }}
+                >
+                  {item.description}
+                </Checkbox>
+              );
+            })}
+        </ModalBody>
+        <ModalFooter>
           <Button
             key="cancel"
-            color="dange"
+            color="none"
             onClick={() => {
               this.props.handleDeleteModal();
+              this._closeModalDelete();
               this.setState({ is_disable: true });
             }}
           >
             Hủy
-          </Button>,
+          </Button>
           <Button
             key="delete"
             color="danger"
@@ -64,39 +121,7 @@ export default class GroupDeleteModal extends React.PureComponent<IGroupDeleteMo
           >
             Xóa
           </Button>
-        ]}
-      >
-        <Checkbox.Group style={{ width: '100%' }} onChange={this.handleCheckBox}>
-          <ul>
-            <li>
-              <Checkbox value="A" key="rule_one">
-                {' '}
-                Tôi hiểu rằng tất cả các liên hệ trong danh sách sẽ bị xóa
-              </Checkbox>
-            </li>
-            <li>
-              <Checkbox value="B" key="rule_two">
-                Tôi hiểu rằng tất cả các chiến dịch và phản hồi chiến dịch trong danh sách sẽ bị xóa
-              </Checkbox>
-            </li>
-            <li>
-              <Checkbox value="C" key="rule_three">
-                Tôi hiểu rằng tất cả các phản hồi về danh sách sẽ bị xóa
-              </Checkbox>
-            </li>
-            <li>
-              <Checkbox value="E" key="rule_four">
-                Tôi hiểu rằng tất cả các cài đặt(thành phần, các trường, v.v ) của danh sách sẽ bị xóa
-              </Checkbox>
-            </li>
-            <li>
-              <Checkbox style={{ color: 'red' }} value="D" key="rule_five">
-                Tôi hiểu rằng sẽ không thể hoàn tác sau khi xóa danh sách sẽ bị xóa vĩnh viễn
-              </Checkbox>
-            </li>
-          </ul>
-        </Checkbox.Group>
-        ,
+        </ModalFooter>
       </Modal>
     );
   }

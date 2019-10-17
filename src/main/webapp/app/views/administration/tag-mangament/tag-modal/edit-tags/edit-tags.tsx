@@ -22,6 +22,20 @@ class TagEdit extends React.Component<ITagEditProps, ITagEditState> {
   componentDidMount() {
     let { singleModalData } = this.props;
     this.setState({ singleModalData });
+    $('.tab-info').keypress(function(event) {
+      if (event.keyCode === 9) {
+        console.log('ok');
+        $(this)
+          .next()
+          .focus();
+      }
+
+      if (event.shiftKey && event.keyCode === 9) {
+        $(this)
+          .prev()
+          .focus();
+      }
+    });
   }
 
   handleInput = (value, type) => {
@@ -32,6 +46,10 @@ class TagEdit extends React.Component<ITagEditProps, ITagEditState> {
     this.props.updateValueFromTagEdit(singleModalData);
   };
 
+  componentWillUnmount() {
+    $('.tab-info').off();
+  }
+
   render() {
     let { singleModalData } = this.props;
 
@@ -41,6 +59,7 @@ class TagEdit extends React.Component<ITagEditProps, ITagEditState> {
           <div className="tag-edit-attribute">
             <Translate contentKey="tag-management.tag-name" />
             <Input
+              className="tab-info"
               id="name"
               type="text"
               placeholder="Tên"
@@ -52,6 +71,7 @@ class TagEdit extends React.Component<ITagEditProps, ITagEditState> {
           <div className="tag-edit-attribute">
             <Translate contentKey="tag-management.tag-description" />
             <Input
+              className="tab-info"
               id="decription"
               type="text"
               placeholder="Mô tả"

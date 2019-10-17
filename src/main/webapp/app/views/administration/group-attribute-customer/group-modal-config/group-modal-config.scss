@@ -1,4 +1,6 @@
 .group-modal-config {
+  position: relative;
+  padding-bottom: 60px;
   .input-search_group {
     display: flex;
     margin-bottom: 10px;
@@ -34,9 +36,5 @@
     .search-table-customer {
       padding-top: 15px;
     }
-  }
-
-  .pagination {
-    float: right;
   }
 }
