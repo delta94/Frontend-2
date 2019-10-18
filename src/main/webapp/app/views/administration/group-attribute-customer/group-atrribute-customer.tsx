@@ -14,6 +14,7 @@ import { Button } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
 import { INSERT_CUSTOMER_GROUP } from '../../../constants/group-atrribute-customer';
+import { IOpenModal } from '../../../reducers/modal';
 
 export interface IGroupAttributeCustomerProps extends StateProps, DispatchProps {}
 
@@ -22,12 +23,14 @@ export interface IGroupAttributeCustomerState {
   is_show: boolean;
   title_modal?: string;
   type_modal: string;
+  modalState?: IOpenModal;
 }
 class GroupAttributeCustomer extends React.Component<IGroupAttributeCustomerProps, IGroupAttributeCustomerState> {
   state: IGroupAttributeCustomerState = {
     id_list_customer: null,
     is_show: false,
-    type_modal: ''
+    type_modal: '',
+    modalState: {}
   };
 
   componentDidMount() {}
@@ -58,10 +61,17 @@ class GroupAttributeCustomer extends React.Component<IGroupAttributeCustomerProp
     this.toggleModalConfig();
   };
 
-  render() {
-    const { modalState } = this.props;
-    let { is_show, title_modal, id_list_customer, type_modal } = this.state;
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.modalState) {
+      return {
+        modalState: nextProps.modalState
+      };
+    }
+  }
 
+  render() {
+    let { is_show, title_modal, id_list_customer, type_modal } = this.state;
+    let { modalState } = this.props;
     return (
       <div className="group-attribute-customer">
         <div id="user-management-title">
@@ -99,8 +109,8 @@ class GroupAttributeCustomer extends React.Component<IGroupAttributeCustomerProp
   }
 }
 
-const mapStateToProps = ({ handleModal }: IRootState) => ({
-  modalState: handleModal.data
+const mapStateToProps = ({ groupCustomerState }: IRootState) => ({
+  modalState: groupCustomerState.postRequest
 });
 
 const mapDispatchToProps = {

@@ -6,6 +6,7 @@ import { ERROR } from '../constants/common';
 import { IListFieldData, IDataCustomer } from 'app/common/model/group-attribute-customer';
 import { IDataCustomerCondition, ISearchAdvanced } from '../common/model/group-attribute-customer';
 import { string } from 'prop-types';
+import { MODAL_ACTION } from '../constants/modal';
 
 interface IPostRequestReturn {
   code?: number;
@@ -48,11 +49,10 @@ const initialDataState = {
   },
 
   postRequest: {
-    type: 'warning',
+    type: 'success',
     text: 'Thiếu trường thông tin',
     title: 'Thông báo',
-    show: false,
-    payload: {}
+    show: false
   } as IOpenModal,
 
   list_field_data: [] as IListFieldData[]
@@ -170,7 +170,7 @@ export default (state: GroupCustomerState = initialDataState, action): GroupCust
         list_group_customer_index,
         postRequest: {
           type: 'success',
-          text: 'Email không hợp lệ',
+          text: 'Sửa thông tin nhóm thất bại',
           title: 'Thông báo',
           show: false
         }
@@ -263,7 +263,7 @@ export default (state: GroupCustomerState = initialDataState, action): GroupCust
         list_group_customer_index,
         postRequest: {
           type: 'success',
-          text: 'Tạo mới thành công',
+          text: 'Sửa thông tin nhóm thành công',
           title: 'Thông báo',
           show: true
         }
@@ -277,6 +277,13 @@ export default (state: GroupCustomerState = initialDataState, action): GroupCust
         single_customer_field: data
       };
 
+    case MODAL_ACTION.CLOSE_MODAL:
+      return {
+        ...state,
+        postRequest: {
+          show: false
+        }
+      };
     default:
       return state;
   }

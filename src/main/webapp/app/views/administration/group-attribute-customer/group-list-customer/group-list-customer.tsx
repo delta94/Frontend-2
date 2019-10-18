@@ -24,11 +24,7 @@ interface IGroupListCustomerState {
   textSearch?: string;
   pageIndex?: number;
   pageSize?: number;
-}
-
-interface IItemCheckBox {
-  ITags;
-  checked: boolean;
+  list_customer_group_with_id: any;
 }
 
 class GroupListCustomer extends React.Component<IGroupListCustomerProps, IGroupListCustomerState> {
@@ -36,13 +32,14 @@ class GroupListCustomer extends React.Component<IGroupListCustomerProps, IGroupL
     activePage: 5,
     textSearch: '',
     pageIndex: 0,
-    pageSize: 10
+    pageSize: 10,
+    list_customer_group_with_id: []
   };
 
   static getDerivedStateFromProps(props, state) {
-    if (props.list_tags !== state.list_tags) {
+    if (props.list_customer_group_with_id !== state.list_customer_group_with_id) {
       return {
-        list_tags: props.list_tags
+        list_customer_group_with_id: props.list_customer_group_with_id
       };
     }
 
@@ -64,8 +61,8 @@ class GroupListCustomer extends React.Component<IGroupListCustomerProps, IGroupL
   };
 
   render() {
-    let { loading, list_customer_group_with_id, totalElements } = this.props;
-    let { textSearch } = this.state;
+    let { loading, totalElements } = this.props;
+    let { list_customer_group_with_id } = this.state;
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
 
     return (
