@@ -39,7 +39,7 @@ class GroupAttributeCustomer extends React.Component<IGroupAttributeCustomerProp
   toggleModalConfig = () => {
     let { is_show } = this.state;
     is_show = !is_show;
-    this.setState({ is_show });
+    this.setState({ is_show, id_list_customer: '' });
   };
 
   // Set title for modal
