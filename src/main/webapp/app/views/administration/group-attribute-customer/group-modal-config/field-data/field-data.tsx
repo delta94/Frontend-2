@@ -41,6 +41,7 @@ interface IFieldDataState {
   value_datepicker?: string;
   value_radio?: string;
   searchAdvanced: ISearchAdvanced;
+  default_data: ISearchAdvanced;
 }
 
 class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
@@ -142,10 +143,9 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.default_data) {
+    if (nextProps.default_data !== prevState.default_data) {
       let { default_data } = nextProps;
       let { value_input, value_check_box, value_dropdown, value_radio, value_datepicker } = prevState;
-      let list_option = default_data.fieldValue && default_data.fieldValue.split('||');
       let { operator } = prevState;
       if (operator !== default_data.operator) {
         operator === default_data.operator;
@@ -188,7 +188,8 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
         value_dropdown,
         value_datepicker,
         operator,
-        defaultValue: default_data.fieldTitle
+        defaultValue: default_data.fieldTitle,
+        default_data
       };
     }
 
@@ -295,9 +296,7 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
 
     switch (type) {
       case TYPE_FIELD.TEXT_INPUT:
-        render_cpn = (
-          <Input key={id + 'input'} onChange={this.setValueForInput} value={value_input} defaultValue={default_data.fieldValue} />
-        );
+        render_cpn = <Input key={id + 'input'} onChange={this.setValueForInput} value={value_input} />;
         break;
       case TYPE_FIELD.DATE:
         render_cpn = (

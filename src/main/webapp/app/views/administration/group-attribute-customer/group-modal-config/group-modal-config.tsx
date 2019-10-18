@@ -270,12 +270,12 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
 
   // Exec function request
   async execFunctionRequest() {
-    let { type_modal, id_list_customer } = this.props;
+    let { type_modal, single_group_field } = this.props;
     let { advancedSearches, categoryName, logicalOperator } = this.state;
     categoryName = categoryName.trim();
     switch (type_modal) {
       case UPDATE_CUSTOMER_GROUP:
-        await this.props.postUpdateCustomerGroupAction(id_list_customer, {
+        await this.props.postUpdateCustomerGroupAction(single_group_field.categoryId, {
           categoryName,
           customerAdvancedSave: {
             logicalOperator,
