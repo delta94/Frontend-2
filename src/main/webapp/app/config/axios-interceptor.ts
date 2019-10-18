@@ -12,8 +12,8 @@ const setupAxiosInterceptors = onUnauthenticated => {
     if (token) {
       config.headers = {
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-        responseType: 'blob'
+        'Content-Type': 'application/json'
+        // responseType: 'blob'
       };
     }
     return config;

@@ -53,7 +53,18 @@ export const getListDuplicateService = (id, email, phone) => {
 export const exportFileService = (textSearch?: string, tagIds?: string) => {
   const requestUrl = `${apiUrl2}/export?textSearch=${textSearch}&tagIds=${tagIds}`;
 
-  return axios.get(requestUrl, { headers: { 'content-type': 'application/vnd.ms-excel' } });
+  return axios({
+    url: requestUrl,
+    method: 'GET',
+    responseType: 'blob' // important
+  }).then(response => {
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'file.xlsx');
+    document.body.appendChild(link);
+    link.click();
+  });
 };
 
 export const createUserService = user => {
