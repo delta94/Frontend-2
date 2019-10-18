@@ -26,6 +26,8 @@ export const USER_MANAGE_ACTION_TYPES = {
   GET_FIELDS: 'userManagement/GET_FIELDS',
   GET_LIST_DUPLICATE: 'userManagement/GET_LIST_DUPLICATE',
   IMPORT_FILE: 'userManagement/IMPORT_FILE',
+  COMPARE_USER: 'userManagement/COMPARE_USER',
+  MERGE_USER: 'userManagement/MERGE_USER',
   RESET_MESSAGE: 'userManagement/RESET_MESSAGE'
 };
 

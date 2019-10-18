@@ -26,6 +26,27 @@ export interface IUserDetails {
   ];
 }
 
+export interface ICompareUser {
+  conflictNumbers?: number;
+  email?: string;
+  fieldConflicts?: string;
+  fields: [
+    {
+      id?: string;
+      type?: string;
+      title?: string;
+      fieldValue?: string;
+      personalizationTag?: string;
+      value?: string;
+      code?: string;
+    }
+  ];
+  firstName?: string;
+  id?: string;
+  lastName?: string;
+  mobile?: string;
+}
+
 export interface IDuplicateUser {
   email?: string;
   id?: string;
@@ -77,7 +98,8 @@ const initialState = {
   data: {} as IUserDetails,
   listDuplicateUser: [] as ReadonlyArray<IDuplicateUser>,
   headerFile: {} as IHeaderFile,
-  listFields: [] as ReadonlyArray<IListFields>
+  listFields: [] as ReadonlyArray<IListFields>,
+  compareUser: [] as ReadonlyArray<ICompareUser>
 };
 
 export type UserManagementState = Readonly<typeof initialState>;
@@ -89,13 +111,14 @@ export default (state: UserManagementState = initialState, action): UserManageme
       return {
         ...state
       };
+    case REQUEST(USER_MANAGE_ACTION_TYPES.COMPARE_USER):
     case REQUEST(USER_MANAGE_ACTION_TYPES.GET_FIELDS):
     case REQUEST(USER_MANAGE_ACTION_TYPES.FETCH_USER_CATEGORIES):
     case REQUEST(USER_MANAGE_ACTION_TYPES.FETCH_USERS):
     case REQUEST(USER_MANAGE_ACTION_TYPES.FETCH_USER):
     case REQUEST(USER_MANAGE_ACTION_TYPES.EXPORT_FILE):
     case REQUEST(USER_MANAGE_ACTION_TYPES.UPLOAD_FILE):
-    case REQUEST(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILERE_SULTS):
+    case REQUEST(USER_MANAGE_ACTION_TYPES.IMPORT_FILE):
     case REQUEST(USER_MANAGE_ACTION_TYPES.GET_LIST_DUPLICATE):
       return {
         ...state,
@@ -118,6 +141,7 @@ export default (state: UserManagementState = initialState, action): UserManageme
       return {
         ...state
       };
+    case FAILURE(USER_MANAGE_ACTION_TYPES.COMPARE_USER):
     case FAILURE(USER_MANAGE_ACTION_TYPES.GET_FIELDS):
     case FAILURE(USER_MANAGE_ACTION_TYPES.FETCH_USERS):
     case FAILURE(USER_MANAGE_ACTION_TYPES.FETCH_USER):
@@ -127,7 +151,7 @@ export default (state: UserManagementState = initialState, action): UserManageme
     case FAILURE(USER_MANAGE_ACTION_TYPES.UPDATE_USER):
     case FAILURE(USER_MANAGE_ACTION_TYPES.DELETE_USER):
     case FAILURE(USER_MANAGE_ACTION_TYPES.UPLOAD_FILE):
-    case FAILURE(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILERE_SULTS):
+    case FAILURE(USER_MANAGE_ACTION_TYPES.IMPORT_FILE):
     case FAILURE(USER_MANAGE_ACTION_TYPES.FETCH_SEARCH_USER):
     case FAILURE(USER_MANAGE_ACTION_TYPES.GET_LIST_DUPLICATE):
       return {
@@ -138,7 +162,12 @@ export default (state: UserManagementState = initialState, action): UserManageme
         uploadScheduleFailure: true,
         errorMessage: action.payload
       };
-
+    case SUCCESS(USER_MANAGE_ACTION_TYPES.COMPARE_USER):
+      return {
+        ...state,
+        loading: false,
+        compareUser: action.payload.data
+      };
     case SUCCESS(USER_MANAGE_ACTION_TYPES.GET_FIELDS):
       return {
         ...state,
@@ -225,7 +254,7 @@ export default (state: UserManagementState = initialState, action): UserManageme
         uploadScheduleSuccess: true,
         headerFile: action.payload.data
       };
-    case SUCCESS(USER_MANAGE_ACTION_TYPES.DOWNLOAD_FILERE_SULTS):
+    case SUCCESS(USER_MANAGE_ACTION_TYPES.IMPORT_FILE):
       const { listErrorImport, total, success, error, fileName } = action.payload.data;
       return {
         ...state,

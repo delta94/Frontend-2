@@ -179,6 +179,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
 
   handleChange = category => {
     this.props.updateCategory(category);
+    console.log(category);
   };
 
   setting = () => {

@@ -7,16 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { openModal, closeModal } from 'app/actions/modal';
 import './user-management.scss';
 import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
-import {
-  downloadFileFromResp,
-  getUser,
-  exportFile,
-  getUsers,
-  updateUser,
-  getUserCategories,
-  deleteUser,
-  getDetailUser
-} from 'app/actions/user-management';
+import { getUser, exportFile, getUsers, updateUser, getUserCategories, deleteUser, getDetailUser } from 'app/actions/user-management';
 import UserCategoryTag from './categories-tag/categories-tag';
 import { IRootState } from 'app/reducers';
 import { Menu, Dropdown, Icon, Checkbox } from 'antd';
@@ -242,7 +233,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                       return (
                         <tr id={event.id} key={`user-${index}`}>
                           <td>{this.state.activePage * this.state.itemsPerPage + index + 1}</td>
-                          <td className="name"> {event.userName}</td>
+                          <td className="name"> {event.firstName + ' ' + event.lastName}</td>
                           <td className="mobile">{event.mobile}</td>
                           <td className="email">{event.email}</td>
                           <td className="dateCreate">{event.createdDate}</td>
@@ -318,7 +309,6 @@ const mapDispatchToProps = {
   getUsers,
   updateUser,
   getUserCategories,
-  downloadFileFromResp,
   deleteUser,
   getUser,
   getDetailUser,

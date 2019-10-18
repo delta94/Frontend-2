@@ -50,6 +50,11 @@ export const getListDuplicateService = (id, email, phone) => {
   return axios.get(requestUrl);
 };
 
+export const mergeUserService = (id, data) => {
+  const requestUrl = `${apiUrl2}/${id}/merge`;
+  return axios.post(requestUrl, data, { headers: authHeaders });
+};
+
 export const exportFileService = (textSearch?: string, tagIds?: string) => {
   const requestUrl = `${apiUrl2}/export?textSearch=${textSearch}&tagIds=${tagIds}`;
 
@@ -61,7 +66,24 @@ export const exportFileService = (textSearch?: string, tagIds?: string) => {
     const url = window.URL.createObjectURL(new Blob([response.data]));
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', 'file.xlsx');
+    link.setAttribute('download', 'Customer.xlsx');
+    document.body.appendChild(link);
+    link.click();
+  });
+};
+
+export const exportFileResultService = fileName => {
+  const requestUrl = `v1/customer/import-result?fileName=${fileName}`;
+
+  return axios({
+    url: requestUrl,
+    method: 'GET',
+    responseType: 'blob' // important
+  }).then(response => {
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'FileResult.xlsx');
     document.body.appendChild(link);
     link.click();
   });
@@ -116,6 +138,11 @@ export const uploadFileExcelService = data => {
       'Content-Type': 'multipart/form-data'
     }
   });
+};
+
+export const compareUserService = (firstUser, secondUser) => {
+  const compareApi = `${apiUrl2}/${firstUser}/compare/${secondUser}`;
+  return axios.get(compareApi);
 };
 
 export const getFieldsService = () => {

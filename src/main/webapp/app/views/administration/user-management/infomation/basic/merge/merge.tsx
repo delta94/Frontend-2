@@ -7,7 +7,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Translate, translate } from 'react-jhipster';
 import './merge.scss';
 import Ionicon from 'react-ionicons';
-import { getListDuplicateAction } from 'app/actions/user-management';
+import { getListDuplicateAction, compareUserAction, mergeUserAction } from 'app/actions/user-management';
 import { IRootState } from 'app/reducers';
 import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
@@ -42,6 +42,8 @@ export interface IMergeState {
   valueBtn1: string;
   valueBtn2: string;
   valueBtn3: string;
+  userSelect: string;
+  userId: string;
 }
 
 export class Merge extends React.Component<IMergeProps, IMergeState> {
@@ -52,7 +54,9 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
     is_chose: true,
     valueBtn1: '',
     valueBtn2: '',
-    valueBtn3: ''
+    valueBtn3: '',
+    userSelect: '',
+    userId: this.props.id
   };
 
   toggle = () => {
@@ -65,7 +69,7 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
     this.props.getListDuplicateAction(id, email, phone);
   };
   onChange = e => {
-    this.setState({ check: e.target.checked });
+    this.setState({ check: e.target.value, userSelect: e.target.value });
   };
 
   contentStepInfo = () => {
@@ -124,32 +128,38 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
 
   contentChosseContact = () => {
     let { is_chose } = this.state;
+    let { compareUser } = this.props;
+    let numberConfict = compareUser.length > 0 ? compareUser[0].conflictNumbers : '';
+    let fieldConfict = compareUser.length > 0 ? compareUser[0].fieldConflicts : '';
+
     let data = (
       <Row>
         <Col span={24}>
           <div className="option-create" style={{ textAlign: 'center' }}>
             <div>
-              <Label>contact trùng 2 trường update .....</Label>
+              <Label>
+                contact trùng {numberConfict} trường :"{fieldConfict}"
+              </Label>
             </div>
 
             <Row className="merge-customer_chose">
               <Col
                 span={12}
                 className="box-chose left-box"
-                onClick={() => this.setState({ is_chose: true, check: true })}
+                onClick={() => this.setState({ is_chose: true, check: true, userId: compareUser.length > 0 ? compareUser[0].id : '' })}
                 style={!is_chose ? styleDiv.unchose : styleDiv.chose}
               >
-                <p>Khách hàng A</p>
-                <label>saldjaskjd@gmail.com</label>
+                <p>{compareUser.length > 0 ? compareUser[0].firstName + compareUser[0].lastName : ''}</p>
+                <label>{compareUser.length > 0 ? compareUser[0].email : ''}</label>
               </Col>
               <Col
                 span={12}
                 className="box-chose right-box"
-                onClick={() => this.setState({ is_chose: false, check: true })}
+                onClick={() => this.setState({ is_chose: false, check: true, userId: compareUser.length > 0 ? compareUser[1].id : '' })}
                 style={is_chose ? styleDiv.unchose : styleDiv.chose}
               >
-                <p> Khách hàng A</p>
-                <label>saldjaskjd@gmail.com</label>
+                <p>{compareUser.length > 0 ? compareUser[1].firstName + compareUser[1].lastName : ''}</p>
+                <label>{compareUser.length > 0 ? compareUser[1].email : ''}</label>
               </Col>
             </Row>
             <div />
@@ -160,16 +170,23 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
                     <thead>
                       <tr className="text-center">
                         <th className="hand" id="name-duplicate" />
-                        <th className="hand">Khách hàng A</th>
-                        <th className="hand">Khách hàng B</th>
+                        <th className="hand">{compareUser.length > 0 ? compareUser[0].firstName + compareUser[0].lastName : ''}</th>
+                        <th className="hand">{compareUser.length > 0 ? compareUser[1].firstName + compareUser[1].lastName : ''}</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>Sở thích </td>
-                        <td>A </td>
-                        <td>B </td>
-                      </tr>
+                      {compareUser.length > 0
+                        ? compareUser[0].fields.map((event, index, list) => {
+                            let data = (
+                              <tr key={index}>
+                                <td>{event.title}</td>
+                                <td>{event.value}</td>
+                                <td>{compareUser[1].fields[index].value}</td>
+                              </tr>
+                            );
+                            return data;
+                          })
+                        : ''}
                     </tbody>
                   </Table>
                 </div>
@@ -272,10 +289,15 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
     return data;
   };
 
-  next() {
+  next = async () => {
+    const { compareUserAction, user, mergeUserAction } = this.props;
+    let { userSelect, userId } = this.state;
     const current = this.state.current + 1;
+    if (current === 1) {
+      await compareUserAction(user.id, userSelect);
+    }
     this.setState({ current });
-  }
+  };
 
   prev() {
     const current = this.state.current - 1;
@@ -330,7 +352,11 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
                   <Button
                     color="primary"
                     disabled={this.state.valueBtn1 && this.state.valueBtn2 && this.state.valueBtn3 && !loading ? false : true}
-                    onClick={() => {
+                    onClick={async () => {
+                      const { mergeUserAction } = this.props;
+                      let { userId } = this.state;
+                      let data = { id: userId };
+                      await mergeUserAction(userId, data);
                       this.props.onClick();
                       this.toggle();
                     }}
@@ -348,13 +374,17 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
 }
 const mapStateToProps = ({ userManagement }: IRootState) => ({
   loading: userManagement.loading,
-  listDuplicateUser: userManagement.listDuplicateUser
+  listDuplicateUser: userManagement.listDuplicateUser,
+  user: userManagement.user,
+  compareUser: userManagement.compareUser
 });
 
 const mapDispatchToProps = {
   openModal,
   closeModal,
-  getListDuplicateAction
+  compareUserAction,
+  getListDuplicateAction,
+  mergeUserAction
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

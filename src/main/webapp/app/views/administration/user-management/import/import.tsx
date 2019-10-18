@@ -183,7 +183,7 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
         description: event.description
       };
     });
-    tags.push(data);
+    tags.push(Object(data));
     this.setState({ tags });
   };
 
@@ -354,12 +354,12 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
                       color="primary"
                       onClick={async () => {
                         let { listFileHeader, importFileAction } = this.props;
-                        let { fileImport, headerFields, tags } = this.state;
+                        let { headerFields, tags, typeImport } = this.state;
                         let data = {
                           fileName: listFileHeader.fileName,
-                          typeImport: fileImport,
+                          typeImport: typeImport,
                           headerFields: this.removeDuplicatesFields(headerFields, 'columnIndex'),
-                          tags: this.removeDuplicates(tags, 'id')
+                          tags: this.removeDuplicates(tags, 'id')[0]
                         };
                         await importFileAction(data);
                         this.toggle();

@@ -15,11 +15,13 @@ import {
   getInfoUser,
   importFileService,
   exportFileService,
-  listUserService,
+  compareUserService,
   uploadFileExcelService,
   getFieldsService,
   postInsertUser,
-  getDoSearch
+  getDoSearch,
+  mergeUserService,
+  exportFileResultService
 } from 'app/services/user-management';
 import { IFileList } from 'app/common/model/sucess-file';
 import { warn } from 'fullcalendar';
@@ -168,15 +170,25 @@ export const exportFile = (textSearch?: string, tagIds?: string) => {
     payload: exportFileService(textSearch, tagIds)
   };
 };
+export const exportFileResult = fileName => {
+  return {
+    type: USER_MANAGE_ACTION_TYPES.EXPORT_FILE,
+    payload: exportFileResultService(fileName)
+  };
+};
 
-export const downloadFileFromResp = (data, fileName) => {
-  const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-  const link = document.createElement('a');
-  link.href = window.URL.createObjectURL(blob);
-  link.download = fileName;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+export const mergeUserAction = (id, data) => {
+  return {
+    type: USER_MANAGE_ACTION_TYPES.MERGE_USER,
+    payload: mergeUserService(id, data)
+  };
+};
+
+export const compareUserAction = (firstUser, secondUser) => {
+  return {
+    type: USER_MANAGE_ACTION_TYPES.COMPARE_USER,
+    payload: compareUserService(firstUser, secondUser)
+  };
 };
 
 export const resetMessage = () => ({
