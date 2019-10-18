@@ -23,6 +23,8 @@ import { openModal } from '../../../../actions/modal';
 import { getListCustomerGroupDataAction, postUpdateCustomerGroupAction } from '../../../../actions/group-attribute-customer';
 import { UPDATE_CUSTOMER_GROUP, COPY_CUSTOMER_GROUP, INSERT_CUSTOMER_GROUP } from '../../../../constants/group-atrribute-customer';
 import { OPERATOR } from '../../../../constants/field-data';
+import { IOpenModal } from '../../../../reducers/modal';
+import { ERROR } from '../../../../constants/common';
 
 interface IGroupModalConfigProps extends StateProps, DispatchProps {
   is_show: boolean;
@@ -106,12 +108,14 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
       let logicalOperator = '';
       let advancedSearchesData = [];
       let list_field_data_cpn = [];
+      let advancedSearches = [];
 
       if (customerAdvancedSave.logicalOperator !== '') {
         logicalOperator = customerAdvancedSave.logicalOperator;
       }
 
       if (customerAdvancedSave.advancedSearches && customerAdvancedSave.advancedSearches.length > 0) {
+        advancedSearches = customerAdvancedSave.advancedSearches;
         customerAdvancedSave.advancedSearches.forEach((item, index) => {
           let id = makeRandomId(16);
           advancedSearchesData.push({
@@ -126,6 +130,8 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
             default_data: item
           });
         });
+
+        advancedSearches = customerAdvancedSave.advancedSearches;
       }
 
       return {
@@ -133,7 +139,8 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
         single_group_field: nextProps.single_group_field,
         advancedSearchesData,
         list_field_data_cpn,
-        logicalOperator
+        logicalOperator,
+        advancedSearches
       };
     }
 
@@ -145,6 +152,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
     let { advancedSearchesData, logicalOperator } = this.state;
 
     let advancedSearches = [];
+
     advancedSearchesData.map(item => {
       advancedSearches.push(item.advancedSearch);
     });
@@ -270,12 +278,20 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
 
   // Exec function request
   async execFunctionRequest() {
-    let { type_modal, id_list_customer } = this.props;
+    let { type_modal, single_group_field } = this.props;
     let { advancedSearches, categoryName, logicalOperator } = this.state;
+    let postRequest: IOpenModal = {
+      show: true,
+      type: ERROR,
+      title: 'Thông báo',
+      text: ''
+    };
+
     categoryName = categoryName.trim();
     switch (type_modal) {
       case UPDATE_CUSTOMER_GROUP:
-        await this.props.postUpdateCustomerGroupAction(id_list_customer, {
+        await this.props.postUpdateCustomerGroupAction(single_group_field.categoryId, {
+          categoryId: single_group_field.categoryId,
           categoryName,
           customerAdvancedSave: {
             logicalOperator,
@@ -307,10 +323,9 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
         break;
     }
 
+    await this.props.openModal(postRequest);
     await this.props.getListCustomerGroupDataAction('');
-    await this.props.openModal(this.props.postRequest);
-    await this.props.toggle();
-    await this.removeDataInModal();
+    this.closeConfigModal();
   }
 
   render() {

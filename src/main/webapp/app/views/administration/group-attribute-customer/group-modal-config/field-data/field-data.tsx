@@ -41,6 +41,7 @@ interface IFieldDataState {
   value_datepicker?: string;
   value_radio?: string;
   searchAdvanced: ISearchAdvanced;
+  default_data: ISearchAdvanced;
 }
 
 class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
@@ -62,60 +63,9 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
       fieldCode: '',
       value: '',
       operator: ''
-    }
+    },
+    default_data: {}
   };
-
-  // componentDidMount() {
-  //   let { default_data } = this.props;
-
-  //   let { value_input, value_check_box, value_dropdown, value_radio, value_datepicker } = this.state;
-  //   if (default_data !== {}) {
-  //     // Set field data and default value
-  //     let list_option = default_data.fieldValue && default_data.fieldValue.split('||');
-  //     let { operator } = this.state;
-  //     if (operator !== default_data.operator) {
-  //       operator === default_data.operator;
-  //     }
-
-  //     console.log(default_data)
-  //     let type = default_data.fieldType;
-  //     switch (type) {
-  //       case TYPE_FIELD.TEXT_INPUT:
-  //         value_input = default_data.value;
-  //         break;
-
-  //       case TYPE_FIELD.DATE:
-  //         value_datepicker = default_data.value;
-  //         break;
-
-  //       case TYPE_FIELD.DROP_DOWN:
-  //         value_dropdown = default_data.value;
-  //         break;
-
-  //       case TYPE_FIELD.CHECK_BOX:
-  //         value_check_box = default_data.value.split('||');
-  //         break;
-
-  //       case TYPE_FIELD.RADIO_BUTTON:
-  //         value_radio = default_data.value;
-  //         break;
-
-  //       default:
-  //         break;
-  //     }
-
-  //     this.handleChoseTypeOfRenderCpn(type, list_option);
-  //     this.setState({
-  //       value_input,
-  //       value_check_box,
-  //       value_radio,
-  //       value_dropdown,
-  //       value_datepicker,
-  //       operator,
-  //       defaultValue: default_data.fieldTitle
-  //     });
-  //   }
-  // }
 
   // Chose type of render in reuseComponent
   handleChoseOption = (id_field: string, item?: any) => {
@@ -142,10 +92,9 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.default_data) {
+    if (nextProps.default_data !== prevState.default_data) {
       let { default_data } = nextProps;
       let { value_input, value_check_box, value_dropdown, value_radio, value_datepicker } = prevState;
-      let list_option = default_data.fieldValue && default_data.fieldValue.split('||');
       let { operator } = prevState;
       if (operator !== default_data.operator) {
         operator === default_data.operator;
@@ -154,26 +103,26 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
       console.log(default_data);
       switch (default_data.fieldType) {
         case TYPE_FIELD.TEXT_INPUT:
-          value_input = default_data.fieldValue;
+          value_input = default_data.value;
           break;
 
         case TYPE_FIELD.DATE:
-          value_datepicker = default_data.fieldValue;
+          value_datepicker = default_data.value;
 
           break;
 
         case TYPE_FIELD.DROP_DOWN:
-          value_dropdown = default_data.fieldValue;
+          value_dropdown = default_data.value;
 
           break;
 
         case TYPE_FIELD.CHECK_BOX:
-          value_check_box = default_data.fieldValue.split('||');
+          value_check_box = default_data.value.split('||');
 
           break;
 
         case TYPE_FIELD.RADIO_BUTTON:
-          value_radio = default_data.fieldValue;
+          value_radio = default_data.value;
           break;
 
         default:
@@ -182,13 +131,15 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
 
       return {
         type: default_data.fieldType,
+        searchAdvanced: default_data,
         value_input,
         value_check_box,
         value_radio,
         value_dropdown,
         value_datepicker,
         operator,
-        defaultValue: default_data.fieldTitle
+        defaultValue: default_data.fieldTitle,
+        default_data
       };
     }
 
@@ -243,6 +194,8 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
   setValueCheckBox = event => {
     this.setState({ value_check_box: event });
     let newValue = '';
+
+    console.log(event);
     event.forEach((item, index) => {
       if (index !== event.length - 1) {
         newValue += item + '||';
@@ -295,9 +248,7 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
 
     switch (type) {
       case TYPE_FIELD.TEXT_INPUT:
-        render_cpn = (
-          <Input key={id + 'input'} onChange={this.setValueForInput} value={value_input} defaultValue={default_data.fieldValue} />
-        );
+        render_cpn = <Input key={id + 'input'} onChange={this.setValueForInput} value={value_input} />;
         break;
       case TYPE_FIELD.DATE:
         render_cpn = (
@@ -330,6 +281,7 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
             key={id + 'choose data'}
             defaultValue={default_data.fieldValue ? default_data.fieldValue : 'Chọn thông tin'}
             style={{ width: '100%' }}
+            value={value_dropdown}
             onChange={this.setValueForDropDown}
           >
             {options &&

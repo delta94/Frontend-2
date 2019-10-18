@@ -17,6 +17,7 @@ import {
 import { openModal, closeModal } from '../../../../actions/modal';
 import GroupDeleteModal from './group-delete-modal/group-delete-modal';
 import { UPDATE_CUSTOMER_GROUP, COPY_CUSTOMER_GROUP } from '../../../../constants/group-atrribute-customer';
+import { getFindCustomerWithConditionAction } from '../../../../actions/group-attribute-customer';
 
 interface IGroupCustomerProps extends StateProps, DispatchProps {
   setIdForListCustomer: Function;
@@ -116,10 +117,17 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
   };
 
   // Update or copy group
-  handleGroup = (id: string, type_modal?: string) => {
-    this.props.setIdForListCustomer(id);
-    this.props.getSingleCustomerGroupFieldDataAction(id);
-    this.props.setStateForModal(type_modal);
+  async handleGroup(id: string, type_modal?: string) {
+    await this.props.setIdForListCustomer(id);
+    await this.props.getSingleCustomerGroupFieldDataAction(id);
+    await this.props.setStateForModal(type_modal);
+    await this.getDataOfListCustomerCondition();
+  }
+
+  // Get data with action
+  getDataOfListCustomerCondition = () => {
+    let { logicalOperator, advancedSearches } = this.props.single_customer_field.customerAdvancedSave;
+    this.props.getFindCustomerWithConditionAction({ logicalOperator, advancedSearches });
   };
 
   // Open delete modal
@@ -138,6 +146,7 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
     let { textSearch } = this.state;
     this.props.setIdForListCustomer(id);
     this.props.getListCustomerWithGroupIdDataAction(textSearch, 0, 10, id);
+    this.props.getSingleCustomerGroupFieldDataAction(id);
     this.setState({ id_chose: id });
   };
 
@@ -183,10 +192,7 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
               {/* Table? */}
               <Table striped>
                 <thead>
-                  <tr
-                    className="text-center"
-                    style={{ borderBottom: listDropdownItem[0] && id_chose === listDropdownItem[0].id ? 'solid gray 2px' : '' }}
-                  >
+                  <tr className="text-center">
                     <th className="checkbox-td">Stt</th>
                     <th>Tên nhóm</th>
                     <th>Số lượng khách hàng</th>
@@ -197,7 +203,13 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
                   {listDropdownItem && listDropdownItem.length > 0 ? (
                     listDropdownItem.map((item, index) => {
                       return (
-                        <tr key={item.id} style={{ border: id_chose === item.id ? 'solid gray 2px' : '' }}>
+                        <tr
+                          key={item.id}
+                          style={{
+                            background: item && id_chose === item.id ? 'gray' : '',
+                            color: item && id_chose === item.id ? 'white' : ''
+                          }}
+                        >
                           <td onClick={() => this.callListCustomer(item.id)}>{index}</td>
                           <td onClick={() => this.callListCustomer(item.id)}>{item.typeName}</td>
                           <td onClick={() => this.callListCustomer(item.id)}>
@@ -243,7 +255,8 @@ const mapStateToProps = ({ groupCustomerState, handleModal }: IRootState) => ({
   loading: groupCustomerState.list_group_customer_index.loading,
   list_group_customer: groupCustomerState.list_group_customer,
   modalData: handleModal.data,
-  postRequest: groupCustomerState.postRequest
+  postRequest: groupCustomerState.postRequest,
+  single_customer_field: groupCustomerState.single_customer_field
 });
 
 const mapDispatchToProps = {
@@ -251,6 +264,7 @@ const mapDispatchToProps = {
   getListCustomerWithGroupIdDataAction,
   postDeleteCustomerGroupAction,
   getSingleCustomerGroupFieldDataAction,
+  getFindCustomerWithConditionAction,
   openModal,
   closeModal
 };
