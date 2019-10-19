@@ -35,8 +35,14 @@ export class Infomation extends React.Component<IInfomationProps, IInfomationSta
         />
         <div id="user-info-title">
           <Translate contentKey="userManagement.home.info-cus" /> > {user.firstName + ' ' + user.lastName}
-          <Button className="btn btn-primary float-right jh-create-entity" color="primary">
-            <Translate contentKey="userManagement.home.edit" />
+          <Button
+            className="btn btn-primary float-right jh-create-entity"
+            color="primary"
+            onClick={() => {
+              window.location.assign('/#/app/views/customers/user-management');
+            }}
+          >
+            <Translate contentKey="userManagement.home.come-back" />
           </Button>
         </div>
 

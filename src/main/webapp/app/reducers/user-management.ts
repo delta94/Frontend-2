@@ -13,7 +13,12 @@ export interface IUserDetails {
   firstName?: string;
   lastName?: string;
   mobile?: string;
-  tag?: [];
+  tags?: [
+    {
+      id?: string;
+      name?: string;
+    }
+  ];
   fields?: [
     {
       id?: string;

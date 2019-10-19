@@ -46,6 +46,8 @@ export interface IBasicState {
       check?: boolean;
     }
   ];
+  tag: {};
+  isOpenPopTag: boolean;
 }
 
 export interface IUserDetails {
@@ -54,7 +56,7 @@ export interface IUserDetails {
   firstName?: string;
   lastName?: string;
   mobile?: string;
-  tag?: [];
+  tags?: [{ id?: string; name?: string }];
   fields?: any[];
 }
 
@@ -62,17 +64,14 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
   state: IBasicState = {
     visible: false,
     user: this.props.user,
-    fiedValue: [
-      {
-        id: '',
-        value: ''
-      }
-    ],
+    fiedValue: [{ id: '', value: '' }],
     listField: this.props.user.fields,
     isOpenPopFirst: false,
     isOpenPopLast: false,
     isOpenPopEmail: false,
-    isOpenPopMobile: false
+    isOpenPopMobile: false,
+    tag: { id: '', name: '' },
+    isOpenPopTag: false
   };
 
   hide = type => {
@@ -101,6 +100,9 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
     }
     if (id === 'mobile') {
       this.setState({ isOpenPopMobile: visible });
+    }
+    if (id === 'tag') {
+      this.setState({ isOpenPopTag: visible });
     } else {
       listFields = this.state.listField.map(event => {
         if (event.id === id) {
@@ -158,7 +160,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
       firstName: id === 'firstName' ? $(`input#${id}`).val() : user.firstName,
       lastName: id === 'lastName' ? $(`input#${id}`).val() : user.lastName,
       mobile: id === 'mobile' ? $(`input#${id}`).val() : user.mobile,
-      tag: [],
+      tags: [this.state.tag],
       fields: this.removeDuplicates(value, 'id')
     };
     await updateUserAction(data);
@@ -178,8 +180,14 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
   };
 
   handleChange = category => {
+    let { tag } = this.state;
+    let data = {
+      id: String(category.map(event => event.id)),
+      name: String(category.map(event => event.name))
+    };
+    tag = data;
+    this.setState({ tag });
     this.props.updateCategory(category);
-    console.log(category);
   };
 
   setting = () => {
@@ -250,7 +258,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
 
   render() {
     const { getDetailUser, loading } = this.props;
-    let { user, isOpenPopEmail, isOpenPopFirst, isOpenPopLast, isOpenPopMobile, listField } = this.state;
+    let { user, isOpenPopEmail, isOpenPopFirst, isOpenPopLast, isOpenPopMobile, listField, isOpenPopTag } = this.state;
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
     return (
       <Fragment>
@@ -470,7 +478,32 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                   <Translate contentKey="userManagement.categories" />
                 </Label>
                 <div className="phone-customer_span">
-                  <UserCategoryTag defaultCate={user.tag} handleChange={this.handleChange} />
+                  <Popover
+                    content={
+                      <div>
+                        <UserCategoryTag defaultCate={user.tags} handleChange={this.handleChange} />
+                        <div style={{ marginTop: '5%' }}>
+                          <Button
+                            onClick={() => {
+                              this.editUser(user.id);
+                            }}
+                            disabled={this.props.loading}
+                            type="primary"
+                          >
+                            {' '}
+                            Chỉnh sửa{' '}
+                          </Button>{' '}
+                          &nbsp;
+                          <Button onClick={this.closePopover}>Hủy bỏ</Button>
+                        </div>
+                      </div>
+                    }
+                    trigger="click"
+                    visible={isOpenPopTag}
+                    onVisibleChange={event => this.handleVisibleChange(event, 'tag', '')}
+                  >
+                    {user.tags ? user.tags.map(event => event.name) : <span className="empty">Click to add</span>}
+                  </Popover>
                 </div>
               </div>
             </Panel>

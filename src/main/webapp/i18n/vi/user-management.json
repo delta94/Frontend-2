@@ -21,7 +21,8 @@
       "export": "Export",
       "import": "Import",
       "edit": "Chỉnh sửa",
-      "merge": "Gộp"
+      "merge": "Gộp",
+      "come-back": "Quay lại"
     },
     "infomation": {
       "delete": {

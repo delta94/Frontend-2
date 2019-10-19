@@ -53,14 +53,14 @@ export class UserDetail extends React.Component<IUserDetailProps> {
         <Loader message={spinner} show={loading} priority={10}>
           <Card className="main-card mb-3">
             <CardBody>
-              <Row>
+              <Row style={{ marginBottom: '10px' }}>
                 <Col md="6">
                   <CardTitle>
                     <Translate contentKey="userManagement.home.import-result-detail" />
                   </CardTitle>
                 </Col>
-                <Col md="6">
-                  <Button type="primary" style={{ textAlign: 'right' }}>
+                <Col md="6" style={{ textAlign: 'right' }}>
+                  <Button type="primary">
                     &nbsp;
                     <span className="d-none d-md-inline">
                       <Translate contentKey="entity.action.continue" />
@@ -181,8 +181,13 @@ export class UserDetail extends React.Component<IUserDetailProps> {
               </Table>
               {noRecord}
               <Row>
-                <Col md="12">
-                  <Button type="link">
+                <Col md="12" style={{ textAlign: 'right' }}>
+                  <Button
+                    type="link"
+                    onClick={() => {
+                      window.location.assign('/#/app/views/customers/user-management');
+                    }}
+                  >
                     <FontAwesomeIcon icon="arrow-left" />
                     &nbsp;
                     <span className="d-none d-md-inline">
