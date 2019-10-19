@@ -46,7 +46,7 @@ export interface IBasicState {
       check?: boolean;
     }
   ];
-  tag: {};
+  tags?: [{ id?: string; name?: string }];
   isOpenPopTag: boolean;
 }
 
@@ -70,7 +70,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
     isOpenPopLast: false,
     isOpenPopEmail: false,
     isOpenPopMobile: false,
-    tag: { id: '', name: '' },
+    tags: [{ id: '', name: '' }],
     isOpenPopTag: false
   };
 
@@ -152,7 +152,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
   };
 
   editUser = async id => {
-    let { user, fiedValue } = this.state;
+    let { user, fiedValue, tags } = this.state;
     let { updateUserAction, getDetailUser } = this.props;
     let value = fiedValue.slice(1);
     let data = {
@@ -161,7 +161,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
       firstName: id === 'firstName' ? $(`input#${id}`).val() : user.firstName,
       lastName: id === 'lastName' ? $(`input#${id}`).val() : user.lastName,
       mobile: id === 'mobile' ? $(`input#${id}`).val() : user.mobile,
-      tags: [this.state.tag],
+      tags: this.removeDuplicates(tags.slice(1), 'id')[0],
       fields: this.removeDuplicates(value, 'id')
     };
     await updateUserAction(data);
@@ -181,13 +181,16 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
   };
 
   handleChange = category => {
-    let { tag } = this.state;
-    let data = {
-      id: String(category.map(event => event.id)),
-      name: String(category.map(event => event.name))
-    };
-    tag = data;
-    this.setState({ tag });
+    let { tags } = this.state;
+
+    let data = category.map(event => {
+      return {
+        id: event.id,
+        name: event.name
+      };
+    });
+    tags.push(data);
+    this.setState({ tags });
     this.props.updateCategory(category);
   };
 
@@ -482,8 +485,8 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                   <Popover
                     content={
                       <div>
-                        <UserCategoryTag defaultCate={user.tags} handleChange={this.handleChange} />
-                        <div style={{ marginTop: '5%' }}>
+                        <UserCategoryTag handleChange={this.handleChange} />
+                        <div>
                           <Button
                             onClick={() => {
                               this.editUser(user.id);
