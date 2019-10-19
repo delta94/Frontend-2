@@ -56,7 +56,7 @@ export class Delete extends React.Component<IDeleteProps, IDeleteState> {
 
         <Modal isOpen={this.state.modal} id="delete-properties">
           <ModalHeader toggle={this.toggle} id="create-properties">
-            <Translate contentKey="properties-management.delete.title" />
+            XÓA THÔNG TIN KHÁCH HÀNG
           </ModalHeader>
           <ModalBody>
             <AvForm>

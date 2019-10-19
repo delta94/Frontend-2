@@ -40,9 +40,7 @@ export class Edit extends React.Component<IEditProps, IEditState> {
     });
   };
 
-  handlerChange = e => {
-    console.log('%' + e.target.value + '%');
-  };
+  handlerChange = e => {};
 
   render() {
     const { getList, id, loading } = this.props;

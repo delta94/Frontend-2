@@ -191,6 +191,10 @@ export const compareUserAction = (firstUser, secondUser) => {
   };
 };
 
+export const openModalImport = () => ({
+  type: USER_MANAGE_ACTION_TYPES.OPEN_MODAL
+});
+
 export const resetMessage = () => ({
   type: USER_MANAGE_ACTION_TYPES.RESET_MESSAGE
 });

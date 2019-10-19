@@ -104,7 +104,8 @@ const initialState = {
   listDuplicateUser: [] as ReadonlyArray<IDuplicateUser>,
   headerFile: {} as IHeaderFile,
   listFields: [] as ReadonlyArray<IListFields>,
-  compareUser: [] as ReadonlyArray<ICompareUser>
+  compareUser: [] as ReadonlyArray<ICompareUser>,
+  isOpenModalImport: false
 };
 
 export type UserManagementState = Readonly<typeof initialState>;
@@ -281,8 +282,14 @@ export default (state: UserManagementState = initialState, action): UserManageme
         ...state,
         user: {
           ...state.user,
-          tag: action.payload.category
+          tags: action.payload.category
         }
+      };
+    case USER_MANAGE_ACTION_TYPES.OPEN_MODAL:
+      return {
+        ...initialState,
+        loading: false,
+        isOpenModalImport: true
       };
     case USER_MANAGE_ACTION_TYPES.RESET:
     case USER_MANAGE_ACTION_TYPES.EXPORT_FILE:

@@ -48,7 +48,7 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
     file: USER_MANAGE_ACTION_TYPES.MESSAGE_DROP_DEFAUL,
     fileImport: '',
     image: '',
-    modal: false,
+    modal: this.props.isOpenModal,
     check: false,
     current: 0,
     headerFields: [],
@@ -320,7 +320,7 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
           <Modal isOpen={this.state.modal} id="modal-import">
             <PerfectScrollbar>
               <ModalHeader toggle={this.toggle} id="create-properties">
-                <Translate contentKey="userManagement.infomation.merge.title" />
+                IMPORT FILE
               </ModalHeader>
               <ModalBody>
                 <AvForm>
@@ -382,7 +382,8 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
 const mapStateToProps = (storeState: IRootState) => ({
   loading: storeState.userManagement.loading,
   listFileHeader: storeState.userManagement.headerFile,
-  listFields: storeState.userManagement.listFields
+  listFields: storeState.userManagement.listFields,
+  isOpenModal: storeState.userManagement.isOpenModalImport
 });
 
 const mapDispatchToProps = { importFileAction, uploadFileExcel, getFields };

@@ -9,7 +9,7 @@ import { Button, Radio, Icon } from 'antd';
 import { Translate } from 'react-jhipster';
 import Loader from 'react-loader-advanced';
 import LoaderAnim from 'react-loaders';
-import { getUser, exportFileResult } from 'app/actions/user-management';
+import { getUser, exportFileResult, openModalImport } from 'app/actions/user-management';
 import { IRootState } from 'app/reducers';
 
 export interface IUserDetailProps
@@ -21,7 +21,7 @@ export interface IUserDetailProps
 
 export class UserDetail extends React.Component<IUserDetailProps> {
   render() {
-    const { listFile, loading } = this.props;
+    const { listFile, loading, openModalImport } = this.props;
     var hiddenLink = 'link-result';
     var noRecord, numberError;
     if (listFile.error === 0) {
@@ -46,7 +46,6 @@ export class UserDetail extends React.Component<IUserDetailProps> {
       hiddenLink = 'classHiden';
     }
 
-    const url = ' http://171.244.40.91:8088/v1/customer/import-result?fileName=' + listFile.fileName;
     const spinner = <LoaderAnim type="ball-pulse" active={true} />;
     return (
       <Container fluid>
@@ -60,7 +59,13 @@ export class UserDetail extends React.Component<IUserDetailProps> {
                   </CardTitle>
                 </Col>
                 <Col md="6" style={{ textAlign: 'right' }}>
-                  <Button type="primary">
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      window.location.assign('/#/app/views/customers/user-management');
+                      this.props.openModalImport();
+                    }}
+                  >
                     &nbsp;
                     <span className="d-none d-md-inline">
                       <Translate contentKey="entity.action.continue" />
@@ -210,7 +215,11 @@ const mapStateToProps = (storeState: IRootState) => ({
   loading: storeState.userManagement.loading
 });
 
-const mapDispatchToProps = { getUser, exportFileResult };
+const mapDispatchToProps = {
+  getUser,
+  exportFileResult,
+  openModalImport
+};
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

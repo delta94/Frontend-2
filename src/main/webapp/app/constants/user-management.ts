@@ -28,7 +28,8 @@ export const USER_MANAGE_ACTION_TYPES = {
   IMPORT_FILE: 'userManagement/IMPORT_FILE',
   COMPARE_USER: 'userManagement/COMPARE_USER',
   MERGE_USER: 'userManagement/MERGE_USER',
-  RESET_MESSAGE: 'userManagement/RESET_MESSAGE'
+  RESET_MESSAGE: 'userManagement/RESET_MESSAGE',
+  OPEN_MODAL: 'userManagement/OPEN_MODAL'
 };
 
 export const CAMPAIGN_MANAGE_ACTION_TYPE = {
