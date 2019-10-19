@@ -80,7 +80,8 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
       isOpenPopFirst: false,
       isOpenPopLast: false,
       isOpenPopEmail: false,
-      isOpenPopMobile: false
+      isOpenPopMobile: false,
+      isOpenPopTag: false
     });
   };
 
@@ -494,7 +495,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                             Chỉnh sửa{' '}
                           </Button>{' '}
                           &nbsp;
-                          <Button onClick={this.closePopover}>Hủy bỏ</Button>
+                          <Button onClick={this.hide}>Hủy bỏ</Button>
                         </div>
                       </div>
                     }
@@ -502,7 +503,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                     visible={isOpenPopTag}
                     onVisibleChange={event => this.handleVisibleChange(event, 'tag', '')}
                   >
-                    {user.tags ? user.tags.map(event => event.name) : <span className="empty">Click to add</span>}
+                    {user.tags.length > 0 ? user.tags.map(event => event.name) : <span className="empty">Click to add</span>}
                   </Popover>
                 </div>
               </div>
