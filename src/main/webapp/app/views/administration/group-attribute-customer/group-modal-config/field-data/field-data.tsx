@@ -7,6 +7,8 @@ import { IListFieldData } from 'app/common/model/group-attribute-customer';
 import { ISearchAdvanced } from '../../../../../common/model/group-attribute-customer';
 import { Moment } from 'moment';
 import moment from 'moment';
+import { ICreateGroupState } from '../../../properties-customer/create-group/create-group';
+import { connect } from 'react-redux';
 const { Option } = Select;
 
 const list_condition_operator = {
@@ -21,7 +23,6 @@ interface IFieldDataProps extends StateProps, DispatchProps {
   id?: string;
   last_index?: boolean;
   logicalOperator?: string;
-  list_field_data?: IListFieldData[];
   default_data?: ISearchAdvanced;
   updateValueFromState: Function;
   deleteComponentById: Function;
@@ -42,6 +43,7 @@ interface IFieldDataState {
   value_radio?: string;
   searchAdvanced: ISearchAdvanced;
   default_data: ISearchAdvanced;
+  default_title?: string;
 }
 
 class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
@@ -64,24 +66,28 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
       value: '',
       operator: ''
     },
-    default_data: {}
+    default_data: {},
+    default_title: ''
   };
 
   // Chose type of render in reuseComponent
-  handleChoseOption = (id_field: string, item?: any) => {
+  handleChoseOption = (id_field?: string, item?: any) => {
     let key_split = item.key;
     let { searchAdvanced } = this.state;
     let { list_field_data, id } = this.props;
     let type = '';
     let fieldId = '';
+    let fieldTitle = '';
 
     // Add field
     list_field_data.forEach(item => {
       if (item.id === id_field) {
         type = item.type;
         fieldId = item.code;
+        fieldTitle = item.title;
       }
     });
+    console.log(event);
 
     let list_option = key_split.split('||');
     this.setState({ type, searchAdvanced });
@@ -89,21 +95,29 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
     this.setSearchAdvancedData(fieldId, 'fieldId');
     this.setSearchAdvancedData(fieldId, 'fieldCode');
     this.setSearchAdvancedData(type, 'fieldType');
+    this.setSearchAdvancedData(fieldTitle, 'fieldTitle');
+    this.setSearchAdvancedData(fieldId, 'fieldValue');
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.default_data !== prevState.default_data) {
-      let { default_data } = nextProps;
-      let { value_input, value_check_box, value_dropdown, value_radio, value_datepicker } = prevState;
-      let { operator } = prevState;
+      let { default_data, list_field_data } = nextProps;
+      let { value_input, value_check_box, value_dropdown, value_radio, value_datepicker, operator, default_title } = prevState;
       if (operator !== default_data.operator) {
-        operator === default_data.operator;
+        operator = default_data.operator;
       }
 
-      console.log(default_data);
+      list_field_data &&
+        list_field_data.forEach(item => {
+          if (item.code === default_data.fieldCode) {
+            default_title = item.title;
+          }
+        });
+
       switch (default_data.fieldType) {
         case TYPE_FIELD.TEXT_INPUT:
           value_input = default_data.value;
+
           break;
 
         case TYPE_FIELD.DATE:
@@ -139,7 +153,8 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
         value_datepicker,
         operator,
         defaultValue: default_data.fieldTitle,
-        default_data
+        default_data,
+        default_title
       };
     }
 
@@ -194,8 +209,6 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
   setValueCheckBox = event => {
     this.setState({ value_check_box: event });
     let newValue = '';
-
-    console.log(event);
     event.forEach((item, index) => {
       if (index !== event.length - 1) {
         newValue += item + '||';
@@ -242,7 +255,17 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
 
   render() {
     let { list_field_data, id, last_index, logicalOperator, default_data } = this.props;
-    let { list_of_operator, type, options, value_radio, value_dropdown, value_input, value_datepicker, value_check_box } = this.state;
+    let {
+      list_of_operator,
+      type,
+      options,
+      value_radio,
+      value_dropdown,
+      value_input,
+      value_datepicker,
+      value_check_box,
+      default_title
+    } = this.state;
     let render_cpn = null;
     console.log(this.state);
 
@@ -299,6 +322,7 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
         render_cpn = <Input key={id + 'input'} readOnly />;
         break;
     }
+
     return (
       <div className="field-data" key={id}>
         <Row>
@@ -306,7 +330,13 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
             <div>
               <Select
                 key={id}
-                defaultValue={default_data.fieldTitle ? default_data.fieldTitle : 'Chọn trường thông tin'}
+                defaultValue={
+                  default_title && default_title !== ''
+                    ? default_title
+                    : default_data.fieldTitle
+                    ? default_data.fieldTitle
+                    : 'Chọn trường thông tin'
+                }
                 style={{ width: '100%' }}
                 onChange={(type, item) => this.handleChoseOption(type, item)}
               >
@@ -369,11 +399,16 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
   }
 }
 
-const mapStateToProps = () => ({});
+const mapStateToProps = ({ groupCustomerState }: IRootState) => ({
+  list_field_data: groupCustomerState.list_field_data
+});
 
 const mapDispatchToProps = {};
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default FieldData;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(FieldData);

@@ -56,6 +56,7 @@ interface IGroupModalConfigState {
   textSearch?: string;
   pageIndex: number;
   pageSize: number;
+  defualtFieldTitle?: string;
   single_group_field?: {
     categoryId?: string;
     categoryName?: string;
@@ -84,6 +85,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
     textSearch: '',
     pageIndex: 0,
     pageSize: 10,
+    defualtFieldTitle: '',
     single_group_field: {
       categoryId: '',
       categoryName: '',
@@ -118,6 +120,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
         advancedSearches = customerAdvancedSave.advancedSearches;
         customerAdvancedSave.advancedSearches.forEach((item, index) => {
           let id = makeRandomId(16);
+
           advancedSearchesData.push({
             id: makeRandomId(8),
             advancedSearch: item

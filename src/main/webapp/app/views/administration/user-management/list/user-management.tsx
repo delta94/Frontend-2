@@ -211,6 +211,13 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                 Lọc bảng
               </Button>
             </Dropdown>
+
+            <div>
+              <label>
+                <Icon type="setting" /> Tìm kiếm nâng cao
+              </label>
+            </div>
+            <Row />
             <Table responsive striped>
               <thead>
                 <tr className="text-center">
