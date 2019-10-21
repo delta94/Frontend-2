@@ -103,7 +103,12 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.single_group_field.categoryId !== '' && nextProps.single_group_field !== prevState.single_group_field) {
+    if (
+      nextProps.single_group_field.categoryId !== '' &&
+      nextProps.id_list_customer !== '' &&
+      nextProps.id_list_customer &&
+      nextProps.single_group_field !== prevState.single_group_field
+    ) {
       let { customerAdvancedSave } = nextProps.single_group_field;
       let logicalOperator = '';
       let advancedSearchesData = [];
