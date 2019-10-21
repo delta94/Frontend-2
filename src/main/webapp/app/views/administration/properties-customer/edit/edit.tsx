@@ -36,7 +36,8 @@ export class Edit extends React.Component<IEditProps, IEditState> {
 
   toggle = () => {
     this.setState({
-      modal: !this.state.modal
+      modal: !this.state.modal,
+      validField: ''
     });
   };
 
@@ -112,8 +113,10 @@ export class Edit extends React.Component<IEditProps, IEditState> {
               disabled={loading}
               color="primary"
               onClick={async () => {
-                if (String($(`input#default-value`).val()).trim().length === 0) {
-                  this.setState({ validField: ' *Vui lòng nhập giá trị ' });
+                let type = `${$(`input#tag`).val()}`;
+                let defaultValue = String($(`input#default-value`).val());
+                if (defaultValue.trim().length === 0 && String(type) !== 'Text Input') {
+                  this.setState({ validField: ' * Vui lòng nhập giá trị ' });
                 } else {
                   let data = {
                     id: id,

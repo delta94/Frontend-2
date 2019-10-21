@@ -206,7 +206,9 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
                       <Translate contentKey="properties-management.form.name" />
                     </Label>
                     <Input maxLength={160} name="name" label="Field Name" onChange={this.getValueName} required />
-                    <p className="error">{this.state.validateName}</p>
+                    <p style={{ marginTop: '5px' }} className="error">
+                      {this.state.validateName}
+                    </p>
                   </div>
                   <div>
                     <Col md="5" className="option-create">

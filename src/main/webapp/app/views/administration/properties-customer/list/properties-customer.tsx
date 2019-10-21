@@ -177,7 +177,7 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
                       <th className="hand">
                         <Translate contentKey="properties-management.form.type" />
                       </th>
-                      <th className="hand">
+                      <th className="hand" style={{ width: '25%', wordBreak: 'break-all' }}>
                         <Translate contentKey="properties-management.form.persionalization" />
                       </th>
                       <th className="hand">
@@ -205,7 +205,7 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
                   <tr {...props}>
                     <td>{value.title}</td>
                     <td>{value.type}</td>
-                    <td>{value.personalizationTag}</td>
+                    <td>{value.personalizationTag.length > 2 ? value.personalizationTag : ''}</td>
                     <td className="text-center">
                       {value.title === 'First Name' ||
                       value.title === 'Last Name' ||

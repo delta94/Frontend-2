@@ -231,7 +231,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                       return (
                         <tr id={event.id} key={`user-${index}`}>
                           <td>{this.state.activePage * this.state.itemsPerPage + index + 1}</td>
-                          <td style={{ width: '25%', wordBreak: 'break-word' }} className="name">
+                          <td style={{ width: '20%', wordBreak: 'break-word' }} className="name">
                             {' '}
                             {event.firstName + ' ' + event.lastName}
                           </td>

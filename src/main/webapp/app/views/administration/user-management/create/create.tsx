@@ -121,7 +121,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
       this.setState({ validLastName: '' });
     }
     if (valueEmail === '') {
-      this.setState({ validEmail: '* Vui lòng nhập số điện thoại' });
+      this.setState({ validEmail: '* Vui lòng nhập email' });
       countError++;
     } else if (!re.test(String(valueEmail))) {
       this.setState({ validEmail: '* Vui lòng nhập đúng định dạng email' });
