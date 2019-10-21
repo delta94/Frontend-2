@@ -110,16 +110,21 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
       nextProps.single_group_field !== prevState.single_group_field
     ) {
       let { customerAdvancedSave } = nextProps.single_group_field;
+      let { type_modal } = nextProps;
       let logicalOperator = '';
       let advancedSearchesData = [];
       let list_field_data_cpn = [];
       let advancedSearches = [];
 
-      if (customerAdvancedSave.logicalOperator !== '') {
+      if (customerAdvancedSave.logicalOperator !== '' && type_modal !== INSERT_CUSTOMER_GROUP) {
         logicalOperator = customerAdvancedSave.logicalOperator;
       }
 
-      if (customerAdvancedSave.advancedSearches && customerAdvancedSave.advancedSearches.length > 0) {
+      if (
+        customerAdvancedSave.advancedSearches &&
+        customerAdvancedSave.advancedSearches.length > 0 &&
+        type_modal !== INSERT_CUSTOMER_GROUP
+      ) {
         advancedSearches = customerAdvancedSave.advancedSearches;
         customerAdvancedSave.advancedSearches.forEach((item, index) => {
           let id = makeRandomId(16);
