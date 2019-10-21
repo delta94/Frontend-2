@@ -470,7 +470,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                             title={value.type}
                             trigger="click"
                           >
-                            {value.value ? value.value : <span className="empty">Click to add</span>}
+                            {value.value && value.value.trim().length > 0 ? value.value : <span className="empty">Click to add</span>}
                           </Popover>
                         </div>
                       </div>
@@ -506,7 +506,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                     visible={isOpenPopTag}
                     onVisibleChange={event => this.handleVisibleChange(event, 'tag', '')}
                   >
-                    {user.tags.length > 0 ? user.tags.map(event => event.name) : <span className="empty">Click to add</span>}
+                    {user.tags && user.tags.length > 0 ? user.tags.map(event => event.name) : <span className="empty">Click to add</span>}
                   </Popover>
                 </div>
               </div>

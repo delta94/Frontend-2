@@ -46,6 +46,19 @@ export class Delete extends React.Component<IDeleteProps, IDeleteState> {
     });
   };
 
+  deleteUser = async () => {
+    let { deleteUserAction, id, openModal } = this.props;
+    deleteUserAction(id);
+    this.toggle();
+    openModal({
+      show: true,
+      type: 'success',
+      title: translate('modal-data.title.success'),
+      text: translate('alert.complete-delete')
+    });
+    window.location.assign('/#/app/views/customers/user-management');
+  };
+
   render() {
     const { loading } = this.props;
     return (
@@ -133,16 +146,8 @@ export class Delete extends React.Component<IDeleteProps, IDeleteState> {
             <Button
               color="primary"
               disabled={this.state.valueBtn1 && this.state.valueBtn2 && this.state.valueBtn3 && !loading ? false : true}
-              onClick={async () => {
-                this.props.deleteUserAction(this.props.id);
-                this.toggle();
-                this.props.openModal({
-                  show: true,
-                  type: 'success',
-                  title: translate('modal-data.title.success'),
-                  text: translate('alert.complete-delete')
-                });
-                window.location.assign('/#/app/views/customers/user-management');
+              onClick={() => {
+                this.deleteUser();
               }}
             >
               <Translate contentKey="properties-management.delete.button" />

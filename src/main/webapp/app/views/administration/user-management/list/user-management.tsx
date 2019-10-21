@@ -109,7 +109,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
         </Menu.Item>
         <Menu.Item key="3">
           <Checkbox defaultChecked={true} onChange={event => this.onChangeCheckBox(event, 'tag')}>
-            Phân loại
+            Tag
           </Checkbox>
         </Menu.Item>
         <Menu.Item key="4">

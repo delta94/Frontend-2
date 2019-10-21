@@ -306,10 +306,24 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
       this.setState({ check: true });
     }
   }
+  mergeUser = async () => {
+    const { mergeUserAction, openModal } = this.props;
+    let { userId } = this.state;
+    let data = { id: userId };
+    await mergeUserAction(userId, data);
+    openModal({
+      show: true,
+      type: 'success',
+      title: translate('modal-data.title.success'),
+      text: 'Merge thành công'
+    });
+    this.props.onClick();
+    this.toggle();
+  };
 
   render() {
-    const { loading, listDuplicateUser } = this.props;
-    const { current, check } = this.state;
+    const { loading } = this.props;
+    const { current } = this.state;
     return (
       <span className="d-inline-block mb-2 mr-2">
         <Button className="btn float-right jh-create-entity" outline color="primary" onClick={this.toggle}>
@@ -352,13 +366,8 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
                   <Button
                     color="primary"
                     disabled={this.state.valueBtn1 && this.state.valueBtn2 && this.state.valueBtn3 && !loading ? false : true}
-                    onClick={async () => {
-                      const { mergeUserAction } = this.props;
-                      let { userId } = this.state;
-                      let data = { id: userId };
-                      await mergeUserAction(userId, data);
-                      this.props.onClick();
-                      this.toggle();
+                    onClick={() => {
+                      this.mergeUser();
                     }}
                   >
                     <Translate contentKey="userManagement.home.merge" />
