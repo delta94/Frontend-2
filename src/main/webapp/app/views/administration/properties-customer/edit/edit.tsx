@@ -41,7 +41,30 @@ export class Edit extends React.Component<IEditProps, IEditState> {
     });
   };
 
-  handlerChange = e => {};
+  editProp = async () => {
+    let { id } = this.props;
+    let type = `${$(`input#tag`).val()}`;
+    let defaultValue = String($(`input#default-value`).val());
+    if (defaultValue.trim().length === 0 && String(type) !== 'Text Input') {
+      this.setState({ validField: ' * Vui lòng nhập giá trị ' });
+    } else {
+      let data = {
+        id: id,
+        title: $(`input#field-name`).val(),
+        type: `${$(`input#tag`).val()}`,
+        personalizationTag: `%${$(`input#default-value`).val()}%`,
+        fieldValue: `${$(`input#default-value`).val()}`
+      };
+      await this.props.updateProp(id, data);
+      this.props.getListProp();
+      this.props.openModal({
+        show: true,
+        type: 'success',
+        title: translate('modal-data.title.success'),
+        text: translate('properties-management.edit.complete')
+      });
+    }
+  };
 
   render() {
     const { getList, id, loading } = this.props;
@@ -69,14 +92,7 @@ export class Edit extends React.Component<IEditProps, IEditState> {
                             <Label>
                               <Translate contentKey="properties-management.form.persionalization" />
                             </Label>
-                            <Input
-                              maxLength={160}
-                              addonBefore="%"
-                              addonAfter="%"
-                              defaultValue={event.type}
-                              onChange={this.handlerChange}
-                              id="tag"
-                            />
+                            <Input maxLength={160} addonBefore="%" addonAfter="%" defaultValue={event.type} id="tag" />
                           </div>
                           <div className="option-create">
                             <Label>
@@ -112,27 +128,8 @@ export class Edit extends React.Component<IEditProps, IEditState> {
             <Button
               disabled={loading}
               color="primary"
-              onClick={async () => {
-                let type = `${$(`input#tag`).val()}`;
-                let defaultValue = String($(`input#default-value`).val());
-                if (defaultValue.trim().length === 0 && String(type) !== 'Text Input') {
-                  this.setState({ validField: ' * Vui lòng nhập giá trị ' });
-                } else {
-                  let data = {
-                    id: id,
-                    title: $(`input#field-name`).val(),
-                    type: `${$(`input#tag`).val()}`,
-                    personalizationTag: `%${$(`input#default-value`).val()}%`
-                  };
-                  await this.props.updateProp(id, data);
-                  this.props.getListProp();
-                  this.props.openModal({
-                    show: true,
-                    type: 'success',
-                    title: translate('modal-data.title.success'),
-                    text: translate('properties-management.edit.complete')
-                  });
-                }
+              onClick={() => {
+                this.editProp();
               }}
             >
               <Translate contentKey="properties-management.edit.button" />
