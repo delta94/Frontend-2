@@ -53,7 +53,7 @@ export class Edit extends React.Component<IEditProps, IEditState> {
         title: $(`input#field-name`).val(),
         type: `${$(`input#tag`).val()}`,
         personalizationTag: `%${$(`input#default-value`).val()}%`,
-        fieldValue: `${$(`input#default-value`).val()}`
+        fieldValue: $(`input#default-value`).val()
       };
       await this.props.updateProp(id, data);
       this.props.getListProp();
