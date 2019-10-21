@@ -16,11 +16,12 @@ import Loader from 'react-loader-advanced';
 import Ionicon from 'react-ionicons';
 import $ from 'jquery';
 import UserCategoryTag from './categories-tag/categories-tag';
+import { RouteComponentProps } from 'react-router';
 const { Option } = Select;
 
 const { Panel } = Collapse;
 
-export interface IBasicProps extends StateProps, DispatchProps {}
+export interface IBasicProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
 
 export interface IBasicState {
   visible: boolean;
@@ -73,6 +74,11 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
     tags: [{ id: '', name: '' }],
     isOpenPopTag: false
   };
+
+  componentDidMount() {
+    console.log(this.props.location);
+    // this.props.getDetailUser(this.props.match.params.id)
+  }
 
   hide = type => {
     this.setState({
