@@ -56,7 +56,7 @@ class GroupAttributeCustomer extends React.Component<IGroupAttributeCustomerProp
   // Set state of modal
   setStateForModal = (type_modal: string, id?: string) => {
     let { id_list_customer } = this.state;
-    if (type_modal === INSERT_CUSTOMER_GROUP) id_list_customer = '';
+    if (!id) id_list_customer = '';
     this.setState({ type_modal, id_list_customer });
     this.toggleModalConfig();
   };
@@ -92,6 +92,7 @@ class GroupAttributeCustomer extends React.Component<IGroupAttributeCustomerProp
           />
           <Row>
             <GroupCustomer setIdForListCustomer={this.setIdForListCustomer} setStateForModal={this.setStateForModal} />
+
             <GroupListCustomer id_list_customer={id_list_customer} />
             <div className="content-group-modal-attribute">
               <GroupModalConfig
