@@ -104,10 +104,6 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
           <Icon type="delete" />
           Xóa
         </Menu.Item>
-        <Menu.Item key="2" onClick={() => this.handleGroup(id, UPDATE_CUSTOMER_GROUP)}>
-          <Icon type="edit" />
-          Chỉnh sửa
-        </Menu.Item>
         <Menu.Item key="3" onClick={() => this.handleGroup(id, COPY_CUSTOMER_GROUP)}>
           <Icon type="copy" />
           Sao chép
@@ -210,7 +206,7 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
                             color: item && id_chose === item.id ? 'white' : ''
                           }}
                         >
-                          <td onClick={() => this.callListCustomer(item.id)}>{index}</td>
+                          <td onClick={() => this.callListCustomer(item.id)}>{index + 1}</td>
                           <td onClick={() => this.callListCustomer(item.id)}>{item.typeName}</td>
                           <td onClick={() => this.callListCustomer(item.id)}>
                             <div className="item-contact">
@@ -222,7 +218,10 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
                             <Dropdown.Button
                               overlay={() => this.menuDropdown(item.id)}
                               icon={<Icon type="caret-down" />}
-                              onClick={() => this.openDropdownItem(item.id)}
+                              onClick={() => {
+                                this.openDropdownItem(item.id);
+                                this.handleGroup(item.id, UPDATE_CUSTOMER_GROUP);
+                              }}
                             >
                               <span>
                                 <Icon type="edit" />
