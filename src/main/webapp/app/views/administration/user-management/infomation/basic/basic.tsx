@@ -16,12 +16,12 @@ import Loader from 'react-loader-advanced';
 import Ionicon from 'react-ionicons';
 import $ from 'jquery';
 import UserCategoryTag from './categories-tag/categories-tag';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps, RouteProps } from 'react-router';
 const { Option } = Select;
 
 const { Panel } = Collapse;
 
-export interface IBasicProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
+export interface IBasicProps extends StateProps, DispatchProps, RouteProps {}
 
 export interface IBasicState {
   visible: boolean;
@@ -76,7 +76,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
   };
 
   componentDidMount() {
-    console.log(this.props.location);
+    console.log(this.props);
     // this.props.getDetailUser(this.props.match.params.id)
   }
 

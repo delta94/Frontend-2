@@ -255,7 +255,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                                 className="buttonUpdate"
                                 onClick={async () => {
                                   await getDetailUser(event.id);
-                                  history.push(`/app/views/customers/user-management/${event.id}/info`);
+                                  history.push(`/app/views/customers/user-management/info/${event.id}`);
                                 }}
                                 color="primary"
                                 size="sm"
