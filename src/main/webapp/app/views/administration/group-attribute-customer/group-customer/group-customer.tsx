@@ -235,7 +235,7 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
                   ) : (
                     <tr>
                       <td className="none-data" colSpan={100}>
-                        Không có dữ liệu khách hàng
+                        Không có nhóm dữ liệu khách hàng
                       </td>
                     </tr>
                   )}

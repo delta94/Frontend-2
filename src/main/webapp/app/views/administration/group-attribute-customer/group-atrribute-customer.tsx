@@ -15,6 +15,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
 import { INSERT_CUSTOMER_GROUP } from '../../../constants/group-atrribute-customer';
 import { IOpenModal } from '../../../reducers/modal';
+import { getFindCustomerWithConditionAction } from '../../../actions/group-attribute-customer';
 
 export interface IGroupAttributeCustomerProps extends StateProps, DispatchProps {}
 
@@ -57,6 +58,9 @@ class GroupAttributeCustomer extends React.Component<IGroupAttributeCustomerProp
   setStateForModal = (type_modal: string, id?: string) => {
     let { id_list_customer } = this.state;
     if (!id) id_list_customer = '';
+
+    if (type_modal === INSERT_CUSTOMER_GROUP) {
+    }
     this.setState({ type_modal, id_list_customer });
     this.toggleModalConfig();
   };
@@ -76,7 +80,19 @@ class GroupAttributeCustomer extends React.Component<IGroupAttributeCustomerProp
       <div className="group-attribute-customer">
         <div id="user-management-title">
           <Translate contentKey="group-attribute-customer.header" />
-          <Button color="primary" style={{ float: 'right' }} onClick={() => this.setStateForModal(INSERT_CUSTOMER_GROUP)}>
+          <Button
+            color="primary"
+            style={{ float: 'right' }}
+            onClick={() => {
+              this.setStateForModal(INSERT_CUSTOMER_GROUP);
+              this.props.getFindCustomerWithConditionAction({
+                logicalOperator: '',
+                advancedSearches: [],
+                page: 0,
+                pageSize: 10
+              });
+            }}
+          >
             <FontAwesomeIcon icon={faPlus} />
             Tạo nhóm mới
           </Button>
@@ -115,6 +131,7 @@ const mapStateToProps = ({ groupCustomerState }: IRootState) => ({
 });
 
 const mapDispatchToProps = {
+  getFindCustomerWithConditionAction,
   openModal,
   closeModal
 };

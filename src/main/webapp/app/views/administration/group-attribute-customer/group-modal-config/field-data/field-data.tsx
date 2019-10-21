@@ -7,6 +7,7 @@ import { IListFieldData } from 'app/common/model/group-attribute-customer';
 import { ISearchAdvanced } from '../../../../../common/model/group-attribute-customer';
 import { Moment } from 'moment';
 import moment from 'moment';
+import { INSERT_CUSTOMER_GROUP } from 'app/constants/group-atrribute-customer';
 const { Option } = Select;
 
 const list_condition_operator = {
@@ -69,6 +70,69 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
     default_title: ''
   };
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.default_data !== prevState.default_data) {
+      let { default_data, list_field_data, type_modal } = nextProps;
+      let { value_input, value_check_box, value_dropdown, value_radio, value_datepicker, operator, default_title } = prevState;
+
+      if (type_modal !== INSERT_CUSTOMER_GROUP) {
+        if (operator !== default_data.operator) {
+          operator === default_data.operator;
+        }
+
+        list_field_data.forEach(item => {
+          if (item.code === default_data.fieldCode) default_title = item.title;
+        });
+
+        switch (default_data.fieldType) {
+          case TYPE_FIELD.TEXT_INPUT:
+            value_input = default_data.value;
+            break;
+
+          case TYPE_FIELD.DATE:
+            value_datepicker = default_data.value;
+
+            break;
+
+          case TYPE_FIELD.DROP_DOWN:
+            value_dropdown = default_data.value;
+
+            break;
+
+          case TYPE_FIELD.CHECK_BOX:
+            value_check_box = default_data.value.split('||');
+
+            break;
+
+          case TYPE_FIELD.RADIO_BUTTON:
+            value_radio = default_data.value;
+            break;
+
+          default:
+            break;
+        }
+
+        return {
+          type: default_data.fieldType,
+          searchAdvanced: default_data,
+          value_input,
+          value_check_box,
+          value_radio,
+          value_dropdown,
+          value_datepicker,
+          operator,
+          defaultValue: default_data.fieldTitle,
+          default_data,
+          default_title
+        };
+      } else {
+        return null;
+      }
+    }
+
+    return null;
+  }
+
   // Chose type of render in reuseComponent
   handleChoseOption = (id_field: string, item?: any) => {
     let key_split = item.key;
@@ -95,64 +159,6 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
     this.setSearchAdvancedData(type, 'fieldType');
     this.setSearchAdvancedData(fieldTitle, 'fieldType');
   };
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.default_data !== prevState.default_data) {
-      let { default_data, list_field_data } = nextProps;
-      let { value_input, value_check_box, value_dropdown, value_radio, value_datepicker, operator, default_title } = prevState;
-      if (operator !== default_data.operator) {
-        operator === default_data.operator;
-      }
-
-      list_field_data.forEach(item => {
-        if (item.code === default_data.fieldCode) default_title = item.title;
-      });
-
-      switch (default_data.fieldType) {
-        case TYPE_FIELD.TEXT_INPUT:
-          value_input = default_data.value;
-          break;
-
-        case TYPE_FIELD.DATE:
-          value_datepicker = default_data.value;
-
-          break;
-
-        case TYPE_FIELD.DROP_DOWN:
-          value_dropdown = default_data.value;
-
-          break;
-
-        case TYPE_FIELD.CHECK_BOX:
-          value_check_box = default_data.value.split('||');
-
-          break;
-
-        case TYPE_FIELD.RADIO_BUTTON:
-          value_radio = default_data.value;
-          break;
-
-        default:
-          break;
-      }
-
-      return {
-        type: default_data.fieldType,
-        searchAdvanced: default_data,
-        value_input,
-        value_check_box,
-        value_radio,
-        value_dropdown,
-        value_datepicker,
-        operator,
-        defaultValue: default_data.fieldTitle,
-        default_data,
-        default_title
-      };
-    }
-
-    return null;
-  }
 
   // Chose Component for reuseComponent
   handleChoseTypeOfRenderCpn = (type: string, list_option: String[]) => {
@@ -202,8 +208,6 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
   setValueCheckBox = event => {
     this.setState({ value_check_box: event });
     let newValue = '';
-
-    console.log(event);
     event.forEach((item, index) => {
       if (index !== event.length - 1) {
         newValue += item + '||';
@@ -227,7 +231,7 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
   };
 
   // Set value for date picker
-  setValueForDatePicker = (date, dateString) => {
+  setValueForDatePicker = (date?: Moment) => {
     let time = moment(date).format('YYYY/MM/DD HH:mm:ss');
     this.setState({ value_datepicker: time });
     this.setSearchAdvancedData(time, 'value');
