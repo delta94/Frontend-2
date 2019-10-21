@@ -8,7 +8,7 @@ import { IRootState } from 'app/reducers';
 import { getListTagDataAction } from '../../../../actions/tag-management';
 import ReactPaginate from 'react-paginate';
 import { Input, Card, Modal } from 'antd';
-// import TagModal from '../tag-modal/tag-modal';
+// import TagModal from "../tag-modal/tag-modal";
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
 import FieldData from './field-data/field-data';
 import {
@@ -107,9 +107,10 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
       nextProps.single_group_field.categoryId !== '' &&
       nextProps.id_list_customer !== '' &&
       nextProps.id_list_customer &&
-      nextProps.single_group_field !== prevState.single_group_field
+      nextProps.single_group_field !== prevState.single_group_field &&
+      nextProps.type_modal !== INSERT_CUSTOMER_GROUP
     ) {
-      let { customerAdvancedSave } = nextProps.single_group_field;
+      let { customerAdvancedSave, categoryName } = nextProps.single_group_field;
       let { type_modal } = nextProps;
       let logicalOperator = '';
       let advancedSearchesData = [];
@@ -120,32 +121,26 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
         logicalOperator = customerAdvancedSave.logicalOperator;
       }
 
-      if (
-        customerAdvancedSave.advancedSearches &&
-        customerAdvancedSave.advancedSearches.length > 0 &&
-        type_modal !== INSERT_CUSTOMER_GROUP
-      ) {
-        advancedSearches = customerAdvancedSave.advancedSearches;
-        customerAdvancedSave.advancedSearches.forEach((item, index) => {
-          let id = makeRandomId(16);
-          advancedSearchesData.push({
-            id: makeRandomId(8),
-            advancedSearch: item
-          });
-
-          list_field_data_cpn.push({
-            id,
-            name: 'new',
-            last_index: customerAdvancedSave.advancedSearches.length - 1 === index ? true : false,
-            default_data: item
-          });
+      advancedSearches = customerAdvancedSave.advancedSearches;
+      customerAdvancedSave.advancedSearches.forEach((item, index) => {
+        let id = makeRandomId(16);
+        advancedSearchesData.push({
+          id: makeRandomId(8),
+          advancedSearch: item
         });
 
-        advancedSearches = customerAdvancedSave.advancedSearches;
-      }
+        list_field_data_cpn.push({
+          id,
+          name: 'new',
+          last_index: customerAdvancedSave.advancedSearches.length - 1 === index ? true : false,
+          default_data: item
+        });
+      });
+
+      advancedSearches = customerAdvancedSave.advancedSearches;
 
       return {
-        categoryName: nextProps.single_group_field.categoryName,
+        categoryName,
         single_group_field: nextProps.single_group_field,
         advancedSearchesData,
         list_field_data_cpn,
@@ -153,7 +148,6 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
         advancedSearches
       };
     }
-
     return null;
   }
 
@@ -177,7 +171,6 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
     }
 
     if (advancedSearchesData.length === 1) logicalOperator = '';
-
     this.setState({ advancedSearchesData, advancedSearches, logicalOperator });
   };
 

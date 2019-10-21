@@ -21,7 +21,7 @@ interface IGroupDeleteModalState {
 
 export default class GroupDeleteModal extends React.PureComponent<IGroupDeleteModalProps, IGroupDeleteModalState> {
   state: IGroupDeleteModalState = {
-    is_disable: true,
+    is_disable: false,
     listCheck: [false, false, false, false, false],
     listCheckBox: [
       {
@@ -57,6 +57,24 @@ export default class GroupDeleteModal extends React.PureComponent<IGroupDeleteMo
     ]
   };
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (prevState.listCheck) {
+      let is_disable = false;
+      let check_all = 0;
+      console.log(prevState.listCheck);
+      prevState.listCheck.forEach(item => {
+        if (item) check_all += 1;
+        if (check_all === 5) is_disable = true;
+      });
+
+      return {
+        is_disable
+      };
+    }
+
+    return null;
+  }
+
   handleCheckBox = key => {
     let { listCheck } = this.state;
     listCheck[key] = !listCheck[key];
@@ -71,15 +89,7 @@ export default class GroupDeleteModal extends React.PureComponent<IGroupDeleteMo
 
   render() {
     let { is_open, id_delete } = this.props;
-    let { listCheckBox, listCheck } = this.state;
-
-    let is_disable = false;
-
-    listCheck.forEach(item => {
-      if (item === false) {
-        is_disable === true;
-      }
-    });
+    let { listCheckBox, is_disable } = this.state;
 
     return (
       <Modal isOpen={is_open} toggle={() => this.props.handleDeleteModal()}>
@@ -115,7 +125,7 @@ export default class GroupDeleteModal extends React.PureComponent<IGroupDeleteMo
           <Button
             key="delete"
             color="danger"
-            disabled={is_disable}
+            disabled={!is_disable}
             onClick={() => {
               this.props.deleteGroupFromState(id_delete);
             }}

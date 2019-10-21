@@ -219,7 +219,6 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
                               overlay={() => this.menuDropdown(item.id)}
                               icon={<Icon type="caret-down" />}
                               onClick={() => {
-                                this.openDropdownItem(item.id);
                                 this.handleGroup(item.id, UPDATE_CUSTOMER_GROUP);
                               }}
                             >

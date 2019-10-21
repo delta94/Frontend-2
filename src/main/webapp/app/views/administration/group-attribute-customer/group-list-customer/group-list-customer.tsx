@@ -85,7 +85,7 @@ class GroupListCustomer extends React.Component<IGroupListCustomerProps, IGroupL
               <thead>
                 <tr className="text-center">
                   <th className="checkbox-td">Stt</th>
-                  <th>Họ và tên</th>
+                  <th>Họ tên</th>
                   <th>Số điện thoại</th>
                   <th>Email</th>
                   <th>Phân loại</th>
