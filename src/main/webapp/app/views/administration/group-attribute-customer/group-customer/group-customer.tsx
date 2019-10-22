@@ -56,11 +56,6 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
     id_chose: ''
   };
 
-  componentDidMount() {
-    let { textSearch } = this.state;
-    this.props.getListCustomerGroupDataAction(textSearch);
-  }
-
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.list_group_customer !== prevState.list_group_customer) {
       let listDropdownItem = nextProps.list_group_customer && nextProps.list_group_customer.map(item => ({ ...item, isShow: false }));
@@ -94,8 +89,6 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
     this.setState({ open_modal_delete: false });
   }
 
-  //TODO: Copy group
-
   // Render menu dropdown
   menuDropdown = (id?: string) => {
     return (
@@ -116,7 +109,7 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
   async handleGroup(id: string, type_modal?: string) {
     await this.props.setIdForListCustomer(id);
     await this.props.getSingleCustomerGroupFieldDataAction(id);
-    await this.props.setStateForModal(type_modal);
+    await this.props.setStateForModal(type_modal, id);
     await this.getDataOfListCustomerCondition();
   }
 

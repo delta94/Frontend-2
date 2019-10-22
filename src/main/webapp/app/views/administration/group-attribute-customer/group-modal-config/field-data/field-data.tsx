@@ -22,6 +22,7 @@ interface IFieldDataProps extends StateProps, DispatchProps {
   id?: string;
   last_index?: boolean;
   logicalOperator?: string;
+  type_modal?: string;
   list_field_data?: IListFieldData[];
   default_data?: ISearchAdvanced;
   updateValueFromState: Function;

@@ -14,7 +14,8 @@ import FieldData from './field-data/field-data';
 import {
   getListFieldDataAction,
   postInsertCustomerGroupAction,
-  getFindCustomerWithConditionAction
+  getFindCustomerWithConditionAction,
+  getListCustomerWithGroupIdDataAction
 } from '../../../../actions/group-attribute-customer';
 import { ISearchAdvanced } from 'app/common/model/group-attribute-customer';
 import LoaderAnim from 'react-loaders';
@@ -300,6 +301,8 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
             advancedSearches
           }
         });
+
+        await this.props.getListCustomerWithGroupIdDataAction('', 0, 10, single_group_field.categoryId);
         break;
 
       case COPY_CUSTOMER_GROUP:
@@ -339,6 +342,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
             if (item.id)
               return (
                 <FieldData
+                  type_modal={type_modal}
                   key={item.id}
                   id={item.id}
                   list_field_data={list_field_data}
@@ -513,6 +517,7 @@ const mapDispatchToProps = {
   getFindCustomerWithConditionAction,
   getListCustomerGroupDataAction,
   postUpdateCustomerGroupAction,
+  getListCustomerWithGroupIdDataAction,
   openModal
 };
 
