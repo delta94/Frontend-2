@@ -149,7 +149,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
         />
         <Loader message={spinner1} show={loading} priority={1}>
           <div id="user-management-title">
-            <Translate contentKey="userManagement.home.title" />
+            <Translate contentKey="userManagement.home.title" /> : {this.props.totalElements}
             <CreateUser />
           </div>
           <div />
@@ -253,10 +253,8 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                             <div className="btn-group flex-btn-group-container">
                               <Button
                                 className="buttonUpdate"
-                                onClick={async () => {
-                                  await getDetailUser(event.id);
-                                  history.push(`/app/views/customers/user-management/info/${event.id}`);
-                                }}
+                                tag={Link}
+                                to={`/app/views/customers/user-management/info/${event.id}`}
                                 color="primary"
                                 size="sm"
                               >

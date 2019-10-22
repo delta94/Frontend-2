@@ -10,6 +10,7 @@ export interface IPropertiesCustomer {
   type?: string;
   personalizationTag?: string;
   fieldValue?: string;
+  value?: string;
 }
 
 export interface IListTemp {

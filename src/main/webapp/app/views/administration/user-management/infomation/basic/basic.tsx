@@ -16,12 +16,14 @@ import Loader from 'react-loader-advanced';
 import Ionicon from 'react-ionicons';
 import $ from 'jquery';
 import UserCategoryTag from './categories-tag/categories-tag';
-import { RouteComponentProps, RouteProps } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 const { Option } = Select;
 
 const { Panel } = Collapse;
 
-export interface IBasicProps extends StateProps, DispatchProps, RouteProps {}
+export interface IBasicProps extends StateProps, DispatchProps {
+  id: string;
+}
 
 export interface IBasicState {
   visible: boolean;
@@ -75,10 +77,10 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
     isOpenPopTag: false
   };
 
-  componentDidMount() {
-    console.log(this.props);
-    // this.props.getDetailUser(this.props.match.params.id)
-  }
+  componentDidMount = async () => {
+    await this.props.getDetailUser(this.props.id);
+    this.setState({ listField: this.props.user.fields, user: this.props.user });
+  };
 
   hide = type => {
     this.setState({
@@ -372,6 +374,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
               </div>
               {listField
                 ? listField.map((value, index) => {
+                    let fieldValue = String(value.personalizationTag).slice(1, value.personalizationTag.length - 1);
                     return (
                       <div className="line-info" key={index}>
                         <Label className="content-text" style={{ width: '50%' }}>
@@ -386,7 +389,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                                     <Col span={8} key={index}>
                                       <Checkbox.Group
                                         className="checkbox-update"
-                                        options={this.optionsCheckbox(String(value.fieldValue).split('||'))}
+                                        options={this.optionsCheckbox(fieldValue.split('||'))}
                                         defaultValue={String(value.value).split(',')}
                                         onChange={event => this.onChangeCheckbox(value.id, event)}
                                       />
@@ -403,15 +406,13 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                                     defaultValue={value.value}
                                   >
                                     <Row>
-                                      {String(value.fieldValue)
-                                        .split('||')
-                                        .map((event, index) => {
-                                          return (
-                                            <Col span={8} key={index}>
-                                              <Radio value={event}>{event}</Radio>
-                                            </Col>
-                                          );
-                                        })}
+                                      {fieldValue.split('||').map((event, index) => {
+                                        return (
+                                          <Col span={8} key={index}>
+                                            <Radio value={event}>{event}</Radio>
+                                          </Col>
+                                        );
+                                      })}
                                     </Row>
                                   </Radio.Group>
                                 ) : (
@@ -442,15 +443,13 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                                     id="box"
                                     onChange={event => this.handleChangeDrop(value.id, event)}
                                   >
-                                    {String(value.fieldValue)
-                                      .split('||')
-                                      .map((event, index) => {
-                                        return (
-                                          <Option key={index} value={String(event)}>
-                                            {event}
-                                          </Option>
-                                        );
-                                      })}
+                                    {fieldValue.split('||').map((event, index) => {
+                                      return (
+                                        <Option key={index} value={String(event)}>
+                                          {event}
+                                        </Option>
+                                      );
+                                    })}
                                   </Select>
                                 ) : (
                                   ''
