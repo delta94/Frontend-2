@@ -17,10 +17,12 @@ interface IGroupDeleteModalState {
   is_disable: boolean;
   listCheckBox: Array<{ key: any; description: string; checked: boolean; color: string }>;
   listCheck: any;
+  id_delete: string;
 }
 
 export default class GroupDeleteModal extends React.PureComponent<IGroupDeleteModalProps, IGroupDeleteModalState> {
   state: IGroupDeleteModalState = {
+    id_delete: '',
     is_disable: false,
     listCheck: [false, false, false, false, false],
     listCheckBox: [
@@ -116,7 +118,7 @@ export default class GroupDeleteModal extends React.PureComponent<IGroupDeleteMo
             onClick={() => {
               this.props.handleDeleteModal();
               this._closeModalDelete();
-              this.setState({ is_disable: true });
+              this.setState({ is_disable: false });
             }}
           >
             Hủy
