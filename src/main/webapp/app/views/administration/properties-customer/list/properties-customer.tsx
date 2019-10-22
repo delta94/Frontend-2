@@ -24,7 +24,7 @@ export const option = [
   { value: 'Checkbox', label: 'Checkbox' },
   { value: 'Text Input', label: 'Text Input' },
   { value: 'Radio', label: 'Radio' },
-  { value: null, label: 'Any Thing' }
+  { value: null, label: 'Tất cả' }
 ];
 export interface IPropertiesCustomerProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
 
@@ -105,7 +105,7 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
   };
 
   render() {
-    const { loading, modalState, match } = this.props;
+    const { loading, modalState } = this.props;
     let { dropItem, selectedOption } = this.state;
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
 
@@ -205,7 +205,7 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
                   <tr {...props}>
                     <td>{value.title}</td>
                     <td>{value.type}</td>
-                    <td>{value.personalizationTag.length > 2 ? value.personalizationTag : ''}</td>
+                    <td>{value.personalizationTag && value.personalizationTag.length > 2 ? value.personalizationTag : ''}</td>
                     <td className="text-center">
                       {value.title === 'First Name' ||
                       value.title === 'Last Name' ||
