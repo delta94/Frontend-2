@@ -149,17 +149,17 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
         />
         <Loader message={spinner1} show={loading} priority={1}>
           <div id="user-management-title">
-            <Translate contentKey="userManagement.home.title" /> : {this.props.totalElements}
-            <CreateUser />
+            <Row>
+              <Translate contentKey="userManagement.home.title" />
+              &nbsp; ({this.props.totalElements})
+              <CreateUser />
+            </Row>
           </div>
           <div />
           <div className="panel">
             <Row>
               <Col md="3" className="catelogry-search">
-                <Label id="catelogry-text">
-                  {' '}
-                  <Translate contentKey="userManagement.home.type" />{' '}
-                </Label>
+                <Label id="catelogry-text"> Thẻ/Tag</Label>
                 <UserCategoryTag handleChange={this.handleChange} />
               </Col>
               <Col md="4" className="catelogry-search">
@@ -218,7 +218,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                   <th className="hand" id="dateCreate">
                     Ngày khởi tạo
                   </th>
-                  <th id="tag">Tag</th>
+                  <th id="tag">Thẻ/Tag</th>
                   <th id="modified-date-sort" className="hand">
                     <Translate contentKey="userManagement.feature" />
                   </th>

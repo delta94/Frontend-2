@@ -119,7 +119,9 @@ export class Edit extends React.Component<IEditProps, IEditState> {
                               maxLength={160}
                               addonBefore="%"
                               addonAfter="%"
-                              defaultValue={event.personalizationTag.slice(1, event.personalizationTag.length - 1)}
+                              defaultValue={
+                                event.personalizationTag && event.personalizationTag.slice(1, event.personalizationTag.length - 1)
+                              }
                               id="tag"
                             />
                           </div>

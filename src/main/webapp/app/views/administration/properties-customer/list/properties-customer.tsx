@@ -205,7 +205,7 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
                   <tr {...props}>
                     <td>{value.title}</td>
                     <td>{value.type}</td>
-                    <td>{value.personalizationTag.length > 2 ? value.personalizationTag : ''}</td>
+                    <td>{value.personalizationTag && value.personalizationTag.length > 2 ? value.personalizationTag : ''}</td>
                     <td className="text-center">
                       {value.title === 'First Name' ||
                       value.title === 'Last Name' ||
