@@ -437,7 +437,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
                       <th>Số điện thoại</th>
                       <th>Email</th>
                       <th>Thẻ/tag</th>
-                      <th>Nguồn</th>
+                      {/* <th>Nguồn</th> */}
                       <th>Ngày tạo</th>
                       <th />
                     </tr>
@@ -451,8 +451,8 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
                             <td>{item.firstName + ' ' + item.lastName}</td>
                             <td>{item.mobile}</td>
                             <td>{item.email}</td>
-                            <td>{item.tags}</td>
-                            <td />
+                            <td>{item.tag}</td>
+                            {/* <td /> */}
                             <td>{item.createdDate}</td>
                             <td />
                           </tr>

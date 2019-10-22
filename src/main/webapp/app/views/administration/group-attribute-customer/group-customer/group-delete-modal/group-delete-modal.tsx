@@ -61,7 +61,6 @@ export default class GroupDeleteModal extends React.PureComponent<IGroupDeleteMo
     if (prevState.listCheck) {
       let is_disable = false;
       let check_all = 0;
-      console.log(prevState.listCheck);
       prevState.listCheck.forEach(item => {
         if (item) check_all += 1;
         if (check_all === 5) is_disable = true;
