@@ -10,9 +10,6 @@ import { updateProp, getListProp } from 'app/actions/properties-customer';
 import { IRootState } from 'app/reducers';
 import { openModal, closeModal } from 'app/actions/modal';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import { Select } from 'antd';
-
-const { Option } = Select;
 
 export interface IEditProps extends StateProps, DispatchProps {
   isOpen: boolean;
@@ -23,13 +20,11 @@ export interface IEditProps extends StateProps, DispatchProps {
 export interface IEditState {
   modal: boolean;
   validField: string;
-  selectedOptionType: string;
 }
 
 export class Edit extends React.Component<IEditProps, IEditState> {
   state: IEditState = {
     modal: false,
-    selectedOptionType: '',
     validField: ''
   };
   componentWillReceiveProps(nextProps) {
@@ -48,45 +43,20 @@ export class Edit extends React.Component<IEditProps, IEditState> {
 
   editProp = async () => {
     let { id } = this.props;
-    let { selectedOptionType } = this.state;
-    let type = `${$(`input#tag`).val()}`;
-    let defaultValue = String($(`input#default-value`).val());
-    let personalizationTag = '%' + `${$(`input#tag`).val()}` + '%';
-    let selectOption = String(
-      this.props.getList
-        .map(event => {
-          if (event.id == this.props.id) {
-            return event.type;
-          }
-        })
-        .filter(function(el) {
-          return el != null;
-        })
-    );
-    if (defaultValue.trim().length === 0 && String(type) !== 'Text Input') {
-      this.setState({ validField: ' * Vui lòng nhập giá trị ' });
-    } else {
-      let data = {
-        id: id,
-        title: $(`input#field-name`).val(),
-        type: selectedOptionType ? selectedOptionType : selectOption,
-        personalizationTag: personalizationTag
-      };
-      await this.props.updateProp(id, data);
-      this.props.getListProp();
-      this.props.openModal({
-        show: true,
-        type: 'success',
-        title: translate('modal-data.title.success'),
-        text: translate('properties-management.edit.complete')
-      });
-    }
-  };
-
-  handleChange = value => {
-    let { selectedOptionType } = this.state;
-    selectedOptionType = value;
-    this.setState({ selectedOptionType: value });
+    let tag = `${$(`input#tag`).val()}`;
+    let data = {
+      id: id,
+      title: $(`input#field-name`).val(),
+      personalizationTag: tag
+    };
+    await this.props.updateProp(id, data);
+    this.props.getListProp();
+    this.props.openModal({
+      show: true,
+      type: 'success',
+      title: translate('modal-data.title.success'),
+      text: translate('properties-management.edit.complete')
+    });
   };
 
   render() {
@@ -119,23 +89,18 @@ export class Edit extends React.Component<IEditProps, IEditState> {
                               maxLength={160}
                               addonBefore="%"
                               addonAfter="%"
-                              defaultValue={
-                                event.personalizationTag && event.personalizationTag.slice(1, event.personalizationTag.length - 1)
-                              }
+                              defaultValue={event.personalizationTag.substr(1, event.personalizationTag.length - 2)}
                               id="tag"
                             />
                           </div>
                           <div className="option-create">
-                            <Label>Phân loại</Label>
-                            <Select defaultValue={event.type} onChange={this.handleChange}>
-                              <Option value="Text Input">Text Input</Option>
-                              <Option value="Dropdown List">Dropdown List</Option>
-                              <Option value="Radio">Radio</Option>
-                              <Option value="Checkbox">Checkbox</Option>
-                              <Option value="Date">Date</Option>
-                            </Select>
+                            <Label>
+                              <Translate contentKey="properties-management.form.default-value" />
+                            </Label>
+                            <Input maxLength={160} id="default-value" />
                           </div>
                         </Col>
+                        <p className="error">{this.state.validField}</p>
                       </Row>
                     );
                   }

@@ -101,6 +101,10 @@ thead th {
   border-radius: 3px;
 }
 
+#row-header {
+  padding-top: 15px !important;
+}
+
 .rowUpdate .row {
   margin-right: -15px;
   margin-left: -15px;
@@ -120,7 +124,6 @@ thead th {
   font-size: 18px;
   background: #f9fafb;
   margin: 0px 0px 10px;
-  padding: 20px;
 }
 .catelogry-search {
   display: flex;
@@ -301,12 +304,6 @@ thead th {
   color: #545cd8;
 }
 
-.row {
-  // align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  padding: 10px;
-}
 .searchUser {
   float: right;
   width: 60%;

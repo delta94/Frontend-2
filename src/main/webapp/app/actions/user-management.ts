@@ -28,10 +28,10 @@ import { warn } from 'fullcalendar';
 
 const apiUrl = 'v1/customer';
 // Actions
-export const getUsers = (page, size, category?: string, textSearch?: string) => {
+export const getUsers = (page, size, tagIds?: string, textSearch?: string) => {
   return {
     type: USER_MANAGE_ACTION_TYPES.FETCH_USERS,
-    payload: getUsersService(page, size, category, textSearch)
+    payload: getUsersService(page, size, tagIds, textSearch)
   };
 };
 
@@ -193,6 +193,10 @@ export const compareUserAction = (firstUser, secondUser) => {
 
 export const openModalImport = () => ({
   type: USER_MANAGE_ACTION_TYPES.OPEN_MODAL
+});
+
+export const closeModalImport = () => ({
+  type: USER_MANAGE_ACTION_TYPES.CLOSE_MODAL
 });
 
 export const resetMessage = () => ({

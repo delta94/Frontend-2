@@ -24,7 +24,7 @@ export const option = [
   { value: 'Checkbox', label: 'Checkbox' },
   { value: 'Text Input', label: 'Text Input' },
   { value: 'Radio', label: 'Radio' },
-  { value: null, label: 'Tất cả' }
+  { value: null, label: 'Any Thing' }
 ];
 export interface IPropertiesCustomerProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
 
@@ -105,7 +105,7 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
   };
 
   render() {
-    const { loading, modalState } = this.props;
+    const { loading, modalState, match } = this.props;
     let { dropItem, selectedOption } = this.state;
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
 
@@ -121,9 +121,20 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
         />
         <Loader message={spinner1} show={loading} priority={1}>
           <div id="properties-management-title">
-            <Translate contentKey="properties-management.title" />
+            <Row>
+              <Col md="6" style={{ paddingTop: '14px' }}>
+                <Translate contentKey="properties-management.title" />
+              </Col>
+              <Col md="6" className="form-button" style={{ textAlign: 'right', padding: '17px 0px 0px 280px' }}>
+                <Col md="6">
+                  <CreateGroup />
+                </Col>
+                <Col md="5">
+                  <Create onClick={this.openModalCreate} />
+                </Col>
+              </Col>
+            </Row>
           </div>
-          <div />
           <div className="panel">
             <Row>
               <Col md="3" />
@@ -146,14 +157,6 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
                       placeholder={translate('userManagement.home.search-placer')}
                     />
                   </div>
-                </Col>
-              </Col>
-              <Col md="4" className="form-button">
-                <Col md="6">
-                  <CreateGroup />
-                </Col>
-                <Col md="5">
-                  <Create onClick={this.openModalCreate} />
                 </Col>
               </Col>
             </Row>
@@ -205,7 +208,7 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
                   <tr {...props}>
                     <td>{value.title}</td>
                     <td>{value.type}</td>
-                    <td>{value.personalizationTag && value.personalizationTag.length > 2 ? value.personalizationTag : ''}</td>
+                    <td>{value.personalizationTag.length > 2 ? value.personalizationTag : ''}</td>
                     <td className="text-center">
                       {value.title === 'First Name' ||
                       value.title === 'Last Name' ||
