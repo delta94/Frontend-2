@@ -19,6 +19,7 @@ import CreateUser from './../create/create';
 import Ionicon from 'react-ionicons';
 import Import from 'app/views/administration/user-management/import/import';
 import $ from 'jquery';
+import { IUser } from 'app/common/model/user.model';
 
 export interface IUserManagementProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
 
@@ -46,10 +47,11 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
   };
 
   //loading page
-  componentDidMount() {
+  componentDidMount = async () => {
     const { activePage, itemsPerPage, textSearch, categories } = this.state;
-    this.props.getUsers(activePage, itemsPerPage, categories, textSearch);
-  }
+    let { users, getUsers } = this.props;
+    await getUsers(activePage, itemsPerPage, categories, textSearch);
+  };
 
   handlePagination = activePage => {
     const { itemsPerPage, textSearch, categories } = this.state;
@@ -133,10 +135,32 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     }
   };
 
+  removeDuplicates = (array, key) => {
+    return array.reduce((accumulator, element, currentIndex, arr) => {
+      if (!accumulator.find(el => el[key] == element[key]) && arr.map(c => c.title).lastIndexOf(element.title) == currentIndex) {
+        accumulator.push(element);
+      }
+      return accumulator;
+    }, []);
+  };
+
   render() {
-    const { users, match, loading, getDetailUser, history, modalState } = this.props;
+    const { users, loading, modalState } = this.props;
     const { activePage } = this.state;
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
+    let data = users
+      .map((event, idx) => {
+        return event.fields;
+      })
+      .filter(function(el) {
+        return el.length > 0;
+      });
+    let title = data.map(event => {
+      return event.map(value => {
+        return value.title;
+      });
+    });
+    console.log(title);
     return (
       <div>
         <SweetAlert
@@ -149,13 +173,35 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
         />
         <Loader message={spinner1} show={loading} priority={1}>
           <div id="user-management-title">
-            <Row>
-              <Translate contentKey="userManagement.home.title" />
-              &nbsp; ({this.props.totalElements})
-              <CreateUser />
+            <Row id="row-header">
+              <Col md="5">
+                <Translate contentKey="userManagement.home.title" />
+                &nbsp; ({this.props.totalElements})
+              </Col>
+              <Col md="5" style={{ display: 'flex', padding: '0px 0px 0px 175px' }}>
+                <Col md="6">
+                  <span className="d-inline-block mb-2 mr-2">
+                    <Button
+                      className="btn float-right jh-create-entity"
+                      outline
+                      color="info"
+                      onClick={async () => {
+                        await this.props.exportFile(this.state.textSearch, this.state.categories);
+                      }}
+                    >
+                      <Ionicon color="#343A40" icon="md-arrow-up" /> &nbsp; Export
+                    </Button>
+                  </span>
+                </Col>
+                <Col md="6">
+                  <Import />
+                </Col>
+              </Col>
+              <Col md="2">
+                <CreateUser />
+              </Col>
             </Row>
           </div>
-          <div />
           <div className="panel">
             <Row>
               <Col md="3" className="catelogry-search">
@@ -175,27 +221,8 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                   />
                 </div>
               </Col>
-              <Col md="5" style={{ display: 'flex', padding: '0px 235px 0px 0px' }}>
-                <Col md="6">
-                  <span className="d-inline-block mb-2 mr-2">
-                    <Button
-                      className="btn float-right jh-create-entity"
-                      outline
-                      color="info"
-                      onClick={async () => {
-                        await this.props.exportFile(this.state.textSearch, this.state.categories);
-                      }}
-                    >
-                      <Ionicon color="#343A40" icon="md-arrow-up" /> &nbsp; Export
-                    </Button>
-                  </span>
-                </Col>
-                <Col md="6">
-                  <Import />
-                </Col>
-              </Col>
+              <Col md="5" style={{ display: 'flex', padding: '0px 235px 0px 0px' }} />
             </Row>
-
             <Dropdown overlay={this.rowName} trigger={['click']}>
               <Button style={{ float: 'right', margin: '0px 50px 8px' }} outline color="warning" className="ant-dropdown-link">
                 <i className="pe-7s-filter icon-gradient bg-premium-dark" style={{ fontSize: '18px' }} />
@@ -219,6 +246,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                     Ngày khởi tạo
                   </th>
                   <th id="tag">Thẻ/Tag</th>
+
                   <th id="modified-date-sort" className="hand">
                     <Translate contentKey="userManagement.feature" />
                   </th>
@@ -226,9 +254,9 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
               </thead>
 
               <tbody>
-                {users
+                {users.length > 0
                   ? users.map((event, index) => {
-                      return (
+                      let valueColumn = (
                         <tr id={event.id} key={`user-${index}`}>
                           <td>{this.state.activePage * this.state.itemsPerPage + index + 1}</td>
                           <td style={{ width: '20%', wordBreak: 'break-word' }} className="name">
@@ -249,6 +277,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                                 );
                               })}
                           </td>
+
                           <td className="text-center">
                             <div className="btn-group flex-btn-group-container">
                               <Button
@@ -264,25 +293,31 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                           </td>
                         </tr>
                       );
+                      return valueColumn;
                     })
                   : ''}
               </tbody>
             </Table>
+            {users.length > 0 ? '' : <p style={{ textAlign: 'center' }}>không có dữ liệu khách hàng</p>}
             <Row className="justify-content-center">
-              <ReactPaginate
-                previousLabel={'<'}
-                nextLabel={'>'}
-                breakLabel={'...'}
-                breakClassName={'break-me'}
-                pageCount={this.props.pageCount}
-                marginPagesDisplayed={1}
-                pageRangeDisplayed={3}
-                onPageChange={this.handlePagination}
-                containerClassName={'pagination'}
-                subContainerClassName={'pages pagination'}
-                activeClassName={'active'}
-                forcePage={activePage}
-              />
+              {this.props.totalElements >= 10 ? (
+                <ReactPaginate
+                  previousLabel={'<'}
+                  nextLabel={'>'}
+                  breakLabel={'...'}
+                  breakClassName={'break-me'}
+                  pageCount={this.props.pageCount}
+                  marginPagesDisplayed={1}
+                  pageRangeDisplayed={3}
+                  onPageChange={this.handlePagination}
+                  containerClassName={'pagination'}
+                  subContainerClassName={'pages pagination'}
+                  activeClassName={'active'}
+                  forcePage={activePage}
+                />
+              ) : (
+                ''
+              )}
             </Row>
           </div>
         </Loader>

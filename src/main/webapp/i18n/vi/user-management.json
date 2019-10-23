@@ -24,6 +24,11 @@
       "merge": "Gộp",
       "come-back": "Quay lại"
     },
+    "text-content": {
+      "text-head-merge": "Bạn sắp gộp <strong>{{ userFirst }}  ({{ emailFirst }}) </strong> vào <strong> {{ userSecond }}  ({{ emailSecond }}) </strong>. Hành động này không thể bị hủy bỏ hoặc hoàn tác. Bạn có chắc chắn muốn gộp hai liên hệ này?",
+      "text-content": "Tôi hiểu rằng có 2 xung đột trường và tôi đã chọn sử dụng các giá trị trường liên quan đến <strong> {{ userSecond }}  ({{ emailSecond }}) </strong>",
+      "text-content-second": "Tôi hiểu rằng  <strong>{{ userFirst }}  ({{ emailFirst }}) </strong> sẽ bị xóa và thông tin của họ sẽ được đưa vào <strong> {{ userSecond }}  ({{ emailSecond }}) </strong>"
+    },
     "infomation": {
       "delete": {
         "title": "Xóa khách hàng "

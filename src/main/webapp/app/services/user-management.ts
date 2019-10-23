@@ -22,8 +22,8 @@ const apiUrl2 = 'v2/customers';
  * @return {code: number, data: Object{item: [{id: string, name: string, gmail: string, catagories: string, }, pageIndex: number, pageSize: number] }}
  */
 
-export const getUsersService = (page, pageSize, category?: string, textSearch?: string) => {
-  const requestUrl = `${apiUrl2}${`?page=${page}&pageSize=${pageSize}&category=${category}&textSearch=${textSearch}`}`;
+export const getUsersService = (page, pageSize, tagIds?: string, textSearch?: string) => {
+  const requestUrl = `${apiUrl2}${`?page=${page}&pageSize=${pageSize}&tagIds=${tagIds}&textSearch=${textSearch}`}`;
   return axios.get<IUser>(requestUrl);
 };
 

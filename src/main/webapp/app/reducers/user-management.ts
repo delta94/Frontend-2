@@ -291,6 +291,12 @@ export default (state: UserManagementState = initialState, action): UserManageme
         loading: false,
         isOpenModalImport: true
       };
+    case USER_MANAGE_ACTION_TYPES.CLOSE_MODAL:
+      return {
+        ...initialState,
+        loading: false,
+        isOpenModalImport: false
+      };
     case USER_MANAGE_ACTION_TYPES.RESET:
     case USER_MANAGE_ACTION_TYPES.EXPORT_FILE:
       return {

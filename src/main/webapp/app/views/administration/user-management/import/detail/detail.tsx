@@ -9,7 +9,7 @@ import { Button, Radio, Icon } from 'antd';
 import { Translate } from 'react-jhipster';
 import Loader from 'react-loader-advanced';
 import LoaderAnim from 'react-loaders';
-import { getUser, exportFileResult, openModalImport } from 'app/actions/user-management';
+import { getUser, exportFileResult, openModalImport, closeModalImport } from 'app/actions/user-management';
 import { IRootState } from 'app/reducers';
 
 export interface IUserDetailProps
@@ -191,6 +191,7 @@ export class UserDetail extends React.Component<IUserDetailProps> {
                     type="link"
                     onClick={() => {
                       window.location.assign('/#/app/views/customers/user-management');
+                      this.props.closeModalImport();
                     }}
                   >
                     <FontAwesomeIcon icon="arrow-left" />
@@ -218,7 +219,8 @@ const mapStateToProps = (storeState: IRootState) => ({
 const mapDispatchToProps = {
   getUser,
   exportFileResult,
-  openModalImport
+  openModalImport,
+  closeModalImport
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

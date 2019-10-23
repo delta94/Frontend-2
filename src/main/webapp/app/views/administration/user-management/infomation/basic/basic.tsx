@@ -374,7 +374,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
               </div>
               {listField
                 ? listField.map((value, index) => {
-                    let fieldValue = String(value.personalizationTag).slice(1, value.personalizationTag.length - 1);
+                    let fieldValue = String(value.fieldValue);
                     return (
                       <div className="line-info" key={index}>
                         <Label className="content-text" style={{ width: '50%' }}>

@@ -83,7 +83,7 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
                 <Translate contentKey="userManagement.infomation.merge.is-merge" />
               </Label>
             </div>
-            <Search maxLength={160} placeholder="input search text" onSearch={value => console.log(value)} style={{ width: 200 }} />
+            <Search maxLength={160} placeholder="Tìm kiếm" onSearch={value => console.log(value)} style={{ width: 200 }} />
           </div>
           <div>
             <Table id="table-merge" striped>
@@ -138,7 +138,7 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
           <div className="option-create" style={{ textAlign: 'center' }}>
             <div>
               <Label>
-                contact trùng {numberConfict} trường :"{fieldConfict}"
+                liên hệ trùng {numberConfict} trường :"{fieldConfict}"
               </Label>
             </div>
 
@@ -200,12 +200,62 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
   };
 
   stepConfirm = () => {
+    let { userId } = this.state;
+    let { compareUser } = this.props;
+    let userChose =
+      compareUser.length > 0
+        ? String(
+            compareUser
+              .map(event => {
+                if (event.id === userId) return event.firstName + event.firstName;
+              })
+              .filter(Boolean)
+          )
+        : '';
+    let userUnChose =
+      compareUser.length > 0
+        ? String(
+            compareUser
+              .map(event => {
+                if (event.id !== userId) return event.firstName + event.firstName;
+              })
+              .filter(Boolean)
+          )
+        : '';
+    let emailChose =
+      compareUser.length > 0
+        ? String(
+            compareUser
+              .map(event => {
+                if (event.id === userId) return event.email;
+              })
+              .filter(Boolean)
+          )
+        : '';
+    let emailUnChose =
+      compareUser.length > 0
+        ? String(
+            compareUser
+              .map(event => {
+                if (event.id !== userId) return event.email;
+              })
+              .filter(Boolean)
+          )
+        : '';
     let data = (
       <Row>
         <Col span={24}>
           <div>
             <Label className="head-text">
-              <Translate contentKey="properties-management.delete.head-title" />
+              <Translate
+                contentKey="userManagement.text-content.text-head-merge"
+                interpolate={{
+                  userFirst: userChose,
+                  userSecond: userUnChose,
+                  emailFirst: emailChose,
+                  emailSecond: emailUnChose
+                }}
+              />
             </Label>
           </div>
           <div>
@@ -222,7 +272,10 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
               </Col>
               <Col span={22}>
                 <Label for="btn1" className="text">
-                  <Translate contentKey="properties-management.delete.content-title-1" />
+                  <Translate
+                    contentKey="userManagement.text-content.text-content"
+                    interpolate={{ emailSecond: emailUnChose, userSecond: userUnChose }}
+                  />
                 </Label>
               </Col>
             </Col>
@@ -241,26 +294,15 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
               </Col>
               <Col span={22}>
                 <Label for="btn2" className="text">
-                  <Translate contentKey="properties-management.delete.content-title-2" />
-                </Label>
-              </Col>
-            </Col>
-          </div>
-          <div>
-            <Col span={24} className="group-btn-delete">
-              <Col span={2}>
-                <Input
-                  type="checkbox"
-                  onClick={() => {
-                    this.setState({ valueBtn3: $('#btn3').prop('checked') });
-                  }}
-                  value="c"
-                  id="btn3"
-                />{' '}
-              </Col>
-              <Col span={22}>
-                <Label for="btn3" className="text">
-                  <Translate contentKey="properties-management.delete.content-title-3" />
+                  <Translate
+                    contentKey="userManagement.text-content.text-content-second"
+                    interpolate={{
+                      userFirst: userChose,
+                      userSecond: userUnChose,
+                      emailFirst: emailChose,
+                      emailSecond: emailUnChose
+                    }}
+                  />
                 </Label>
               </Col>
             </Col>
@@ -315,7 +357,7 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
       show: true,
       type: 'success',
       title: translate('modal-data.title.success'),
-      text: 'Merge thành công'
+      text: 'Gộp thành công'
     });
     this.props.onClick();
     this.toggle();
@@ -327,7 +369,7 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
     return (
       <span className="d-inline-block mb-2 mr-2">
         <Button className="btn float-right jh-create-entity" outline color="primary" onClick={this.toggle}>
-          <Ionicon color="#343A40" icon="md-git-merge" /> &nbsp; Merge
+          <Ionicon color="#343A40" icon="md-git-merge" /> &nbsp; Gộp
         </Button>
 
         <Modal isOpen={this.state.modal} id="content-properties">
@@ -344,7 +386,7 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
               <div className="steps-action">
                 {current > 0 && (
                   <Button id="btn-prev" color="linkaaaaa" onClick={() => this.prev()}>
-                    Previous
+                    Quay lại
                   </Button>
                 )}
                 <Button color="link" onClick={this.toggle}>
@@ -365,7 +407,7 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
                 {current === this.stepTable().length - 1 && (
                   <Button
                     color="primary"
-                    disabled={this.state.valueBtn1 && this.state.valueBtn2 && this.state.valueBtn3 && !loading ? false : true}
+                    disabled={this.state.valueBtn1 && this.state.valueBtn2 && !loading ? false : true}
                     onClick={() => {
                       this.mergeUser();
                     }}

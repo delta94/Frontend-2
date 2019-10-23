@@ -108,13 +108,13 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
     let valueEmail = $(`input#email`).val();
     let valuePhone = $(`input#phone`).val();
     let countError = 0;
-    if ($(`input#first-name`).val() === '') {
+    if (String($(`input#first-name`).val()).trim() === '') {
       this.setState({ validFirstName: '* Vui lòng nhập tên' });
       countError++;
     } else {
       this.setState({ validFirstName: '' });
     }
-    if ($(`input#last-name`).val() === '') {
+    if (String($(`input#last-name`).val()).trim() === '') {
       this.setState({ validLastName: '* Vui lòng nhập họ' });
       countError++;
     } else {
@@ -203,7 +203,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
 
         <Modal isOpen={this.state.modal} id="content-user">
           <ModalHeader toggle={this.toggle} id="create-properties">
-            <Translate contentKey="properties-management.add.properties" />
+            THÊM MỚI KHÁCH HÀNG
           </ModalHeader>
           <PerfectScrollbar>
             <ModalBody>
