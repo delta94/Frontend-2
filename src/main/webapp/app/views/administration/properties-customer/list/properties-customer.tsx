@@ -24,7 +24,7 @@ export const option = [
   { value: 'Checkbox', label: 'Checkbox' },
   { value: 'Text Input', label: 'Text Input' },
   { value: 'Radio', label: 'Radio' },
-  { value: null, label: 'Any Thing' }
+  { value: null, label: 'Tất cả' }
 ];
 export interface IPropertiesCustomerProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
 

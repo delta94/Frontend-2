@@ -300,20 +300,24 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
             </Table>
             {users.length > 0 ? '' : <p style={{ textAlign: 'center' }}>không có dữ liệu khách hàng</p>}
             <Row className="justify-content-center">
-              <ReactPaginate
-                previousLabel={'<'}
-                nextLabel={'>'}
-                breakLabel={'...'}
-                breakClassName={'break-me'}
-                pageCount={this.props.pageCount}
-                marginPagesDisplayed={1}
-                pageRangeDisplayed={3}
-                onPageChange={this.handlePagination}
-                containerClassName={'pagination'}
-                subContainerClassName={'pages pagination'}
-                activeClassName={'active'}
-                forcePage={activePage}
-              />
+              {this.props.totalElements >= 10 ? (
+                <ReactPaginate
+                  previousLabel={'<'}
+                  nextLabel={'>'}
+                  breakLabel={'...'}
+                  breakClassName={'break-me'}
+                  pageCount={this.props.pageCount}
+                  marginPagesDisplayed={1}
+                  pageRangeDisplayed={3}
+                  onPageChange={this.handlePagination}
+                  containerClassName={'pagination'}
+                  subContainerClassName={'pages pagination'}
+                  activeClassName={'active'}
+                  forcePage={activePage}
+                />
+              ) : (
+                ''
+              )}
             </Row>
           </div>
         </Loader>
