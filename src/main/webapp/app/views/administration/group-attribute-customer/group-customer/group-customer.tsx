@@ -116,7 +116,7 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
   // Get data with action
   getDataOfListCustomerCondition = () => {
     let { logicalOperator, advancedSearches } = this.props.single_customer_field.customerAdvancedSave;
-    this.props.getFindCustomerWithConditionAction({ logicalOperator, advancedSearches });
+    this.props.getFindCustomerWithConditionAction({ logicalOperator, advancedSearches }, 0, 10);
   };
 
   // Open delete modal

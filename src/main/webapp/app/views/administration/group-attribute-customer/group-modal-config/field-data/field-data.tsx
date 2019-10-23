@@ -71,16 +71,35 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
     default_title: ''
   };
 
+  componentDidMount() {
+    let { list_of_operator } = this.state;
+    this.setSearchAdvancedData(list_of_operator[0], 'operator');
+  }
+
   static getDerivedStateFromProps(nextProps, prevState) {
+    let { default_data, list_field_data, type_modal } = nextProps;
+
+    let {
+      value_input,
+      value_check_box,
+      value_dropdown,
+      value_radio,
+      value_datepicker,
+      operator,
+      default_title,
+      list_of_operator
+    } = prevState;
+
+    if (list_of_operator && !default_data.operator) {
+      operator === list_of_operator[0];
+    }
+
     if (nextProps.default_data !== prevState.default_data) {
-      let { default_data, list_field_data, type_modal } = nextProps;
-      let { value_input, value_check_box, value_dropdown, value_radio, value_datepicker, operator, default_title } = prevState;
+      if (nextProps.default_data !== prevState.default_data && default_data.operator && default_data.operator !== '') {
+        operator = default_data.operator;
+      }
 
       if (type_modal !== INSERT_CUSTOMER_GROUP) {
-        if (operator !== default_data.operator) {
-          operator = default_data.operator;
-        }
-
         list_field_data.forEach(item => {
           if (item.code === default_data.fieldCode) default_title = item.title;
         });
@@ -198,6 +217,7 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
 
   // Chose operator for reuseComponent
   handleChoseOperator = event => {
+    console.log(event);
     this.setState({ operator: event });
     this.setSearchAdvancedData(event, 'operator');
   };
@@ -376,14 +396,16 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
                   : 'Chọn toán tử'
               }
               style={{ width: '100%' }}
-              onChange={this.handleChoseOperator}
+              onChange={event => this.handleChoseOperator(event)}
             >
               {list_of_operator &&
                 list_of_operator.map((item, index) => {
                   if (item)
                     return (
                       <Option value={item} key={item}>
-                        {item.toLocaleLowerCase()}
+                        <label style={{ width: '100%', height: '100%' }} onClick={() => this.handleChoseOperator(item)}>
+                          {item.toLocaleLowerCase()}
+                        </label>
                       </Option>
                     );
                 })}

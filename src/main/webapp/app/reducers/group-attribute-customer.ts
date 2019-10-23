@@ -144,7 +144,7 @@ export default (state: GroupCustomerState = initialDataState, action): GroupCust
         list_group_customer_index,
         postRequest: {
           type: ERROR,
-          text: 'Thêm mới nhóm khách hàng thành công',
+          text: 'Thêm mới nhóm khách hàng không thành công',
           title: 'Thông báo',
           show: true
         }

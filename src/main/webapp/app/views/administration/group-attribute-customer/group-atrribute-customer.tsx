@@ -35,7 +35,7 @@ class GroupAttributeCustomer extends React.Component<IGroupAttributeCustomerProp
   state: IGroupAttributeCustomerState = {
     id_list_customer: null,
     is_show: false,
-    type_modal: '',
+    type_modal: INSERT_CUSTOMER_GROUP,
     modalState: {},
     list_group_customer: []
   };
