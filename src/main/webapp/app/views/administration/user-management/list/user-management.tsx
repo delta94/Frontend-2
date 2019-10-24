@@ -367,18 +367,16 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     this.setState({ open_search: !open_search });
     this.removeDataInModal();
   };
-
-  render() {
+  dataTable() {
     const { users, loading, modalState, listFields } = this.props;
     const { activePage } = this.state;
-    const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
     let listPropUser = listFields.filter(
       el => el.title !== 'Tên' && el.title !== 'Email' && el.title !== 'Họ' && el.title !== 'Số điện thoại'
     );
     let lengthProps = listPropUser.length;
     let dataUser = users.map(event => {
       let dataProps;
-      if (event.fields.length < lengthProps) {
+      if (event.fields.length <= lengthProps) {
         dataProps = listPropUser.map(item => {
           return {
             code: item.code,
@@ -415,21 +413,31 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
         tags: event.tags
       };
     });
+    return dataUser;
+  }
+
+  render() {
+    const { users, loading, modalState, listFields } = this.props;
+    const { activePage } = this.state;
+    const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
+
     let { list_field_data, pageCount } = this.props;
     let { list_field_data_cpn, logicalOperator, open_import, open_create, open_search } = this.state;
-    let data = users
-      .map((event, idx) => {
-        return event.fields;
-      })
-      .filter(function(el) {
-        return el.length > 0;
-      });
-    let title = data.map(event => {
-      return event.map(value => {
-        return value.title;
-      });
+    let dataUser = this.dataTable();
+    let theader = listFields.map(event => {
+      return event;
     });
-
+    let dataHeader = theader
+      .sort(function(a, b) {
+        if (a.title.toLowerCase() < b.title.toLowerCase()) {
+          return -1;
+        }
+        if (a.title.toLowerCase() > b.title.toLowerCase()) {
+          return 1;
+        }
+        return 0;
+      })
+      .filter(el => el.title !== 'Tên' && el.title !== 'Email' && el.title !== 'Họ' && el.title !== 'Số điện thoại');
     let list_field_render =
       list_field_data_cpn && list_field_data_cpn.length > 0
         ? list_field_data_cpn.map(item => {
@@ -464,7 +472,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
 
           {/* Title */}
           <div id="title-common-header">
-            <Translate contentKey="userManagement.home.title" />
+            <Translate contentKey="userManagement.home.title" /> ({this.props.totalElements})
             <Button className="btn btn-primary float-right jh-create-entity" color="primary" onClick={this.toggleCreate}>
               <FontAwesomeIcon icon="plus" />
               <Translate contentKey="userManagement.home.createLabel" />
@@ -556,13 +564,19 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
               <thead>
                 <tr className="text-center">
                   <th className="hand">#</th>
-                  {listFields.map((event, id) => {
-                    return (
-                      <th key={id} id={event.id}>
-                        {event.title}
-                      </th>
-                    );
-                  })}
+                  <th className="hand">Tên</th>
+                  <th className="hand">Họ</th>
+                  <th className="hand">Email</th>
+                  <th className="hand">Số điện thoại</th>
+                  {dataHeader
+                    ? dataHeader.map((event, id) => {
+                        return (
+                          <th key={id} id={event.id}>
+                            {event.title}
+                          </th>
+                        );
+                      })
+                    : ''}
                   <th>Ngày khởi tạo</th>
                   <th>Thẻ/Tag</th>
                   <th id="modified-date-sort" className="hand">
@@ -580,13 +594,23 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                           <td>{item.lastName}</td>
                           <td>{item.email}</td>
                           <td>{item.mobile}</td>
-                          {item.fields.map((value, index) => {
-                            return (
-                              <td className={value.id} key={index}>
-                                {value.value}
-                              </td>
-                            );
-                          })}
+                          {item.fields
+                            .sort(function(a, b) {
+                              if (a.title.toLowerCase() < b.title.toLowerCase()) {
+                                return -1;
+                              }
+                              if (a.title.toLowerCase() > b.title.toLowerCase()) {
+                                return 1;
+                              }
+                              return 0;
+                            })
+                            .map((value, index) => {
+                              return (
+                                <td className={value.id} key={index}>
+                                  {value.value}
+                                </td>
+                              );
+                            })}
                           <td>{item.createdDate}</td>
                           <td className="tag">
                             {item.tag &&
