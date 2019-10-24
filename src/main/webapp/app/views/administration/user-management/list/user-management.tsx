@@ -7,7 +7,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { openModal, closeModal } from 'app/actions/modal';
 import './user-management.scss';
 import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
-import { getUser, exportFile, getUsers, updateUser, getUserCategories, deleteUser, getDetailUser } from 'app/actions/user-management';
+import {
+  getUser,
+  exportFile,
+  getUsers,
+  updateUser,
+  getUserCategories,
+  deleteUser,
+  getDetailUser,
+  getFields
+} from 'app/actions/user-management';
 import UserCategoryTag from './categories-tag/categories-tag';
 import { IRootState } from 'app/reducers';
 import { Menu, Dropdown, Icon, Checkbox } from 'antd';
@@ -49,8 +58,9 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
   //loading page
   componentDidMount = async () => {
     const { activePage, itemsPerPage, textSearch, categories } = this.state;
-    let { users, getUsers } = this.props;
+    let { users, getUsers, getFields } = this.props;
     await getUsers(activePage, itemsPerPage, categories, textSearch);
+    getFields();
   };
 
   handlePagination = activePage => {
@@ -92,33 +102,19 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
   };
 
   rowName = () => {
+    let { listFields } = this.props;
+    let listData = listFields.filter(el => el.title !== 'Tên' && el.title !== 'Email' && el.title !== 'Họ' && el.title !== 'Số điện thoại');
     let data = (
       <Menu>
-        <Menu.Item key="0">
-          <Checkbox defaultChecked={true} onChange={event => this.onChangeCheckBox(event, 'name')}>
-            Họ tên
-          </Checkbox>
-        </Menu.Item>
-        <Menu.Item key="1">
-          <Checkbox defaultChecked={true} onChange={event => this.onChangeCheckBox(event, 'mobile')}>
-            Số điện thoại
-          </Checkbox>
-        </Menu.Item>
-        <Menu.Item key="2">
-          <Checkbox defaultChecked={true} onChange={event => this.onChangeCheckBox(event, 'email')}>
-            Email
-          </Checkbox>
-        </Menu.Item>
-        <Menu.Item key="3">
-          <Checkbox defaultChecked={true} onChange={event => this.onChangeCheckBox(event, 'tag')}>
-            Tag
-          </Checkbox>
-        </Menu.Item>
-        <Menu.Item key="4">
-          <Checkbox defaultChecked={true} onChange={event => this.onChangeCheckBox(event, 'dateCreate')}>
-            Ngày khởi tạo
-          </Checkbox>
-        </Menu.Item>
+        {listData.map((value, index) => {
+          return (
+            <Menu.Item key={index}>
+              <Checkbox defaultChecked={true} onChange={event => this.onChangeCheckBox(event, value.id)}>
+                {value.title}
+              </Checkbox>
+            </Menu.Item>
+          );
+        })}
       </Menu>
     );
     return data;
@@ -135,35 +131,59 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     }
   };
 
-  removeDuplicates = (array, key) => {
-    return array.reduce((accumulator, element, currentIndex, arr) => {
-      if (!accumulator.find(el => el[key] == element[key]) && arr.map(c => c.title).lastIndexOf(element.title) == currentIndex) {
-        accumulator.push(element);
-      }
-      return accumulator;
-    }, []);
-  };
+  toObject(arr) {
+    var rv = {};
+    for (var i = 0; i < arr.length; ++i) rv[i] = arr[i];
+    return rv;
+  }
 
   render() {
-    const { users, loading, modalState } = this.props;
+    const { users, loading, modalState, listFields } = this.props;
     const { activePage } = this.state;
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
-    let data = users
-      .map((event, idx) => {
-        return event.fields;
-      })
-      .filter(function(el) {
-        return el.length > 0;
-      });
-    let title = data.map(event => {
-      return event.map(value => {
-        return value.title;
-      });
+    let listPropUser = listFields.filter(
+      el => el.title !== 'Tên' && el.title !== 'Email' && el.title !== 'Họ' && el.title !== 'Số điện thoại'
+    );
+    let lengthProps = listPropUser.length;
+    let dataUser = users.map(event => {
+      let dataProps;
+      if (event.fields.length < lengthProps) {
+        dataProps = listPropUser.map(item => {
+          return {
+            code: item.code,
+            fieldValue: item.fieldValue,
+            id: item.id,
+            title: item.title,
+            type: item.type,
+            value:
+              event.fields.length > 0 &&
+              event.fields.map(value => {
+                return value.value;
+              })
+                ? event.fields.map(value => {
+                    if (String(value.id) == String(item.id)) {
+                      return value.value;
+                    } else {
+                      return item.value;
+                    }
+                  })
+                : item.value
+          };
+        });
+      }
+      return {
+        id: event.id,
+        createdDate: event.createdDate,
+        email: event.email,
+        fields: event.fields.length > 0 ? (lengthProps > event.fields.length ? dataProps : event.fields) : listPropUser,
+        firstName: event.firstName,
+        lastName: event.lastName,
+        merchantId: event.merchantId,
+        mobile: event.mobile,
+        tag: event.tag,
+        tags: event.tags
+      };
     });
-    let a = title.map((event, index) => {
-      return event[index];
-    });
-    console.log(a);
     return (
       <div>
         <SweetAlert
@@ -236,42 +256,41 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
               <thead>
                 <tr className="text-center">
                   <th className="hand">#</th>
-                  <th className="hand " id="name">
-                    <Translate contentKey="userManagement.name" />
-                  </th>
-                  <th className="hand" id="mobile">
-                    <Translate contentKey="userManagement.mobile" />
-                  </th>
-                  <th className="hand" id="email">
-                    <Translate contentKey="userManagement.email" />
-                  </th>
-                  <th className="hand" id="dateCreate">
-                    Ngày khởi tạo
-                  </th>
-                  <th id="tag">Thẻ/Tag</th>
-
+                  {listFields.map((event, id) => {
+                    return (
+                      <th key={id} id={event.id}>
+                        {event.title}
+                      </th>
+                    );
+                  })}
+                  <th>Ngày khởi tạo</th>
+                  <th>Thẻ/Tag</th>
                   <th id="modified-date-sort" className="hand">
                     <Translate contentKey="userManagement.feature" />
                   </th>
                 </tr>
               </thead>
-
               <tbody>
-                {users.length > 0
-                  ? users.map((event, index) => {
-                      let valueColumn = (
-                        <tr id={event.id} key={`user-${index}`}>
+                {dataUser
+                  ? dataUser.map((item, index) => {
+                      return (
+                        <tr id={item.id} key={`user-${index}`}>
                           <td>{this.state.activePage * this.state.itemsPerPage + index + 1}</td>
-                          <td style={{ width: '20%', wordBreak: 'break-word' }} className="name">
-                            {' '}
-                            {event.firstName + ' ' + event.lastName}
-                          </td>
-                          <td className="mobile">0{event.mobile}</td>
-                          <td className="email">{event.email}</td>
-                          <td className="dateCreate">{event.createdDate}</td>
+                          <td>{item.firstName}</td>
+                          <td>{item.lastName}</td>
+                          <td>{item.email}</td>
+                          <td>{item.mobile}</td>
+                          {item.fields.map((value, index) => {
+                            return (
+                              <td className={value.id} key={index}>
+                                {value.value}
+                              </td>
+                            );
+                          })}
+                          <td>{item.createdDate}</td>
                           <td className="tag">
-                            {event.tag &&
-                              event.tag.split(',').map((category, index) => {
+                            {item.tag &&
+                              item.tag.split(',').map((category, index) => {
                                 return (
                                   <span className="badge badge-success" key={index}>
                                     {' '}
@@ -280,13 +299,12 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                                 );
                               })}
                           </td>
-
                           <td className="text-center">
                             <div className="btn-group flex-btn-group-container">
                               <Button
                                 className="buttonUpdate"
                                 tag={Link}
-                                to={`/app/views/customers/user-management/info/${event.id}`}
+                                to={`/app/views/customers/user-management/info/${item.id}`}
                                 color="primary"
                                 size="sm"
                               >
@@ -296,7 +314,6 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                           </td>
                         </tr>
                       );
-                      return valueColumn;
                     })
                   : ''}
               </tbody>
@@ -338,7 +355,8 @@ const mapStateToProps = (storeState: IRootState) => ({
   totalElements: storeState.userManagement.totalElements,
   loading: storeState.userManagement.loading,
   listCategory: storeState.userManagement.listCategory,
-  pageCount: Math.ceil(storeState.userManagement.totalElements / ITEMS_PER_PAGE)
+  pageCount: Math.ceil(storeState.userManagement.totalElements / ITEMS_PER_PAGE),
+  listFields: storeState.userManagement.listFields
 });
 
 const mapDispatchToProps = {
@@ -350,7 +368,8 @@ const mapDispatchToProps = {
   getUser,
   getDetailUser,
   openModal,
-  closeModal
+  closeModal,
+  getFields
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

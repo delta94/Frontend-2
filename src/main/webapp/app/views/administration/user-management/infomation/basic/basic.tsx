@@ -249,7 +249,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
     let { fiedValue } = this.state;
     let data = {
       id: id,
-      value: String(checkedValues)
+      value: String(checkedValues.join('||'))
     };
     fiedValue.push(data);
     this.setState({ fiedValue });
@@ -501,7 +501,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                             title={value.type}
                             trigger="click"
                           >
-                            {value.value && value.value.trim().length > 0 ? value.value : <span className="empty">Click to add</span>}
+                            {value.value && value.value.trim().length > 0 ? value.value : <span className="empty">Click vào để thêm</span>}
                           </Popover>
                         </div>
                       </div>

@@ -207,7 +207,7 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
         ? String(
             compareUser
               .map(event => {
-                if (event.id === userId) return event.firstName + event.firstName;
+                if (event.id === userId) return event.firstName + event.lastName;
               })
               .filter(Boolean)
           )
@@ -217,7 +217,7 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
         ? String(
             compareUser
               .map(event => {
-                if (event.id !== userId) return event.firstName + event.firstName;
+                if (event.id !== userId) return event.firstName + event.lastName;
               })
               .filter(Boolean)
           )
@@ -349,10 +349,14 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
     }
   }
   mergeUser = async () => {
-    const { mergeUserAction, openModal } = this.props;
+    const { mergeUserAction, openModal, compareUser } = this.props;
     let { userId } = this.state;
-    let data = { id: userId };
-    await mergeUserAction(userId, data);
+    let userToMerge = compareUser
+      .map(event => {
+        return { id: event.id };
+      })
+      .filter(el => el.id !== userId);
+    await mergeUserAction(userId, userToMerge[0]);
     openModal({
       show: true,
       type: 'success',
@@ -361,6 +365,7 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
     });
     this.props.onClick();
     this.toggle();
+    window.location.assign('/#/app/views/customers/user-management');
   };
 
   render() {
