@@ -16,8 +16,8 @@ export const getListFieldData = () => {
   return axios.get('v1/fields', { headers: authHeaders });
 };
 
-export const getFindCustomerWithCondition = (data?: any, page?: number, pageIndex?: number) => {
-  return axios.post('v2/customers', data, { headers: authHeaders, params: { page, pageIndex } });
+export const getFindCustomerWithCondition = data => {
+  return axios.post('v2/customers', data, { headers: authHeaders });
 };
 
 // Post insert customer group

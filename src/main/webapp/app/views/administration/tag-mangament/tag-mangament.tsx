@@ -32,7 +32,7 @@ class TagManagement extends React.Component<ITagManagementProps, ITagManagementS
 
     return (
       <div className="tag-management">
-        <div id="user-management-title">
+        <div id="title-common-header">
           <Translate contentKey="tag-management.header" />
         </div>
         <Fragment>

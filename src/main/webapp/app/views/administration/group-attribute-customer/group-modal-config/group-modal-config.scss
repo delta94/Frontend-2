@@ -1,16 +1,6 @@
 .group-modal-config {
   position: relative;
   padding-bottom: 60px;
-  .input-search_group {
-    display: flex;
-    margin-bottom: 10px;
-
-    .input-search_label {
-      width: 80px;
-      line-height: 30px;
-      font-weight: 500;
-    }
-  }
 
   .group-addition {
     .ant-card-body {
@@ -36,5 +26,18 @@
     .search-table-customer {
       padding-top: 15px;
     }
+  }
+}
+
+.input-search_group {
+  display: flex;
+  margin-bottom: 10px;
+  height: 50px;
+
+  .input-search_label {
+    width: 90px !important;
+    line-height: 35px;
+    font-weight: 500;
+    height: 35px;
   }
 }

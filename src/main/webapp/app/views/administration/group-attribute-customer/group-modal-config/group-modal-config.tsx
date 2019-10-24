@@ -335,7 +335,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
 
   render() {
     let { is_show, list_field_data, loading, list_customer_with_condition, totalElements, type_modal } = this.props;
-    let { list_field_data_cpn, logicalOperator, advancedSearches, categoryName } = this.state;
+    let { list_field_data_cpn, logicalOperator, advancedSearches, categoryName, pageIndex } = this.state;
     let list_field_render =
       list_field_data_cpn && list_field_data_cpn.length > 0
         ? list_field_data_cpn.map(item => {
@@ -437,12 +437,12 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
                   <thead>
                     <tr className="text-center">
                       <th className="checkbox-td">Stt</th>
-                      <th>Họ và tên</th>
+                      <th>Họ tên</th>
                       <th>Số điện thoại</th>
                       <th>Email</th>
                       <th>Thẻ/tag</th>
                       {/* <th>Nguồn</th> */}
-                      <th>Ngày tạo</th>
+                      <th>Ngày khởi tạo</th>
                       <th />
                     </tr>
                   </thead>
@@ -451,7 +451,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
                       list_customer_with_condition.map((item, index) => {
                         return (
                           <tr key={index}>
-                            <td>{index + 1}</td>
+                            <td>{index + 1 + 10 * pageIndex}</td>
                             <td>{item.firstName + ' ' + item.lastName}</td>
                             <td>{item.mobile}</td>
                             <td>{item.email}</td>

@@ -19,10 +19,12 @@ import { openModal, closeModal } from 'app/actions/modal';
 import Dropzone from 'react-dropzone';
 
 const { Option } = Select;
-
 const { Panel } = Collapse;
 
-export interface IImportProps extends StateProps, DispatchProps {}
+export interface IImportProps extends StateProps, DispatchProps {
+  open_import?: boolean;
+  toggleImport: Function;
+}
 export interface IImportState {
   isActive: boolean;
   isComplete: boolean;
@@ -87,6 +89,8 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
       image: imageFileDown,
       file: ''
     });
+
+    this.props.toggleImport();
   };
 
   validated = () => {
@@ -313,11 +317,7 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
     return (
       <Container fluid>
         <span className="d-inline-block mb-2 mr-2">
-          <Button className="btn float-right jh-create-entity" outline color="primary" onClick={this.toggle}>
-            <Ionicon color="#343A40" icon="md-arrow-down" /> &nbsp; <Translate contentKey="userManagement.home.import" />
-          </Button>
-
-          <Modal isOpen={this.state.modal} id="modal-import">
+          <Modal isOpen={this.props.open_import} id="modal-import">
             <PerfectScrollbar>
               <ModalHeader toggle={this.toggle} id="create-properties">
                 IMPORT FILE

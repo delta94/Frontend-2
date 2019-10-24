@@ -239,11 +239,12 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
   // Set default title
   setDefaultTitle = fieldCode => {
     let { list_field_data, id } = this.props;
-    list_field_data.forEach(item => {
-      if (item.code === fieldCode) {
-        this.props.updateValueFromState(item.title, 'fieldTitle');
-      }
-    });
+    list_field_data &&
+      list_field_data.forEach(item => {
+        if (item.code === fieldCode) {
+          this.props.updateValueFromState(item.title, 'fieldTitle');
+        }
+      });
   };
 
   // Set value for input

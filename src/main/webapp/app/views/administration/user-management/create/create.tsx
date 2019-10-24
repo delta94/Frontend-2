@@ -18,7 +18,10 @@ import { getUsers } from 'app/actions/user-management';
 
 const { Option } = Select;
 
-export interface ICreateProps extends StateProps, DispatchProps {}
+export interface ICreateProps extends StateProps, DispatchProps {
+  open_create?: boolean;
+  toggleCreate?: Function;
+}
 
 export interface ICreateState {
   modal: boolean;
@@ -68,6 +71,8 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
     if (data.length > 0) {
       for (var member in data) delete data[member];
     }
+
+    this.props.toggleCreate();
   };
 
   showCollapse = () => {
@@ -197,11 +202,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
     let { collapse } = this.state;
     return (
       <span className="d-inline-block mb-2 mr-2" id="btn-modal-create">
-        <Button className="btn btn-primary float-right jh-create-entity" color="primary" onClick={this.toggle}>
-          <FontAwesomeIcon icon="plus" /> <Translate contentKey="userManagement.home.createLabel" />
-        </Button>
-
-        <Modal isOpen={this.state.modal} id="content-user">
+        <Modal isOpen={this.props.open_create} id="content-user">
           <ModalHeader toggle={this.toggle} id="create-properties">
             THÊM MỚI KHÁCH HÀNG
           </ModalHeader>

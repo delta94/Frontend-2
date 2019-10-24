@@ -103,7 +103,7 @@ class GroupAttributeCustomer extends React.Component<IGroupAttributeCustomerProp
     let { modalState } = this.props;
     return (
       <div className="group-attribute-customer">
-        <div id="user-management-title">
+        <div id="title-common-header">
           <Translate contentKey="group-attribute-customer.header" />
           <Button
             color="primary"

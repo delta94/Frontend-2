@@ -20,19 +20,17 @@
 }
 .table-responsive {
   display: block;
-  width: 94%;
   overflow-x: auto;
-  margin: 30px;
 }
 .table-striped {
   margin-top: 0px !important;
 }
 
 .panel {
-  border: 1px solid #dedede;
-  border-radius: 5px;
+  border-radius: 3px;
   background-color: #ffffff;
   width: 100%;
+  padding: 30px;
 }
 
 .searchUser {
@@ -62,7 +60,6 @@ thead th {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
-  margin: 9px 19px -10px 19px;
 }
 .searchUser {
   float: right;
@@ -101,14 +98,6 @@ thead th {
   border-radius: 3px;
 }
 
-#row-header {
-  padding-top: 15px !important;
-}
-
-.rowUpdate .row {
-  margin-right: -15px;
-  margin-left: -15px;
-}
 .save-right {
   float: right;
   margin-bottom: 15px;
@@ -120,10 +109,15 @@ thead th {
 .Toastify__toast-body {
   margin-top: 50px;
 }
-#user-management-title {
+#title-common-header {
   font-size: 18px;
   background: #f9fafb;
   margin: 0px 0px 10px;
+  padding: 20px 10px;
+  line-height: 30px;
+  button {
+    margin: 0px 10px;
+  }
 }
 .catelogry-search {
   display: flex;
@@ -264,21 +258,8 @@ th {
   width: 100%;
 }
 
-.table-responsive {
-  display: block;
-  width: 94%;
-  overflow-x: auto;
-  margin: 30px;
-}
 .table-striped {
   margin-top: 0px !important;
-}
-
-.panel {
-  border: 1px solid #dedede;
-  border-radius: 5px;
-  background-color: #ffffff;
-  width: 100%;
 }
 
 .searchUser {
@@ -357,4 +338,25 @@ thead th {
 }
 #display-row {
   display: none;
+}
+
+.search-field {
+  display: inline-flex;
+}
+
+.field-search {
+  margin-bottom: 20px;
+
+  .field-title {
+    height: 40px;
+    .field-title_text {
+      padding: 10px 5px;
+      margin: 0px;
+      color: #3866dd;
+      &:hover {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+  }
 }
