@@ -1,3 +1,4 @@
+import { getFindCustomerWithCondition } from './../services/group-atrribute-customer';
 import axios from 'axios';
 import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction, translate } from 'react-jhipster';
 
@@ -25,6 +26,7 @@ import {
 } from 'app/services/user-management';
 import { IFileList } from 'app/common/model/sucess-file';
 import { warn } from 'fullcalendar';
+import { any } from 'prop-types';
 
 const apiUrl = 'v1/customer';
 // Actions
@@ -202,3 +204,11 @@ export const closeModalImport = () => ({
 export const resetMessage = () => ({
   type: USER_MANAGE_ACTION_TYPES.RESET_MESSAGE
 });
+
+// TODO: find customer with condition
+export const getFindUserInManagerWithActionData = data => {
+  return {
+    type: USER_MANAGE_ACTION_TYPES.GET_FIND_USER_IN_MANAGEMENTS,
+    payload: getFindCustomerWithCondition(data)
+  };
+};

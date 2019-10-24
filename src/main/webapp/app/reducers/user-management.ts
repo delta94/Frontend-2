@@ -130,9 +130,16 @@ export default (state: UserManagementState = initialState, action): UserManageme
         ...state,
         errorMessage: null,
         updateSuccess: false,
-
         loading: true
       };
+    case REQUEST(USER_MANAGE_ACTION_TYPES.GET_FIND_USER_IN_MANAGEMENTS):
+      return {
+        ...state,
+        errorMessage: null,
+        updateSuccess: false,
+        loading: true
+      };
+
     case REQUEST(USER_MANAGE_ACTION_TYPES.CREATE_USER):
     case REQUEST(USER_MANAGE_ACTION_TYPES.UPDATE_USER):
     case REQUEST(USER_MANAGE_ACTION_TYPES.DELETE_USER):
@@ -277,14 +284,20 @@ export default (state: UserManagementState = initialState, action): UserManageme
         }
       };
 
+    case SUCCESS(USER_MANAGE_ACTION_TYPES.GET_FIND_USER_IN_MANAGEMENTS):
+      return {
+        ...state,
+        loading: false,
+        users: action.payload.data.data,
+        totalElements: action.payload.data.total
+      };
+
     case USER_MANAGE_ACTION_TYPES.UPDATE_USER_CATEGORY:
       return {
         ...state,
-        user: {
-          ...state.user,
-          tags: action.payload.category
-        }
+        user: action.payload.data
       };
+
     case USER_MANAGE_ACTION_TYPES.OPEN_MODAL:
       return {
         ...initialState,
