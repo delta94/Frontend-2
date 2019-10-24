@@ -28,12 +28,7 @@ export interface IBasicProps extends StateProps, DispatchProps {
 export interface IBasicState {
   visible: boolean;
   user: IUserDetails;
-  fiedValue: [
-    {
-      id: string;
-      value: string;
-    }
-  ];
+  fiedValue: any[];
   isOpenPopFirst: boolean;
   isOpenPopLast: boolean;
   isOpenPopEmail: boolean;
@@ -67,7 +62,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
   state: IBasicState = {
     visible: false,
     user: this.props.user,
-    fiedValue: [{ id: '', value: '' }],
+    fiedValue: [],
     listField: this.props.user.fields,
     isOpenPopFirst: false,
     isOpenPopLast: false,
@@ -79,7 +74,13 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
 
   componentDidMount = async () => {
     await this.props.getDetailUser(this.props.id);
-    this.setState({ listField: this.props.user.fields, user: this.props.user });
+    this.setState({
+      listField: this.props.user.fields,
+      user: this.props.user,
+      fiedValue: this.props.user.fields.map(event => {
+        return { id: event.id, value: event.value };
+      })
+    });
   };
 
   hide = type => {
@@ -124,13 +125,32 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
     }
   };
 
-  closePopover = async () => {
+  closePopover = async id => {
     let listFields;
+    let { listField, fiedValue } = this.state;
+    fiedValue = fiedValue.map(event => {
+      if (event.id == String(id)) {
+        return {
+          id: id,
+          value: String(
+            listField
+              .map(item => {
+                if (item.id === event.id) {
+                  return item.value;
+                }
+              })
+              .filter(Boolean)
+          )
+        };
+      } else {
+        return { id: event.id, value: event.value };
+      }
+    });
     listFields = this.state.listField.map(event => {
       event.check = false;
       return event;
     });
-    this.setState({ listField: listFields });
+    this.setState({ listField: listFields, fiedValue });
     await this.props.getDetailUser(this.state.user.id);
   };
 
@@ -173,7 +193,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
       fields: this.removeDuplicates(value, 'id')
     };
     await updateUserAction(data);
-    this.closePopover();
+    this.closePopover('');
     this.hide('');
     await getDetailUser(data.id);
     this.setState({ user: this.props.user, listField: this.props.user.fields });
@@ -466,7 +486,13 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                                     Chỉnh sửa{' '}
                                   </Button>{' '}
                                   &nbsp;
-                                  <Button onClick={this.closePopover}>Hủy bỏ</Button>
+                                  <Button
+                                    onClick={() => {
+                                      this.closePopover(value.id);
+                                    }}
+                                  >
+                                    Hủy bỏ
+                                  </Button>
                                 </div>
                               </div>
                             }
@@ -484,7 +510,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                 : ''}
               <div className="line-info">
                 <Label className="content-text" for="categories">
-                  <Translate contentKey="userManagement.categories" />
+                  Thẻ/Tag
                 </Label>
                 <div className="phone-customer_span">
                   <Popover

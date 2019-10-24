@@ -80,7 +80,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
   };
 
   handleSubmit = async () => {
-    const { insertUser, getUsers } = this.props;
+    const { insertUser, getUsers, openModal } = this.props;
     let { fiedValue } = this.state;
     let value = fiedValue.slice(1);
     let data = {
@@ -92,9 +92,15 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
     };
     if (this.IsValidateForm()) {
       await insertUser(data);
-      await getUsers(0, 10, '', '');
 
       this.toggle(data);
+      openModal({
+        show: true,
+        type: 'success',
+        title: translate('modal-data.title.success'),
+        text: 'Tạo khách hàng thành công'
+      });
+      await getUsers(0, 10, '', '');
     }
   };
 
@@ -327,9 +333,9 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
                       })}
                     </Collapse>
                     <div className="option-create" id="has-collapse" style={{ display: collapse ? 'none' : '' }}>
-                      <p>Only required fields are being displayed </p>
+                      <p>Chỉ hiển thị các trường bắt buộc</p>
                       <button id="btn-collapse" onClick={this.showCollapse}>
-                        Click here to shocustomer fields
+                        Hiển thị đầy đủ các trường
                       </button>
                     </div>
                   </Col>

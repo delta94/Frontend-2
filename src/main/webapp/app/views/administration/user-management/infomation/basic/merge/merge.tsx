@@ -372,7 +372,7 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
           <Ionicon color="#343A40" icon="md-git-merge" /> &nbsp; Gộp
         </Button>
 
-        <Modal isOpen={this.state.modal} id="content-properties">
+        <Modal isOpen={this.state.modal} id="content-properties" className={current === this.stepTable().length - 1 ? 'fix-heigth' : ''}>
           <PerfectScrollbar>
             <ModalHeader toggle={this.toggle} id="create-properties">
               <Translate contentKey="userManagement.infomation.merge.title" />
