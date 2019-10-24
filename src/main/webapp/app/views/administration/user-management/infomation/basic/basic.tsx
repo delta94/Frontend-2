@@ -182,7 +182,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
   editUser = async id => {
     let { user, fiedValue, tags } = this.state;
     let { updateUserAction, getDetailUser } = this.props;
-    let value = fiedValue.slice(1);
+    let value = fiedValue;
     let data = {
       email: id === 'email' ? $(`input#${id}`).val() : user.email,
       id: user.id,
