@@ -160,7 +160,10 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
         return value.title;
       });
     });
-    console.log(title);
+    let a = title.map((event, index) => {
+      return event[index];
+    });
+    console.log(a);
     return (
       <div>
         <SweetAlert
@@ -263,7 +266,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                             {' '}
                             {event.firstName + ' ' + event.lastName}
                           </td>
-                          <td className="mobile">{event.mobile}</td>
+                          <td className="mobile">0{event.mobile}</td>
                           <td className="email">{event.email}</td>
                           <td className="dateCreate">{event.createdDate}</td>
                           <td className="tag">
