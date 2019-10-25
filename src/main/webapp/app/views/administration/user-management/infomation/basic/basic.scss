@@ -1,0 +1,99 @@
+.image-customer {
+  background: rgba(56, 102, 221, 0.8);
+  border-radius: 5px;
+  text-align: center;
+  margin-bottom: 1%;
+}
+.details-customer-name {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 26px;
+  color: #ffffff;
+  margin-top: 1%;
+}
+.details-customer {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 20px;
+  /* or 125% */
+
+  text-align: center;
+
+  color: #ffffff;
+}
+#info-basic .ant-collapse-header {
+  background: #f9fafb;
+  border-radius: 5px 5px 0px 0px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 13px;
+  line-height: 27px;
+  /* identical to box height, or 208% */
+  letter-spacing: 1px;
+
+  color: #2d3843;
+}
+
+.image-customer .ant-card-head {
+  border-bottom: none;
+}
+.image-customer .anticon-setting {
+  color: #ffffff;
+  transform: matrix(1, 0, 0, -1, 0, 0);
+  font-size: 16px;
+}
+
+.phone-customer_span {
+  position: absolute;
+  right: 0px;
+}
+.btn-canel-popover {
+  margin-left: 25%;
+}
+.group-btn-popover {
+  margin-top: 2%;
+}
+.line-info {
+  display: flex;
+  position: relative;
+  border-top: 1px solid #e5ecf4;
+  padding-top: 20px;
+}
+.value-text {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+
+  color: #343a40;
+}
+.value-empty {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  text-align: right;
+
+  color: #9ba3b3;
+}
+.content-text {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  /* identical to box height, or 193% */
+
+  letter-spacing: 1px;
+
+  color: #343a40;
+}

@@ -1,0 +1,35 @@
+#properties-management-title {
+  font-size: 18px;
+  background: white;
+  margin: 1px -9px 0px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  color: black;
+}
+.form-button {
+  display: flex;
+  padding-top: 15px;
+}
+.search-bar-properties {
+  display: flex;
+  padding-top: 11px;
+}
+.select-bar {
+  width: 120px;
+}
+.table-drag {
+  z-index: 99;
+}
+#btn-function {
+  display: inline-block;
+}
+#first-head {
+  width: 25%;
+}
+td {
+  word-break: break-all;
+}
+.table-drag {
+  position: relative;
+}

@@ -1,0 +1,43 @@
+.group-modal-config {
+  position: relative;
+  padding-bottom: 60px;
+
+  .group-addition {
+    .ant-card-body {
+      padding: 0px;
+    }
+
+    .group-addition_content {
+      padding: 14px;
+    }
+
+    .group-addition_block-out {
+      padding-left: 20px;
+      line-height: 40px;
+      background: #eff9ff;
+      box-sizing: border-box;
+      border-radius: 3px 3px 0px 0px;
+    }
+
+    ul {
+      list-style-type: none;
+    }
+
+    .search-table-customer {
+      padding-top: 15px;
+    }
+  }
+}
+
+.input-search_group {
+  display: flex;
+  margin-bottom: 10px;
+  height: 50px;
+
+  .input-search_label {
+    width: 90px !important;
+    line-height: 35px;
+    font-weight: 500;
+    height: 35px;
+  }
+}
