@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Table, Row, Label, Col } from 'reactstrap';
+import { Button, Table, Row, Label, Col, Modal, ModalHeader, ModalFooter, ModalBody } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { openModal, closeModal } from 'app/actions/modal';
@@ -15,11 +15,15 @@ import {
   getUserCategories,
   deleteUser,
   getDetailUser,
-  getFields
+  getFields,
+  getListSaveAdvancedSearchActionData,
+  getSaveAdvancedSearchActionData,
+  deleteSaveAdvancedSearchActionData,
+  postSaveAdvancedSearchActionData
 } from 'app/actions/user-management';
 import UserCategoryTag from './categories-tag/categories-tag';
 import { IRootState } from 'app/reducers';
-import { Menu, Dropdown, Icon, Checkbox } from 'antd';
+import { Menu, Dropdown, Icon, Checkbox, Input } from 'antd';
 import ReactPaginate from 'react-paginate';
 import LoaderAnim from 'react-loaders';
 import SweetAlert from 'sweetalert-react';
@@ -38,6 +42,9 @@ import { getFindUserInManagerWithActionData } from 'app/actions/user-management'
 import { faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { Collapse } from 'reactstrap';
 import { INSERT_CUSTOMER_GROUP } from 'app/constants/group-atrribute-customer';
+import { IModalData } from 'app/reducers/user-management';
+import { ERROR } from 'app/constants/common';
+import SearchSaveModal from './search-save-modal/search-save-modal';
 
 interface IComponentData {
   id: string;
@@ -68,10 +75,20 @@ export interface IUserManagementState {
   pageIndex: number;
   pageSize: number;
   list_field_data_cpn: IComponentData[];
+  list_save_advanced_search: Array<{
+    id?: string;
+    name?: string;
+    customerAdvancedSave?: any;
+  }>;
   open_import?: boolean;
   open_create?: boolean;
   open_search?: boolean;
+  open_new_save?: boolean;
+  open_save?: boolean;
   name?: string;
+  modalState?: IModalData;
+  open_list_save?: boolean;
+  save_advanced_search?: any;
 }
 
 export class UserManagement extends React.Component<IUserManagementProps, IUserManagementState> {
@@ -90,30 +107,31 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     pageIndex: 0,
     pageSize: 10,
     list_field_data_cpn: [],
+    list_save_advanced_search: [],
     open_import: false,
     open_create: false,
     open_search: false,
-    name: ''
+    open_new_save: false,
+    name: '',
+    modalState: {
+      show: false,
+      type: ERROR,
+      text: '',
+      title: 'Thông báo'
+    },
+    open_list_save: false,
+    save_advanced_search: {}
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (
-      nextProps.id_list_customer !== '' &&
-      nextProps.id_list_customer &&
-      nextProps.single_group_field !== prevState.single_group_field &&
-      nextProps.type_modal !== INSERT_CUSTOMER_GROUP
-    ) {
-      let { customerAdvancedSave, categoryName } = nextProps.single_group_field;
-      let { type_modal } = nextProps;
+    if (nextProps.save_advanced_search.id !== '' && nextProps.save_advanced_search !== prevState.save_advanced_search) {
+      let { customerAdvancedSave } = nextProps.save_advanced_search;
       let logicalOperator = '';
       let advancedSearchesData = [];
       let list_field_data_cpn = [];
       let advancedSearches = [];
 
-      if (customerAdvancedSave.logicalOperator !== '' && type_modal !== INSERT_CUSTOMER_GROUP) {
-        logicalOperator = customerAdvancedSave.logicalOperator;
-      }
-
+      logicalOperator = customerAdvancedSave.logicalOperator;
       advancedSearches = customerAdvancedSave.advancedSearches;
       customerAdvancedSave.advancedSearches.forEach((item, index) => {
         let id = makeRandomId(16);
@@ -133,12 +151,17 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
       advancedSearches = customerAdvancedSave.advancedSearches;
 
       return {
-        categoryName,
-        single_group_field: nextProps.single_group_field,
+        save_advanced_search: nextProps.save_advanced_search,
         advancedSearchesData,
         list_field_data_cpn,
         logicalOperator,
         advancedSearches
+      };
+    }
+
+    if (nextProps.modalState !== prevState.modalState) {
+      return {
+        modalState: nextProps.modalState
       };
     }
     return null;
@@ -149,13 +172,13 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     const { activePage, itemsPerPage, textSearch, categories } = this.state;
     let { users, getUsers, getFields } = this.props;
     await getUsers(activePage, itemsPerPage, categories, textSearch);
-    getFields();
-    this.props.getListFieldDataAction();
+    await getFields();
+    await this.props.getListFieldDataAction();
+    await this.props.getListSaveAdvancedSearchActionData();
   };
 
   handlePagination = activePage => {
     const { itemsPerPage, textSearch, categories, open_search } = this.state;
-    console.log(activePage);
     if (open_search) {
       this.getDataListCustomer(activePage.selected);
     } else {
@@ -241,7 +264,15 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     this.setState({ open_create: !open_create });
   };
 
-  saveSearchData = () => {};
+  saveSearchData = () => {
+    let { open_new_save } = this.state;
+    this.setState({ open_new_save: !open_new_save });
+  };
+
+  toggleSearchSaveModal = () => {
+    let { open_list_save } = this.state;
+    this.setState({ open_list_save: !open_list_save });
+  };
 
   /**
    *  @SearchAdvanced
@@ -346,6 +377,10 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     });
   };
 
+  openAdvancedSearch = () => {
+    this.setState({ open_search: true });
+  };
+
   // GetData customer by condition
   getDataListCustomer = (page?: any) => {
     let { advancedSearches, logicalOperator, pageSize } = this.state;
@@ -368,10 +403,46 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     this.removeDataInModal();
   };
 
+  // Save advanced search
+  saveAdvancedSearch = async () => {
+    let { name, advancedSearches, logicalOperator } = this.state;
+    await this.props.postSaveAdvancedSearchActionData({ name: name.trim(), customerAdvancedSave: { advancedSearches, logicalOperator } });
+    await this.getListAdvancedSearch();
+    this.saveSearchData();
+  };
+
+  // Get list advanced search
+  getListAdvancedSearch = () => {
+    this.props.getListSaveAdvancedSearchActionData();
+  };
+
+  // Delete advanced search
+  deleteAdvancedSearch = (id?: string) => {
+    this.props.deleteSaveAdvancedSearchActionData(id);
+  };
+  // Get advanced search
+  getAdvancedSearch = (id?: string) => {
+    this.props.getSaveAdvancedSearchActionData(id);
+  };
+
   render() {
-    const { users, loading, modalState, listFields } = this.props;
-    const { activePage } = this.state;
+    const { users, loading, listFields, list_field_data, pageCount } = this.props;
+
+    const {
+      activePage,
+      open_new_save,
+      open_import,
+      open_create,
+      open_search,
+      logicalOperator,
+      list_field_data_cpn,
+      name,
+      modalState,
+      open_list_save
+    } = this.state;
+
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
+
     let listPropUser = listFields.filter(
       el => el.title !== 'Tên' && el.title !== 'Email' && el.title !== 'Họ' && el.title !== 'Số điện thoại'
     );
@@ -415,8 +486,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
         tags: event.tags
       };
     });
-    let { list_field_data, pageCount } = this.props;
-    let { list_field_data_cpn, logicalOperator, open_import, open_create, open_search } = this.state;
+
     let data = users
       .map((event, idx) => {
         return event.fields;
@@ -451,18 +521,48 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
         : [];
 
     return (
-      <div className="user-management">
-        <Fragment>
-          <SweetAlert
-            title={modalState.title ? modalState.title : 'No title'}
-            confirmButtonColor=""
-            show={modalState.show ? modalState.show : false}
-            text={modalState.text ? modalState.text : 'No'}
-            type={modalState.type ? modalState.type : 'error'}
-            onConfirm={() => this.props.closeModal()}
-          />
-
-          {/* Title */}
+      <Fragment>
+        <SweetAlert
+          title={modalState.title ? modalState.title : 'No title'}
+          confirmButtonColor=""
+          show={modalState.show ? modalState.show : false}
+          text={modalState.text ? modalState.text : 'No'}
+          type={modalState.type ? modalState.type : 'error'}
+          onConfirm={() => this.props.closeModal()}
+        />
+        {/* Add new */}
+        <Modal isOpen={open_new_save}>
+          <ModalHeader>Đặt tên tìm kiếm</ModalHeader>
+          <ModalBody>
+            <div className="input-search_group" style={{ paddingRight: '30px' }}>
+              <label className="input-search_label">
+                <span>Tên</span>
+              </label>
+              <Input value={name} onChange={event => this.setState({ name: event.target.value })} />
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="none" style={{ float: 'right' }} onClick={() => this.setState({ open_new_save: false, name: '' })}>
+              Hủy
+            </Button>
+            <Button
+              color="primary"
+              style={{ float: 'right' }}
+              onClick={() => this.saveAdvancedSearch()}
+              disabled={name && name.trim() !== '' ? false : true}
+            >
+              Lưu
+            </Button>
+          </ModalFooter>
+        </Modal>
+        {/* Search save modal  */}
+        <SearchSaveModal
+          open_list_save={open_list_save}
+          toggleSearchSaveModal={this.toggleSearchSaveModal}
+          openAdvancedSearch={this.openAdvancedSearch}
+        />
+        {/* Title */}
+        <div className="user-management">
           <div id="title-common-header">
             <Translate contentKey="userManagement.home.title" />
             <Button className="btn btn-primary float-right jh-create-entity" color="primary" onClick={this.toggleCreate}>
@@ -528,6 +628,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                     style={{
                       float: 'right'
                     }}
+                    onClick={this.toggleSearchSaveModal}
                   >
                     Các tìm kiếm đã lưu
                   </label>
@@ -641,15 +742,15 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
             </Row>
           </div>
           <Loader message={spinner1} show={loading} priority={1} />
-        </Fragment>
-      </div>
+        </div>
+      </Fragment>
     );
   }
 }
 
 const mapStateToProps = (storeState: IRootState) => ({
   dowloadTemplate: storeState.userManagement.dowloadTemplate,
-  modalState: storeState.handleModal.data,
+  modalState: storeState.userManagement.dataModal,
   users: storeState.userManagement.users,
   totalItems: storeState.userManagement.totalItems,
   account: storeState.authentication.account,
@@ -658,7 +759,9 @@ const mapStateToProps = (storeState: IRootState) => ({
   listCategory: storeState.userManagement.listCategory,
   pageCount: Math.ceil(storeState.userManagement.totalElements / ITEMS_PER_PAGE),
   listFields: storeState.userManagement.listFields,
-  list_field_data: storeState.groupCustomerState.list_field_data
+  list_field_data: storeState.groupCustomerState.list_field_data,
+  list_save_advanced_search: storeState.userManagement.list_save_advanced_search,
+  save_advanced_search: storeState.userManagement.save_advanced_search
 });
 
 const mapDispatchToProps = {
@@ -673,7 +776,11 @@ const mapDispatchToProps = {
   closeModal,
   getFields,
   getListFieldDataAction,
-  getFindUserInManagerWithActionData
+  getFindUserInManagerWithActionData,
+  getListSaveAdvancedSearchActionData,
+  getSaveAdvancedSearchActionData,
+  deleteSaveAdvancedSearchActionData,
+  postSaveAdvancedSearchActionData
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
