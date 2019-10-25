@@ -126,6 +126,10 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
     return data;
   };
 
+  jsUcfirst(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
   contentChosseContact = () => {
     let { is_chose } = this.state;
     let { compareUser } = this.props;
@@ -138,7 +142,7 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
           <div className="option-create" style={{ textAlign: 'center' }}>
             <div>
               <Label>
-                liên hệ trùng {numberConfict} trường :"{fieldConfict}"
+                liên hệ trùng {numberConfict} trường :"{this.jsUcfirst(fieldConfict.split(',').join(', '))}"
               </Label>
             </div>
 

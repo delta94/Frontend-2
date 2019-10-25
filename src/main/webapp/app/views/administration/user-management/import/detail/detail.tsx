@@ -146,9 +146,7 @@ export class UserDetail extends React.Component<IUserDetailProps> {
                     <th>
                       <Translate contentKey="userManagement.home.phone-number" />
                     </th>
-                    <th>
-                      <Translate contentKey="userManagement.home.type" />
-                    </th>
+                    <th>Thẻ/Tag</th>
                     <th>
                       <Translate contentKey="userManagement.home.reason-error" />
                     </th>

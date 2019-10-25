@@ -642,7 +642,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                   : ''}
               </tbody>
             </Table>
-            {users.length > 0 ? '' : <p style={{ textAlign: 'center' }}>không có dữ liệu khách hàng</p>}
+            {users.length > 0 ? '' : <p style={{ textAlign: 'center', color: 'black' }}>không có dữ liệu khách hàng</p>}
             <Row className="justify-content-center">
               {this.props.totalElements >= 10 ? (
                 <ReactPaginate
