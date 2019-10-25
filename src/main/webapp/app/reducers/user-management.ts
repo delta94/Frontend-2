@@ -1,3 +1,5 @@
+import { IModalData } from 'app/reducers/user-management';
+import { MODAL_ACTION } from './../constants/modal';
 import axios from 'axios';
 import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } from 'react-jhipster';
 
@@ -6,6 +8,7 @@ import { IUser } from 'app/common/model/user.model';
 import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
 import { IFileList } from 'app/common/model/sucess-file';
 import { ICategory } from 'app/common/model/category.model';
+import { ISearchAdvanced } from 'app/common/model/group-attribute-customer';
 
 export interface IUserDetails {
   email?: string;
@@ -82,6 +85,13 @@ export interface IListFields {
   code?: string;
 }
 
+export interface IModalData {
+  show?: boolean;
+  type: string;
+  text?: string;
+  title: string;
+}
+
 const initialState = {
   loading: false,
   errorMessage: null,
@@ -105,7 +115,29 @@ const initialState = {
   headerFile: {} as IHeaderFile,
   listFields: [] as ReadonlyArray<IListFields>,
   compareUser: [] as ReadonlyArray<ICompareUser>,
-  isOpenModalImport: false
+  isOpenModalImport: false,
+  dataModal: {
+    show: false,
+    title: '',
+    type: 'success',
+    text: ''
+  },
+  list_save_advanced_search: [] as Array<{
+    name?: string;
+    id?: string;
+    customerAdvancedSave: {
+      advancedSearches?: ISearchAdvanced[];
+      logicalOperator?: string;
+    };
+  }>,
+  save_advanced_search: {
+    name: '',
+    id: '',
+    customerAdvancedSave: {
+      advancedSearches: [],
+      logicalOperator: ''
+    }
+  }
 };
 
 export type UserManagementState = Readonly<typeof initialState>;
@@ -126,6 +158,10 @@ export default (state: UserManagementState = initialState, action): UserManageme
     case REQUEST(USER_MANAGE_ACTION_TYPES.UPLOAD_FILE):
     case REQUEST(USER_MANAGE_ACTION_TYPES.IMPORT_FILE):
     case REQUEST(USER_MANAGE_ACTION_TYPES.GET_LIST_DUPLICATE):
+    case REQUEST(USER_MANAGE_ACTION_TYPES.GET_ADVANCED_SEARCH):
+    case REQUEST(USER_MANAGE_ACTION_TYPES.GET_LIST_ADVANCED_SEARCH):
+    case REQUEST(USER_MANAGE_ACTION_TYPES.POST_SAVE_ADVANCED_SEARCH):
+    case REQUEST(USER_MANAGE_ACTION_TYPES.DELETE_ADVANCED_SEARCH):
       return {
         ...state,
         errorMessage: null,
@@ -175,6 +211,31 @@ export default (state: UserManagementState = initialState, action): UserManageme
         uploadScheduleFailure: true,
         errorMessage: action.payload
       };
+    case FAILURE(USER_MANAGE_ACTION_TYPES.POST_SAVE_ADVANCED_SEARCH):
+      return {
+        ...state,
+        loading: false,
+        dataModal: {
+          show: true,
+          title: 'Thành công',
+          type: 'success',
+          text: 'Lưu tìm kiếm thất bại'
+        }
+      };
+
+    // TODO: Delete Advanced search
+    case FAILURE(USER_MANAGE_ACTION_TYPES.DELETE_ADVANCED_SEARCH):
+      return {
+        ...state,
+        loading: false,
+        dataModal: {
+          show: true,
+          title: 'Thành công',
+          type: 'success',
+          text: 'Xóa tìm kiếm thất bại'
+        }
+      };
+
     case SUCCESS(USER_MANAGE_ACTION_TYPES.COMPARE_USER):
       return {
         ...state,
@@ -290,6 +351,59 @@ export default (state: UserManagementState = initialState, action): UserManageme
         loading: false,
         users: action.payload.data.data,
         totalElements: action.payload.data.total
+      };
+
+    // TODO: Get job search data
+    case SUCCESS(USER_MANAGE_ACTION_TYPES.GET_ADVANCED_SEARCH):
+      return {
+        ...state,
+        loading: false,
+        save_advanced_search: action.payload.data
+      };
+
+    //TODO: Get list advanced Data
+    case SUCCESS(USER_MANAGE_ACTION_TYPES.GET_LIST_ADVANCED_SEARCH):
+      return {
+        ...state,
+        loading: false,
+        list_save_advanced_search: action.payload.data
+      };
+
+    // TODO: Save advanced search
+    case SUCCESS(USER_MANAGE_ACTION_TYPES.POST_SAVE_ADVANCED_SEARCH):
+      return {
+        ...state,
+        loading: false,
+        dataModal: {
+          show: true,
+          title: 'Thành công',
+          type: 'success',
+          text: 'Lưu tìm kiếm thành kiếm thành công'
+        }
+      };
+
+    // TODO: Delete Advanced search
+    case SUCCESS(USER_MANAGE_ACTION_TYPES.DELETE_ADVANCED_SEARCH):
+      return {
+        ...state,
+        loading: false,
+        dataModal: {
+          show: true,
+          title: 'Thành công',
+          type: 'success',
+          text: 'Xóa tìm kiếm thành kiếm thành công'
+        }
+      };
+
+    case MODAL_ACTION.CLOSE_MODAL:
+      return {
+        ...state,
+        dataModal: {
+          show: false,
+          title: '',
+          type: 'success',
+          text: ''
+        }
       };
 
     case USER_MANAGE_ACTION_TYPES.UPDATE_USER_CATEGORY:

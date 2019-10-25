@@ -163,3 +163,29 @@ export const getInfoUser = (id: any) => {
   const insertPropApi = `${apiUrl2}/${id}`;
   return axios.get(insertPropApi, { headers: authHeaders });
 };
+
+const advancedSearchApi = 'v1/saved-advance-searches';
+
+// TODO: Save advanced search data
+export const postSaveAdvancedSearch = (data: any) => {
+  const postSearchApi = `${advancedSearchApi}/insert`;
+  return axios.post(postSearchApi, data, { headers: authHeaders });
+};
+
+// TODO: Delete advanced search data
+export const deleteSaveAdvancedSearch = (id?: string) => {
+  const deleteSearchApi = `${advancedSearchApi}/${id}/delete`;
+  return axios.post(deleteSearchApi, { headers: authHeaders });
+};
+
+// TODO: Get list advanced search
+export const getListSaveAdvancedSearch = (id?: string) => {
+  const getListSearchApi = `${advancedSearchApi}`;
+  return axios.get(getListSearchApi, { headers: authHeaders });
+};
+
+// TODO: Get advanced search
+export const getSaveAdvancedSearch = (id?: string) => {
+  const getListSearchApi = `${advancedSearchApi}/${id}`;
+  return axios.get(getListSearchApi, { headers: authHeaders });
+};

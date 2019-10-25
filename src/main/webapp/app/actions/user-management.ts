@@ -1,3 +1,4 @@
+import { getListSaveAdvancedSearch, getSaveAdvancedSearch } from './../services/user-management';
 import { getFindCustomerWithCondition } from './../services/group-atrribute-customer';
 import axios from 'axios';
 import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction, translate } from 'react-jhipster';
@@ -22,7 +23,9 @@ import {
   postInsertUser,
   getDoSearch,
   mergeUserService,
-  exportFileResultService
+  exportFileResultService,
+  postSaveAdvancedSearch,
+  deleteSaveAdvancedSearch
 } from 'app/services/user-management';
 import { IFileList } from 'app/common/model/sucess-file';
 import { warn } from 'fullcalendar';
@@ -205,10 +208,42 @@ export const resetMessage = () => ({
   type: USER_MANAGE_ACTION_TYPES.RESET_MESSAGE
 });
 
-// TODO: find customer with condition
+// Find Customer with condition
 export const getFindUserInManagerWithActionData = data => {
   return {
     type: USER_MANAGE_ACTION_TYPES.GET_FIND_USER_IN_MANAGEMENTS,
     payload: getFindCustomerWithCondition(data)
+  };
+};
+
+// TODO: Save advanced search data
+export const postSaveAdvancedSearchActionData = (data: any) => {
+  return {
+    type: USER_MANAGE_ACTION_TYPES.POST_SAVE_ADVANCED_SEARCH,
+    payload: postSaveAdvancedSearch(data)
+  };
+};
+
+// Delete advanced search data
+export const deleteSaveAdvancedSearchActionData = (id?: string) => {
+  return {
+    type: USER_MANAGE_ACTION_TYPES.DELETE_ADVANCED_SEARCH,
+    payload: deleteSaveAdvancedSearch(id)
+  };
+};
+
+// Get list advanced search
+export const getListSaveAdvancedSearchActionData = () => {
+  return {
+    type: USER_MANAGE_ACTION_TYPES.GET_LIST_ADVANCED_SEARCH,
+    payload: getListSaveAdvancedSearch()
+  };
+};
+
+//Get advanced search
+export const getSaveAdvancedSearchActionData = (id?: string) => {
+  return {
+    type: USER_MANAGE_ACTION_TYPES.GET_ADVANCED_SEARCH,
+    payload: getSaveAdvancedSearch(id)
   };
 };

@@ -1,0 +1,16 @@
+.delete-search {
+  background: #fff1ef;
+  border: 1px solid #fcc4c4;
+  border-radius: 3px;
+  margin: 10px 0px;
+  line-height: 35px;
+  padding: 5px 15px;
+  color: #7f221c;
+  font-size: 12px;
+}
+
+li {
+  &:hover {
+    cursor: hand;
+  }
+}
