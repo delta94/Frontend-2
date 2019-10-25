@@ -182,7 +182,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
   editUser = async id => {
     let { user, fiedValue, tags } = this.state;
     let { updateUserAction, getDetailUser } = this.props;
-    let value = fiedValue.slice(1);
+    let value = fiedValue;
     let data = {
       email: id === 'email' ? $(`input#${id}`).val() : user.email,
       id: user.id,
@@ -329,7 +329,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
             <Panel header="THÔNG TIN CƠ BẢN" id="info-basic" key="1">
               <div style={{ display: 'flex', position: 'relative' }}>
                 <Label className="content-text" style={{ width: '50%' }}>
-                  First Name
+                  Tên
                 </Label>
                 <label className="phone-customer_span">
                   <Popover
@@ -345,7 +345,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
               </div>
               <div className="line-info">
                 <Label className="content-text" style={{ width: '50%' }}>
-                  Last Name
+                  Họ
                 </Label>
                 <span className="phone-customer_span">
                   <Popover
@@ -378,7 +378,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
               </div>
               <div className="line-info">
                 <Label className="content-text" style={{ width: '50%' }}>
-                  Mobile
+                  Số điện thoại
                 </Label>
                 <span className="phone-customer_span">
                   <Popover
@@ -537,7 +537,11 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                     visible={isOpenPopTag}
                     onVisibleChange={event => this.handleVisibleChange(event, 'tag', '')}
                   >
-                    {user.tags && user.tags.length > 0 ? user.tags.map(event => event.name) : <span className="empty">Click to add</span>}
+                    {user.tags && user.tags.length > 0 ? (
+                      user.tags.map(event => event.name).join(', ')
+                    ) : (
+                      <span className="empty">Click vào đây để thêm</span>
+                    )}
                   </Popover>
                 </div>
               </div>

@@ -19,7 +19,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 export interface ISearchSaveModalProps extends StateProps, DispatchProps {
   open_list_save: boolean;
   toggleSearchSaveModal: Function;
-  openAdvancedSearch: Fucntion;
+  openAdvancedSearch: Function;
 }
 
 export interface ISearchSaveModalState {

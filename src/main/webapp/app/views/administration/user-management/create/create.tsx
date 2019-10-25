@@ -92,7 +92,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
     };
     if (this.IsValidateForm()) {
       await insertUser(data);
-
+      await getUsers(0, 10, '', '');
       this.toggle(data);
       openModal({
         show: true,
@@ -100,7 +100,6 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
         title: translate('modal-data.title.success'),
         text: 'Tạo khách hàng thành công'
       });
-      await getUsers(0, 10, '', '');
     }
   };
 
@@ -169,7 +168,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
     let { fiedValue } = this.state;
     let data = {
       id: id,
-      value: String(checkedValues)
+      value: String(checkedValues.join('||'))
     };
     fiedValue.push(data);
     this.setState({ fiedValue });
@@ -246,91 +245,88 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
                     </div>
                     <p className="error">{this.state.validPhone}</p>
                     <Collapse isOpen={this.state.collapse}>
-                      {getList.map((value, index) => {
-                        if (
-                          !(
-                            value.title === 'First Name' ||
-                            value.title === 'Last Name' ||
-                            value.title === 'Email' ||
-                            value.title === 'Mobile'
-                          )
-                        ) {
-                          let object = (
-                            <div className="option-create" key={index}>
-                              <Label>{value.title}</Label>
-                              {value.type === 'Checkbox' ? (
-                                <Checkbox.Group className="checkbox-group" onChange={event => this.onChangeCheckbox(value.id, event)}>
-                                  <Row>
+                      {getList
+                        .filter(el => el.title !== 'Tên' && el.title !== 'Email' && el.title !== 'Họ' && el.title !== 'Số điện thoại')
+                        .map((value, index) => {
+                          if (
+                            !(value.title === 'Tên' || value.title === 'Họ' || value.title === 'Email' || value.title === 'Số điện thoại')
+                          ) {
+                            let object = (
+                              <div className="option-create" key={index}>
+                                <Label>{value.title}</Label>
+                                {value.type === 'Checkbox' ? (
+                                  <Checkbox.Group className="checkbox-group" onChange={event => this.onChangeCheckbox(value.id, event)}>
+                                    <Row>
+                                      {String(value.fieldValue)
+                                        .split('||')
+                                        .map((event, index) => {
+                                          return (
+                                            <Col span={8} key={index}>
+                                              <Checkbox value={String(event)}>{event}</Checkbox>
+                                            </Col>
+                                          );
+                                        })}
+                                    </Row>
+                                  </Checkbox.Group>
+                                ) : (
+                                  ''
+                                )}
+                                {value.type === 'Radio' ? (
+                                  <Radio.Group
+                                    onChange={event => this.onChangeRadio(event, value.id)}
+                                    className="radio-group"
+                                    name="radiogroup"
+                                    defaultValue={event}
+                                  >
+                                    <Row>
+                                      {String(value.fieldValue)
+                                        .split('||')
+                                        .map((event, index) => {
+                                          return (
+                                            <Col span={8} key={index}>
+                                              <Radio value={event}>{event}</Radio>
+                                            </Col>
+                                          );
+                                        })}
+                                    </Row>
+                                  </Radio.Group>
+                                ) : (
+                                  ''
+                                )}
+                                {value.type === 'Text Input' ? (
+                                  <Input id={value.id} onChange={event => this.onChangeText(value.id, event)} />
+                                ) : (
+                                  ''
+                                )}
+                                {value.type === 'Date' ? (
+                                  <DatePicker
+                                    className="date-create"
+                                    onChange={(event, dateString) => this.onChangeDate(value.id, dateString)}
+                                  />
+                                ) : (
+                                  ''
+                                )}
+                                {value.type === 'Dropdown List' ? (
+                                  <Select className="checkbox-group" onChange={event => this.handleChangeDrop(value.id, event)}>
                                     {String(value.fieldValue)
                                       .split('||')
                                       .map((event, index) => {
                                         return (
-                                          <Col span={8} key={index}>
-                                            <Checkbox value={String(event)}>{event}</Checkbox>
-                                          </Col>
+                                          <Option value={String(event)} key={index}>
+                                            {event}
+                                          </Option>
                                         );
                                       })}
-                                  </Row>
-                                </Checkbox.Group>
-                              ) : (
-                                ''
-                              )}
-                              {value.type === 'Radio' ? (
-                                <Radio.Group
-                                  onChange={event => this.onChangeRadio(event, value.id)}
-                                  className="radio-group"
-                                  name="radiogroup"
-                                  defaultValue={event}
-                                >
-                                  <Row>
-                                    {String(value.fieldValue)
-                                      .split('||')
-                                      .map((event, index) => {
-                                        return (
-                                          <Col span={8} key={index}>
-                                            <Radio value={event}>{event}</Radio>
-                                          </Col>
-                                        );
-                                      })}
-                                  </Row>
-                                </Radio.Group>
-                              ) : (
-                                ''
-                              )}
-                              {value.type === 'Text Input' ? (
-                                <Input id={value.id} onChange={event => this.onChangeText(value.id, event)} />
-                              ) : (
-                                ''
-                              )}
-                              {value.type === 'Date' ? (
-                                <DatePicker
-                                  className="date-create"
-                                  onChange={(event, dateString) => this.onChangeDate(value.id, dateString)}
-                                />
-                              ) : (
-                                ''
-                              )}
-                              {value.type === 'Dropdown List' ? (
-                                <Select className="checkbox-group" onChange={event => this.handleChangeDrop(value.id, event)}>
-                                  {String(value.fieldValue)
-                                    .split('||')
-                                    .map((event, index) => {
-                                      return (
-                                        <Option value={String(event)} key={index}>
-                                          {event}
-                                        </Option>
-                                      );
-                                    })}
-                                </Select>
-                              ) : (
-                                ''
-                              )}
-                            </div>
-                          );
-                          return object;
-                        }
-                        return '';
-                      })}
+                                  </Select>
+                                ) : (
+                                  ''
+                                )}
+                              </div>
+                            );
+                            return object;
+                          }
+                          return '';
+                        })}
                     </Collapse>
                     <div className="option-create" id="has-collapse" style={{ display: collapse ? 'none' : '' }}>
                       <p>Chỉ hiển thị các trường bắt buộc</p>

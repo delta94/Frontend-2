@@ -409,7 +409,10 @@ export default (state: UserManagementState = initialState, action): UserManageme
     case USER_MANAGE_ACTION_TYPES.UPDATE_USER_CATEGORY:
       return {
         ...state,
-        user: action.payload.data
+        user: {
+          ...state.user,
+          tags: action.payload.data
+        }
       };
 
     case USER_MANAGE_ACTION_TYPES.OPEN_MODAL:
