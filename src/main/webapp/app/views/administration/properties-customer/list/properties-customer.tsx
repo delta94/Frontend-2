@@ -121,7 +121,7 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
         />
         <Loader message={spinner1} show={loading} priority={1}>
           <div id="properties-management-title">
-            <Row>
+            <Row id="title-properties">
               <Col md="6" style={{ paddingTop: '14px' }}>
                 <Translate contentKey="properties-management.title" />
               </Col>
@@ -210,10 +210,7 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
                     <td>{value.type}</td>
                     <td>{value.personalizationTag.length > 2 ? value.personalizationTag : ''}</td>
                     <td className="text-center">
-                      {value.title === 'First Name' ||
-                      value.title === 'Last Name' ||
-                      value.title === 'Email' ||
-                      value.title === 'Mobile' ? (
+                      {value.title === 'Tên' || value.title === 'Họ' || value.title === 'Email' || value.title === 'Số điện thoại' ? (
                         ''
                       ) : (
                         <div className="btn-group flex-btn-group-container">
