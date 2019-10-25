@@ -12,12 +12,7 @@ import LoaderAnim from 'react-loaders';
 import { getUser, exportFileResult, openModalImport, closeModalImport } from 'app/actions/user-management';
 import { IRootState } from 'app/reducers';
 
-export interface IUserDetailProps
-  extends StateProps,
-    DispatchProps,
-    RouteComponentProps<{
-      login: string;
-    }> {}
+export interface IUserDetailProps extends StateProps, DispatchProps {}
 
 export class UserDetail extends React.Component<IUserDetailProps> {
   render() {
@@ -58,20 +53,7 @@ export class UserDetail extends React.Component<IUserDetailProps> {
                     <Translate contentKey="userManagement.home.import-result-detail" />
                   </CardTitle>
                 </Col>
-                <Col md="6" style={{ textAlign: 'right' }}>
-                  <Button
-                    type="primary"
-                    onClick={() => {
-                      window.location.assign('/#/app/views/customers/user-management');
-                      this.props.openModalImport();
-                    }}
-                  >
-                    &nbsp;
-                    <span className="d-none d-md-inline">
-                      <Translate contentKey="entity.action.continue" />
-                    </span>
-                  </Button>
-                </Col>
+                <Col md="6" style={{ textAlign: 'right' }} />
               </Row>
               <Row className="no-gutters ">
                 <Col md="6" xl="4">
@@ -183,23 +165,6 @@ export class UserDetail extends React.Component<IUserDetailProps> {
                 </tbody>
               </Table>
               {noRecord}
-              <Row>
-                <Col md="12" style={{ textAlign: 'right' }}>
-                  <Button
-                    type="link"
-                    onClick={() => {
-                      window.location.assign('/#/app/views/customers/user-management');
-                      this.props.closeModalImport();
-                    }}
-                  >
-                    <FontAwesomeIcon icon="arrow-left" />
-                    &nbsp;
-                    <span className="d-none d-md-inline">
-                      <Translate contentKey="entity.action.back" />
-                    </span>
-                  </Button>
-                </Col>
-              </Row>
             </CardBody>
           </Card>
         </Loader>

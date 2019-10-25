@@ -203,7 +203,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
         {listData.map((value, index) => {
           return (
             <Menu.Item key={index}>
-              <Checkbox defaultChecked={true} onChange={event => this.onChangeCheckBox(event, value.id)}>
+              <Checkbox defaultChecked={true} onChange={event => this.onChangeCheckBox(event, value.code)}>
                 {value.title}
               </Checkbox>
             </Menu.Item>
@@ -217,11 +217,11 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
   onChangeCheckBox = (e, value) => {
     let isCheck = e.target.checked;
     if (isCheck) {
-      $(`#${value}`).show();
-      $(`.${value}`).show();
+      $(`th.${value}`).show();
+      $(`td.${value}`).show();
     } else {
-      $(`#${value}`).hide();
-      $(`.${value}`).hide();
+      $(`th.${value}`).hide();
+      $(`td.${value}`).hide();
     }
   };
 
@@ -488,7 +488,12 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
               <FontAwesomeIcon icon={faArrowDown} />
               Export
             </Button>
-            <Button className="btn float-right jh-create-entity" outline color="primary" onClick={this.toggleImport}>
+            <Button
+              className="btn float-right jh-create-entity"
+              outline
+              color="primary"
+              onClick={() => window.location.assign('/#/app/views/customers/user-management/new')}
+            >
               <FontAwesomeIcon icon={faArrowUp} />
               <Translate contentKey="userManagement.home.import" />
             </Button>
@@ -496,7 +501,6 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
 
           {/* Panel */}
           <div className="panel">
-            <Import open_import={open_import} toggleImport={this.toggleImport} />
             <CreateUser open_create={open_create} toggleCreate={this.toggleCreate} />
             <div className="search-field">
               <div className="input-search_group" style={{ paddingRight: '30px' }}>
@@ -571,7 +575,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                   {dataHeader
                     ? dataHeader.map((event, id) => {
                         return (
-                          <th key={id} id={event.id}>
+                          <th key={id} className={event.code}>
                             {event.title}
                           </th>
                         );
@@ -593,7 +597,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                           <td>{item.firstName}</td>
                           <td>{item.lastName}</td>
                           <td>{item.email}</td>
-                          <td>{item.mobile}</td>
+                          <td>0{item.mobile}</td>
                           {item.fields
                             .sort(function(a, b) {
                               if (a.title.toLowerCase() < b.title.toLowerCase()) {
@@ -606,7 +610,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                             })
                             .map((value, index) => {
                               return (
-                                <td className={value.id} key={index}>
+                                <td className={value.code} key={index}>
                                   {value.value}
                                 </td>
                               );
