@@ -89,9 +89,6 @@ export class SearchSaveModal extends React.Component<ISearchSaveModalProps, ISea
             renderItem={(item, index) => (
               <List.Item
                 key={index}
-                onClick={() => {
-                  this.getAdvancedSearch(index);
-                }}
                 actions={[
                   <span
                     style={{ color: 'red' }}
@@ -104,7 +101,14 @@ export class SearchSaveModal extends React.Component<ISearchSaveModalProps, ISea
                   </span>
                 ]}
               >
-                {item}
+                <div
+                  className="search-name-info"
+                  onClick={() => {
+                    this.getAdvancedSearch(index);
+                  }}
+                >
+                  {item}
+                </div>
               </List.Item>
             )}
           />
