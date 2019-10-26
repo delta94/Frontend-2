@@ -244,87 +244,38 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
   onChangeCheckBox = (e, code) => {
     let { isDisable, listDataUser } = this.state;
     let isCheck = e.target.checked;
+    let existValue;
+    if (listDataUser.length > 0) {
+      listDataUser.forEach((item, index) => {
+        if (item === code) {
+          existValue = code;
+          listDataUser = listDataUser.filter(function(value) {
+            return value != code;
+          });
+        } else {
+          if (listDataUser.includes(existValue)) {
+            listDataUser = listDataUser.filter(function(value) {
+              return value != code;
+            });
+          } else {
+            if (!existValue) {
+              existValue = '';
+              listDataUser.push(code);
+            }
+          }
+        }
+      });
+    } else {
+      listDataUser.push(code);
+    }
     isDisable = isCheck;
-    this.setState({ isDisable });
-    const { users, loading, modalState, listFields } = this.props;
-    const { activePage } = this.state;
-    let listPropUser = listFields.filter(
-      el => el.title !== 'Tên' && el.title !== 'Email' && el.title !== 'Họ' && el.title !== 'Số điện thoại'
-    );
-    let lengthProps = listPropUser.length;
-    let listPropsUser = listPropUser.map(event => {
-      return {
-        code: event.code,
-        fieldValue: event.fieldValue,
-        id: event.id,
-        title: event.title,
-        type: event.type,
-        check: isCheck,
-        value: event.value
-      };
-    });
-    let dataUser = users.map(event => {
-      let dataProps;
-      if (event.fields.length <= lengthProps) {
-        dataProps = listPropsUser.map(item => {
-          return {
-            code: item.code,
-            fieldValue: item.fieldValue,
-            id: item.id,
-            title: item.title,
-            type: item.type,
-            check: isCheck,
-            value:
-              event.fields.length > 0 &&
-              event.fields.map(value => {
-                return value.value;
-              })
-                ? event.fields.map(value => {
-                    if (String(value.id) == String(item.id)) {
-                      return value.value;
-                    } else {
-                      return item.value;
-                    }
-                  })
-                : item.value
-          };
-        });
-      }
-      return {
-        id: event.id,
-        createdDate: event.createdDate,
-        email: event.email,
-        fields:
-          event.fields.length > 0
-            ? lengthProps > event.fields.length
-              ? dataProps
-              : event.fields.map(item => {
-                  return {
-                    code: item.code,
-                    fieldValue: item.fieldValue,
-                    id: item.id,
-                    title: item.title,
-                    type: item.type,
-                    check: isCheck,
-                    value: item.value
-                  };
-                })
-            : listPropsUser,
-        firstName: event.firstName,
-        lastName: event.lastName,
-        merchantId: event.merchantId,
-        mobile: event.mobile,
-        tag: event.tag,
-        tags: event.tags
-      };
-    });
+    this.setState({ isDisable, listDataUser });
+    console.log(listDataUser);
     if (isCheck) {
       $(`th.${code}`).show();
     } else {
       $(`th.${code}`).hide();
     }
-    listDataUser.push(dataUser);
-    this.setState({ listDataUser: dataUser });
   };
 
   toObject(arr) {
@@ -504,6 +455,44 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     this.props.getSaveAdvancedSearchActionData(id);
   };
 
+  dataFilter() {
+    let dataProps = true;
+    let { listDataUser, isDisable } = this.state;
+    let dataUser = this.dataTable().map(event => {
+      return {
+        id: event.id,
+        createdDate: event.createdDate,
+        email: event.email,
+        fields: event.fields.map((item, idx) => {
+          return {
+            code: item.code,
+            fieldValue: item.fieldValue,
+            id: item.id,
+            title: item.title,
+            type: item.type,
+            check:
+              listDataUser
+                .map(event => {
+                  if (String(event) === String(item.code)) return event;
+                })
+                .filter(Boolean).length > 0
+                ? false
+                : true,
+            value: item.value
+          };
+        }),
+
+        firstName: event.firstName,
+        lastName: event.lastName,
+        merchantId: event.merchantId,
+        mobile: event.mobile,
+        tag: event.tag,
+        tags: event.tags
+      };
+    });
+    return dataUser;
+  }
+
   dataTable() {
     const { users, loading, modalState, listFields } = this.props;
     const { activePage } = this.state;
@@ -600,12 +589,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     } = this.state;
 
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
-    if (listDataUser.length > 0) {
-      dataUser = listDataUser;
-      console.log(dataUser);
-    } else {
-      dataUser = this.dataTable();
-    }
+    dataUser = this.dataFilter();
     let theader = listFields.map(event => {
       return event;
     });
