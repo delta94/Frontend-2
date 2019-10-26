@@ -259,7 +259,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
         id: event.id,
         title: event.title,
         type: event.type,
-        check: event.code == String(code) ? isCheck : false,
+        check: isCheck,
         value: event.value
       };
     });
@@ -273,7 +273,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
             id: item.id,
             title: item.title,
             type: item.type,
-            check: item.code == String(code) ? isCheck : false,
+            check: isCheck,
             value:
               event.fields.length > 0 &&
               event.fields.map(value => {
@@ -294,7 +294,22 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
         id: event.id,
         createdDate: event.createdDate,
         email: event.email,
-        fields: event.fields.length > 0 ? (lengthProps > event.fields.length ? dataProps : event.fields) : listPropsUser,
+        fields:
+          event.fields.length > 0
+            ? lengthProps > event.fields.length
+              ? dataProps
+              : event.fields.map(item => {
+                  return {
+                    code: item.code,
+                    fieldValue: item.fieldValue,
+                    id: item.id,
+                    title: item.title,
+                    type: item.type,
+                    check: isCheck,
+                    value: item.value
+                  };
+                })
+            : listPropsUser,
         firstName: event.firstName,
         lastName: event.lastName,
         merchantId: event.merchantId,
@@ -496,16 +511,28 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
       el => el.title !== 'Tên' && el.title !== 'Email' && el.title !== 'Họ' && el.title !== 'Số điện thoại'
     );
     let lengthProps = listPropUser.length;
+    let listPropsUser = listPropUser.map(event => {
+      return {
+        code: event.code,
+        fieldValue: event.fieldValue,
+        id: event.id,
+        title: event.title,
+        type: event.type,
+        check: true,
+        value: event.value
+      };
+    });
     let dataUser = users.map(event => {
       let dataProps;
       if (event.fields.length <= lengthProps) {
-        dataProps = listPropUser.map(item => {
+        dataProps = listPropsUser.map(item => {
           return {
             code: item.code,
             fieldValue: item.fieldValue,
             id: item.id,
             title: item.title,
             type: item.type,
+            check: true,
             value:
               event.fields.length > 0 &&
               event.fields.map(value => {
@@ -526,7 +553,22 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
         id: event.id,
         createdDate: event.createdDate,
         email: event.email,
-        fields: event.fields.length > 0 ? (lengthProps > event.fields.length ? dataProps : event.fields) : listPropUser,
+        fields:
+          event.fields.length > 0
+            ? lengthProps > event.fields.length
+              ? dataProps
+              : event.fields.map(item => {
+                  return {
+                    code: item.code,
+                    fieldValue: item.fieldValue,
+                    id: item.id,
+                    title: item.title,
+                    type: item.type,
+                    check: true,
+                    value: item.value
+                  };
+                })
+            : listPropsUser,
         firstName: event.firstName,
         lastName: event.lastName,
         merchantId: event.merchantId,
@@ -792,7 +834,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                             })
                             .map((value, index) => {
                               return (
-                                <td className={value.code} key={index}>
+                                <td className={value.check === true ? '' : 'display-colum'} key={index}>
                                   {value.value}
                                 </td>
                               );
