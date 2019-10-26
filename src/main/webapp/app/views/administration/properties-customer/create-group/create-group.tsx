@@ -114,7 +114,7 @@ export class CreateGroup extends React.Component<ICreateGroupProps, ICreateGroup
     let { listCheckBox } = this.state;
     return (
       <span className="d-inline-block mb-2 mr-2">
-        <Button className="btn btn-primary float-right jh-create-entity" onClick={this.toggle}>
+        <Button className="btn btn-info float-right jh-create-entity" style={{ width: '100%', marginTop: 'auto' }} onClick={this.toggle}>
           <FontAwesomeIcon icon="plus" /> <Translate contentKey="properties-management.button-template" />
         </Button>
         <Modal isOpen={this.state.modal} className="content-group-properties">

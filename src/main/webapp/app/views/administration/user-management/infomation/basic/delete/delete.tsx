@@ -48,15 +48,16 @@ export class Delete extends React.Component<IDeleteProps, IDeleteState> {
 
   deleteUser = async () => {
     let { deleteUserAction, id, openModal } = this.props;
-    deleteUserAction(id);
+    await deleteUserAction(id);
+
     this.toggle();
+    await window.location.assign('/#/app/views/customers/user-management');
     openModal({
       show: true,
       type: 'success',
       title: translate('modal-data.title.success'),
       text: translate('alert.complete-delete')
     });
-    window.location.assign('/#/app/views/customers/user-management');
   };
 
   render() {

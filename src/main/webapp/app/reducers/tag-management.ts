@@ -18,9 +18,15 @@ export interface ITags {
   description?: string;
 }
 
+export interface IComboTags {
+  id?: string;
+  name?: string;
+}
+
 const initialDataState = {
   loading: false,
   list_tags: [] as ITags[],
+  combo_tag: [] as IComboTags[],
   totalElements: 0,
   totalPages: 0,
   size: 0,
@@ -42,12 +48,19 @@ export default (state: TagDataState = initialDataState, action): TagDataState =>
     case REQUEST(TAG_MANAGEMENT.POST_INSERT_TAG):
     case REQUEST(TAG_MANAGEMENT.POST_MERGE_TAG):
     case REQUEST(TAG_MANAGEMENT.POST_UPDATE_TAG):
+    case REQUEST(TAG_MANAGEMENT.GET_COMBOBOX_TAG):
       return {
         ...state,
         loading: true
       };
 
     case FAILURE(TAG_MANAGEMENT.GET_LIST_TAG):
+      return {
+        ...state,
+        loading: false
+      };
+
+    case FAILURE(TAG_MANAGEMENT.GET_COMBOBOX_TAG):
       return {
         ...state,
         loading: false
@@ -99,6 +112,14 @@ export default (state: TagDataState = initialDataState, action): TagDataState =>
           title: 'Thông báo',
           show: true
         }
+      };
+
+    case SUCCESS(TAG_MANAGEMENT.GET_COMBOBOX_TAG):
+      let dataTag = action.payload.data;
+      return {
+        ...state,
+        loading: false,
+        combo_tag: dataTag
       };
 
     case SUCCESS(TAG_MANAGEMENT.GET_LIST_TAG):

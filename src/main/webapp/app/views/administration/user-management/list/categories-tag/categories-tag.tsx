@@ -6,7 +6,7 @@ import { Multiselect } from 'react-widgets';
 import { IRootState } from 'app/reducers';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { getListTagDataAction } from 'app/actions/tag-management';
+import { getComboTagsAction } from 'app/actions/tag-management';
 import './categories-tag.scss';
 
 library.add(faSpinner);
@@ -24,20 +24,20 @@ class UserCategoryTag extends React.Component<IUserUpdateProps, IUserUpdateState
   handleChange = data => {
     this.props.handleChange(data);
     if (data.length < 1) {
-      this.props.getListTagDataAction('');
+      this.props.getComboTagsAction('');
     }
   };
 
   componentDidMount() {
-    this.props.getListTagDataAction('');
+    this.props.getComboTagsAction('');
   }
 
   handleCreate = name => {
-    this.props.getListTagDataAction(name);
+    this.props.getComboTagsAction(name);
   };
 
   render() {
-    const { listTag, defaultCate } = this.props;
+    const { comboTag, defaultCate } = this.props;
     return (
       <div className="tag-customer-filter">
         <ReactCSSTransitionGroup
@@ -49,7 +49,7 @@ class UserCategoryTag extends React.Component<IUserUpdateProps, IUserUpdateState
         >
           <Multiselect
             placeholder={translate('userManagement.choose-categories')}
-            data={listTag}
+            data={comboTag}
             value={defaultCate}
             className="Select-holder"
             allowCreate="onFilter"
@@ -64,10 +64,10 @@ class UserCategoryTag extends React.Component<IUserUpdateProps, IUserUpdateState
 }
 
 const mapStateToProps = ({ tagDataState }: IRootState) => ({
-  listTag: tagDataState.list_tags
+  comboTag: tagDataState.combo_tag
 });
 
-const mapDispatchToProps = { getListTagDataAction };
+const mapDispatchToProps = { getComboTagsAction };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

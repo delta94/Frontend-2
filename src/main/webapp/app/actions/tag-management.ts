@@ -1,9 +1,14 @@
 import { TAG_MANAGEMENT } from '../constants/tag-management';
-import { getListTags, postInsertTag, postUpdateTag, postMergeTag, postDeleteTag } from '../services/tag-management';
+import { getListTags, postInsertTag, postUpdateTag, postMergeTag, postDeleteTag, getComboTags } from '../services/tag-management';
 
 export const getListTagDataAction = (textSearch?: string, page?: number, pageSize?: number) => ({
   type: TAG_MANAGEMENT.GET_LIST_TAG,
   payload: getListTags(textSearch, page, pageSize)
+});
+
+export const getComboTagsAction = (textSearch?: string) => ({
+  type: TAG_MANAGEMENT.GET_COMBOBOX_TAG,
+  payload: getComboTags(textSearch)
 });
 
 export const postInsertTagAction = data => ({

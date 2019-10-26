@@ -89,6 +89,8 @@ export interface IUserManagementState {
   modalState?: IModalData;
   open_list_save?: boolean;
   save_advanced_search?: any;
+  isDisable: boolean;
+  listDataUser: any[];
 }
 
 export class UserManagement extends React.Component<IUserManagementProps, IUserManagementState> {
@@ -120,7 +122,9 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
       title: 'Thông báo'
     },
     open_list_save: false,
-    save_advanced_search: {}
+    save_advanced_search: {},
+    isDisable: false,
+    listDataUser: []
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -237,15 +241,75 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     return data;
   };
 
-  onChangeCheckBox = (e, value) => {
+  onChangeCheckBox = (e, code) => {
+    let { isDisable, listDataUser } = this.state;
     let isCheck = e.target.checked;
+    isDisable = isCheck;
+    this.setState({ isDisable });
+    const { users, loading, modalState, listFields } = this.props;
+    const { activePage } = this.state;
+    let listPropUser = listFields.filter(
+      el => el.title !== 'Tên' && el.title !== 'Email' && el.title !== 'Họ' && el.title !== 'Số điện thoại'
+    );
+    let lengthProps = listPropUser.length;
+    let listPropsUser = listPropUser.map(event => {
+      return {
+        code: event.code,
+        fieldValue: event.fieldValue,
+        id: event.id,
+        title: event.title,
+        type: event.type,
+        check: event.code == String(code) ? isCheck : false,
+        value: event.value
+      };
+    });
+    let dataUser = users.map(event => {
+      let dataProps;
+      if (event.fields.length <= lengthProps) {
+        dataProps = listPropsUser.map(item => {
+          return {
+            code: item.code,
+            fieldValue: item.fieldValue,
+            id: item.id,
+            title: item.title,
+            type: item.type,
+            check: item.code == String(code) ? isCheck : false,
+            value:
+              event.fields.length > 0 &&
+              event.fields.map(value => {
+                return value.value;
+              })
+                ? event.fields.map(value => {
+                    if (String(value.id) == String(item.id)) {
+                      return value.value;
+                    } else {
+                      return item.value;
+                    }
+                  })
+                : item.value
+          };
+        });
+      }
+      return {
+        id: event.id,
+        createdDate: event.createdDate,
+        email: event.email,
+        fields: event.fields.length > 0 ? (lengthProps > event.fields.length ? dataProps : event.fields) : listPropsUser,
+        firstName: event.firstName,
+        lastName: event.lastName,
+        merchantId: event.merchantId,
+        mobile: event.mobile,
+        tag: event.tag,
+        tags: event.tags
+      };
+    });
     if (isCheck) {
-      $(`th.${value}`).show();
-      $(`td.${value}`).show();
+      $(`th.${code}`).show();
     } else {
-      $(`th.${value}`).hide();
-      $(`td.${value}`).hide();
+      $(`th.${code}`).hide();
     }
+    listDataUser.push(dataUser);
+    this.setState({ listDataUser: dataUser });
   };
 
   toObject(arr) {
@@ -475,11 +539,15 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
   }
 
   render() {
+    const importImage = require('app/assets/utils/images/user-mangament/import.png');
+    const exportImage = require('app/assets/utils/images/user-mangament/export.png');
+    const filterImage = require('app/assets/utils/images/user-mangament/filter.png');
     const { users, loading, listFields, list_field_data, pageCount } = this.props;
+    let { listDataUser } = this.state;
+    let dataUser;
     const {
       activePage,
       open_new_save,
-      open_import,
       open_create,
       open_search,
       logicalOperator,
@@ -490,8 +558,12 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     } = this.state;
 
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
-
-    let dataUser = this.dataTable();
+    if (listDataUser.length > 0) {
+      dataUser = listDataUser;
+      console.log(dataUser);
+    } else {
+      dataUser = this.dataTable();
+    }
     let theader = listFields.map(event => {
       return event;
     });
@@ -570,11 +642,10 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
         {/* Title */}
         <div className="user-management">
           <div id="title-common-header">
-            <Translate contentKey="userManagement.home.title" /> ({this.props.totalElements})
-            <Button className="btn btn-primary float-right jh-create-entity" color="primary" onClick={this.toggleCreate}>
-              <FontAwesomeIcon icon="plus" />
-              <Translate contentKey="userManagement.home.createLabel" />
-            </Button>
+            <span id="text-title">
+              {' '}
+              <Translate contentKey="userManagement.home.title" />
+            </span>
             <Button
               className="btn float-right jh-create-entity"
               outline
@@ -583,17 +654,27 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                 await this.props.exportFile(this.state.textSearch, this.state.categories);
               }}
             >
-              <FontAwesomeIcon icon={faArrowDown} />
+              <img src={exportImage} style={{ margin: ' 0px 5px 2px' }} />
               Export
             </Button>
             <Button
               className="btn float-right jh-create-entity"
               outline
-              color="primary"
+              color="info"
               onClick={() => window.location.assign('/#/app/views/customers/user-management/new')}
             >
-              <FontAwesomeIcon icon={faArrowUp} />
+              <span>
+                <img src={importImage} style={{ margin: ' 0px 5px 2px' }} />
+              </span>
               <Translate contentKey="userManagement.home.import" />
+            </Button>
+            <span id="column-span">|</span>
+            <Button className=" float-right" color="primary" style={{ backGround: '#3866DD' }} onClick={this.toggleCreate}>
+              <FontAwesomeIcon icon="plus" />
+              <span id="btn-create">
+                {' '}
+                <Translate contentKey="userManagement.home.createLabel" />
+              </span>
             </Button>
           </div>
 
@@ -619,12 +700,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                 />
               </div>
             </div>
-            <Dropdown overlay={this.rowName} trigger={['click']}>
-              <Button style={{ float: 'right' }} color="warning">
-                <Icon type="filter" />
-                Lọc bảng
-              </Button>
-            </Dropdown>
+
             <div className="field-search">
               <div className="field-title">
                 <p>
@@ -663,6 +739,13 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                 </div>
               </Collapse>
             </div>
+            <hr />
+            <Translate contentKey="userManagement.home.total-element" interpolate={{ element: this.props.totalElements }} />
+            <Dropdown overlay={this.rowName} trigger={['click']}>
+              <Button color="link" style={{ float: 'right' }}>
+                <img src={filterImage} style={{ margin: ' 0px 5px 10px' }} />
+              </Button>
+            </Dropdown>
             <Table responsive striped>
               <thead>
                 <tr className="text-center">
@@ -746,7 +829,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
               </tbody>
             </Table>
             {users.length > 0 ? '' : <p style={{ textAlign: 'center', color: 'black' }}>không có dữ liệu khách hàng</p>}
-            <Row className="justify-content-center">
+            <Row className="justify-content-center" style={{ float: 'right' }}>
               {this.props.totalElements >= 10 ? (
                 <ReactPaginate
                   previousLabel={'<'}
@@ -766,6 +849,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                 ''
               )}
             </Row>
+            <br />
           </div>
           <Loader message={spinner1} show={loading} priority={1} />
         </div>
@@ -776,7 +860,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
 
 const mapStateToProps = (storeState: IRootState) => ({
   dowloadTemplate: storeState.userManagement.dowloadTemplate,
-  modalState: storeState.userManagement.dataModal,
+  modalState: storeState.handleModal.data,
   users: storeState.userManagement.users,
   totalItems: storeState.userManagement.totalItems,
   account: storeState.authentication.account,
@@ -787,7 +871,9 @@ const mapStateToProps = (storeState: IRootState) => ({
   listFields: storeState.userManagement.listFields,
   list_field_data: storeState.groupCustomerState.list_field_data,
   list_save_advanced_search: storeState.userManagement.list_save_advanced_search,
-  save_advanced_search: storeState.userManagement.save_advanced_search
+  save_advanced_search: storeState.userManagement.save_advanced_search,
+  isMerge: storeState.userManagement.isMerge,
+  isDelete: storeState.userManagement.isDelete
 });
 
 const mapDispatchToProps = {

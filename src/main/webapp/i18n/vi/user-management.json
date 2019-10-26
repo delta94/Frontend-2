@@ -14,7 +14,7 @@
       "type": "Phân loại",
       "reason-error": "Lý do không thành công",
       "no-record": "Không tìm thấy bản ghi phù hợp",
-      "total-element": "Tổng số {{ element }} bản ghi",
+      "total-element": "Danh sách khách hàng: <strong> {{ element }} </strong> bản ghi",
       "line-error": "{{ number }} dòng không thành công đầu tiên ",
       "editLabel": "Cập nhật thông tin khách hàng",
       "info-cus": "Thông tin khách hàng",

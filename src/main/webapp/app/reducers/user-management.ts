@@ -56,6 +56,7 @@ export interface ICompareUser {
 }
 
 export interface IDuplicateUser {
+  createdDate?: string;
   email?: string;
   id?: string;
   firstName?: string;
@@ -115,6 +116,8 @@ const initialState = {
   headerFile: {} as IHeaderFile,
   listFields: [] as ReadonlyArray<IListFields>,
   compareUser: [] as ReadonlyArray<ICompareUser>,
+  isDelete: false,
+  isMerge: false,
   isOpenModalImport: false,
   dataModal: {
     show: false,
@@ -184,7 +187,8 @@ export default (state: UserManagementState = initialState, action): UserManageme
         errorMessage: null,
         updateSuccess: false,
         updating: true,
-        loading: true
+        loading: true,
+        isDelete: false
       };
     case FAILURE(USER_MANAGE_ACTION_TYPES.EXPORT_FILE):
       return {
@@ -311,7 +315,16 @@ export default (state: UserManagementState = initialState, action): UserManageme
         ...state,
         updating: false,
         updateSuccess: true,
-        loading: false
+        loading: false,
+        isDelete: true
+      };
+    case SUCCESS(USER_MANAGE_ACTION_TYPES.MERGE_USER):
+      return {
+        ...state,
+        updating: false,
+        updateSuccess: true,
+        loading: false,
+        isMerge: true
       };
     case SUCCESS(USER_MANAGE_ACTION_TYPES.EXPORT_FILE):
       return {

@@ -98,6 +98,7 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
                   <th className="hand">
                     <Translate contentKey="userManagement.home.date-create" />
                   </th>
+                  <th className="hand">Chọn</th>
                 </tr>
               </thead>
               <tbody>
@@ -107,7 +108,7 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
                       <tr key={index}>
                         <td>{event.firstName + event.lastName}</td>
                         <td>{event.email}</td>
-                        <td>{event.mobile}</td>
+                        <td>{event.createdDate}</td>
                         <td>
                           <Input type="radio" name="gender" value={event.id} onChange={this.onChange} />
                         </td>
@@ -168,7 +169,7 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
             </Row>
             <div />
             <Collapse className="merge-collapse" bordered={false} expandIconPosition="right" defaultActiveKey={['1']}>
-              <Panel header="Ẩn chi tiết" key="1">
+              <Panel style={{ color: '#3866DD' }} header="Ẩn chi tiết" key="1">
                 <div>
                   <Table id="table-merge" striped>
                     <thead>
@@ -382,51 +383,49 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
         </Button>
 
         <Modal isOpen={this.state.modal} id="content-properties" className={current === this.stepTable().length - 1 ? 'fix-heigth' : ''}>
+          <ModalHeader toggle={this.toggle} id="create-properties">
+            <Translate contentKey="userManagement.infomation.merge.title" />
+          </ModalHeader>
           <PerfectScrollbar>
-            <ModalHeader toggle={this.toggle} id="create-properties">
-              <Translate contentKey="userManagement.infomation.merge.title" />
-            </ModalHeader>
             <ModalBody>
               <AvForm>
                 <div className="steps-content">{this.stepTable()[current].content}</div>
               </AvForm>
             </ModalBody>
-            <ModalFooter>
-              <div className="steps-action">
-                {current > 0 && (
-                  <Button id="btn-prev" color="linkaaaaa" onClick={() => this.prev()}>
-                    Quay lại
-                  </Button>
-                )}
-                <Button color="link" onClick={this.toggle}>
-                  <Translate contentKey="properties-management.cancel" />
-                </Button>
-
-                {current < this.stepTable().length - 1 && (
-                  <Button
-                    disabled={!this.state.check}
-                    color="primary"
-                    onClick={() => {
-                      this.next();
-                    }}
-                  >
-                    Tiếp tục
-                  </Button>
-                )}
-                {current === this.stepTable().length - 1 && (
-                  <Button
-                    color="primary"
-                    disabled={this.state.valueBtn1 && this.state.valueBtn2 && !loading ? false : true}
-                    onClick={() => {
-                      this.mergeUser();
-                    }}
-                  >
-                    <Translate contentKey="userManagement.home.merge" />
-                  </Button>
-                )}
-              </div>
-            </ModalFooter>
           </PerfectScrollbar>
+
+          <ModalFooter>
+            {current > 0 && (
+              <Button style={{ float: 'left' }} id="btn-prev" color="linkaaaaa" onClick={() => this.prev()}>
+                Quay lại
+              </Button>
+            )}
+
+            {current < this.stepTable().length - 1 && (
+              <Button
+                style={{ float: 'right' }}
+                disabled={!this.state.check}
+                color="primary"
+                onClick={() => {
+                  this.next();
+                }}
+              >
+                Tiếp tục
+              </Button>
+            )}
+            {current === this.stepTable().length - 1 && (
+              <Button
+                style={{ float: 'right' }}
+                color="primary"
+                disabled={this.state.valueBtn1 && this.state.valueBtn2 && !loading ? false : true}
+                onClick={() => {
+                  this.mergeUser();
+                }}
+              >
+                <Translate contentKey="userManagement.home.merge" />
+              </Button>
+            )}
+          </ModalFooter>
         </Modal>
       </span>
     );
