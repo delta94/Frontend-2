@@ -91,6 +91,8 @@ export interface IUserManagementState {
   save_advanced_search?: any;
   listValueSort: any[];
   listDataUser: any[];
+  conditionSort: string;
+  count: number;
 }
 
 export class UserManagement extends React.Component<IUserManagementProps, IUserManagementState> {
@@ -124,7 +126,9 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     open_list_save: false,
     save_advanced_search: {},
     listValueSort: [],
-    listDataUser: []
+    listDataUser: [],
+    conditionSort: '',
+    count: 0
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -559,13 +563,36 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     return dataUser;
   }
 
+  sortData(arr, key) {
+    let { count } = this.state;
+    let sortData = arr.sort(function(a, b) {
+      if (count % 2 === 0) {
+        if (String(a[key]).toLowerCase() < String(b[key]).toLowerCase()) {
+          return -1;
+        }
+        if (String(a[key]).toLowerCase() > String(b[key]).toLowerCase()) {
+          return 1;
+        }
+        return 0;
+      } else {
+        if (String(a[key]).toLowerCase() < String(b[key]).toLowerCase()) {
+          return 1;
+        }
+        if (String(a[key]).toLowerCase() > String(b[key]).toLowerCase()) {
+          return -1;
+        }
+        return 0;
+      }
+    });
+    return sortData;
+  }
+
   render() {
     const importImage = require('app/assets/utils/images/user-mangament/import.png');
     const exportImage = require('app/assets/utils/images/user-mangament/export.png');
     const filterImage = require('app/assets/utils/images/user-mangament/filter.png');
     const { users, loading, listFields, list_field_data, pageCount } = this.props;
-    let { listDataUser } = this.state;
-    let dataUser;
+    const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
     const {
       activePage,
       open_new_save,
@@ -575,25 +602,23 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
       list_field_data_cpn,
       name,
       modalState,
+      conditionSort,
+      count,
       open_list_save
     } = this.state;
+    let dataUser;
 
-    const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
     dataUser = this.dataFilter();
     let theader = listFields.map(event => {
       return event;
     });
-    let dataHeader = theader
-      .sort(function(a, b) {
-        if (a.title.toLowerCase() < b.title.toLowerCase()) {
-          return -1;
-        }
-        if (a.title.toLowerCase() > b.title.toLowerCase()) {
-          return 1;
-        }
-        return 0;
-      })
-      .filter(el => el.title !== 'Tên' && el.title !== 'Email' && el.title !== 'Họ' && el.title !== 'Số điện thoại');
+
+    let dataHeader = this.sortData(theader, 'title').filter(
+      el => el.title !== 'Tên' && el.title !== 'Email' && el.title !== 'Họ' && el.title !== 'Số điện thoại'
+    );
+    if (count > 0) {
+      dataUser = this.sortData(dataUser, conditionSort);
+    }
     let list_field_render =
       list_field_data_cpn && list_field_data_cpn.length > 0
         ? list_field_data_cpn.map(item => {
@@ -613,7 +638,6 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
               );
           })
         : [];
-
     return (
       <Fragment>
         <SweetAlert
@@ -766,10 +790,38 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
               <thead>
                 <tr className="text-center">
                   <th className="hand">#</th>
-                  <th className="hand">Tên</th>
-                  <th className="hand">Họ</th>
-                  <th className="hand">Email</th>
-                  <th className="hand">Số điện thoại</th>
+                  <th
+                    className="hand"
+                    onClick={() => {
+                      this.setState({ conditionSort: 'firstName', count: count + 1 });
+                    }}
+                  >
+                    Tên
+                  </th>
+                  <th
+                    className="hand"
+                    onClick={() => {
+                      this.setState({ conditionSort: 'lastName', count: count + 1 });
+                    }}
+                  >
+                    Họ
+                  </th>
+                  <th
+                    className="hand"
+                    onClick={() => {
+                      this.setState({ conditionSort: 'email', count: count + 1 });
+                    }}
+                  >
+                    Email
+                  </th>
+                  <th
+                    className="hand"
+                    onClick={() => {
+                      this.setState({ conditionSort: 'mobile', count: count + 1 });
+                    }}
+                  >
+                    Số điện thoại
+                  </th>
                   {dataHeader
                     ? dataHeader.map((event, id) => {
                         return (
@@ -779,7 +831,13 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                         );
                       })
                     : ''}
-                  <th>Ngày khởi tạo</th>
+                  <th
+                    onClick={() => {
+                      this.setState({ conditionSort: 'createdDate', count: count + 1 });
+                    }}
+                  >
+                    Ngày khởi tạo
+                  </th>
                   <th>Thẻ/Tag</th>
                   <th id="modified-date-sort" className="hand">
                     <Translate contentKey="userManagement.feature" />
