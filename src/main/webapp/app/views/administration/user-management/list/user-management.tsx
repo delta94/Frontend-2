@@ -89,7 +89,7 @@ export interface IUserManagementState {
   modalState?: IModalData;
   open_list_save?: boolean;
   save_advanced_search?: any;
-  isDisable: boolean;
+  listValueSort: any[];
   listDataUser: any[];
 }
 
@@ -123,7 +123,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     },
     open_list_save: false,
     save_advanced_search: {},
-    isDisable: false,
+    listValueSort: [],
     listDataUser: []
   };
 
@@ -242,7 +242,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
   };
 
   onChangeCheckBox = (e, code) => {
-    let { isDisable, listDataUser } = this.state;
+    let { listDataUser } = this.state;
     let isCheck = e.target.checked;
     let existValue;
     if (listDataUser.length > 0) {
@@ -253,24 +253,15 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
             return value != code;
           });
         } else {
-          if (listDataUser.includes(existValue)) {
-            listDataUser = listDataUser.filter(function(value) {
-              return value != code;
-            });
-          } else {
-            if (!existValue) {
-              existValue = '';
-              listDataUser.push(code);
-            }
+          if (!existValue) {
+            listDataUser.push(code);
           }
         }
       });
     } else {
       listDataUser.push(code);
     }
-    isDisable = isCheck;
-    this.setState({ isDisable, listDataUser });
-    console.log(listDataUser);
+    this.setState({ listDataUser });
     if (isCheck) {
       $(`th.${code}`).show();
     } else {
@@ -456,8 +447,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
   };
 
   dataFilter() {
-    let dataProps = true;
-    let { listDataUser, isDisable } = this.state;
+    let { listDataUser, listValueSort } = this.state;
     let dataUser = this.dataTable().map(event => {
       return {
         id: event.id,
