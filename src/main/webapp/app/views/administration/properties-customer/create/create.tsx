@@ -285,17 +285,17 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
               {selectedOptionType.value === 'Text Input' || selectedOptionType.value === 'Date' || selectedOptionType.value === '' ? (
                 ''
               ) : (
-                <Button onClick={this.addOption} className="btn btn-primary float-right jh-create-entity" id="button-add">
-                  <FontAwesomeIcon icon="plus" /> <Translate contentKey="properties-management.button-add" />
-                </Button>
+                <div style={{ textAlign: 'center' }}>
+                  <Button onClick={this.addOption} className="btn btn-primary jh-create-entity" id="button-add">
+                    <FontAwesomeIcon icon="plus" /> <Translate contentKey="properties-management.button-add" />
+                  </Button>
+                </div>
               )}
             </AvForm>
           </ModalBody>
           <ModalFooter>
-            <Button color="link" onClick={this.toggle}>
-              <Translate contentKey="properties-management.cancel" />
-            </Button>
             <Button
+              style={{ float: 'right' }}
               disabled={loading}
               onClick={() => {
                 let valueOption = options
@@ -323,6 +323,9 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
             >
               <Translate contentKey="properties-management.button-field" />
             </Button>{' '}
+            <Button color="link" onClick={this.toggle} style={{ float: 'right' }}>
+              <Translate contentKey="properties-management.cancel" />
+            </Button>
           </ModalFooter>
         </Modal>
       </span>

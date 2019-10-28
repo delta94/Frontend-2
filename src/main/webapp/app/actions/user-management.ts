@@ -247,3 +247,10 @@ export const getSaveAdvancedSearchActionData = (id?: string) => {
     payload: getSaveAdvancedSearch(id)
   };
 };
+
+export const getListOptionFilter = (data?: any) => {
+  return {
+    type: USER_MANAGE_ACTION_TYPES.GET_OPTION_FILTER,
+    payload: data
+  };
+};

@@ -19,7 +19,8 @@ import {
   getListSaveAdvancedSearchActionData,
   getSaveAdvancedSearchActionData,
   deleteSaveAdvancedSearchActionData,
-  postSaveAdvancedSearchActionData
+  postSaveAdvancedSearchActionData,
+  getListOptionFilter
 } from 'app/actions/user-management';
 import UserCategoryTag from './categories-tag/categories-tag';
 import { IRootState } from 'app/reducers';
@@ -227,14 +228,24 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
   };
 
   rowName = () => {
-    let { listFields } = this.props;
-    let listData = listFields.filter(el => el.title !== 'Tên' && el.title !== 'Email' && el.title !== 'Họ' && el.title !== 'Số điện thoại');
+    let { listFields, list_option } = this.props;
+    let listData = listFields
+      .filter(el => el.title !== 'Tên' && el.title !== 'Email' && el.title !== 'Họ' && el.title !== 'Số điện thoại')
+      .map(event => {
+        let check = true;
+        list_option.map(item => {
+          if (String(item) === String(event.code)) {
+            check = false;
+          }
+        });
+        return { ...event, check: check };
+      });
     let data = (
       <Menu>
         {listData.map((value, index) => {
           return (
             <Menu.Item key={index}>
-              <Checkbox defaultChecked={true} onChange={event => this.onChangeCheckBox(event, value.code)}>
+              <Checkbox defaultChecked={value.check} onChange={event => this.onChangeCheckBox(event, value.code)}>
                 {value.title}
               </Checkbox>
             </Menu.Item>
@@ -242,13 +253,20 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
         })}
       </Menu>
     );
+
     return data;
   };
 
   onChangeCheckBox = (e, code) => {
     let { listDataUser } = this.state;
+    let { list_option } = this.props;
     let isCheck = e.target.checked;
     let existValue;
+    if (listDataUser.length === 0) {
+      if (this.props.list_option.length > 0) {
+        listDataUser = this.props.list_option;
+      }
+    }
     if (listDataUser.length > 0) {
       listDataUser.forEach((item, index) => {
         if (item === code) {
@@ -259,6 +277,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
         } else {
           if (!existValue) {
             listDataUser.push(code);
+            listDataUser = [...new Set(listDataUser)];
           }
         }
       });
@@ -268,9 +287,8 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     this.setState({ listDataUser });
     if (isCheck) {
       $(`th.${code}`).show();
-    } else {
-      $(`th.${code}`).hide();
     }
+    this.props.getListOptionFilter(listDataUser);
   };
 
   toObject(arr) {
@@ -452,6 +470,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
 
   dataFilter() {
     let { listDataUser, listValueSort } = this.state;
+    const { list_option } = this.props;
     let dataUser = this.dataTable().map(event => {
       return {
         id: event.id,
@@ -465,7 +484,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
             title: item.title,
             type: item.type,
             check:
-              listDataUser
+              list_option
                 .map(event => {
                   if (String(event) === String(item.code)) return event;
                 })
@@ -610,12 +629,25 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
 
     dataUser = this.dataFilter();
     let theader = listFields.map(event => {
-      return event;
+      return { ...event, showValue: this.props.list_option };
     });
 
-    let dataHeader = this.sortData(theader, 'title').filter(
-      el => el.title !== 'Tên' && el.title !== 'Email' && el.title !== 'Họ' && el.title !== 'Số điện thoại'
-    );
+    let dataHeader = theader
+      .sort(function(a, b) {
+        if (a.title.toLowerCase() < b.title.toLowerCase()) {
+          return -1;
+        }
+        if (a.title.toLowerCase() > b.title.toLowerCase()) {
+          return 1;
+        }
+        return 0;
+      })
+      .filter(el => el.title !== 'Tên' && el.title !== 'Email' && el.title !== 'Họ' && el.title !== 'Số điện thoại');
+    if (this.props.list_option.length > 0) {
+      this.props.list_option.map(event => {
+        $(`th.${event}`).hide();
+      });
+    }
     if (count > 0) {
       dataUser = this.sortData(dataUser, conditionSort);
     }
@@ -639,295 +671,304 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
           })
         : [];
     return (
-      <Fragment>
-        <SweetAlert
-          title={modalState.title ? modalState.title : 'No title'}
-          confirmButtonColor=""
-          show={modalState.show ? modalState.show : false}
-          text={modalState.text ? modalState.text : 'No'}
-          type={modalState.type ? modalState.type : 'error'}
-          onConfirm={() => this.props.closeModal()}
-        />
-        {/* Add new */}
-        <Modal isOpen={open_new_save}>
-          <ModalHeader>Đặt tên tìm kiếm</ModalHeader>
-          <ModalBody>
-            <div className="input-search_group" style={{ paddingRight: '30px' }}>
-              <label className="input-search_label">
-                <span>Tên</span>
-              </label>
-              <Input value={name} onChange={event => this.setState({ name: event.target.value })} />
-            </div>
-          </ModalBody>
-          <ModalFooter>
-            <Button color="none" style={{ float: 'right' }} onClick={() => this.setState({ open_new_save: false, name: '' })}>
-              Hủy
-            </Button>
-            <Button
-              color="primary"
-              style={{ float: 'right' }}
-              onClick={() => this.saveAdvancedSearch()}
-              disabled={name && name.trim() !== '' ? false : true}
-            >
-              Lưu
-            </Button>
-          </ModalFooter>
-        </Modal>
-        {/* Search save modal  */}
-        <SearchSaveModal
-          open_list_save={open_list_save}
-          toggleSearchSaveModal={this.toggleSearchSaveModal}
-          openAdvancedSearch={this.openAdvancedSearch}
-        />
-        {/* Title */}
-        <div className="user-management">
-          <div id="title-common-header">
-            <span id="text-title">
-              {' '}
-              <Translate contentKey="userManagement.home.title" />
-            </span>
-            <Button
-              className="btn float-right jh-create-entity"
-              outline
-              color="info"
-              onClick={async () => {
-                await this.props.exportFile(this.state.textSearch, this.state.categories);
-              }}
-            >
-              <img src={exportImage} style={{ margin: ' 0px 5px 2px' }} />
-              Export
-            </Button>
-            <Button
-              className="btn float-right jh-create-entity"
-              outline
-              color="info"
-              onClick={() => window.location.assign('/#/app/views/customers/user-management/new')}
-            >
-              <span>
-                <img src={importImage} style={{ margin: ' 0px 5px 2px' }} />
-              </span>
-              <Translate contentKey="userManagement.home.import" />
-            </Button>
-            <span id="column-span">|</span>
-            <Button className=" float-right" color="primary" style={{ backGround: '#3866DD' }} onClick={this.toggleCreate}>
-              <FontAwesomeIcon icon="plus" />
-              <span id="btn-create">
-                {' '}
-                <Translate contentKey="userManagement.home.createLabel" />
-              </span>
-            </Button>
-          </div>
-
-          {/* Panel */}
-          <div className="panel">
-            <CreateUser open_create={open_create} toggleCreate={this.toggleCreate} />
-            <div className="search-field">
+      <Loader message={spinner1} show={loading} priority={1}>
+        <Fragment>
+          <SweetAlert
+            title={modalState.title ? modalState.title : 'No title'}
+            confirmButtonColor=""
+            show={modalState.show ? modalState.show : false}
+            text={modalState.text ? modalState.text : 'No'}
+            type={modalState.type ? modalState.type : 'error'}
+            onConfirm={() => this.props.closeModal()}
+          />
+          {/* Add new */}
+          <Modal isOpen={open_new_save}>
+            <ModalHeader>Đặt tên tìm kiếm</ModalHeader>
+            <ModalBody>
               <div className="input-search_group" style={{ paddingRight: '30px' }}>
                 <label className="input-search_label">
-                  <span>Thẻ/Tag</span>
+                  <span>Tên</span>
                 </label>
-                <UserCategoryTag handleChange={this.handleChange} />
+                <Input value={name} onChange={event => this.setState({ name: event.target.value })} />
               </div>
-              <div className="input-search_group" style={{ paddingRight: '30px' }}>
-                <label className="input-search_label">
-                  <Translate contentKey="userManagement.home.search-placer" />
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  onKeyDown={this.search}
-                  placeholder={translate('userManagement.home.search-placer')}
-                />
-              </div>
-            </div>
-
-            <div className="field-search">
-              <div className="field-title">
-                <p>
-                  <label className="field-title_text" onClick={this.closeSearchAdvanced}>
-                    <Icon type="setting" />
-                    Tìm kiếm nâng cao
-                    <Icon type={open_search ? 'caret-up' : 'caret-down'} />
-                  </label>
-                  <label
-                    className="field-title_text"
-                    style={{
-                      float: 'right'
-                    }}
-                    onClick={this.toggleSearchSaveModal}
-                  >
-                    Các tìm kiếm đã lưu
-                  </label>
-                </p>
-              </div>
-              <Collapse isOpen={open_search} navbar>
-                <div>{list_field_render}</div>
-                <div style={{ marginTop: '10px' }}>
-                  <Button color="primary" onClick={this.handleAddNewComponent} style={{ marginRight: '20px' }}>
-                    <FontAwesomeIcon icon="plus" />
-                    Thêm
-                  </Button>
-                  <Button color="success" onClick={this.saveSearchData}>
-                    <FontAwesomeIcon icon="save" />
-                    Lưu tìm kiếm
-                  </Button>
-
-                  <Button style={{ float: 'right' }} onClick={() => this.getDataListCustomer(0)}>
-                    <FontAwesomeIcon icon="search" />
-                    Tìm kiếm
-                  </Button>
-                </div>
-              </Collapse>
-            </div>
-            <hr />
-            <Translate contentKey="userManagement.home.total-element" interpolate={{ element: this.props.totalElements }} />
-            <Dropdown overlay={this.rowName} trigger={['click']}>
-              <Button color="link" style={{ float: 'right' }}>
-                <img src={filterImage} style={{ margin: ' 0px 5px 10px' }} />
+            </ModalBody>
+            <ModalFooter>
+              <Button color="none" style={{ float: 'right' }} onClick={() => this.setState({ open_new_save: false, name: '' })}>
+                Hủy
               </Button>
-            </Dropdown>
-            <Table responsive striped>
-              <thead>
-                <tr className="text-center">
-                  <th className="hand">#</th>
-                  <th
-                    className="hand"
-                    onClick={() => {
-                      this.setState({ conditionSort: 'firstName', count: count + 1 });
-                    }}
-                  >
-                    Tên
-                  </th>
-                  <th
-                    className="hand"
-                    onClick={() => {
-                      this.setState({ conditionSort: 'lastName', count: count + 1 });
-                    }}
-                  >
-                    Họ
-                  </th>
-                  <th
-                    className="hand"
-                    onClick={() => {
-                      this.setState({ conditionSort: 'email', count: count + 1 });
-                    }}
-                  >
-                    Email
-                  </th>
-                  <th
-                    className="hand"
-                    onClick={() => {
-                      this.setState({ conditionSort: 'mobile', count: count + 1 });
-                    }}
-                  >
-                    Số điện thoại
-                  </th>
-                  {dataHeader
-                    ? dataHeader.map((event, id) => {
+              <Button
+                color="primary"
+                style={{ float: 'right' }}
+                onClick={() => this.saveAdvancedSearch()}
+                disabled={name && name.trim() !== '' ? false : true}
+              >
+                Lưu
+              </Button>
+            </ModalFooter>
+          </Modal>
+          {/* Search save modal  */}
+          <SearchSaveModal
+            open_list_save={open_list_save}
+            toggleSearchSaveModal={this.toggleSearchSaveModal}
+            openAdvancedSearch={this.openAdvancedSearch}
+          />
+          {/* Title */}
+          <div className="user-management">
+            <div id="title-common-header">
+              <span id="text-title">
+                {' '}
+                <Translate contentKey="userManagement.home.title" />
+              </span>
+              <Button
+                className="btn float-right jh-create-entity"
+                outline
+                color="info"
+                onClick={async () => {
+                  await this.props.exportFile(this.state.textSearch, this.state.categories);
+                }}
+              >
+                <img src={exportImage} style={{ margin: ' 0px 5px 2px' }} />
+                Export
+              </Button>
+              <Button
+                className="btn float-right jh-create-entity"
+                outline
+                color="info"
+                onClick={() => window.location.assign('/#/app/views/customers/user-management/new')}
+              >
+                <span>
+                  <img src={importImage} style={{ margin: ' 0px 5px 2px' }} />
+                </span>
+                <Translate contentKey="userManagement.home.import" />
+              </Button>
+              <span id="column-span">|</span>
+              <Button className=" float-right" color="primary" style={{ backGround: '#3866DD' }} onClick={this.toggleCreate}>
+                <FontAwesomeIcon icon="plus" />
+                <span id="btn-create">
+                  {' '}
+                  <Translate contentKey="userManagement.home.createLabel" />
+                </span>
+              </Button>
+            </div>
+
+            {/* Panel */}
+            <div className="panel">
+              <CreateUser open_create={open_create} toggleCreate={this.toggleCreate} />
+              <div className="search-field">
+                <div className="input-search_group" style={{ paddingRight: '30px' }}>
+                  <label className="input-search_label">
+                    <span>Thẻ/Tag</span>
+                  </label>
+                  <UserCategoryTag handleChange={this.handleChange} />
+                </div>
+                <div className="input-search_group" style={{ paddingRight: '30px' }}>
+                  <label className="input-search_label">
+                    <Translate contentKey="userManagement.home.search-placer" />
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    onKeyDown={this.search}
+                    placeholder={translate('userManagement.home.search-placer')}
+                  />
+                </div>
+              </div>
+
+              <div className="field-search">
+                <div className="field-title">
+                  <p>
+                    <label className="field-title_text" onClick={this.closeSearchAdvanced}>
+                      <Icon type="setting" />
+                      Tìm kiếm nâng cao
+                      <Icon type={open_search ? 'caret-up' : 'caret-down'} />
+                    </label>
+                    <label
+                      className="field-title_text"
+                      style={{
+                        float: 'right'
+                      }}
+                      onClick={this.toggleSearchSaveModal}
+                    >
+                      Các tìm kiếm đã lưu
+                    </label>
+                  </p>
+                </div>
+                <Collapse isOpen={open_search} navbar>
+                  <div>{list_field_render}</div>
+                  <div style={{ marginTop: '10px' }}>
+                    <Button color="primary" onClick={this.handleAddNewComponent} style={{ marginRight: '20px' }}>
+                      <FontAwesomeIcon icon="plus" />
+                      Thêm
+                    </Button>
+                    <Button color="success" onClick={this.saveSearchData}>
+                      <FontAwesomeIcon icon="save" />
+                      Lưu tìm kiếm
+                    </Button>
+
+                    <Button style={{ float: 'right' }} onClick={() => this.getDataListCustomer(0)}>
+                      <FontAwesomeIcon icon="search" />
+                      Tìm kiếm
+                    </Button>
+                  </div>
+                </Collapse>
+              </div>
+              <hr />
+              <Translate contentKey="userManagement.home.total-element" interpolate={{ element: this.props.totalElements }} />
+              <Dropdown overlay={this.rowName} trigger={['click']}>
+                <Button color="link" style={{ float: 'right' }}>
+                  <img src={filterImage} style={{ margin: ' 0px 5px 10px' }} />
+                </Button>
+              </Dropdown>
+              <Table responsive striped>
+                <thead>
+                  <tr className="text-center">
+                    <th className="hand">#</th>
+                    <th
+                      className="hand"
+                      onClick={() => {
+                        this.setState({ conditionSort: 'firstName', count: count + 1 });
+                      }}
+                    >
+                      Tên
+                    </th>
+                    <th
+                      className="hand"
+                      onClick={() => {
+                        this.setState({ conditionSort: 'lastName', count: count + 1 });
+                      }}
+                    >
+                      Họ
+                    </th>
+                    <th
+                      className="hand"
+                      onClick={() => {
+                        this.setState({ conditionSort: 'email', count: count + 1 });
+                      }}
+                    >
+                      Email
+                    </th>
+                    <th
+                      className="hand"
+                      onClick={() => {
+                        this.setState({ conditionSort: 'mobile', count: count + 1 });
+                      }}
+                    >
+                      Số điện thoại
+                    </th>
+                    {dataHeader
+                      ? dataHeader.map((event, id) => {
+                          return (
+                            <th key={id} className={event.code}>
+                              {event.title}
+                            </th>
+                          );
+                        })
+                      : ''}
+                    <th
+                      onClick={() => {
+                        this.setState({ conditionSort: 'createdDate', count: count + 1 });
+                      }}
+                    >
+                      Ngày khởi tạo
+                    </th>
+                    <th>Thẻ/Tag</th>
+                    <th id="modified-date-sort" className="hand">
+                      <Translate contentKey="userManagement.feature" />
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {dataUser
+                    ? dataUser.map((item, index) => {
                         return (
-                          <th key={id} className={event.code}>
-                            {event.title}
-                          </th>
+                          <tr id={item.id} key={`user-${index}`}>
+                            <td>{this.state.activePage * this.state.itemsPerPage + index + 1}</td>
+                            <td>{item.firstName}</td>
+                            <td>{item.lastName}</td>
+                            <td>{item.email}</td>
+                            <td>0{item.mobile}</td>
+                            {item.fields
+                              .sort(function(a, b) {
+                                if (a.title.toLowerCase() < b.title.toLowerCase()) {
+                                  return -1;
+                                }
+                                if (a.title.toLowerCase() > b.title.toLowerCase()) {
+                                  return 1;
+                                }
+                                return 0;
+                              })
+                              .map((value, index, arr) => {
+                                return (
+                                  <td className={value.check === true ? '' : 'display-colum'} key={index}>
+                                    {value.value}
+                                  </td>
+                                );
+                              })}
+                            <td>{item.createdDate}</td>
+                            <td className="tag">
+                              {item.tag &&
+                                item.tag.split(',').map((category, index) => {
+                                  return (
+                                    <span className="badge badge-success" key={index}>
+                                      {' '}
+                                      {category}
+                                    </span>
+                                  );
+                                })}
+                            </td>
+                            <td className="text-center">
+                              <div className="btn-group flex-btn-group-container">
+                                <Button
+                                  className="buttonUpdate"
+                                  tag={Link}
+                                  to={`/app/views/customers/user-management/info/${item.id}`}
+                                  color="primary"
+                                  size="sm"
+                                >
+                                  <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Thông tin</span>
+                                </Button>
+                              </div>
+                            </td>
+                          </tr>
                         );
                       })
                     : ''}
-                  <th
-                    onClick={() => {
-                      this.setState({ conditionSort: 'createdDate', count: count + 1 });
-                    }}
-                  >
-                    Ngày khởi tạo
-                  </th>
-                  <th>Thẻ/Tag</th>
-                  <th id="modified-date-sort" className="hand">
-                    <Translate contentKey="userManagement.feature" />
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {dataUser
-                  ? dataUser.map((item, index) => {
-                      return (
-                        <tr id={item.id} key={`user-${index}`}>
-                          <td>{this.state.activePage * this.state.itemsPerPage + index + 1}</td>
-                          <td>{item.firstName}</td>
-                          <td>{item.lastName}</td>
-                          <td>{item.email}</td>
-                          <td>0{item.mobile}</td>
-                          {item.fields
-                            .sort(function(a, b) {
-                              if (a.title.toLowerCase() < b.title.toLowerCase()) {
-                                return -1;
-                              }
-                              if (a.title.toLowerCase() > b.title.toLowerCase()) {
-                                return 1;
-                              }
-                              return 0;
-                            })
-                            .map((value, index) => {
-                              return (
-                                <td className={value.check === true ? '' : 'display-colum'} key={index}>
-                                  {value.value}
-                                </td>
-                              );
-                            })}
-                          <td>{item.createdDate}</td>
-                          <td className="tag">
-                            {item.tag &&
-                              item.tag.split(',').map((category, index) => {
-                                return (
-                                  <span className="badge badge-success" key={index}>
-                                    {' '}
-                                    {category}
-                                  </span>
-                                );
-                              })}
-                          </td>
-                          <td className="text-center">
-                            <div className="btn-group flex-btn-group-container">
-                              <Button
-                                className="buttonUpdate"
-                                tag={Link}
-                                to={`/app/views/customers/user-management/info/${item.id}`}
-                                color="primary"
-                                size="sm"
-                              >
-                                <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Thông tin</span>
-                              </Button>
-                            </div>
-                          </td>
-                        </tr>
-                      );
-                    })
-                  : ''}
-              </tbody>
-            </Table>
-            {users.length > 0 ? '' : <p style={{ textAlign: 'center', color: 'black' }}>không có dữ liệu khách hàng</p>}
-            <Row className="justify-content-center" style={{ float: 'right' }}>
-              {this.props.totalElements >= 10 ? (
-                <ReactPaginate
-                  previousLabel={'<'}
-                  nextLabel={'>'}
-                  breakLabel={'...'}
-                  breakClassName={'break-me'}
-                  pageCount={pageCount}
-                  marginPagesDisplayed={1}
-                  pageRangeDisplayed={3}
-                  onPageChange={this.handlePagination}
-                  containerClassName={'pagination'}
-                  subContainerClassName={'pages pagination'}
-                  activeClassName={'active'}
-                  forcePage={activePage}
-                />
-              ) : (
-                ''
-              )}
-            </Row>
-            <br />
+                  {users.length > 0 ? (
+                    ''
+                  ) : (
+                    <tr>
+                      <td colSpan={99}>
+                        <Translate contentKey="properties-management.no-record" />
+                      </td>{' '}
+                    </tr>
+                  )}
+                </tbody>
+              </Table>
+              <Row className="justify-content-center" style={{ float: 'right' }}>
+                {this.props.totalElements >= 10 ? (
+                  <ReactPaginate
+                    previousLabel={'<'}
+                    nextLabel={'>'}
+                    breakLabel={'...'}
+                    breakClassName={'break-me'}
+                    pageCount={pageCount}
+                    marginPagesDisplayed={1}
+                    pageRangeDisplayed={3}
+                    onPageChange={this.handlePagination}
+                    containerClassName={'pagination'}
+                    subContainerClassName={'pages pagination'}
+                    activeClassName={'active'}
+                    forcePage={activePage}
+                  />
+                ) : (
+                  ''
+                )}
+              </Row>
+              <br />
+            </div>
           </div>
-          <Loader message={spinner1} show={loading} priority={1} />
-        </div>
-      </Fragment>
+        </Fragment>
+      </Loader>
     );
   }
 }
@@ -947,7 +988,8 @@ const mapStateToProps = (storeState: IRootState) => ({
   list_save_advanced_search: storeState.userManagement.list_save_advanced_search,
   save_advanced_search: storeState.userManagement.save_advanced_search,
   isMerge: storeState.userManagement.isMerge,
-  isDelete: storeState.userManagement.isDelete
+  isDelete: storeState.userManagement.isDelete,
+  list_option: storeState.userManagement.list_option
 });
 
 const mapDispatchToProps = {
@@ -966,7 +1008,8 @@ const mapDispatchToProps = {
   getListSaveAdvancedSearchActionData,
   getSaveAdvancedSearchActionData,
   deleteSaveAdvancedSearchActionData,
-  postSaveAdvancedSearchActionData
+  postSaveAdvancedSearchActionData,
+  getListOptionFilter
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

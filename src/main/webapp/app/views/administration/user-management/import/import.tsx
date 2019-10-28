@@ -200,7 +200,6 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
 
   selectFields = () => {
     const { listFileHeader, listFields } = this.props;
-    console.log(listFileHeader.fileName !== undefined ? listFields : '');
 
     let data = (
       <div>
@@ -342,9 +341,20 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
             <AvForm>
               <div className="steps-content">{this.stepTable()[current].content}</div>
             </AvForm>
+            <hr />
             <div className="steps-action">
+              {current < this.stepTable().length - 1 && (
+                <Button
+                  onClick={() => {
+                    window.location.assign('/#/app/views/customers/user-management');
+                  }}
+                  color="link"
+                >
+                  <Translate contentKey="properties-management.cancel" />
+                </Button>
+              )}
               {current > 0 && current < this.stepTable().length - 1 && (
-                <Button id="btn-prev" color="linkaaaaa" onClick={() => this.prev()}>
+                <Button id="btn-prev" style={{ float: 'left' }} color="linkaaaaa" onClick={() => this.prev()}>
                   Quay lại
                 </Button>
               )}
