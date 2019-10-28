@@ -119,7 +119,7 @@ class GroupAttributeCustomer extends React.Component<IGroupAttributeCustomerProp
             }}
           >
             <FontAwesomeIcon icon={faPlus} />
-            Tạo nhóm mới
+            <Translate contentKey="group-attribute-customer.create-new-group" />
           </Button>
         </div>
         <Fragment>

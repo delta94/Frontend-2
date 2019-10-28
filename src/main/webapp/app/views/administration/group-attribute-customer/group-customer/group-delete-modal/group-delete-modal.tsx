@@ -99,7 +99,6 @@ export default class GroupDeleteModal extends React.PureComponent<IGroupDeleteMo
     let { is_open, id_delete } = this.props;
     let { listCheckBox, is_disable, listCheck } = this.state;
     let number_disable = listCheck.indexOf(false);
-    console.log(number_disable);
     if (number_disable === -1) {
       is_disable = false;
     }

@@ -93,6 +93,7 @@ export interface IUserManagementState {
   listDataUser: any[];
   conditionSort: string;
   count: number;
+  is_normal_find: boolean;
 }
 
 export class UserManagement extends React.Component<IUserManagementProps, IUserManagementState> {
@@ -128,7 +129,8 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     listValueSort: [],
     listDataUser: [],
     conditionSort: '',
-    count: 0
+    count: 0,
+    is_normal_find: true
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -186,8 +188,8 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
   };
 
   handlePagination = activePage => {
-    const { itemsPerPage, textSearch, categories, open_search } = this.state;
-    if (open_search) {
+    const { itemsPerPage, textSearch, categories, open_search, is_normal_find } = this.state;
+    if (open_search && !is_normal_find) {
       this.getDataListCustomer(activePage.selected);
     } else {
       this.props.getUsers(activePage.selected, itemsPerPage, categories, textSearch);
@@ -216,11 +218,12 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
   search = event => {
     if (event.key === 'Enter') {
       const textSearch = event.target.value;
-      const { itemsPerPage, categories } = this.state;
+      const { itemsPerPage, categories, is_normal_find } = this.state;
       this.setState({
         ...this.state,
         textSearch,
-        activePage: 0
+        activePage: 0,
+        is_normal_find: true
       });
       this.props.getUsers(0, itemsPerPage, categories, textSearch);
     }
@@ -408,7 +411,8 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
 
   // GetData customer by condition
   getDataListCustomer = (page?: any) => {
-    let { advancedSearches, logicalOperator, pageSize } = this.state;
+    let { advancedSearches, logicalOperator, pageSize, is_normal_find } = this.state;
+    is_normal_find = false;
     if (advancedSearches.length <= 1) {
       logicalOperator = '';
     }
@@ -419,6 +423,8 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
       page,
       pageSize
     });
+
+    this.setState({ is_normal_find });
   };
 
   // Close Find search
@@ -649,18 +655,22 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
         />
         {/* Add new */}
         <Modal isOpen={open_new_save}>
-          <ModalHeader>Đặt tên tìm kiếm</ModalHeader>
+          <ModalHeader>
+            <Translate contentKey="userManagement.create-find-name" />
+          </ModalHeader>
           <ModalBody>
             <div className="input-search_group" style={{ paddingRight: '30px' }}>
               <label className="input-search_label">
-                <span>Tên</span>
+                <span>
+                  <Translate contentKey="userManagement.name-find" />
+                </span>
               </label>
               <Input value={name} onChange={event => this.setState({ name: event.target.value })} />
             </div>
           </ModalBody>
           <ModalFooter>
             <Button color="none" style={{ float: 'right' }} onClick={() => this.setState({ open_new_save: false, name: '' })}>
-              Hủy
+              <Translate contentKey="userManagement.cancel" />
             </Button>
             <Button
               color="primary"
@@ -668,7 +678,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
               onClick={() => this.saveAdvancedSearch()}
               disabled={name && name.trim() !== '' ? false : true}
             >
-              Lưu
+              <Translate contentKey="userManagement.save" />
             </Button>
           </ModalFooter>
         </Modal>
@@ -679,7 +689,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
           openAdvancedSearch={this.openAdvancedSearch}
         />
         {/* Title */}
-        <div className="user-management">
+        <div className="userManagement">
           <div id="title-common-header">
             <span id="text-title">
               {' '}
@@ -694,7 +704,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
               }}
             >
               <img src={exportImage} style={{ margin: ' 0px 5px 2px' }} />
-              Export
+              <Translate contentKey="userManagement.home.export" />
             </Button>
             <Button
               className="btn float-right jh-create-entity"
@@ -723,7 +733,9 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
             <div className="search-field">
               <div className="input-search_group" style={{ paddingRight: '30px' }}>
                 <label className="input-search_label">
-                  <span>Thẻ/Tag</span>
+                  <span>
+                    <Translate contentKey="userManagement.card-tag" />
+                  </span>
                 </label>
                 <UserCategoryTag handleChange={this.handleChange} />
               </div>
@@ -731,7 +743,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                 <label className="input-search_label">
                   <Translate contentKey="userManagement.home.search-placer" />
                 </label>
-                <input
+                <Input
                   type="text"
                   className="form-control"
                   onKeyDown={this.search}
@@ -745,7 +757,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                 <p>
                   <label className="field-title_text" onClick={this.closeSearchAdvanced}>
                     <Icon type="setting" />
-                    Tìm kiếm nâng cao
+                    <Translate contentKey="userManagement.advanced-search" />
                     <Icon type={open_search ? 'caret-up' : 'caret-down'} />
                   </label>
                   <label
@@ -755,25 +767,37 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                     }}
                     onClick={this.toggleSearchSaveModal}
                   >
-                    Các tìm kiếm đã lưu
+                    <Translate contentKey="userManagement.saved-advanced-search" />
                   </label>
                 </p>
               </div>
               <Collapse isOpen={open_search} navbar>
-                <div>{list_field_render}</div>
-                <div style={{ marginTop: '10px' }}>
+                <div className="search-anvanced_customer">
+                  {list_field_render}
+
                   <Button color="primary" onClick={this.handleAddNewComponent} style={{ marginRight: '20px' }}>
                     <FontAwesomeIcon icon="plus" />
-                    Thêm
                   </Button>
-                  <Button color="success" onClick={this.saveSearchData}>
-                    <FontAwesomeIcon icon="save" />
-                    Lưu tìm kiếm
+                  <label className="title-advanced-search">
+                    <Translate contentKey="userManagement.add-more-condition-search" />
+                  </label>
+                </div>
+                <div className="search-anvanced_footer">
+                  <Button
+                    color="ghost"
+                    style={{
+                      marginLeft: '20px',
+                      float: 'right',
+                      backgroundColor: '#E5ECF4',
+                      border: '1px solid #CED4DA'
+                    }}
+                    onClick={this.saveSearchData}
+                  >
+                    <Translate contentKey="userManagement.save-search" />
                   </Button>
 
-                  <Button style={{ float: 'right' }} onClick={() => this.getDataListCustomer(0)}>
-                    <FontAwesomeIcon icon="search" />
-                    Tìm kiếm
+                  <Button color="primary" style={{ float: 'right' }} onClick={() => this.getDataListCustomer(0)}>
+                    <Translate contentKey="userManagement.find" />
                   </Button>
                 </div>
               </Collapse>
@@ -796,7 +820,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                       this.setState({ conditionSort: 'firstName', count: count + 1 });
                     }}
                   >
-                    Tên
+                    <Translate contentKey="userManagement.first-name" />
                   </th>
                   <th
                     className="hand"
@@ -804,7 +828,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                       this.setState({ conditionSort: 'lastName', count: count + 1 });
                     }}
                   >
-                    Họ
+                    <Translate contentKey="userManagement.last-name" />
                   </th>
                   <th
                     className="hand"
@@ -812,7 +836,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                       this.setState({ conditionSort: 'email', count: count + 1 });
                     }}
                   >
-                    Email
+                    <Translate contentKey="userManagement.email" />
                   </th>
                   <th
                     className="hand"
@@ -820,7 +844,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                       this.setState({ conditionSort: 'mobile', count: count + 1 });
                     }}
                   >
-                    Số điện thoại
+                    <Translate contentKey="userManagement.phone-number" />
                   </th>
                   {dataHeader
                     ? dataHeader.map((event, id) => {
@@ -836,9 +860,11 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                       this.setState({ conditionSort: 'createdDate', count: count + 1 });
                     }}
                   >
-                    Ngày khởi tạo
+                    <Translate contentKey="userManagement.created-date" />
                   </th>
-                  <th>Thẻ/Tag</th>
+                  <th>
+                    <Translate contentKey="userManagement.card-tag" />
+                  </th>
                   <th id="modified-date-sort" className="hand">
                     <Translate contentKey="userManagement.feature" />
                   </th>

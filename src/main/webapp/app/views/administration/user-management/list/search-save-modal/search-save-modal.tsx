@@ -56,6 +56,7 @@ export class SearchSaveModal extends React.Component<ISearchSaveModalProps, ISea
   deleteAdvancedSearch = async (id?: string) => {
     await this.props.deleteSaveAdvancedSearchActionData(id);
     await this.props.getListSaveAdvancedSearchActionData();
+    await this.setState({ delete_search: { id: '', name: '' } });
   };
 
   //  Get advanced search

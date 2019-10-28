@@ -379,13 +379,21 @@ thead th {
       padding: 10px 5px;
       margin: 0px;
       color: #3866dd;
+      text-decoration: underline;
       &:hover {
-        text-decoration: underline;
-        cursor: pointer;
+        cursor: hand;
       }
     }
   }
 }
 .display-colum {
   display: none;
+}
+
+.search-anvanced_footer {
+  height: 40px;
+}
+
+.title-advanced-search {
+  padding: 0px 5px;
 }

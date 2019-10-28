@@ -357,6 +357,9 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
     return (
       <div className="field-data" key={id}>
         <Row>
+          <Col span={1}>
+            <Icon type="close" onClick={() => this.props.deleteComponentById(id)} />
+          </Col>
           <Col span={6}>
             {/* Defualt select */}
             <div>
@@ -431,9 +434,6 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
                 OR
               </Radio.Button>
             </Radio.Group>
-          </Col>
-          <Col span={1}>
-            <Icon type="close" onClick={() => this.props.deleteComponentById(id)} />
           </Col>
         </Row>
       </div>
