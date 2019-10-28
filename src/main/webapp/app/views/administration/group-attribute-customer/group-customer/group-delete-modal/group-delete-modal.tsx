@@ -60,26 +60,23 @@ export default class GroupDeleteModal extends React.PureComponent<IGroupDeleteMo
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (prevState.listCheck) {
-      let is_disable = true;
-      let check_all = 0;
-      prevState.listCheck.forEach(item => {
-        if (item) check_all += 1;
-        if (check_all === 5) is_disable = false;
+    if (prevState.listCheckBox) {
+      let listCheck = prevState.listCheckBox.map(item => {
+        return item.checked;
       });
-
       return {
-        is_disable
+        listCheck
       };
     }
 
     if (nextProps.is_open) {
-      let { list_check } = prevState;
-
+      let { list_check, listCheckBox } = prevState;
       list_check.forEach(item => (item = false));
-
+      listCheckBox.forEach(item => (item.checked = false));
       return {
-        list_check
+        list_check,
+        is_disable: true,
+        listCheckBox
       };
     }
 
@@ -100,21 +97,26 @@ export default class GroupDeleteModal extends React.PureComponent<IGroupDeleteMo
 
   render() {
     let { is_open, id_delete } = this.props;
-    let { listCheckBox, is_disable } = this.state;
+    let { listCheckBox, is_disable, listCheck } = this.state;
+    let number_disable = listCheck.indexOf(false);
+    if (number_disable === -1) {
+      is_disable = false;
+    }
 
     return (
       <Modal isOpen={is_open} toggle={() => this.props.handleDeleteModal()}>
         <ModalHeader>XÓA NHÓM NÀY</ModalHeader>
         <ModalBody>
-          {listCheckBox &&
+          {listCheck &&
+            listCheckBox &&
             listCheckBox.map((item, index) => {
               return (
                 <label key={index}>
                   <Checkbox
                     id={makeRandomId(8)}
-                    onChange={() => this.handleCheckBox(item.key)}
+                    onChange={() => this.handleCheckBox(index)}
                     style={{ color: item.color, width: '100%' }}
-                    checked={item.checked}
+                    checked={listCheck[index]}
                   >
                     {item.description}
                   </Checkbox>
@@ -137,11 +139,11 @@ export default class GroupDeleteModal extends React.PureComponent<IGroupDeleteMo
           <Button
             key="delete"
             color="danger"
-            disabled={is_disable}
             onClick={() => {
               this.props.deleteGroupFromState(id_delete);
               this.setState({ is_disable: true });
             }}
+            disabled={is_disable}
           >
             Xóa
           </Button>

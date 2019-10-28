@@ -3,18 +3,14 @@ import axios from 'axios';
 
 const tagUrl = 'v1/tags';
 
-export const getListTags = (textSearch: string, page: number, pageSize: number) => {
+export const getListTags = () => {
   // return axios.get('http://localhost:9000/content/json_data/tag_data.json');
-  return axios.get(tagUrl, { params: { textSearch, page, pageSize, type: 'pagingEnable' } });
-
-  // return axios.get(tagUrl+`?page=${page}&pageSize=${pageSize}&textSearch=${textSearch}`);
+  return axios.get(tagUrl);
 };
 
 export const getComboTags = (textSearch: string) => {
   // return axios.get('http://localhost:9000/content/json_data/tag_data.json');
   return axios.get(tagUrl, { params: { textSearch } });
-
-  // return axios.get(tagUrl+`?page=${page}&pageSize=${pageSize}&textSearch=${textSearch}`);
 };
 
 export const postMergeTag = (id?: string, data?: any) => {

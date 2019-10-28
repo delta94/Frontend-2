@@ -46,6 +46,10 @@ interface IPopOver {
   };
 }
 
+const styleBorder = {
+  borderLeft: 'solid #3866DD 3px'
+};
+
 class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerState> {
   state = {
     listNewTag: [],
@@ -165,7 +169,9 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
           deleteGroupFromState={event => this.deleteGroupFromState(event)}
         />
         <div className="group-customer">
-          <p className="group-header">Danh sách nhóm khách hàng</p>
+          <p className="group-header">
+            <Translate contentKey="group-attribute-customer.group-customer.header" />
+          </p>
           <Loader message={spinner1} show={loading} priority={1}>
             <div>
               {/* Block out */}
@@ -173,7 +179,7 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
                 <Input
                   id="searchText"
                   prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  placeholder="Tìm kiếm"
+                  placeholder={translate('group-attribute-customer.find')}
                   onChange={event => this.setState({ textSearch: event.target.value })}
                   onPressEnter={() => this.props.getListCustomerGroupDataAction(textSearch)}
                 />
@@ -182,9 +188,15 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
               <Table striped>
                 <thead>
                   <tr className="text-center">
-                    <th className="checkbox-td">Stt</th>
-                    <th>Tên nhóm</th>
-                    <th>Số lượng khách hàng</th>
+                    <th className="checkbox-td">
+                      <Translate contentKey="group-attribute-customer.stt" />
+                    </th>
+                    <th>
+                      <Translate contentKey="group-attribute-customer.group-name" />
+                    </th>
+                    <th>
+                      <Translate contentKey="group-attribute-customer.group-customer.amount" />
+                    </th>
                     <th />
                   </tr>
                 </thead>
@@ -192,14 +204,10 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
                   {listDropdownItem && listDropdownItem.length > 0 ? (
                     listDropdownItem.map((item, index) => {
                       return (
-                        <tr
-                          key={item.id}
-                          style={{
-                            background: item && id_chose === item.id ? 'gray' : '',
-                            color: item && id_chose === item.id ? 'white' : ''
-                          }}
-                        >
-                          <td onClick={() => this.callListCustomer(item.id)}>{index + 1}</td>
+                        <tr key={item.id}>
+                          <td style={id_chose && id_chose === item.id ? styleBorder : null} onClick={() => this.callListCustomer(item.id)}>
+                            {index + 1}
+                          </td>
                           <td onClick={() => this.callListCustomer(item.id)}>{item.typeName}</td>
                           <td onClick={() => this.callListCustomer(item.id)}>
                             <div className="item-contact">
@@ -226,7 +234,7 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
                   ) : (
                     <tr>
                       <td className="none-data" colSpan={100}>
-                        Không có nhóm dữ liệu khách hàng
+                        <Translate contentKey="group-attribute-customer.group-customer.none-data-list-customer" />
                       </td>
                     </tr>
                   )}

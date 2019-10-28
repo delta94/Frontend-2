@@ -56,6 +56,7 @@ export class SearchSaveModal extends React.Component<ISearchSaveModalProps, ISea
   deleteAdvancedSearch = async (id?: string) => {
     await this.props.deleteSaveAdvancedSearchActionData(id);
     await this.props.getListSaveAdvancedSearchActionData();
+    await this.setState({ delete_search: { id: '', name: '' } });
   };
 
   //  Get advanced search
@@ -97,7 +98,9 @@ export class SearchSaveModal extends React.Component<ISearchSaveModalProps, ISea
                     }}
                   >
                     <FontAwesomeIcon icon="trash" />
-                    <a key="list-loadmore-edit">Xóa</a>
+                    <a key="list-loadmore-edit" style={{ paddingLeft: '5px' }}>
+                      Xóa
+                    </a>
                   </span>
                 ]}
               >

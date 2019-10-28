@@ -16,6 +16,19 @@ interface ITagEditUpdateEntity {
   id?: string;
 }
 
+const style = {
+  unValidate: {
+    display: 'none',
+    height: '0px'
+  },
+
+  validate: {
+    color: 'red',
+    height: 'auto',
+    paddingLeft: '110px'
+  }
+};
+
 class TagEdit extends React.Component<ITagEditProps, ITagEditState> {
   state = {};
 
@@ -40,7 +53,6 @@ class TagEdit extends React.Component<ITagEditProps, ITagEditState> {
 
   handleInput = (value, type) => {
     let { singleModalData } = this.props;
-
     singleModalData[type] = value;
     this.setState({ singleModalData });
     this.props.updateValueFromTagEdit(singleModalData);
@@ -67,6 +79,9 @@ class TagEdit extends React.Component<ITagEditProps, ITagEditState> {
               onChange={event => this.handleInput(event.target.value, 'name')}
               maxLength={160}
             />
+          </div>
+          <div style={singleModalData.name && singleModalData.name.trim() !== '' ? style.unValidate : style.validate}>
+            Tên thẻ không được để trống
           </div>
           <div className="tag-edit-attribute">
             <Translate contentKey="tag-management.tag-description" />

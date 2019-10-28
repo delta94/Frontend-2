@@ -197,8 +197,9 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
         color = 'primary';
         break;
       case EDIT_TAG:
-        !singleModalData.name && singleModalData.name === '' ? (isDisable = true) : null;
+        !singleModalData.name || singleModalData.name.trim() === '' ? (isDisable = true) : null;
         extendComponent = <TagEditComponent singleModalData={singleModalData} updateValueFromTagEdit={this.updateValueFromTagEdit} />;
+
         color = 'primary';
         break;
       default:

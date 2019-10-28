@@ -8,6 +8,7 @@ import { ISearchAdvanced } from '../../../../../common/model/group-attribute-cus
 import { Moment } from 'moment';
 import moment from 'moment';
 import { INSERT_CUSTOMER_GROUP } from 'app/constants/group-atrribute-customer';
+import { connect } from 'react-redux';
 const { Option } = Select;
 
 const list_condition_operator = {
@@ -23,11 +24,10 @@ interface IFieldDataProps extends StateProps, DispatchProps {
   last_index?: boolean;
   logicalOperator?: string;
   type_modal?: string;
-  list_field_data?: IListFieldData[];
   default_data?: ISearchAdvanced;
-  updateValueFromState: Function;
-  deleteComponentById: Function;
-  updateRelationshipFromState: Function;
+  updateValueFromState?: Function;
+  deleteComponentById?: Function;
+  updateRelationshipFromState?: Function;
 }
 
 interface IFieldDataState {
@@ -294,7 +294,6 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
       value_check_box,
       default_title
     } = this.state;
-
     let render_cpn = null;
 
     switch (type) {
@@ -354,9 +353,13 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
         render_cpn = <Input key={id + 'input'} />;
         break;
     }
+
     return (
       <div className="field-data" key={id}>
         <Row>
+          <Col span={1}>
+            <Icon type="close" onClick={() => this.props.deleteComponentById(id)} />
+          </Col>
           <Col span={6}>
             {/* Defualt select */}
             <div>
@@ -432,20 +435,22 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
               </Radio.Button>
             </Radio.Group>
           </Col>
-          <Col span={1}>
-            <Icon type="close" onClick={() => this.props.deleteComponentById(id)} />
-          </Col>
         </Row>
       </div>
     );
   }
 }
 
-const mapStateToProps = () => ({});
+const mapStateToProps = ({ groupCustomerState }: IRootState) => ({
+  list_field_data: groupCustomerState.list_field_data
+});
 
 const mapDispatchToProps = {};
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default FieldData;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(FieldData);

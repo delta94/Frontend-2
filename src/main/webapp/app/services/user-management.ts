@@ -175,7 +175,7 @@ export const postSaveAdvancedSearch = (data: any) => {
 // TODO: Delete advanced search data
 export const deleteSaveAdvancedSearch = (id?: string) => {
   const deleteSearchApi = `${advancedSearchApi}/${id}/delete`;
-  return axios.post(deleteSearchApi, { headers: authHeaders });
+  return axios.post(deleteSearchApi);
 };
 
 // TODO: Get list advanced search

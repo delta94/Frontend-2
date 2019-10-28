@@ -57,6 +57,7 @@ interface IGroupModalConfigState {
   textSearch?: string;
   pageIndex: number;
   pageSize: number;
+  defualtFieldTitle?: string;
   single_group_field?: {
     categoryId?: string;
     categoryName?: string;
@@ -85,6 +86,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
     textSearch: '',
     pageIndex: 0,
     pageSize: 10,
+    defualtFieldTitle: '',
     single_group_field: {
       categoryId: '',
       categoryName: '',
@@ -345,7 +347,6 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
                   type_modal={type_modal}
                   key={item.id}
                   id={item.id}
-                  list_field_data={list_field_data}
                   last_index={item.last_index}
                   logicalOperator={logicalOperator}
                   default_data={item.default_data}
@@ -358,17 +359,17 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
         : [];
 
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
-    let title_modal = 'THÊM MỚI NHÓM';
+    let title_modal = translate('group-attribute-customer.create-new-group');
 
     switch (type_modal) {
       case UPDATE_CUSTOMER_GROUP:
-        title_modal = 'CHỈNH SỬA THÔNG TIN NHÓM';
+        title_modal = translate('group-attribute-customer.fix-info-group');
         break;
       case COPY_CUSTOMER_GROUP:
-        title_modal = 'SAO CHÉP THÔNG TIN NHÓM';
+        title_modal = translate('group-attribute-customer.copy-info-group');
         break;
       case INSERT_CUSTOMER_GROUP:
-        title_modal = 'THÊM MỚI NHÓM';
+        title_modal = translate('group-attribute-customer.create-new-group');
         break;
       default:
         break;
@@ -383,7 +384,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
         onCancel={this.closeConfigModal}
         footer={[
           <Button key="submit" color="none" onClick={() => this.props.toggle()}>
-            Hủy
+            <Translate contentKey="group-attribute-customer.cancel" />
           </Button>,
           <Button
             key="back"
@@ -391,15 +392,17 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
             disabled={advancedSearches && categoryName && categoryName.trim() !== '' ? false : true}
             onClick={() => this.execFunctionRequest()}
           >
-            Lưu
+            <Translate contentKey="group-attribute-customer.save" />
           </Button>
         ]}
       >
         <div className="group-modal-config">
           <div className="input-search_group">
-            <label className="input-search_label">Tên nhóm</label>
+            <label className="input-search_label">
+              <Translate contentKey="group-attribute-customer.group-name" />
+            </label>
             <Input
-              placeholder="Học sinh, người nổi tiếng, quần chúng .v.v"
+              placeholder={translate('group-attribute-customer.group-modal-config.name-placeholder')}
               value={categoryName}
               onChange={event => this.setState({ categoryName: event.target.value })}
               maxLength={160}
@@ -416,7 +419,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
                   onClick={this.getDataListCustomer}
                   disabled={list_field_data_cpn.length === 0 ? true : false}
                 >
-                  Apply
+                  <Translate contentKey="group-attribute-customer.apply" />
                 </Button>
               </div>
             </Card>
@@ -424,25 +427,58 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
               <div className="group-addition_content">
                 {list_field_render}
                 <div className="group-addition_footer">
-                  <Button color="primary" style={{ margin: '2px 14px' }} onClick={this.handleAddNewComponent}>
+                  <Button color="primary" onClick={this.handleAddNewComponent}>
                     <FontAwesomeIcon icon={faPlus} />
                   </Button>
-                  <label style={{ lineHeight: '30px', padding: '0px 14px', fontWeight: 400 }}>Thêm điều kiện khác</label>
+                  <label
+                    style={{
+                      lineHeight: '30px',
+                      padding: '0px 14px',
+                      fontWeight: 400
+                    }}
+                  >
+                    <Translate contentKey="group-attribute-customer.add-more-condition" />
+                  </label>
                 </div>
               </div>
             </Card>
+            <div className="list-title">
+              <Translate contentKey="group-attribute-customer.group-modal-config.list-record" />
+              <label
+                style={{
+                  color: '#6C757D',
+                  fontWeight: 500,
+                  padding: '0px 5px'
+                }}
+              >
+                {totalElements}
+              </label>
+              <Translate contentKey="group-attribute-customer.group-modal-config.record" />
+            </div>
             <Loader message={spinner1} show={loading} priority={1}>
               <div className="search-table-customer">
                 <Table striped>
                   <thead>
                     <tr className="text-center">
-                      <th className="checkbox-td">Stt</th>
-                      <th>Họ tên</th>
-                      <th>Số điện thoại</th>
-                      <th>Email</th>
-                      <th>Thẻ/tag</th>
+                      <th className="checkbox-td">
+                        <Translate contentKey="group-attribute-customer.stt" />
+                      </th>
+                      <th>
+                        <Translate contentKey="group-attribute-customer.first-last-name" />
+                      </th>
+                      <th>
+                        <Translate contentKey="group-attribute-customer.phone-number" />
+                      </th>
+                      <th>
+                        <Translate contentKey="group-attribute-customer.email" />
+                      </th>
+                      <th>
+                        <Translate contentKey="group-attribute-customer.card-tag" />
+                      </th>
                       {/* <th>Nguồn</th> */}
-                      <th>Ngày khởi tạo</th>
+                      <th>
+                        <Translate contentKey="group-attribute-customer.created-date" />
+                      </th>
                       <th />
                     </tr>
                   </thead>
@@ -465,7 +501,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
                     ) : (
                       <tr>
                         <td className="none-data" colSpan={100}>
-                          Không có dữ liệu nhóm khách hàng
+                          <Translate contentKey="group-attribute-customer.none-data-list-customer" />
                         </td>
                       </tr>
                     )}
@@ -475,7 +511,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
             </Loader>
             <div className="navigation">
               {list_customer_with_condition && Math.ceil(totalElements / 10) > 1 ? (
-                <Row className="justify-content-center">
+                <Row>
                   <ReactPaginate
                     previousLabel={'<'}
                     nextLabel={'>'}

@@ -1,6 +1,9 @@
 .group-modal-config {
   position: relative;
-  padding-bottom: 60px;
+
+  .list-title {
+    padding: 20px 0px;
+  }
 
   .group-addition {
     .ant-card-body {
@@ -19,12 +22,15 @@
       border-radius: 3px 3px 0px 0px;
     }
 
-    ul {
-      list-style-type: none;
-    }
+    .navigation {
+      text-align: right;
+      position: relative;
+      height: 40px;
 
-    .search-table-customer {
-      padding-top: 15px;
+      .pagination {
+        position: absolute;
+        right: 0px;
+      }
     }
   }
 }
@@ -32,7 +38,7 @@
 .input-search_group {
   display: flex;
   margin-bottom: 10px;
-  height: 50px;
+  height: auto;
 
   .input-search_label {
     width: 90px !important;
