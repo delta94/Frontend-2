@@ -46,17 +46,31 @@ export class Delete extends React.Component<IDeleteProps, IDeleteState> {
     });
   };
 
+  deleteUser = async () => {
+    let { deleteUserAction, id, openModal } = this.props;
+    await deleteUserAction(id);
+
+    this.toggle();
+    await window.location.assign('/#/app/views/customers/user-management');
+    openModal({
+      show: true,
+      type: 'success',
+      title: translate('modal-data.title.success'),
+      text: translate('alert.complete-delete')
+    });
+  };
+
   render() {
     const { loading } = this.props;
     return (
       <span className="d-inline-block mb-2 mr-2">
         <Button className="btn float-right jh-create-entity" outline color="danger" onClick={this.toggle}>
-          <Ionicon icon="ios-trash-outline" /> &nbsp; Delete
+          <Ionicon icon="ios-trash-outline" /> &nbsp; Xóa
         </Button>
 
         <Modal isOpen={this.state.modal} id="delete-properties">
           <ModalHeader toggle={this.toggle} id="create-properties">
-            <Translate contentKey="properties-management.delete.title" />
+            XÓA THÔNG TIN KHÁCH HÀNG
           </ModalHeader>
           <ModalBody>
             <AvForm>
@@ -133,16 +147,8 @@ export class Delete extends React.Component<IDeleteProps, IDeleteState> {
             <Button
               color="primary"
               disabled={this.state.valueBtn1 && this.state.valueBtn2 && this.state.valueBtn3 && !loading ? false : true}
-              onClick={async () => {
-                this.props.deleteUserAction(this.props.id);
-                this.toggle();
-                this.props.openModal({
-                  show: true,
-                  type: 'success',
-                  title: translate('modal-data.title.success'),
-                  text: translate('alert.complete-delete')
-                });
-                window.location.assign('/#/app/views/customers/user-management');
+              onClick={() => {
+                this.deleteUser();
               }}
             >
               <Translate contentKey="properties-management.delete.button" />

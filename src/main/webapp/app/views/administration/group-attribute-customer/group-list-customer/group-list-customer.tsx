@@ -62,14 +62,14 @@ class GroupListCustomer extends React.Component<IGroupListCustomerProps, IGroupL
 
   render() {
     let { loading, totalElements } = this.props;
-    let { list_customer_group_with_id } = this.state;
+    let { list_customer_group_with_id, pageIndex } = this.state;
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
 
     return (
       <div className="group-list-customer b-l">
         <Loader message={spinner1} show={loading} priority={1}>
           <div>
-            <p className="group-header">Danh sách khách hàng</p>
+            <p className="group-header">Danh sách khách hàng({totalElements})</p>
             {/* Block out */}
             <div className="block-out">
               <Input
@@ -85,7 +85,7 @@ class GroupListCustomer extends React.Component<IGroupListCustomerProps, IGroupL
               <thead>
                 <tr className="text-center">
                   <th className="checkbox-td">Stt</th>
-                  <th>Họ và tên</th>
+                  <th>Họ tên</th>
                   <th>Số điện thoại</th>
                   <th>Email</th>
                   <th>Phân loại</th>
@@ -97,7 +97,7 @@ class GroupListCustomer extends React.Component<IGroupListCustomerProps, IGroupL
                   list_customer_group_with_id.map((item, index) => {
                     return (
                       <tr key={index}>
-                        <td>{index + 1}</td>
+                        <td>{index + 1 + pageIndex * 10}</td>
                         <td>{item.firstName + ' ' + item.lastName}</td>
                         <td>{item.mobile}</td>
                         <td>{item.email}</td>
@@ -133,7 +133,7 @@ class GroupListCustomer extends React.Component<IGroupListCustomerProps, IGroupL
                 containerClassName={'pagination'}
                 subContainerClassName={'pages pagination'}
                 activeClassName={'active'}
-                forcePage={5}
+                forcePage={0}
               />
             </Row>
           ) : null}

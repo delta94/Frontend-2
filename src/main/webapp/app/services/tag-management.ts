@@ -10,6 +10,13 @@ export const getListTags = (textSearch: string, page: number, pageSize: number) 
   // return axios.get(tagUrl+`?page=${page}&pageSize=${pageSize}&textSearch=${textSearch}`);
 };
 
+export const getComboTags = (textSearch: string) => {
+  // return axios.get('http://localhost:9000/content/json_data/tag_data.json');
+  return axios.get(tagUrl, { params: { textSearch } });
+
+  // return axios.get(tagUrl+`?page=${page}&pageSize=${pageSize}&textSearch=${textSearch}`);
+};
+
 export const postMergeTag = (id?: string, data?: any) => {
   const mergeTagApi = `${tagUrl}/${id}/merge`;
   return axios.post(mergeTagApi, data, { headers: authHeaders });

@@ -116,7 +116,6 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
         break;
     }
 
-    await this.props.callData();
     this.props.closeFixModalData();
   }
 
@@ -138,6 +137,7 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
   async updateTagFunction() {
     let { singleModalData } = this.state;
     await this.props.postUpdateTagAction(singleModalData);
+    await this.props.callData();
   }
 
   // Delete Tag
@@ -153,6 +153,7 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
         });
 
     await this.props.postDeleteTagAction(listIdTag);
+    await this.props.getListTagDataAction('', 0, 6);
   }
 
   async mergeTagFunction() {
@@ -169,6 +170,7 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
     console.log(targetTag, listIdTag);
 
     await this.props.postMergeTagAction(targetTag.id, listIdTag);
+    await this.props.getListTagDataAction('', 0, 6);
   }
 
   render() {
@@ -195,8 +197,9 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
         color = 'primary';
         break;
       case EDIT_TAG:
-        !singleModalData.name && singleModalData.name === '' ? (isDisable = true) : null;
+        !singleModalData.name || singleModalData.name.trim() === '' ? (isDisable = true) : null;
         extendComponent = <TagEditComponent singleModalData={singleModalData} updateValueFromTagEdit={this.updateValueFromTagEdit} />;
+
         color = 'primary';
         break;
       default:

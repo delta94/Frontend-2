@@ -1,13 +1,13 @@
 import React, { Fragment } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import { Row, Col, Card } from 'reactstrap';
 import { translate } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { Multiselect } from 'react-widgets';
 import { IRootState } from 'app/reducers';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { getListTagDataAction } from 'app/actions/tag-management';
+import { getComboTagsAction } from 'app/actions/tag-management';
+import './categories-tag.scss';
 
 library.add(faSpinner);
 
@@ -24,22 +24,22 @@ class UserCategoryTag extends React.Component<IUserUpdateProps, IUserUpdateState
   handleChange = data => {
     this.props.handleChange(data);
     if (data.length < 1) {
-      this.props.getListTagDataAction('');
+      this.props.getComboTagsAction('');
     }
   };
 
   componentDidMount() {
-    this.props.getListTagDataAction('');
+    this.props.getComboTagsAction('');
   }
 
   handleCreate = name => {
-    this.props.getListTagDataAction(name);
+    this.props.getComboTagsAction(name);
   };
 
   render() {
-    const { listTag, defaultCate } = this.props;
+    const { comboTag, defaultCate } = this.props;
     return (
-      <Fragment>
+      <div className="tag-customer-filter">
         <ReactCSSTransitionGroup
           component="div"
           transitionName="TabsAnimation"
@@ -47,37 +47,27 @@ class UserCategoryTag extends React.Component<IUserUpdateProps, IUserUpdateState
           transitionEnter={false}
           transitionLeave={false}
         >
-          <Row>
-            <Col md="12">
-              <Card className="main-card mb-3">
-                <Row form>
-                  <Col md={12}>
-                    <Multiselect
-                      placeholder={translate('userManagement.choose-categories')}
-                      data={listTag}
-                      value={defaultCate}
-                      className="Select-holder"
-                      allowCreate="onFilter"
-                      onCreate={name => this.handleCreate(name)}
-                      onChange={data => this.handleChange(data)}
-                      textField="name"
-                    />
-                  </Col>
-                </Row>
-              </Card>
-            </Col>
-          </Row>
+          <Multiselect
+            placeholder={translate('userManagement.choose-categories')}
+            data={comboTag}
+            value={defaultCate}
+            className="Select-holder"
+            allowCreate="onFilter"
+            onCreate={name => this.handleCreate(name)}
+            onChange={data => this.handleChange(data)}
+            textField="name"
+          />
         </ReactCSSTransitionGroup>
-      </Fragment>
+      </div>
     );
   }
 }
 
 const mapStateToProps = ({ tagDataState }: IRootState) => ({
-  listTag: tagDataState.list_tags
+  comboTag: tagDataState.combo_tag
 });
 
-const mapDispatchToProps = { getListTagDataAction };
+const mapDispatchToProps = { getComboTagsAction };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

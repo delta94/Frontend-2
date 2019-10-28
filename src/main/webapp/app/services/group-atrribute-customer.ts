@@ -16,7 +16,7 @@ export const getListFieldData = () => {
   return axios.get('v1/fields', { headers: authHeaders });
 };
 
-export const getFindCustomerWithCondition = (data?: any) => {
+export const getFindCustomerWithCondition = data => {
   return axios.post('v2/customers', data, { headers: authHeaders });
 };
 

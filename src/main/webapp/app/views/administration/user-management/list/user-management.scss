@@ -20,19 +20,17 @@
 }
 .table-responsive {
   display: block;
-  width: 94%;
   overflow-x: auto;
-  margin: 30px;
 }
 .table-striped {
   margin-top: 0px !important;
 }
 
 .panel {
-  border: 1px solid #dedede;
-  border-radius: 5px;
-  background-color: #ffffff;
+  border-radius: 3px;
+  background-color: #ffff;
   width: 100%;
+  padding: 30px;
 }
 
 .searchUser {
@@ -62,7 +60,6 @@ thead th {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
-  margin: 9px 19px -10px 19px;
 }
 .searchUser {
   float: right;
@@ -101,10 +98,6 @@ thead th {
   border-radius: 3px;
 }
 
-.rowUpdate .row {
-  margin-right: -15px;
-  margin-left: -15px;
-}
 .save-right {
   float: right;
   margin-bottom: 15px;
@@ -116,11 +109,41 @@ thead th {
 .Toastify__toast-body {
   margin-top: 50px;
 }
-#user-management-title {
+#title-common-header {
   font-size: 18px;
   background: #f9fafb;
-  margin: 0px 0px 10px;
-  padding: 20px;
+  margin: 0px -10px 10px;
+  padding: 20px 10px;
+  line-height: 30px;
+  button {
+    margin: 0px 10px;
+  }
+
+  #text-title {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 23px;
+
+    color: #2d3843;
+  }
+  #btn-create {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+
+    color: #ffffff;
+  }
+}
+#column-span {
+  font-size: 43px;
+  float: right;
+  color: #dce4ee;
+  font-family: none;
 }
 .catelogry-search {
   display: flex;
@@ -261,21 +284,8 @@ th {
   width: 100%;
 }
 
-.table-responsive {
-  display: block;
-  width: 94%;
-  overflow-x: auto;
-  margin: 30px;
-}
 .table-striped {
   margin-top: 0px !important;
-}
-
-.panel {
-  border: 1px solid #dedede;
-  border-radius: 5px;
-  background-color: #ffffff;
-  width: 100%;
 }
 
 .searchUser {
@@ -301,12 +311,6 @@ thead th {
   color: #545cd8;
 }
 
-.row {
-  // align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  padding: 10px;
-}
 .searchUser {
   float: right;
   width: 60%;
@@ -359,5 +363,29 @@ thead th {
   margin-top: 50px;
 }
 #display-row {
+  display: none;
+}
+
+.search-field {
+  display: inline-flex;
+}
+
+.field-search {
+  margin-bottom: 20px;
+
+  .field-title {
+    height: 40px;
+    .field-title_text {
+      padding: 10px 5px;
+      margin: 0px;
+      color: #3866dd;
+      &:hover {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+  }
+}
+.display-colum {
   display: none;
 }

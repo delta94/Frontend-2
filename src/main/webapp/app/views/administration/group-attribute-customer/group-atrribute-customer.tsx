@@ -15,6 +15,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
 import { INSERT_CUSTOMER_GROUP } from '../../../constants/group-atrribute-customer';
 import { IOpenModal } from '../../../reducers/modal';
+import {
+  getFindCustomerWithConditionAction,
+  getListCustomerGroupDataAction,
+  getListCustomerWithGroupIdDataAction
+} from '../../../actions/group-attribute-customer';
 
 export interface IGroupAttributeCustomerProps extends StateProps, DispatchProps {}
 
@@ -24,16 +29,16 @@ export interface IGroupAttributeCustomerState {
   title_modal?: string;
   type_modal: string;
   modalState?: IOpenModal;
+  list_group_customer?: any;
 }
 class GroupAttributeCustomer extends React.Component<IGroupAttributeCustomerProps, IGroupAttributeCustomerState> {
   state: IGroupAttributeCustomerState = {
     id_list_customer: null,
     is_show: false,
-    type_modal: '',
-    modalState: {}
+    type_modal: INSERT_CUSTOMER_GROUP,
+    modalState: {},
+    list_group_customer: []
   };
-
-  componentDidMount() {}
 
   // Show modal config
   toggleModalConfig = () => {
@@ -41,6 +46,14 @@ class GroupAttributeCustomer extends React.Component<IGroupAttributeCustomerProp
     is_show = !is_show;
     this.setState({ is_show, id_list_customer: '' });
   };
+
+  async componentDidMount() {
+    let { list_group_customer } = this.props;
+    let { id_list_customer } = this.state;
+
+    await this.props.getListCustomerGroupDataAction('');
+    await this.props.getListCustomerWithGroupIdDataAction('', 0, 10, id_list_customer);
+  }
 
   // Set title for modal
   setTitleForModalConfig = (title?: string) => {
@@ -56,17 +69,33 @@ class GroupAttributeCustomer extends React.Component<IGroupAttributeCustomerProp
   // Set state of modal
   setStateForModal = (type_modal: string, id?: string) => {
     let { id_list_customer } = this.state;
-    if (type_modal === INSERT_CUSTOMER_GROUP) id_list_customer = '';
+    if (!id) id_list_customer = '';
+
+    if (type_modal === INSERT_CUSTOMER_GROUP) {
+      id_list_customer === '';
+    } else {
+      id_list_customer = id;
+    }
     this.setState({ type_modal, id_list_customer });
     this.toggleModalConfig();
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.modalState) {
+    if (nextProps.list_group_customer && nextProps.list_group_customer !== prevState.list_group_customer) {
+      let { modalState } = prevState;
+      let { list_group_customer } = nextProps;
+      let id_list_customer = list_group_customer && list_group_customer.length > 0 ? list_group_customer[0].id : '';
+      if (nextProps.modalState) {
+        let modalState = nextProps.modalState;
+      }
       return {
-        modalState: nextProps.modalState
+        id_list_customer,
+        list_group_customer: nextProps.list_group_customer,
+        modalState
       };
     }
+
+    return null;
   }
 
   render() {
@@ -74,9 +103,21 @@ class GroupAttributeCustomer extends React.Component<IGroupAttributeCustomerProp
     let { modalState } = this.props;
     return (
       <div className="group-attribute-customer">
-        <div id="user-management-title">
+        <div id="title-common-header">
           <Translate contentKey="group-attribute-customer.header" />
-          <Button color="primary" style={{ float: 'right' }} onClick={() => this.setStateForModal(INSERT_CUSTOMER_GROUP)}>
+          <Button
+            color="primary"
+            style={{ float: 'right' }}
+            onClick={() => {
+              this.setStateForModal(INSERT_CUSTOMER_GROUP);
+              this.props.getFindCustomerWithConditionAction({
+                logicalOperator: '',
+                advancedSearches: [],
+                page: 0,
+                pageSize: 10
+              });
+            }}
+          >
             <FontAwesomeIcon icon={faPlus} />
             Tạo nhóm mới
           </Button>
@@ -110,11 +151,14 @@ class GroupAttributeCustomer extends React.Component<IGroupAttributeCustomerProp
 }
 
 const mapStateToProps = ({ groupCustomerState }: IRootState) => ({
-  modalState: groupCustomerState.postRequest
+  modalState: groupCustomerState.postRequest,
+  list_group_customer: groupCustomerState.list_group_customer
 });
 
 const mapDispatchToProps = {
-  openModal,
+  getFindCustomerWithConditionAction,
+  getListCustomerGroupDataAction,
+  getListCustomerWithGroupIdDataAction,
   closeModal
 };
 

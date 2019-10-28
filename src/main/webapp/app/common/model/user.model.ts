@@ -8,6 +8,15 @@ export interface IUser {
   merchantId?: string;
   tag?: string;
   createdDate?: string;
-  fields?: any[];
+  fields?: [
+    {
+      id?: string;
+      fieldValue?: string;
+      code?: string;
+      title?: string;
+      type?: string;
+      value?: string;
+    }
+  ];
   tags?: any[];
 }

@@ -32,4 +32,15 @@
   .ant-collapse-item-active {
     border-bottom: none;
   }
+  .ant-collapse-header {
+    color: #3866dd !important;
+  }
+}
+.fix-heigth .modal-content {
+  height: 340px !important;
+}
+#content-properties {
+  .modal-footer {
+    display: block !important;
+  }
 }

@@ -1,3 +1,5 @@
+import { getListSaveAdvancedSearch, getSaveAdvancedSearch } from './../services/user-management';
+import { getFindCustomerWithCondition } from './../services/group-atrribute-customer';
 import axios from 'axios';
 import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction, translate } from 'react-jhipster';
 
@@ -15,21 +17,26 @@ import {
   getInfoUser,
   importFileService,
   exportFileService,
-  listUserService,
+  compareUserService,
   uploadFileExcelService,
   getFieldsService,
   postInsertUser,
-  getDoSearch
+  getDoSearch,
+  mergeUserService,
+  exportFileResultService,
+  postSaveAdvancedSearch,
+  deleteSaveAdvancedSearch
 } from 'app/services/user-management';
 import { IFileList } from 'app/common/model/sucess-file';
 import { warn } from 'fullcalendar';
+import { any } from 'prop-types';
 
 const apiUrl = 'v1/customer';
 // Actions
-export const getUsers = (page, size, category?: string, textSearch?: string) => {
+export const getUsers = (page, size, tagIds?: string, textSearch?: string) => {
   return {
     type: USER_MANAGE_ACTION_TYPES.FETCH_USERS,
-    payload: getUsersService(page, size, category, textSearch)
+    payload: getUsersService(page, size, tagIds, textSearch)
   };
 };
 
@@ -168,17 +175,75 @@ export const exportFile = (textSearch?: string, tagIds?: string) => {
     payload: exportFileService(textSearch, tagIds)
   };
 };
-
-export const downloadFileFromResp = (data, fileName) => {
-  const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-  const link = document.createElement('a');
-  link.href = window.URL.createObjectURL(blob);
-  link.download = fileName;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+export const exportFileResult = fileName => {
+  return {
+    type: USER_MANAGE_ACTION_TYPES.EXPORT_FILE,
+    payload: exportFileResultService(fileName)
+  };
 };
+
+export const mergeUserAction = (id, data) => {
+  return {
+    type: USER_MANAGE_ACTION_TYPES.MERGE_USER,
+    payload: mergeUserService(id, data)
+  };
+};
+
+export const compareUserAction = (firstUser, secondUser) => {
+  return {
+    type: USER_MANAGE_ACTION_TYPES.COMPARE_USER,
+    payload: compareUserService(firstUser, secondUser)
+  };
+};
+
+export const openModalImport = () => ({
+  type: USER_MANAGE_ACTION_TYPES.OPEN_MODAL
+});
+
+export const closeModalImport = () => ({
+  type: USER_MANAGE_ACTION_TYPES.CLOSE_MODAL
+});
 
 export const resetMessage = () => ({
   type: USER_MANAGE_ACTION_TYPES.RESET_MESSAGE
 });
+
+// Find Customer with condition
+export const getFindUserInManagerWithActionData = data => {
+  return {
+    type: USER_MANAGE_ACTION_TYPES.GET_FIND_USER_IN_MANAGEMENTS,
+    payload: getFindCustomerWithCondition(data)
+  };
+};
+
+// TODO: Save advanced search data
+export const postSaveAdvancedSearchActionData = (data: any) => {
+  return {
+    type: USER_MANAGE_ACTION_TYPES.POST_SAVE_ADVANCED_SEARCH,
+    payload: postSaveAdvancedSearch(data)
+  };
+};
+
+// Delete advanced search data
+export const deleteSaveAdvancedSearchActionData = (id?: string) => {
+  return {
+    type: USER_MANAGE_ACTION_TYPES.DELETE_ADVANCED_SEARCH,
+    payload: deleteSaveAdvancedSearch(id)
+  };
+};
+
+// Get list advanced search
+export const getListSaveAdvancedSearchActionData = () => {
+  return {
+    type: USER_MANAGE_ACTION_TYPES.GET_LIST_ADVANCED_SEARCH,
+    payload: getListSaveAdvancedSearch()
+  };
+};
+
+//Get advanced search
+export const getSaveAdvancedSearchActionData = (id?: string) => {
+  return {
+    type: USER_MANAGE_ACTION_TYPES.GET_ADVANCED_SEARCH,
+    payload: getSaveAdvancedSearch(id)
+  };
+};

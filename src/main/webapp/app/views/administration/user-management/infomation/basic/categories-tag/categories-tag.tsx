@@ -7,7 +7,7 @@ import { Multiselect } from 'react-widgets';
 import { IRootState } from 'app/reducers';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { getUser, getUserCategories } from 'app/actions/user-management';
+import { getComboTagsAction } from 'app/actions/tag-management';
 
 library.add(faSpinner);
 
@@ -24,20 +24,20 @@ class UserCategoryTag extends React.Component<IUserUpdateProps, IUserUpdateState
   handleChange = data => {
     this.props.handleChange(data);
     if (data.length < 1) {
-      this.props.getUserCategories('');
+      this.props.getComboTagsAction('');
     }
   };
 
   componentDidMount() {
-    this.props.getUserCategories('');
+    this.props.getComboTagsAction('');
   }
 
   handleCreate = name => {
-    this.props.getUserCategories(name);
+    this.props.getComboTagsAction(name);
   };
 
   render() {
-    const { listCategory, defaultCate } = this.props;
+    const { comboTag, defaultCate } = this.props;
     return (
       <Fragment>
         <ReactCSSTransitionGroup
@@ -55,13 +55,13 @@ class UserCategoryTag extends React.Component<IUserUpdateProps, IUserUpdateState
                     <Multiselect
                       dropUp
                       placeholder={translate('userManagement.choose-categories')}
-                      data={listCategory}
+                      data={comboTag}
                       value={defaultCate}
                       className="Select-holder"
                       allowCreate="onFilter"
                       onCreate={name => this.handleCreate(name)}
                       onChange={data => this.handleChange(data)}
-                      textField="typeName"
+                      textField="name"
                     />
                   </Col>
                 </Row>
@@ -74,12 +74,11 @@ class UserCategoryTag extends React.Component<IUserUpdateProps, IUserUpdateState
   }
 }
 
-const mapStateToProps = (storeState: IRootState) => ({
-  user: storeState.userManagement.user,
-  listCategory: storeState.userManagement.listCategory
+const mapStateToProps = ({ tagDataState }: IRootState) => ({
+  comboTag: tagDataState.combo_tag
 });
 
-const mapDispatchToProps = { getUser, getUserCategories };
+const mapDispatchToProps = { getComboTagsAction };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

@@ -16,21 +16,19 @@ import Loader from 'react-loader-advanced';
 import Ionicon from 'react-ionicons';
 import $ from 'jquery';
 import UserCategoryTag from './categories-tag/categories-tag';
+import { RouteComponentProps } from 'react-router';
 const { Option } = Select;
 
 const { Panel } = Collapse;
 
-export interface IBasicProps extends StateProps, DispatchProps {}
+export interface IBasicProps extends StateProps, DispatchProps {
+  id: string;
+}
 
 export interface IBasicState {
   visible: boolean;
   user: IUserDetails;
-  fiedValue: [
-    {
-      id: string;
-      value: string;
-    }
-  ];
+  fiedValue: any[];
   isOpenPopFirst: boolean;
   isOpenPopLast: boolean;
   isOpenPopEmail: boolean;
@@ -46,6 +44,8 @@ export interface IBasicState {
       check?: boolean;
     }
   ];
+  tags?: [{ id?: string; name?: string }];
+  isOpenPopTag: boolean;
 }
 
 export interface IUserDetails {
@@ -54,7 +54,7 @@ export interface IUserDetails {
   firstName?: string;
   lastName?: string;
   mobile?: string;
-  tag?: [];
+  tags?: [{ id?: string; name?: string }];
   fields?: any[];
 }
 
@@ -62,17 +62,25 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
   state: IBasicState = {
     visible: false,
     user: this.props.user,
-    fiedValue: [
-      {
-        id: '',
-        value: ''
-      }
-    ],
+    fiedValue: [],
     listField: this.props.user.fields,
     isOpenPopFirst: false,
     isOpenPopLast: false,
     isOpenPopEmail: false,
-    isOpenPopMobile: false
+    isOpenPopMobile: false,
+    tags: [{ id: '', name: '' }],
+    isOpenPopTag: false
+  };
+
+  componentDidMount = async () => {
+    await this.props.getDetailUser(this.props.id);
+    this.setState({
+      listField: this.props.user.fields,
+      user: this.props.user,
+      fiedValue: this.props.user.fields.map(event => {
+        return { id: event.id, value: event.value };
+      })
+    });
   };
 
   hide = type => {
@@ -81,7 +89,8 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
       isOpenPopFirst: false,
       isOpenPopLast: false,
       isOpenPopEmail: false,
-      isOpenPopMobile: false
+      isOpenPopMobile: false,
+      isOpenPopTag: false
     });
   };
 
@@ -101,6 +110,9 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
     }
     if (id === 'mobile') {
       this.setState({ isOpenPopMobile: visible });
+    }
+    if (id === 'tag') {
+      this.setState({ isOpenPopTag: visible });
     } else {
       listFields = this.state.listField.map(event => {
         if (event.id === id) {
@@ -113,13 +125,32 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
     }
   };
 
-  closePopover = async () => {
+  closePopover = async id => {
     let listFields;
+    let { listField, fiedValue } = this.state;
+    fiedValue = fiedValue.map(event => {
+      if (event.id == String(id)) {
+        return {
+          id: id,
+          value: String(
+            listField
+              .map(item => {
+                if (item.id === event.id) {
+                  return item.value;
+                }
+              })
+              .filter(Boolean)
+          )
+        };
+      } else {
+        return { id: event.id, value: event.value };
+      }
+    });
     listFields = this.state.listField.map(event => {
       event.check = false;
       return event;
     });
-    this.setState({ listField: listFields });
+    this.setState({ listField: listFields, fiedValue });
     await this.props.getDetailUser(this.state.user.id);
   };
 
@@ -149,20 +180,20 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
   };
 
   editUser = async id => {
-    let { user, fiedValue } = this.state;
+    let { user, fiedValue, tags } = this.state;
     let { updateUserAction, getDetailUser } = this.props;
-    let value = fiedValue.slice(1);
+    let value = fiedValue;
     let data = {
       email: id === 'email' ? $(`input#${id}`).val() : user.email,
       id: user.id,
       firstName: id === 'firstName' ? $(`input#${id}`).val() : user.firstName,
       lastName: id === 'lastName' ? $(`input#${id}`).val() : user.lastName,
       mobile: id === 'mobile' ? $(`input#${id}`).val() : user.mobile,
-      tag: [],
+      tags: this.removeDuplicates(tags.slice(1), 'id')[0],
       fields: this.removeDuplicates(value, 'id')
     };
     await updateUserAction(data);
-    this.closePopover();
+    this.closePopover('');
     this.hide('');
     await getDetailUser(data.id);
     this.setState({ user: this.props.user, listField: this.props.user.fields });
@@ -178,6 +209,16 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
   };
 
   handleChange = category => {
+    let { tags } = this.state;
+
+    let data = category.map(event => {
+      return {
+        id: event.id,
+        name: event.name
+      };
+    });
+    tags.push(data);
+    this.setState({ tags });
     this.props.updateCategory(category);
   };
 
@@ -208,7 +249,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
     let { fiedValue } = this.state;
     let data = {
       id: id,
-      value: String(checkedValues)
+      value: String(checkedValues.join('||'))
     };
     fiedValue.push(data);
     this.setState({ fiedValue });
@@ -249,7 +290,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
 
   render() {
     const { getDetailUser, loading } = this.props;
-    let { user, isOpenPopEmail, isOpenPopFirst, isOpenPopLast, isOpenPopMobile, listField } = this.state;
+    let { user, isOpenPopEmail, isOpenPopFirst, isOpenPopLast, isOpenPopMobile, listField, isOpenPopTag } = this.state;
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
     return (
       <Fragment>
@@ -288,7 +329,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
             <Panel header="THÔNG TIN CƠ BẢN" id="info-basic" key="1">
               <div style={{ display: 'flex', position: 'relative' }}>
                 <Label className="content-text" style={{ width: '50%' }}>
-                  First Name
+                  Tên
                 </Label>
                 <label className="phone-customer_span">
                   <Popover
@@ -304,7 +345,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
               </div>
               <div className="line-info">
                 <Label className="content-text" style={{ width: '50%' }}>
-                  Last Name
+                  Họ
                 </Label>
                 <span className="phone-customer_span">
                   <Popover
@@ -337,7 +378,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
               </div>
               <div className="line-info">
                 <Label className="content-text" style={{ width: '50%' }}>
-                  Mobile
+                  Số điện thoại
                 </Label>
                 <span className="phone-customer_span">
                   <Popover
@@ -353,6 +394,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
               </div>
               {listField
                 ? listField.map((value, index) => {
+                    let fieldValue = String(value.fieldValue);
                     return (
                       <div className="line-info" key={index}>
                         <Label className="content-text" style={{ width: '50%' }}>
@@ -367,7 +409,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                                     <Col span={8} key={index}>
                                       <Checkbox.Group
                                         className="checkbox-update"
-                                        options={this.optionsCheckbox(String(value.fieldValue).split('||'))}
+                                        options={this.optionsCheckbox(fieldValue.split('||'))}
                                         defaultValue={String(value.value).split(',')}
                                         onChange={event => this.onChangeCheckbox(value.id, event)}
                                       />
@@ -384,15 +426,13 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                                     defaultValue={value.value}
                                   >
                                     <Row>
-                                      {String(value.fieldValue)
-                                        .split('||')
-                                        .map((event, index) => {
-                                          return (
-                                            <Col span={8} key={index}>
-                                              <Radio value={event}>{event}</Radio>
-                                            </Col>
-                                          );
-                                        })}
+                                      {fieldValue.split('||').map((event, index) => {
+                                        return (
+                                          <Col span={8} key={index}>
+                                            <Radio value={event}>{event}</Radio>
+                                          </Col>
+                                        );
+                                      })}
                                     </Row>
                                   </Radio.Group>
                                 ) : (
@@ -423,15 +463,13 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                                     id="box"
                                     onChange={event => this.handleChangeDrop(value.id, event)}
                                   >
-                                    {String(value.fieldValue)
-                                      .split('||')
-                                      .map((event, index) => {
-                                        return (
-                                          <Option key={index} value={String(event)}>
-                                            {event}
-                                          </Option>
-                                        );
-                                      })}
+                                    {fieldValue.split('||').map((event, index) => {
+                                      return (
+                                        <Option key={index} value={String(event)}>
+                                          {event}
+                                        </Option>
+                                      );
+                                    })}
                                   </Select>
                                 ) : (
                                   ''
@@ -448,7 +486,13 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                                     Chỉnh sửa{' '}
                                   </Button>{' '}
                                   &nbsp;
-                                  <Button onClick={this.closePopover}>Hủy bỏ</Button>
+                                  <Button
+                                    onClick={() => {
+                                      this.closePopover(value.id);
+                                    }}
+                                  >
+                                    Hủy bỏ
+                                  </Button>
                                 </div>
                               </div>
                             }
@@ -457,7 +501,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                             title={value.type}
                             trigger="click"
                           >
-                            {value.value ? value.value : <span className="empty">Click to add</span>}
+                            {value.value && value.value.trim().length > 0 ? value.value : <span className="empty">Click vào để thêm</span>}
                           </Popover>
                         </div>
                       </div>
@@ -466,10 +510,39 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                 : ''}
               <div className="line-info">
                 <Label className="content-text" for="categories">
-                  <Translate contentKey="userManagement.categories" />
+                  Thẻ/Tag
                 </Label>
                 <div className="phone-customer_span">
-                  <UserCategoryTag defaultCate={user.tag} handleChange={this.handleChange} />
+                  <Popover
+                    content={
+                      <div>
+                        <UserCategoryTag handleChange={this.handleChange} />
+                        <div>
+                          <Button
+                            onClick={() => {
+                              this.editUser(user.id);
+                            }}
+                            disabled={this.props.loading}
+                            type="primary"
+                          >
+                            {' '}
+                            Chỉnh sửa{' '}
+                          </Button>{' '}
+                          &nbsp;
+                          <Button onClick={this.hide}>Hủy bỏ</Button>
+                        </div>
+                      </div>
+                    }
+                    trigger="click"
+                    visible={isOpenPopTag}
+                    onVisibleChange={event => this.handleVisibleChange(event, 'tag', '')}
+                  >
+                    {user.tags && user.tags.length > 0 ? (
+                      user.tags.map(event => event.name).join(', ')
+                    ) : (
+                      <span className="empty">Click vào đây để thêm</span>
+                    )}
+                  </Popover>
                 </div>
               </div>
             </Panel>

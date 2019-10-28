@@ -170,6 +170,7 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
     if (param === DELETE_TAG || param === MERGE_TAG) {
       this.props.getListTagDataAction(textSearch, 0, 6);
     }
+
     let pageIndex = localStorage.getItem('pageIndex');
     this.props.getListTagDataAction(textSearch, parseInt(pageIndex), 6);
     this.setState({ checkAll: false });
@@ -184,6 +185,7 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
         isDisable = false;
       }
     });
+
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
 
     return (

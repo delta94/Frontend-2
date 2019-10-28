@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Card, Row, Col, Button } from 'antd';
-import { AvForm, AvGroup, AvInput, AvField, AvFeedback } from 'availity-reactstrap-validation';
+import { getDetailUser } from 'app/actions/user-management';
 import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { openModal, closeModal } from '../../../../actions/modal';
@@ -35,14 +35,20 @@ export class Infomation extends React.Component<IInfomationProps, IInfomationSta
         />
         <div id="user-info-title">
           <Translate contentKey="userManagement.home.info-cus" /> > {user.firstName + ' ' + user.lastName}
-          <Button className="btn btn-primary float-right jh-create-entity" color="primary">
-            <Translate contentKey="userManagement.home.edit" />
+          <Button
+            className="btn btn-primary float-right jh-create-entity"
+            color="primary"
+            onClick={() => {
+              window.location.assign('/#/app/views/customers/user-management');
+            }}
+          >
+            <Translate contentKey="userManagement.home.come-back" />
           </Button>
         </div>
 
         <Row>
           <Col span={12} style={{ marginTop: '1%' }}>
-            <Basic />
+            <Basic id={this.props.match.params.id} />
             <Member />
           </Col>
           <Col span={12} style={{ marginTop: '1%', width: '49.7%', float: 'right' }}>
@@ -59,7 +65,7 @@ const mapStateToProps = ({ handleModal, userManagement }: IRootState) => ({
   user: userManagement.user
 });
 
-const mapDispatchToProps = { resetMessage, openModal, closeModal };
+const mapDispatchToProps = { getDetailUser, openModal, closeModal };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

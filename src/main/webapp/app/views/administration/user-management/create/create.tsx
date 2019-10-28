@@ -18,7 +18,10 @@ import { getUsers } from 'app/actions/user-management';
 
 const { Option } = Select;
 
-export interface ICreateProps extends StateProps, DispatchProps {}
+export interface ICreateProps extends StateProps, DispatchProps {
+  open_create?: boolean;
+  toggleCreate?: Function;
+}
 
 export interface ICreateState {
   modal: boolean;
@@ -68,6 +71,8 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
     if (data.length > 0) {
       for (var member in data) delete data[member];
     }
+
+    this.props.toggleCreate();
   };
 
   showCollapse = () => {
@@ -75,7 +80,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
   };
 
   handleSubmit = async () => {
-    const { insertUser, getUsers } = this.props;
+    const { insertUser, getUsers, openModal } = this.props;
     let { fiedValue } = this.state;
     let value = fiedValue.slice(1);
     let data = {
@@ -88,8 +93,13 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
     if (this.IsValidateForm()) {
       await insertUser(data);
       await getUsers(0, 10, '', '');
-
       this.toggle(data);
+      openModal({
+        show: true,
+        type: 'success',
+        title: translate('modal-data.title.success'),
+        text: 'Tạo khách hàng thành công'
+      });
     }
   };
 
@@ -108,20 +118,20 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
     let valueEmail = $(`input#email`).val();
     let valuePhone = $(`input#phone`).val();
     let countError = 0;
-    if ($(`input#first-name`).val() === '') {
+    if (String($(`input#first-name`).val()).trim() === '') {
       this.setState({ validFirstName: '* Vui lòng nhập tên' });
       countError++;
     } else {
       this.setState({ validFirstName: '' });
     }
-    if ($(`input#last-name`).val() === '') {
+    if (String($(`input#last-name`).val()).trim() === '') {
       this.setState({ validLastName: '* Vui lòng nhập họ' });
       countError++;
     } else {
       this.setState({ validLastName: '' });
     }
     if (valueEmail === '') {
-      this.setState({ validEmail: '* Vui lòng nhập số điện thoại' });
+      this.setState({ validEmail: '* Vui lòng nhập email' });
       countError++;
     } else if (!re.test(String(valueEmail))) {
       this.setState({ validEmail: '* Vui lòng nhập đúng định dạng email' });
@@ -158,7 +168,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
     let { fiedValue } = this.state;
     let data = {
       id: id,
-      value: String(checkedValues)
+      value: String(checkedValues.join('||'))
     };
     fiedValue.push(data);
     this.setState({ fiedValue });
@@ -197,13 +207,9 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
     let { collapse } = this.state;
     return (
       <span className="d-inline-block mb-2 mr-2" id="btn-modal-create">
-        <Button className="btn btn-primary float-right jh-create-entity" color="primary" onClick={this.toggle}>
-          <FontAwesomeIcon icon="plus" /> <Translate contentKey="userManagement.home.createLabel" />
-        </Button>
-
-        <Modal isOpen={this.state.modal} id="content-user">
+        <Modal isOpen={this.props.open_create} id="content-user">
           <ModalHeader toggle={this.toggle} id="create-properties">
-            <Translate contentKey="properties-management.add.properties" />
+            THÊM MỚI KHÁCH HÀNG
           </ModalHeader>
           <PerfectScrollbar>
             <ModalBody>
@@ -239,96 +245,93 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
                     </div>
                     <p className="error">{this.state.validPhone}</p>
                     <Collapse isOpen={this.state.collapse}>
-                      {getList.map((value, index) => {
-                        if (
-                          !(
-                            value.title === 'First Name' ||
-                            value.title === 'Last Name' ||
-                            value.title === 'Email' ||
-                            value.title === 'Mobile'
-                          )
-                        ) {
-                          let object = (
-                            <div className="option-create" key={index}>
-                              <Label>{value.title}</Label>
-                              {value.type === 'Checkbox' ? (
-                                <Checkbox.Group className="checkbox-group" onChange={event => this.onChangeCheckbox(value.id, event)}>
-                                  <Row>
+                      {getList
+                        .filter(el => el.title !== 'Tên' && el.title !== 'Email' && el.title !== 'Họ' && el.title !== 'Số điện thoại')
+                        .map((value, index) => {
+                          if (
+                            !(value.title === 'Tên' || value.title === 'Họ' || value.title === 'Email' || value.title === 'Số điện thoại')
+                          ) {
+                            let object = (
+                              <div className="option-create" key={index}>
+                                <Label>{value.title}</Label>
+                                {value.type === 'Checkbox' ? (
+                                  <Checkbox.Group className="checkbox-group" onChange={event => this.onChangeCheckbox(value.id, event)}>
+                                    <Row>
+                                      {String(value.fieldValue)
+                                        .split('||')
+                                        .map((event, index) => {
+                                          return (
+                                            <Col span={8} key={index}>
+                                              <Checkbox value={String(event)}>{event}</Checkbox>
+                                            </Col>
+                                          );
+                                        })}
+                                    </Row>
+                                  </Checkbox.Group>
+                                ) : (
+                                  ''
+                                )}
+                                {value.type === 'Radio' ? (
+                                  <Radio.Group
+                                    onChange={event => this.onChangeRadio(event, value.id)}
+                                    className="radio-group"
+                                    name="radiogroup"
+                                    defaultValue={event}
+                                  >
+                                    <Row>
+                                      {String(value.fieldValue)
+                                        .split('||')
+                                        .map((event, index) => {
+                                          return (
+                                            <Col span={8} key={index}>
+                                              <Radio value={event}>{event}</Radio>
+                                            </Col>
+                                          );
+                                        })}
+                                    </Row>
+                                  </Radio.Group>
+                                ) : (
+                                  ''
+                                )}
+                                {value.type === 'Text Input' ? (
+                                  <Input id={value.id} onChange={event => this.onChangeText(value.id, event)} />
+                                ) : (
+                                  ''
+                                )}
+                                {value.type === 'Date' ? (
+                                  <DatePicker
+                                    className="date-create"
+                                    onChange={(event, dateString) => this.onChangeDate(value.id, dateString)}
+                                  />
+                                ) : (
+                                  ''
+                                )}
+                                {value.type === 'Dropdown List' ? (
+                                  <Select className="checkbox-group" onChange={event => this.handleChangeDrop(value.id, event)}>
                                     {String(value.fieldValue)
                                       .split('||')
                                       .map((event, index) => {
                                         return (
-                                          <Col span={8} key={index}>
-                                            <Checkbox value={String(event)}>{event}</Checkbox>
-                                          </Col>
+                                          <Option value={String(event)} key={index}>
+                                            {event}
+                                          </Option>
                                         );
                                       })}
-                                  </Row>
-                                </Checkbox.Group>
-                              ) : (
-                                ''
-                              )}
-                              {value.type === 'Radio' ? (
-                                <Radio.Group
-                                  onChange={event => this.onChangeRadio(event, value.id)}
-                                  className="radio-group"
-                                  name="radiogroup"
-                                  defaultValue={event}
-                                >
-                                  <Row>
-                                    {String(value.fieldValue)
-                                      .split('||')
-                                      .map((event, index) => {
-                                        return (
-                                          <Col span={8} key={index}>
-                                            <Radio value={event}>{event}</Radio>
-                                          </Col>
-                                        );
-                                      })}
-                                  </Row>
-                                </Radio.Group>
-                              ) : (
-                                ''
-                              )}
-                              {value.type === 'Text Input' ? (
-                                <Input id={value.id} onChange={event => this.onChangeText(value.id, event)} />
-                              ) : (
-                                ''
-                              )}
-                              {value.type === 'Date' ? (
-                                <DatePicker
-                                  className="date-create"
-                                  onChange={(event, dateString) => this.onChangeDate(value.id, dateString)}
-                                />
-                              ) : (
-                                ''
-                              )}
-                              {value.type === 'Dropdown List' ? (
-                                <Select className="checkbox-group" onChange={event => this.handleChangeDrop(value.id, event)}>
-                                  {String(value.fieldValue)
-                                    .split('||')
-                                    .map((event, index) => {
-                                      return (
-                                        <Option value={String(event)} key={index}>
-                                          {event}
-                                        </Option>
-                                      );
-                                    })}
-                                </Select>
-                              ) : (
-                                ''
-                              )}
-                            </div>
-                          );
-                          return object;
-                        }
-                        return '';
-                      })}
+                                  </Select>
+                                ) : (
+                                  ''
+                                )}
+                              </div>
+                            );
+                            return object;
+                          }
+                          return '';
+                        })}
                     </Collapse>
                     <div className="option-create" id="has-collapse" style={{ display: collapse ? 'none' : '' }}>
-                      <p>Only required fields are being displayed </p>
+                      <p>Chỉ hiển thị các trường bắt buộc</p>
                       <button id="btn-collapse" onClick={this.showCollapse}>
-                        Click here to shocustomer fields
+                        Hiển thị đầy đủ các trường
                       </button>
                     </div>
                   </Col>

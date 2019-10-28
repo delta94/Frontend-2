@@ -4,23 +4,19 @@ import './detail.scss';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col, Table, Container, CardTitle, Card, CardBody } from 'reactstrap';
+import { Row, Col, Table, Container, CardTitle, Card, CardBody } from 'reactstrap';
+import { Button, Radio, Icon } from 'antd';
 import { Translate } from 'react-jhipster';
 import Loader from 'react-loader-advanced';
 import LoaderAnim from 'react-loaders';
-import { getUser } from 'app/actions/user-management';
+import { getUser, exportFileResult, openModalImport, closeModalImport } from 'app/actions/user-management';
 import { IRootState } from 'app/reducers';
 
-export interface IUserDetailProps
-  extends StateProps,
-    DispatchProps,
-    RouteComponentProps<{
-      login: string;
-    }> {}
+export interface IUserDetailProps extends StateProps, DispatchProps {}
 
 export class UserDetail extends React.Component<IUserDetailProps> {
   render() {
-    const { listFile, loading } = this.props;
+    const { listFile, loading, openModalImport } = this.props;
     var hiddenLink = 'link-result';
     var noRecord, numberError;
     if (listFile.error === 0) {
@@ -45,27 +41,19 @@ export class UserDetail extends React.Component<IUserDetailProps> {
       hiddenLink = 'classHiden';
     }
 
-    const url = ' http://171.244.40.91:8088/v1/customer/import-result?fileName=' + listFile.fileName;
     const spinner = <LoaderAnim type="ball-pulse" active={true} />;
     return (
       <Container fluid>
         <Loader message={spinner} show={loading} priority={10}>
           <Card className="main-card mb-3">
             <CardBody>
-              <Row>
+              <Row style={{ marginBottom: '10px' }}>
                 <Col md="6">
                   <CardTitle>
                     <Translate contentKey="userManagement.home.import-result-detail" />
                   </CardTitle>
                 </Col>
-                <Col md="6">
-                  <Button tag={Link} to="./new" replace color="info">
-                    &nbsp;
-                    <span className="d-none d-md-inline">
-                      <Translate contentKey="entity.action.continue" />
-                    </span>
-                  </Button>
-                </Col>
+                <Col md="6" style={{ textAlign: 'right' }} />
               </Row>
               <Row className="no-gutters ">
                 <Col md="6" xl="4">
@@ -116,10 +104,16 @@ export class UserDetail extends React.Component<IUserDetailProps> {
               <Col>
                 <Translate contentKey="userManagement.home.line-error" interpolate={{ number: numberError }} />
 
-                <a className={hiddenLink} href={url}>
+                <Button
+                  className={hiddenLink}
+                  type="link"
+                  onClick={() => {
+                    this.props.exportFileResult(this.props.listFile.fileName);
+                  }}
+                >
                   {/* them cac translate vao cac hard code*/}
-                  <Translate contentKey="userManagement.home.download-result" />
-                </a>
+                  <Icon type="cloud-download" style={{ fontSize: '24px' }} /> <Translate contentKey="userManagement.home.download-result" />
+                </Button>
               </Col>
 
               <Table striped className="mb-0">
@@ -134,9 +128,7 @@ export class UserDetail extends React.Component<IUserDetailProps> {
                     <th>
                       <Translate contentKey="userManagement.home.phone-number" />
                     </th>
-                    <th>
-                      <Translate contentKey="userManagement.home.type" />
-                    </th>
+                    <th>Thẻ/Tag</th>
                     <th>
                       <Translate contentKey="userManagement.home.reason-error" />
                     </th>
@@ -145,34 +137,6 @@ export class UserDetail extends React.Component<IUserDetailProps> {
                 <tbody>
                   {listFile.listErrorImport
                     ? listFile.listErrorImport.map((event, index, listUser) => {
-                        var ramdomIdName =
-                          Math.random()
-                            .toString(36)
-                            .substring(2, 15) +
-                          Math.random()
-                            .toString(36)
-                            .substring(2, 15);
-                        var ramdomIdEmail =
-                          Math.random()
-                            .toString(36)
-                            .substring(2, 15) +
-                          Math.random()
-                            .toString(36)
-                            .substring(2, 15);
-                        var ramdomIdPhone =
-                          Math.random()
-                            .toString(36)
-                            .substring(2, 15) +
-                          Math.random()
-                            .toString(36)
-                            .substring(2, 15);
-                        var ramdomIdType =
-                          Math.random()
-                            .toString(36)
-                            .substring(2, 15) +
-                          Math.random()
-                            .toString(36)
-                            .substring(2, 15);
                         if (listUser.length === 0) {
                           var haveNoRecord = (
                             <td>
@@ -184,36 +148,23 @@ export class UserDetail extends React.Component<IUserDetailProps> {
                         if (listUser.length > 10) {
                           listUser.splice(10, listUser.length);
                         }
-                        if (event.type !== '') {
-                          var tableElement = (
-                            <tr key={index}>
-                              <td key={ramdomIdName}>{event.name}</td>
-                              <td key={ramdomIdEmail}>{event.email}</td>
-                              <td key={ramdomIdPhone}>{event.phone}</td>
-                              <td key={ramdomIdType}>{event.type}</td>
-                              <td className="widget-heading text-danger" key={index}>
-                                {event.error}
-                              </td>
-                            </tr>
-                          );
-                        }
+                        var tableElement = (
+                          <tr key={index}>
+                            <td>{event.firstName + ' ' + event.lastName}</td>
+                            <td>{event.email}</td>
+                            <td>{event.mobile}</td>
+                            <td>{event.tag}</td>
+                            <td className="widget-heading text-danger" key={index}>
+                              {event.error}
+                            </td>
+                          </tr>
+                        );
                         return tableElement;
                       })
                     : ''}
                 </tbody>
               </Table>
               {noRecord}
-              <Row>
-                <Col md="12">
-                  <Button tag={Link} to="/app/views/administration/user-management" replace color="info">
-                    <FontAwesomeIcon icon="arrow-left" />
-                    &nbsp;
-                    <span className="d-none d-md-inline">
-                      <Translate contentKey="entity.action.back" />
-                    </span>
-                  </Button>
-                </Col>
-              </Row>
             </CardBody>
           </Card>
         </Loader>
@@ -228,7 +179,12 @@ const mapStateToProps = (storeState: IRootState) => ({
   loading: storeState.userManagement.loading
 });
 
-const mapDispatchToProps = { getUser };
+const mapDispatchToProps = {
+  getUser,
+  exportFileResult,
+  openModalImport,
+  closeModalImport
+};
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

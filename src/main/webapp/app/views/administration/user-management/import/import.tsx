@@ -17,12 +17,18 @@ import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import { openModal, closeModal } from 'app/actions/modal';
 import Dropzone from 'react-dropzone';
+import { Steps, message } from 'antd';
+import UserDetail from './detail/detail';
+
+const { Step } = Steps;
 
 const { Option } = Select;
-
 const { Panel } = Collapse;
 
-export interface IImportProps extends StateProps, DispatchProps {}
+export interface IImportProps extends StateProps, DispatchProps {
+  open_import?: boolean;
+  toggleImport: Function;
+}
 export interface IImportState {
   isActive: boolean;
   isComplete: boolean;
@@ -48,7 +54,7 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
     file: USER_MANAGE_ACTION_TYPES.MESSAGE_DROP_DEFAUL,
     fileImport: '',
     image: '',
-    modal: false,
+    modal: this.props.isOpenModal,
     check: false,
     current: 0,
     headerFields: [],
@@ -87,6 +93,8 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
       image: imageFileDown,
       file: ''
     });
+
+    this.props.toggleImport();
   };
 
   validated = () => {
@@ -103,9 +111,6 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
     let data = (
       <Card className="main-card mb-3">
         <CardBody>
-          <CardTitle>
-            <Translate contentKey="userManagement.home.createOrEditLabel" />
-          </CardTitle>
           <div className="container">
             <Row className="justify-content-center">
               <Col span={24}>
@@ -183,7 +188,7 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
         description: event.description
       };
     });
-    tags.push(data);
+    tags.push(Object(data));
     this.setState({ tags });
   };
 
@@ -195,13 +200,12 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
 
   selectFields = () => {
     const { listFileHeader, listFields } = this.props;
+    console.log(listFileHeader.fileName !== undefined ? listFields : '');
+
     let data = (
       <div>
         <Card className="main-card mb-3">
           <CardBody>
-            <CardTitle>
-              <Translate contentKey="userManagement.home.createOrEditLabel" />
-            </CardTitle>
             <div className="container">
               <Row className="justify-content-center">
                 <Col span={24}>
@@ -217,7 +221,7 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
                                 </Col>
                                 <Col span={12} style={{ textAlign: 'right', marginBottom: '10px' }}>
                                   <Select
-                                    defaultValue="Do not import this fields"
+                                    defaultValue="Không import trường này"
                                     style={{ width: 200 }}
                                     onChange={e => this.handleChangeSelect(e, event.columnIndex, event.columnName)}
                                   >
@@ -230,7 +234,7 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
                                                 value.id + ',' + value.code + ',' + value.type + ',' + value.fieldValue + ',' + value.title
                                               }
                                             >
-                                              {value.code}
+                                              {value.title}
                                             </Option>
                                           );
                                         })
@@ -249,17 +253,17 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
           </CardBody>
         </Card>
         <Card>
-          <CardTitle style={{ marginLeft: '2%' }}>Thêm thẻ (tùy chọn)</CardTitle>
-          <p style={{ marginLeft: '3%' }}>
+          <CardTitle style={{ marginLeft: '7%' }}>Thêm thẻ (tùy chọn)</CardTitle>
+          <p style={{ marginLeft: '7%' }}>
             Thẻ cho phép bạn xác định danh bạ của bạn. Bạn có thể thêm một thẻ cho cách bạn thông tin, cho dù họ là khách hàng, v.v.
           </p>
-          <CardBody>
+          <CardBody style={{ marginLeft: '7%' }} id="card-body-tag">
             <UserCategoryTag handleChange={this.handleChangeCategories} />
           </CardBody>
         </Card>
         <Card>
-          <CardTitle style={{ marginLeft: '2%' }}>Tùy chọn import</CardTitle>
-          <CardBody style={{ marginLeft: '3%' }}>
+          <CardTitle style={{ marginLeft: '7%' }}>Tùy chọn import</CardTitle>
+          <CardBody style={{ textAlign: 'center' }}>
             <Radio.Group onChange={this.onChangeRadio} value={this.state.typeImport}>
               <Radio value="SKIP">Bỏ qua nếu trùng</Radio>
               <Radio value="OVERIDE">Ghi đè nếu trùng</Radio>
@@ -276,12 +280,16 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
   stepTable = () => {
     let data = [
       {
-        title: 'First',
+        title: 'Chọn File',
         content: this.contentUploadFile()
       },
       {
-        title: 'Second',
+        title: 'Mapping',
         content: this.selectFields()
+      },
+      {
+        title: 'Xem kết quả',
+        content: <UserDetail />
       }
     ];
     return data;
@@ -293,6 +301,17 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
     if (current === 1) {
       await uploadFileExcel(this.state.fileImport);
       await getFields();
+    }
+    if (current === 2) {
+      let { listFileHeader, importFileAction } = this.props;
+      let { headerFields, tags, typeImport } = this.state;
+      let data = {
+        fileName: listFileHeader.fileName,
+        typeImport: typeImport,
+        headerFields: this.removeDuplicatesFields(headerFields, 'columnIndex'),
+        tags: this.removeDuplicates(tags, 'id')[0]
+      };
+      await importFileAction(data);
     }
 
     this.setState({ current });
@@ -312,68 +331,53 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
     const imageFileDown = require('app/assets/utils/images/user-mangament/image-down-files.png');
     return (
       <Container fluid>
-        <span className="d-inline-block mb-2 mr-2">
-          <Button className="btn float-right jh-create-entity" outline color="primary" onClick={this.toggle}>
-            <Ionicon color="#343A40" icon="md-arrow-down" /> &nbsp; <Translate contentKey="userManagement.home.import" />
-          </Button>
+        <Card id="card-header"> TẠO MỚI DỮ LIỆU KHÁCH HÀNG</Card>
+        <Card>
+          <PerfectScrollbar>
+            <Steps current={current} className="step-import">
+              {this.stepTable().map(item => (
+                <Step key={item.title} title={item.title} />
+              ))}
+            </Steps>
+            <AvForm>
+              <div className="steps-content">{this.stepTable()[current].content}</div>
+            </AvForm>
+            <div className="steps-action">
+              {current > 0 && current < this.stepTable().length - 1 && (
+                <Button id="btn-prev" color="linkaaaaa" onClick={() => this.prev()}>
+                  Quay lại
+                </Button>
+              )}
 
-          <Modal isOpen={this.state.modal} id="modal-import">
-            <PerfectScrollbar>
-              <ModalHeader toggle={this.toggle} id="create-properties">
-                <Translate contentKey="userManagement.infomation.merge.title" />
-              </ModalHeader>
-              <ModalBody>
-                <AvForm>
-                  <div className="steps-content">{this.stepTable()[current].content}</div>
-                </AvForm>
-              </ModalBody>
-              <ModalFooter>
-                <div className="steps-action">
-                  {current > 0 && (
-                    <Button id="btn-prev" color="linkaaaaa" onClick={() => this.prev()}>
-                      Previous
-                    </Button>
-                  )}
-                  <Button color="link" onClick={this.toggle}>
-                    <Translate contentKey="properties-management.cancel" />
-                  </Button>
-
-                  {current < this.stepTable().length - 1 && (
-                    <Button
-                      disabled={fileImport ? false : true}
-                      color="primary"
-                      onClick={() => {
-                        this.next();
-                      }}
-                    >
-                      Tiếp tục
-                    </Button>
-                  )}
-                  {current === this.stepTable().length - 1 && (
-                    <Button
-                      color="primary"
-                      onClick={async () => {
-                        let { listFileHeader, importFileAction } = this.props;
-                        let { fileImport, headerFields, tags } = this.state;
-                        let data = {
-                          fileName: listFileHeader.fileName,
-                          typeImport: fileImport,
-                          headerFields: this.removeDuplicatesFields(headerFields, 'columnIndex'),
-                          tags: this.removeDuplicates(tags, 'id')
-                        };
-                        await importFileAction(data);
-                        this.toggle();
-                        window.location.assign('/#/app/views/customers/user-management/results-files');
-                      }}
-                    >
-                      Import File
-                    </Button>
-                  )}
-                </div>
-              </ModalFooter>
-            </PerfectScrollbar>
-          </Modal>
-        </span>
+              {current < this.stepTable().length - 1 && (
+                <Button
+                  disabled={fileImport ? false : true}
+                  color="primary"
+                  onClick={() => {
+                    this.next();
+                  }}
+                >
+                  Tiếp tục
+                </Button>
+              )}
+              {current === this.stepTable().length - 1 && (
+                <Button
+                  outline
+                  color="primary"
+                  onClick={() => {
+                    window.location.assign('/#/app/views/customers/user-management');
+                  }}
+                >
+                  <FontAwesomeIcon icon="arrow-left" />
+                  &nbsp;
+                  <span className="d-none d-md-inline">
+                    <Translate contentKey="entity.action.back" />
+                  </span>
+                </Button>
+              )}
+            </div>
+          </PerfectScrollbar>
+        </Card>
       </Container>
     );
   }
@@ -382,7 +386,8 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
 const mapStateToProps = (storeState: IRootState) => ({
   loading: storeState.userManagement.loading,
   listFileHeader: storeState.userManagement.headerFile,
-  listFields: storeState.userManagement.listFields
+  listFields: storeState.userManagement.listFields,
+  isOpenModal: storeState.userManagement.isOpenModalImport
 });
 
 const mapDispatchToProps = { importFileAction, uploadFileExcel, getFields };

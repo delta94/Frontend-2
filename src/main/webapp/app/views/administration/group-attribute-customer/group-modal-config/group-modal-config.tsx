@@ -8,13 +8,14 @@ import { IRootState } from 'app/reducers';
 import { getListTagDataAction } from '../../../../actions/tag-management';
 import ReactPaginate from 'react-paginate';
 import { Input, Card, Modal } from 'antd';
-// import TagModal from '../tag-modal/tag-modal';
+// import TagModal from "../tag-modal/tag-modal";
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
 import FieldData from './field-data/field-data';
 import {
   getListFieldDataAction,
   postInsertCustomerGroupAction,
-  getFindCustomerWithConditionAction
+  getFindCustomerWithConditionAction,
+  getListCustomerWithGroupIdDataAction
 } from '../../../../actions/group-attribute-customer';
 import { ISearchAdvanced } from 'app/common/model/group-attribute-customer';
 import LoaderAnim from 'react-loaders';
@@ -105,40 +106,44 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.single_group_field.categoryId !== '' && nextProps.single_group_field !== prevState.single_group_field) {
-      let { customerAdvancedSave } = nextProps.single_group_field;
+    if (
+      nextProps.single_group_field.categoryId !== '' &&
+      nextProps.id_list_customer !== '' &&
+      nextProps.id_list_customer &&
+      nextProps.single_group_field !== prevState.single_group_field &&
+      nextProps.type_modal !== INSERT_CUSTOMER_GROUP
+    ) {
+      let { customerAdvancedSave, categoryName } = nextProps.single_group_field;
+      let { type_modal } = nextProps;
       let logicalOperator = '';
       let advancedSearchesData = [];
       let list_field_data_cpn = [];
       let advancedSearches = [];
 
-      if (customerAdvancedSave.logicalOperator !== '') {
+      if (customerAdvancedSave.logicalOperator !== '' && type_modal !== INSERT_CUSTOMER_GROUP) {
         logicalOperator = customerAdvancedSave.logicalOperator;
       }
 
-      if (customerAdvancedSave.advancedSearches && customerAdvancedSave.advancedSearches.length > 0) {
-        advancedSearches = customerAdvancedSave.advancedSearches;
-        customerAdvancedSave.advancedSearches.forEach((item, index) => {
-          let id = makeRandomId(16);
-
-          advancedSearchesData.push({
-            id: makeRandomId(8),
-            advancedSearch: item
-          });
-
-          list_field_data_cpn.push({
-            id,
-            name: 'new',
-            last_index: customerAdvancedSave.advancedSearches.length - 1 === index ? true : false,
-            default_data: item
-          });
+      advancedSearches = customerAdvancedSave.advancedSearches;
+      customerAdvancedSave.advancedSearches.forEach((item, index) => {
+        let id = makeRandomId(16);
+        advancedSearchesData.push({
+          id: makeRandomId(8),
+          advancedSearch: item
         });
 
-        advancedSearches = customerAdvancedSave.advancedSearches;
-      }
+        list_field_data_cpn.push({
+          id,
+          name: 'new',
+          last_index: customerAdvancedSave.advancedSearches.length - 1 === index ? true : false,
+          default_data: item
+        });
+      });
+
+      advancedSearches = customerAdvancedSave.advancedSearches;
 
       return {
-        categoryName: nextProps.single_group_field.categoryName,
+        categoryName,
         single_group_field: nextProps.single_group_field,
         advancedSearchesData,
         list_field_data_cpn,
@@ -146,14 +151,12 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
         advancedSearches
       };
     }
-
     return null;
   }
 
   // Update value from state;
   updateValueFromState = (id: string, advancedSearch: ISearchAdvanced) => {
     let { advancedSearchesData, logicalOperator } = this.state;
-
     let advancedSearches = [];
 
     advancedSearchesData.map(item => {
@@ -171,7 +174,6 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
     }
 
     if (advancedSearchesData.length === 1) logicalOperator = '';
-
     this.setState({ advancedSearchesData, advancedSearches, logicalOperator });
   };
 
@@ -301,6 +303,8 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
             advancedSearches
           }
         });
+
+        await this.props.getListCustomerWithGroupIdDataAction('', 0, 10, single_group_field.categoryId);
         break;
 
       case COPY_CUSTOMER_GROUP:
@@ -333,15 +337,14 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
 
   render() {
     let { is_show, list_field_data, loading, list_customer_with_condition, totalElements, type_modal } = this.props;
-
-    let { list_field_data_cpn, logicalOperator, advancedSearches, categoryName } = this.state;
-
+    let { list_field_data_cpn, logicalOperator, advancedSearches, categoryName, pageIndex } = this.state;
     let list_field_render =
       list_field_data_cpn && list_field_data_cpn.length > 0
         ? list_field_data_cpn.map(item => {
             if (item.id)
               return (
                 <FieldData
+                  type_modal={type_modal}
                   key={item.id}
                   id={item.id}
                   list_field_data={list_field_data}
@@ -436,12 +439,12 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
                   <thead>
                     <tr className="text-center">
                       <th className="checkbox-td">Stt</th>
-                      <th>Họ và tên</th>
+                      <th>Họ tên</th>
                       <th>Số điện thoại</th>
                       <th>Email</th>
                       <th>Thẻ/tag</th>
-                      <th>Nguồn</th>
-                      <th>Ngày tạo</th>
+                      {/* <th>Nguồn</th> */}
+                      <th>Ngày khởi tạo</th>
                       <th />
                     </tr>
                   </thead>
@@ -450,12 +453,12 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
                       list_customer_with_condition.map((item, index) => {
                         return (
                           <tr key={index}>
-                            <td>{index + 1}</td>
+                            <td>{index + 1 + 10 * pageIndex}</td>
                             <td>{item.firstName + ' ' + item.lastName}</td>
                             <td>{item.mobile}</td>
                             <td>{item.email}</td>
-                            <td>{item.tags}</td>
-                            <td />
+                            <td>{item.tag}</td>
+                            {/* <td /> */}
                             <td>{item.createdDate}</td>
                             <td />
                           </tr>
@@ -516,6 +519,7 @@ const mapDispatchToProps = {
   getFindCustomerWithConditionAction,
   getListCustomerGroupDataAction,
   postUpdateCustomerGroupAction,
+  getListCustomerWithGroupIdDataAction,
   openModal
 };
 

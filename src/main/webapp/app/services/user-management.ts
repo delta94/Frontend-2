@@ -22,8 +22,8 @@ const apiUrl2 = 'v2/customers';
  * @return {code: number, data: Object{item: [{id: string, name: string, gmail: string, catagories: string, }, pageIndex: number, pageSize: number] }}
  */
 
-export const getUsersService = (page, pageSize, category?: string, textSearch?: string) => {
-  const requestUrl = `${apiUrl2}${`?page=${page}&pageSize=${pageSize}&category=${category}&textSearch=${textSearch}`}`;
+export const getUsersService = (page, pageSize, tagIds?: string, textSearch?: string) => {
+  const requestUrl = `${apiUrl2}${`?page=${page}&pageSize=${pageSize}&tagIds=${tagIds}&textSearch=${textSearch}`}`;
   return axios.get<IUser>(requestUrl);
 };
 
@@ -50,6 +50,11 @@ export const getListDuplicateService = (id, email, phone) => {
   return axios.get(requestUrl);
 };
 
+export const mergeUserService = (id, data) => {
+  const requestUrl = `${apiUrl2}/${id}/merge`;
+  return axios.post(requestUrl, data, { headers: authHeaders });
+};
+
 export const exportFileService = (textSearch?: string, tagIds?: string) => {
   const requestUrl = `${apiUrl2}/export?textSearch=${textSearch}&tagIds=${tagIds}`;
 
@@ -61,7 +66,24 @@ export const exportFileService = (textSearch?: string, tagIds?: string) => {
     const url = window.URL.createObjectURL(new Blob([response.data]));
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', 'file.xlsx');
+    link.setAttribute('download', 'Customer.xlsx');
+    document.body.appendChild(link);
+    link.click();
+  });
+};
+
+export const exportFileResultService = fileName => {
+  const requestUrl = `v1/customer/import-result?fileName=${fileName}`;
+
+  return axios({
+    url: requestUrl,
+    method: 'GET',
+    responseType: 'blob' // important
+  }).then(response => {
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'FileResult.xlsx');
     document.body.appendChild(link);
     link.click();
   });
@@ -118,6 +140,11 @@ export const uploadFileExcelService = data => {
   });
 };
 
+export const compareUserService = (firstUser, secondUser) => {
+  const compareApi = `${apiUrl2}/${firstUser}/compare/${secondUser}`;
+  return axios.get(compareApi);
+};
+
 export const getFieldsService = () => {
   return axios.get(`v1/fields`);
 };
@@ -135,4 +162,30 @@ export const importFileService = (data: any) => {
 export const getInfoUser = (id: any) => {
   const insertPropApi = `${apiUrl2}/${id}`;
   return axios.get(insertPropApi, { headers: authHeaders });
+};
+
+const advancedSearchApi = 'v1/saved-advance-searches';
+
+// TODO: Save advanced search data
+export const postSaveAdvancedSearch = (data: any) => {
+  const postSearchApi = `${advancedSearchApi}/insert`;
+  return axios.post(postSearchApi, data, { headers: authHeaders });
+};
+
+// TODO: Delete advanced search data
+export const deleteSaveAdvancedSearch = (id?: string) => {
+  const deleteSearchApi = `${advancedSearchApi}/${id}/delete`;
+  return axios.post(deleteSearchApi);
+};
+
+// TODO: Get list advanced search
+export const getListSaveAdvancedSearch = (id?: string) => {
+  const getListSearchApi = `${advancedSearchApi}`;
+  return axios.get(getListSearchApi, { headers: authHeaders });
+};
+
+// TODO: Get advanced search
+export const getSaveAdvancedSearch = (id?: string) => {
+  const getListSearchApi = `${advancedSearchApi}/${id}`;
+  return axios.get(getListSearchApi, { headers: authHeaders });
 };

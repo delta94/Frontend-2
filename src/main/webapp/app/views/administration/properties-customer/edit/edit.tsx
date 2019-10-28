@@ -36,12 +36,27 @@ export class Edit extends React.Component<IEditProps, IEditState> {
 
   toggle = () => {
     this.setState({
-      modal: !this.state.modal
+      modal: !this.state.modal,
+      validField: ''
     });
   };
 
-  handlerChange = e => {
-    console.log('%' + e.target.value + '%');
+  editProp = async () => {
+    let { id } = this.props;
+    let tag = `${$(`input#tag`).val()}`;
+    let data = {
+      id: id,
+      title: $(`input#field-name`).val(),
+      personalizationTag: tag
+    };
+    await this.props.updateProp(id, data);
+    this.props.getListProp();
+    this.props.openModal({
+      show: true,
+      type: 'success',
+      title: translate('modal-data.title.success'),
+      text: translate('properties-management.edit.complete')
+    });
   };
 
   render() {
@@ -74,8 +89,7 @@ export class Edit extends React.Component<IEditProps, IEditState> {
                               maxLength={160}
                               addonBefore="%"
                               addonAfter="%"
-                              defaultValue={event.type}
-                              onChange={this.handlerChange}
+                              defaultValue={event.personalizationTag.substr(1, event.personalizationTag.length - 2)}
                               id="tag"
                             />
                           </div>
@@ -83,11 +97,7 @@ export class Edit extends React.Component<IEditProps, IEditState> {
                             <Label>
                               <Translate contentKey="properties-management.form.default-value" />
                             </Label>
-                            <Input
-                              maxLength={160}
-                              id="default-value"
-                              defaultValue={event.personalizationTag.substr(1, event.personalizationTag.length - 2)}
-                            />
+                            <Input maxLength={160} id="default-value" />
                           </div>
                         </Col>
                         <p className="error">{this.state.validField}</p>
@@ -113,25 +123,8 @@ export class Edit extends React.Component<IEditProps, IEditState> {
             <Button
               disabled={loading}
               color="primary"
-              onClick={async () => {
-                if (String($(`input#default-value`).val()).trim().length === 0) {
-                  this.setState({ validField: ' *Vui lòng nhập giá trị ' });
-                } else {
-                  let data = {
-                    id: id,
-                    title: $(`input#field-name`).val(),
-                    type: `${$(`input#tag`).val()}`,
-                    personalizationTag: `%${$(`input#default-value`).val()}%`
-                  };
-                  await this.props.updateProp(id, data);
-                  this.props.getListProp();
-                  this.props.openModal({
-                    show: true,
-                    type: 'success',
-                    title: translate('modal-data.title.success'),
-                    text: translate('properties-management.edit.complete')
-                  });
-                }
+              onClick={() => {
+                this.editProp();
               }}
             >
               <Translate contentKey="properties-management.edit.button" />

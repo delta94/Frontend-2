@@ -24,7 +24,7 @@ export const option = [
   { value: 'Checkbox', label: 'Checkbox' },
   { value: 'Text Input', label: 'Text Input' },
   { value: 'Radio', label: 'Radio' },
-  { value: null, label: 'Any Thing' }
+  { value: null, label: 'Tất cả' }
 ];
 export interface IPropertiesCustomerProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
 
@@ -121,9 +121,20 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
         />
         <Loader message={spinner1} show={loading} priority={1}>
           <div id="properties-management-title">
-            <Translate contentKey="properties-management.title" />
+            <Row id="title-properties">
+              <Col md="6" style={{ paddingTop: '14px' }}>
+                <Translate contentKey="properties-management.title" />
+              </Col>
+              <Col md="6" className="form-button" style={{ textAlign: 'right', padding: '17px 0px 0px 280px' }}>
+                <Col md="5">
+                  <Create onClick={this.openModalCreate} />
+                </Col>
+                <Col md="6">
+                  <CreateGroup />
+                </Col>
+              </Col>
+            </Row>
           </div>
-          <div />
           <div className="panel">
             <Row>
               <Col md="3" />
@@ -148,16 +159,7 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
                   </div>
                 </Col>
               </Col>
-              <Col md="4" className="form-button">
-                <Col md="6">
-                  <CreateGroup />
-                </Col>
-                <Col md="5">
-                  <Create onClick={this.openModalCreate} />
-                </Col>
-              </Col>
             </Row>
-            <hr />
 
             <List
               values={dropItem}
@@ -177,7 +179,7 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
                       <th className="hand">
                         <Translate contentKey="properties-management.form.type" />
                       </th>
-                      <th className="hand">
+                      <th className="hand" style={{ width: '25%', wordBreak: 'break-all' }}>
                         <Translate contentKey="properties-management.form.persionalization" />
                       </th>
                       <th className="hand">
@@ -205,12 +207,9 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
                   <tr {...props}>
                     <td>{value.title}</td>
                     <td>{value.type}</td>
-                    <td>{value.personalizationTag}</td>
+                    <td>{value.personalizationTag.length > 2 ? value.personalizationTag : ''}</td>
                     <td className="text-center">
-                      {value.title === 'First Name' ||
-                      value.title === 'Last Name' ||
-                      value.title === 'Email' ||
-                      value.title === 'Mobile' ? (
+                      {value.title === 'Tên' || value.title === 'Họ' || value.title === 'Email' || value.title === 'Số điện thoại' ? (
                         ''
                       ) : (
                         <div className="btn-group flex-btn-group-container">

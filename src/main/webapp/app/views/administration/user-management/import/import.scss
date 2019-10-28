@@ -1,9 +1,28 @@
-#modal-import {
-  margin-top: 5%;
-  margin-left: 30% !important;
-  .modal-content {
-    width: 150% !important;
-    margin-left: 0px !important;
-    height: 600px;
-  }
+.ant-steps-item-icon > .ant-steps-icon {
+  position: relative;
+  top: -3px;
+  color: #1890ff;
+  line-height: 1;
+}
+#card-header {
+  height: 44px;
+  padding: 10px;
+  margin: 2px -9px 11px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 23px;
+  color: #2d3843;
+}
+.step-import {
+  width: 80%;
+  margin-left: 10%;
+  margin-top: 1%;
+}
+.steps-action {
+  text-align: right;
+}
+#card-body-tag .tag-customer-filter {
+  width: 94%;
 }

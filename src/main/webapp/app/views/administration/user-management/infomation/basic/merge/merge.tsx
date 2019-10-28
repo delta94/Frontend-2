@@ -7,7 +7,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Translate, translate } from 'react-jhipster';
 import './merge.scss';
 import Ionicon from 'react-ionicons';
-import { getListDuplicateAction } from 'app/actions/user-management';
+import { getListDuplicateAction, compareUserAction, mergeUserAction } from 'app/actions/user-management';
 import { IRootState } from 'app/reducers';
 import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
@@ -42,6 +42,8 @@ export interface IMergeState {
   valueBtn1: string;
   valueBtn2: string;
   valueBtn3: string;
+  userSelect: string;
+  userId: string;
 }
 
 export class Merge extends React.Component<IMergeProps, IMergeState> {
@@ -52,7 +54,9 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
     is_chose: true,
     valueBtn1: '',
     valueBtn2: '',
-    valueBtn3: ''
+    valueBtn3: '',
+    userSelect: '',
+    userId: this.props.id
   };
 
   toggle = () => {
@@ -65,7 +69,7 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
     this.props.getListDuplicateAction(id, email, phone);
   };
   onChange = e => {
-    this.setState({ check: e.target.checked });
+    this.setState({ check: e.target.value, userSelect: e.target.value });
   };
 
   contentStepInfo = () => {
@@ -79,7 +83,7 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
                 <Translate contentKey="userManagement.infomation.merge.is-merge" />
               </Label>
             </div>
-            <Search maxLength={160} placeholder="input search text" onSearch={value => console.log(value)} style={{ width: 200 }} />
+            <Search maxLength={160} placeholder="Tìm kiếm" onSearch={value => console.log(value)} style={{ width: 200 }} />
           </div>
           <div>
             <Table id="table-merge" striped>
@@ -94,6 +98,7 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
                   <th className="hand">
                     <Translate contentKey="userManagement.home.date-create" />
                   </th>
+                  <th className="hand">Chọn</th>
                 </tr>
               </thead>
               <tbody>
@@ -103,7 +108,7 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
                       <tr key={index}>
                         <td>{event.firstName + event.lastName}</td>
                         <td>{event.email}</td>
-                        <td>{event.mobile}</td>
+                        <td>{event.createdDate}</td>
                         <td>
                           <Input type="radio" name="gender" value={event.id} onChange={this.onChange} />
                         </td>
@@ -122,54 +127,71 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
     return data;
   };
 
+  jsUcfirst(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
   contentChosseContact = () => {
     let { is_chose } = this.state;
+    let { compareUser } = this.props;
+    let numberConfict = compareUser.length > 0 ? compareUser[0].conflictNumbers : '';
+    let fieldConfict = compareUser.length > 0 ? compareUser[0].fieldConflicts : '';
+
     let data = (
       <Row>
         <Col span={24}>
           <div className="option-create" style={{ textAlign: 'center' }}>
             <div>
-              <Label>contact trùng 2 trường update .....</Label>
+              <Label>
+                liên hệ trùng {numberConfict} trường :"{this.jsUcfirst(fieldConfict.split(',').join(', '))}"
+              </Label>
             </div>
 
             <Row className="merge-customer_chose">
               <Col
                 span={12}
                 className="box-chose left-box"
-                onClick={() => this.setState({ is_chose: true, check: true })}
+                onClick={() => this.setState({ is_chose: true, check: true, userId: compareUser.length > 0 ? compareUser[0].id : '' })}
                 style={!is_chose ? styleDiv.unchose : styleDiv.chose}
               >
-                <p>Khách hàng A</p>
-                <label>saldjaskjd@gmail.com</label>
+                <p>{compareUser.length > 0 ? compareUser[0].firstName + compareUser[0].lastName : ''}</p>
+                <label>{compareUser.length > 0 ? compareUser[0].email : ''}</label>
               </Col>
               <Col
                 span={12}
                 className="box-chose right-box"
-                onClick={() => this.setState({ is_chose: false, check: true })}
+                onClick={() => this.setState({ is_chose: false, check: true, userId: compareUser.length > 0 ? compareUser[1].id : '' })}
                 style={is_chose ? styleDiv.unchose : styleDiv.chose}
               >
-                <p> Khách hàng A</p>
-                <label>saldjaskjd@gmail.com</label>
+                <p>{compareUser.length > 0 ? compareUser[1].firstName + compareUser[1].lastName : ''}</p>
+                <label>{compareUser.length > 0 ? compareUser[1].email : ''}</label>
               </Col>
             </Row>
             <div />
             <Collapse className="merge-collapse" bordered={false} expandIconPosition="right" defaultActiveKey={['1']}>
-              <Panel header="Ẩn chi tiết" key="1">
+              <Panel style={{ color: '#3866DD' }} header="Ẩn chi tiết" key="1">
                 <div>
                   <Table id="table-merge" striped>
                     <thead>
                       <tr className="text-center">
                         <th className="hand" id="name-duplicate" />
-                        <th className="hand">Khách hàng A</th>
-                        <th className="hand">Khách hàng B</th>
+                        <th className="hand">{compareUser.length > 0 ? compareUser[0].firstName + compareUser[0].lastName : ''}</th>
+                        <th className="hand">{compareUser.length > 0 ? compareUser[1].firstName + compareUser[1].lastName : ''}</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>Sở thích </td>
-                        <td>A </td>
-                        <td>B </td>
-                      </tr>
+                      {compareUser.length > 0
+                        ? compareUser[0].fields.map((event, index, list) => {
+                            let data = (
+                              <tr key={index}>
+                                <td>{event.title}</td>
+                                <td>{event.value}</td>
+                                <td>{compareUser[1].fields[index].value}</td>
+                              </tr>
+                            );
+                            return data;
+                          })
+                        : ''}
                     </tbody>
                   </Table>
                 </div>
@@ -183,12 +205,62 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
   };
 
   stepConfirm = () => {
+    let { userId } = this.state;
+    let { compareUser } = this.props;
+    let userChose =
+      compareUser.length > 0
+        ? String(
+            compareUser
+              .map(event => {
+                if (event.id === userId) return event.firstName + event.lastName;
+              })
+              .filter(Boolean)
+          )
+        : '';
+    let userUnChose =
+      compareUser.length > 0
+        ? String(
+            compareUser
+              .map(event => {
+                if (event.id !== userId) return event.firstName + event.lastName;
+              })
+              .filter(Boolean)
+          )
+        : '';
+    let emailChose =
+      compareUser.length > 0
+        ? String(
+            compareUser
+              .map(event => {
+                if (event.id === userId) return event.email;
+              })
+              .filter(Boolean)
+          )
+        : '';
+    let emailUnChose =
+      compareUser.length > 0
+        ? String(
+            compareUser
+              .map(event => {
+                if (event.id !== userId) return event.email;
+              })
+              .filter(Boolean)
+          )
+        : '';
     let data = (
       <Row>
         <Col span={24}>
           <div>
             <Label className="head-text">
-              <Translate contentKey="properties-management.delete.head-title" />
+              <Translate
+                contentKey="userManagement.text-content.text-head-merge"
+                interpolate={{
+                  userFirst: userChose,
+                  userSecond: userUnChose,
+                  emailFirst: emailChose,
+                  emailSecond: emailUnChose
+                }}
+              />
             </Label>
           </div>
           <div>
@@ -205,7 +277,10 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
               </Col>
               <Col span={22}>
                 <Label for="btn1" className="text">
-                  <Translate contentKey="properties-management.delete.content-title-1" />
+                  <Translate
+                    contentKey="userManagement.text-content.text-content"
+                    interpolate={{ emailSecond: emailUnChose, userSecond: userUnChose }}
+                  />
                 </Label>
               </Col>
             </Col>
@@ -224,26 +299,15 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
               </Col>
               <Col span={22}>
                 <Label for="btn2" className="text">
-                  <Translate contentKey="properties-management.delete.content-title-2" />
-                </Label>
-              </Col>
-            </Col>
-          </div>
-          <div>
-            <Col span={24} className="group-btn-delete">
-              <Col span={2}>
-                <Input
-                  type="checkbox"
-                  onClick={() => {
-                    this.setState({ valueBtn3: $('#btn3').prop('checked') });
-                  }}
-                  value="c"
-                  id="btn3"
-                />{' '}
-              </Col>
-              <Col span={22}>
-                <Label for="btn3" className="text">
-                  <Translate contentKey="properties-management.delete.content-title-3" />
+                  <Translate
+                    contentKey="userManagement.text-content.text-content-second"
+                    interpolate={{
+                      userFirst: userChose,
+                      userSecond: userUnChose,
+                      emailFirst: emailChose,
+                      emailSecond: emailUnChose
+                    }}
+                  />
                 </Label>
               </Col>
             </Col>
@@ -272,10 +336,15 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
     return data;
   };
 
-  next() {
+  next = async () => {
+    const { compareUserAction, user, mergeUserAction } = this.props;
+    let { userSelect, userId } = this.state;
     const current = this.state.current + 1;
+    if (current === 1) {
+      await compareUserAction(user.id, userSelect);
+    }
     this.setState({ current });
-  }
+  };
 
   prev() {
     const current = this.state.current - 1;
@@ -284,63 +353,79 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
       this.setState({ check: true });
     }
   }
+  mergeUser = async () => {
+    const { mergeUserAction, openModal, compareUser } = this.props;
+    let { userId } = this.state;
+    let userToMerge = compareUser
+      .map(event => {
+        return { id: event.id };
+      })
+      .filter(el => el.id !== userId);
+    await mergeUserAction(userId, userToMerge[0]);
+    openModal({
+      show: true,
+      type: 'success',
+      title: translate('modal-data.title.success'),
+      text: 'Gộp thành công'
+    });
+    this.props.onClick();
+    this.toggle();
+    window.location.assign('/#/app/views/customers/user-management');
+  };
 
   render() {
-    const { loading, listDuplicateUser } = this.props;
-    const { current, check } = this.state;
+    const { loading } = this.props;
+    const { current } = this.state;
     return (
       <span className="d-inline-block mb-2 mr-2">
         <Button className="btn float-right jh-create-entity" outline color="primary" onClick={this.toggle}>
-          <Ionicon color="#343A40" icon="md-git-merge" /> &nbsp; Merge
+          <Ionicon color="#343A40" icon="md-git-merge" /> &nbsp; Gộp
         </Button>
 
-        <Modal isOpen={this.state.modal} id="content-properties">
+        <Modal isOpen={this.state.modal} id="content-properties" className={current === this.stepTable().length - 1 ? 'fix-heigth' : ''}>
+          <ModalHeader toggle={this.toggle} id="create-properties">
+            <Translate contentKey="userManagement.infomation.merge.title" />
+          </ModalHeader>
           <PerfectScrollbar>
-            <ModalHeader toggle={this.toggle} id="create-properties">
-              <Translate contentKey="userManagement.infomation.merge.title" />
-            </ModalHeader>
             <ModalBody>
               <AvForm>
                 <div className="steps-content">{this.stepTable()[current].content}</div>
               </AvForm>
             </ModalBody>
-            <ModalFooter>
-              <div className="steps-action">
-                {current > 0 && (
-                  <Button id="btn-prev" color="linkaaaaa" onClick={() => this.prev()}>
-                    Previous
-                  </Button>
-                )}
-                <Button color="link" onClick={this.toggle}>
-                  <Translate contentKey="properties-management.cancel" />
-                </Button>
-
-                {current < this.stepTable().length - 1 && (
-                  <Button
-                    disabled={!this.state.check}
-                    color="primary"
-                    onClick={() => {
-                      this.next();
-                    }}
-                  >
-                    Tiếp tục
-                  </Button>
-                )}
-                {current === this.stepTable().length - 1 && (
-                  <Button
-                    color="primary"
-                    disabled={this.state.valueBtn1 && this.state.valueBtn2 && this.state.valueBtn3 && !loading ? false : true}
-                    onClick={() => {
-                      this.props.onClick();
-                      this.toggle();
-                    }}
-                  >
-                    <Translate contentKey="userManagement.home.merge" />
-                  </Button>
-                )}
-              </div>
-            </ModalFooter>
           </PerfectScrollbar>
+
+          <ModalFooter>
+            {current > 0 && (
+              <Button style={{ float: 'left' }} id="btn-prev" color="linkaaaaa" onClick={() => this.prev()}>
+                Quay lại
+              </Button>
+            )}
+
+            {current < this.stepTable().length - 1 && (
+              <Button
+                style={{ float: 'right' }}
+                disabled={!this.state.check}
+                color="primary"
+                onClick={() => {
+                  this.next();
+                }}
+              >
+                Tiếp tục
+              </Button>
+            )}
+            {current === this.stepTable().length - 1 && (
+              <Button
+                style={{ float: 'right' }}
+                color="primary"
+                disabled={this.state.valueBtn1 && this.state.valueBtn2 && !loading ? false : true}
+                onClick={() => {
+                  this.mergeUser();
+                }}
+              >
+                <Translate contentKey="userManagement.home.merge" />
+              </Button>
+            )}
+          </ModalFooter>
         </Modal>
       </span>
     );
@@ -348,13 +433,17 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
 }
 const mapStateToProps = ({ userManagement }: IRootState) => ({
   loading: userManagement.loading,
-  listDuplicateUser: userManagement.listDuplicateUser
+  listDuplicateUser: userManagement.listDuplicateUser,
+  user: userManagement.user,
+  compareUser: userManagement.compareUser
 });
 
 const mapDispatchToProps = {
   openModal,
   closeModal,
-  getListDuplicateAction
+  compareUserAction,
+  getListDuplicateAction,
+  mergeUserAction
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

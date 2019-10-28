@@ -56,11 +56,6 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
     id_chose: ''
   };
 
-  componentDidMount() {
-    let { textSearch } = this.state;
-    this.props.getListCustomerGroupDataAction(textSearch);
-  }
-
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.list_group_customer !== prevState.list_group_customer) {
       let listDropdownItem = nextProps.list_group_customer && nextProps.list_group_customer.map(item => ({ ...item, isShow: false }));
@@ -94,8 +89,6 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
     this.setState({ open_modal_delete: false });
   }
 
-  //TODO: Copy group
-
   // Render menu dropdown
   menuDropdown = (id?: string) => {
     return (
@@ -103,10 +96,6 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
         <Menu.Item key="1" onClick={() => this.hanldeDeleteModal(id)}>
           <Icon type="delete" />
           Xóa
-        </Menu.Item>
-        <Menu.Item key="2" onClick={() => this.handleGroup(id, UPDATE_CUSTOMER_GROUP)}>
-          <Icon type="edit" />
-          Chỉnh sửa
         </Menu.Item>
         <Menu.Item key="3" onClick={() => this.handleGroup(id, COPY_CUSTOMER_GROUP)}>
           <Icon type="copy" />
@@ -120,7 +109,7 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
   async handleGroup(id: string, type_modal?: string) {
     await this.props.setIdForListCustomer(id);
     await this.props.getSingleCustomerGroupFieldDataAction(id);
-    await this.props.setStateForModal(type_modal);
+    await this.props.setStateForModal(type_modal, id);
     await this.getDataOfListCustomerCondition();
   }
 
@@ -210,7 +199,7 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
                             color: item && id_chose === item.id ? 'white' : ''
                           }}
                         >
-                          <td onClick={() => this.callListCustomer(item.id)}>{index}</td>
+                          <td onClick={() => this.callListCustomer(item.id)}>{index + 1}</td>
                           <td onClick={() => this.callListCustomer(item.id)}>{item.typeName}</td>
                           <td onClick={() => this.callListCustomer(item.id)}>
                             <div className="item-contact">
@@ -222,7 +211,9 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
                             <Dropdown.Button
                               overlay={() => this.menuDropdown(item.id)}
                               icon={<Icon type="caret-down" />}
-                              onClick={() => this.openDropdownItem(item.id)}
+                              onClick={() => {
+                                this.handleGroup(item.id, UPDATE_CUSTOMER_GROUP);
+                              }}
                             >
                               <span>
                                 <Icon type="edit" />
@@ -235,7 +226,7 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
                   ) : (
                     <tr>
                       <td className="none-data" colSpan={100}>
-                        Không có dữ liệu khách hàng
+                        Không có nhóm dữ liệu khách hàng
                       </td>
                     </tr>
                   )}
