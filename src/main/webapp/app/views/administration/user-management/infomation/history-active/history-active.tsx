@@ -19,7 +19,7 @@ export class HistoryActive extends React.Component<IHistoryActiveProps, IHistory
   render() {
     return (
       <Card title="LỊCH SỬ TƯƠNG TÁC">
-        <VerticalTimeline className="time-line" layout="1-column">
+        {/* <VerticalTimeline className="time-line" layout="1-column">
           <PerfectScrollbar>
             <VerticalTimelineElement
               className="vertical-timeline-item"
@@ -145,7 +145,7 @@ export class HistoryActive extends React.Component<IHistoryActiveProps, IHistory
               <p>Lorem ipsum dolor sit amit,consectetur elit enim at minim veniam quis nostrud</p>
             </VerticalTimelineElement>
           </PerfectScrollbar>
-        </VerticalTimeline>
+        </VerticalTimeline> */}
       </Card>
     );
   }

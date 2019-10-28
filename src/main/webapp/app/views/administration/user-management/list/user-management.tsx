@@ -19,7 +19,8 @@ import {
   getListSaveAdvancedSearchActionData,
   getSaveAdvancedSearchActionData,
   deleteSaveAdvancedSearchActionData,
-  postSaveAdvancedSearchActionData
+  postSaveAdvancedSearchActionData,
+  getListOptionFilter
 } from 'app/actions/user-management';
 import UserCategoryTag from './categories-tag/categories-tag';
 import { IRootState } from 'app/reducers';
@@ -230,14 +231,24 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
   };
 
   rowName = () => {
-    let { listFields } = this.props;
-    let listData = listFields.filter(el => el.title !== 'Tên' && el.title !== 'Email' && el.title !== 'Họ' && el.title !== 'Số điện thoại');
+    let { listFields, list_option } = this.props;
+    let listData = listFields
+      .filter(el => el.title !== 'Tên' && el.title !== 'Email' && el.title !== 'Họ' && el.title !== 'Số điện thoại')
+      .map(event => {
+        let check = true;
+        list_option.map(item => {
+          if (String(item) === String(event.code)) {
+            check = false;
+          }
+        });
+        return { ...event, check: check };
+      });
     let data = (
       <Menu>
         {listData.map((value, index) => {
           return (
             <Menu.Item key={index}>
-              <Checkbox defaultChecked={true} onChange={event => this.onChangeCheckBox(event, value.code)}>
+              <Checkbox defaultChecked={value.check} onChange={event => this.onChangeCheckBox(event, value.code)}>
                 {value.title}
               </Checkbox>
             </Menu.Item>
@@ -245,13 +256,20 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
         })}
       </Menu>
     );
+
     return data;
   };
 
   onChangeCheckBox = (e, code) => {
     let { listDataUser } = this.state;
+    let { list_option } = this.props;
     let isCheck = e.target.checked;
     let existValue;
+    if (listDataUser.length === 0) {
+      if (this.props.list_option.length > 0) {
+        listDataUser = this.props.list_option;
+      }
+    }
     if (listDataUser.length > 0) {
       listDataUser.forEach((item, index) => {
         if (item === code) {
@@ -262,6 +280,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
         } else {
           if (!existValue) {
             listDataUser.push(code);
+            listDataUser = [...new Set(listDataUser)];
           }
         }
       });
@@ -271,9 +290,8 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     this.setState({ listDataUser });
     if (isCheck) {
       $(`th.${code}`).show();
-    } else {
-      $(`th.${code}`).hide();
     }
+    this.props.getListOptionFilter(listDataUser);
   };
 
   toObject(arr) {
@@ -458,6 +476,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
 
   dataFilter() {
     let { listDataUser, listValueSort } = this.state;
+    const { list_option } = this.props;
     let dataUser = this.dataTable().map(event => {
       return {
         id: event.id,
@@ -471,7 +490,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
             title: item.title,
             type: item.type,
             check:
-              listDataUser
+              list_option
                 .map(event => {
                   if (String(event) === String(item.code)) return event;
                 })
@@ -616,12 +635,25 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
 
     dataUser = this.dataFilter();
     let theader = listFields.map(event => {
-      return event;
+      return { ...event, showValue: this.props.list_option };
     });
 
-    let dataHeader = this.sortData(theader, 'title').filter(
-      el => el.title !== 'Tên' && el.title !== 'Email' && el.title !== 'Họ' && el.title !== 'Số điện thoại'
-    );
+    let dataHeader = theader
+      .sort(function(a, b) {
+        if (a.title.toLowerCase() < b.title.toLowerCase()) {
+          return -1;
+        }
+        if (a.title.toLowerCase() > b.title.toLowerCase()) {
+          return 1;
+        }
+        return 0;
+      })
+      .filter(el => el.title !== 'Tên' && el.title !== 'Email' && el.title !== 'Họ' && el.title !== 'Số điện thoại');
+    if (this.props.list_option.length > 0) {
+      this.props.list_option.map(event => {
+        $(`th.${event}`).hide();
+      });
+    }
     if (count > 0) {
       dataUser = this.sortData(dataUser, conditionSort);
     }
@@ -926,9 +958,17 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                       );
                     })
                   : ''}
+                {users.length > 0 ? (
+                  ''
+                ) : (
+                  <tr>
+                    <td colSpan={99}>
+                      <Translate contentKey="properties-management.no-record" />
+                    </td>{' '}
+                  </tr>
+                )}
               </tbody>
             </Table>
-            {users.length > 0 ? '' : <p style={{ textAlign: 'center', color: 'black' }}>không có dữ liệu khách hàng</p>}
             <Row className="justify-content-center" style={{ float: 'right' }}>
               {this.props.totalElements >= 10 ? (
                 <ReactPaginate
@@ -973,7 +1013,8 @@ const mapStateToProps = (storeState: IRootState) => ({
   list_save_advanced_search: storeState.userManagement.list_save_advanced_search,
   save_advanced_search: storeState.userManagement.save_advanced_search,
   isMerge: storeState.userManagement.isMerge,
-  isDelete: storeState.userManagement.isDelete
+  isDelete: storeState.userManagement.isDelete,
+  list_option: storeState.userManagement.list_option
 });
 
 const mapDispatchToProps = {
@@ -992,7 +1033,8 @@ const mapDispatchToProps = {
   getListSaveAdvancedSearchActionData,
   getSaveAdvancedSearchActionData,
   deleteSaveAdvancedSearchActionData,
-  postSaveAdvancedSearchActionData
+  postSaveAdvancedSearchActionData,
+  getListOptionFilter
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

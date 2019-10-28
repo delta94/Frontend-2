@@ -143,7 +143,7 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
           <div className="option-create" style={{ textAlign: 'center' }}>
             <div>
               <Label>
-                liên hệ trùng {numberConfict} trường :"{this.jsUcfirst(fieldConfict.split(',').join(', '))}"
+                Liên hệ trùng {numberConfict} trường :"{this.jsUcfirst(fieldConfict.split(',').join(', '))}"
               </Label>
             </div>
 

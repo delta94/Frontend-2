@@ -137,7 +137,6 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
           </div>
           <div className="panel">
             <Row>
-              <Col md="3" />
               <Col md="5" className="search-bar-properties">
                 <Select
                   className="select-bar"

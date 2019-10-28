@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Label } from 'reactstrap';
-import { Card, Row, Avatar, Icon, Popover, Button, Collapse, Input, DatePicker, Checkbox, Col, Radio, Select } from 'antd';
+import { Card, Row, Avatar, Icon, Popover, Button, Collapse, Input, DatePicker, Checkbox, Col, Radio, Select, Tag } from 'antd';
 import { Translate, translate } from 'react-jhipster';
 import { openModal, closeModal } from '../../../../../actions/modal';
 import SweetAlert from 'sweetalert-react';
@@ -336,7 +336,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                     content={this.contentUser('firstName', user.firstName)}
                     visible={isOpenPopFirst}
                     onVisibleChange={event => this.handleVisibleChange(event, 'fistName', '')}
-                    title="Frist Name"
+                    title="Tên"
                     trigger="click"
                   >
                     {user.firstName ? user.firstName : ''}
@@ -352,7 +352,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                     content={this.contentUser('lastName', user.lastName)}
                     visible={isOpenPopLast}
                     onVisibleChange={event => this.handleVisibleChange(event, 'lastName', '')}
-                    title="Last Name"
+                    title="Họ"
                     trigger="click"
                   >
                     {user.lastName ? user.lastName : ''}
@@ -385,7 +385,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                     content={this.contentUser('mobile', user.mobile)}
                     visible={isOpenPopMobile}
                     onVisibleChange={event => this.handleVisibleChange(event, 'mobile', '')}
-                    title="Mobile"
+                    title="Số điện thoại"
                     trigger="click"
                   >
                     {user.mobile ? user.mobile : ''}
@@ -410,7 +410,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                                       <Checkbox.Group
                                         className="checkbox-update"
                                         options={this.optionsCheckbox(fieldValue.split('||'))}
-                                        defaultValue={String(value.value).split(',')}
+                                        defaultValue={String(value.value).split('||')}
                                         onChange={event => this.onChangeCheckbox(value.id, event)}
                                       />
                                     </Col>
@@ -498,7 +498,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                             }
                             visible={value.check}
                             onVisibleChange={event => this.handleVisibleChange(event, value.id, value)}
-                            title={value.type}
+                            title={value.title}
                             trigger="click"
                           >
                             {value.value && value.value.trim().length > 0 ? value.value : <span className="empty">Click vào để thêm</span>}
@@ -508,11 +508,13 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                     );
                   })
                 : ''}
-              <div className="line-info">
-                <Label className="content-text" for="categories">
-                  Thẻ/Tag
-                </Label>
-                <div className="phone-customer_span">
+              <Row className="line-info">
+                <Col span={10}>
+                  <Label className="content-text" for="categories">
+                    Thẻ/Tag
+                  </Label>
+                </Col>
+                <Col span={14} style={{ textAlign: 'right' }}>
                   <Popover
                     content={
                       <div>
@@ -538,13 +540,15 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                     onVisibleChange={event => this.handleVisibleChange(event, 'tag', '')}
                   >
                     {user.tags && user.tags.length > 0 ? (
-                      user.tags.map(event => event.name).join(', ')
+                      user.tags.map(event => {
+                        return <Tag style={{ fontSize: '16px' }}>{event.name}</Tag>;
+                      })
                     ) : (
                       <span className="empty">Click vào đây để thêm</span>
                     )}
                   </Popover>
-                </div>
-              </div>
+                </Col>
+              </Row>
             </Panel>
           </Collapse>
         </Loader>

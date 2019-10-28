@@ -24,11 +24,11 @@ export class Member extends React.Component<IMemberProps, IMemberState> {
     const image = require('app/assets/utils/images/user-mangament/rank-bronze.png');
     return (
       <Fragment>
-        <Collapse defaultActiveKey="1" expandIconPosition="right" className="collapse-member">
-          <Panel header="THÔNG TIN THÀNH VIÊN" id="info-member" key="1">
-            <div style={{ display: 'flex', position: 'relative' }}>
+        <Collapse defaultActiveKey="2" expandIconPosition="right" className="collapse-member">
+          <Panel header="Chưa xử lý" id="info-member" key="1">
+            {/* <div style={{ display: 'flex', position: 'relative' }}>
               <Label className="rank-text" style={{ width: '50%' }}>
-                Hạng đồng
+                Chưa xử lý
               </Label>
               <label className="phone-customer_span">
                 {' '}
@@ -43,12 +43,12 @@ export class Member extends React.Component<IMemberProps, IMemberState> {
             <div>
               <span style={{ marginLeft: '20px' }}>- Được hưởng quyền lợi 1</span>
             </div>
-            <span style={{ marginLeft: '20px' }}>- Được hưởng quyền lợi 2</span>
+            <span style={{ marginLeft: '20px' }}>- Được hưởng quyền lợi 2</span> */}
           </Panel>
         </Collapse>
-        <Collapse defaultActiveKey="1" expandIconPosition="right" className="collapse-member">
-          <Panel header="Điểm tích lũy" extra={200} id="info-member" key="1">
-            <div style={{ display: 'flex', position: 'relative' }}>
+        <Collapse defaultActiveKey="2" expandIconPosition="right" className="collapse-member">
+          <Panel header="Chưa xử lý" extra={200} id="info-member" key="1">
+            {/* <div style={{ display: 'flex', position: 'relative' }}>
               <Label className="rank-text" style={{ width: '50%' }}>
                 Mua hàng tại cửa hàng
               </Label>
@@ -59,7 +59,7 @@ export class Member extends React.Component<IMemberProps, IMemberState> {
                 Đổi bánh trưng
               </Label>
               <span className="phone-customer_span">-100</span>
-            </div>
+            </div> */}
           </Panel>
         </Collapse>
       </Fragment>

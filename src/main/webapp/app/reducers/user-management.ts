@@ -96,6 +96,7 @@ export interface IModalData {
 const initialState = {
   loading: false,
   errorMessage: null,
+  list_option: [],
   uploadScheduleFailure: false,
   uploadScheduleSuccess: false,
   users: [] as ReadonlyArray<IUser>,
@@ -426,6 +427,12 @@ export default (state: UserManagementState = initialState, action): UserManageme
           ...state.user,
           tags: action.payload.data
         }
+      };
+
+    case USER_MANAGE_ACTION_TYPES.GET_OPTION_FILTER:
+      return {
+        ...state,
+        list_option: action.payload
       };
 
     case USER_MANAGE_ACTION_TYPES.OPEN_MODAL:
