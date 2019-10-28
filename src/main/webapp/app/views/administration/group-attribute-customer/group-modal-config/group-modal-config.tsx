@@ -347,7 +347,6 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
                   type_modal={type_modal}
                   key={item.id}
                   id={item.id}
-                  list_field_data={list_field_data}
                   last_index={item.last_index}
                   logicalOperator={logicalOperator}
                   default_data={item.default_data}
