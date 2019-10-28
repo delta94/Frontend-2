@@ -221,8 +221,8 @@ export default (state: UserManagementState = initialState, action): UserManageme
         loading: false,
         dataModal: {
           show: true,
-          title: 'Thành công',
-          type: 'success',
+          title: 'Thất bại',
+          type: 'error',
           text: 'Lưu tìm kiếm thất bại'
         }
       };
@@ -391,7 +391,7 @@ export default (state: UserManagementState = initialState, action): UserManageme
           show: true,
           title: 'Thành công',
           type: 'success',
-          text: 'Lưu tìm kiếm thành kiếm thành công'
+          text: 'Lưu tìm kiếm thành công'
         }
       };
 

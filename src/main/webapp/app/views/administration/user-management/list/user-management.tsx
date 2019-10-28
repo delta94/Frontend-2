@@ -703,7 +703,9 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                 await this.props.exportFile(this.state.textSearch, this.state.categories);
               }}
             >
-              <img src={exportImage} style={{ margin: ' 0px 5px 2px' }} />
+              <span>
+                <img src={importImage} style={{ margin: ' 0px 5px 2px' }} />
+              </span>
               <Translate contentKey="userManagement.home.export" />
             </Button>
             <Button
@@ -712,9 +714,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
               color="info"
               onClick={() => window.location.assign('/#/app/views/customers/user-management/new')}
             >
-              <span>
-                <img src={importImage} style={{ margin: ' 0px 5px 2px' }} />
-              </span>
+              <img src={exportImage} style={{ margin: ' 0px 5px 2px' }} />
               <Translate contentKey="userManagement.home.import" />
             </Button>
             <span id="column-span">|</span>
@@ -802,7 +802,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                 </div>
               </Collapse>
             </div>
-            <hr />
+            <hr style={{ borderTop: 'dotted 1px' }} />
             <Translate contentKey="userManagement.home.total-element" interpolate={{ element: this.props.totalElements }} />
             <Dropdown overlay={this.rowName} trigger={['click']}>
               <Button color="link" style={{ float: 'right' }}>
