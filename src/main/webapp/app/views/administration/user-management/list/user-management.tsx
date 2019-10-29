@@ -616,7 +616,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     const importImage = require('app/assets/utils/images/user-mangament/import.png');
     const exportImage = require('app/assets/utils/images/user-mangament/export.png');
     const filterImage = require('app/assets/utils/images/user-mangament/filter.png');
-    const { users, loading, listFields, list_field_data, pageCount } = this.props;
+    const { users, loading, listFields, modalStateFilter, pageCount } = this.props;
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
     const {
       activePage,
@@ -684,6 +684,14 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
             show={modalState.show ? modalState.show : false}
             text={modalState.text ? modalState.text : 'No'}
             type={modalState.type ? modalState.type : 'error'}
+            onConfirm={() => this.props.closeModal()}
+          />
+          <SweetAlert
+            title={modalStateFilter.title ? modalStateFilter.title : 'No title'}
+            confirmButtonColor=""
+            show={modalStateFilter.show ? modalStateFilter.show : false}
+            text={modalStateFilter.text ? modalStateFilter.text : 'No'}
+            type={modalStateFilter.type ? modalStateFilter.type : 'error'}
             onConfirm={() => this.props.closeModal()}
           />
           {/* Add new */}
@@ -1003,6 +1011,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
 const mapStateToProps = (storeState: IRootState) => ({
   dowloadTemplate: storeState.userManagement.dowloadTemplate,
   modalState: storeState.handleModal.data,
+  modalStateFilter: storeState.userManagement.dataModal,
   users: storeState.userManagement.users,
   totalItems: storeState.userManagement.totalItems,
   account: storeState.authentication.account,
