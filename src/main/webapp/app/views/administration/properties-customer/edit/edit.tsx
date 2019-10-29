@@ -85,13 +85,7 @@ export class Edit extends React.Component<IEditProps, IEditState> {
                             <Label>
                               <Translate contentKey="properties-management.form.persionalization" />
                             </Label>
-                            <Input
-                              maxLength={160}
-                              addonBefore="%"
-                              addonAfter="%"
-                              defaultValue={event.personalizationTag.substr(1, event.personalizationTag.length - 2)}
-                              id="tag"
-                            />
+                            <Input maxLength={160} addonBefore="%" addonAfter="%" defaultValue={event.personalizationTag} id="tag" />
                           </div>
                           <div className="option-create">
                             <Label>

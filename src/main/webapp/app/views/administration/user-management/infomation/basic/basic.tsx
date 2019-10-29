@@ -558,7 +558,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
 }
 
 const mapStateToProps = ({ handleModal, userManagement }: IRootState) => ({
-  modalState: handleModal.data,
+  modalState: userManagement.dataModal,
   loading: userManagement.loading,
   user: userManagement.user,
   data: userManagement.data
