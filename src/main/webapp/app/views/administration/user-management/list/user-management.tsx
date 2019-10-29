@@ -1002,7 +1002,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
 
 const mapStateToProps = (storeState: IRootState) => ({
   dowloadTemplate: storeState.userManagement.dowloadTemplate,
-  modalState: storeState.userManagement.dataModal,
+  modalState: storeState.handleModal.data,
   users: storeState.userManagement.users,
   totalItems: storeState.userManagement.totalItems,
   account: storeState.authentication.account,
