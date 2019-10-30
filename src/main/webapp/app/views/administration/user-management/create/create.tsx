@@ -209,7 +209,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
       <span className="d-inline-block mb-2 mr-2" id="btn-modal-create">
         <Modal isOpen={this.props.open_create} id="content-user">
           <ModalHeader toggle={this.toggle} id="create-properties">
-            THÊM MỚI KHÁCH HÀNG
+            <Translate contentKey="userManagement.create-new-customer" />
           </ModalHeader>
           {/* <PerfectScrollbar> */}
           <ModalBody>
@@ -329,9 +329,12 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
                       })}
                   </Collapse>
                   <div className="option-create" id="has-collapse" style={{ display: collapse ? 'none' : '' }}>
-                    <p>Chỉ hiển thị các trường bắt buộc</p>
+                    <p>
+                      {' '}
+                      <Translate contentKey="userManagement.only-show-required" />
+                    </p>
                     <button id="btn-collapse" onClick={this.showCollapse}>
-                      Hiển thị đầy đủ các trường
+                      <Translate contentKey="userManagement.show-full" />
                     </button>
                   </div>
                 </Col>

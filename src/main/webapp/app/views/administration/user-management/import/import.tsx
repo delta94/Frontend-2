@@ -208,7 +208,10 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
             <div className="container">
               <Row className="justify-content-center">
                 <Col span={24}>
-                  <p>Chọn trường bạn muốn đồng bộ hóa</p>
+                  <p>
+                    {' '}
+                    <Translate contentKey="userManagement.home.chose-field-to-map" />
+                  </p>
                   <Collapse defaultActiveKey={['1']} accordion>
                     <Panel header="Cột để import" key="1" showArrow={false} extra={'Map vào trường'}>
                       {listFileHeader.fileName !== undefined
@@ -252,22 +255,34 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
           </CardBody>
         </Card>
         <Card>
-          <CardTitle style={{ marginLeft: '7%' }}>Thêm thẻ (tùy chọn)</CardTitle>
+          <CardTitle style={{ marginLeft: '7%' }}>
+            <Translate contentKey="userManagement.home.add-tag" />
+          </CardTitle>
           <p style={{ marginLeft: '7%' }}>
-            Thẻ cho phép bạn xác định danh bạ của bạn. Bạn có thể thêm một thẻ cho cách bạn thông tin, cho dù họ là khách hàng, v.v.
+            <Translate contentKey="userManagement.home.tag-info" />
           </p>
           <CardBody style={{ marginLeft: '7%' }} id="card-body-tag">
             <UserCategoryTag handleChange={this.handleChangeCategories} />
           </CardBody>
         </Card>
         <Card>
-          <CardTitle style={{ marginLeft: '7%' }}>Tùy chọn import</CardTitle>
+          <CardTitle style={{ marginLeft: '7%' }}>
+            <Translate contentKey="userManagement.home.option-import" />
+          </CardTitle>
           <CardBody style={{ textAlign: 'center' }}>
             <Radio.Group onChange={this.onChangeRadio} value={this.state.typeImport}>
-              <Radio value="SKIP">Bỏ qua nếu trùng</Radio>
-              <Radio value="OVERIDE">Ghi đè nếu trùng</Radio>
-              <Radio value="DUPLICATE">Nhân đôi nếu trùng</Radio>
-              <Radio value="MERGE">Gộp nếu trùng</Radio>
+              <Radio value="SKIP">
+                <Translate contentKey="userManagement.home.skip-import" />
+              </Radio>
+              <Radio value="OVERIDE">
+                <Translate contentKey="userManagement.home.overide-import" />
+              </Radio>
+              <Radio value="DUPLICATE">
+                <Translate contentKey="userManagement.home.duplicate-import" />
+              </Radio>
+              <Radio value="MERGE">
+                <Translate contentKey="userManagement.home.merge-import" />
+              </Radio>
             </Radio.Group>
           </CardBody>
         </Card>
@@ -279,15 +294,15 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
   stepTable = () => {
     let data = [
       {
-        title: 'Chọn File',
+        title: translate('userManagement.home.chose-file'),
         content: this.contentUploadFile()
       },
       {
-        title: 'Mapping',
+        title: translate('userManagement.home.mapping'),
         content: this.selectFields()
       },
       {
-        title: 'Xem kết quả',
+        title: translate('userManagement.home.result'),
         content: <UserDetail />
       }
     ];
@@ -330,7 +345,10 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
     const imageFileDown = require('app/assets/utils/images/user-mangament/image-down-files.png');
     return (
       <Container fluid>
-        <Card id="card-header"> TẠO MỚI DỮ LIỆU KHÁCH HÀNG</Card>
+        <Card id="card-header">
+          {' '}
+          <Translate contentKey="userManagement.home.createOrEditLabel" />
+        </Card>
         <Card>
           <PerfectScrollbar>
             <Steps current={current} className="step-import">
@@ -355,7 +373,7 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
               )}
               {current > 0 && current < this.stepTable().length - 1 && (
                 <Button id="btn-prev" style={{ float: 'left' }} color="linkaaaaa" onClick={() => this.prev()}>
-                  Quay lại
+                  <Translate contentKey="userManagement.home.come-back" />
                 </Button>
               )}
 
@@ -367,7 +385,7 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
                     this.next();
                   }}
                 >
-                  Tiếp tục
+                  <Translate contentKey="userManagement.home.continue" />
                 </Button>
               )}
               {current === this.stepTable().length - 1 && (

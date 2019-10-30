@@ -98,7 +98,9 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
                   <th className="hand">
                     <Translate contentKey="userManagement.home.date-create" />
                   </th>
-                  <th className="hand">Chọn</th>
+                  <th className="hand">
+                    <Translate contentKey="userManagement.chosse" />
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -116,7 +118,10 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
                     );
                   })
                 ) : (
-                  <td colSpan={4}> không có bản ghi nào</td>
+                  <td colSpan={4}>
+                    {' '}
+                    <Translate contentKey="userManagement.none-data-customer" />
+                  </td>
                 )}
               </tbody>
             </Table>
@@ -143,7 +148,8 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
           <div className="option-create" style={{ textAlign: 'center' }}>
             <div>
               <Label>
-                Liên hệ trùng {numberConfict} trường :"{this.jsUcfirst(fieldConfict.split(',').join(', '))}"
+                <Translate contentKey="userManagement.info-contact-duplicate" interpolate={(numberConfict = numberConfict)} /> "
+                {this.jsUcfirst(fieldConfict.split(',').join(', '))}"
               </Label>
             </div>
 
@@ -255,10 +261,10 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
               <Translate
                 contentKey="userManagement.text-content.text-head-merge"
                 interpolate={{
-                  userFirst: userChose,
-                  userSecond: userUnChose,
-                  emailFirst: emailChose,
-                  emailSecond: emailUnChose
+                  userFirst: userUnChose,
+                  userSecond: userChose,
+                  emailFirst: emailUnChose,
+                  emailSecond: emailChose
                 }}
               />
             </Label>
@@ -279,7 +285,7 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
                 <Label for="btn1" className="text">
                   <Translate
                     contentKey="userManagement.text-content.text-content"
-                    interpolate={{ emailSecond: emailUnChose, userSecond: userUnChose }}
+                    interpolate={{ emailSecond: userUnChose, userSecond: emailUnChose }}
                   />
                 </Label>
               </Col>
@@ -302,10 +308,10 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
                   <Translate
                     contentKey="userManagement.text-content.text-content-second"
                     interpolate={{
-                      userFirst: userChose,
-                      userSecond: userUnChose,
-                      emailFirst: emailChose,
-                      emailSecond: emailUnChose
+                      userFirst: userUnChose,
+                      userSecond: userChose,
+                      emailFirst: emailUnChose,
+                      emailSecond: emailChose
                     }}
                   />
                 </Label>
@@ -379,7 +385,7 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
     return (
       <span className="d-inline-block mb-2 mr-2">
         <Button className="btn float-right jh-create-entity" outline color="primary" onClick={this.toggle}>
-          <Ionicon color="#343A40" icon="md-git-merge" /> &nbsp; Gộp
+          <Ionicon color="#343A40" icon="md-git-merge" /> &nbsp; <Translate contentKey="userManagement.home.merge" />
         </Button>
 
         <Modal isOpen={this.state.modal} id="content-properties" className={current === this.stepTable().length - 1 ? 'fix-heigth' : ''}>
@@ -397,7 +403,7 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
           <ModalFooter>
             {current > 0 && (
               <Button style={{ float: 'left' }} id="btn-prev" color="linkaaaaa" onClick={() => this.prev()}>
-                Quay lại
+                <Translate contentKey="userManagement.home.come-back" />
               </Button>
             )}
 
@@ -410,7 +416,7 @@ export class Merge extends React.Component<IMergeProps, IMergeState> {
                   this.next();
                 }}
               >
-                Tiếp tục
+                <Translate contentKey="userManagement.home.continue" />
               </Button>
             )}
             {current === this.stepTable().length - 1 && (
