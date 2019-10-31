@@ -52,27 +52,25 @@ class SelectReward extends React.Component<SelectRewardProps, SelectRewardState>
           {' '}
           <Translate contentKey="campaign.select-reward" />
         </CardTitle>
-        <Card>
-          <CardBody>
-            <FormGroup tag="fieldset">
-              <FormGroup check>
-                <label className="radio">
-                  <input type="radio" name="radio1" onClick={this.onClickNoVoucher} defaultChecked={this.state.isCheck} />{' '}
-                  <Translate contentKey="campaign.notifi-reward" />
-                </label>
-              </FormGroup>
-              <FormGroup check>
-                <label className="radio">
-                  <input type="radio" name="radio1" onClick={this.onClickVoucher} />
-                  <Translate contentKey="campaign.evoucher" />
-                </label>
-              </FormGroup>
+        <CardBody>
+          <FormGroup tag="fieldset">
+            <FormGroup check>
+              <label className="radio">
+                <input type="radio" name="radio1" onClick={this.onClickNoVoucher} defaultChecked={this.state.isCheck} />{' '}
+                <Translate contentKey="campaign.notifi-reward" />
+              </label>
             </FormGroup>
-            <div className={this.state.displayVoucher}>
-              <Voucher />
-            </div>
-          </CardBody>
-        </Card>
+            <FormGroup check>
+              <label className="radio">
+                <input type="radio" name="radio1" onClick={this.onClickVoucher} />
+                <Translate contentKey="campaign.evoucher" />
+              </label>
+            </FormGroup>
+          </FormGroup>
+          <div className={this.state.displayVoucher}>
+            <Voucher />
+          </div>
+        </CardBody>
       </div>
     );
   }

@@ -55,7 +55,7 @@ class Vocher extends React.Component<VocherProps, VocherState> {
       <Loader message={spinner} show={loading} priority={10}>
         <Container fluid>
           <Row>
-            <Card className="main-card mb-3">
+            <div className="main-card mb-3">
               <CardBody>
                 <CardTitle>
                   {' '}
@@ -73,20 +73,20 @@ class Vocher extends React.Component<VocherProps, VocherState> {
                   </Col>
                 </Row>
               </CardBody>
-            </Card>
+            </div>
           </Row>
           <div className={this.state.displayTable}>
-            <table className="table-voucher">
+            <Table responsive striped className="table-voucher">
               <thead>
                 <tr>
-                  <th>
+                  <th className="hand">
                     {' '}
                     <Translate contentKey="campaign.value" />
                   </th>
-                  <th>
+                  <th className="hand">
                     <Translate contentKey="campaign.time-voucher" />
                   </th>
-                  <th>
+                  <th className="hand">
                     <Translate contentKey="campaign.amount" />{' '}
                   </th>
                 </tr>
@@ -100,7 +100,7 @@ class Vocher extends React.Component<VocherProps, VocherState> {
                   <td>{evoucherDetail.totalCode}</td>
                 </tr>
               </tbody>
-            </table>
+            </Table>
           </div>
         </Container>
       </Loader>

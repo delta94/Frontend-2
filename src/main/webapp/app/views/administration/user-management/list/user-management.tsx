@@ -617,7 +617,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     const importImage = require('app/assets/utils/images/user-mangament/import.png');
     const exportImage = require('app/assets/utils/images/user-mangament/export.png');
     const filterImage = require('app/assets/utils/images/user-mangament/filter.png');
-    const { users, loading, listFields, list_field_data, pageCount } = this.props;
+    const { users, loading, listFields, modalStateFilter, pageCount } = this.props;
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
     const {
       activePage,
@@ -677,331 +677,351 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
           })
         : [];
     return (
-      <Fragment>
-        <SweetAlert
-          title={modalState.title ? modalState.title : 'No title'}
-          confirmButtonColor=""
-          show={modalState.show ? modalState.show : false}
-          text={modalState.text ? modalState.text : 'No'}
-          type={modalState.type ? modalState.type : 'error'}
-          onConfirm={() => this.props.closeModal()}
-        />
-        {/* Add new */}
-        <Modal isOpen={open_new_save}>
-          <ModalHeader>
-            <Translate contentKey="userManagement.create-find-name" />
-          </ModalHeader>
-          <ModalBody>
-            <div className="input-search_group" style={{ paddingRight: '30px' }}>
-              <label className="input-search_label">
-                <span>
-                  <Translate contentKey="userManagement.name-find" />
-                </span>
-              </label>
-              <Input value={name} onChange={event => this.setState({ name: event.target.value })} />
-            </div>
-          </ModalBody>
-          <ModalFooter>
-            <Button color="none" style={{ float: 'right' }} onClick={() => this.setState({ open_new_save: false, name: '' })}>
-              <Translate contentKey="userManagement.cancel" />
-            </Button>
-            <Button
-              color="primary"
-              style={{ float: 'right' }}
-              onClick={() => this.saveAdvancedSearch()}
-              disabled={name && name.trim() !== '' ? false : true}
-            >
-              <Translate contentKey="userManagement.save" />
-            </Button>
-          </ModalFooter>
-        </Modal>
-        {/* Search save modal  */}
-        <SearchSaveModal
-          open_list_save={open_list_save}
-          toggleSearchSaveModal={this.toggleSearchSaveModal}
-          openAdvancedSearch={this.openAdvancedSearch}
-        />
-        {/* Title */}
-        <div className="userManagement">
-          <div id="title-common-header">
-            <span id="text-title">
-              {' '}
-              <Translate contentKey="userManagement.home.title" />
-            </span>
-            <Button
-              className="btn float-right jh-create-entity"
-              outline
-              color="info"
-              onClick={async () => {
-                await this.props.exportFile(this.state.textSearch, this.state.categories);
-              }}
-            >
-              <span>
-                <img src={importImage} style={{ margin: ' 0px 5px 2px' }} />
-              </span>
-              <Translate contentKey="userManagement.home.export" />
-            </Button>
-            <Button
-              className="btn float-right jh-create-entity"
-              outline
-              color="info"
-              onClick={() => window.location.assign('/#/app/views/customers/user-management/new')}
-            >
-              <img src={exportImage} style={{ margin: ' 0px 5px 2px' }} />
-              <Translate contentKey="userManagement.home.import" />
-            </Button>
-            <span id="column-span">|</span>
-            <Button className=" float-right" color="primary" style={{ backGround: '#3866DD' }} onClick={this.toggleCreate}>
-              <FontAwesomeIcon icon="plus" />
-              <span id="btn-create">
-                {' '}
-                <Translate contentKey="userManagement.home.createLabel" />
-              </span>
-            </Button>
-          </div>
-
-          {/* Panel */}
-          <div className="panel">
-            <CreateUser open_create={open_create} toggleCreate={this.toggleCreate} />
-            <div className="search-field">
+      <Loader message={spinner1} show={loading} priority={1}>
+        <Fragment>
+          <SweetAlert
+            title={modalState.title ? modalState.title : 'No title'}
+            confirmButtonColor=""
+            show={modalState.show ? modalState.show : false}
+            text={modalState.text ? modalState.text : 'No'}
+            type={modalState.type ? modalState.type : 'error'}
+            onConfirm={() => this.props.closeModal()}
+          />
+          <SweetAlert
+            title={modalStateFilter.title ? modalStateFilter.title : 'No title'}
+            confirmButtonColor=""
+            show={modalStateFilter.show ? modalStateFilter.show : false}
+            text={modalStateFilter.text ? modalStateFilter.text : 'No'}
+            type={modalStateFilter.type ? modalStateFilter.type : 'error'}
+            onConfirm={() => this.props.closeModal()}
+          />
+          {/* Add new */}
+          <Modal isOpen={open_new_save}>
+            <ModalHeader>
+              <Translate contentKey="userManagement.create-find-name" />
+            </ModalHeader>
+            <ModalBody>
               <div className="input-search_group" style={{ paddingRight: '30px' }}>
                 <label className="input-search_label">
                   <span>
-                    <Translate contentKey="userManagement.card-tag" />
+                    <Translate contentKey="userManagement.name-find" />
                   </span>
                 </label>
-                <UserCategoryTag handleChange={this.handleChange} />
+                <Input value={name} onChange={event => this.setState({ name: event.target.value })} />
               </div>
-              <div className="input-search_group" style={{ paddingRight: '30px' }}>
-                <label className="input-search_label">
-                  <Translate contentKey="userManagement.home.search-placer" />
-                </label>
-                <Input
-                  type="text"
-                  className="form-control"
-                  onKeyDown={this.search}
-                  placeholder={translate('userManagement.home.search-placer')}
-                />
-              </div>
-            </div>
-
-            <div className="field-search">
-              <div className="field-title">
-                <p>
-                  <label className="field-title_text" onClick={this.closeSearchAdvanced}>
-                    <Icon type="setting" />
-                    <Translate contentKey="userManagement.advanced-search" />
-                    <Icon type={open_search ? 'caret-up' : 'caret-down'} />
-                  </label>
-                  <label
-                    className="field-title_text"
-                    style={{
-                      float: 'right'
-                    }}
-                    onClick={this.toggleSearchSaveModal}
-                  >
-                    <Translate contentKey="userManagement.saved-advanced-search" />
-                  </label>
-                </p>
-              </div>
-              <Collapse isOpen={open_search} navbar>
-                <div className="search-anvanced_customer">
-                  {list_field_render}
-
-                  <Button color="primary" onClick={this.handleAddNewComponent} style={{ marginRight: '20px' }}>
-                    <FontAwesomeIcon icon="plus" />
-                  </Button>
-                  <label className="title-advanced-search">
-                    <Translate contentKey="userManagement.add-more-condition-search" />
-                  </label>
-                </div>
-                <div className="search-anvanced_footer">
-                  <Button
-                    color="ghost"
-                    style={{
-                      marginLeft: '20px',
-                      float: 'right',
-                      backgroundColor: '#E5ECF4',
-                      border: '1px solid #CED4DA'
-                    }}
-                    onClick={this.saveSearchData}
-                  >
-                    <Translate contentKey="userManagement.save-search" />
-                  </Button>
-
-                  <Button color="primary" style={{ float: 'right' }} onClick={() => this.getDataListCustomer(0)}>
-                    <Translate contentKey="userManagement.find" />
-                  </Button>
-                </div>
-              </Collapse>
-            </div>
-            <hr style={{ borderTop: 'dotted 1px' }} />
-            <Translate contentKey="userManagement.home.total-element" interpolate={{ element: this.props.totalElements }} />
-            <Dropdown overlay={this.rowName} trigger={['click']}>
-              <Button color="link" style={{ float: 'right' }}>
-                <img src={filterImage} style={{ margin: ' 0px 5px 10px' }} />
+            </ModalBody>
+            <ModalFooter>
+              <Button color="none" style={{ float: 'right' }} onClick={() => this.setState({ open_new_save: false, name: '' })}>
+                <Translate contentKey="userManagement.cancel" />
               </Button>
-            </Dropdown>
-            <Row />
-            <Table responsive striped>
-              <thead>
-                <tr className="text-center">
-                  <th className="hand">#</th>
-                  <th
-                    className="hand"
-                    onClick={() => {
-                      this.setState({ conditionSort: 'firstName', count: count + 1 });
-                    }}
-                  >
-                    <Translate contentKey="userManagement.first-name" />
-                  </th>
-                  <th
-                    className="hand"
-                    onClick={() => {
-                      this.setState({ conditionSort: 'lastName', count: count + 1 });
-                    }}
-                  >
-                    <Translate contentKey="userManagement.last-name" />
-                  </th>
-                  <th
-                    className="hand"
-                    onClick={() => {
-                      this.setState({ conditionSort: 'email', count: count + 1 });
-                    }}
-                  >
-                    <Translate contentKey="userManagement.email" />
-                  </th>
-                  <th
-                    className="hand"
-                    onClick={() => {
-                      this.setState({ conditionSort: 'mobile', count: count + 1 });
-                    }}
-                  >
-                    <Translate contentKey="userManagement.phone-number" />
-                  </th>
-                  {dataHeader
-                    ? dataHeader.map((event, id) => {
-                        return (
-                          <th key={id} className={event.code}>
-                            {event.title}
-                          </th>
-                        );
-                      })
-                    : ''}
-                  <th
-                    onClick={() => {
-                      this.setState({ conditionSort: 'createdDate', count: count + 1 });
-                    }}
-                  >
-                    <Translate contentKey="userManagement.created-date" />
-                  </th>
-                  <th>
-                    <Translate contentKey="userManagement.card-tag" />
-                  </th>
-                  <th id="modified-date-sort" className="hand">
-                    <Translate contentKey="userManagement.feature" />
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {dataUser
-                  ? dataUser.map((item, index) => {
-                      return (
-                        <tr id={item.id} key={`user-${index}`}>
-                          <td>{this.state.activePage * this.state.itemsPerPage + index + 1}</td>
-                          <td>{item.firstName}</td>
-                          <td>{item.lastName}</td>
-                          <td>{item.email}</td>
-                          <td>0{item.mobile}</td>
-                          {item.fields
-                            .sort(function(a, b) {
-                              if (a.title.toLowerCase() < b.title.toLowerCase()) {
-                                return -1;
-                              }
-                              if (a.title.toLowerCase() > b.title.toLowerCase()) {
-                                return 1;
-                              }
-                              return 0;
-                            })
-                            .map((value, index) => {
-                              return (
-                                <td className={value.check === true ? '' : 'display-colum'} key={index}>
-                                  {value.value}
-                                </td>
-                              );
-                            })}
-                          <td>{item.createdDate}</td>
-                          <td className="tag">
-                            {item.tag &&
-                              item.tag.split(',').map((category, index) => {
-                                return (
-                                  <span className="badge badge-success" key={index}>
-                                    {' '}
-                                    {category}
-                                  </span>
-                                );
-                              })}
-                          </td>
-                          <td className="text-center">
-                            <div className="btn-group flex-btn-group-container">
-                              <Button
-                                className="buttonUpdate"
-                                tag={Link}
-                                to={`/app/views/customers/user-management/info/${item.id}`}
-                                color="primary"
-                                size="sm"
-                              >
-                                <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Thông tin</span>
-                              </Button>
-                            </div>
-                          </td>
-                        </tr>
-                      );
-                    })
-                  : ''}
-                {users.length > 0 ? (
-                  ''
+              <Button
+                color="primary"
+                style={{ float: 'right' }}
+                onClick={() => this.saveAdvancedSearch()}
+                disabled={name && name.trim() !== '' ? false : true}
+              >
+                <Translate contentKey="userManagement.save" />
+              </Button>
+            </ModalFooter>
+          </Modal>
+          {/* Search save modal  */}
+          <SearchSaveModal
+            open_list_save={open_list_save}
+            toggleSearchSaveModal={this.toggleSearchSaveModal}
+            openAdvancedSearch={this.openAdvancedSearch}
+          />
+          {/* Title */}
+          <div className="userManagement">
+            <div id="title-common-header">
+              <span id="text-title">
+                {' '}
+                <Translate contentKey="userManagement.home.title" />
+              </span>
+              <Button
+                className="btn float-right jh-create-entity"
+                outline
+                color="info"
+                onClick={async () => {
+                  await this.props.exportFile(this.state.textSearch, this.state.categories);
+                }}
+              >
+                <img src={exportImage} style={{ margin: ' 0px 5px 2px' }} />
+                <Translate contentKey="userManagement.home.export" />
+              </Button>
+              <Button
+                className="btn float-right jh-create-entity"
+                outline
+                color="info"
+                onClick={() => window.location.assign('/#/app/views/customers/user-management/new')}
+              >
+                <span>
+                  <img src={importImage} style={{ margin: ' 0px 5px 2px' }} />
+                </span>
+                <Translate contentKey="userManagement.home.import" />
+              </Button>
+              <span id="column-span">|</span>
+              <Button className=" float-right" color="primary" style={{ backGround: '#3866DD' }} onClick={this.toggleCreate}>
+                <FontAwesomeIcon icon="plus" />
+                <span id="btn-create">
+                  {' '}
+                  <Translate contentKey="userManagement.home.createLabel" />
+                </span>
+              </Button>
+            </div>
+
+            {/* Panel */}
+            <div className="panel">
+              <CreateUser open_create={open_create} toggleCreate={this.toggleCreate} />
+              <div className="search-field">
+                <div className="input-search_group" style={{ paddingRight: '30px' }}>
+                  <label className="input-search_label">
+                    <span>
+                      <Translate contentKey="userManagement.card-tag" />
+                    </span>
+                  </label>
+                  <UserCategoryTag handleChange={this.handleChange} />
+                </div>
+                <div className="input-search_group" style={{ paddingRight: '30px' }}>
+                  <label className="input-search_label">
+                    <Translate contentKey="userManagement.home.search-placer" />
+                  </label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    onKeyDown={this.search}
+                    placeholder={translate('userManagement.home.search-placer')}
+                  />
+                </div>
+              </div>
+
+              <div className="field-search">
+                <div className="field-title">
+                  <p>
+                    <label className="field-title_text" onClick={this.closeSearchAdvanced}>
+                      <Icon type="setting" />
+                      <Translate contentKey="userManagement.advanced-search" />
+                      <Icon type={open_search ? 'caret-up' : 'caret-down'} />
+                    </label>
+                    <label
+                      className="field-title_text"
+                      style={{
+                        float: 'right'
+                      }}
+                      onClick={this.toggleSearchSaveModal}
+                    >
+                      <Translate contentKey="userManagement.saved-advanced-search" />
+                    </label>
+                  </p>
+                </div>
+                <Collapse isOpen={open_search} navbar>
+                  <div className="search-anvanced_customer">
+                    {list_field_render}
+
+                    <Button color="primary" onClick={this.handleAddNewComponent} style={{ marginRight: '20px' }}>
+                      <FontAwesomeIcon icon="plus" />
+                    </Button>
+                    <label className="title-advanced-search">
+                      <Translate contentKey="userManagement.add-more-condition-search" />
+                    </label>
+                  </div>
+                  <div className="search-anvanced_footer">
+                    <Button
+                      color="ghost"
+                      style={{
+                        marginLeft: '20px',
+                        float: 'right',
+                        backgroundColor: '#E5ECF4',
+                        border: '1px solid #CED4DA'
+                      }}
+                      onClick={this.saveSearchData}
+                    >
+                      <Translate contentKey="userManagement.save-search" />
+                    </Button>
+
+                    <Button color="primary" style={{ float: 'right' }} onClick={() => this.getDataListCustomer(0)}>
+                      <Translate contentKey="userManagement.find" />
+                    </Button>
+                  </div>
+                </Collapse>
+              </div>
+              <hr style={{ borderTop: 'dotted 1px' }} />
+              <Translate contentKey="userManagement.home.total-element" interpolate={{ element: this.props.totalElements }} />
+              <Dropdown overlay={this.rowName} trigger={['click']}>
+                <Button color="link" style={{ float: 'right' }}>
+                  <img src={filterImage} style={{ margin: ' 0px 5px 10px' }} />
+                </Button>
+              </Dropdown>
+              <Row />
+              <div className="table-user">
+                <Table responsive striped id="table-reponse">
+                  <thead>
+                    <tr className="text-center">
+                      <th style={{ width: '50px' }} className="hand">
+                        #
+                      </th>
+                      <th
+                        style={{ width: '150px' }}
+                        className="hand"
+                        onClick={() => {
+                          this.setState({ conditionSort: 'firstName', count: count + 1 });
+                        }}
+                      >
+                        <Translate contentKey="userManagement.first-name" />
+                      </th>
+                      <th
+                        style={{ width: '150px' }}
+                        className="hand"
+                        onClick={() => {
+                          this.setState({ conditionSort: 'lastName', count: count + 1 });
+                        }}
+                      >
+                        <Translate contentKey="userManagement.last-name" />
+                      </th>
+                      <th
+                        style={{ width: '200px' }}
+                        className="hand"
+                        onClick={() => {
+                          this.setState({ conditionSort: 'email', count: count + 1 });
+                        }}
+                      >
+                        <Translate contentKey="userManagement.email" />
+                      </th>
+                      <th
+                        style={{ width: '200px' }}
+                        className="hand"
+                        onClick={() => {
+                          this.setState({ conditionSort: 'mobile', count: count + 1 });
+                        }}
+                      >
+                        <Translate contentKey="userManagement.phone-number" />
+                      </th>
+                      {dataHeader
+                        ? dataHeader.map((event, id) => {
+                            return (
+                              <th style={{ width: '100px' }} key={id} className={event.code}>
+                                {event.title}
+                              </th>
+                            );
+                          })
+                        : ''}
+                      <th
+                        style={{ width: '200px' }}
+                        onClick={() => {
+                          this.setState({ conditionSort: 'createdDate', count: count + 1 });
+                        }}
+                      >
+                        <Translate contentKey="userManagement.created-date" />
+                      </th>
+                      <th style={{ width: '200px' }}>
+                        <Translate contentKey="userManagement.card-tag" />
+                      </th>
+                      <th style={{ width: '150px' }} id="modified-date-sort" className="hand">
+                        <Translate contentKey="userManagement.feature" />
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {dataUser
+                      ? dataUser.map((item, index) => {
+                          return (
+                            <tr id={item.id} key={`user-${index}`}>
+                              <td>{this.state.activePage * this.state.itemsPerPage + index + 1}</td>
+                              <td>{item.firstName}</td>
+                              <td>{item.lastName}</td>
+                              <td>{item.email}</td>
+                              <td>0{item.mobile}</td>
+                              {item.fields
+                                .sort(function(a, b) {
+                                  if (a.title.toLowerCase() < b.title.toLowerCase()) {
+                                    return -1;
+                                  }
+                                  if (a.title.toLowerCase() > b.title.toLowerCase()) {
+                                    return 1;
+                                  }
+                                  return 0;
+                                })
+                                .map((value, index) => {
+                                  return (
+                                    <td className={value.check === true ? '' : 'display-colum'} key={index}>
+                                      {value.value}
+                                    </td>
+                                  );
+                                })}
+                              <td>{item.createdDate}</td>
+                              <td className="tag">
+                                {item.tag &&
+                                  item.tag.split(',').map((category, index) => {
+                                    return (
+                                      <span className="badge badge-success" key={index}>
+                                        {' '}
+                                        {category}
+                                      </span>
+                                    );
+                                  })}
+                              </td>
+                              <td className="text-center">
+                                <div className="btn-group flex-btn-group-container">
+                                  <Button
+                                    className="buttonUpdate"
+                                    tag={Link}
+                                    to={`/app/views/customers/user-management/info/${item.id}`}
+                                    color="primary"
+                                    size="sm"
+                                  >
+                                    <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Thông tin</span>
+                                  </Button>
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })
+                      : ''}
+                    {users.length > 0 ? (
+                      ''
+                    ) : (
+                      <tr>
+                        <td colSpan={99}>
+                          <Translate contentKey="properties-management.no-record" />
+                        </td>{' '}
+                      </tr>
+                    )}
+                  </tbody>
+                </Table>
+              </div>
+              <Row className="justify-content-center" style={{ float: 'right' }}>
+                {this.props.totalElements >= 10 ? (
+                  <ReactPaginate
+                    previousLabel={'<'}
+                    nextLabel={'>'}
+                    breakLabel={'...'}
+                    breakClassName={'break-me'}
+                    pageCount={pageCount}
+                    marginPagesDisplayed={1}
+                    pageRangeDisplayed={3}
+                    onPageChange={this.handlePagination}
+                    containerClassName={'pagination'}
+                    subContainerClassName={'pages pagination'}
+                    activeClassName={'active'}
+                    forcePage={activePage}
+                  />
                 ) : (
-                  <tr>
-                    <td colSpan={99}>
-                      <Translate contentKey="properties-management.no-record" />
-                    </td>{' '}
-                  </tr>
+                  ''
                 )}
-              </tbody>
-            </Table>
-            <Row className="justify-content-center" style={{ float: 'right' }}>
-              {this.props.totalElements >= 10 ? (
-                <ReactPaginate
-                  previousLabel={'<'}
-                  nextLabel={'>'}
-                  breakLabel={'...'}
-                  breakClassName={'break-me'}
-                  pageCount={pageCount}
-                  marginPagesDisplayed={1}
-                  pageRangeDisplayed={3}
-                  onPageChange={this.handlePagination}
-                  containerClassName={'pagination'}
-                  subContainerClassName={'pages pagination'}
-                  activeClassName={'active'}
-                  forcePage={activePage}
-                />
-              ) : (
-                ''
-              )}
-            </Row>
-            <br />
+              </Row>
+              <br />
+            </div>
+            <Loader message={spinner1} show={loading} priority={1} />
           </div>
-          <Loader message={spinner1} show={loading} priority={1} />
-        </div>
-      </Fragment>
+        </Fragment>
+      </Loader>
     );
   }
 }
 
 const mapStateToProps = (storeState: IRootState) => ({
   dowloadTemplate: storeState.userManagement.dowloadTemplate,
-  modalState: storeState.userManagement.dataModal,
+  modalState: storeState.handleModal.data,
+  modalStateFilter: storeState.userManagement.dataModal,
   users: storeState.userManagement.users,
   totalItems: storeState.userManagement.totalItems,
   account: storeState.authentication.account,

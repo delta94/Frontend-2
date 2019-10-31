@@ -4,7 +4,7 @@
       "title": "Danh sách khách hàng  ",
       "search-placer": "Tìm kiếm",
       "createLabel": "Tạo tài khoản mới",
-      "createOrEditLabel": "Tạo mới dữ liệu khách hàng",
+      "createOrEditLabel": "TẠO MỚI DỮ LIỆU KHÁCH HÀNG",
       "import-result-detail": "Kết quả import chi tiết",
       "download-result": "Tải kết quả đầy đủ",
       "customer-name": "Tên khách hàng",
@@ -22,7 +22,20 @@
       "import": "Tải lên file",
       "edit": "Chỉnh sửa",
       "merge": "Gộp",
-      "come-back": "Quay lại"
+      "come-back": "Quay lại",
+      "cancel": "Hủy Bỏ",
+      "continue": "Tiếp tục",
+      "chose-field-to-map": "Chọn trường bạn muốn đồng bộ hóa",
+      "add-tag": "Thêm thẻ (tùy chọn)",
+      "tag-info": " Thẻ cho phép bạn xác định danh bạ của bạn. Bạn có thể thêm một thẻ cho cách bạn thông tin, cho dù họ là khách hàng, v.v.",
+      "option-import": "Tùy chọn import",
+      "skip-import": "Bỏ qua nếu trùng",
+      "overide-import": "Ghi đè nếu trùng",
+      "duplicate-import": "Nhân đôi nếu trùng",
+      "merge-import": "Gộp nếu trùng",
+      "chose-file": "Chọn file",
+      "mapping": "Maping",
+      "result": "Xem kết quả"
     },
     "text-content": {
       "text-head-merge": "Bạn sắp gộp <strong>{{ userFirst }}  ({{ emailFirst }}) </strong> vào <strong> {{ userSecond }}  ({{ emailSecond }}) </strong>. Hành động này không thể bị hủy bỏ hoặc hoàn tác. Bạn có chắc chắn muốn gộp hai liên hệ này?",
@@ -31,7 +44,9 @@
     },
     "infomation": {
       "delete": {
-        "title": "Xóa khách hàng "
+        "title": "Xóa khách hàng ",
+        "header": "XÓA THÔNG TIN KHÁCH HÀNG",
+        "btn-delete": "Xóa"
       },
       "merge": {
         "title": "Gộp thông tin khách hàng",
@@ -55,6 +70,8 @@
     "mobile": "Số điện thoại",
     "feature": "Chức năng",
     "login": "Tên đăng nhập",
+    "only-show-required": "Chỉ hiển thị các trường bắt buộc",
+    "show-full": " Hiển thị đầy đủ các trường",
     "firstName": "Tên",
     "lastName": "Họ",
     "email": "Email",
@@ -94,6 +111,10 @@
     "add-more-condition-search": "Thêm điều kiện tìm kiếm",
     "save-search": "Lưu tìm kiếm",
     "first-name": "Tên",
-    "last-name": "Họ"
+    "last-name": "Họ",
+    "click-here": "Click vào đây để thêm",
+    "chosse": "Chọn",
+    "create-new-customer": " THÊM MỚI KHÁCH HÀNG",
+    "info-contact-duplicate": "Liên hệ trùng {{ numberConfict }} trường :"
   }
 }

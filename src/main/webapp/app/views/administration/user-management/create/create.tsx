@@ -92,7 +92,6 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
     };
     if (this.IsValidateForm()) {
       await insertUser(data);
-      await getUsers(0, 10, '', '');
       this.toggle(data);
       openModal({
         show: true,
@@ -101,6 +100,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
         text: 'Tạo khách hàng thành công'
       });
     }
+    await getUsers(0, 10, '', '');
   };
 
   removeDuplicates = (array, key) => {
@@ -209,136 +209,139 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
       <span className="d-inline-block mb-2 mr-2" id="btn-modal-create">
         <Modal isOpen={this.props.open_create} id="content-user">
           <ModalHeader toggle={this.toggle} id="create-properties">
-            THÊM MỚI KHÁCH HÀNG
+            <Translate contentKey="userManagement.create-new-customer" />
           </ModalHeader>
-          <PerfectScrollbar>
-            <ModalBody>
-              <AvForm>
-                <Row>
-                  <Col span={24}>
-                    <div className="option-create">
-                      <Label>
-                        <Translate contentKey="userManagement.firstName" />
-                      </Label>
-                      <Input maxLength={160} id="first-name" name="name" label="Field Name" />
-                    </div>
-                    <p className="error">{this.state.validFirstName}</p>
-                    <div className="option-create">
-                      <Label>
-                        <Translate contentKey="userManagement.lastName" />
-                      </Label>
-                      <Input maxLength={160} id="last-name" name="name" label="Field Name" />
-                    </div>
-                    <p className="error">{this.state.validLastName}</p>
-                    <div className="option-create">
-                      <Label>
-                        <Translate contentKey="userManagement.email" />
-                      </Label>
-                      <Input maxLength={160} id="email" name="name" label="Field Name" />
-                    </div>
-                    <p className="error">{this.state.validEmail}</p>
-                    <div className="option-create">
-                      <Label>
-                        <Translate contentKey="userManagement.mobile" />
-                      </Label>
-                      <Input maxLength={160} id="phone" name="name" label="Field Name" />
-                    </div>
-                    <p className="error">{this.state.validPhone}</p>
-                    <Collapse isOpen={this.state.collapse}>
-                      {getList
-                        .filter(el => el.title !== 'Tên' && el.title !== 'Email' && el.title !== 'Họ' && el.title !== 'Số điện thoại')
-                        .map((value, index) => {
-                          if (
-                            !(value.title === 'Tên' || value.title === 'Họ' || value.title === 'Email' || value.title === 'Số điện thoại')
-                          ) {
-                            let object = (
-                              <div className="option-create" key={index}>
-                                <Label>{value.title}</Label>
-                                {value.type === 'Checkbox' ? (
-                                  <Checkbox.Group className="checkbox-group" onChange={event => this.onChangeCheckbox(value.id, event)}>
-                                    <Row>
-                                      {String(value.fieldValue)
-                                        .split('||')
-                                        .map((event, index) => {
-                                          return (
-                                            <Col span={8} key={index}>
-                                              <Checkbox value={String(event)}>{event}</Checkbox>
-                                            </Col>
-                                          );
-                                        })}
-                                    </Row>
-                                  </Checkbox.Group>
-                                ) : (
-                                  ''
-                                )}
-                                {value.type === 'Radio' ? (
-                                  <Radio.Group
-                                    onChange={event => this.onChangeRadio(event, value.id)}
-                                    className="radio-group"
-                                    name="radiogroup"
-                                    defaultValue={event}
-                                  >
-                                    <Row>
-                                      {String(value.fieldValue)
-                                        .split('||')
-                                        .map((event, index) => {
-                                          return (
-                                            <Col span={8} key={index}>
-                                              <Radio value={event}>{event}</Radio>
-                                            </Col>
-                                          );
-                                        })}
-                                    </Row>
-                                  </Radio.Group>
-                                ) : (
-                                  ''
-                                )}
-                                {value.type === 'Text Input' ? (
-                                  <Input id={value.id} onChange={event => this.onChangeText(value.id, event)} />
-                                ) : (
-                                  ''
-                                )}
-                                {value.type === 'Date' ? (
-                                  <DatePicker
-                                    className="date-create"
-                                    onChange={(event, dateString) => this.onChangeDate(value.id, dateString)}
-                                  />
-                                ) : (
-                                  ''
-                                )}
-                                {value.type === 'Dropdown List' ? (
-                                  <Select className="checkbox-group" onChange={event => this.handleChangeDrop(value.id, event)}>
+          {/* <PerfectScrollbar> */}
+          <ModalBody>
+            <AvForm>
+              <Row>
+                <Col span={24}>
+                  <div className="option-create">
+                    <Label>
+                      <Translate contentKey="userManagement.firstName" />
+                    </Label>
+                    <Input maxLength={160} id="first-name" name="name" label="Field Name" />
+                  </div>
+                  <p className="error">{this.state.validFirstName}</p>
+                  <div className="option-create">
+                    <Label>
+                      <Translate contentKey="userManagement.lastName" />
+                    </Label>
+                    <Input maxLength={160} id="last-name" name="name" label="Field Name" />
+                  </div>
+                  <p className="error">{this.state.validLastName}</p>
+                  <div className="option-create">
+                    <Label>
+                      <Translate contentKey="userManagement.email" />
+                    </Label>
+                    <Input maxLength={160} id="email" name="name" label="Field Name" />
+                  </div>
+                  <p className="error">{this.state.validEmail}</p>
+                  <div className="option-create">
+                    <Label>
+                      <Translate contentKey="userManagement.mobile" />
+                    </Label>
+                    <Input maxLength={160} id="phone" name="name" label="Field Name" />
+                  </div>
+                  <p className="error">{this.state.validPhone}</p>
+                  <Collapse isOpen={this.state.collapse}>
+                    {getList
+                      .filter(el => el.title !== 'Tên' && el.title !== 'Email' && el.title !== 'Họ' && el.title !== 'Số điện thoại')
+                      .map((value, index) => {
+                        if (
+                          !(value.title === 'Tên' || value.title === 'Họ' || value.title === 'Email' || value.title === 'Số điện thoại')
+                        ) {
+                          let object = (
+                            <div className="option-create" key={index}>
+                              <Label>{value.title}</Label>
+                              {value.type === 'Checkbox' ? (
+                                <Checkbox.Group className="checkbox-group" onChange={event => this.onChangeCheckbox(value.id, event)}>
+                                  <Row>
                                     {String(value.fieldValue)
                                       .split('||')
                                       .map((event, index) => {
                                         return (
-                                          <Option value={String(event)} key={index}>
-                                            {event}
-                                          </Option>
+                                          <Col span={8} key={index}>
+                                            <Checkbox value={String(event)}>{event}</Checkbox>
+                                          </Col>
                                         );
                                       })}
-                                  </Select>
-                                ) : (
-                                  ''
-                                )}
-                              </div>
-                            );
-                            return object;
-                          }
-                          return '';
-                        })}
-                    </Collapse>
-                    <div className="option-create" id="has-collapse" style={{ display: collapse ? 'none' : '' }}>
-                      <p>Chỉ hiển thị các trường bắt buộc</p>
-                      <button id="btn-collapse" onClick={this.showCollapse}>
-                        Hiển thị đầy đủ các trường
-                      </button>
-                    </div>
-                  </Col>
-                </Row>
-              </AvForm>
-            </ModalBody>
-          </PerfectScrollbar>
+                                  </Row>
+                                </Checkbox.Group>
+                              ) : (
+                                ''
+                              )}
+                              {value.type === 'Radio' ? (
+                                <Radio.Group
+                                  onChange={event => this.onChangeRadio(event, value.id)}
+                                  className="radio-group"
+                                  name="radiogroup"
+                                  defaultValue={event}
+                                >
+                                  <Row>
+                                    {String(value.fieldValue)
+                                      .split('||')
+                                      .map((event, index) => {
+                                        return (
+                                          <Col span={8} key={index}>
+                                            <Radio value={event}>{event}</Radio>
+                                          </Col>
+                                        );
+                                      })}
+                                  </Row>
+                                </Radio.Group>
+                              ) : (
+                                ''
+                              )}
+                              {value.type === 'Text Input' ? (
+                                <Input id={value.id} onChange={event => this.onChangeText(value.id, event)} />
+                              ) : (
+                                ''
+                              )}
+                              {value.type === 'Date' ? (
+                                <DatePicker
+                                  className="date-create"
+                                  onChange={(event, dateString) => this.onChangeDate(value.id, dateString)}
+                                />
+                              ) : (
+                                ''
+                              )}
+                              {value.type === 'Dropdown List' ? (
+                                <Select className="checkbox-group" onChange={event => this.handleChangeDrop(value.id, event)}>
+                                  {String(value.fieldValue)
+                                    .split('||')
+                                    .map((event, index) => {
+                                      return (
+                                        <Option value={String(event)} key={index}>
+                                          {event}
+                                        </Option>
+                                      );
+                                    })}
+                                </Select>
+                              ) : (
+                                ''
+                              )}
+                            </div>
+                          );
+                          return object;
+                        }
+                        return '';
+                      })}
+                  </Collapse>
+                  <div className="option-create" id="has-collapse" style={{ display: collapse ? 'none' : '' }}>
+                    <p>
+                      {' '}
+                      <Translate contentKey="userManagement.only-show-required" />
+                    </p>
+                    <button id="btn-collapse" onClick={this.showCollapse}>
+                      <Translate contentKey="userManagement.show-full" />
+                    </button>
+                  </div>
+                </Col>
+              </Row>
+            </AvForm>
+          </ModalBody>
+          {/* </PerfectScrollbar> */}
           <ModalFooter>
             <Button color="link" onClick={this.toggle}>
               <Translate contentKey="properties-management.cancel" />

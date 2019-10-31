@@ -170,10 +170,13 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
             type="primary"
           >
             {' '}
-            Chỉnh sửa{' '}
+            <Translate contentKey="userManagement.home.edit" />{' '}
           </Button>{' '}
           &nbsp;
-          <Button onClick={this.hide}>Hủy bỏ</Button>
+          <Button onClick={this.hide}>
+            {' '}
+            <Translate contentKey="userManagement.home.cancel" />
+          </Button>
         </div>
       </div>
     );
@@ -329,14 +332,14 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
             <Panel header="THÔNG TIN CƠ BẢN" id="info-basic" key="1">
               <div style={{ display: 'flex', position: 'relative' }}>
                 <Label className="content-text" style={{ width: '50%' }}>
-                  Tên
+                  <Translate contentKey="userManagement.firstName" />
                 </Label>
                 <label className="phone-customer_span">
                   <Popover
                     content={this.contentUser('firstName', user.firstName)}
                     visible={isOpenPopFirst}
                     onVisibleChange={event => this.handleVisibleChange(event, 'fistName', '')}
-                    title="Tên"
+                    title={translate('userManagement.firstName')}
                     trigger="click"
                   >
                     {user.firstName ? user.firstName : ''}
@@ -345,14 +348,14 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
               </div>
               <div className="line-info">
                 <Label className="content-text" style={{ width: '50%' }}>
-                  Họ
+                  <Translate contentKey="userManagement.lastName" />
                 </Label>
                 <span className="phone-customer_span">
                   <Popover
                     content={this.contentUser('lastName', user.lastName)}
                     visible={isOpenPopLast}
                     onVisibleChange={event => this.handleVisibleChange(event, 'lastName', '')}
-                    title="Họ"
+                    title={translate('userManagement.lastName')}
                     trigger="click"
                   >
                     {user.lastName ? user.lastName : ''}
@@ -361,7 +364,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
               </div>
               <div className="line-info">
                 <Label className="content-text" style={{ width: '50%' }}>
-                  Email
+                  <Translate contentKey="userManagement.email" />
                 </Label>
 
                 <span className="phone-customer_span">
@@ -369,7 +372,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                     content={this.contentUser('email', user.email)}
                     visible={isOpenPopEmail}
                     onVisibleChange={event => this.handleVisibleChange(event, 'email', '')}
-                    title="Email"
+                    title={translate('userManagement.email')}
                     trigger="click"
                   >
                     {user.email ? user.email : ''}
@@ -378,14 +381,14 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
               </div>
               <div className="line-info">
                 <Label className="content-text" style={{ width: '50%' }}>
-                  Số điện thoại
+                  <Translate contentKey="userManagement.mobile" />
                 </Label>
                 <span className="phone-customer_span">
                   <Popover
                     content={this.contentUser('mobile', user.mobile)}
                     visible={isOpenPopMobile}
                     onVisibleChange={event => this.handleVisibleChange(event, 'mobile', '')}
-                    title="Số điện thoại"
+                    title={translate('userManagement.mobile')}
                     trigger="click"
                   >
                     {user.mobile ? user.mobile : ''}
@@ -483,7 +486,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                                     type="primary"
                                   >
                                     {' '}
-                                    Chỉnh sửa{' '}
+                                    <Translate contentKey="userManagement.home.edit" />{' '}
                                   </Button>{' '}
                                   &nbsp;
                                   <Button
@@ -491,7 +494,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                                       this.closePopover(value.id);
                                     }}
                                   >
-                                    Hủy bỏ
+                                    <Translate contentKey="userManagement.home.cancel" />
                                   </Button>
                                 </div>
                               </div>
@@ -501,7 +504,13 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                             title={value.title}
                             trigger="click"
                           >
-                            {value.value && value.value.trim().length > 0 ? value.value : <span className="empty">Click vào để thêm</span>}
+                            {value.value && value.value.trim().length > 0 ? (
+                              value.value
+                            ) : (
+                              <span className="empty">
+                                <Translate contentKey="userManagement.click-here" />
+                              </span>
+                            )}
                           </Popover>
                         </div>
                       </div>
@@ -511,7 +520,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
               <Row className="line-info">
                 <Col span={10}>
                   <Label className="content-text" for="categories">
-                    Thẻ/Tag
+                    <Translate contentKey="userManagement.card-tag" />
                   </Label>
                 </Col>
                 <Col span={14} style={{ textAlign: 'right' }}>
@@ -528,10 +537,13 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                             type="primary"
                           >
                             {' '}
-                            Chỉnh sửa{' '}
+                            <Translate contentKey="userManagement.home.edit" />{' '}
                           </Button>{' '}
                           &nbsp;
-                          <Button onClick={this.hide}>Hủy bỏ</Button>
+                          <Button onClick={this.hide}>
+                            {' '}
+                            <Translate contentKey="userManagement.home.cancel" />
+                          </Button>
                         </div>
                       </div>
                     }
@@ -544,7 +556,10 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                         return <Tag style={{ fontSize: '16px' }}>{event.name}</Tag>;
                       })
                     ) : (
-                      <span className="empty">Click vào đây để thêm</span>
+                      <span className="empty">
+                        {' '}
+                        <Translate contentKey="userManagement.click-here" />
+                      </span>
                     )}
                   </Popover>
                 </Col>
@@ -558,7 +573,7 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
 }
 
 const mapStateToProps = ({ handleModal, userManagement }: IRootState) => ({
-  modalState: handleModal.data,
+  modalState: userManagement.dataModal,
   loading: userManagement.loading,
   user: userManagement.user,
   data: userManagement.data

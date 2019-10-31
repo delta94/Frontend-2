@@ -65,12 +65,12 @@ export class Delete extends React.Component<IDeleteProps, IDeleteState> {
     return (
       <span className="d-inline-block mb-2 mr-2">
         <Button className="btn float-right jh-create-entity" outline color="danger" onClick={this.toggle}>
-          <Ionicon icon="ios-trash-outline" /> &nbsp; Xóa
+          <Ionicon icon="ios-trash-outline" /> &nbsp; <Translate contentKey="userManagement.infomation.delete.btn-delete" />
         </Button>
 
         <Modal isOpen={this.state.modal} id="delete-properties">
           <ModalHeader toggle={this.toggle} id="create-properties">
-            XÓA THÔNG TIN KHÁCH HÀNG
+            <Translate contentKey="userManagement.infomation.delete.header" />
           </ModalHeader>
           <ModalBody>
             <AvForm>

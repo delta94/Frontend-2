@@ -285,7 +285,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
               {selectedOptionType.value === 'Text Input' || selectedOptionType.value === 'Date' || selectedOptionType.value === '' ? (
                 ''
               ) : (
-                <div style={{ textAlign: 'center' }}>
+                <div>
                   <Button onClick={this.addOption} className="btn btn-primary jh-create-entity" id="button-add">
                     <FontAwesomeIcon icon="plus" /> <Translate contentKey="properties-management.button-add" />
                   </Button>
