@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Table, Row, Label, Col, Modal, ModalHeader, ModalFooter, ModalBody } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalFooter, ModalBody } from 'reactstrap';
 import { openModal, closeModal } from 'app/actions/modal';
 import './search-save-modal.scss';
 import {

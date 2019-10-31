@@ -46,7 +46,7 @@ class TagMerge extends React.PureComponent<ITagMergeProps, ITagMergeState> {
     if (!value || value.length === 0) {
       result = [];
     } else {
-      Promise.resolve(getListTags(value, 0, 10))
+      Promise.resolve(getListTags(value, 0, 0, true))
         .then(item => {
           console.log(item);
           let listTagRes = item.data.content;
