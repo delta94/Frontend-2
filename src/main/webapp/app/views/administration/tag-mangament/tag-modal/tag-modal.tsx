@@ -170,7 +170,7 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
     console.log(targetTag, listIdTag);
 
     await this.props.postMergeTagAction(targetTag.id, listIdTag);
-    await this.props.getListTagDataAction('', 0, 6);
+    await this.props.getListTagDataAction('', 0, 6, null);
   }
 
   render() {
