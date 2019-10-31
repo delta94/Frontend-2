@@ -94,7 +94,7 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
   componentDidMount() {
     let { textSearch } = this.state;
     localStorage.setItem('pageIndex', '0');
-    this.getListTagDataAction(0, 6, textSearch);
+    this.getListTagDataAction(0, 6, textSearch, null);
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -112,8 +112,8 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
     return null;
   }
 
-  getListTagDataAction = (pageIndex, pageSize, textSearch) => {
-    this.props.getListTagDataAction(textSearch, pageIndex, pageSize);
+  getListTagDataAction = (pageIndex, pageSize, textSearch, type) => {
+    this.props.getListTagDataAction(textSearch, pageIndex, pageSize, type);
   };
 
   handleSearchTags = event => {
@@ -168,11 +168,11 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
     let { textSearch } = this.state;
 
     if (param === DELETE_TAG || param === MERGE_TAG) {
-      this.props.getListTagDataAction(textSearch, 0, 6);
+      this.props.getListTagDataAction(textSearch, 0, 6, null);
     }
 
     let pageIndex = localStorage.getItem('pageIndex');
-    this.props.getListTagDataAction(textSearch, parseInt(pageIndex), 6);
+    this.props.getListTagDataAction(textSearch, parseInt(pageIndex), 6, null);
     this.setState({ checkAll: false });
   };
 
@@ -222,7 +222,7 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
                   placeholder={translate('tag-management.tag-search')}
                   onChange={this.handleSearchTags}
                   onPressEnter={() => {
-                    this.getListTagDataAction(0, 6, textSearch);
+                    this.getListTagDataAction(0, 6, textSearch, null);
                   }}
                 />
               </div>

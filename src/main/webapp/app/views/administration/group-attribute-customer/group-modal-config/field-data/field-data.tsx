@@ -78,7 +78,6 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     let { default_data, list_field_data, type_modal } = nextProps;
-
     let {
       value_input,
       value_check_box,
@@ -380,7 +379,7 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
                     if (item.title !== TYPE_FIELD.TEXT_INPUT)
                       return (
                         <Option value={item.id} key={item.fieldValue}>
-                          <label style={{ width: '100%', height: '100%' }} onClick={event => this.selectValue(event, item, id)}>
+                          <label className="label-option" onClick={event => this.selectValue(event, item, id)}>
                             {item.title}
                           </label>
                         </Option>
@@ -407,7 +406,7 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
                   if (item)
                     return (
                       <Option value={item} key={item}>
-                        <label style={{ width: '100%', height: '100%' }} onClick={() => this.handleChoseOperator(item)}>
+                        <label className="label-option" onClick={() => this.handleChoseOperator(item)}>
                           {item.toLocaleLowerCase()}
                         </label>
                       </Option>

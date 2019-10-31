@@ -1,9 +1,9 @@
 import { TAG_MANAGEMENT } from '../constants/tag-management';
 import { getListTags, postInsertTag, postUpdateTag, postMergeTag, postDeleteTag, getComboTags } from '../services/tag-management';
 
-export const getListTagDataAction = (textSearch?: string, page?: number, pageSize?: number) => ({
+export const getListTagDataAction = (textSearch, page, pageIndex, type) => ({
   type: TAG_MANAGEMENT.GET_LIST_TAG,
-  payload: getListTags(textSearch, page, pageSize)
+  payload: getListTags(textSearch, page, pageIndex, type)
 });
 
 export const getComboTagsAction = (textSearch?: string) => ({
