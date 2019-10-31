@@ -96,12 +96,21 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
 
   handleChangeEmail = event => {
     this.setState({ valueEmail: event.target.value });
+    if (event.key === 'Enter') {
+      this.submitForm();
+    }
   };
   handleChangePass = event => {
     this.setState({ valuePassword: event.target.value });
+    if (event.key === 'Enter') {
+      this.submitForm();
+    }
   };
   handleChangeMerchantCode = event => {
     this.setState({ valueMerchantCode: event.target.value });
+    if (event.key === 'Enter') {
+      this.submitForm();
+    }
   };
 
   render() {
@@ -160,6 +169,7 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
                               name="merchantCode"
                               value={this.state.valueMerchantCode}
                               onChange={this.handleChangeMerchantCode}
+                              onKeyDown={this.handleChangeMerchantCode}
                               id="merchantCode"
                               placeholder={translate('login.form.code-placeholder')}
                             />
@@ -177,6 +187,7 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
                               name="email"
                               value={this.state.valueEmail}
                               onChange={this.handleChangeEmail}
+                              onKeyDown={this.handleChangeEmail}
                               id="Email"
                               placeholder={translate('login.form.email-placeholder')}
                             />
@@ -194,6 +205,7 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
                               name="password"
                               value={this.state.valuePassword}
                               onChange={this.handleChangePass}
+                              onKeyDown={this.handleChangePass}
                               id="Password"
                               placeholder={translate('login.form.password-placeholder')}
                             />

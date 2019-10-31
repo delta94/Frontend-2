@@ -207,20 +207,24 @@ class CustomerDialog extends React.Component<CustomerDialogProps, CustomerDialog
                   </tbody>
                 </Table>
                 <div className="paginator-nav">
-                  <ReactPaginate
-                    previousLabel={'<'}
-                    nextLabel={'>'}
-                    breakLabel={'...'}
-                    breakClassName={'break-me'}
-                    pageCount={this.props.pageCount}
-                    marginPagesDisplayed={1}
-                    pageRangeDisplayed={2}
-                    onPageChange={this.handlePagination}
-                    containerClassName={'pagination'}
-                    subContainerClassName={'pages pagination'}
-                    activeClassName={'active'}
-                    forcePage={this.state.activePage}
-                  />
+                  {total > 9 ? (
+                    <ReactPaginate
+                      previousLabel={'<'}
+                      nextLabel={'>'}
+                      breakLabel={'...'}
+                      breakClassName={'break-me'}
+                      pageCount={this.props.pageCount}
+                      marginPagesDisplayed={1}
+                      pageRangeDisplayed={2}
+                      onPageChange={this.handlePagination}
+                      containerClassName={'pagination'}
+                      subContainerClassName={'pages pagination'}
+                      activeClassName={'active'}
+                      forcePage={this.state.activePage}
+                    />
+                  ) : (
+                    ''
+                  )}
                 </div>
               </div>
             </Col>

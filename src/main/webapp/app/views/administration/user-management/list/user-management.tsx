@@ -851,133 +851,142 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                 </Button>
               </Dropdown>
               <Row />
-              <Table responsive striped>
-                <thead>
-                  <tr className="text-center">
-                    <th className="hand">#</th>
-                    <th
-                      className="hand"
-                      onClick={() => {
-                        this.setState({ conditionSort: 'firstName', count: count + 1 });
-                      }}
-                    >
-                      <Translate contentKey="userManagement.first-name" />
-                    </th>
-                    <th
-                      className="hand"
-                      onClick={() => {
-                        this.setState({ conditionSort: 'lastName', count: count + 1 });
-                      }}
-                    >
-                      <Translate contentKey="userManagement.last-name" />
-                    </th>
-                    <th
-                      className="hand"
-                      onClick={() => {
-                        this.setState({ conditionSort: 'email', count: count + 1 });
-                      }}
-                    >
-                      <Translate contentKey="userManagement.email" />
-                    </th>
-                    <th
-                      className="hand"
-                      onClick={() => {
-                        this.setState({ conditionSort: 'mobile', count: count + 1 });
-                      }}
-                    >
-                      <Translate contentKey="userManagement.phone-number" />
-                    </th>
-                    {dataHeader
-                      ? dataHeader.map((event, id) => {
+              <div className="table-user">
+                <Table responsive striped id="table-reponse">
+                  <thead>
+                    <tr className="text-center">
+                      <th style={{ width: '50px' }} className="hand">
+                        #
+                      </th>
+                      <th
+                        style={{ width: '150px' }}
+                        className="hand"
+                        onClick={() => {
+                          this.setState({ conditionSort: 'firstName', count: count + 1 });
+                        }}
+                      >
+                        <Translate contentKey="userManagement.first-name" />
+                      </th>
+                      <th
+                        style={{ width: '150px' }}
+                        className="hand"
+                        onClick={() => {
+                          this.setState({ conditionSort: 'lastName', count: count + 1 });
+                        }}
+                      >
+                        <Translate contentKey="userManagement.last-name" />
+                      </th>
+                      <th
+                        style={{ width: '200px' }}
+                        className="hand"
+                        onClick={() => {
+                          this.setState({ conditionSort: 'email', count: count + 1 });
+                        }}
+                      >
+                        <Translate contentKey="userManagement.email" />
+                      </th>
+                      <th
+                        style={{ width: '200px' }}
+                        className="hand"
+                        onClick={() => {
+                          this.setState({ conditionSort: 'mobile', count: count + 1 });
+                        }}
+                      >
+                        <Translate contentKey="userManagement.phone-number" />
+                      </th>
+                      {dataHeader
+                        ? dataHeader.map((event, id) => {
+                            return (
+                              <th style={{ width: '100px' }} key={id} className={event.code}>
+                                {event.title}
+                              </th>
+                            );
+                          })
+                        : ''}
+                      <th
+                        style={{ width: '200px' }}
+                        onClick={() => {
+                          this.setState({ conditionSort: 'createdDate', count: count + 1 });
+                        }}
+                      >
+                        <Translate contentKey="userManagement.created-date" />
+                      </th>
+                      <th style={{ width: '200px' }}>
+                        <Translate contentKey="userManagement.card-tag" />
+                      </th>
+                      <th style={{ width: '150px' }} id="modified-date-sort" className="hand">
+                        <Translate contentKey="userManagement.feature" />
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {dataUser
+                      ? dataUser.map((item, index) => {
                           return (
-                            <th key={id} className={event.code}>
-                              {event.title}
-                            </th>
+                            <tr id={item.id} key={`user-${index}`}>
+                              <td>{this.state.activePage * this.state.itemsPerPage + index + 1}</td>
+                              <td>{item.firstName}</td>
+                              <td>{item.lastName}</td>
+                              <td>{item.email}</td>
+                              <td>0{item.mobile}</td>
+                              {item.fields
+                                .sort(function(a, b) {
+                                  if (a.title.toLowerCase() < b.title.toLowerCase()) {
+                                    return -1;
+                                  }
+                                  if (a.title.toLowerCase() > b.title.toLowerCase()) {
+                                    return 1;
+                                  }
+                                  return 0;
+                                })
+                                .map((value, index) => {
+                                  return (
+                                    <td className={value.check === true ? '' : 'display-colum'} key={index}>
+                                      {value.value}
+                                    </td>
+                                  );
+                                })}
+                              <td>{item.createdDate}</td>
+                              <td className="tag">
+                                {item.tag &&
+                                  item.tag.split(',').map((category, index) => {
+                                    return (
+                                      <span className="badge badge-success" key={index}>
+                                        {' '}
+                                        {category}
+                                      </span>
+                                    );
+                                  })}
+                              </td>
+                              <td className="text-center">
+                                <div className="btn-group flex-btn-group-container">
+                                  <Button
+                                    className="buttonUpdate"
+                                    tag={Link}
+                                    to={`/app/views/customers/user-management/info/${item.id}`}
+                                    color="primary"
+                                    size="sm"
+                                  >
+                                    <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Thông tin</span>
+                                  </Button>
+                                </div>
+                              </td>
+                            </tr>
                           );
                         })
                       : ''}
-                    <th
-                      onClick={() => {
-                        this.setState({ conditionSort: 'createdDate', count: count + 1 });
-                      }}
-                    >
-                      <Translate contentKey="userManagement.created-date" />
-                    </th>
-                    <th>
-                      <Translate contentKey="userManagement.card-tag" />
-                    </th>
-                    <th id="modified-date-sort" className="hand">
-                      <Translate contentKey="userManagement.feature" />
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {dataUser
-                    ? dataUser.map((item, index) => {
-                        return (
-                          <tr id={item.id} key={`user-${index}`}>
-                            <td>{this.state.activePage * this.state.itemsPerPage + index + 1}</td>
-                            <td>{item.firstName}</td>
-                            <td>{item.lastName}</td>
-                            <td>{item.email}</td>
-                            <td>0{item.mobile}</td>
-                            {item.fields
-                              .sort(function(a, b) {
-                                if (a.title.toLowerCase() < b.title.toLowerCase()) {
-                                  return -1;
-                                }
-                                if (a.title.toLowerCase() > b.title.toLowerCase()) {
-                                  return 1;
-                                }
-                                return 0;
-                              })
-                              .map((value, index) => {
-                                return (
-                                  <td className={value.check === true ? '' : 'display-colum'} key={index}>
-                                    {value.value}
-                                  </td>
-                                );
-                              })}
-                            <td>{item.createdDate}</td>
-                            <td className="tag">
-                              {item.tag &&
-                                item.tag.split(',').map((category, index) => {
-                                  return (
-                                    <span className="badge badge-success" key={index}>
-                                      {' '}
-                                      {category}
-                                    </span>
-                                  );
-                                })}
-                            </td>
-                            <td className="text-center">
-                              <div className="btn-group flex-btn-group-container">
-                                <Button
-                                  className="buttonUpdate"
-                                  tag={Link}
-                                  to={`/app/views/customers/user-management/info/${item.id}`}
-                                  color="primary"
-                                  size="sm"
-                                >
-                                  <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Thông tin</span>
-                                </Button>
-                              </div>
-                            </td>
-                          </tr>
-                        );
-                      })
-                    : ''}
-                  {users.length > 0 ? (
-                    ''
-                  ) : (
-                    <tr>
-                      <td colSpan={99}>
-                        <Translate contentKey="properties-management.no-record" />
-                      </td>{' '}
-                    </tr>
-                  )}
-                </tbody>
-              </Table>
+                    {users.length > 0 ? (
+                      ''
+                    ) : (
+                      <tr>
+                        <td colSpan={99}>
+                          <Translate contentKey="properties-management.no-record" />
+                        </td>{' '}
+                      </tr>
+                    )}
+                  </tbody>
+                </Table>
+              </div>
               <Row className="justify-content-center" style={{ float: 'right' }}>
                 {this.props.totalElements >= 10 ? (
                   <ReactPaginate

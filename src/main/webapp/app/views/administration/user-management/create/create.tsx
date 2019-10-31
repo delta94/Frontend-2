@@ -92,8 +92,8 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
     };
     if (this.IsValidateForm()) {
       await insertUser(data);
-      await getUsers(0, 10, '', '');
       this.toggle(data);
+      await getUsers(0, 10, '', '');
       openModal({
         show: true,
         type: 'success',
