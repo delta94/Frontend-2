@@ -93,7 +93,6 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
     if (this.IsValidateForm()) {
       await insertUser(data);
       this.toggle(data);
-      await getUsers(0, 10, '', '');
       openModal({
         show: true,
         type: 'success',
@@ -101,6 +100,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
         text: 'Tạo khách hàng thành công'
       });
     }
+    await getUsers(0, 10, '', '');
   };
 
   removeDuplicates = (array, key) => {
