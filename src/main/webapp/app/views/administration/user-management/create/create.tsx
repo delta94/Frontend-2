@@ -100,7 +100,6 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
         text: 'Tạo khách hàng thành công'
       });
     }
-    await getUsers(0, 10, '', '');
   };
 
   removeDuplicates = (array, key) => {
@@ -346,7 +345,13 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
             <Button color="link" onClick={this.toggle}>
               <Translate contentKey="properties-management.cancel" />
             </Button>
-            <Button disabled={loading} onClick={this.handleSubmit} color="primary">
+            <Button
+              disabled={loading}
+              onClick={() => {
+                this.handleSubmit();
+              }}
+              color="primary"
+            >
               <Translate contentKey="properties-management.button-field" />
             </Button>{' '}
           </ModalFooter>

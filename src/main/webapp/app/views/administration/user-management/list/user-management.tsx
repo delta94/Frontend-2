@@ -235,10 +235,10 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     let listData = listFields
       .filter(el => el.title !== 'Tên' && el.title !== 'Email' && el.title !== 'Họ' && el.title !== 'Số điện thoại')
       .map(event => {
-        let check = true;
+        let check = false;
         list_option.map(item => {
           if (String(item) === String(event.code)) {
-            check = false;
+            check = true;
           }
         });
         return { ...event, check: check };
@@ -308,6 +308,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
   toggleCreate = () => {
     let { open_create } = this.state;
     this.setState({ open_create: !open_create });
+    this.props.getUsers(0, 10, '', '');
   };
 
   saveSearchData = () => {
@@ -495,8 +496,8 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                   if (String(event) === String(item.code)) return event;
                 })
                 .filter(Boolean).length > 0
-                ? false
-                : true,
+                ? true
+                : false,
             value: item.value
           };
         }),
@@ -526,7 +527,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
         id: event.id,
         title: event.title,
         type: event.type,
-        check: true,
+        check: false,
         value: event.value
       };
     });
@@ -540,7 +541,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
             id: item.id,
             title: item.title,
             type: item.type,
-            check: true,
+            check: false,
             value:
               event.fields.length > 0 &&
               event.fields.map(value => {
@@ -572,7 +573,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                     id: item.id,
                     title: item.title,
                     type: item.type,
-                    check: true,
+                    check: false,
                     value: item.value
                   };
                 })
@@ -616,7 +617,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     const importImage = require('app/assets/utils/images/user-mangament/import.png');
     const exportImage = require('app/assets/utils/images/user-mangament/export.png');
     const filterImage = require('app/assets/utils/images/user-mangament/filter.png');
-    const { users, loading, listFields, modalStateFilter, pageCount } = this.props;
+    const { users, loading, listFields, modalStateFilter, pageCount, list_option } = this.props;
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
     const {
       activePage,
@@ -648,7 +649,16 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
         }
         return 0;
       })
-      .filter(el => el.title !== 'Tên' && el.title !== 'Email' && el.title !== 'Họ' && el.title !== 'Số điện thoại');
+      .filter(el => el.title !== 'Tên' && el.title !== 'Email' && el.title !== 'Họ' && el.title !== 'Số điện thoại')
+      .map(event => {
+        let check = false;
+        list_option.map(item => {
+          if (String(item) === String(event.code)) {
+            check = true;
+          }
+        });
+        return { ...event, check: check };
+      });
     if (this.props.list_option.length > 0) {
       this.props.list_option.map(event => {
         $(`th.${event}`).hide();
@@ -865,7 +875,16 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                           this.setState({ conditionSort: 'firstName', count: count + 1 });
                         }}
                       >
-                        <Translate contentKey="userManagement.first-name" />
+                        <Translate contentKey="userManagement.first-name" />{' '}
+                        {conditionSort === 'firstName' ? (
+                          count % 2 === 0 ? (
+                            <Icon type="sort-ascending" />
+                          ) : (
+                            <Icon type="sort-descending" />
+                          )
+                        ) : (
+                          ''
+                        )}
                       </th>
                       <th
                         style={{ width: '150px' }}
@@ -875,6 +894,15 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                         }}
                       >
                         <Translate contentKey="userManagement.last-name" />
+                        {conditionSort === 'lastName' ? (
+                          count % 2 === 0 ? (
+                            <Icon type="sort-ascending" />
+                          ) : (
+                            <Icon type="sort-descending" />
+                          )
+                        ) : (
+                          ''
+                        )}
                       </th>
                       <th
                         style={{ width: '200px' }}
@@ -883,7 +911,16 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                           this.setState({ conditionSort: 'email', count: count + 1 });
                         }}
                       >
-                        <Translate contentKey="userManagement.email" />
+                        <Translate contentKey="userManagement.email" />{' '}
+                        {conditionSort === 'email' ? (
+                          count % 2 === 0 ? (
+                            <Icon type="sort-ascending" />
+                          ) : (
+                            <Icon type="sort-descending" />
+                          )
+                        ) : (
+                          ''
+                        )}
                       </th>
                       <th
                         style={{ width: '200px' }}
@@ -892,12 +929,26 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                           this.setState({ conditionSort: 'mobile', count: count + 1 });
                         }}
                       >
-                        <Translate contentKey="userManagement.phone-number" />
+                        <Translate contentKey="userManagement.phone-number" />{' '}
+                        {conditionSort === 'mobile' ? (
+                          count % 2 === 0 ? (
+                            <Icon type="sort-ascending" />
+                          ) : (
+                            <Icon type="sort-descending" />
+                          )
+                        ) : (
+                          ''
+                        )}
                       </th>
                       {dataHeader
                         ? dataHeader.map((event, id) => {
                             return (
-                              <th style={{ width: '100px' }} key={id} className={event.code}>
+                              <th
+                                style={{ width: '100px' }}
+                                key={id}
+                                className={event.check === true ? '' : 'display-colum'}
+                                id={event.code}
+                              >
                                 {event.title}
                               </th>
                             );
@@ -909,7 +960,16 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                           this.setState({ conditionSort: 'createdDate', count: count + 1 });
                         }}
                       >
-                        <Translate contentKey="userManagement.created-date" />
+                        <Translate contentKey="userManagement.created-date" />{' '}
+                        {conditionSort === 'createdDate' ? (
+                          count % 2 === 0 ? (
+                            <Icon type="sort-ascending" />
+                          ) : (
+                            <Icon type="sort-descending" />
+                          )
+                        ) : (
+                          ''
+                        )}
                       </th>
                       <th style={{ width: '200px' }}>
                         <Translate contentKey="userManagement.card-tag" />
@@ -987,7 +1047,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                   </tbody>
                 </Table>
               </div>
-              <Row className="justify-content-center" style={{ float: 'right' }}>
+              <Row className="justify-content-center" style={{ float: 'right', marginTop: '1%' }}>
                 {this.props.totalElements >= 10 ? (
                   <ReactPaginate
                     previousLabel={'<'}
@@ -1024,6 +1084,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   users: storeState.userManagement.users,
   totalItems: storeState.userManagement.totalItems,
   account: storeState.authentication.account,
+  isCreate: storeState.userManagement.isCreate,
   totalElements: storeState.userManagement.totalElements,
   loading: storeState.userManagement.loading,
   listCategory: storeState.userManagement.listCategory,

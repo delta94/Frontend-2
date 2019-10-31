@@ -96,6 +96,7 @@ export interface IModalData {
 const initialState = {
   loading: false,
   errorMessage: null,
+  isCreate: false,
   list_option: [],
   uploadScheduleFailure: false,
   uploadScheduleSuccess: false,
@@ -214,7 +215,8 @@ export default (state: UserManagementState = initialState, action): UserManageme
         updating: false,
         updateSuccess: false,
         uploadScheduleFailure: true,
-        errorMessage: action.payload
+        errorMessage: action.payload,
+        isCreate: false
       };
     case FAILURE(USER_MANAGE_ACTION_TYPES.POST_SAVE_ADVANCED_SEARCH):
       return {
@@ -298,7 +300,8 @@ export default (state: UserManagementState = initialState, action): UserManageme
     case SUCCESS(USER_MANAGE_ACTION_TYPES.CREATE_USER):
       return {
         ...state,
-        loading: false
+        loading: false,
+        isCreate: true
       };
 
     case SUCCESS(USER_MANAGE_ACTION_TYPES.UPDATE_USER):
