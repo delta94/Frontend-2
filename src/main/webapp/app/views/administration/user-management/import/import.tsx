@@ -7,20 +7,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { importFileAction, uploadFileExcel, getFields } from 'app/actions/user-management';
 import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Container, FormGroup, Label, Card, CardBody, CardTitle } from 'reactstrap';
-import { Radio, Select, Row, Col, Collapse } from 'antd';
+import { Radio, Select, Row, Col, Collapse, Popover } from 'antd';
 import { AvForm } from 'availity-reactstrap-validation';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Translate, translate } from 'react-jhipster';
-import Ionicon from 'react-ionicons';
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
 import { IRootState } from 'app/reducers';
 import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import { openModal, closeModal } from 'app/actions/modal';
 import Dropzone from 'react-dropzone';
-import { Steps, message } from 'antd';
 import UserDetail from './detail/detail';
-
-const { Step } = Steps;
 
 const { Option } = Select;
 const { Panel } = Collapse;
@@ -351,11 +350,13 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
         </Card>
         <Card>
           <PerfectScrollbar>
-            <Steps current={current} className="step-import">
-              {this.stepTable().map(item => (
-                <Step key={item.title} title={item.title} />
+            <Stepper activeStep={current} alternativeLabel className="icon-step">
+              {this.stepTable().map(label => (
+                <Step key={label.title}>
+                  <StepLabel>{label.title}</StepLabel>
+                </Step>
               ))}
-            </Steps>
+            </Stepper>
             <AvForm>
               <div className="steps-content">{this.stepTable()[current].content}</div>
             </AvForm>

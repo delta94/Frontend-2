@@ -95,6 +95,7 @@ export interface IUserManagementState {
   conditionSort: string;
   count: number;
   is_normal_find: boolean;
+  isCheckDateCreate: boolean;
 }
 
 export class UserManagement extends React.Component<IUserManagementProps, IUserManagementState> {
@@ -131,7 +132,8 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     listDataUser: [],
     conditionSort: '',
     count: 0,
-    is_normal_find: true
+    is_normal_find: true,
+    isCheckDateCreate: false
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -254,6 +256,11 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
             </Menu.Item>
           );
         })}
+        <Menu.Item>
+          <Checkbox onChange={event => this.onChangeCheckBox(event, 'createdDate')}>
+            <Translate contentKey="userManagement.created-date" />
+          </Checkbox>
+        </Menu.Item>
       </Menu>
     );
 
@@ -261,7 +268,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
   };
 
   onChangeCheckBox = (e, code) => {
-    let { listDataUser } = this.state;
+    let { listDataUser, isCheckDateCreate } = this.state;
     let { list_option } = this.props;
     let isCheck = e.target.checked;
     let existValue;
@@ -287,7 +294,12 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     } else {
       listDataUser.push(code);
     }
-    this.setState({ listDataUser });
+
+    if (code === 'createdDate') {
+      isCheckDateCreate = isCheck;
+    }
+
+    this.setState({ listDataUser, isCheckDateCreate });
     if (isCheck) {
       $(`th.${code}`).show();
     }
@@ -957,6 +969,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                           })
                         : ''}
                       <th
+                        className={this.state.isCheckDateCreate === true ? '' : 'display-colum'}
                         style={{ width: '200px' }}
                         onClick={() => {
                           this.setState({ conditionSort: 'createdDate', count: count + 1 });
@@ -1008,7 +1021,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                                     </td>
                                   );
                                 })}
-                              <td>{item.createdDate}</td>
+                              <td className={this.state.isCheckDateCreate === true ? '' : 'display-colum'}>{item.createdDate}</td>
                               <td className="tag">
                                 {item.tag &&
                                   item.tag.split(',').map((category, index) => {
