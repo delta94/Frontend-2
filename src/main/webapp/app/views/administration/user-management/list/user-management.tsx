@@ -782,28 +782,29 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
             {/* Panel */}
             <div className="panel">
               <CreateUser open_create={open_create} toggleCreate={this.toggleCreate} />
-              <div className="search-field">
-                <div className="input-search_group" style={{ paddingRight: '30px' }}>
-                  <label className="input-search_label">
-                    <span>
-                      <Translate contentKey="userManagement.card-tag" />
-                    </span>
-                  </label>
-                  <UserCategoryTag handleChange={this.handleChange} />
+              <Collapse isOpen={!open_search} navbar>
+                <div className="search-field">
+                  <div className="input-search_group" style={{ paddingRight: '30px' }}>
+                    <label className="input-search_label">
+                      <span>
+                        <Translate contentKey="userManagement.card-tag" />
+                      </span>
+                    </label>
+                    <UserCategoryTag handleChange={this.handleChange} />
+                  </div>
+                  <div className="input-search_group" style={{ paddingRight: '30px' }}>
+                    <label className="input-search_label">
+                      <Translate contentKey="userManagement.home.search-placer" />
+                    </label>
+                    <Input
+                      type="text"
+                      className="form-control"
+                      onKeyDown={this.search}
+                      placeholder={translate('userManagement.home.search-placer')}
+                    />
+                  </div>
                 </div>
-                <div className="input-search_group" style={{ paddingRight: '30px' }}>
-                  <label className="input-search_label">
-                    <Translate contentKey="userManagement.home.search-placer" />
-                  </label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    onKeyDown={this.search}
-                    placeholder={translate('userManagement.home.search-placer')}
-                  />
-                </div>
-              </div>
-
+              </Collapse>
               <div className="field-search">
                 <div className="field-title">
                   <p>
