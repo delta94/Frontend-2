@@ -206,7 +206,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
     let { collapse } = this.state;
     return (
       <span className="d-inline-block mb-2 mr-2" id="btn-modal-create">
-        <Modal isOpen={this.props.open_create} id="content-user">
+        <Modal isOpen={this.props.open_create} id="create-user">
           <ModalHeader toggle={this.toggle} id="create-properties">
             <Translate contentKey="userManagement.create-new-customer" />
           </ModalHeader>

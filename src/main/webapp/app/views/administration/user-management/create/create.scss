@@ -1,6 +1,13 @@
 #btn-modal-create {
   float: right;
 }
+#create-user {
+  .modal-content {
+    width: 100% !important;
+    margin-top: 20%;
+    margin-left: 0% !important;
+  }
+}
 #btn-collapse {
   border: none;
   background-color: inherit;
