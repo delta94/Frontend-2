@@ -48,13 +48,11 @@ class TagMerge extends React.PureComponent<ITagMergeProps, ITagMergeState> {
     } else {
       Promise.resolve(getListTags(value, 0, 0, true))
         .then(item => {
-          console.log(item);
-          let listTagRes = item.data.content;
+          let listTagRes = item.data;
           if (listTagRes && listTagRes.length > 0) {
             result = listTagRes.map(item => ({ label: item.name, value: item.id }));
           }
 
-          console.log(result);
           this.setState({ result });
         })
         .catch(err => {
