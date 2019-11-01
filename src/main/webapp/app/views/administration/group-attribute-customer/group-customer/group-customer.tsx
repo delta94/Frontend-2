@@ -64,7 +64,12 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
     if (nextProps.list_group_customer !== prevState.list_group_customer) {
       let { id_chose } = prevState;
       let listDropdownItem = nextProps.list_group_customer && nextProps.list_group_customer.map(item => ({ ...item, isShow: false }));
-      if (nextProps.list_group_customer && nextProps.list_group_customer.length >= 1 && nextProps.list_group_customer[0].id) {
+      if (
+        nextProps.list_group_customer &&
+        nextProps.list_group_customer.length >= 1 &&
+        nextProps.list_group_customer[0].id &&
+        id_chose !== nextProps.list_group_customer[0].id
+      ) {
         nextProps.getListCustomerWithGroupIdDataAction('', 1, 10, nextProps.list_group_customer[0].id);
         id_chose = nextProps.list_group_customer[0].id;
         nextProps.getListCustomerWithGroupIdDataAction('', 0, 10, id_chose);
@@ -242,7 +247,7 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
                   ) : (
                     <tr>
                       <td className="none-data" colSpan={100}>
-                        <Translate contentKey="group-attribute-customer.group-customer.none-data-list-customer" />
+                        <Translate contentKey="group-attribute-customer.none-data-list-customer" />
                       </td>
                     </tr>
                   )}
