@@ -158,53 +158,36 @@ export class CreateGroup extends React.Component<ICreateGroupProps, ICreateGroup
                   </div>
                 </Col>
                 <Col md="8" id="table-group">
-                  <Col md="6">
-                    <div>
-                      <Checkbox
-                        id="addAll"
-                        className="checkbox-all"
-                        onChange={event => this.onCheckAllChange('add-all', event.target.checked)}
-                      >
-                        <Label for="addAll" className="text-temp">
-                          <Translate contentKey="properties-management.form.name" />
-                        </Label>
-                      </Checkbox>
-                      {listCheckBox
-                        ? listCheckBox.map((item, index) => {
-                            return (
-                              <div key={index}>
-                                <Checkbox
-                                  id={String(item.id)}
-                                  onChange={event => this.onCheckAllChange(item.id, event.target.checked)}
-                                  checked={item.checked}
-                                >
-                                  <Label for={String(item.id)} className="text-temp">
-                                    {item.title}
-                                  </Label>{' '}
-                                </Checkbox>
-                              </div>
-                            );
-                          })
-                        : ''}
-
-                      <br />
-                    </div>
-                  </Col>
-                  <Col md="6" id="table-right">
-                    <Label className="type-temp">
-                      {' '}
-                      <Translate contentKey="properties-management.form.type" />
-                    </Label>
+                  <div>
+                    <Checkbox
+                      id="addAll"
+                      className="checkbox-all"
+                      onChange={event => this.onCheckAllChange('add-all', event.target.checked)}
+                    >
+                      <Label for="addAll" className="text-temp">
+                        <Translate contentKey="properties-management.form.name" />
+                      </Label>
+                    </Checkbox>
                     {listCheckBox
-                      ? listCheckBox.map((event, index) => {
+                      ? listCheckBox.map((item, index) => {
                           return (
                             <div key={index}>
-                              <Label className="text-temp">{event.type}</Label>
+                              <Checkbox
+                                id={String(item.id)}
+                                onChange={event => this.onCheckAllChange(item.id, event.target.checked)}
+                                checked={item.checked}
+                              >
+                                <Label for={String(item.id)} className="text-temp">
+                                  {item.title}
+                                </Label>{' '}
+                              </Checkbox>
                             </div>
                           );
                         })
                       : ''}
-                  </Col>
+
+                    <br />
+                  </div>
                 </Col>
               </Row>
             </PerfectScrollbar>
