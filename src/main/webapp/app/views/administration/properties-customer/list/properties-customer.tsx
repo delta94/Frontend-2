@@ -125,11 +125,11 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
               <Col md="6" style={{ paddingTop: '14px' }}>
                 <Translate contentKey="properties-management.title" />
               </Col>
-              <Col md="6" className="form-button" style={{ textAlign: 'right', padding: '17px 0px 0px 280px' }}>
-                <Col md="5">
+              <Col md="6" className="form-button" style={{ textAlign: 'right' }}>
+                <Col md="7">
                   <Create onClick={this.openModalCreate} />
                 </Col>
-                <Col md="6">
+                <Col md="5">
                   <CreateGroup />
                 </Col>
               </Col>

@@ -207,7 +207,7 @@ class TagModal extends React.Component<ITagModalProps, ITagModalState> {
 
     return (
       <div className="tag-modal">
-        <Modal isOpen={openFixModal} toggle={this.props.toggleFixModal}>
+        <Modal id="tag-modal-edit" isOpen={openFixModal} toggle={this.props.toggleFixModal}>
           <ModalHeader>{modalTitle}</ModalHeader>
           <ModalBody>{extendComponent}</ModalBody>
           <ModalFooter>
