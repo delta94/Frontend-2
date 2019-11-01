@@ -17,7 +17,7 @@ export const getListCustomerGroupDataAction = (textSearch?: string) => ({
 });
 
 // Get list customer with group id
-export const getListCustomerWithGroupIdDataAction = (textSearch: string, page: number, pageSize: number, id: string) => ({
+export const getListCustomerWithGroupIdDataAction = (textSearch: string, page: number, pageSize: number, id?: string) => ({
   type: CUSTOMER_GROUP_ATTRIBUTE.GET_LIST_CUSTOMER_WITH_GROUP_ID,
   payload: getListCustomerWithGroupId(textSearch, page, pageSize, id)
 });
