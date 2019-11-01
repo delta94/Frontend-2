@@ -209,17 +209,18 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
 
   // Delete component by Id
   deleteComponentById = (id: string) => {
-    let { list_field_data_cpn, advancedSearchesData } = this.state;
+    let { list_field_data_cpn, advancedSearchesData, advancedSearches } = this.state;
 
     list_field_data_cpn.forEach((item, index) => {
       if (item.id === id) {
         list_field_data_cpn.splice(index, 1);
         advancedSearchesData.splice(index, 1);
+        advancedSearches.splice(index, 1);
       }
     });
 
     this.updateLastIndex(list_field_data_cpn);
-    this.setState({ list_field_data_cpn, advancedSearchesData });
+    this.setState({ list_field_data_cpn, advancedSearchesData, advancedSearches });
   };
 
   // Update last index
