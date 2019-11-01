@@ -390,7 +390,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     });
 
     this.updateLastIndex(list_field_data_cpn);
-    this.setState({ list_field_data_cpn, advancedSearchesData });
+    this.setState({ list_field_data_cpn, advancedSearchesData, advancedSearches });
   };
 
   // Update last index
