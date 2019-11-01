@@ -160,16 +160,9 @@ export class CreateGroup extends React.Component<ICreateGroupProps, ICreateGroup
                   </Col>
                   <Col md="4" id="table-group">
                     <div>
-                      <Checkbox
-                        defaultChecked={true}
-                        id="addAll"
-                        className="checkbox-all"
-                        onChange={event => this.onCheckAllChange('add-all', event.target.checked)}
-                      >
-                        <Label for="addAll" className="text-temp" id="text-all">
-                          <Translate contentKey="properties-management.form.name" />
-                        </Label>
-                      </Checkbox>
+                      <Label for="addAll" className="text-temp" id="text-all">
+                        <Translate contentKey="properties-management.form.name" />
+                      </Label>
                       {listCheckBox
                         ? listCheckBox.map((item, index) => {
                             return (
