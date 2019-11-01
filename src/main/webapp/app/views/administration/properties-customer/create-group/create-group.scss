@@ -1,9 +1,11 @@
 .content-group-properties .modal-content {
-  width: 200% !important;
+  width: 134% !important;
   margin-top: 15%;
+  margin-left: 44% !important;
 }
 .content-group-properties {
   margin-left: 20% !important;
+  box-shadow: none;
 }
 #recomand {
   margin-top: 16px;
@@ -15,7 +17,7 @@
 }
 #has-search {
   padding: 10px;
-  background: beige;
+  background: #f2f5f8;
 }
 #table-group {
   display: flex;
@@ -33,4 +35,13 @@
 }
 #row-create-group {
   height: 475px;
+}
+#text-all {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+
+  color: #a5adb6;
 }

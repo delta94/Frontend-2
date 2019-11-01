@@ -60,7 +60,7 @@ export class CreateGroup extends React.Component<ICreateGroupProps, ICreateGroup
 
   static getDerivedStateFromProps(props, state) {
     if (props.temp !== state.list_temp) {
-      let listCheckBox = props.temp && props.temp.map(item => ({ ...item, checked: false, id: Math.random() }));
+      let listCheckBox = props.temp && props.temp.map(item => ({ ...item, checked: true, id: Math.random() }));
       return {
         list_temp: props.temp,
         listCheckBox
@@ -71,7 +71,7 @@ export class CreateGroup extends React.Component<ICreateGroupProps, ICreateGroup
 
   toggle = () => {
     let newListCheckBox = this.state.listCheckBox.map(item => {
-      item.checked = false;
+      item.checked = true;
       return item;
     });
     this.setState({ listCheckBox: newListCheckBox });
@@ -114,131 +114,136 @@ export class CreateGroup extends React.Component<ICreateGroupProps, ICreateGroup
     let { listCheckBox } = this.state;
     return (
       <span className="d-inline-block mb-2 mr-2">
-        <Button className="btn btn-info float-right jh-create-entity" style={{ width: '100%', marginTop: 'auto' }} onClick={this.toggle}>
+        <Button className="btn btn-info float-right jh-create-entity" style={{ width: '101%', marginTop: 'auto' }} onClick={this.toggle}>
           <FontAwesomeIcon icon="plus" /> <Translate contentKey="properties-management.button-template" />
         </Button>
-        <Modal isOpen={this.state.modal} className="content-group-properties">
-          <ModalHeader toggle={this.toggle} className="create-group">
-            <Translate contentKey="properties-management.add.properties" />
-          </ModalHeader>
-          <ModalBody>
-            <PerfectScrollbar>
-              <Row id="row-create-group">
-                <Col md=" 4" id="has-search">
-                  <Search
-                    placeholder={translate('properties-management.search')}
-                    onSearch={value => this.props.getListTemp(value)}
-                    size="large"
-                    enterButton
-                  />
-                  <div id="recomand">
-                    <Translate contentKey="properties-management.recommand" />
-                  </div>
-                  <div id="nav-group">
-                    <PerfectScrollbar>
-                      {listTemp
-                        ? listTemp.map((event, index) => {
+        <div id="mangament-modal">
+          <Modal isOpen={this.state.modal} className="content-group-properties">
+            <ModalHeader toggle={this.toggle} className="create-group">
+              <Translate contentKey="properties-management.add.properties" />
+            </ModalHeader>
+            <ModalBody>
+              <PerfectScrollbar>
+                <Row id="row-create-group">
+                  <Col md=" 4" id="has-search">
+                    <Search
+                      placeholder={translate('properties-management.search')}
+                      onSearch={value => this.props.getListTemp(value)}
+                      size="large"
+                      enterButton
+                    />
+                    <div id="recomand">
+                      <Translate contentKey="properties-management.recommand" />
+                    </div>
+                    <div id="nav-group">
+                      <PerfectScrollbar>
+                        {listTemp
+                          ? listTemp.map((event, index) => {
+                              return (
+                                <DropdownItem
+                                  key={index}
+                                  toggle={false}
+                                  className={classnames({ active: this.state.activeTab === event.id })}
+                                  onClick={() => {
+                                    this.Changetab(event.id);
+                                  }}
+                                >
+                                  <div>
+                                    <label>{event.title}</label>
+                                  </div>
+                                </DropdownItem>
+                              );
+                            })
+                          : ''}
+                      </PerfectScrollbar>
+                    </div>
+                  </Col>
+                  <Col md="4" id="table-group">
+                    <div>
+                      <Checkbox
+                        defaultChecked={true}
+                        id="addAll"
+                        className="checkbox-all"
+                        onChange={event => this.onCheckAllChange('add-all', event.target.checked)}
+                      >
+                        <Label for="addAll" className="text-temp" id="text-all">
+                          <Translate contentKey="properties-management.form.name" />
+                        </Label>
+                      </Checkbox>
+                      {listCheckBox
+                        ? listCheckBox.map((item, index) => {
                             return (
-                              <DropdownItem
-                                key={index}
-                                toggle={false}
-                                className={classnames({ active: this.state.activeTab === event.id })}
-                                onClick={() => {
-                                  this.Changetab(event.id);
-                                }}
-                              >
-                                <div>
-                                  <label>{event.title}</label>
-                                </div>
-                              </DropdownItem>
+                              <div key={index}>
+                                <Checkbox
+                                  id={String(item.id)}
+                                  onChange={event => this.onCheckAllChange(item.id, event.target.checked)}
+                                  checked={item.checked}
+                                >
+                                  <Label for={String(item.id)} className="text-temp">
+                                    {item.title}
+                                  </Label>{' '}
+                                </Checkbox>
+                              </div>
                             );
                           })
                         : ''}
-                    </PerfectScrollbar>
-                  </div>
-                </Col>
-                <Col md="8" id="table-group">
-                  <div>
-                    <Checkbox
-                      id="addAll"
-                      className="checkbox-all"
-                      onChange={event => this.onCheckAllChange('add-all', event.target.checked)}
-                    >
-                      <Label for="addAll" className="text-temp">
-                        <Translate contentKey="properties-management.form.name" />
-                      </Label>
-                    </Checkbox>
-                    {listCheckBox
-                      ? listCheckBox.map((item, index) => {
-                          return (
-                            <div key={index}>
-                              <Checkbox
-                                id={String(item.id)}
-                                onChange={event => this.onCheckAllChange(item.id, event.target.checked)}
-                                checked={item.checked}
-                              >
-                                <Label for={String(item.id)} className="text-temp">
-                                  {item.title}
-                                </Label>{' '}
-                              </Checkbox>
-                            </div>
-                          );
-                        })
-                      : ''}
 
-                    <br />
-                  </div>
-                </Col>
-              </Row>
-            </PerfectScrollbar>
-          </ModalBody>
-          <ModalFooter>
-            <Button color="link" onClick={this.toggle}>
-              <Translate contentKey="properties-management.cancel" />
-            </Button>
-            <Button
-              disabled={loading}
-              onClick={async () => {
-                let addText;
-                let list = listCheckBox
-                  .map(event => {
-                    if (event.checked === true) {
-                      addText = {
-                        title: event.title,
-                        type: event.type,
-                        fieldValue: event.fieldValue
-                      };
-                      return addText;
-                    }
-                  })
-                  .filter(function(obj) {
-                    return obj;
+                      <br />
+                    </div>
+                  </Col>
+                </Row>
+              </PerfectScrollbar>
+            </ModalBody>
+            <ModalFooter>
+              <Button color="link" onClick={this.toggle}>
+                <Translate contentKey="properties-management.cancel" />
+              </Button>
+              <Button
+                disabled={loading}
+                onClick={async () => {
+                  console.log(listCheckBox, this.props.listTemp);
+                  let addText;
+
+                  let list = listCheckBox
+                    .map(event => {
+                      if (event.checked === true) {
+                        addText = {
+                          title: event.title,
+                          type: event.type,
+                          fieldValue: event.fieldValue
+                        };
+                        return addText;
+                      }
+                    })
+                    .filter(function(obj) {
+                      return obj;
+                    });
+                  let data = {
+                    fields: list.length > 0 ? list : ''
+                  };
+
+                  await this.props.insertProp(data);
+                  this.toggle();
+                  this.props.getListProp();
+                  let newListCheckBox = listCheckBox.map(item => {
+                    item.checked = false;
+                    return item;
                   });
-                let data = {
-                  fields: list
-                };
-
-                await this.props.insertProp(data);
-                this.toggle();
-                this.props.getListProp();
-                let newListCheckBox = listCheckBox.map(item => {
-                  item.checked = false;
-                  return item;
-                });
-                this.setState({ listCheckBox: newListCheckBox });
-                this.props.openModal({
-                  show: true,
-                  type: 'success',
-                  title: translate('modal-data.title.success'),
-                  text: translate('alert.success-properties')
-                });
-              }}
-              color="primary"
-            >
-              <Translate contentKey="properties-management.button-field" />
-            </Button>{' '}
-          </ModalFooter>
-        </Modal>
+                  this.setState({ listCheckBox: newListCheckBox });
+                  this.props.openModal({
+                    show: true,
+                    type: 'success',
+                    title: translate('modal-data.title.success'),
+                    text: translate('alert.success-properties')
+                  });
+                }}
+                color="primary"
+              >
+                <Translate contentKey="properties-management.button-field" />
+              </Button>{' '}
+            </ModalFooter>
+          </Modal>
+        </div>
       </span>
     );
   }
