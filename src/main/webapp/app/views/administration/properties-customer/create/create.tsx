@@ -184,6 +184,30 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
     this.setState({ options: deleteItem });
   };
 
+  handlerSubmit = () => {
+    let { options } = this.state;
+    let valueOption = options
+      .map(event => {
+        if ($(`input#${event.id}`).val() === '') {
+          return event.id;
+        }
+      })
+      .filter(function(obj) {
+        return obj;
+      });
+    let removeDuplicate = String(Array.from(new Set(valueOption)));
+    if (removeDuplicate.trim()) {
+      this.setState({
+        validateOption: ' * Vui lòng nhập giá trị vào Option'
+      });
+    } else {
+      this.addField();
+      this.setState({
+        validateOption: ''
+      });
+    }
+  };
+
   render() {
     let { options, selectedOptionType } = this.state;
     const { loading } = this.props;
@@ -298,30 +322,11 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
               style={{ float: 'right' }}
               disabled={loading}
               onClick={() => {
-                let valueOption = options
-                  .map(event => {
-                    if ($(`input#${event.id}`).val() === '') {
-                      return event.id;
-                    }
-                  })
-                  .filter(function(obj) {
-                    return obj;
-                  });
-                let removeDuplicate = String(Array.from(new Set(valueOption)));
-                if (removeDuplicate.trim()) {
-                  this.setState({
-                    validateOption: ' * Vui lòng nhập giá trị vào Option'
-                  });
-                } else {
-                  this.addField();
-                  this.setState({
-                    validateOption: ''
-                  });
-                }
+                this.handlerSubmit();
               }}
               color="primary"
             >
-              <Translate contentKey="properties-management.button-field" />
+              <Translate contentKey="properties-management.add-button" />
             </Button>{' '}
             <Button color="link" onClick={this.toggle} style={{ float: 'right' }}>
               <Translate contentKey="properties-management.cancel" />

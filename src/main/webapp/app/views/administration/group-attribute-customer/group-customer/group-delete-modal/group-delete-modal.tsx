@@ -104,7 +104,7 @@ export default class GroupDeleteModal extends React.PureComponent<IGroupDeleteMo
     }
 
     return (
-      <Modal isOpen={is_open} toggle={() => this.props.handleDeleteModal()}>
+      <Modal className="modal-delete" isOpen={is_open} toggle={() => this.props.handleDeleteModal()}>
         <ModalHeader>XÓA NHÓM NÀY</ModalHeader>
         <ModalBody>
           {listCheck &&

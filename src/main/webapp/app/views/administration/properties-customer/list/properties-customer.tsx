@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Table, Row, Input, Col } from 'reactstrap';
+import { Icon, Checkbox, Menu, Dropdown } from 'antd';
 import Create from '../create/create';
 import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -102,6 +103,27 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
         text: translate('alert.success-properties')
       });
     }
+  };
+
+  menu = id => {
+    return (
+      <Menu>
+        <Menu.Item
+          key="1"
+          onClick={() => {
+            this.props.openModalDel();
+            this.state.openModalDelete = this.props.openDelete;
+            this.setState({
+              openModalDelete: this.props.openDelete,
+              propsId: id,
+              ramdomID: Math.random()
+            });
+          }}
+        >
+          <Icon type="delete" /> <Translate contentKey="tag-management.delete" />
+        </Menu.Item>
+      </Menu>
+    );
   };
 
   render() {
@@ -211,9 +233,10 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
                       {value.title === 'Tên' || value.title === 'Họ' || value.title === 'Email' || value.title === 'Số điện thoại' ? (
                         ''
                       ) : (
-                        <div className="btn-group flex-btn-group-container">
-                          <Button
-                            className="buttonUpdate"
+                        <span className="btn-group flex-btn-group-container">
+                          <Dropdown.Button
+                            overlay={() => this.menu(value.id)}
+                            icon={<Icon type="caret-down" />}
                             onClick={() => {
                               this.props.openModalEdit();
                               this.state.openModalEdit = this.props.openEdit;
@@ -223,33 +246,13 @@ export class PropertiesCustomer extends React.Component<IPropertiesCustomerProps
                                 ramdomID: Math.random()
                               });
                             }}
-                            color="primary"
-                            size="sm"
                           >
-                            <FontAwesomeIcon icon="pencil-alt" />{' '}
-                            <span className="d-none d-md-inline">
-                              <Translate contentKey="entity.action.edit" />
+                            <span>
+                              <Icon type="edit" />
+                              <Translate contentKey="tag-management.edit" />
                             </span>
-                          </Button>
-                          <Button
-                            color="danger"
-                            size="sm"
-                            onClick={() => {
-                              this.props.openModalDel();
-                              this.state.openModalDelete = this.props.openDelete;
-                              this.setState({
-                                openModalDelete: this.props.openDelete,
-                                propsId: value.id,
-                                ramdomID: Math.random()
-                              });
-                            }}
-                          >
-                            <FontAwesomeIcon icon="trash" />{' '}
-                            <span className="d-none d-md-inline">
-                              <Translate contentKey="entity.action.delete" />
-                            </span>
-                          </Button>
-                        </div>
+                          </Dropdown.Button>
+                        </span>
                       )}
                     </td>
                   </tr>

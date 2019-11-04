@@ -228,7 +228,7 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
                     {' '}
                     <Translate contentKey="userManagement.home.chose-field-to-map" />
                   </label>
-                  <label style={{ float: 'right', marginTop: '-1%' }}>
+                  <label style={{ float: 'right', marginTop: '-13px' }}>
                     {' '}
                     <Create onClick={this.openModalCreate} />
                   </label>

@@ -552,8 +552,12 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                     onVisibleChange={event => this.handleVisibleChange(event, 'tag', '')}
                   >
                     {user.tags && user.tags.length > 0 ? (
-                      user.tags.map(event => {
-                        return <Tag style={{ fontSize: '16px' }}>{event.name}</Tag>;
+                      user.tags.map((event, index) => {
+                        return (
+                          <Tag style={{ fontSize: '16px' }} key={index}>
+                            {event.name}
+                          </Tag>
+                        );
                       })
                     ) : (
                       <span className="empty">

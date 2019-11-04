@@ -109,11 +109,48 @@ export class CreateGroup extends React.Component<ICreateGroupProps, ICreateGroup
     }
   };
 
+  handlerSubmit = async () => {
+    let addText;
+    let { listCheckBox } = this.state;
+    let list = listCheckBox
+      .map(event => {
+        if (event.checked === true) {
+          addText = {
+            title: event.title,
+            type: event.type,
+            fieldValue: event.fieldValue
+          };
+          return addText;
+        }
+      })
+      .filter(function(obj) {
+        return obj;
+      });
+    let data = {
+      fields: list.length > 0 ? list : ''
+    };
+
+    await this.props.insertProp(data);
+    this.toggle();
+    this.props.getListProp();
+    let newListCheckBox = listCheckBox.map(item => {
+      item.checked = false;
+      return item;
+    });
+    this.setState({ listCheckBox: newListCheckBox });
+    this.props.openModal({
+      show: true,
+      type: 'success',
+      title: translate('modal-data.title.success'),
+      text: translate('alert.success-properties')
+    });
+  };
+
   render() {
     const { listTemp, loading } = this.props;
     let { listCheckBox } = this.state;
     return (
-      <span className="d-inline-block mb-2 mr-2">
+      <span id="btn-header" className="d-inline-block mb-2 mr-2">
         <Button className="btn btn-info float-right jh-create-entity" style={{ width: '101%', marginTop: 'auto' }} onClick={this.toggle}>
           <FontAwesomeIcon icon="plus" /> <Translate contentKey="properties-management.button-template" />
         </Button>
@@ -194,41 +231,7 @@ export class CreateGroup extends React.Component<ICreateGroupProps, ICreateGroup
               <Button
                 disabled={loading}
                 onClick={async () => {
-                  console.log(listCheckBox, this.props.listTemp);
-                  let addText;
-
-                  let list = listCheckBox
-                    .map(event => {
-                      if (event.checked === true) {
-                        addText = {
-                          title: event.title,
-                          type: event.type,
-                          fieldValue: event.fieldValue
-                        };
-                        return addText;
-                      }
-                    })
-                    .filter(function(obj) {
-                      return obj;
-                    });
-                  let data = {
-                    fields: list.length > 0 ? list : ''
-                  };
-
-                  await this.props.insertProp(data);
-                  this.toggle();
-                  this.props.getListProp();
-                  let newListCheckBox = listCheckBox.map(item => {
-                    item.checked = false;
-                    return item;
-                  });
-                  this.setState({ listCheckBox: newListCheckBox });
-                  this.props.openModal({
-                    show: true,
-                    type: 'success',
-                    title: translate('modal-data.title.success'),
-                    text: translate('alert.success-properties')
-                  });
+                  this.handlerSubmit();
                 }}
                 color="primary"
               >
