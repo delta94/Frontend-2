@@ -317,10 +317,10 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     this.setState({ open_import: !open_import });
   };
 
-  toggleCreate = () => {
+  toggleCreate = async () => {
     let { open_create } = this.state;
     this.setState({ open_create: !open_create });
-    this.props.getUsers(0, 10, '', '');
+    await this.props.getUsers(0, 10, '', '');
   };
 
   saveSearchData = () => {
@@ -890,6 +890,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                         }}
                       >
                         <Translate contentKey="userManagement.first-name" />{' '}
+                        {conditionSort === 'firstName' ? '' : <Icon type="caret-down" />}
                         {conditionSort === 'firstName' ? (
                           count % 2 === 0 ? (
                             <Icon type="sort-ascending" />
@@ -907,7 +908,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                           this.setState({ conditionSort: 'lastName', count: count + 1 });
                         }}
                       >
-                        <Translate contentKey="userManagement.last-name" />
+                        <Translate contentKey="userManagement.last-name" /> {conditionSort === 'lastName' ? '' : <Icon type="caret-down" />}
                         {conditionSort === 'lastName' ? (
                           count % 2 === 0 ? (
                             <Icon type="sort-ascending" />
@@ -925,7 +926,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                           this.setState({ conditionSort: 'email', count: count + 1 });
                         }}
                       >
-                        <Translate contentKey="userManagement.email" />{' '}
+                        <Translate contentKey="userManagement.email" /> {conditionSort === 'email' ? '' : <Icon type="caret-down" />}
                         {conditionSort === 'email' ? (
                           count % 2 === 0 ? (
                             <Icon type="sort-ascending" />
@@ -944,6 +945,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                         }}
                       >
                         <Translate contentKey="userManagement.phone-number" />{' '}
+                        {conditionSort === 'mobile' ? '' : <Icon type="caret-down" />}
                         {conditionSort === 'mobile' ? (
                           count % 2 === 0 ? (
                             <Icon type="sort-ascending" />

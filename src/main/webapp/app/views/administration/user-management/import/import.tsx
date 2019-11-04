@@ -1,5 +1,7 @@
 import React from 'react';
 import './import.scss';
+import Create from 'app/views/administration/properties-customer/create/create';
+import { openModal, closeModal } from 'app/actions/modal';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps, Router, Route } from 'react-router-dom';
 import UserCategoryTag from 'app/views/administration/user-management/list/categories-tag/categories-tag';
@@ -17,9 +19,9 @@ import StepLabel from '@material-ui/core/StepLabel';
 import { IRootState } from 'app/reducers';
 import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
-import { openModal, closeModal } from 'app/actions/modal';
 import Dropzone from 'react-dropzone';
 import UserDetail from './detail/detail';
+import SweetAlert from 'sweetalert-react';
 
 const { Option } = Select;
 const { Panel } = Collapse;
@@ -83,6 +85,19 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
     }
   };
 
+  //pop-up success if add complete
+  openModalCreate = async e => {
+    if (this.props.isComplete) {
+      await this.props.getFields();
+      this.props.openModal({
+        show: true,
+        type: 'success',
+        title: translate('modal-data.title.success'),
+        text: translate('alert.success-properties')
+      });
+    }
+  };
+
   toggle = () => {
     const imageFileDown = require('app/assets/utils/images/user-mangament/image-down-files.png');
     this.setState({
@@ -123,7 +138,9 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
                           <div className="dropzone-content">
                             <Col span={24}>
                               {' '}
-                              <p>chọn file để import</p>
+                              <p>
+                                <Translate contentKey="userManagement.home.chose-file-to-import" />
+                              </p>
                               {image ? <img className="img" src={image} /> : <img style={{ width: '255px' }} src={imageFileDown} />}
                             </Col>
                             {file}
@@ -207,10 +224,14 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
             <div className="container">
               <Row className="justify-content-center">
                 <Col span={24}>
-                  <p>
+                  <label>
                     {' '}
                     <Translate contentKey="userManagement.home.chose-field-to-map" />
-                  </p>
+                  </label>
+                  <label style={{ float: 'right', marginTop: '-1%' }}>
+                    {' '}
+                    <Create onClick={this.openModalCreate} />
+                  </label>
                   <Collapse defaultActiveKey={['1']} accordion>
                     <Panel header="Cột để import" key="1" showArrow={false} extra={'Map vào trường'}>
                       {listFileHeader.fileName !== undefined
@@ -290,6 +311,7 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
     return data;
   };
 
+  //filter step
   stepTable = () => {
     let data = [
       {
@@ -339,11 +361,19 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
   }
 
   render() {
-    const { loading } = this.props;
+    const { loading, modalState } = this.props;
     let { current, fileImport } = this.state;
     const imageFileDown = require('app/assets/utils/images/user-mangament/image-down-files.png');
     return (
       <Container fluid>
+        <SweetAlert
+          title={modalState.title ? modalState.title : 'No title'}
+          confirmButtonColor=""
+          show={modalState.show ? modalState.show : false}
+          text={modalState.text ? modalState.text : 'No'}
+          type={modalState.type ? modalState.type : 'error'}
+          onConfirm={() => this.props.closeModal()}
+        />
         <Card id="card-header">
           {' '}
           <Translate contentKey="userManagement.home.createOrEditLabel" />
@@ -416,10 +446,12 @@ const mapStateToProps = (storeState: IRootState) => ({
   loading: storeState.userManagement.loading,
   listFileHeader: storeState.userManagement.headerFile,
   listFields: storeState.userManagement.listFields,
-  isOpenModal: storeState.userManagement.isOpenModalImport
+  isOpenModal: storeState.userManagement.isOpenModalImport,
+  isComplete: storeState.propertiesState.isCompelete,
+  modalState: storeState.handleModal.data
 });
 
-const mapDispatchToProps = { importFileAction, uploadFileExcel, getFields };
+const mapDispatchToProps = { importFileAction, uploadFileExcel, getFields, closeModal, openModal };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

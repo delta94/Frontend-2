@@ -38,6 +38,7 @@
     "tag-list": "Danh sách các thẻ",
     "tag-search": "Tìm kiếm thẻ",
     "none-name": "Không có tên",
-    "none-tag-data": "Không có dữ liệu thẻ"
+    "none-tag-data": "Không có dữ liệu thẻ",
+    "count-list-tag": "Danh sách tag : <strong> {{ count }} </strong> bản ghi"
   }
 }

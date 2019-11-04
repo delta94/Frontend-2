@@ -177,7 +177,7 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
   };
 
   render() {
-    let { loading, totalPages, list_tags } = this.props;
+    let { loading, totalPages, list_tags, totalElements } = this.props;
     const { listCheckBox, textSearch, openFixModal, param, singleModalData, checkAll } = this.state;
     let isDisable = true;
     listCheckBox.forEach(item => {
@@ -227,6 +227,9 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
                 />
               </div>
             </div>
+            <p className="total-list">
+              <Translate contentKey="tag-management.count-list-tag" interpolate={{ count: totalElements }} />
+            </p>
             {/* Table? */}
             <Table striped>
               <thead>
