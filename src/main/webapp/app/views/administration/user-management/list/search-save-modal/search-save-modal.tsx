@@ -79,7 +79,7 @@ export class SearchSaveModal extends React.Component<ISearchSaveModalProps, ISea
         : [];
 
     return (
-      <Modal isOpen={open_list_save}>
+      <Modal isOpen={open_list_save} id="modal-filter">
         <ModalHeader>Danh sách tìm kiếm</ModalHeader>
         <ModalBody>
           <List
