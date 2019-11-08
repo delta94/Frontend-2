@@ -112,11 +112,11 @@ class GroupCustomer extends React.Component<IGroupCustomerProps, IGroupCustomerS
       <Menu>
         <Menu.Item key="1" onClick={() => this.hanldeDeleteModal(id)}>
           <Icon type="delete" />
-          Xóa
+          <Translate contentKey="group-attribute-customer.delete" />
         </Menu.Item>
         <Menu.Item key="3" onClick={() => this.handleGroup(id, COPY_CUSTOMER_GROUP)}>
           <Icon type="copy" />
-          Sao chép
+          <Translate contentKey="group-attribute-customer.coppy" />
         </Menu.Item>
       </Menu>
     );

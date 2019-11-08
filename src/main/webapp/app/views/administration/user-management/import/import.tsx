@@ -232,7 +232,7 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
                     {' '}
                     <Create onClick={this.openModalCreate} />
                   </label>
-                  <Collapse defaultActiveKey={['1']} accordion>
+                  <Collapse defaultActiveKey={['1']} destroyInactivePanel={true}>
                     <Panel header="Cột để import" key="1" showArrow={false} extra={'Map vào trường'}>
                       {listFileHeader.fileName !== undefined
                         ? listFileHeader.headerFields.map((event, index) => {

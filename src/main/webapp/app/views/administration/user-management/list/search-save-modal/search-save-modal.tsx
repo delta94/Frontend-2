@@ -14,6 +14,7 @@ import { IRootState } from 'app/reducers';
 import { List, Typography, Icon } from 'antd';
 import LoaderAnim from 'react-loaders';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Translate, translate } from 'react-jhipster';
 
 export interface ISearchSaveModalProps extends StateProps, DispatchProps {
   open_list_save: boolean;
@@ -80,7 +81,10 @@ export class SearchSaveModal extends React.Component<ISearchSaveModalProps, ISea
 
     return (
       <Modal isOpen={open_list_save} id="modal-filter">
-        <ModalHeader>Danh sách tìm kiếm</ModalHeader>
+        <ModalHeader>
+          {' '}
+          <Translate contentKey="group-attribute-customer.list-filter" />
+        </ModalHeader>
         <ModalBody>
           <List
             style={{ color: '#3866DD' }}
@@ -98,7 +102,7 @@ export class SearchSaveModal extends React.Component<ISearchSaveModalProps, ISea
                   >
                     <FontAwesomeIcon icon="trash" />
                     <a key="list-loadmore-edit" style={{ paddingLeft: '5px' }}>
-                      Xóa
+                      <Translate contentKey="group-attribute-customer.delete" />
                     </a>
                   </span>
                 ]}
@@ -118,7 +122,7 @@ export class SearchSaveModal extends React.Component<ISearchSaveModalProps, ISea
             <div className="delete-search">
               <label style={{ margin: '0px' }}>Bạn muốn xóa: {delete_search.name}</label>
               <Button color="danger" style={{ float: 'right' }} onClick={() => this.deleteAdvancedSearch(delete_search.id)}>
-                Xóa
+                <Translate contentKey="group-attribute-customer.delete" />
               </Button>
               <Button
                 color="none"
@@ -130,7 +134,7 @@ export class SearchSaveModal extends React.Component<ISearchSaveModalProps, ISea
                 }}
                 onClick={this.removeDeleteSearch}
               >
-                Hủy
+                <Translate contentKey="group-attribute-customer.cancel" />
               </Button>
             </div>
           ) : null}
@@ -145,7 +149,7 @@ export class SearchSaveModal extends React.Component<ISearchSaveModalProps, ISea
               await this.props.getListSaveAdvancedSearchActionData();
             }}
           >
-            Đóng
+            <Translate contentKey="group-attribute-customer.close" />
           </Button>
         </ModalFooter>
       </Modal>
