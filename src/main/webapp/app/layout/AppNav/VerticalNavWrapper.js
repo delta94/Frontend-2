@@ -27,7 +27,16 @@ class Nav extends Component {
             }
             return nav
         }) : null
-
+        let guide_content = [{
+            label : "hướng dẫn",
+            to : "https://membership-userguide.herokuapp.com/"
+        }]
+        let guide = {
+            icon : 'pe-7s-plugin',
+            label : "Hướng dẫn sử dụng",
+            content : guide_content
+        }
+        nameNav ? nameNav.push(guide) : ''
         return (
             <Fragment>
                 <h5 className="app-sidebar__heading">Menu</h5>
