@@ -67,6 +67,7 @@ export interface IUserManagementState {
   idUser: string;
   textSearch: string;
   categories: string;
+  tagIds: [];
   activePage: number;
   itemsPerPage: number;
   isHide: boolean;
@@ -107,6 +108,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     idUser: '',
     textSearch: '',
     categories: '',
+    tagIds: [],
     isHide: false,
     advancedSearches: [],
     advancedSearchesData: [],
@@ -213,7 +215,8 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     this.setState({
       ...this.state,
       categories: categorieIds.join(),
-      activePage: 0
+      activePage: 0,
+      tagIds: categorieIds
     });
     this.props.getUsers(0, itemsPerPage, categorieIds.join(), textSearch);
   };
@@ -764,7 +767,22 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                 outline
                 color="info"
                 onClick={async () => {
-                  await this.props.exportFile(this.state.textSearch, this.state.categories);
+                  let { advancedSearches, logicalOperator, textSearch, tagIds } = this.state;
+                  if (advancedSearches.length <= 1) {
+                    logicalOperator = '';
+                  }
+                  let data = {
+                    quickSearch: {
+                      textSearch: textSearch,
+                      tagIds: tagIds
+                    },
+                    isAdvanced: this.state.open_search ? 1 : 0,
+                    advancedSearch: {
+                      logicalOperator: logicalOperator,
+                      advancedSearches: advancedSearches
+                    }
+                  };
+                  await this.props.exportFile(data);
                 }}
               >
                 <img src={exportImage} style={{ margin: ' 0px 5px 2px' }} />

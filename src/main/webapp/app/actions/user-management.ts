@@ -169,10 +169,10 @@ export const getListDuplicateAction = (id, email, phone) => {
   };
 };
 
-export const exportFile = (textSearch?: string, tagIds?: string) => {
+export const exportFile = data => {
   return {
     type: USER_MANAGE_ACTION_TYPES.EXPORT_FILE,
-    payload: exportFileService(textSearch, tagIds)
+    payload: exportFileService(data)
   };
 };
 export const exportFileResult = fileName => {
