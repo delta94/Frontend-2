@@ -52,7 +52,7 @@ class GroupAttributeCustomer extends React.Component<IGroupAttributeCustomerProp
     let { id_list_customer } = this.state;
 
     await this.props.getListCustomerGroupDataAction('');
-    await this.props.getListCustomerWithGroupIdDataAction('', 0, 10, id_list_customer);
+    // await this.props.getListCustomerWithGroupIdDataAction('', 0, 10, list_group_customer[0].id);
   }
 
   // Set title for modal
@@ -81,7 +81,7 @@ class GroupAttributeCustomer extends React.Component<IGroupAttributeCustomerProp
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.list_group_customer && nextProps.list_group_customer !== prevState.list_group_customer) {
+    if (nextProps.list_group_customer !== prevState.list_group_customer) {
       let { modalState } = prevState;
       let { list_group_customer } = nextProps;
       let id_list_customer = list_group_customer && list_group_customer.length > 0 ? list_group_customer[0].id : '';

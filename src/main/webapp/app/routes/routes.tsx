@@ -6,6 +6,7 @@ import { ToastContainer } from 'react-toastify';
 const Admin = lazy(() => import('app/views/administration'));
 const Pages = lazy(() => import('app/views/pages'));
 const Login = lazy(() => import('app/views/login'));
+const CampaginManagament = lazy(() => import('app/views/campaign'));
 
 const UserPages = lazy(() => import('app/DemoPages/UserPages'));
 const Applications = lazy(() => import('app/DemoPages/Applications'));
@@ -15,7 +16,7 @@ const Widgets = lazy(() => import('app/DemoPages/Widgets'));
 const Elements = lazy(() => import('app/DemoPages/Elements'));
 const Components = lazy(() => import('app/DemoPages/Components'));
 const Charts = lazy(() => import('app/DemoPages/Charts'));
-const Forms = lazy(() => import('app/views/administration/user-campaign'));
+const Usercampaign = lazy(() => import('app/views/administration/user-campaign'));
 const Tables = lazy(() => import('app/DemoPages/Tables'));
 
 const AppRoutes = () => {
@@ -39,6 +40,26 @@ const AppRoutes = () => {
       >
         <Route path="/login" component={Login} />
       </Suspense>
+
+      {/* campaign */}
+      <Suspense
+        fallback={
+          <div className="loader-container">
+            <div className="loader-container-inner">
+              <div className="text-center">{/* <Loader type="ball-pulse-rise" /> */}</div>
+              <h6 className="mt-5">
+                Please wait while we load all the Components examples
+                <small>
+                  Because this is a demonstration we load at once all the Components examples. This wouldn't happen in a real live app!
+                </small>
+              </h6>
+            </div>
+          </div>
+        }
+      >
+        <Route path="/app/views/campaign-managament" component={CampaginManagament} />
+      </Suspense>
+
       {/* Admin */}
       <Suspense
         fallback={
@@ -94,7 +115,7 @@ const AppRoutes = () => {
           </div>
         }
       >
-        <Route path="/app/views/campaigns/user-campaign" component={Forms} />
+        <Route path="/app/views/campaigns/user-campaign" component={Usercampaign} />
       </Suspense>
 
       {/* Charts */}
