@@ -10,7 +10,7 @@ import { openModal, closeModal } from 'app/actions/modal';
 import { IRootState } from 'app/reducers';
 import treeData, { data, columns } from './example-data';
 import { getTreeFolder } from 'app/actions/campaign-managament';
-import styled from 'styled-components';
+import TreeFolder from './tree-folder/tree-folder';
 import './campaign-managament.scss';
 
 const { confirm } = Modal;
@@ -18,59 +18,12 @@ const { confirm } = Modal;
 export interface ICampaginManagamentProps extends StateProps, DispatchProps {}
 
 export interface ICampaginManagamentState {
-  treeData: any[];
   hover: boolean;
 }
 
 class CampaginManagament extends React.Component<ICampaginManagamentProps, ICampaginManagamentState> {
   state: ICampaginManagamentState = {
-    treeData: this.props.list_tree_folder.map(event => {
-      let dataChildren;
-      return {
-        id: event.id,
-        title: event.name,
-        isDirectory: event.cjFolders.length > 0 ? true : false,
-        expanded: event.cjFolders.length > 0 ? true : false,
-        children:
-          event.cjFolders.length > 0
-            ? (dataChildren = event.cjFolders.map(value => {
-                return {
-                  id: value.id,
-                  title: value.name,
-                  parentId: event.id,
-                  children: value.cjFolders.length > 0 ? dataChildren : value.cjFolders
-                };
-              }))
-            : event.cjFolders
-      };
-    }),
     hover: false
-  };
-
-  componentDidMount = async () => {
-    const { getTreeFolder, list_tree_folder } = this.props;
-    let { treeData } = this.state;
-    await getTreeFolder();
-    //  list_tree_folder.map(event => {
-    //   let dataChildren;
-    //   return {
-    //     id: event.id,
-    //     title: event.name,
-    //     isDirectory: event.cjFolders.length > 0 ? true : false,
-    //     expanded: event.cjFolders.length > 0 ? true : false,
-    //     children: event.cjFolders.length > 0 ?
-    //       dataChildren = event.cjFolders.map(value => {
-    //         return {
-    //           id: value.id,
-    //           title: value.name,
-    //           parentId: event.id,
-    //           children: value.cjFolders.length > 0 ? dataChildren : value.cjFolders
-    //         }
-    //       }) : event.cjFolders
-    //   }
-    // })
-    this.setState({ treeData });
-    console.log(treeData);
   };
 
   rowSelection = {
@@ -143,7 +96,6 @@ class CampaginManagament extends React.Component<ICampaginManagamentProps, ICamp
   };
 
   render() {
-    let { treeData } = this.state;
     return (
       <Fragment>
         <div>
@@ -162,53 +114,7 @@ class CampaginManagament extends React.Component<ICampaginManagamentProps, ICamp
               </Row>
               <hr />
               <Row>
-                <div style={{ height: 700 }}>
-                  <SortableTree
-                    treeData={treeData[0]}
-                    theme={FileExplorerTheme}
-                    canDrag={({ node }) => !node.dragDisabled}
-                    canDrop={({ nextParent }) => !nextParent || nextParent.isDirectory}
-                    generateNodeProps={rowInfo => ({
-                      icons: rowInfo.node.isDirectory
-                        ? [
-                            <div
-                              style={{
-                                borderLeft: 'solid 8px gray',
-                                borderBottom: 'solid 10px gray',
-                                marginRight: 10,
-                                boxSizing: 'border-box',
-                                width: 16,
-                                height: 12,
-                                filter: rowInfo.node.expanded
-                                  ? 'drop-shadow(1px 0 0 gray) drop-shadow(0 1px 0 gray) drop-shadow(0 -1px 0 gray) drop-shadow(-1px 0 0 gray)'
-                                  : 'none',
-                                borderColor: rowInfo.node.expanded ? 'white' : 'gray'
-                              }}
-                            />
-                          ]
-                        : [
-                            <div
-                              style={{
-                                border: 'solid 1px black',
-                                fontSize: 8,
-                                textAlign: 'center',
-                                marginRight: 10,
-                                width: 12,
-                                height: 16
-                              }}
-                            >
-                              F
-                            </div>
-                          ],
-                      buttons: [
-                        <Popover content={this.contentPop(rowInfo)} title="Thông tin" trigger="click" placement="bottomLeft">
-                          <Icon type="info-circle" />
-                        </Popover>
-                      ]
-                    })}
-                    onChange={treeData => this.setState({ treeData })}
-                  />
-                </div>
+                <TreeFolder />
               </Row>
             </Col>
             <Col span={18} className="h-100 bg-white  align-items-center">
