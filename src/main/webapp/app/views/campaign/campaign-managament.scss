@@ -1,6 +1,5 @@
 .row-main {
   .row-sort-tree {
-    text-align: center;
     display: list-item;
     font-family: Roboto;
     font-style: normal;
@@ -20,6 +19,12 @@
   }
   .ant-spin-nested-loading {
     border: solid 1px rgba(0, 0, 0, 0.1);
+  }
+  .rstcustom__rowLabel {
+    font-size: 24px;
+  }
+  .rstcustom__expandButton {
+    top: 20px;
   }
 }
 .header-row {

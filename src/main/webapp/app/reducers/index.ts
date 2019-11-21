@@ -6,6 +6,7 @@ import authentication, { AuthenticationState } from './authentication';
 // import applicationProfile, { ApplicationProfileState } from './application-profile';
 import userManagement, { UserManagementState } from './user-management';
 import userCampaign, { UserCampaignState } from './user-campaign';
+import campaignManagament, { HandleCampaignManagament } from './campaign-managament';
 import landingPage, { LandingPageState } from './landing-page';
 import themeOptions, { ThemeOptionsState } from './theme-options';
 import navigationInfo, { NavigationInfo } from './navigation-info';
@@ -32,6 +33,7 @@ export interface IRootState {
   readonly tagDataState: TagDataState;
   readonly propertiesState: PropertiesDataState;
   readonly groupCustomerState: GroupCustomerState;
+  readonly campaignManagament: HandleCampaignManagament;
 }
 
 const rootReducer = combineReducers<IRootState>({
@@ -48,7 +50,8 @@ const rootReducer = combineReducers<IRootState>({
   loadingState,
   tagDataState,
   propertiesState,
-  groupCustomerState
+  groupCustomerState,
+  campaignManagament
 });
 
 export default rootReducer;
