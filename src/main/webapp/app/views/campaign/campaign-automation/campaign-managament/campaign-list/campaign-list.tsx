@@ -8,7 +8,7 @@ import Loader from 'react-loader-advanced';
 import ReactPaginate from 'react-paginate';
 import { getListCampaignInfolderDataAction } from 'app/actions/campaign-managament';
 import './campaign-list.scss';
-import { Input, Icon, Checkbox, Menu, Dropdown } from 'antd';
+import { Input, Icon, Checkbox, Menu, Dropdown, Tag } from 'antd';
 import CampaignTag from './campaign-tag/campaign-tag';
 
 interface ICampaignListProps extends StateProps, DispatchProps {
@@ -77,29 +77,35 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
           <div>
             {/* Block out */}
             <div className="block-out">
-              <div className="search">
-                <Input
-                  id="searchText"
-                  prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  value={textSearch}
-                  placeholder="Tìm kiếm chiến dịch"
-                  onChange={this.onchangeTextSearch}
-                  onPressEnter={() => {
-                    this.getListCampaignInfolderDataAction(folderId, textSearch, strTagId, 0, 4);
-                  }}
-                />
-              </div>
-
-              <div className="input-search_group" style={{ paddingRight: '30px' }}>
-                <label className="input-search_label">
-                  <span>
-                    <Translate contentKey="userManagement.card-tag" />
-                  </span>
-                </label>
-                <CampaignTag handleChange={this.handleChange} />
-              </div>
+              <Row>
+                <Col span={4}>
+                  <label className="total-list">{total} chiến dịch</label>
+                </Col>
+                <Col span={8}>
+                  <Input
+                    id="searchText"
+                    prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                    value={textSearch}
+                    placeholder="Tìm kiếm chiến dịch"
+                    onChange={this.onchangeTextSearch}
+                    onPressEnter={() => {
+                      this.getListCampaignInfolderDataAction(folderId, textSearch, strTagId, 0, 4);
+                    }}
+                  />
+                </Col>
+                <Col span={8}>
+                  <div className="input-search_group">
+                    <label className="input-search_label">
+                      <Translate contentKey="userManagement.card-tag" />
+                    </label>
+                    <CampaignTag handleChange={this.handleChange} />
+                  </div>
+                </Col>
+                <Col span={4} style={{ textAlign: 'right' }}>
+                  <Button color="primary">Tạo mới chiến dịch</Button>
+                </Col>
+              </Row>
             </div>
-            <p className="total-list">{total} chiến dịch</p>
             {/* Table? */}
             <Table striped>
               <thead>
@@ -129,7 +135,13 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                         </td>
                         <td colSpan={30} id="name">
                           <p> {item.name}</p>
-                          <p> {item.tags}</p>
+                          {item.tags.split(',').map((value, index) => {
+                            return (
+                              <Tag color="blue" key={index}>
+                                {value}
+                              </Tag>
+                            );
+                          })}
                         </td>
                         <td colSpan={20} id="status">
                           {item.status}
@@ -153,6 +165,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
             {/* Blockout */}
           </div>
         </Loader>
+        <br />
         <div className="navigation ">
           {totalPages && totalPages >= 2 ? (
             <Row className="justify-content-center" style={{ float: 'right' }}>
