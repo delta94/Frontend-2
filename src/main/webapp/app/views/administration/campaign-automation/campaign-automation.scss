@@ -1,0 +1,34 @@
+#campaing-auto {
+  font-size: 18px;
+  background: white;
+  margin: 1px -9px 0px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+}
+#title-campaign-auto {
+  height: 60px;
+  margin: 3px 0px 12px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 23px;
+}
+
+.body-campaign-auto {
+  background: white;
+  .gutter-example .ant-row > div {
+    background: transparent;
+    border: 0;
+  }
+  .gutter-box {
+    background: #00a0e9;
+    padding: 5px 0;
+    height: 75px;
+    font-size: 18px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+  }
+}

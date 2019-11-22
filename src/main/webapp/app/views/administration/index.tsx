@@ -8,6 +8,7 @@ import TagManagament from './tag-mangament/tag-mangament';
 import PropertiesCustomer from './properties-customer';
 import PrivateRoute from '../../common/auth/private-route';
 import GroupAttributeCustomer from './group-attribute-customer/group-atrribute-customer';
+import CampaginAuto from 'app/views/administration/campaign-automation/campaign-automation';
 
 const Routes = ({ match }) => (
   <Fragment>
@@ -16,6 +17,7 @@ const Routes = ({ match }) => (
       <AppSidebar />
       <div className="app-main__outer">
         <div className="app-main__inner">
+          <ErrorBoundaryRoute path={`${match.url}/campaign-auto`} component={CampaginAuto} />
           <ErrorBoundaryRoute path={`${match.url}/user-management`} component={UserManagement} />
           <ErrorBoundaryRoute path={`${match.url}/user-campaign`} component={CampaignManagement} />
           <ErrorBoundaryRoute path={`${match.url}/tag-management`} component={TagManagament} />
