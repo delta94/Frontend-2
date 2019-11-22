@@ -6,7 +6,8 @@ import SortableTree from 'react-sortable-tree';
 import FileExplorerTheme from 'react-sortable-tree-theme-file-explorer';
 import { openModal, closeModal } from 'app/actions/modal';
 import { IRootState } from 'app/reducers';
-import { getTreeFolder } from 'app/actions/campaign-managament';
+import { getTreeFolder, insertTreeFolder, editTreeFolder, deleteTreefolder, moveTreeFolder } from 'app/actions/campaign-managament';
+import $ from 'jquery';
 import './tree-folder.scss';
 
 const { confirm } = Modal;
@@ -25,50 +26,43 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
   };
 
   componentDidMount = async () => {
-    const { getTreeFolder, list_tree_folder } = this.props;
-    let { treeData } = this.state;
+    const { getTreeFolder } = this.props;
     await getTreeFolder();
-    treeData = list_tree_folder.map(event => {
-      let dataChildren;
+    await this.getData();
+  };
+  getData() {
+    const { list_tree_folder } = this.props;
+    let { treeData } = this.state;
+
+    let data = list_tree_folder.map(event => {
+      let dataChildren = event.cjFolders.map(value => {
+        let dataChilMin = value.cjFolders.map(item => {
+          return {
+            id: item.id,
+            title: item.name,
+            isDirectory: item.cjFolders.length > 0 ? true : false,
+            parentId: item.id
+          };
+        });
+        return {
+          id: value.id,
+          title: value.name,
+          isDirectory: value.cjFolders.length > 0 ? true : false,
+          parentId: event.id,
+          children: dataChilMin
+        };
+      });
       return {
         id: event.id,
         title: event.name,
         isDirectory: event.cjFolders.length > 0 ? true : false,
         expanded: event.cjFolders.length > 0 ? true : false,
-        children:
-          event.cjFolders.length > 0
-            ? (dataChildren = event.cjFolders.map(value => {
-                return {
-                  id: value.id,
-                  title: value.name,
-                  parentId: event.id,
-                  children: value.cjFolders.length > 0 ? dataChildren : value.cjFolders
-                };
-              }))
-            : event.cjFolders
+        children: event.cjFolders.length > 0 ? dataChildren : event.cjFolders
       };
     });
-    this.setState({ treeData });
-    console.log(treeData);
-  };
-
-  shouldComponentUpdate(nextProps, nextState) {
-    let { treeData } = this.state;
-    if (treeData != nextState.treeData) {
-      return true;
-    }
-    return false;
+    treeData = data;
+    this.setState({ treeData: data });
   }
-
-  rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-    },
-    getCheckboxProps: record => ({
-      disabled: record.name === 'Disabled User', // Column configuration not to be checked
-      name: record.name
-    })
-  };
 
   alertNodeInfo = ({ node, path, treeIndex }) => {
     const objectString = Object.keys(node)
@@ -86,18 +80,34 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
   contentPop = rowInfo => (
     <Row>
       <Row>
-        <Button type="primary" onClick={() => this.createFolder(rowInfo)}>
+        <Button type="primary" onClick={() => this.createFolder(rowInfo, 'create')}>
           {' '}
           Thêm mới
         </Button>
       </Row>
       <hr />
       <Row>
-        <Button type="ghost"> Đổi tên</Button>
+        <Button
+          type="ghost"
+          onClick={() => {
+            this.createFolder(rowInfo, 'edit');
+          }}
+        >
+          {' '}
+          Đổi tên
+        </Button>
       </Row>
       <hr />
       <Row>
-        <Button type="danger"> Xóa</Button>
+        <Button
+          type="danger"
+          onClick={() => {
+            this.createFolder(rowInfo, 'delete');
+          }}
+        >
+          {' '}
+          Xóa
+        </Button>
       </Row>
     </Row>
   );
@@ -110,76 +120,184 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
         </Col>
         <Col span={18}>
           {' '}
-          <Input />{' '}
+          <Input id="nameTree" />{' '}
         </Col>
       </Row>
     );
     return content;
   }
 
-  createFolder = (event?: any) => {
-    console.log(event);
+  createFolder = async (event, option) => {
+    const { insertTreeFolder, getTreeFolder, editTreeFolder, deleteTreefolder } = this.props;
+
+    switch (option) {
+      case 'create':
+        confirm({
+          title: 'Thêm mới',
+          content: this.contentCreateFolder(),
+          onOk: async () => {
+            let data = {
+              name: $(`#nameTree`).val(),
+              parentId: event ? event.node.id : null
+            };
+            await insertTreeFolder(data);
+            await getTreeFolder();
+            await this.getData();
+          },
+          onCancel() {}
+        });
+        break;
+      case 'edit':
+        confirm({
+          title: 'Chỉnh sửa',
+          content: this.contentCreateFolder(),
+          onOk: async () => {
+            let data = {
+              name: {
+                name: $(`#nameTree`).val()
+              },
+              id: event ? event.node.id : null
+            };
+            await editTreeFolder(data);
+            await getTreeFolder();
+            await this.getData();
+          },
+          onCancel() {}
+        });
+        break;
+
+      case 'delete':
+        confirm({
+          title: 'Xóa',
+          content: 'Bạn thực sự muốn xóa ?',
+          onOk: async () => {
+            let data = event ? event.node.id : null;
+            await deleteTreefolder(data);
+            await getTreeFolder();
+            await this.getData();
+          },
+          onCancel() {}
+        });
+
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  onChangeData = treeDataChane => {
+    let { treeData } = this.state;
+    let nameFolderMove;
+    let headerFolder;
+    let changeData = treeData.filter(val => !treeDataChane.includes(val));
+    if (changeData.length === 2) {
+      nameFolderMove = changeData
+        .map(event => {
+          if (event.isDirectory === false) {
+            return {
+              name: event.title,
+              id: event.id
+            };
+          }
+        })
+        .filter(Boolean);
+
+      headerFolder = changeData
+        .map(event => {
+          if (event.isDirectory === true) {
+            return {
+              name: event.title,
+              id: event.id
+            };
+          }
+        })
+        .filter(Boolean);
+
+      this.confirmChangeData(nameFolderMove, headerFolder, treeDataChane);
+    }
+  };
+
+  confirmChangeData = async (nameFolderMove, headerFolder, treeDataChane) => {
+    const { moveTreeFolder } = this.props;
     confirm({
-      title: 'Do you want to delete these items?',
-      content: this.contentCreateFolder(),
-      onOk: () => {
-        console.log('a');
+      title: 'Di chuyển',
+      content: `bạn muốn di chuyên ${nameFolderMove[0].name} vào thư mục ${headerFolder[0].name}`,
+      onOk: async () => {
+        let data = {
+          idChil: nameFolderMove[0].id,
+          idParent: headerFolder[0].id
+        };
+        await moveTreeFolder(data);
+        this.setState({ treeData: treeDataChane });
       },
       onCancel() {}
     });
   };
 
   render() {
-    const { list_tree_folder } = this.props;
     let { treeData } = this.state;
     return (
-      <div style={{ height: 700 }}>
-        <SortableTree
-          treeData={treeData ? treeData : []}
-          theme={FileExplorerTheme}
-          canDrag={({ node }) => !node.dragDisabled}
-          canDrop={({ nextParent }) => !nextParent || nextParent.isDirectory}
-          generateNodeProps={rowInfo => ({
-            icons: rowInfo.node.isDirectory
-              ? [
-                  <div
-                    style={{
-                      borderLeft: 'solid 8px gray',
-                      borderBottom: 'solid 10px gray',
-                      marginRight: 10,
-                      boxSizing: 'border-box',
-                      width: 16,
-                      height: 12,
-                      filter: rowInfo.node.expanded
-                        ? 'drop-shadow(1px 0 0 gray) drop-shadow(0 1px 0 gray) drop-shadow(0 -1px 0 gray) drop-shadow(-1px 0 0 gray)'
-                        : 'none',
-                      borderColor: rowInfo.node.expanded ? 'white' : 'gray'
-                    }}
-                  />
+      <Fragment>
+        <Row className="row-sort-tree">
+          <Col style={{ textAlign: 'center' }} span={12}>
+            <label>THƯ MỤC</label>
+          </Col>
+          <Col style={{ textAlign: 'right' }} span={12}>
+            <Icon style={{ marginRight: '5%', fontSize: '27px' }} onClick={() => this.createFolder(null, 'create')} type="folder-add" />
+          </Col>
+        </Row>
+        <hr />
+        <Row>
+          <div style={{ height: 700 }}>
+            <SortableTree
+              treeData={treeData ? treeData : []}
+              theme={FileExplorerTheme}
+              canDrag={({ node }) => !node.dragDisabled}
+              canDrop={({ nextParent }) => !nextParent || nextParent.isDirectory}
+              generateNodeProps={rowInfo => ({
+                icons: rowInfo.node.isDirectory
+                  ? [
+                      <div
+                        style={{
+                          borderLeft: 'solid 8px gray',
+                          borderBottom: 'solid 10px gray',
+                          marginRight: 10,
+                          boxSizing: 'border-box',
+                          width: 16,
+                          height: 12,
+                          filter: rowInfo.node.expanded
+                            ? 'drop-shadow(1px 0 0 gray) drop-shadow(0 1px 0 gray) drop-shadow(0 -1px 0 gray) drop-shadow(-1px 0 0 gray)'
+                            : 'none',
+                          borderColor: rowInfo.node.expanded ? 'white' : 'gray'
+                        }}
+                      />
+                    ]
+                  : [
+                      <div
+                        style={{
+                          border: 'solid 1px black',
+                          fontSize: 8,
+                          textAlign: 'center',
+                          marginRight: 10,
+                          width: 12,
+                          height: 16
+                        }}
+                      >
+                        F
+                      </div>
+                    ],
+                buttons: [
+                  <Popover content={this.contentPop(rowInfo)} title="Thông tin" trigger="click" placement="bottomLeft">
+                    <Icon type="info-circle" />
+                  </Popover>
                 ]
-              : [
-                  <div
-                    style={{
-                      border: 'solid 1px black',
-                      fontSize: 8,
-                      textAlign: 'center',
-                      marginRight: 10,
-                      width: 12,
-                      height: 16
-                    }}
-                  >
-                    F
-                  </div>
-                ],
-            buttons: [
-              <Popover content={this.contentPop(rowInfo)} title="Thông tin" trigger="click" placement="bottomLeft">
-                <Icon type="info-circle" />
-              </Popover>
-            ]
-          })}
-          onChange={treeData => this.setState({ treeData })}
-        />
-      </div>
+              })}
+              onChange={treeData => this.onChangeData(treeData)}
+            />
+          </div>
+        </Row>
+      </Fragment>
     );
   }
 }
@@ -189,7 +307,15 @@ const mapStateToProps = ({ campaignManagament }: IRootState) => ({
   list_tree_folder: campaignManagament.tree_folder
 });
 
-const mapDispatchToProps = { openModal, closeModal, getTreeFolder };
+const mapDispatchToProps = {
+  openModal,
+  closeModal,
+  getTreeFolder,
+  insertTreeFolder,
+  editTreeFolder,
+  deleteTreefolder,
+  moveTreeFolder
+};
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

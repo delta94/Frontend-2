@@ -33,15 +33,15 @@ interface ICampaign {
   ];
 }
 
-const initialModalState = {
+const initialCampaignManagament = {
   tree_folder: [] as IDataTreeFolder[],
   campaign: {} as ICampaign,
   loading: false
 };
 
-export type HandleCampaignManagament = typeof initialModalState;
+export type HandleCampaignManagament = typeof initialCampaignManagament;
 
-export default (state = initialModalState, action) => {
+export default (state = initialCampaignManagament, action) => {
   switch (action.type) {
     case REQUEST(CAMPAIGN_MANAGAMENT.GET_TREE_FOLDER):
       return {
