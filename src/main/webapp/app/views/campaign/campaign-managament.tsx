@@ -11,6 +11,7 @@ import { IRootState } from 'app/reducers';
 import treeData, { data, columns } from './example-data';
 import { getTreeFolder } from 'app/actions/campaign-managament';
 import TreeFolder from './tree-folder/tree-folder';
+import Campaign from './campaign-list/campaign-list';
 import './campaign-managament.scss';
 
 const { confirm } = Modal;
@@ -118,21 +119,7 @@ class CampaginManagament extends React.Component<ICampaginManagamentProps, ICamp
               </Row>
             </Col>
             <Col span={18} className="h-100 bg-white  align-items-center">
-              <Row>
-                <Col span={6} style={{ padding: '20px' }}>
-                  <label>22 Chiến dịch</label>
-                </Col>
-                <Col span={18} style={{ padding: '20px' }}>
-                  <Input style={{ width: '200px' }} placeholder="tìm kiếm" />
-                  <Button type="primary" style={{ float: 'right' }}>
-                    {' '}
-                    Tạo mới chiến dịch
-                  </Button>
-                </Col>
-              </Row>
-              <Row>
-                <Table rowSelection={this.rowSelection} columns={columns} dataSource={data} />
-              </Row>
+              <Campaign folder_id_choose={'1'} />
             </Col>
           </Row>
         </div>

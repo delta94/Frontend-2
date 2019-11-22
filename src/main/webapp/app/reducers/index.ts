@@ -15,6 +15,7 @@ import loadingState, { LoadingState } from './loading';
 import tagDataState, { TagDataState } from './tag-management';
 import propertiesState, { PropertiesDataState } from './properties-customer';
 import groupCustomerState, { GroupCustomerState } from './group-attribute-customer';
+import cjTagState, { CjTagState } from './cj-tag';
 
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
@@ -34,6 +35,7 @@ export interface IRootState {
   readonly propertiesState: PropertiesDataState;
   readonly groupCustomerState: GroupCustomerState;
   readonly campaignManagament: HandleCampaignManagament;
+  readonly cjTagState: CjTagState;
 }
 
 const rootReducer = combineReducers<IRootState>({
@@ -51,7 +53,8 @@ const rootReducer = combineReducers<IRootState>({
   tagDataState,
   propertiesState,
   groupCustomerState,
-  campaignManagament
+  campaignManagament,
+  cjTagState
 });
 
 export default rootReducer;
