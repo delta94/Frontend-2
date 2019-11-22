@@ -16,47 +16,57 @@ interface ICampaignListProps extends StateProps, DispatchProps {
 }
 
 interface ICampaignListState {
+  activePage: number;
+  itemsPerPage: number;
   textSearch?: string;
-  tagIds: [];
+  strTagId?: string;
 }
 
 class CampaignList extends React.Component<ICampaignListProps, ICampaignListState> {
   state: ICampaignListState = {
+    activePage: 0,
+    itemsPerPage: 4,
     textSearch: '',
-    tagIds: []
+    strTagId: ''
   };
 
   componentDidMount() {
-    let { tagIds, textSearch } = this.state;
+    let { strTagId, textSearch, activePage, itemsPerPage } = this.state;
     let folderId = this.props.folder_id_choose;
-    localStorage.setItem('pageIndex', '0');
-    this.getListCampaignInfolderDataAction(folderId, textSearch, tagIds, 0, 4);
+    this.getListCampaignInfolderDataAction(folderId, textSearch, strTagId, activePage, itemsPerPage);
   }
 
-  getListCampaignInfolderDataAction = (folderId, textSearch, tagIds, pageIndex, pageSize) => {
-    this.props.getListCampaignInfolderDataAction(folderId, textSearch, tagIds, pageIndex, pageSize);
+  getListCampaignInfolderDataAction = (folderId, textSearch, strTagId, pageIndex, pageSize) => {
+    this.props.getListCampaignInfolderDataAction(folderId, textSearch, strTagId, pageIndex, pageSize);
   };
 
   onchangeTextSearch = event => {
-    this.setState({ textSearch: event.target.value });
+    this.setState({
+      ...this.state,
+      textSearch: event.target.value
+    });
   };
 
   setPageIndex = pageIndex => {
-    let { tagIds, textSearch } = this.state;
+    let { strTagId, textSearch, itemsPerPage } = this.state;
     let folderId = this.props.folder_id_choose;
-    this.getListCampaignInfolderDataAction(folderId, textSearch, tagIds, parseInt(pageIndex), 4);
+    this.getListCampaignInfolderDataAction(folderId, textSearch, strTagId, parseInt(pageIndex), itemsPerPage);
   };
 
   handleChange = cjTags => {
     let cjTagIds = cjTags.map((item, index) => item.id);
     let folderId = this.props.folder_id_choose;
-    const { textSearch } = this.state;
-    this.props.getListCampaignInfolderDataAction(folderId, textSearch, cjTagIds.join(), 0, 4);
+    const { textSearch, activePage, itemsPerPage } = this.state;
+    this.setState({
+      ...this.state,
+      strTagId: cjTagIds.join()
+    });
+    this.props.getListCampaignInfolderDataAction(folderId, textSearch, cjTagIds.join(), activePage, itemsPerPage);
   };
 
   render() {
     let { campaign_list, total } = this.props;
-    let { textSearch, tagIds } = this.state;
+    let { textSearch, strTagId } = this.state;
     let folderId = this.props.folder_id_choose;
     let totalPages = Math.ceil(total / 4);
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
@@ -75,7 +85,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                   placeholder="Tìm kiếm chiến dịch"
                   onChange={this.onchangeTextSearch}
                   onPressEnter={() => {
-                    this.getListCampaignInfolderDataAction(folderId, textSearch, tagIds, 0, 4);
+                    this.getListCampaignInfolderDataAction(folderId, textSearch, strTagId, 0, 4);
                   }}
                 />
               </div>
@@ -103,7 +113,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                   <th colSpan={20} id="status">
                     Trạng thái
                   </th>
-                  <th colSpan={30} id="description">
+                  <th colSpan={30} id="contact-number">
                     Kết quả
                   </th>
                   <th colSpan={15} />
@@ -121,10 +131,13 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                           <p> {item.name}</p>
                           <p> {item.tags}</p>
                         </td>
-                        <td colSpan={20}>{item.status}</td>
-                        <td colSpan={30} id="">
+                        <td colSpan={20} id="status">
+                          {item.status}
+                        </td>
+                        <td colSpan={30} id="contact-number">
                           <span> {item.contactNumbers}</span>
                         </td>
+                        <td colSpan={15} />
                       </tr>
                     );
                   })
@@ -142,7 +155,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
         </Loader>
         <div className="navigation ">
           {totalPages && totalPages >= 2 ? (
-            <Row className="justify-content-center">
+            <Row className="justify-content-center" style={{ float: 'right' }}>
               <ReactPaginate
                 previousLabel={'<'}
                 nextLabel={'>'}
