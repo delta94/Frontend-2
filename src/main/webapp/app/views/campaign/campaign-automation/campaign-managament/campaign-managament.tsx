@@ -7,7 +7,6 @@ import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import { openModal, closeModal } from 'app/actions/modal';
 import { IRootState } from 'app/reducers';
-import treeData, { data, columns } from './example-data';
 import { getTreeFolder, insertTreeFolder } from 'app/actions/campaign-managament';
 import TreeFolder from './tree-folder/tree-folder';
 import Campaign from './campaign-list/campaign-list';

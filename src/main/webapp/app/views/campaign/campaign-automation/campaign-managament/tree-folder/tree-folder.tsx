@@ -49,13 +49,15 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
           return {
             id: item.id,
             title: item.name,
+            expanded: item.cjFolders.length > 0 ? true : false,
             isDirectory: item.cjFolders.length > 0 ? true : false,
-            parentId: item.id
+            parentId: value.id
           };
         });
         return {
           id: value.id,
           title: value.name,
+          expanded: value.cjFolders.length > 0 ? true : false,
           isDirectory: value.cjFolders.length > 0 ? true : false,
           parentId: event.id,
           children: dataChilMin
@@ -87,49 +89,52 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
   };
 
   contentPop = rowInfo => (
-    <Row>
+    <Row style={{ width: '220px' }}>
       <Row>
-        <Button type="primary" onClick={() => this.createFolder(rowInfo, 'create')}>
-          {' '}
-          Thêm mới
-        </Button>
+        <Col span={12}>
+          <Button
+            type="primary"
+            ghost
+            onClick={() => {
+              this.createFolder(rowInfo, 'getlist');
+            }}
+          >
+            {' '}
+            Xem thông tin
+          </Button>
+        </Col>
+        <Col span={12} style={{ textAlign: 'right' }}>
+          <Button
+            type="ghost"
+            onClick={() => {
+              this.createFolder(rowInfo, 'edit');
+            }}
+          >
+            {' '}
+            Đổi tên
+          </Button>
+        </Col>
       </Row>
+
       <hr />
       <Row>
-        <Button
-          type="ghost"
-          onClick={() => {
-            this.createFolder(rowInfo, 'edit');
-          }}
-        >
-          {' '}
-          Đổi tên
-        </Button>
-      </Row>
-      <hr />
-      <Row>
-        <Button
-          type="danger"
-          onClick={() => {
-            this.createFolder(rowInfo, 'delete');
-          }}
-        >
-          {' '}
-          Xóa
-        </Button>
-      </Row>
-      <hr />
-      <Row>
-        <Button
-          type="primary"
-          ghost
-          onClick={() => {
-            this.createFolder(rowInfo, 'getlist');
-          }}
-        >
-          {' '}
-          Xem thông tin
-        </Button>
+        <Col span={12}>
+          <Button type="primary" onClick={() => this.createFolder(rowInfo, 'create')}>
+            {' '}
+            Thêm mới
+          </Button>
+        </Col>
+        <Col span={12} style={{ textAlign: 'right' }}>
+          <Button
+            type="danger"
+            onClick={() => {
+              this.createFolder(rowInfo, 'delete');
+            }}
+          >
+            {' '}
+            Xóa
+          </Button>
+        </Col>
       </Row>
     </Row>
   );
