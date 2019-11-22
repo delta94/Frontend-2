@@ -19,26 +19,20 @@ export interface ICampaginManagamentProps extends StateProps, DispatchProps {}
 
 export interface ICampaginManagamentState {
   hover: boolean;
-  nametree: string;
+  idTree: string;
 }
 
 class CampaginManagament extends React.Component<ICampaginManagamentProps, ICampaginManagamentState> {
   state: ICampaginManagamentState = {
     hover: false,
-    nametree: ''
+    idTree: ''
   };
-
-  rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-    },
-    getCheckboxProps: record => ({
-      disabled: record.name === 'Disabled User', // Column configuration not to be checked
-      name: record.name
-    })
+  getId = idTree => {
+    this.setState({ idTree });
   };
 
   render() {
+    let { idTree } = this.state;
     return (
       <Fragment>
         <div>
@@ -47,10 +41,10 @@ class CampaginManagament extends React.Component<ICampaginManagamentProps, ICamp
           </Row>
           <Row className="row-main">
             <Col span={6} className="d-none d-lg-block h-100 bg-white  align-items-center">
-              <TreeFolder />
+              <TreeFolder onClick={this.getId} />
             </Col>
             <Col span={18} className="h-100 bg-white  align-items-center">
-              <Campaign folder_id_choose={'1'} />
+              <Campaign folder_id_choose={idTree} />
             </Col>
           </Row>
         </div>
