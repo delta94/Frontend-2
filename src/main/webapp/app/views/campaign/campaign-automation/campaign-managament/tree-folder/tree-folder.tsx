@@ -6,13 +6,22 @@ import SortableTree from 'react-sortable-tree';
 import FileExplorerTheme from 'react-sortable-tree-theme-file-explorer';
 import { openModal, closeModal } from 'app/actions/modal';
 import { IRootState } from 'app/reducers';
-import { getTreeFolder, insertTreeFolder, editTreeFolder, deleteTreefolder, moveTreeFolder } from 'app/actions/campaign-managament';
+import {
+  getTreeFolder,
+  insertTreeFolder,
+  editTreeFolder,
+  deleteTreefolder,
+  moveTreeFolder,
+  getListCampaignInfolderDataAction
+} from 'app/actions/campaign-managament';
 import $ from 'jquery';
 import './tree-folder.scss';
 
 const { confirm } = Modal;
 
-export interface ITreeFolderProps extends StateProps, DispatchProps {}
+export interface ITreeFolderProps extends StateProps, DispatchProps {
+  onClick: Function;
+}
 
 export interface ITreeFolderState {
   treeData: any[];
@@ -40,13 +49,15 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
           return {
             id: item.id,
             title: item.name,
+            expanded: item.cjFolders.length > 0 ? true : false,
             isDirectory: item.cjFolders.length > 0 ? true : false,
-            parentId: item.id
+            parentId: value.id
           };
         });
         return {
           id: value.id,
           title: value.name,
+          expanded: value.cjFolders.length > 0 ? true : false,
           isDirectory: value.cjFolders.length > 0 ? true : false,
           parentId: event.id,
           children: dataChilMin
@@ -78,36 +89,52 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
   };
 
   contentPop = rowInfo => (
-    <Row>
+    <Row style={{ width: '220px' }}>
       <Row>
-        <Button type="primary" onClick={() => this.createFolder(rowInfo, 'create')}>
-          {' '}
-          Thêm mới
-        </Button>
+        <Col span={12}>
+          <Button
+            type="primary"
+            ghost
+            onClick={() => {
+              this.createFolder(rowInfo, 'getlist');
+            }}
+          >
+            {' '}
+            Xem thông tin
+          </Button>
+        </Col>
+        <Col span={12} style={{ textAlign: 'right' }}>
+          <Button
+            type="ghost"
+            onClick={() => {
+              this.createFolder(rowInfo, 'edit');
+            }}
+          >
+            {' '}
+            Đổi tên
+          </Button>
+        </Col>
       </Row>
+
       <hr />
       <Row>
-        <Button
-          type="ghost"
-          onClick={() => {
-            this.createFolder(rowInfo, 'edit');
-          }}
-        >
-          {' '}
-          Đổi tên
-        </Button>
-      </Row>
-      <hr />
-      <Row>
-        <Button
-          type="danger"
-          onClick={() => {
-            this.createFolder(rowInfo, 'delete');
-          }}
-        >
-          {' '}
-          Xóa
-        </Button>
+        <Col span={12}>
+          <Button type="primary" onClick={() => this.createFolder(rowInfo, 'create')}>
+            {' '}
+            Thêm mới
+          </Button>
+        </Col>
+        <Col span={12} style={{ textAlign: 'right' }}>
+          <Button
+            type="danger"
+            onClick={() => {
+              this.createFolder(rowInfo, 'delete');
+            }}
+          >
+            {' '}
+            Xóa
+          </Button>
+        </Col>
       </Row>
     </Row>
   );
@@ -128,7 +155,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
   }
 
   createFolder = async (event, option) => {
-    const { insertTreeFolder, getTreeFolder, editTreeFolder, deleteTreefolder } = this.props;
+    const { insertTreeFolder, getTreeFolder, editTreeFolder, deleteTreefolder, getListCampaignInfolderDataAction, onClick } = this.props;
 
     switch (option) {
       case 'create':
@@ -136,6 +163,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
           title: 'Thêm mới',
           content: this.contentCreateFolder(),
           onOk: async () => {
+            console.log(event ? event.node.id : null);
             let data = {
               name: $(`#nameTree`).val(),
               parentId: event ? event.node.id : null
@@ -179,6 +207,10 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
           onCancel() {}
         });
 
+        break;
+      case 'getlist':
+        getListCampaignInfolderDataAction(event ? event.node.id : null, '', '', 0, 4);
+        onClick(event ? event.node.id : null);
         break;
 
       default:
@@ -314,7 +346,8 @@ const mapDispatchToProps = {
   insertTreeFolder,
   editTreeFolder,
   deleteTreefolder,
-  moveTreeFolder
+  moveTreeFolder,
+  getListCampaignInfolderDataAction
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
