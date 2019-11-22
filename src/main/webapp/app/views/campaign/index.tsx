@@ -5,7 +5,6 @@ import CampaginManagament from './campaign-automation/campaign-managament/campai
 const Routes = ({ match }) => (
   <Fragment>
     <ErrorBoundaryRoute path={`${match.url}`} exact={true} component={CampaginManagament} />
-    <ErrorBoundaryRoute path={`${match.url}/manage`} exact={true} component={CampaginManagament} />
   </Fragment>
 );
 

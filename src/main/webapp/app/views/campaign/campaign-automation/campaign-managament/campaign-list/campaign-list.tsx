@@ -33,7 +33,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
   componentDidMount() {
     let { strTagId, textSearch, activePage, itemsPerPage } = this.state;
     let folderId = this.props.folder_id_choose;
-    this.getListCampaignInfolderDataAction(folderId, textSearch, strTagId, activePage, itemsPerPage);
+    this.getListCampaignInfolderDataAction(folderId ? folderId : 1, textSearch, strTagId, activePage, itemsPerPage);
   }
 
   getListCampaignInfolderDataAction = (folderId, textSearch, strTagId, pageIndex, pageSize) => {
