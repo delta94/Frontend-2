@@ -50,7 +50,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
   setPageIndex = pageIndex => {
     let { strTagId, textSearch, itemsPerPage } = this.state;
     let folderId = this.props.folder_id_choose;
-    this.getListCampaignInfolderDataAction(folderId, textSearch, strTagId, parseInt(pageIndex), itemsPerPage);
+    this.getListCampaignInfolderDataAction(folderId ? folderId : 1, textSearch, strTagId, parseInt(pageIndex), itemsPerPage);
   };
 
   handleChange = cjTags => {
@@ -149,7 +149,10 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                         <td colSpan={30} id="contact-number">
                           <span> {item.contactNumbers}</span>
                         </td>
-                        <td colSpan={15} />
+                        <td colSpan={15}>
+                          <Icon style={{ fontSize: '24px' }} type="tags" /> &nbsp;
+                          <Icon style={{ fontSize: '24px' }} type="unordered-list" />
+                        </td>
                       </tr>
                     );
                   })
