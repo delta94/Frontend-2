@@ -209,8 +209,16 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
 
         break;
       case 'getlist':
-        getListCampaignInfolderDataAction(event ? event.node.id : null, '', '', 0, 4);
-        onClick(event ? event.node.id : null);
+        confirm({
+          title: 'Xem chi tiết',
+          content: `Xem chi tiết ${event.node.title}`,
+          onOk: async () => {
+            await getListCampaignInfolderDataAction(event ? event.node.id : null, '', '', 0, 4);
+            await onClick(event ? event.node.id : null);
+          },
+          onCancel() {}
+        });
+
         break;
 
       default:
