@@ -10,6 +10,8 @@ import { getListCampaignInfolderDataAction } from 'app/actions/campaign-managame
 import './campaign-list.scss';
 import { Input, Icon, Checkbox, Menu, Dropdown, Tag } from 'antd';
 import CampaignTag from './campaign-tag/campaign-tag';
+import CjTagModal from './cj-tag-modal/cj-tag-modal';
+import { getCjTagsByCjIdAction } from 'app/actions/cj';
 
 interface ICampaignListProps extends StateProps, DispatchProps {
   folder_id_choose?: string;
@@ -20,6 +22,11 @@ interface ICampaignListState {
   itemsPerPage: number;
   textSearch?: string;
   strTagId?: string;
+  openModalCjTag?: boolean;
+  cjEdit: {
+    cjId?: string;
+    cjTags?: any[];
+  };
 }
 
 class CampaignList extends React.Component<ICampaignListProps, ICampaignListState> {
@@ -27,7 +34,12 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
     activePage: 0,
     itemsPerPage: 4,
     textSearch: '',
-    strTagId: ''
+    strTagId: '',
+    openModalCjTag: false,
+    cjEdit: {
+      cjTags: [],
+      cjId: ''
+    }
   };
 
   componentDidMount() {
@@ -64,16 +76,56 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
     this.props.getListCampaignInfolderDataAction(folderId, textSearch, cjTagIds.join(), activePage, itemsPerPage);
   };
 
+  openModalCjTag = async id => {
+    await this.props.getCjTagsByCjIdAction(id);
+    this.setState({
+      openModalCjTag: true,
+      cjEdit: {
+        cjTags: this.props.valueComboTag,
+        cjId: id
+      }
+    });
+  };
+
+  toogleModalCjTag = () => {
+    let { openModalCjTag } = this.state;
+    this.setState({
+      openModalCjTag: !openModalCjTag
+    });
+  };
+
+  closeModalCjTag = () => {
+    this.setState({
+      openModalCjTag: false,
+      cjEdit: {
+        cjTags: []
+      }
+    });
+  };
+
+  getCjs = () => {
+    let { activePage, itemsPerPage } = this.state;
+    let folderId = this.props.folder_id_choose;
+    this.getListCampaignInfolderDataAction(folderId ? folderId : 1, '', '', activePage, itemsPerPage);
+  };
+
   render() {
-    let { campaign_list, total } = this.props;
-    let { textSearch, strTagId } = this.state;
+    let { campaign_list, total, loading } = this.props;
+    let { textSearch, strTagId, activePage, itemsPerPage, openModalCjTag, cjEdit } = this.state;
     let folderId = this.props.folder_id_choose;
     let totalPages = Math.ceil(total / 4);
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
 
     return (
       <div className="campaign-list">
-        <Loader message={spinner1} show={false} priority={1}>
+        <CjTagModal
+          toogleModalCjTag={this.toogleModalCjTag}
+          openModalCjTag={openModalCjTag}
+          dataModalTag={cjEdit}
+          closeModalCjTag={this.closeModalCjTag}
+          getCjs={this.getCjs}
+        />
+        <Loader message={spinner1} show={loading} priority={1}>
           <div>
             {/* Block out */}
             <div className="block-out">
@@ -89,13 +141,13 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                     placeholder="Tìm kiếm chiến dịch"
                     onChange={this.onchangeTextSearch}
                     onPressEnter={() => {
-                      this.getListCampaignInfolderDataAction(folderId, textSearch, strTagId, 0, 4);
+                      this.getListCampaignInfolderDataAction(folderId, textSearch, strTagId, activePage, itemsPerPage);
                     }}
                   />
                 </Col>
                 <Col span={8}>
                   <div className="input-search_group">
-                    <label className="input-search_label">
+                    <label className="input-search_label-1">
                       <Translate contentKey="userManagement.card-tag" />
                     </label>
                     <CampaignTag handleChange={this.handleChange} />
@@ -122,7 +174,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                   <th colSpan={30} id="contact-number">
                     Kết quả
                   </th>
-                  <th colSpan={15} />
+                  <th colSpan={15}> Thao tác</th>
                 </tr>
               </thead>
               <tbody>
@@ -135,6 +187,9 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                         </td>
                         <td colSpan={30} id="name">
                           <p> {item.name}</p>
+                          <p>
+                            <Tag color="green">Version {item.version}</Tag>
+                          </p>
                           {item.tags.split(',').map((value, index) => {
                             return (
                               <Tag color="blue" key={index}>
@@ -149,7 +204,12 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                         <td colSpan={30} id="contact-number">
                           <span> {item.contactNumbers}</span>
                         </td>
-                        <td colSpan={15} />
+                        <td colSpan={15}>
+                          <Button color="primary" onClick={() => this.openModalCjTag(item.id)}>
+                            Tạo tag
+                          </Button>
+                          <Button color="success">TT Chiến dịch</Button>
+                        </td>
                       </tr>
                     );
                   })
@@ -162,42 +222,43 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                 )}
               </tbody>
             </Table>
+            <div className="navigation1">
+              {totalPages && totalPages >= 2 ? (
+                <Row className="justify-content-center" style={{ float: 'right' }}>
+                  <ReactPaginate
+                    previousLabel={'<'}
+                    nextLabel={'>'}
+                    breakLabel={'...'}
+                    breakClassName={'break-me'}
+                    pageCount={totalPages}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={5}
+                    onPageChange={event => this.setPageIndex(event.selected)}
+                    containerClassName={'pagination'}
+                    subContainerClassName={'pages pagination'}
+                    activeClassName={'active'}
+                  />
+                </Row>
+              ) : (
+                ''
+              )}
+            </div>
             {/* Blockout */}
           </div>
         </Loader>
-        <br />
-        <div className="navigation ">
-          {totalPages && totalPages >= 2 ? (
-            <Row className="justify-content-center" style={{ float: 'right' }}>
-              <ReactPaginate
-                previousLabel={'<'}
-                nextLabel={'>'}
-                breakLabel={'...'}
-                breakClassName={'break-me'}
-                pageCount={totalPages}
-                marginPagesDisplayed={2}
-                pageRangeDisplayed={5}
-                onPageChange={event => this.setPageIndex(event.selected)}
-                containerClassName={'pagination'}
-                subContainerClassName={'pages pagination'}
-                activeClassName={'active'}
-              />
-            </Row>
-          ) : (
-            ''
-          )}
-        </div>
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ campaignManagament }: IRootState) => ({
+const mapStateToProps = ({ campaignManagament, cjState }: IRootState) => ({
+  loading: campaignManagament.loading,
   campaign_list: campaignManagament.campaign.data,
-  total: campaignManagament.campaign.total
+  total: campaignManagament.campaign.total,
+  valueComboTag: cjState.cj_tags
 });
 
-const mapDispatchToProps = { getListCampaignInfolderDataAction };
+const mapDispatchToProps = { getListCampaignInfolderDataAction, getCjTagsByCjIdAction };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
