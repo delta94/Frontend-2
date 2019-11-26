@@ -248,7 +248,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
     let headerFolder;
     let changeData = treeData.filter(val => !treeDataChane.includes(val));
     console.log(changeData);
-    if (changeData.length <= 2) {
+    if (changeData.length == 2) {
       nameFolderMove = changeData
         .map(event => {
           if (event.isDirectory === false) {
