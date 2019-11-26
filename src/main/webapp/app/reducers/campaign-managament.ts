@@ -29,6 +29,7 @@ interface ICampaign {
       tags: string;
       status: string;
       contactNumbers: number;
+      modifiedDate: string;
     }
   ];
 }

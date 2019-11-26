@@ -12,6 +12,7 @@ import { Input, Icon, Checkbox, Menu, Dropdown, Tag } from 'antd';
 import CampaignTag from './campaign-tag/campaign-tag';
 import CjTagModal from './cj-tag-modal/cj-tag-modal';
 import { getCjTagsByCjIdAction } from 'app/actions/cj';
+import { STATUS_CJ } from 'app/constants/cj';
 
 interface ICampaignListProps extends StateProps, DispatchProps {
   folder_id_choose?: string;
@@ -38,14 +39,14 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
     openModalCjTag: false,
     cjEdit: {
       cjTags: [],
-      cjId: ''
+      cjId: '-1'
     }
   };
 
   componentDidMount() {
     let { strTagId, textSearch, activePage, itemsPerPage } = this.state;
     let folderId = this.props.folder_id_choose;
-    this.getListCampaignInfolderDataAction(folderId ? folderId : 1, textSearch, strTagId, activePage, itemsPerPage);
+    this.getListCampaignInfolderDataAction(folderId ? folderId : '-1', textSearch, strTagId, activePage, itemsPerPage);
   }
 
   getListCampaignInfolderDataAction = (folderId, textSearch, strTagId, pageIndex, pageSize) => {
@@ -62,7 +63,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
   setPageIndex = pageIndex => {
     let { strTagId, textSearch, itemsPerPage } = this.state;
     let folderId = this.props.folder_id_choose;
-    this.getListCampaignInfolderDataAction(folderId ? folderId : 1, textSearch, strTagId, parseInt(pageIndex), itemsPerPage);
+    this.getListCampaignInfolderDataAction(folderId, textSearch, strTagId, parseInt(pageIndex), itemsPerPage);
   };
 
   handleChange = cjTags => {
@@ -106,7 +107,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
   getCjs = () => {
     let { activePage, itemsPerPage } = this.state;
     let folderId = this.props.folder_id_choose;
-    this.getListCampaignInfolderDataAction(folderId ? folderId : 1, '', '', activePage, itemsPerPage);
+    this.getListCampaignInfolderDataAction(folderId, '', '', activePage, itemsPerPage);
   };
 
   render() {
@@ -115,6 +116,24 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
     let folderId = this.props.folder_id_choose;
     let totalPages = Math.ceil(total / 4);
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
+
+    const getStatusName = (status: string) => {
+      let result = '';
+      switch (status) {
+        case STATUS_CJ.DRAFT:
+          result = 'Bản nháp';
+          break;
+        case STATUS_CJ.FINISH:
+          result = 'Đang thực hiện';
+          break;
+        case STATUS_CJ.FINISH:
+          result = 'Kết thúc';
+          break;
+        default:
+          break;
+      }
+      return result;
+    };
 
     return (
       <div className="campaign-list">
@@ -163,16 +182,19 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
               <thead>
                 <tr className="text-center">
                   <th className="checkbox-td" colSpan={5}>
-                    <Checkbox id="check-all" />
+                    STT
                   </th>
-                  <th colSpan={30} id="name">
+                  <th colSpan={25} id="name">
                     Chiến dịch
                   </th>
                   <th colSpan={20} id="status">
                     Trạng thái
                   </th>
-                  <th colSpan={30} id="contact-number">
+                  <th colSpan={15} id="contact-number">
                     Kết quả
+                  </th>
+                  <th colSpan={20} id="contact-number">
+                    Chỉnh sửa gần nhất
                   </th>
                   <th colSpan={15}> Thao tác</th>
                 </tr>
@@ -182,27 +204,30 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                   campaign_list.map((item, index) => {
                     return (
                       <tr key={index}>
-                        <td colSpan={5}>
-                          <Checkbox id={item.id} />
-                        </td>
-                        <td colSpan={30} id="name">
+                        <td colSpan={5}>{index + 1}</td>
+                        <td colSpan={25} id="name">
                           <p> {item.name}</p>
                           <p>
                             <Tag color="green">Version {item.version}</Tag>
                           </p>
-                          {item.tags.split(',').map((value, index) => {
-                            return (
-                              <Tag color="blue" key={index}>
-                                {value}
-                              </Tag>
-                            );
-                          })}
+                          {item.tags
+                            ? item.tags.split(',').map((value, index) => {
+                                return (
+                                  <Tag color="blue" key={index}>
+                                    {value}
+                                  </Tag>
+                                );
+                              })
+                            : null}
                         </td>
                         <td colSpan={20} id="status">
-                          {item.status}
+                          {getStatusName(item.status)}
                         </td>
-                        <td colSpan={30} id="contact-number">
+                        <td colSpan={15} id="contact-number">
                           <span> {item.contactNumbers}</span>
+                        </td>
+                        <td colSpan={15} id="modifier-date">
+                          <span> {item.modifiedDate}</span>
                         </td>
                         <td colSpan={15}>
                           <Icon onClick={() => this.openModalCjTag(item.id)} style={{ fontSize: '24px' }} type="tags" /> &nbsp;
