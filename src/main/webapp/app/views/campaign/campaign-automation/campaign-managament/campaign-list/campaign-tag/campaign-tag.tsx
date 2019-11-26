@@ -14,11 +14,14 @@ library.add(faSpinner);
 export interface ICampaignTagProps extends StateProps, DispatchProps {
   defaultCate?: any[];
   handleChange?: Function;
+  defaultValue?: any[];
 }
 
 export interface ICampaignTagState {}
 
 class CampaignTag extends React.Component<ICampaignTagProps, ICampaignTagState> {
+  state: ICampaignTagState = {};
+
   handleChange = data => {
     this.props.handleChange(data);
     if (data.length < 1) {
@@ -35,7 +38,7 @@ class CampaignTag extends React.Component<ICampaignTagProps, ICampaignTagState> 
   };
 
   render() {
-    const { comboTag, defaultCate } = this.props;
+    const { comboTag, defaultCate, defaultValue } = this.props;
     return (
       <div className="campaign-tag-filter">
         <ReactCSSTransitionGroup
@@ -47,6 +50,7 @@ class CampaignTag extends React.Component<ICampaignTagProps, ICampaignTagState> 
         >
           <Multiselect
             placeholder={translate('userManagement.choose-categories')}
+            defaultValue={defaultValue}
             data={comboTag}
             value={defaultCate}
             className="Select-holder"

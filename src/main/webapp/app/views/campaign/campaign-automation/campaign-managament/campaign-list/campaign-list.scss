@@ -17,7 +17,7 @@
     .input-search_group {
       display: flex;
       width: 400px;
-      .input-search_label {
+      .input-search_label-1 {
         line-height: 2;
       }
     }
@@ -30,6 +30,10 @@
     th {
       border: 1px solid #dddddd;
       text-align: center;
+    }
+
+    th {
+      color: #545cd8;
     }
   }
 
@@ -48,22 +52,26 @@
   #contact-number {
     max-width: 100px;
   }
-}
 
-.navigation {
-  position: absolute;
-  bottom: 0px;
-  right: 0px;
-  width: 100%;
-  text-align: center;
-  margin-right: 25px;
-}
-.total-list {
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 16px;
+  .navigation1 {
+    position: absolute;
+    right: 0px;
+    width: 100%;
+    text-align: center;
+    margin-right: 15px;
 
-  color: #6c757d;
+    .row {
+      margin-right: -15px;
+    }
+  }
+
+  .total-list {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+
+    color: #6c757d;
+  }
 }
