@@ -36,13 +36,13 @@ class CampaginManagament extends React.Component<ICampaginManagamentProps, ICamp
       <Fragment>
         <div>
           <Row className="header-row" style={{ height: '50px' }}>
-            <label>DANH SÁCH CHIẾN DỊCH</label>
+            <label style={{ margin: '10px' }}>DANH SÁCH CHIẾN DỊCH</label>
           </Row>
           <Row className="row-main">
-            <Col span={6} className="d-none d-lg-block h-100 bg-white  align-items-center">
+            <Col span={4} className="d-none d-lg-block h-100 bg-white  align-items-center">
               <TreeFolder onClick={this.getId} />
             </Col>
-            <Col span={18} className="h-100 bg-white  align-items-center">
+            <Col span={20} className="h-100 bg-white  align-items-center">
               <Campaign folder_id_choose={idTree} />
             </Col>
           </Row>
