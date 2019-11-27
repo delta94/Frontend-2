@@ -208,7 +208,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                         <td colSpan={25} id="name">
                           <p> {item.name}</p>
                           <p>
-                            <Tag color="green">Version {item.version}</Tag>
+                            <p>Version {item.version}</p>
                           </p>
                           {item.tags
                             ? item.tags.split(',').map((value, index) => {
