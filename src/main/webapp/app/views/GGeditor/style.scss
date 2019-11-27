@@ -1,0 +1,81 @@
+.app-container {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+#root {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.editor {
+  display: flex;
+  flex: 1;
+}
+
+.flow {
+  flex: 1;
+}
+.editor {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+}
+
+.editorHd {
+  padding: 8px;
+  border: 1px solid #e6e9ed;
+}
+
+.editorBd {
+  flex: 1;
+}
+.titleContent {
+  height: 100%;
+}
+.editorTitleBar {
+  min-height: 48px;
+  padding: 0 24px;
+  color: rgba(0, 0, 0, 0.85);
+  font-weight: 500;
+  font-size: 16px;
+  background: transparent;
+  border-radius: 2px 2px 0 0;
+}
+
+.editorSidebar,
+.editorContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.editorSidebar {
+  background: #fafafa;
+  height: 600px;
+  overflow: auto;
+
+  &:first-child {
+    border-right: 1px solid #e6e9ed;
+  }
+
+  &:last-child {
+    border-left: 1px solid #e6e9ed;
+  }
+}
+
+.flow,
+.mind,
+.koni {
+  flex: 1;
+  // https://github.com/philipwalton/flexbugs/issues/197#issuecomment-378908438
+  height: 0;
+}
