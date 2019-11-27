@@ -24,8 +24,7 @@ const style = {
 
   validate: {
     color: 'red',
-    height: 'auto',
-    paddingLeft: '110px'
+    height: 'auto'
   }
 };
 
