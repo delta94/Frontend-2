@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/reducers';
 import LoaderAnim from 'react-loaders';
 import { Input } from 'antd';
-import { createCjTagAction } from 'app/actions/cj-tag';
+import { createCjTagAction, getCjTagsAction } from 'app/actions/cj-tag';
 
 interface ICjTagInsertModalProps extends StateProps, DispatchProps {
   isOpenModalCjTagInsert?: boolean;
@@ -35,14 +35,16 @@ class CJTagInsertModal extends React.Component<ICjTagInsertModalProps, ICjTagIns
     this.setState({ cjTag: cjTag });
   };
 
-  submit = () => {
+  submit = async () => {
+    let { createCjTagAction, closeModalCjTagInsert, getCjTagsAction } = this.props;
     let cjTagValue = this.state.cjTag;
     this.validateForm(cjTagValue);
     if (cjTagValue.name && cjTagValue.name.trim() !== '') {
-      this.props.createCjTagAction(cjTagValue);
+      await createCjTagAction(cjTagValue);
+      await getCjTagsAction();
     }
 
-    this.props.closeModalCjTagInsert();
+    closeModalCjTagInsert();
   };
 
   validateForm = (cjTag: ITCjagEditEntity) => {
@@ -55,6 +57,10 @@ class CJTagInsertModal extends React.Component<ICjTagInsertModalProps, ICjTagIns
         messageErrorCjTagName: <label className="message-error">Tên thẻ không được để trống</label>
       });
     }
+  };
+
+  resetField = () => {
+    this.setState({ cjTag: {} });
   };
 
   render() {
@@ -81,7 +87,13 @@ class CJTagInsertModal extends React.Component<ICjTagInsertModalProps, ICjTagIns
           </div>
         </ModalBody>
         <ModalFooter>
-          <Button color="link" onClick={closeModalCjTagInsert}>
+          <Button
+            color="link"
+            onClick={() => {
+              closeModalCjTagInsert;
+              this.resetField();
+            }}
+          >
             Hủy bỏ
           </Button>
           <Button color="primary" onClick={() => this.submit()}>
@@ -96,7 +108,8 @@ class CJTagInsertModal extends React.Component<ICjTagInsertModalProps, ICjTagIns
 const mapStateToProps = ({ cjTagState }: IRootState) => ({});
 
 const mapDispatchToProps = {
-  createCjTagAction
+  createCjTagAction,
+  getCjTagsAction
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

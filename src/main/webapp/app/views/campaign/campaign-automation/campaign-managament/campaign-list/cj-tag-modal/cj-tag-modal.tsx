@@ -24,15 +24,19 @@ interface ICjTagModalProps extends StateProps, DispatchProps {
 interface TCjTagModalState {
   cjTags?: any[];
   isOpenModalCjTagInsert?: boolean;
-
   isOpenModalCjTagList?: boolean;
+  dataModalTag: {
+    cjId?: string;
+    cjTags?: any[];
+  };
 }
 
 class CJTagModal extends React.Component<ICjTagModalProps, TCjTagModalState> {
   state: TCjTagModalState = {
     cjTags: [],
     isOpenModalCjTagInsert: false,
-    isOpenModalCjTagList: false
+    isOpenModalCjTagList: false,
+    dataModalTag: {}
   };
 
   componentDidMount() {}
@@ -94,8 +98,13 @@ class CJTagModal extends React.Component<ICjTagModalProps, TCjTagModalState> {
     });
   };
 
+  refreshListCjTag = () => {
+    this.props.getCjs();
+    this.props.closeModalCjTag();
+  };
+
   render() {
-    let { openModalCjTag, toogleModalCjTag, dataModalTag, closeModalCjTag } = this.props;
+    let { openModalCjTag, toogleModalCjTag, closeModalCjTag, dataModalTag } = this.props;
     let extendComponent: any = null;
     let color: string = 'primary';
     let isDisable = false;
@@ -111,6 +120,7 @@ class CJTagModal extends React.Component<ICjTagModalProps, TCjTagModalState> {
           toogleModalCjTagList={this.toogleModalCjTagList}
           isOpenModalCjTag={isOpenModalCjTagList}
           closeModalCjTag={this.closeModalCjTagList}
+          refreshListCjTag={this.refreshListCjTag}
         />
 
         <Modal id="modal-cj-tag" isOpen={openModalCjTag}>
