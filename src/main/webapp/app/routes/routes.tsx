@@ -7,7 +7,7 @@ const Admin = lazy(() => import('app/views/administration'));
 const Pages = lazy(() => import('app/views/pages'));
 const Login = lazy(() => import('app/views/login'));
 const CampaginManagament = lazy(() => import('app/views/campaign'));
-const GGeditor = lazy(() => import('app/views/GGeditor/index'));
+const GGeditor = lazy(() => import('app/views/GGeditor'));
 const UserPages = lazy(() => import('app/DemoPages/UserPages'));
 const Applications = lazy(() => import('app/DemoPages/Applications'));
 const Dashboards = lazy(() => import('app/DemoPages/Dashboards'));
