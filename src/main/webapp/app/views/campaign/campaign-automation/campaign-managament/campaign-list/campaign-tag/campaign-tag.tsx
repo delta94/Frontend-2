@@ -11,13 +11,13 @@ import './campaign-tag.scss';
 
 library.add(faSpinner);
 
-export interface ICampaignTagProps extends StateProps, DispatchProps {
+interface ICampaignTagProps extends StateProps, DispatchProps {
   defaultCate?: any[];
   handleChange?: Function;
   defaultValue?: any[];
 }
 
-export interface ICampaignTagState {}
+interface ICampaignTagState {}
 
 class CampaignTag extends React.Component<ICampaignTagProps, ICampaignTagState> {
   state: ICampaignTagState = {};
@@ -30,7 +30,7 @@ class CampaignTag extends React.Component<ICampaignTagProps, ICampaignTagState> 
   };
 
   componentDidMount() {
-    this.props.getCjTagsAction('');
+    this.props.getCjTagsAction();
   }
 
   handleCreate = name => {
