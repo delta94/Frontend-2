@@ -111,7 +111,7 @@ export default () => next => action => {
       } else if (error && error.errorCode) {
         // addErrorAlert(`error.response.${error.errorCode}`);
       } else {
-        // toast.error('Unknown error!');
+        toast.error('Hệ thống đang nâng cấp. Vui lòng thử lại sau!');
       }
       return Promise.reject(error);
     });

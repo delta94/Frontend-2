@@ -1,11 +1,16 @@
-.rstcustom__rowContents:hover {
-  color: #3866dd;
-  i {
-    display: block;
+.draggable-tree {
+  .ant-tree-icon__customize {
+    float: right;
   }
-}
-.rstcustom__row {
-  i {
-    display: none;
+  .ant-tree-node-content-wrapper-normal:hover {
+    color: #3866dd;
+    i {
+      display: block;
+    }
+  }
+  .ant-tree-node-content-wrapper-normal {
+    i {
+      display: none;
+    }
   }
 }

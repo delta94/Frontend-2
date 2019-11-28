@@ -11,7 +11,6 @@ import EditorMinimap from './EditorMinMap/editor-mini-map';
 import FlowContextMenu from './EditorContextMenu/flow-context-menu';
 import { Modal } from 'antd';
 import './style.scss';
-import { isFirstDayOfMonth } from 'date-fns';
 
 const { confirm } = Modal;
 

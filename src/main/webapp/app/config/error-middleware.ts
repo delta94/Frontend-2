@@ -1,4 +1,9 @@
-import { isPromise } from 'react-jhipster';
+import { toast } from 'react-toastify';
+import { isPromise, translate } from 'react-jhipster';
+
+const addErrorAlert = (data?) => {
+  toast.error(data);
+};
 
 const getErrorMessage = errorData => {
   let message = errorData.message;

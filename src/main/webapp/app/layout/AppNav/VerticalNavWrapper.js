@@ -34,6 +34,7 @@ class Nav extends Component {
             to : "https://membership-userguide.herokuapp.com/"
         }
         nameNav ? nameNav.push(guide) : ''
+        
         return (
             <Fragment>
                 <h5 className="app-sidebar__heading">Menu</h5>
