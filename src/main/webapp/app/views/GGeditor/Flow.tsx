@@ -43,14 +43,14 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   };
   commandExecute = (command, data) => {
     let name = command.command.name;
-
+    let model = command.command;
     let { dataNode } = this.state;
     console.log(command.command);
     switch (name) {
       case 'delete':
         break;
       case 'add':
-        this.addModel(command.command);
+        this.addModel(model);
         break;
       default:
         break;
