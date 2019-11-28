@@ -3,7 +3,7 @@ import React, { Suspense, lazy, Fragment } from 'react';
 
 import { ToastContainer } from 'react-toastify';
 
-const Admin = lazy(() => import('app/views/administration'));
+const Admin = lazy(() => import('app/views/customer'));
 const Pages = lazy(() => import('app/views/pages'));
 const Login = lazy(() => import('app/views/login'));
 const CampaginManagament = lazy(() => import('app/views/campaign'));
@@ -16,7 +16,7 @@ const Widgets = lazy(() => import('app/DemoPages/Widgets'));
 const Elements = lazy(() => import('app/DemoPages/Elements'));
 const Components = lazy(() => import('app/DemoPages/Components'));
 const Charts = lazy(() => import('app/DemoPages/Charts'));
-const Usercampaign = lazy(() => import('app/views/administration/user-campaign'));
+const Usercampaign = lazy(() => import('app/views/campaign/user-campaign'));
 const Tables = lazy(() => import('app/DemoPages/Tables'));
 
 const AppRoutes = () => {
