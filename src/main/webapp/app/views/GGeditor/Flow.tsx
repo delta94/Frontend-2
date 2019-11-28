@@ -61,9 +61,9 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     let type = command.type;
     let { data } = this.state;
 
-    let props = JSON.parse(localStorage.getItem('nodeStore'));
+    let props = JSON.parse(localStorage.getItem('nodeStore')) ? JSON.parse(localStorage.getItem('nodeStore')) : {};
 
-    if (Object.keys(props).length > 0) {
+    if (props && Object.keys(props).length > 0) {
       data = JSON.parse(localStorage.getItem('nodeStore'));
     }
     switch (type) {
