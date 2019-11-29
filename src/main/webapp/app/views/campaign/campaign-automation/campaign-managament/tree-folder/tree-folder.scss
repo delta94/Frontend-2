@@ -6,17 +6,17 @@
   .ant-tree-node-content-wrapper:hover {
     color: #3866dd;
 
-    i {
+    .anticon-down {
       float: left;
       display: block;
     }
   }
   .ant-tree-node-content-wrapper {
-    i {
+    .anticon-down {
       display: none;
     }
   }
-  .anticon {
+  .anticon-folder-add {
     color: gray;
   }
 }
@@ -24,4 +24,7 @@
   .ant-tree-icon__customize {
     margin-right: 10% !important;
   }
+}
+.pop-data {
+  left: 6% !important;
 }

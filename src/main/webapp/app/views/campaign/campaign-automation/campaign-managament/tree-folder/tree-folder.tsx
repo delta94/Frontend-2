@@ -153,8 +153,9 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
   createFolder = async (event, option) => {
     const { insertTreeFolder, getTreeFolder, editTreeFolder, deleteTreefolder, onClick } = this.props;
     let { level } = this.state;
-    console.log(Number(level));
-
+    if (event === 'select') {
+      level = '1';
+    }
     switch (option) {
       case 'create':
         debugger;
@@ -309,7 +310,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
     if (dropPosition >= 0) {
       confirm({
         title: 'Di chuyển thư mục',
-        content: `bạn muốn di chuyên vào thư mục ${info.node.props.title ? info.node.props.title : ''}`,
+        content: `bạn muốn di chuyên vào thư mục ${info.node.props.title ? info.node.props.title.props.children[2] : ''}`,
         onOk: async () => {
           await moveTreeFolder(idData);
           this.setState({
@@ -343,7 +344,11 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
           return (
             <TreeNode
               key={item.key}
-              title={item.title}
+              title={
+                <div>
+                  <Icon type="file" /> {item.title}
+                </div>
+              }
               icon={
                 <Popover content={this.contentPop(item)} title="Thông tin" trigger="hover" placement="bottomRight">
                   <Icon type="down" />
@@ -358,7 +363,11 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
           return (
             <TreeNode
               key={item.key}
-              title={item.title}
+              title={
+                <div>
+                  <Icon type="file" /> {item.title}
+                </div>
+              }
               icon={
                 <Popover content={this.contentPop(item)} title="Thông tin" trigger="hover" placement="bottomRight">
                   <Icon type="down" />
@@ -378,9 +387,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
             <Icon
               style={{ marginRight: '5%', fontSize: '27px', color: 'gray' }}
               onClick={() => {
-                level = '1';
-                this.setState({ level });
-                this.createFolder(null, 'create');
+                this.createFolder('select', 'create');
               }}
               type="folder-add"
             />
@@ -388,7 +395,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
         </Row>
         <hr />
         <Row>
-          <div style={{ height: 700 }}>
+          <div style={{ height: 700 }} className="tree-data">
             <Tree
               onSelect={(info, { selected }) => {
                 this.getList(info, selected);
@@ -408,9 +415,19 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
                     <TreeNode
                       className="tree-node"
                       key={item.key}
-                      title={item.title}
+                      title={
+                        <div>
+                          <Icon type="folder" /> {item.title}
+                        </div>
+                      }
                       icon={
-                        <Popover content={this.contentPop(item)} title="Thông tin" trigger="hover" placement="bottomRight">
+                        <Popover
+                          overlayClassName="pop-data"
+                          content={this.contentPop(item)}
+                          title="Thông tin"
+                          trigger="hover"
+                          placement="bottomRight"
+                        >
                           <Icon type="down" />
                         </Popover>
                       }
