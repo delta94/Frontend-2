@@ -7,11 +7,14 @@ import { IRootState } from 'app/reducers';
 import LoaderAnim from 'react-loaders';
 import { Input } from 'antd';
 import { createCjTagAction, getCjTagsAction } from 'app/actions/cj-tag';
+import './cj-tag-insert-modal.scss';
 
 interface ICjTagInsertModalProps extends StateProps, DispatchProps {
   isOpenModalCjTagInsert?: boolean;
   toogleModalCjTagInsert?: Function;
   closeModalCjTagInsert?: Function;
+  dataModalTag?: string;
+  refreshListCjTag?: Function;
 }
 
 interface ICjTagInsertModalState {
@@ -36,15 +39,19 @@ class CJTagInsertModal extends React.Component<ICjTagInsertModalProps, ICjTagIns
   };
 
   submit = async () => {
-    let { createCjTagAction, closeModalCjTagInsert, getCjTagsAction } = this.props;
-    let cjTagValue = this.state.cjTag;
-    this.validateForm(cjTagValue);
-    if (cjTagValue.name && cjTagValue.name.trim() !== '') {
-      await createCjTagAction(cjTagValue);
+    let { createCjTagAction, closeModalCjTagInsert, getCjTagsAction, dataModalTag, refreshListCjTag } = this.props;
+    let { cjTag } = this.state;
+    let cjTagData = {
+      cjTag: cjTag,
+      cjId: dataModalTag
+    };
+    this.validateForm(cjTag);
+    if (cjTag.name && cjTag.name.trim() !== '') {
+      await createCjTagAction(cjTagData);
       await getCjTagsAction();
+      await refreshListCjTag();
+      closeModalCjTagInsert();
     }
-
-    closeModalCjTagInsert();
   };
 
   validateForm = (cjTag: ITCjagEditEntity) => {
@@ -90,7 +97,7 @@ class CJTagInsertModal extends React.Component<ICjTagInsertModalProps, ICjTagIns
           <Button
             color="link"
             onClick={() => {
-              closeModalCjTagInsert;
+              this.props.closeModalCjTagInsert();
               this.resetField();
             }}
           >
