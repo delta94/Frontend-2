@@ -65,6 +65,7 @@ class CJTagModal extends React.Component<ICjTagModalProps, TCjTagModalState> {
   };
 
   toogleModalCjTagInsert = () => {
+    this.props.closeModalCjTag();
     let isOpenModalCjTagInsert = this.state.isOpenModalCjTagInsert;
     this.setState({
       isOpenModalCjTagInsert: !isOpenModalCjTagInsert
@@ -72,6 +73,7 @@ class CJTagModal extends React.Component<ICjTagModalProps, TCjTagModalState> {
   };
 
   closeModalCjTagInsert = () => {
+    this.props.closeModalCjTag();
     let isOpenModalCjTagInsert = this.state.isOpenModalCjTagInsert;
     this.setState({
       isOpenModalCjTagInsert: !isOpenModalCjTagInsert
@@ -100,7 +102,9 @@ class CJTagModal extends React.Component<ICjTagModalProps, TCjTagModalState> {
 
   refreshListCjTag = () => {
     this.props.getCjs();
-    this.props.closeModalCjTag();
+    if (this.props.openModalCjTag) {
+      this.props.closeModalCjTag();
+    }
   };
 
   render() {
