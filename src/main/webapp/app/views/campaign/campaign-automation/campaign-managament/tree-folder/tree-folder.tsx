@@ -53,7 +53,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
     let data = list_tree_folder.map(event => {
       return {
         title: event.name,
-        key: event.name,
+        key: event.id,
         id: event.id,
         parentId: event.parentId,
         children:
@@ -61,7 +61,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
             ? event.cjFolders.map(value => {
                 return {
                   title: value.name,
-                  key: value.name,
+                  key: value.id,
                   id: value.id,
                   parentId: event.parentId,
                   children:
@@ -69,7 +69,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
                       ? value.cjFolders.map(item => {
                           return {
                             title: item.name,
-                            key: item.name,
+                            key: item.id,
                             id: item.id,
                             parentId: value.parentId,
                             children: item.cjFolders
@@ -407,6 +407,9 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
         <Row>
           <div style={{ height: 700 }}>
             <Tree
+              onSelect={info => {
+                console.log(info);
+              }}
               showIcon
               className="draggable-tree"
               defaultExpandAll

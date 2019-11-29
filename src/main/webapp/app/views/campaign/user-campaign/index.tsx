@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { Switch } from 'react-router-dom';
 import CampaignManagement from './list/campaign-management';
+import PrivateRoute from '../../../common/auth/private-route';
 import CreateCampagin from './create/create';
 import AppHeader from 'app/layout/AppHeader/';
 import AppSidebar from 'app/layout/AppSidebar/';
@@ -17,6 +18,9 @@ const Routes = ({ match }) => (
             <Switch>
               <ErrorBoundaryRoute exact path={`${match.url}/new`} component={CreateCampagin} />
               <ErrorBoundaryRoute exact path={match.url} component={CampaignManagement} />
+
+              <PrivateRoute exact path={`${match.url}/new`} component={CreateCampagin} />
+              <PrivateRoute exact path={match.url} component={CampaignManagement} />
             </Switch>
           </div>
         </div>
