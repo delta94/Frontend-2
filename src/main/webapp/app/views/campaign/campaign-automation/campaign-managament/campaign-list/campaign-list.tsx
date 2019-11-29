@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Table, Row, Badge, Col } from 'reactstrap';
+import { Table, Row, Badge, Col } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { IRootState } from 'app/reducers';
 import LoaderAnim from 'react-loaders';
@@ -8,7 +8,7 @@ import Loader from 'react-loader-advanced';
 import ReactPaginate from 'react-paginate';
 import { getListCampaignInfolderDataAction } from 'app/actions/campaign-managament';
 import './campaign-list.scss';
-import { Input, Icon, Checkbox, Menu, Dropdown, Tag } from 'antd';
+import { Input, Icon, Checkbox, Menu, Button, Tag } from 'antd';
 import CampaignTag from './campaign-tag/campaign-tag';
 import CjTagModal from './cj-tag-modal/cj-tag-modal';
 import { getCjTagsByCjIdAction } from 'app/actions/cj';
@@ -173,7 +173,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                   </div>
                 </Col>
                 <Col span={4} style={{ textAlign: 'right' }}>
-                  <Button color="primary">Tạo mới chiến dịch</Button>
+                  <Button type="primary">Tạo mới chiến dịch</Button>
                 </Col>
               </Row>
             </div>

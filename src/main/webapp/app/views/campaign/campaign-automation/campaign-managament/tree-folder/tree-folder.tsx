@@ -157,6 +157,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
 
     switch (option) {
       case 'create':
+        debugger;
         if (Number(level) < 3) {
           confirm({
             title: 'Tạo thư mục',
@@ -175,7 +176,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
             cancelText: 'Hủy bỏ'
           });
         } else {
-          confirm({
+          Modal.error({
             title: 'Không thể tạo thêm thư mục',
             content: '',
             onOk() {},
@@ -335,6 +336,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
   };
 
   render() {
+    let { level } = this.state;
     const loop = data =>
       data.map(item => {
         if (item.children && item.children.length) {
@@ -375,7 +377,11 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
           <Col style={{ textAlign: 'right' }} span={12}>
             <Icon
               style={{ marginRight: '5%', fontSize: '27px', color: 'gray' }}
-              onClick={() => this.createFolder(null, 'create')}
+              onClick={() => {
+                level = '1';
+                this.setState({ level });
+                this.createFolder(null, 'create');
+              }}
               type="folder-add"
             />
           </Col>
