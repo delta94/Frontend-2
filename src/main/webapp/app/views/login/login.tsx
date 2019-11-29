@@ -43,6 +43,7 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
       password: valuePassword,
       merchantCode: valueMerchantCode
     };
+    window.localStorage.setItem('merchantCode', valueEmail);
     this.validateForm();
     if (valueEmail && valuePassword && valueMerchantCode) {
       login(submitValue);
