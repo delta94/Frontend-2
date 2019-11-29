@@ -24,6 +24,12 @@ const Routes = ({ match }) => (
           <ErrorBoundaryRoute path={`${match.url}/user-properties`} component={PropertiesCustomer} />
           <ErrorBoundaryRoute path={`${match.url}/user-group`} component={GroupAttributeCustomer} />
 
+          <PrivateRoute path={`${match.url}/user-management`} component={UserManagement} />
+          <PrivateRoute path={`${match.url}/campaign-auto`} component={CampaginAuto} />
+          <PrivateRoute path={`${match.url}/user-campaign`} component={CampaignManagement} />
+          <PrivateRoute path={`${match.url}/tag-management`} component={TagManagament} />
+          <PrivateRoute path={`${match.url}/user-properties`} component={PropertiesCustomer} />
+          <PrivateRoute path={`${match.url}/user-group`} component={GroupAttributeCustomer} />
           {/* <PrivateRoute path={`${match.url}/user-management`} component={UserManagement} hasAnyAuthorities={['Admin']} /> */}
         </div>
       </div>

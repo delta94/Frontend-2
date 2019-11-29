@@ -2,13 +2,14 @@
   .ant-tree-icon__customize {
     float: right;
   }
-  .ant-tree-node-content-wrapper-normal:hover {
+  .ant-tree-node-content-wrapper:hover {
     color: #3866dd;
     i {
+      float: left;
       display: block;
     }
   }
-  .ant-tree-node-content-wrapper-normal {
+  .ant-tree-node-content-wrapper {
     i {
       display: none;
     }

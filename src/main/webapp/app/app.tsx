@@ -34,12 +34,9 @@ export class App extends React.Component<IAppProps, IAppState> {
     closedSmallerSidebar: false
   };
 
-  componentDidMount() {
-    this.props.getSession();
-    if (!(Object.keys(this.props.account).length > 0)) {
-      window.location.assign('/#/login');
-    }
-  }
+  componentDidMount = async () => {
+    await this.props.getSession();
+  };
 
   render() {
     let {

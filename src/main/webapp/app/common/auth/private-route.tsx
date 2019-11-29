@@ -25,11 +25,12 @@ export const PrivateRouteComponent = ({
         <Component {...props} />
       </ErrorBoundary>
     ) : (
-      <div className="insufficient-authority">
-        <div className="alert alert-danger">
-          <Translate contentKey="error.http.403">You are not authorized to access this page.</Translate>
-        </div>
-      </div>
+      <div />
+      // <div className="insufficient-authority">
+      //   <div className="alert alert-danger">
+      //     <Translate contentKey="error.http.403">You are not authorized to access this page.</Translate>
+      //   </div>
+      // </div>
     );
 
   const renderRedirect = props => {
