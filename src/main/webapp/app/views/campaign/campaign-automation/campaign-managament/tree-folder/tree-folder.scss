@@ -2,8 +2,10 @@
   .ant-tree-icon__customize {
     float: right;
   }
+
   .ant-tree-node-content-wrapper:hover {
     color: #3866dd;
+
     i {
       float: left;
       display: block;
@@ -13,5 +15,13 @@
     i {
       display: none;
     }
+  }
+  .anticon {
+    color: gray;
+  }
+}
+.tree-node {
+  .ant-tree-icon__customize {
+    margin-right: 10% !important;
   }
 }

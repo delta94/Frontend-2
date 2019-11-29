@@ -28,6 +28,7 @@ export interface ITreeFolderProps extends StateProps, DispatchProps {
 export interface ITreeFolderState {
   treeData: any[];
   hover: boolean;
+  level: string;
   expandedKeys: any;
 }
 
@@ -35,7 +36,8 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
   state: ITreeFolderState = {
     treeData: [],
     hover: false,
-    expandedKeys: []
+    expandedKeys: [],
+    level: ''
   };
 
   componentDidMount = async () => {
@@ -53,7 +55,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
     let data = list_tree_folder.map(event => {
       return {
         title: event.name,
-        key: event.id,
+        key: event.id + ',1',
         id: event.id,
         parentId: event.parentId,
         children:
@@ -61,7 +63,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
             ? event.cjFolders.map(value => {
                 return {
                   title: value.name,
-                  key: value.id,
+                  key: value.id + ',2',
                   id: value.id,
                   parentId: event.parentId,
                   children:
@@ -69,7 +71,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
                       ? value.cjFolders.map(item => {
                           return {
                             title: item.name,
-                            key: item.id,
+                            key: item.id + ',3',
                             id: item.id,
                             parentId: value.parentId,
                             children: item.cjFolders
@@ -101,26 +103,13 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
     <Row style={{ textAlign: 'center' }}>
       <Row>
         <Button
-          type="dashed"
-          onClick={() => {
-            this.createFolder(rowInfo, 'getlist');
-          }}
-        >
-          {' '}
-          xem chi tiết
-        </Button>
-      </Row>
-
-      <hr />
-      <Row>
-        <Button
           type="ghost"
           onClick={() => {
             this.createFolder(rowInfo, 'edit');
           }}
         >
           {' '}
-          Đổi tên
+          <Icon type="edit" /> Đổi tên
         </Button>
       </Row>
 
@@ -128,7 +117,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
       <Row>
         <Button type="primary" onClick={() => this.createFolder(rowInfo, 'create')}>
           {' '}
-          Thêm mới
+          <Icon type="folder" /> Tạo mới
         </Button>
       </Row>
       <hr />
@@ -140,7 +129,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
           }}
         >
           {' '}
-          Xóa
+          <Icon type="delete" /> Xóa
         </Button>
       </Row>
     </Row>
@@ -162,27 +151,38 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
   }
 
   createFolder = async (event, option) => {
-    const { insertTreeFolder, getTreeFolder, editTreeFolder, deleteTreefolder, getListCampaignInfolderDataAction, onClick } = this.props;
+    const { insertTreeFolder, getTreeFolder, editTreeFolder, deleteTreefolder, onClick } = this.props;
+    let { level } = this.state;
+    console.log(Number(level));
 
     switch (option) {
       case 'create':
-        console.log(event);
-        confirm({
-          title: 'Tạo thư mục',
-          content: this.contentCreateFolder(),
-          onOk: async () => {
-            let data = {
-              name: $(`#nameTree`).val(),
-              parentId: event ? event.id : null
-            };
-            await insertTreeFolder(data);
-            await getTreeFolder();
-            await this.getData();
-          },
-          okText: 'Thêm mới',
-          onCancel() {},
-          cancelText: 'Hủy bỏ'
-        });
+        if (Number(level) < 3) {
+          confirm({
+            title: 'Tạo thư mục',
+            content: this.contentCreateFolder(),
+            onOk: async () => {
+              let data = {
+                name: $(`#nameTree`).val(),
+                parentId: event ? event.id : null
+              };
+              await insertTreeFolder(data);
+              await getTreeFolder();
+              await this.getData();
+            },
+            okText: 'Thêm mới',
+            onCancel() {},
+            cancelText: 'Hủy bỏ'
+          });
+        } else {
+          confirm({
+            title: 'Không thể tạo thêm thư mục',
+            content: '',
+            onOk() {},
+            okText: 'Đồng ý'
+          });
+        }
+
         break;
       case 'edit':
         confirm({
@@ -241,66 +241,12 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
     }
   };
 
-  onChangeData = treeDataChane => {
-    let { treeData } = this.state;
-    let nameFolderMove;
-    let headerFolder;
-    let changeData = treeData.filter(val => !treeDataChane.includes(val));
-    console.log(changeData);
-    if (changeData.length == 2) {
-      nameFolderMove = changeData
-        .map(event => {
-          if (event.isDirectory === false) {
-            return {
-              name: event.title,
-              id: event.id
-            };
-          }
-        })
-        .filter(Boolean);
-
-      headerFolder = changeData
-        .map(event => {
-          if (event.isDirectory === true) {
-            return {
-              name: event.title,
-              id: event.id
-            };
-          }
-        })
-        .filter(Boolean);
-
-      this.confirmChangeData(nameFolderMove, headerFolder, treeDataChane);
-    }
-  };
-
-  confirmChangeData = async (nameFolderMove, headerFolder, treeDataChane) => {
-    const { moveTreeFolder } = this.props;
-    confirm({
-      title: 'Di chuyển thư mục',
-      content: `bạn muốn di chuyên ${nameFolderMove[0] ? nameFolderMove[0].name : ''} vào thư mục ${
-        headerFolder[0] ? headerFolder[0].name : ''
-      }`,
-      onOk: async () => {
-        let data = {
-          idChil: nameFolderMove[0] ? nameFolderMove[0].id : '',
-          idParent: headerFolder[0] ? headerFolder[0].id : ''
-        };
-        await moveTreeFolder(data);
-        this.setState({ treeData: treeDataChane });
-      },
-      okText: 'Lưu lại',
-      onCancel() {},
-      cancelText: 'Hủy bỏ'
-    });
-  };
-
   onDragEnter = info => {
     console.log(info);
   };
 
-  onDrop = info => {
-    console.log(info);
+  onDrop = async info => {
+    const { moveTreeFolder } = this.props;
     const dropKey = info.node.props.eventKey;
     const dragKey = info.dragNode.props.eventKey;
     const dropPos = info.node.props.pos.split('-');
@@ -329,7 +275,6 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
       // Drop on the content
       loop(data, dropKey, item => {
         item.children = item.children || [];
-        // where to insert 示例添加到尾部，可以是随意位置
         item.children.push(dragObj);
       });
     } else if (
@@ -339,7 +284,6 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
     ) {
       loop(data, dropKey, item => {
         item.children = item.children || [];
-        // where to insert 示例添加到尾部，可以是随意位置
         item.children.unshift(dragObj);
       });
     } else {
@@ -356,9 +300,38 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
       }
     }
 
-    this.setState({
-      treeData: data
-    });
+    let idData = {
+      idChil: String(dragKey).split(',')[0],
+      idParent: String(dropKey).split(',')[0]
+    };
+
+    if (dropPosition >= 0) {
+      confirm({
+        title: 'Di chuyển thư mục',
+        content: `bạn muốn di chuyên vào thư mục ${info.node.props.title ? info.node.props.title : ''}`,
+        onOk: async () => {
+          await moveTreeFolder(idData);
+          this.setState({
+            treeData: data
+          });
+        },
+        okText: 'Lưu lại',
+        onCancel() {},
+        cancelText: 'Hủy bỏ'
+      });
+    }
+  };
+
+  getList = async (key, node) => {
+    const { getListCampaignInfolderDataAction, onClick } = this.props;
+    let { level } = this.state;
+    let id = String(key).split(',')[0];
+    level = String(key).split(',')[1];
+    if (node) {
+      await getListCampaignInfolderDataAction(id, '', '', 0, 4);
+      await onClick(id);
+    }
+    this.setState({ level });
   };
 
   render() {
@@ -370,7 +343,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
               key={item.key}
               title={item.title}
               icon={
-                <Popover content={this.contentPop(item)} title="Thông tin" trigger="click" placement="bottomLeft">
+                <Popover content={this.contentPop(item)} title="Thông tin" trigger="hover" placement="bottomRight">
                   <Icon type="down" />
                 </Popover>
               }
@@ -385,7 +358,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
               key={item.key}
               title={item.title}
               icon={
-                <Popover content={this.contentPop(item)} title="Thông tin" trigger="click" placement="bottomLeft">
+                <Popover content={this.contentPop(item)} title="Thông tin" trigger="hover" placement="bottomRight">
                   <Icon type="down" />
                 </Popover>
               }
@@ -400,15 +373,19 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
             <label style={{ margin: '3px' }}>THƯ MỤC</label>
           </Col>
           <Col style={{ textAlign: 'right' }} span={12}>
-            <Icon style={{ marginRight: '5%', fontSize: '27px' }} onClick={() => this.createFolder(null, 'create')} type="folder-add" />
+            <Icon
+              style={{ marginRight: '5%', fontSize: '27px', color: 'gray' }}
+              onClick={() => this.createFolder(null, 'create')}
+              type="folder-add"
+            />
           </Col>
         </Row>
         <hr />
         <Row>
           <div style={{ height: 700 }}>
             <Tree
-              onSelect={info => {
-                console.log(info);
+              onSelect={(info, { selected }) => {
+                this.getList(info, selected);
               }}
               showIcon
               className="draggable-tree"
@@ -423,10 +400,11 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
                 if (item.children && item.children.length) {
                   return (
                     <TreeNode
+                      className="tree-node"
                       key={item.key}
                       title={item.title}
                       icon={
-                        <Popover content={this.contentPop(item)} title="Thông tin" trigger="click" placement="bottomLeft">
+                        <Popover content={this.contentPop(item)} title="Thông tin" trigger="hover" placement="bottomRight">
                           <Icon type="down" />
                         </Popover>
                       }
