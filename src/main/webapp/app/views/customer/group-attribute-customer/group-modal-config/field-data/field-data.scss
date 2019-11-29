@@ -2,6 +2,10 @@
   div[class~='ant-col'] {
     padding: 5px 5px;
   }
+  .ant-modal {
+    width: 1000px !important;
+    top: 40px;
+  }
 }
 
 .label-option {
@@ -19,9 +23,4 @@
 
 .ant-radio-button-wrapper-checked {
   background-color: #353ed1 !important;
-}
-
-.ant-modal {
-  width: 1000px !important;
-  top: 40px;
 }
