@@ -350,7 +350,13 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
                 </div>
               }
               icon={
-                <Popover content={this.contentPop(item)} title="Thông tin" trigger="hover" placement="bottomRight">
+                <Popover
+                  overlayClassName="pop-data"
+                  content={this.contentPop(item)}
+                  title="Thông tin"
+                  trigger="hover"
+                  placement="bottomRight"
+                >
                   <Icon type="down" />
                 </Popover>
               }
@@ -369,7 +375,13 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
                 </div>
               }
               icon={
-                <Popover content={this.contentPop(item)} title="Thông tin" trigger="hover" placement="bottomRight">
+                <Popover
+                  overlayClassName="pop-data"
+                  content={this.contentPop(item)}
+                  title="Thông tin"
+                  trigger="hover"
+                  placement="bottomRight"
+                >
                   <Icon type="down" />
                 </Popover>
               }

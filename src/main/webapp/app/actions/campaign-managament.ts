@@ -4,7 +4,9 @@ import {
   insertTreeFolderService,
   editTreeFolderService,
   deleteTreeFolderService,
-  moveTreeFolderService
+  moveTreeFolderService,
+  getStatusCampaignService,
+  getListCampaginService
 } from 'app/services/campaign-managament';
 
 //get Tree Folder
@@ -31,12 +33,24 @@ export const editTreeFolder = data => ({
 
 // delete Tree Folder
 export const deleteTreefolder = data => ({
-  return: CAMPAIGN_MANAGAMENT.DELETE_TREE_FOLDER,
+  type: CAMPAIGN_MANAGAMENT.DELETE_TREE_FOLDER,
   payload: deleteTreeFolderService(data)
 });
 
 // move Tree Folder
 export const moveTreeFolder = data => ({
-  return: CAMPAIGN_MANAGAMENT.MOVE_TREE_FOLDER,
+  type: CAMPAIGN_MANAGAMENT.MOVE_TREE_FOLDER,
   payload: moveTreeFolderService(data)
+});
+
+//count status campaign
+export const statusCampaign = () => ({
+  type: CAMPAIGN_MANAGAMENT.COUNT_CAMPAIGN,
+  payload: getStatusCampaignService()
+});
+
+// get list CJ
+export const getListCampaginAuto = () => ({
+  type: CAMPAIGN_MANAGAMENT.GET_LIST_CAMPAIGN_AUTO,
+  payload: getListCampaginService()
 });

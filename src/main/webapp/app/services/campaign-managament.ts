@@ -2,6 +2,7 @@ import { authHeaders } from './header';
 import axios from 'axios';
 
 const urlCJ = 'v1/cj-folders';
+const urlCampaign = 'v1/cjs';
 
 //call API get list Tree
 export const getTreeFolderService = () => {
@@ -34,4 +35,15 @@ export const moveTreeFolderService = data => {
 
 export const getListCampaignInfolder = (folderId: string, textSearch?: string, tagIds?: string, page?: number, pageSize?: number) => {
   return axios.get(urlCJ + '/' + folderId + '/cjs', { params: { textSearch, tagIds, page, pageSize } });
+};
+
+// call API count status campaign
+export const getStatusCampaignService = () => {
+  const url = `${urlCampaign}/count`;
+  return axios.get(url);
+};
+
+// call API get list campaign auto
+export const getListCampaginService = () => {
+  return axios.get(urlCampaign);
 };
