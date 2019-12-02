@@ -30,7 +30,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
   };
 
   movePage = () => {
-    location.assign('#/app/views/campaign-managament');
+    location.assign('#/app/views/campaigns/campaign-managament');
   };
 
   render() {

@@ -173,7 +173,14 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                   </div>
                 </Col>
                 <Col span={4} style={{ textAlign: 'right' }}>
-                  <Button color="primary">Tạo mới chiến dịch</Button>
+                  <Button
+                    color="primary"
+                    onClick={() => {
+                      window.location.assign('app/views/customers/campaign-auto');
+                    }}
+                  >
+                    Tạo mới chiến dịch
+                  </Button>
                 </Col>
               </Row>
             </div>
