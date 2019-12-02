@@ -9,6 +9,7 @@ import CampaignTag from '../campaign-tag/campaign-tag';
 import CjTagInsertModal from './insert-cj-tag-modal/cj-tag-insert-modal';
 import CjTagListModal from './list-cj-tag-modal/cj-tag-list-modal';
 import { updateCjTagsAction } from 'app/actions/cj';
+import './cj-tag-modal.scss';
 
 interface ICjTagModalProps extends StateProps, DispatchProps {
   openModalCjTag?: boolean;
@@ -106,6 +107,7 @@ class CJTagModal extends React.Component<ICjTagModalProps, TCjTagModalState> {
 
   render() {
     let { openModalCjTag, toogleModalCjTag, closeModalCjTag, dataModalTag } = this.props;
+    console.log('sufskhjkl;dddddddddd', dataModalTag);
     let extendComponent: any = null;
     let color: string = 'primary';
     let isDisable = false;
@@ -129,15 +131,15 @@ class CJTagModal extends React.Component<ICjTagModalProps, TCjTagModalState> {
         <Modal id="modal-cj-tag" isOpen={openModalCjTag}>
           <ModalHeader toggle={toogleModalCjTag}>Chọn tag</ModalHeader>
           <ModalBody>
-            <CampaignTag handleChange={this.handleChange} defaultValue={dataModalTag.cjTags} />
+            <div className="combobox-cj-tag">
+              <CampaignTag handleChange={this.handleChange} defaultValue={dataModalTag.cjTags} />
+            </div>
             <br />
-            <label htmlFor="" onClick={() => this.openModalCjTag()}>
-              Thêm mới tag
-            </label>
-            <br />
-            <label htmlFor="" onClick={() => this.openModalListCjTag()}>
-              Danh sách tag
-            </label>
+            <div className="link">
+              <a onClick={() => this.openModalCjTag()}>Thêm mới tag</a>
+              <br />
+              <a onClick={() => this.openModalListCjTag()}>Danh sách tag</a>
+            </div>
           </ModalBody>
           <ModalFooter>
             <Button color="link" onClick={closeModalCjTag}>

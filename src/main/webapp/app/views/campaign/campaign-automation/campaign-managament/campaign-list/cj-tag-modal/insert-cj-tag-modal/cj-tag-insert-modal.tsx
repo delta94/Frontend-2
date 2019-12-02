@@ -51,6 +51,7 @@ class CJTagInsertModal extends React.Component<ICjTagInsertModalProps, ICjTagIns
       await getCjTagsAction();
       await refreshListCjTag();
       closeModalCjTagInsert();
+      this.resetField();
     }
   };
 
@@ -79,7 +80,7 @@ class CJTagInsertModal extends React.Component<ICjTagInsertModalProps, ICjTagIns
         <ModalBody>
           <div className="cj-tag-insert-content">
             <div className="cj-tag-insert-input">
-              Tag
+              <span>Tag</span>
               <Input
                 className="tab-info"
                 id="name"

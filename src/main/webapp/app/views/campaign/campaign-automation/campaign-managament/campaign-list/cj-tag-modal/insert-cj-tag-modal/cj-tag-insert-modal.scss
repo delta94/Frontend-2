@@ -1,0 +1,13 @@
+#modal-cj-tag-insert {
+  .modal-header,
+  .modal-footer {
+    background: #ffffff;
+  }
+
+  .cj-tag-insert-input {
+    display: flex;
+    span {
+      margin-right: 10px;
+    }
+  }
+}
