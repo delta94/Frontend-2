@@ -31,4 +31,37 @@
     font-style: normal;
     font-weight: normal;
   }
+  thead th {
+    color: #545cd8;
+  }
+  .table-striped {
+    margin-top: 0px !important;
+  }
+
+  .table-responsive {
+    display: block;
+    overflow-x: auto;
+  }
+  .table thead th,
+  .table td {
+    vertical-align: middle;
+  }
+  .table thead th {
+    border-bottom: 2px solid #e9ecef;
+  }
+  .table th,
+  .table td {
+    padding: 0.55rem;
+    border-top: 1px solid #e9ecef;
+  }
+  thead th,
+  tbody td,
+  tbody td .badge {
+    border-right: 1px solid #dedede;
+  }
+  td,
+  th {
+    border: 1px solid #dddddd;
+    text-align: center;
+  }
 }
