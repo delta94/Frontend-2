@@ -6,8 +6,8 @@ import { ToastContainer } from 'react-toastify';
 const Admin = lazy(() => import('app/views/customer'));
 const Pages = lazy(() => import('app/views/pages'));
 const Login = lazy(() => import('app/views/login'));
-const CampaginManagament = lazy(() => import('app/views/campaign'));
-const CampaginAuto = lazy(() => import('app/views/campaign/campaign-automation/campaign-managament'));
+const CampaginAuto = lazy(() => import('app/views/campaign'));
+const CampaginManagament = lazy(() => import('app/views/campaign/campaign-automation/campaign-managament'));
 const GGeditor = lazy(() => import('app/views/GGeditor'));
 const UserPages = lazy(() => import('app/DemoPages/UserPages'));
 const Applications = lazy(() => import('app/DemoPages/Applications'));
@@ -77,7 +77,7 @@ const AppRoutes = () => {
           </div>
         }
       >
-        <Route path="/app/views/campaigns/campaign-auto" component={CampaginManagament} />
+        <Route path="/app/views/campaigns/campaign-auto" component={CampaginAuto} />
       </Suspense>
 
       {/* campaign */}
@@ -96,7 +96,7 @@ const AppRoutes = () => {
           </div>
         }
       >
-        <Route path="/app/views/campaigns/campaign-managament" component={CampaginAuto} />
+        <Route path="/app/views/campaigns/campaign-managament" component={CampaginManagament} />
       </Suspense>
 
       {/* Admin */}
