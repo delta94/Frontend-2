@@ -7,6 +7,7 @@ import { IRootState } from 'app/reducers';
 import LoaderAnim from 'react-loaders';
 import { getCjTagsAction, deleteCjTagAction } from 'app/actions/cj-tag';
 import { List, Typography, Icon, Modal as ModalAntd } from 'antd';
+import './cj-tag-list-modal.scss';
 
 interface ICjTagListModalProps extends StateProps, DispatchProps {
   isOpenModalCjTag?: boolean;
@@ -58,7 +59,7 @@ class CJTagListModal extends React.Component<ICjTagListModalProps, ICjTagListMod
                 key={index}
                 actions={[
                   <span
-                    style={{ color: 'red' }}
+                    style={{ color: 'red', float: 'right' }}
                     onClick={() => {
                       this.deleteCjTag(cjTags[index]);
                     }}

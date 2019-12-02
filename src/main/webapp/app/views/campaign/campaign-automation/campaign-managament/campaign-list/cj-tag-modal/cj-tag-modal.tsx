@@ -25,18 +25,14 @@ interface TCjTagModalState {
   cjTags?: any[];
   isOpenModalCjTagInsert?: boolean;
   isOpenModalCjTagList?: boolean;
-  dataModalTag: {
-    cjId?: string;
-    cjTags?: any[];
-  };
+  cjId?: string;
 }
 
 class CJTagModal extends React.Component<ICjTagModalProps, TCjTagModalState> {
   state: TCjTagModalState = {
     cjTags: [],
     isOpenModalCjTagInsert: false,
-    isOpenModalCjTagList: false,
-    dataModalTag: {}
+    isOpenModalCjTagList: false
   };
 
   componentDidMount() {}
@@ -59,8 +55,10 @@ class CJTagModal extends React.Component<ICjTagModalProps, TCjTagModalState> {
   };
 
   openModalCjTag = () => {
+    this.props.closeModalCjTag();
     this.setState({
-      isOpenModalCjTagInsert: true
+      isOpenModalCjTagInsert: true,
+      cjId: this.props.dataModalTag.cjId
     });
   };
 
@@ -79,6 +77,7 @@ class CJTagModal extends React.Component<ICjTagModalProps, TCjTagModalState> {
   };
 
   openModalListCjTag = () => {
+    this.props.closeModalCjTag();
     this.setState({
       isOpenModalCjTagList: true
     });
@@ -100,7 +99,9 @@ class CJTagModal extends React.Component<ICjTagModalProps, TCjTagModalState> {
 
   refreshListCjTag = () => {
     this.props.getCjs();
-    this.props.closeModalCjTag();
+    if (this.props.openModalCjTag) {
+      this.props.closeModalCjTag();
+    }
   };
 
   render() {
@@ -108,13 +109,15 @@ class CJTagModal extends React.Component<ICjTagModalProps, TCjTagModalState> {
     let extendComponent: any = null;
     let color: string = 'primary';
     let isDisable = false;
-    let { isOpenModalCjTagInsert, isOpenModalCjTagList } = this.state;
+    let { isOpenModalCjTagInsert, isOpenModalCjTagList, cjId } = this.state;
     return (
       <div className="modal-cj-tag">
         <CjTagInsertModal
           toogleModalCjTagInsert={this.toogleModalCjTagInsert}
           isOpenModalCjTagInsert={isOpenModalCjTagInsert}
           closeModalCjTagInsert={this.closeModalCjTagInsert}
+          dataModalTag={cjId}
+          refreshListCjTag={this.refreshListCjTag}
         />
         <CjTagListModal
           toogleModalCjTagList={this.toogleModalCjTagList}
