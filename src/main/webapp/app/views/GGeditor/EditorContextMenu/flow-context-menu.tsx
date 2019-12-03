@@ -25,7 +25,7 @@ class FlowContextMenu extends React.Component<IFlowContextMenuProps, any> {
             <MenuItem command="delete" />
             <div className="item" onClick={this.onClick}>
               <Icon type="search" />
-              <span>edit</span>
+              <span>Edit</span>
             </div>
           </NodeMenu>
           <EdgeMenu>
