@@ -3,7 +3,7 @@ import { withPropsAPI } from "gg-editor";
 import { Row, Col, Card, Input, Button } from 'antd';
 
 class Save extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props)
   }
 
@@ -17,9 +17,7 @@ class Save extends React.Component {
 
   render() {
     return (
-      <div >
-        <Button type="primary" onClick={this.handleClick}>Save Node</Button>
-      </div>
+      <Button  onClick={this.handleClick}>Save</Button>
     );
   }
 }

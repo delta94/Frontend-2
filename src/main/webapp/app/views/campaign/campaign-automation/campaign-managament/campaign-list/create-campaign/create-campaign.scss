@@ -1,0 +1,44 @@
+.container-create {
+  .row-title {
+    background: #f9fafb;
+    padding: 15px;
+  }
+  .title {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 19px;
+    /* identical to box height */
+
+    color: #595c82;
+  }
+  .gutter-box {
+    background: #f9fafb;
+    border: 1px solid;
+    padding: 5px 0;
+    font-size: 18px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+  }
+  .text-title {
+    margin-left: 2%;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 21px;
+
+    color: #343a40;
+  }
+  p {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 18px;
+
+    color: #6c757d;
+  }
+}

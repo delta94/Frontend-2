@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Card, Row, Col, Collapse, Layout, Menu, Icon } from 'antd';
 import { ItemPanel, Item } from 'gg-editor';
-
+const { SubMenu } = Menu;
 const { Panel } = Collapse;
 const { Header, Sider, Content } = Layout;
 // import ImageOne from '../../image/image.png'
@@ -20,7 +20,7 @@ class FlowItemPanel extends React.Component {
 
   render() {
     return (
-      <Layout>
+      <Fragment>
         {/* <Sider trigger={null} width = {"100%"} collapsible collapsed={this.state.collapsed}> */}
         <ItemPanel className="itemPanel">
           <Card title="Nguồn dữ liệu" bordered={true}>
@@ -348,7 +348,7 @@ class FlowItemPanel extends React.Component {
           </Card>
         </ItemPanel>
         {/* // </Sider> */}
-      </Layout>
+      </Fragment>
     );
   }
 }

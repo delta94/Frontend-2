@@ -32,8 +32,10 @@ body {
 }
 
 .editorHd {
-  padding: 8px;
+  margin: 1% 1% 0%;
+  padding: 1%;
   border: 1px solid #e6e9ed;
+  background: #ffffff;
 }
 
 .editorBd {
@@ -78,4 +80,82 @@ body {
   flex: 1;
   // https://github.com/philipwalton/flexbugs/issues/197#issuecomment-378908438
   height: 0;
+}
+.editor {
+  .ant-breadcrumb-link {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 19px;
+    /* identical to box height */
+
+    color: #595c82;
+  }
+
+  .ant-breadcrumb a {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 19px;
+    /* identical to box height */
+
+    text-decoration-line: underline;
+
+    color: #3866dd;
+  }
+  .ant-breadcrumb a:hover {
+    text-decoration: none;
+    color: greenyellow;
+  }
+  .ant-layout-sider {
+    background: white;
+  }
+  .ant-layout-sider-trigger {
+    position: fixed;
+    bottom: 0;
+    z-index: 1;
+    height: 48px;
+    color: #d0dce7;
+    line-height: 48px;
+    text-align: center;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tool-bar {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 16px;
+
+    color: #9aa8b4;
+  }
+  .icon-collapse {
+    float: right;
+    color: #d0dce7;
+  }
+  .header-sider {
+    padding: 16px;
+  }
+  .header-flow {
+    background: #f9fafb;
+    padding: 13px;
+  }
+  .itemPanel {
+    .ant-card {
+      background: white;
+      margin-top: 2%;
+    }
+  }
+  .ant-layout-sider-children {
+    height: 800px;
+    overflow: auto;
+  }
+  .flow {
+    background: #f9fafb;
+    margin: 0% 1%;
+  }
 }

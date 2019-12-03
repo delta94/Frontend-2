@@ -8,7 +8,7 @@ import Loader from 'react-loader-advanced';
 import ReactPaginate from 'react-paginate';
 import { getListCampaignInfolderDataAction } from 'app/actions/campaign-managament';
 import './campaign-list.scss';
-import { Input, Icon, Checkbox, Menu, Dropdown, Tag } from 'antd';
+import { Input, Icon, Checkbox, Menu, Popconfirm, Tag } from 'antd';
 import CampaignTag from './campaign-tag/campaign-tag';
 import CjTagModal from './cj-tag-modal/cj-tag-modal';
 import { getCjTagsByCjIdAction } from 'app/actions/cj';
@@ -176,7 +176,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                   <Button
                     color="primary"
                     onClick={() => {
-                      window.location.assign('app/views/customers/campaign-auto');
+                      window.location.assign('/#/app/views/campaigns/campaign-managament/new');
                     }}
                   >
                     Tạo mới chiến dịch
@@ -214,9 +214,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                         <td colSpan={5}>{index + 1}</td>
                         <td colSpan={25} id="name">
                           <p> {item.name}</p>
-                          <p>
-                            <p>Version {item.version}</p>
-                          </p>
+                          <p>Version {item.version}</p>
                           {item.tags
                             ? item.tags.split(',').map((value, index) => {
                                 return (

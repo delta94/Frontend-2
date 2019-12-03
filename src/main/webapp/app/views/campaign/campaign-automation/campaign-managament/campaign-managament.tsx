@@ -32,7 +32,6 @@ class CampaginManagament extends React.Component<ICampaginManagamentProps, ICamp
 
   render() {
     let { idTree } = this.state;
-    console.log('aaa');
     return (
       <Fragment>
         <div>

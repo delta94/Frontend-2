@@ -1,17 +1,21 @@
 import React, { Fragment } from 'react';
 import GGEditor, { Flow } from 'gg-editor';
-import { Row, Col, Card, Input, Button } from 'antd';
+import { Row, Col, Card, Input, Button, Layout, Menu, Breadcrumb, Icon } from 'antd';
 import CustomNode from './node/node';
 import CustomEdges from './egdes/egdes';
 import FlowToolbar from './FlowToolBar/flow-tool-bar';
 import Save from './save/save';
 import FlowItemPanel from './EditorItemPannel/FlowItemPanel';
-import FlowDetailPanel from './EditorDetailPanel/FlowDetailPanel';
-import EditorMinimap from './EditorMinMap/editor-mini-map';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { Container } from 'reactstrap';
 import FlowContextMenu from './EditorContextMenu/flow-context-menu';
 import { Modal } from 'antd';
+const { Header, Content, Footer, Sider } = Layout;
+const { SubMenu } = Menu;
 import './style.scss';
 
+const ButtonGroup = Button.Group;
 const { confirm } = Modal;
 
 interface IFlowPageProps {}
@@ -21,6 +25,7 @@ interface IFlowPageState {
   isUpdate: boolean;
   data: any;
   idNode: any;
+  collapsed: boolean;
 }
 
 export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
@@ -32,7 +37,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       nodes: [],
       edges: []
     },
-    idNode: {}
+    idNode: {},
+    collapsed: false
   };
   getVisible = e => {
     this.setState({ visible: e });
@@ -81,7 +87,6 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
   showModal() {
     let { dataNode, idNode } = this.state;
-
     confirm({
       title: 'Edit Node',
       content: this.contentModal(),
@@ -124,7 +129,10 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   }
 
   render() {
-    let { dataNode, visible } = this.state;
+    let { dataNode, collapsed } = this.state;
+    const imgSetting = require('app/assets/utils/images/flow/setting.png');
+    const imgAward = require('app/assets/utils/images/flow/award.png');
+    const imgMove = require('app/assets/utils/images/flow/move.png');
     return (
       <Fragment>
         <GGEditor
@@ -133,38 +141,78 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             this.commandExecute(command, dataNode);
           }}
         >
-          <Row>
-            <Col span={4} className="titleContent">
-              <Card bordered={true} className="titleContent">
-                <label className="editorTitleBar">Công Cụ</label>
-              </Card>
-            </Col>
-            <Col span={20} className="titleContent">
-              <Card bordered={true} className="titleContent">
+          <Layout style={{ minHeight: '200vh' }}>
+            <Sider width={370} collapsed={collapsed}>
+              <div className="header-sider">
+                <label className="tool-bar">Công cụ</label>
+                <Icon
+                  type="double-left"
+                  onClick={() => {
+                    this.setState({ collapsed: !collapsed });
+                  }}
+                  className="icon-collapse"
+                />
+              </div>
+
+              <div className="logo" />
+              <FlowItemPanel />
+            </Sider>
+            <Layout>
+              <Header className="header-flow">
                 <Row>
-                  <Col span={6}>
-                    <label>Phiên bản : 1</label>
-                  </Col>
-                  <Col span={6}>
-                    <label>Trạng thái : Bản nháp</label>
-                  </Col>
-                  <Col span={6}>
-                    <Save />
+                  <Col span={24} className="titleContent">
+                    <Row>
+                      <Breadcrumb separator=">">
+                        <Breadcrumb.Item>
+                          <a href="javascript:void(0);">
+                            <FontAwesomeIcon icon={faHome} />
+                          </a>
+                        </Breadcrumb.Item>
+                        <Breadcrumb.Item>
+                          <a href="javascript:void(0);">Chiến dịch tự động</a>
+                        </Breadcrumb.Item>
+                        <Breadcrumb.Item>
+                          <a href="javascript:void(0);">Danh sách chiến dịch</a>
+                        </Breadcrumb.Item>
+                        <Breadcrumb.Item>
+                          <a href="javascript:void(0);">Tạo chiến dịch</a>
+                        </Breadcrumb.Item>
+                        <label className="ant-breadcrumb-link">Chiến dịch mới</label>
+                      </Breadcrumb>
+                    </Row>
                   </Col>
                 </Row>
-              </Card>
-            </Col>
-          </Row>
-          <Row type="flex" className="editorHd">
-            <Col span={24}>
-              <FlowToolbar />
-            </Col>
-          </Row>
-          <Row type="flex" className="editorBd">
-            <Col span={6} className="editorSidebar">
-              <FlowItemPanel />
-            </Col>
-            <Col span={14} className="editorContent">
+              </Header>
+              <Row type="flex" className="editorHd">
+                <Col span={24} style={{ borderBottom: '0.25px solid', padding: '1%' }}>
+                  <Col span={4}>
+                    <label>Phiên bản: 1.0</label>
+                  </Col>
+                  <Col span={8}>
+                    <label>Trạng Thái : Bản nháp</label>
+                  </Col>
+                  <Col span={4}>
+                    <img src={imgMove} /> &nbsp;
+                    <img src={imgSetting} /> &nbsp;
+                    <img src={imgAward} />
+                  </Col>
+                  <Col span={6}>
+                    <ButtonGroup>
+                      <Button disabled>Test</Button>
+                      <Button disabled>Validate</Button>
+                      <Save />
+                    </ButtonGroup>
+                  </Col>
+                  <Col span={2}>
+                    <Button type="primary" style={{ float: 'right' }}>
+                      Kích hoạt
+                    </Button>
+                  </Col>
+                </Col>
+                <Col span={24} style={{ padding: '0% 23%' }}>
+                  <FlowToolbar />
+                </Col>
+              </Row>
               <Flow
                 // onClick= {(e)=> {this.setState({isUpdate:true})}}
                 onClick={e => {
@@ -180,12 +228,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
               />
               <CustomNode />
               <CustomEdges />
-            </Col>
-            <Col span={4} className="editorSidebar">
-              <FlowDetailPanel />
-              <EditorMinimap />
-            </Col>
-          </Row>
+            </Layout>
+          </Layout>
           <FlowContextMenu onClick={this.getVisible} />
         </GGEditor>
       </Fragment>

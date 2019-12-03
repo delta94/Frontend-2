@@ -54,3 +54,9 @@ export const getListCampaginAuto = () => ({
   type: CAMPAIGN_MANAGAMENT.GET_LIST_CAMPAIGN_AUTO,
   payload: getListCampaginService()
 });
+
+//get value from Flow
+export const getNode = (data?: any) => ({
+  type: CAMPAIGN_MANAGAMENT.GET_NODE,
+  payload: data
+});

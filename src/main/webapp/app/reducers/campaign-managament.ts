@@ -57,7 +57,8 @@ const initialCampaignManagament = {
   campaign: {} as ICampaign,
   loading: false,
   statusCampaign: {} as IStatusCampagin,
-  listCampaignAuto: [] as IListCampaignAuto[]
+  listCampaignAuto: [] as IListCampaignAuto[],
+  listNode: []
 };
 
 export type HandleCampaignManagament = typeof initialCampaignManagament;
@@ -122,6 +123,8 @@ export default (state = initialCampaignManagament, action) => {
     case CAMPAIGN_MANAGAMENT.GET_CAMPAIGN_IN_FOLDER:
       return { ...state, data: action.data };
 
+    case CAMPAIGN_MANAGAMENT.GET_NODE:
+      return { ...state, listNode: action.data };
     default:
       return state;
   }

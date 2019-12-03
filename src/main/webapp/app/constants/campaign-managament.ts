@@ -6,5 +6,6 @@ export const CAMPAIGN_MANAGAMENT = {
   DELETE_TREE_FOLDER: 'campaign-managament/DELETE_TREE_FOLDER',
   MOVE_TREE_FOLDER: 'campaign-managament/MOVE_TREE_FOLDER',
   COUNT_CAMPAIGN: 'campaign-managament/COUNT_CAMPAIGN',
-  GET_LIST_CAMPAIGN_AUTO: 'campaign-managament/GET_LIST_CAMPAIGN_AUTO'
+  GET_LIST_CAMPAIGN_AUTO: 'campaign-managament/GET_LIST_CAMPAIGN_AUTO',
+  GET_NODE: 'campaign-managament/GET_NODE'
 };
