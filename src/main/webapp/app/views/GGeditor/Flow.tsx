@@ -144,18 +144,30 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           <Layout style={{ minHeight: '200vh' }}>
             <Sider width={370} collapsed={collapsed}>
               <div className="header-sider">
-                <label className="tool-bar">Công cụ</label>
-                <Icon
-                  type="double-left"
-                  onClick={() => {
-                    this.setState({ collapsed: !collapsed });
-                  }}
-                  className="icon-collapse"
-                />
+                <label className="tool-bar" style={{ display: collapsed ? 'none' : 'contents' }}>
+                  CÔNG CỤ
+                </label>
+                {collapsed ? (
+                  <Icon
+                    type="double-right"
+                    onClick={() => {
+                      this.setState({ collapsed: !collapsed });
+                    }}
+                  />
+                ) : (
+                  <Icon
+                    type="double-left"
+                    onClick={() => {
+                      this.setState({ collapsed: !collapsed });
+                    }}
+                    className="icon-collapse"
+                  />
+                )}
               </div>
-
-              <div className="logo" />
-              <FlowItemPanel />
+              <hr />
+              <div className="logo" style={{ display: collapsed ? 'none' : 'block' }}>
+                <FlowItemPanel />
+              </div>
             </Sider>
             <Layout>
               <Header className="header-flow">
