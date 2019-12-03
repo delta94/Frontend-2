@@ -381,6 +381,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
         visible={is_show}
         title={title_modal ? title_modal.toUpperCase() : ''}
         style={{ width: '700px' }}
+        className="modal-config"
         onOk={() => this.props.toggle()}
         onCancel={this.closeConfigModal}
         footer={[

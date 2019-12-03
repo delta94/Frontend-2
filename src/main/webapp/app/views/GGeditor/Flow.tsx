@@ -1,13 +1,13 @@
 import React, { Fragment } from 'react';
 import GGEditor, { Flow } from 'gg-editor';
-import { Row, Col, Card, Input, Button, Layout, Menu, Breadcrumb, Icon } from 'antd';
+import { Row, Col, Popover, Input, Button, Layout, Menu, Breadcrumb, Icon } from 'antd';
 import CustomNode from './node/node';
 import CustomEdges from './egdes/egdes';
 import FlowToolbar from './FlowToolBar/flow-tool-bar';
 import Save from './save/save';
 import FlowItemPanel from './EditorItemPannel/FlowItemPanel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faCopy, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { Container } from 'reactstrap';
 import FlowContextMenu from './EditorContextMenu/flow-context-menu';
 import { Modal } from 'antd';
@@ -22,7 +22,7 @@ interface IFlowPageProps {}
 interface IFlowPageState {
   visible: boolean;
   dataNode: any[];
-  isUpdate: boolean;
+  isOpen: boolean;
   data: any;
   idNode: any;
   collapsed: boolean;
@@ -32,7 +32,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   state: IFlowPageState = {
     visible: false,
     dataNode: JSON.parse(localStorage.getItem('nodeStore')),
-    isUpdate: false,
+    isOpen: false,
     data: {
       nodes: [],
       edges: []
@@ -128,6 +128,39 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     );
   }
 
+  hide = () => {
+    this.setState({
+      isOpen: false
+    });
+  };
+
+  handleVisibleChange = visible => {
+    this.setState({ isOpen: visible });
+  };
+
+  contentSetting() {
+    return (
+      <Row>
+        <Row>
+          <Button type="link" onClick={this.hide} className="btn-multi">
+            <FontAwesomeIcon icon={faCopy} /> &nbsp; <label>Nhân bản chiến dịch</label>
+          </Button>
+        </Row>
+        <hr />
+        <Row>
+          <Button type="link" onClick={this.hide} className="btn-multi">
+            <FontAwesomeIcon icon={faTrashAlt} color="red" /> &nbsp; <label style={{ color: 'red' }}>Xóa version này</label>
+          </Button>
+        </Row>
+        <Row>
+          <Button type="link" onClick={this.hide} className="btn-multi">
+            <Icon type="notification" style={{ color: 'red' }} /> &nbsp; <label style={{ color: 'red' }}>Xóa chiến dịch này</label>
+          </Button>
+        </Row>
+      </Row>
+    );
+  }
+
   render() {
     let { dataNode, collapsed } = this.state;
     const imgSetting = require('app/assets/utils/images/flow/setting.png');
@@ -205,7 +238,16 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                   </Col>
                   <Col span={4}>
                     <img src={imgMove} /> &nbsp;
-                    <img src={imgSetting} /> &nbsp;
+                    <Popover
+                      content={this.contentSetting()}
+                      visible={this.state.isOpen}
+                      placement="bottom"
+                      onVisibleChange={this.handleVisibleChange}
+                      title=""
+                      trigger="click"
+                    >
+                      <img src={imgSetting} /> &nbsp;
+                    </Popover>
                     <img src={imgAward} />
                   </Col>
                   <Col span={6}>

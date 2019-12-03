@@ -8,7 +8,8 @@ import { Translate, translate } from 'react-jhipster';
 import { IRootState } from 'app/reducers';
 import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
-import ReactPaginate from 'react-paginate';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { getListCampaignInfolderDataAction } from 'app/actions/campaign-managament';
 import './create-campaign.scss';
 
@@ -24,7 +25,7 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
       <div className="container-create">
         <Row className="row-title">
           <Col span={20}>
-            <Icon type="home" /> > <label className="title"> Chiến dịch tự động > Danh sách chiến dịch > Tạo Chiến dịch</label>
+            <FontAwesomeIcon icon={faHome} /> > <label className="title"> Chiến dịch tự động > Danh sách chiến dịch > Tạo Chiến dịch</label>
           </Col>
           <Col span={4}>
             <Button
@@ -33,8 +34,8 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
                 window.location.assign('#/flow');
               }}
             >
-              <Icon type="plus" />
-              Tạo chiến dịch mới{' '}
+              <FontAwesomeIcon icon={faPlus} />
+              &nbsp; Tạo chiến dịch mới{' '}
             </Button>
           </Col>
         </Row>
