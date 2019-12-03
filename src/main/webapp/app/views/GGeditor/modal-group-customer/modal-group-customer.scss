@@ -1,0 +1,52 @@
+.group-modal-config {
+  position: relative;
+
+  .list-title {
+    padding: 20px 0px;
+  }
+
+  .group-addition {
+    .ant-card-body {
+      padding: 0px;
+    }
+
+    .group-addition_content {
+      padding: 14px;
+    }
+
+    .group-addition_block-out {
+      padding-left: 20px;
+      line-height: 40px;
+      background: #eff9ff;
+      box-sizing: border-box;
+      border-radius: 3px 3px 0px 0px;
+    }
+
+    .navigation {
+      text-align: right;
+      position: relative;
+      height: 40px;
+
+      .pagination {
+        position: absolute;
+        right: 0px;
+      }
+    }
+  }
+}
+
+.input-search_group {
+  display: flex;
+  margin-bottom: 10px;
+  height: auto;
+
+  .input-search_label {
+    width: 90px !important;
+    line-height: 35px;
+    font-weight: 500;
+    height: 35px;
+  }
+}
+.modal-config {
+  width: 60% !important;
+}

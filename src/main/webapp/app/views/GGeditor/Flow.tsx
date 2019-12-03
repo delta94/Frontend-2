@@ -8,7 +8,7 @@ import Save from './save/save';
 import FlowItemPanel from './EditorItemPannel/FlowItemPanel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faCopy, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import { Container } from 'reactstrap';
+import ModalGroupCustomer from './modal-group-customer/modal-group-customer';
 import FlowContextMenu from './EditorContextMenu/flow-context-menu';
 import { Modal } from 'antd';
 const { Header, Content, Footer, Sider } = Layout;
@@ -40,12 +40,16 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     idNode: {},
     collapsed: false
   };
-  getVisible = e => {
-    this.setState({ visible: e });
-    if (e) {
-      this.showModal();
-    }
+
+  // show modal
+  getVisible = event => {
+    this.setState({ visible: event });
+    // if (event) {
+    //   this.showModal();
+    // }
   };
+
+  //excute command
   commandExecute = (command, data) => {
     let name = command.command.name;
     let model = command.command;
@@ -62,6 +66,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     }
   };
 
+  //add node and save in local store
   addModel(command) {
     let type = command.type;
     let { data } = this.state;
@@ -109,23 +114,10 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     });
     this.setState({ visible: false });
   }
+  // Content Modal Chosse list customer
   contentModal() {
     let { idNode } = this.state;
-
-    return (
-      <div>
-        <label>Type</label>
-        <Input defaultValue={idNode.type} id="type" />
-        <label>Label</label>
-        <Input defaultValue={idNode.label} id="label" />
-        <label>Color</label>
-        <Input defaultValue={idNode.color} id="color" />
-        <label>Shape</label>
-        <Input defaultValue={idNode.shape} id="shape" />
-        <label>Size</label>
-        <Input defaultValue={idNode.size} id="size" />
-      </div>
-    );
+    return <div />;
   }
 
   hide = () => {
@@ -286,6 +278,15 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           </Layout>
           <FlowContextMenu onClick={this.getVisible} />
         </GGEditor>
+        <div className="content-group-modal-attribute">
+          <ModalGroupCustomer
+            is_show={this.state.visible}
+            type_modal={'INSERT_CUSTOMER_GROUP'}
+            id_list_customer={''}
+            toggle={this.getVisible}
+            title_modal={'CHỌN NHÓM'}
+          />
+        </div>
       </Fragment>
     );
   }
