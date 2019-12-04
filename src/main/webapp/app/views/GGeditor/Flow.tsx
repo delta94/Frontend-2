@@ -21,42 +21,68 @@ const { confirm } = Modal;
 interface IFlowPageProps {}
 interface IFlowPageState {
   visible: boolean;
-  dataNode: any[];
   isOpen: boolean;
   data: any;
   idNode: any;
   collapsed: boolean;
+  isUpdateNode: boolean;
+  idEdge: any;
 }
 
 export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   state: IFlowPageState = {
     visible: false,
-    dataNode: JSON.parse(localStorage.getItem('nodeStore')),
     isOpen: false,
-    data: {
-      nodes: [],
-      edges: []
-    },
+    data: JSON.parse(localStorage.getItem('nodeStore')),
     idNode: {},
-    collapsed: false
+    collapsed: false,
+    isUpdateNode: false,
+    idEdge: {}
   };
 
   // show modal
-  getVisible = event => {
-    this.setState({ visible: event });
-    // if (event) {
-    //   this.showModal();
-    // }
+  getVisible = async (event, valueName, isSuccess) => {
+    let { idNode } = this.state;
+    let data = JSON.parse(localStorage.getItem('nodeStore'));
+    switch (idNode.type) {
+      case 'DATA':
+        this.setState({ visible: event });
+        await data.nodes.map(event => {
+          if (event.id === idNode.id) {
+            event.label = String(valueName).split(',')[0];
+          }
+        });
+        break;
+
+      case 'EVENT':
+        confirm({
+          title: 'Do you Want to delete these items?',
+          content: 'Some descriptions',
+          onOk() {
+            console.log('OK');
+          },
+          onCancel() {
+            console.log('Cancel');
+          }
+        });
+
+      default:
+        break;
+    }
+    if (isSuccess) {
+      await localStorage.setItem('nodeStore', JSON.stringify(data));
+      await this.setState({ data: JSON.parse(localStorage.getItem('nodeStore')), isUpdateNode: true });
+    }
   };
 
   //excute command
-  commandExecute = (command, data) => {
+  commandExecute = command => {
     let name = command.command.name;
     let model = command.command;
-    let { dataNode } = this.state;
     console.log(command.command);
     switch (name) {
       case 'delete':
+        this.deleteModel(command.command.itemIds[0]);
         break;
       case 'add':
         this.addModel(model);
@@ -66,58 +92,65 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     }
   };
 
-  //add node and save in local store
-  addModel(command) {
-    let type = command.type;
-    let { data } = this.state;
-
+  //delete Node
+  deleteModel(id) {
+    let { idNode, idEdge } = this.state;
+    let data = {
+      nodes: [],
+      edges: []
+    };
     let props = JSON.parse(localStorage.getItem('nodeStore')) ? JSON.parse(localStorage.getItem('nodeStore')) : {};
 
     if (props && Object.keys(props).length > 0) {
       data = JSON.parse(localStorage.getItem('nodeStore'));
     }
+    switch (idNode.type ? idNode.type : idEdge.type) {
+      case 'node':
+        let index = data.nodes.indexOf(idNode);
+        data.nodes.splice(index, 1);
+        break;
+
+      case 'edge':
+        let indexEdge = data.edges.indexOf(idNode);
+        data.edges.splice(indexEdge, 1);
+        break;
+
+      default:
+        break;
+    }
+    localStorage.setItem('nodeStore', JSON.stringify(data));
+  }
+
+  //add node and save in local store
+  addModel(command) {
+    let type = command.type;
+    let data = {
+      edges: [],
+      nodes: [],
+      groups: []
+    };
+
+    let props = JSON.parse(localStorage.getItem('nodeStore')) ? JSON.parse(localStorage.getItem('nodeStore')) : {};
+
     switch (type) {
       case 'edge':
+        if (props.edges && Object.keys(props).length > 0) {
+          data = JSON.parse(localStorage.getItem('nodeStore'));
+        }
         data.edges.push(command.addModel);
+        localStorage.setItem('nodeStore', JSON.stringify(data));
         break;
       case 'node':
+        if (props.nodes && Object.keys(props).length > 0) {
+          data = JSON.parse(localStorage.getItem('nodeStore'));
+        }
         data.nodes.push(command.addModel);
+        localStorage.setItem('nodeStore', JSON.stringify(data));
+
         break;
       default:
         break;
     }
-    console.log(data);
-    localStorage.setItem('nodeStore', JSON.stringify(data));
-  }
-
-  showModal() {
-    let { dataNode, idNode } = this.state;
-    confirm({
-      title: 'Edit Node',
-      content: this.contentModal(),
-      onOk: () => {
-        let data = JSON.parse(localStorage.getItem('nodeStore'));
-        data.nodes.map(event => {
-          if (event.id === idNode.id) {
-            (event.label = $('#label').val()),
-              (event.color = $('#color').val()),
-              (event.type = $('#type').val()),
-              (event.shape = $('#shape').val()),
-              (event.size = $('#size').val());
-          }
-        });
-
-        localStorage.setItem('nodeStore', JSON.stringify(data));
-        this.setState({ visible: false });
-      },
-      onCancel: () => {}
-    });
-    this.setState({ visible: false });
-  }
-  // Content Modal Chosse list customer
-  contentModal() {
-    let { idNode } = this.state;
-    return <div />;
   }
 
   hide = () => {
@@ -154,7 +187,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   }
 
   render() {
-    let { dataNode, collapsed } = this.state;
+    let { collapsed, data } = this.state;
     const imgSetting = require('app/assets/utils/images/flow/setting.png');
     const imgAward = require('app/assets/utils/images/flow/award.png');
     const imgMove = require('app/assets/utils/images/flow/move.png');
@@ -163,7 +196,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         <GGEditor
           className="editor"
           onAfterCommandExecute={command => {
-            this.commandExecute(command, dataNode);
+            this.commandExecute(command);
           }}
         >
           <Layout style={{ minHeight: '200vh' }}>
@@ -263,14 +296,19 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                 // onClick= {(e)=> {this.setState({isUpdate:true})}}
                 onClick={e => {
                   console.log(e);
-                  this.setState({ idNode: e.item && e.item.type === 'node' ? e.item.model : '' });
+                  if (e.item && e.item.type === 'node') {
+                    this.setState({ idNode: e.item && e.item.type === 'node' ? e.item.model : '' });
+                  }
+                  if (e.item && e.item.type === 'edge') {
+                    this.setState({ idEdge: e.item && e.item.type === 'edge' ? e.item.model : '' });
+                  }
                 }}
                 // onMouseMove = {(e)=>{}}
                 graph={{
                   edgeDefaultShape: 'custom-edge'
                 }}
                 className="flow"
-                data={dataNode}
+                data={data}
               />
               <CustomNode />
               <CustomEdges />
@@ -281,7 +319,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         <div className="content-group-modal-attribute">
           <ModalGroupCustomer
             is_show={this.state.visible}
-            type_modal={'INSERT_CUSTOMER_GROUP'}
+            type_modal={'empty'}
             id_list_customer={''}
             toggle={this.getVisible}
             title_modal={'CHỌN NHÓM'}

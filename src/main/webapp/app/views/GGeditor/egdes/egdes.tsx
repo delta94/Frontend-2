@@ -11,7 +11,7 @@ class CustomEdge extends React.Component {
           sourceAnchor: item.getModel().sourceAnchor,
           target: item.getModel().target,
           targetAnchor: item.getModel().targetAnchor,
-          condition: ''
+          type: 'edge'
         };
         const model = item.getModel();
         const { color, size } = model;
@@ -19,8 +19,7 @@ class CustomEdge extends React.Component {
         return {
           stroke: color || '#E7F0F9',
           lineWidth: size || 5,
-          endArrow: true,
-          condition: 'a'
+          endArrow: true
         };
       }
     };

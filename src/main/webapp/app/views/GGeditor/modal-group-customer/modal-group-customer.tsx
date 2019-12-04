@@ -64,6 +64,7 @@ interface IGroupModalConfigState {
     categoryName?: string;
     customerAdvancedSave?: any;
   };
+  dateTime?: string;
 }
 
 export function makeRandomId(length: number): string {
@@ -92,7 +93,8 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
       categoryId: '',
       categoryName: '',
       customerAdvancedSave: {}
-    }
+    },
+    dateTime: ''
   };
 
   componentDidMount() {
@@ -279,8 +281,9 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
 
   // Close modal
   closeConfigModal = () => {
-    this.removeDataInModal();
     this.props.toggle();
+
+    this.removeDataInModal();
   };
 
   // Exec function request
@@ -334,7 +337,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
 
     await this.props.openModal(postRequest);
     await this.props.getListCustomerGroupDataAction('');
-    this.closeConfigModal();
+    this.props.toggle(false, this.state.categoryName + ',' + this.state.dateTime, true);
   }
 
   render() {
@@ -406,7 +409,6 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
             </label>
             <Input
               placeholder={translate('group-attribute-customer.group-modal-config.name-placeholder')}
-              value={categoryName}
               onChange={event => this.setState({ categoryName: event.target.value })}
               maxLength={160}
             />
@@ -415,8 +417,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
             <label className="input-search_label">Đặt lịch</label>
             <Input
               placeholder={'yyyy/mm/dd hh:mm:ss'}
-              value={categoryName}
-              onChange={event => this.setState({ categoryName: event.target.value })}
+              onChange={event => this.setState({ dateTime: event.target.value })}
               maxLength={160}
             />
           </div>
