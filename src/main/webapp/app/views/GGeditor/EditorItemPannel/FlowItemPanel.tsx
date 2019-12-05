@@ -29,10 +29,9 @@ class FlowItemPanel extends React.Component {
                     size="100*100"
                     shape="custom-node-circle"
                     model={{
-                      type: 'DATA',
+                      code: 'DATA',
                       color: '#23C00A',
                       backgroud: '#23C00A',
-                      code: 'action',
                       label: 'Data extensision',
                       icon:
                         'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFYAAABYCAYAAABvXACHAAAAAXNSR0IB2cksfwAAAAlwSFlzAAALEwAACxMBAJqcGAAAG65JREFUeJzlnYdbU9nWxu9feZ/vuXPnOqgoTURpUhTLFO+oOLRAICFUZWzTPnV0LLSQnpBQxI51FEFFpKS+31rrnJNGQKXJzHd8XkPaSc7vrLP2WnuvvfOPf2yyzfmkE7/6juPnoe8V0d+nbYdJX0d16Xa9Kr3oc3/nTbn13bmAzhtHcLq3HD9aS3Dano8WRzYMzgxSlsjo3CUyOHJIudDTLavBtktU1ZtBt7vRNlSKC6PH/n+Ctjw5A9PAARispTDYimCwF5DyFGgCMgONrnTo3UspA/XOHSL+O15Ng3QSPDkwufeg1VmMNucBtNmP/r1B94y34pzza3S5ywSg3r1NVO/5dOncW0XJjzcMpqPBS7e+LXSbRvcz0eDOR62lFM2eKlx7cfHvA7l94CjarQfQYiuGyZYHo4OtMh2NBLVRhfupkJcE69WUptwyaE826hy7YBo+gAZnGZoch3Htz1N/XcCX7uvRZC5B00A+6gey0WCly9e+FQ2ONOidW0X1rq0rstwPg40TwTWOZEPvpRM6lIPOe6XQ2fbg/O2qvxbc3mcXYbRVoMmZTxa5G3pXluIXCWK9+yuRjm8H0xKg1A2uXPXe9MXybVOVFlXD8FfkJnaQL86HwV2CFnc5Ou2HNz9gk/0HssTD5Nf2KP6NVO9Jj7Oyr1Dr+SoJTPqqVe/d+QG4CuC6oS2o8/Fn7qLvtEdOvNG5Bx32EvSMmzYf4O7xLlR37yNrKEf9cAHqvJnKwRLYOk+GqNa9I6oEMOrzqxF/jgI3hfi5wWxRnTcbNT6Sdxd99m4ygN10Ze2BiUK8c0MVOGPbt3ng3rhjQKtjPwy+Ahx3bEftaCZqhgiYj7UTtYMElcKgGgKgaS1gLgKbDFd7TKCyhe4WSxV5Fcj8OFttvTULjZYMdLpz0Nyd8/nh/nT7GL6/So2PK0esr5ZaY5ZcbipYtl4Fbkx1nixVawx2kbKXUOx5jhq4HWikELDRpSQlupsZGPiz6/MAbrtzEDUcxozlq5c1AfVuUbTpwC71vNoOqAkG33KbwJFLQ38Wuh//uLFwmx2UNY0Uo+V2EWpcO1Wwya107HJc60v/48EuDTNe9RpUVSctX6KZ3ETXcCmu3G/cGLjtfWVo8Rai0roNJyx0Zn1xlhffSscdyF8FrLa/5rFc1Dq24nj3P9Fk2Y3eR2fXF277QAWM9lw0ejJTtrrSSHzE5bfZwEYBD7LbUtqKmkGOt7dDT5kiRw0DE6fXB+5Pww0UmhSi/XaeZDQSG/Ilr4GlVjeqKODNCnanqlRgM1BNx1bl3UoRzHaBa/JlCNyr9zrXFu7NR12o7Ssiv1pIZ3JrXDazTbXaXSrUPQlgueGSmDbpwJIbs9Vqqc9JKe9OpQ9BFAfXo1xptZ4cVA/moGpwh8DlhMY4RO6uP13g2v5cQ7fAceoPFOt9Qz61aoQOZIihbvkAWC1ezFykam+GaCPBxixzZ0I/gtz3cNilfOdaTy6BzUUVXQliteQSfqDjNnlzqG3JQpu1eG3AnnKVSChSReHT98M5OD6UIwlAaovdnSIQp4TBx9q5SHVrJM3fJ9+PXfI7qV1QRTAbKTRUtE15zK2A5VRcvj8lCspJUxtjNRzjONdoz8PV4erVwb08cgKdlPpxbHpyeIuA/X44V6BEfWwy2LjMJmqlS8BcMg39RDG45Z6LghWoSWD5PoFtdCtgOc2td2clhF/xnencIX/eUwbb+Cq6HrvIBXD/KfdEVdHlf3w4CyfYYn1xnR7RqCDOSgVcrDMkvrHgiGK91PBBV7Az1hkedQc7lfe7d0UlPXJqr1y8tMyssScTp8xfrwxsR99hnPGWyVAJg+UQpMrHfidLtbb4eHVpsHxATWQRRudumBxKhwfL6Fh7SVelSxGPHLDq3drfexTxJS8nOM49aCdHLDc7JdR4sFXXydpvFuKS7xOjhN9HDOhwlqLFlSu9/XpPmgKXYzzyPal7j3ZF4bY8LMR/B75Apfkr6Cnu5dGDTms52nvKcLr/ENr6D8LUX7GmajZXwKCqaUCR3lKBhoH9qDOXQ2fZD73tIBodZQSITrA3Fw12BWoTHVOCH46HnSQ2kmZ3Loy2ApwbPPlpYLnzt5kcOJ+hxqQe/lj/Zwqw0nDtxtGBNFQ6MmEaJpieQ7BNdOFZcADAE9JrvMVdTK2DJuM0oWoKD+nzHsntc4zR/3acu30UzRTBcPDfRKFVvIuI+uEPwXXlocVeinOemo+De8P9M1rt+8RKlxo2SY4DE8HuwXcD5IdGD8r40hM4MIfHiNBhAu9EAdL8OmtB1Sze0P+T9B3eIEz/R+j2Lq4THLK4+xWotSnHoXWG83jZUmDlWJ07oHOkS2+YkSzXYD3wcWC7zNX0plwCtSUOZnp0JOBDYDmWrXEWwOD7juzECz8dyLwc1CwQWQDCIfobCK1QwRRSnouI+B8SFNv4nh8zdM3cwTh60D64H82+fOXK88WyyYZlwOpcO1Dn2Io6+3aJf43Ocvw0/AFf+8fjTjqDeWqGkp4idFE+NDb8sdgVSCxoL0D/5DlMk6X46dDDcQgYali9F16BUoH1RxUmeOqrIvHYlY3vzdP99xE+0VPoftpO33UvWWmO2sWpHEescUvtCnROconU9tS5iZVjH5rMR5YH2+TeD91I5pIB+OJxpdRg9eTYLRMX8J7+yWGFFXPRDns1W7I9JoOPvihM9yKJnxZQT0AgEJJ7zslL5CvLoPPlSBLD7QNfcWyJy4HlwhHpDSOwda4isdpLd5cZM6vsJRcwmvMRWc5qwIaUO5HEyzS2LcK0cvpJm2bD4UBEwI7O3IDJXR4FW+NV2ggF7DIxs0upyKn1MNgCagSLYFoqru2y1aHRW0o5fFY0ndO0GO5qwZIiocVHHr2M/Uh0FqvfNL8eVO9EyOf73lzF6VtfiwuoHloJ2FwFri0HbfaK1GAbb5ThhDkbJ10Zi8Ama6VgQ4I1LI1M8hYK+WN/B5XnA4GA3EboJCj/AlEFk+RXNU/iV7wJzsp7Z0J+gRlQwYbUj/ZTC8Bg9bYiGbnl5Ic7XxiUjIUt0WerwNUabTUSsu9Am7MY10ZSuIOm7gJUUzDPYGs8O6QvUtNaglUwKG33+NQopoL38eiNj4C8xrvQu2hD9PztJDUyc5iJTGP8DbXib0Yx/tZH8uDBdKLuv1N0d0bR49AYHiyMUvz6ivb7njQvjVYwDuwCRSoaWL5KPxas1rBFwbJc29HqzMNPtu8TwV72HEdjP+XJviL84MpeV7DzEvDMwfGiDy09h9B0Ix+GmwXooi81hacUR0zTuyL0mgAehR+irVtHmdoxtA1QxmYtIRVSJpcok12R0UGyF+PElWzJwK4/7CB8D2h/EwI4yCc0vBZgM+PAZktnToszE203kroUz1jKYLRkyuAg90OuL9h5PA4/Jmdfhc6hCuis2yTD0/XlYThgIRt7TZqj/+dwZfwiGvq/Q5PzAAX0eyX1bPJuTym9T5WXWmtHNppcpWh3/xf3KdOawQsBG1K+xBqCVUZJBCz53ObuXDgexg2bd/bvQ4uLUtgRHpZII7hpy4JNKA/yqMPZlALXUSZST6leo70I1lc/UfMwm9D0cOO1QMAmKBNrtZ4kUMWociv9Dw2uQpgnfyOLfSX29Zxw/DhyCg3Oo/Qdiul77ZIGpnoouecsKbamg9WPVMA4fAzV3UdoP3cp83pFnzvLuYnibFUfOzx9jb7rPvGx8Y3XckPzHGYl96RxpmYc3IEme4ZUoUfBnrLuQxvnzENb6cz9W4Zf1gtsgA7xNf5Ee28Vanrz0Xa3nFxQAYU9B+Ca/IMgTNEh+ykVfoELo52o7tmPWkcBnQDy/x5FNdwR7cqiLGixasnX6dxcP1aJRsoiH1GW9Y6sc4FOVkTLJtYArAY3mkwMKplpO+UCAtXx4BxO20rQ4uVe8/+sO9igtNnz6Pf9L/SX95PvrMCPrm9x3lGFey+dcpFy+vsq+BC3Xnfj99EGdNgOodVRgWbnERic38DgOkR/VyyhIzh2pVygXr73s/QTzMqp8q87WL1vBwyWIgXs9cFmnHaUotmdtSFg2cmF/DN0O4fJ4DAdHkUGGKIW/DY99lbARsKzmA+8BPeETUU8GJ/vxT1/L8b8dpITd/xW0kBKjQWseIgR0m3a9ys6kex8ZhEkqtEsdxmwNQSWa82WGxWOH9WNByu1uFYV7Pn+Spyyl1DjkLkhYMNsMhEG+0bAhaWDRsndEZggrvTcbJj5gjN7fjwgXneCvC73Vr2X3rEwnQRNSg/AG9rzJN3n8GqaNEOapcfmlQCPE5JwrPH6ENjEkqilh9uTwZrsamRwjsC22/ZJy1yzAWBDTCwwTQfIYKfokUk68AnSC3oBQfL7mVNcSsrh2RPpU50k3/waLwndSyyEX0U1F5pQAXPLPy2xR1jt/AnzpxLUKNhwZGPAnhk4LrEgB7kbATYcJfaebMyL55GbuD97CZMhtzwmW1B7xxxe+Icx7u/D/dB13AnfxJ1QD+5TWPZgwRHV46AbT8JuuvBHyTZfKY5UDfGUDhkFaBTuRoHlYQbuZ+Rx9JO+r6JVIOsDlmxq5i1Gxx24YP8etVe2w9CTg54HzZgOPpfXcXbEh//cfweXfXo09xdLDZXeQnm8pRB6cxlpP5r6FZ0fPYmaa5wsHKbY9JrS9xtCDO7nANtl+V4FmyHJwUnaEVeBrGdU8J4u6IuODhkL09vTZcCy01WG+zMOese8eALO9G/cuwBDX5HM3apzbUMNZTc1rlwJqSSscigyjZSK+O+r40b6hDcJPVyaK9gYsPmwjp0DgT2KJluexIUn6QBY6wk2IAMmL/Cb2yBfgmtReVytnZKAu7N9kt8zVG5+rj88hcaBXMqs+Pt8iSrXTjr59P3o8zTVUDSj8+VScrNHBjL/mDDQO19B6xmLh7phYG9T9nXaqoLlulD60pWc3q2rxc6RxT7FZVcD2mz5ZLHbZCT4lKsYD97fpIbqGaFfoNdMo/tBB4z9eWimz9A506QWl5ODKtUAxAj4Ozu4c55S0eG96H3bSWCnNgPYbwlsrgKWdrj+YBfooKZw1d6CTjMPW+9Bq6UAZ2xf49G0BXORl/T8guDnebYtNw9Q1FIq/lVnpUaWkplkVXaT/7WXUpJzCM53F6WnTAMZDgc/D9iuJLCs9QQbVrub54Kv8XjWi9G3PYRhjA5zHH4Kt0KBAIL0En8EkjG9oxDr/oIHdwIOjIZcdOuihMGFJ7MuPJ1z4/m8By8CPrwMDmEiNIzJwB3a+4wA5T5evuXkgCWQQ+F1B+t9/EsMrNJ4rS/YkESVYXVQgKPNt4TgFcHj2HSSoC4oMSzdhAJ88BHpZpyTtOC97G8BnFxoeifemDO2iCQbU6RphChzY6iaEsEGPxfY9YsKFLBBdaCPe/bfErQp7hkggJN0tBTHzi+IuYbJbP3ikedlP+8IxDTBm6HXzcvoLycWr2mfb+n2jappsdYAgQ2E56PisQdxA5EAlC6u1YKNzcBZFqzBliUzBzci3AqrY6ULwRd49t6L26/NdIj3yB4fE4TX5CUouPfTKQj6pc+Us6zHC5T7B4ZwL+TFg5AHj8gdPPW78Czgxp/+QXEFrwIjmAyOYiI4Ru95RnolxRqc2sZS2rUAm5VQUhUb0VUK/7jD3fvoMv5xbawBRmqVdYP/IqDbNyCOXcBU4BEumPUw9lKD49iHFns5zrqr8TzwUOnl5/HEsB/uO1dwzvw92uz70egspti1HLX2MrrC9sI4sDtB3AiyjOZCSR4aeo7irKONbHpCRsKitQZh5Rst1dFd7clbBmyWCjZWtspFdvG9XSZqTCVBcL08L2DrPf8jED9mBGF1cewcJsJ3cdZ2kmLUHAr+6Wqx0Jm2VsA3ZZOiiyC74cgs7LfP4rS5REpJeapopXuXqMaVLuFXKimJRDZqLftwyqMjh/FYehsEbHidwKpVimy9Juv+WEe30Z6Deve/NwRskC7SqdAtXLAeg8GcI8V3bd58GT72vegj7HzpzovPNI92orO7GM0DmVIZyBP2qpwK2BoGmEIMlitVGiy5OOupJIu9R/viRk4dp1XrGVYGNpUriNXVctGyyXooBtZkLRDn+4NrY8C+Cd7CLwMnYOrbi1YHiV5/yvIN7ryyYy48JQ2Qn7KzPl8HTt3Yj9a+fLrMd8vaBw3WfOjsu2RcK5V0lCw0WXdSYpGLC65K8qQPVLBqoYi6rRxsfFSglNjrudbNkSt1uCY6jihYthbD4G4ct6alLNhY28Zrjv56Ac/9n3Gq+xC6rIfR2lOBiy4D3gYeYyE0LZetPzKB+xMD+K2/Bmd6vkNX7xF09h9Bu/kIWiyHxHXwugjx4sda6FLkE3bOfgQ3yOLnpEtyIa5XbRVg1WPXBlKV2Ta7lBNt5cKNQvS/uhAD++uYji5Jnm2YLqU2y0H9FLDzmEXixmC5B3uWB7fJ1w7i7kwvngbdeOm/K5Ett95BCcV4EJxCrNBDPJ124fE7Bx7N2PDwvQUPZi24N2fB3flE8WP35sy49+46ns7bKRB7Kp8aQKyuZk3AqhNbtKVRagaonaD0vMmdohqGh6zZ6dcNZa0aLK9OZJ+IAxuJgeXDnH//Egv+lxKPTlFo5Ff7YbWhkwU/4Q/HlyCFoAwpsLW//4C4BvZ9FKNfBatJs9x4sAySZwVpw9/LugI+7qEtqB/6Up3DkIlqcyb0FN103EqxNJW+t0SpnlsLsPYCAnteulJUHxA1FyXzUmyIU4AZCuYn597Kc7PTSlbm5xyBXvJ+NiSQY4xTFXEmKxz9OH7bu9nYM/FgQ2GKYxmsJV+OoZoub6UWK/fDYIe/JH2hFClT/Frbly4h48+3DIvB/uSqQ405T/zsan0sg/W++5XAvk3goR1wRK2wlGJhOk4Or4Ja1WVEfS6IpeqHP7hF968qoX5R219wGg/f3ZDYl61OahW0WqwlJv4pU6vSBaoG1uhOR1PvFrTfLFq6jLPqBmUdrpxVgzW6itDzrIPHYRPBRmKFadrBs9giWfGPaZBXog/uR4oaJ+F7egGt1r1idVL8EZ2huDzYmjiLNVHod9qaiV/7llm0x9hXIRXODGrFYJ170eKpwHmfjpqeF5Lva+aiFaJoxWmaNIuNfywUWVnFdxjL70ep4ZzDHGV5f4w0oNVVqE7AS49OSZKJ1MuC3SJiH2tyZlJksxe2221Lg712lwJy3xFKFnJWDJb9dPNQGaWZhylbvye9VmqfVrSSUNLWSExhyoZY8Y9FlixM/ghXsMx+wlLs+RJT4SF02b+WtRe0qQFaaro8WEpUhtNEXCdmcuzGz+5vPzzBg62WF85JDTQ9GnIsDZayuOFsGL17cWmsFg9mzNKx7VfL0t5FAgIxwYy4HjaYwkRX6AoW7dtP10ogrPrqBfw558Uft41odpSjypatlMn7lI6UJvfOZcFWubeh0vUlfvAoS/xxp4v16UfMCL96vx3GwSLohhb72ZRgk+Byi8rz/RsoLmxzF+H3W1W4O30NL8PDlE+95KkVZLHse2MKk22HZZxqMklTK9Ti/fvxHNPzD/By1ovfPLXSiht9JWgcK5KeLQFLx9LkUYL/pcDWD1NSMKa8vt6ZQQlJ2cdPomsdKkfDyGI/+1FgeRzKq9zyDL4O5x6coSjhnLNEFoz8ceiAtMQt/TGZ+vJE8Y+xWs17V6TYPvJFjddp332F4LnBZ70HlaF0SkMbhvOgu7UbtSPZUbBS3OZdPD1AWziIZXqwV9L+JgrNfrvzCUv5XX2ko7OZJ9N0uP9AYrwEoKnAKnA1sLyYAtfpc91ok/nfaLZugcHxFQXR2YtqW5VZ2NsWPW6ghmIlWlQ7694mPV+1NkrZLVvQMrYH+qFsWTPhhHu7ZF0MriEBbDzcxPs6XxaOm7ejY+jQx0PVNpO5hOLaXBy3Z+CkdwdJWW1CW0Kv1qtqMD0hmJalP7xKwC3TQz2LV9tczTqGq1d6dG0D/o5cb1utWmh8rW0MZryUZa8ah3Nh9JTjl7FlIoHlNl1vkRRGxC/jwesTJoBdBDddfKz2XPxrtYNLeO9nkGZ5yYtSaMXLi4HGLJdPSuswpa+eVSz4e853Eo12pUqmlheece1QpjwyyEVgVX1maJ8CdrGWACq+VVncgqcCtLgO4Mb4KhfeaR0oh8HK62LzEs5ZAnlJsJsA2pqDJZg6bx61H9ynUCiL+552Va7NujCnrRXooDS1rl9ZP+WvDnbpZVCUpVGjSwiSpTJUHYWfta5Sinn3Q2f+Zm2g8ma5exrGP/YqC0PInNOkL/u3BZstlspQj/eVUsRQiRsvfl/btbcuuqooy6BY1fkv1MlSJokNETdYmj43uI8Gqw2xJMHl5a8EroAtJEstE6i/PDu/PqvFdfSXQj+QroROg8pyJvUCMk2mMf0VwCpDK8lrzMbGsPi2ZmibsgYuDxa6iqEbqED3y1/Xd33Di856nPLsQZ3ln7LEEi8YUev7guLBLxS43vRNA3hxDJuWNGYVG7fiEVZu8XlqvWm8EDXDOagcyIaR/OovnrqNWZGTB+p+vleCBvt/FNdAYAVunNVuRrDRqyxh8l1spTjpi/XsRiU10IYxav3HvsXluw0bu4Zsu+VrtLl2o3lwq6wfI37Xt4WAbokC3nRgtaVY4sF6Y7+dwFcgg9YPFqOe/OqVx82fZ9Xj30Yq5UcjlF/iSFcbtbTPDvRjwEbT18G0KNRG7xaZlsXjfz1Pzn3+tboN5jz5AQmdYydabuUvjnM3C1jVFWgLRkqHC3cyWdJkZSJOggyWgs8PVNvMz86ieaAIZ8YOomWoUFkvZTP0CSwJVoGrLb2ndxTgZE8uWgfXMPhfy63DcVAW+mKwyx1wfAO3nr44pStgsD5lvEpqrpwlMLqO4tKTdYpR12qzTLTK9KZGR55S08RDNp4stTsxPaVSZW2r6RZM+FWPpDXDOAY3upVBQB5WaRnYpFa61HbjlgktNw9C31cMg6dYZrTU3N4l0g0ra8wqhRGxWrH4eLM+TrJqXbySflVp0e99yTKlqpzK739xKm4cyiDrzESHOQcXrPvhfrbBy/Gv5XbR00RWcQS1liIcs2bjuCMbNewueG1B3x5loUltGrtWG6UmHoo+Daq2aqb8YIQzR1a9q+rdAb09Dy2DJTjlroD7acdfF2jyduV2K0yW79DQXw6dOV9++knvzFN+kkRbCFe9ZJUMKaZF/nPRCHJs9IL3YXClweikS96eI9PcT3mOotV6Atd5bsDfebswVI9251GJF/WWQhjsexXrcmWolpc8jJPoNxevIZAVFf88i8mWi7aBArT1H0Bb39/8p/2W2nhaZ6v5ANrtRegk99Dhy0W7d5es+GEazJaAnS9rruiut+0QtQ0XoIXcSDPl9U2uXTjZvRU6XizIm48zIytcifjvvg08N+K3oWP4ZVjTCfAPW0RlPoQu+7e4MHgMF29V4497G/STJZ+4/R92yzmkZkHJmwAAAABJRU5ErkJggg==',
@@ -48,7 +47,7 @@ class FlowItemPanel extends React.Component {
                     size="100*100"
                     shape="custom-node-circle-multi"
                     model={{
-                      type: 'EVENT',
+                      code: 'EVENT',
                       color: '#FA8C16',
                       label: 'Event',
                       icon:
@@ -73,7 +72,7 @@ class FlowItemPanel extends React.Component {
                     size="99*50"
                     shape="custom-node-flow"
                     model={{
-                      type: 'message',
+                      code: 'message',
                       color: '#FA8C16',
                       label: 'Send messages',
                       icon:
@@ -90,7 +89,7 @@ class FlowItemPanel extends React.Component {
                     size="99*50"
                     shape="custom-node-flow"
                     model={{
-                      type: 'mail',
+                      code: 'mail',
                       color: '#FA8C16',
                       label: 'Send email',
                       icon:
@@ -115,7 +114,7 @@ class FlowItemPanel extends React.Component {
                     size="100*100"
                     shape="custom-node-rhombus"
                     model={{
-                      type: 'condition',
+                      code: 'condition',
                       color: '#1890FF',
                       label: 'Decision split',
                       icon:
@@ -134,7 +133,7 @@ class FlowItemPanel extends React.Component {
                     size="100*100"
                     shape="custom-node-rhombus"
                     model={{
-                      type: 'wait',
+                      code: 'wait',
                       color: '#1890FF',
                       label: 'Wait',
                       icon:
@@ -152,7 +151,7 @@ class FlowItemPanel extends React.Component {
                     size="100*100"
                     shape="custom-node-rhombus"
                     model={{
-                      type: 'waitUltil',
+                      code: 'WAIT-UNTIL',
                       color: '#1890FF',
                       label: 'Wait until event',
                       icon:

@@ -47,7 +47,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   getVisible = async (event, valueName, isSuccess) => {
     let { idNode } = this.state;
     let data = JSON.parse(localStorage.getItem('nodeStore'));
-    switch (idNode.type) {
+    switch (idNode.code) {
       case 'DATA':
         this.setState({ visible: event });
         await data.nodes.map(event => {
@@ -60,6 +60,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       case 'EVENT':
         this.setState({ isOpenModal: event });
 
+      case 'WAIT-UNTIL':
+        break;
       default:
         break;
     }

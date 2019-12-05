@@ -403,7 +403,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
         ]}
       >
         <div className="group-modal-config">
-          <div className="input-search_group">
+          <div className="input-search">
             <label className="input-search_label">
               <Translate contentKey="group-attribute-customer.group-name" />
             </label>
@@ -413,7 +413,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
               maxLength={160}
             />
           </div>
-          <div className="input-search_group">
+          <div className="input-search">
             <label className="input-search_label">Đặt lịch</label>
             <Input
               placeholder={'yyyy/mm/dd hh:mm:ss'}
