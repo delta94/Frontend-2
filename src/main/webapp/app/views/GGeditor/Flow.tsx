@@ -5,12 +5,13 @@ import CustomNode from './node/node';
 import CustomEdges from './egdes/egdes';
 import FlowToolbar from './FlowToolBar/flow-tool-bar';
 import Save from './save/save';
+import ConfigEmail from './config-email/config-email';
 import FlowItemPanel from './EditorItemPannel/FlowItemPanel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faCopy, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import ModalGroupCustomer from './modal-group-customer/modal-group-customer';
 import FlowContextMenu from './EditorContextMenu/flow-context-menu';
-import { Modal } from 'antd';
+import { Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap';
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 import './style.scss';
@@ -27,6 +28,7 @@ interface IFlowPageState {
   collapsed: boolean;
   isUpdateNode: boolean;
   idEdge: any;
+  isOpenModal: boolean;
 }
 
 export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
@@ -37,7 +39,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     idNode: {},
     collapsed: false,
     isUpdateNode: false,
-    idEdge: {}
+    idEdge: {},
+    isOpenModal: false
   };
 
   // show modal
@@ -55,16 +58,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         break;
 
       case 'EVENT':
-        confirm({
-          title: 'Do you Want to delete these items?',
-          content: 'Some descriptions',
-          onOk() {
-            console.log('OK');
-          },
-          onCancel() {
-            console.log('Cancel');
-          }
-        });
+        this.setState({ isOpenModal: event });
 
       default:
         break;
@@ -325,6 +319,36 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             title_modal={'CHỌN NHÓM'}
           />
         </div>
+        <Modal className="modal-config-email" isOpen={this.state.isOpenModal}>
+          <ModalHeader
+            toggle={() => {
+              this.setState({ isOpenModal: !this.state.isOpenModal });
+            }}
+          >
+            GỬI EMAIL
+          </ModalHeader>
+          <ModalBody>
+            <ConfigEmail />
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              color="link"
+              onClick={() => {
+                this.setState({ isOpenModal: !this.state.isOpenModal });
+              }}
+            >
+              Hủy
+            </Button>
+            <Button
+              color="primary"
+              onClick={() => {
+                this.setState({ isOpenModal: !this.state.isOpenModal });
+              }}
+            >
+              Chọn
+            </Button>{' '}
+          </ModalFooter>
+        </Modal>
       </Fragment>
     );
   }
