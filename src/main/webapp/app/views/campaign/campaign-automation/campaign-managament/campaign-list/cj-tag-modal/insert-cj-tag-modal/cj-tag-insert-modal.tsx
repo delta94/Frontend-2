@@ -74,9 +74,10 @@ class CJTagInsertModal extends React.Component<ICjTagInsertModalProps, ICjTagIns
   render() {
     let { isOpenModalCjTagInsert, closeModalCjTagInsert, toogleModalCjTagInsert } = this.props;
     let { cjTag, messageErrorCjTagName } = this.state;
+
     return (
       <Modal id="modal-cj-tag-insert" isOpen={isOpenModalCjTagInsert}>
-        <ModalHeader toggle={toogleModalCjTagInsert}>Thêm tag</ModalHeader>
+        <ModalHeader toggle={toogleModalCjTagInsert}>THÊM TAG MỚI</ModalHeader>
         <ModalBody>
           <div className="cj-tag-insert-content">
             <div className="cj-tag-insert-input">
@@ -96,13 +97,13 @@ class CJTagInsertModal extends React.Component<ICjTagInsertModalProps, ICjTagIns
         </ModalBody>
         <ModalFooter>
           <Button
-            color="link"
+            color="black"
             onClick={() => {
               this.props.closeModalCjTagInsert();
               this.resetField();
             }}
           >
-            Hủy bỏ
+            Hủy
           </Button>
           <Button color="primary" onClick={() => this.submit()}>
             Chọn

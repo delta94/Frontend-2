@@ -48,7 +48,7 @@ class CJTagListModal extends React.Component<ICjTagListModalProps, ICjTagListMod
     let { isOpenModalCjTag, closeModalCjTag, toogleModalCjTagList, cjTags } = this.props;
     return (
       <Modal id="modal-cj-tag-list" isOpen={isOpenModalCjTag}>
-        <ModalHeader toggle={toogleModalCjTagList}>Danh sách tag</ModalHeader>
+        <ModalHeader toggle={toogleModalCjTagList}>DANH SÁCH TAG</ModalHeader>
         <ModalBody>
           <List
             style={{ color: '#3866DD' }}
@@ -77,8 +77,8 @@ class CJTagListModal extends React.Component<ICjTagListModalProps, ICjTagListMod
           />
         </ModalBody>
         <ModalFooter>
-          <Button color="link" onClick={closeModalCjTag}>
-            Hủy bỏ
+          <Button color="black" onClick={closeModalCjTag}>
+            Hủy
           </Button>
         </ModalFooter>
       </Modal>

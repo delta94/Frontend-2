@@ -49,7 +49,7 @@ class CampaignTag extends React.Component<ICampaignTagProps, ICampaignTagState> 
           transitionLeave={false}
         >
           <Multiselect
-            placeholder={translate('userManagement.choose-categories')}
+            placeholder={'Chọn thẻ'}
             defaultValue={defaultValue}
             data={comboTag}
             value={defaultCate}

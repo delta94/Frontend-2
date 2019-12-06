@@ -107,7 +107,6 @@ class CJTagModal extends React.Component<ICjTagModalProps, TCjTagModalState> {
 
   render() {
     let { openModalCjTag, toogleModalCjTag, closeModalCjTag, dataModalTag } = this.props;
-    console.log('sufskhjkl;dddddddddd', dataModalTag);
     let extendComponent: any = null;
     let color: string = 'primary';
     let isDisable = false;
