@@ -22,7 +22,9 @@ import { SUBJECT } from 'app/constants/common';
 
 // export interface I
 
-export interface IConfigEmailProps extends StateProps, DispatchProps {}
+export interface IConfigEmailProps extends StateProps, DispatchProps {
+  onClick: Function;
+}
 
 export interface IConfigEmailState {
   showMailForFriend: boolean;
@@ -31,6 +33,8 @@ export interface IConfigEmailState {
   openModal: boolean;
   paramester: IParamester[];
   subjectLanding: string;
+  valueName: string;
+  valueTitle: string;
 }
 
 class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailState> {
@@ -40,7 +44,9 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
     openModal: false,
     defaultValueContentPopup: '',
     paramester: [],
-    subjectLanding: ''
+    subjectLanding: '',
+    valueName: '',
+    valueTitle: ''
   };
   constructor(props) {
     super(props);
@@ -131,6 +137,23 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
     this.setState({ openModal: false });
   };
 
+  getValueText = (option, item) => {
+    const { onClick } = this.props;
+    let { valueName, valueTitle } = this.state;
+    switch (option) {
+      case 'name':
+        valueName = item.target.value;
+        break;
+      case 'title':
+        valueTitle = item.target.value;
+        break;
+      default:
+        break;
+    }
+    this.setState({ valueTitle, valueName });
+    onClick(valueName, valueTitle);
+  };
+
   render() {
     let { showMailForFriend, defaultValueContent, openModal } = this.state;
     let { listCampainContentParams, listContentTemplateAsTypeLanding } = this.props;
@@ -181,7 +204,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
                         <Input
                           style={{ width: '50%' }}
                           // placeholder={translate('group-attribute-customer.group-modal-config.name-placeholder')}
-                          // onChange={event => this.setState({ categoryName: event.target.value })}
+                          onChange={e => this.getValueText('name', e)}
                           maxLength={160}
                         />
                       </div>
@@ -190,7 +213,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
                         <Input
                           style={{ width: '50%' }}
                           // placeholder={'yyyy/mm/dd hh:mm:ss'}
-                          // onChange={event => this.setState({ dateTime: event.target.value })}
+                          onChange={e => this.getValueText('title', e)}
                           maxLength={160}
                         />
                       </div>
@@ -200,7 +223,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
                           <div>
                             <Dropdown
                               selection={true}
-                              defaultValue="Chọn landing"
+                              defaultValue="Template mail"
                               listArray={listTemplate}
                               toggleDropdown={this.toggleLanding}
                             />

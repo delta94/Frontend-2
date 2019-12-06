@@ -31,6 +31,7 @@ interface IFlowPageState {
   isUpdateNode: boolean;
   idEdge: any;
   isOpenModal: boolean;
+  titleMail: string;
 }
 
 export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
@@ -42,7 +43,20 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     collapsed: false,
     isUpdateNode: false,
     idEdge: {},
-    isOpenModal: false
+    isOpenModal: false,
+    titleMail: ''
+  };
+
+  confirmEmail = async () => {
+    let { idNode, titleMail } = this.state;
+    let data = JSON.parse(localStorage.getItem('nodeStore'));
+    await data.nodes.map(event => {
+      if (event.id === idNode.id) {
+        event.label = titleMail;
+      }
+    });
+    await localStorage.setItem('nodeStore', JSON.stringify(data));
+    await this.setState({ isOpenModal: !this.state.isOpenModal, data: JSON.parse(localStorage.getItem('nodeStore')), isUpdateNode: true });
   };
 
   // show modal
@@ -61,7 +75,6 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
       case 'EMAIL':
         this.setState({ isOpenModal: event });
-        isSuccess = true;
         break;
       case 'WAIT-UNTIL':
         confirm({
@@ -103,7 +116,11 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       await this.setState({ data: JSON.parse(localStorage.getItem('nodeStore')), isUpdateNode: true });
     }
   };
-
+  getInfoEmail = (event, value) => {
+    let { titleMail } = this.state;
+    titleMail = event;
+    this.setState({ titleMail });
+  };
   handleChange(value) {
     console.log(`selected ${value}`);
   }
@@ -483,7 +500,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             GỬI EMAIL
           </ModalHeader>
           <ModalBody>
-            <ConfigEmail />
+            <ConfigEmail onClick={this.getInfoEmail} />
           </ModalBody>
           <ModalFooter>
             <Button
@@ -497,7 +514,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             <Button
               color="primary"
               onClick={() => {
-                this.setState({ isOpenModal: !this.state.isOpenModal });
+                this.confirmEmail();
               }}
             >
               Chọn
