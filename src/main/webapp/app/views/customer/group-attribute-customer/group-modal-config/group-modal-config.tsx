@@ -398,8 +398,8 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
           </Button>
         ]}
       >
-        <div className="group-modal-config">
-          <div className="input-search_group">
+        <div className="modal-config">
+          <div className="input-search">
             <label className="input-search_label">
               <Translate contentKey="group-attribute-customer.group-name" />
             </label>

@@ -178,8 +178,34 @@ body {
 }
 .modal-config-email {
   .modal-content {
-    height: 620px;
+    height: 680px;
     width: 200%;
     margin-left: -200px;
   }
+}
+.text-event-wait {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 32px;
+  color: #495057;
+}
+.title-event-wait {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 16px;
+  text-transform: uppercase;
+
+  color: #595c82;
+}
+.label-message {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 30px;
+  color: #495057;
 }

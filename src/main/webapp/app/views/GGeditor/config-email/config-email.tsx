@@ -148,7 +148,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
 
     return (
       <Fragment>
-        <Modal isOpen={openModal} toggle={this.toggleModal}>
+        <Modal className="modal-config-preview" isOpen={openModal} toggle={this.toggleModal}>
           <ModalHeader toggle={this.toggleModal}>Landing preview</ModalHeader>
           <ModalBody>
             <PreviewLanding htmlDOM={defaultValueContent} styleForDOM={''} />
@@ -159,7 +159,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
             </Button>
           </ModalFooter>
         </Modal>
-        <div className="create-landing">
+        <div className="config-email">
           <div className="add-content">
             <div className="interactive">
               <label onClick={this.openModalPreview} style={{ textDecoration: 'underline', color: '#3866DD' }}>
@@ -179,6 +179,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
                       <div className="input-search_group">
                         <label className="input-search_label">Tên</label>
                         <Input
+                          style={{ width: '50%' }}
                           // placeholder={translate('group-attribute-customer.group-modal-config.name-placeholder')}
                           // onChange={event => this.setState({ categoryName: event.target.value })}
                           maxLength={160}
@@ -187,6 +188,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
                       <div className="input-search_group">
                         <label className="input-search_label">Tiêu đề mail</label>
                         <Input
+                          style={{ width: '50%' }}
                           // placeholder={'yyyy/mm/dd hh:mm:ss'}
                           // onChange={event => this.setState({ dateTime: event.target.value })}
                           maxLength={160}

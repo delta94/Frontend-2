@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import GGEditor, { Flow } from 'gg-editor';
-import { Row, Col, Popover, Input, Button, Layout, Menu, Breadcrumb, Icon } from 'antd';
+import { Row, Col, Popover, Input, Button, Layout, Menu, Breadcrumb, Icon, Select, Modal as ModalAntd } from 'antd';
 import CustomNode from './node/node';
 import CustomEdges from './egdes/egdes';
 import FlowToolbar from './FlowToolBar/flow-tool-bar';
@@ -12,12 +12,14 @@ import { faHome, faCopy, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import ModalGroupCustomer from './modal-group-customer/modal-group-customer';
 import FlowContextMenu from './EditorContextMenu/flow-context-menu';
 import { Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap';
+const { Option } = Select;
 const { Header, Content, Footer, Sider } = Layout;
+const { TextArea } = Input;
 const { SubMenu } = Menu;
 import './style.scss';
 
 const ButtonGroup = Button.Group;
-const { confirm } = Modal;
+const { confirm } = ModalAntd;
 
 interface IFlowPageProps {}
 interface IFlowPageState {
@@ -47,7 +49,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   getVisible = async (event, valueName, isSuccess) => {
     let { idNode } = this.state;
     let data = JSON.parse(localStorage.getItem('nodeStore'));
-    switch (idNode.type) {
+    switch (idNode.code) {
       case 'DATA':
         this.setState({ visible: event });
         await data.nodes.map(event => {
@@ -57,8 +59,41 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         });
         break;
 
-      case 'EVENT':
+      case 'EMAIL':
         this.setState({ isOpenModal: event });
+        isSuccess = true;
+        break;
+      case 'WAIT-UNTIL':
+        confirm({
+          icon: 'none',
+          width: '55%',
+          title: <label className="title-event-wait">CHỜ SỰ KIỆN </label>,
+          content: this.contentWaitUltil('1'),
+          onOk() {},
+          onCancel() {}
+        });
+        break;
+      case 'WAIT':
+        confirm({
+          icon: 'none',
+          width: '55%',
+          title: <label className="title-event-wait">THỜI GIAN CHỜ </label>,
+          content: this.contentWaitUltil('2'),
+          onOk() {},
+          onCancel() {}
+        });
+        break;
+
+      case 'MESSAGE':
+        confirm({
+          icon: 'none',
+          width: '55%',
+          title: <label className="title-event-wait">GỬI TIN NHẮN </label>,
+          content: this.contentWaitUltil('3'),
+          onOk() {},
+          onCancel() {}
+        });
+        break;
 
       default:
         break;
@@ -69,6 +104,126 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     }
   };
 
+  handleChange(value) {
+    console.log(`selected ${value}`);
+  }
+  contentWaitUltil(option) {
+    let data;
+    switch (option) {
+      case '1':
+        data = (
+          <Row>
+            <Row>
+              <Col span={6}>
+                <label className="text-event-wait">Sự kiện</label>
+              </Col>
+              <Col span={18}>
+                <Select defaultValue="lucy" style={{ width: '100%' }} onChange={this.handleChange}>
+                  <Option value="jack">Khách hàng mở mail</Option>
+                  <Option value="lucy">Sinh nhật khách hàng</Option>
+                </Select>
+              </Col>
+            </Row>
+            <Row>
+              <Col span={6}>
+                <label className="text-event-wait">Email</label>
+              </Col>
+              <Col span={18}>
+                <Select defaultValue="lucy" style={{ width: '100%' }} onChange={this.handleChange}>
+                  <Option value="jack">Email 1</Option>
+                  <Option value="lucy">Email 2</Option>
+                  <Option value="Yiminghe">Email 3</Option>
+                </Select>
+              </Col>
+            </Row>
+            <Row>
+              <Col span={6}>
+                <label className="text-event-wait">Kết thúc chờ sau</label>
+              </Col>
+              <Col span={18}>
+                <Col span={17}>
+                  <Input maxLength={160} />
+                </Col>
+                <Col span={6} style={{ float: 'right' }}>
+                  <Select defaultValue="lucy" style={{ width: '100%' }} onChange={this.handleChange}>
+                    <Option value="jack">Giờ</Option>
+                    <Option value="lucy">Phút</Option>
+                    <Option value="Yiminghe">Giây</Option>
+                  </Select>
+                </Col>
+              </Col>
+            </Row>
+          </Row>
+        );
+        break;
+
+      case '2':
+        data = (
+          <Row>
+            <Row>
+              <Col span={6}>
+                <label className="text-event-wait">#</label>
+              </Col>
+              <Col span={18}>
+                <Col span={17}>
+                  <Input maxLength={160} />
+                </Col>
+                <Col span={6} style={{ float: 'right' }}>
+                  <Select style={{ width: '100%' }} onChange={this.handleChange}>
+                    <Option value="jack">Giờ</Option>
+                    <Option value="lucy">Phút</Option>
+                    <Option value="Yiminghe">Giây</Option>
+                  </Select>
+                </Col>
+              </Col>
+            </Row>
+          </Row>
+        );
+        break;
+
+      case '3':
+        data = (
+          <Row>
+            <Row>
+              <Col span={1}>
+                <label className="label-message">Tên</label>
+              </Col>
+              <Col span={12}>
+                <Input style={{ float: 'right', width: '92%' }} />
+              </Col>
+              <Col span={5} style={{ textAlign: 'center' }}>
+                <label className="label-message">Tham số</label>
+              </Col>
+              <Col span={6}>
+                <Select defaultValue="Tên" style={{ width: '100%' }} onChange={this.insertAtCursor}>
+                  <Option value="{{Tên}}">Tên</Option>
+                  <Option value="{{Email}}">Email</Option>
+                  <Option value="{{Số Điện Thoại}}">Số điện thoại</Option>
+                </Select>
+              </Col>
+            </Row>
+            <br />
+            <Row>
+              <Col span={2}>
+                <label className="label-message">Nội dung</label>
+              </Col>
+              <Col span={22}>
+                <TextArea id="text-content" rows={4} />
+              </Col>
+            </Row>
+          </Row>
+        );
+        break;
+      default:
+        break;
+    }
+    return data;
+  }
+
+  insertAtCursor(newText) {
+    const textarea = document.querySelector('textarea');
+    textarea.setRangeText(newText, textarea.selectionStart, textarea.selectionEnd, 'end');
+  }
   //excute command
   commandExecute = command => {
     let name = command.command.name;
