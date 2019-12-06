@@ -8,7 +8,7 @@ import Loader from 'react-loader-advanced';
 import ReactPaginate from 'react-paginate';
 import { getListCampaignInfolderDataAction } from 'app/actions/campaign-managament';
 import './campaign-list.scss';
-import { Input, Icon, Checkbox, Menu, Popover, Tag } from 'antd';
+import { Input, Icon, Checkbox, Menu, Tag } from 'antd';
 import CampaignTag from './campaign-tag/campaign-tag';
 import CjTagModal from './cj-tag-modal/cj-tag-modal';
 import { getCjTagsByCjIdAction } from 'app/actions/cj';
