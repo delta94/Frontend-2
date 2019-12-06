@@ -72,7 +72,7 @@ class FlowItemPanel extends React.Component {
                     size="99*50"
                     shape="custom-node-flow"
                     model={{
-                      code: 'message',
+                      code: 'MESSAGE',
                       color: '#FA8C16',
                       label: 'Send messages',
                       icon:
@@ -89,7 +89,7 @@ class FlowItemPanel extends React.Component {
                     size="99*50"
                     shape="custom-node-flow"
                     model={{
-                      code: 'mail',
+                      code: 'EMAIL',
                       color: '#FA8C16',
                       label: 'Send email',
                       icon:
@@ -133,7 +133,7 @@ class FlowItemPanel extends React.Component {
                     size="100*100"
                     shape="custom-node-rhombus"
                     model={{
-                      code: 'wait',
+                      code: 'WAIT',
                       color: '#1890FF',
                       label: 'Wait',
                       icon:

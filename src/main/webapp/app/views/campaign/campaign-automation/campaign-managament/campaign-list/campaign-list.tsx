@@ -8,7 +8,7 @@ import Loader from 'react-loader-advanced';
 import ReactPaginate from 'react-paginate';
 import { getListCampaignInfolderDataAction } from 'app/actions/campaign-managament';
 import './campaign-list.scss';
-import { Input, Icon, Checkbox, Menu, Popconfirm, Tag } from 'antd';
+import { Input, Icon, Checkbox, Menu, Popover, Tag } from 'antd';
 import CampaignTag from './campaign-tag/campaign-tag';
 import CjTagModal from './cj-tag-modal/cj-tag-modal';
 import { getCjTagsByCjIdAction } from 'app/actions/cj';
@@ -28,6 +28,8 @@ interface ICampaignListState {
     cjId?: string;
     cjTags?: any[];
   };
+  list_camp: any[];
+  visible: boolean;
 }
 
 class CampaignList extends React.Component<ICampaignListProps, ICampaignListState> {
@@ -40,7 +42,9 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
     cjEdit: {
       cjTags: [],
       cjId: '-1'
-    }
+    },
+    list_camp: [],
+    visible: false
   };
 
   componentDidMount() {
@@ -48,6 +52,41 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
     let folderId = this.props.folder_id_choose;
     this.getListCampaignInfolderDataAction(folderId ? folderId : '-1', textSearch, strTagId, activePage, itemsPerPage);
   }
+
+  componentWillReceiveProps(nextProps) {
+    let { list_camp } = this.state;
+    if (list_camp != nextProps.campaign_list) {
+      list_camp = nextProps.campaign_list;
+      if (list_camp && list_camp.length > 0) {
+        list_camp.map(event => {
+          return {
+            ...event,
+            check: false
+          };
+        });
+      }
+    }
+
+    this.setState({ list_camp });
+  }
+
+  hide = () => {
+    this.setState({
+      visible: false
+    });
+  };
+
+  handleVisibleChange = (visible, id) => {
+    let { list_camp } = this.state;
+
+    list_camp &&
+      list_camp.map(event => {
+        if (event.id === id) {
+          event.check = visible;
+        }
+      });
+    this.setState({ visible, list_camp });
+  };
 
   getListCampaignInfolderDataAction = (folderId, textSearch, strTagId, pageIndex, pageSize) => {
     this.props.getListCampaignInfolderDataAction(folderId, textSearch, strTagId, pageIndex, pageSize);
@@ -112,7 +151,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
 
   render() {
     let { campaign_list, total, loading } = this.props;
-    let { textSearch, strTagId, activePage, itemsPerPage, openModalCjTag, cjEdit } = this.state;
+    let { textSearch, strTagId, activePage, itemsPerPage, openModalCjTag, cjEdit, list_camp } = this.state;
     let folderId = this.props.folder_id_choose;
     let totalPages = Math.ceil(total / 4);
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
@@ -207,8 +246,8 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                 </tr>
               </thead>
               <tbody>
-                {campaign_list && campaign_list.length > 0 ? (
-                  campaign_list.map((item, index) => {
+                {list_camp && list_camp.length > 0 ? (
+                  list_camp.map((item, index) => {
                     return (
                       <tr key={index}>
                         <td colSpan={5}>{index + 1}</td>
@@ -235,7 +274,15 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                           <span> {item.modifiedDate}</span>
                         </td>
                         <td colSpan={15}>
-                          <Icon onClick={() => this.openModalCjTag(item.id)} style={{ fontSize: '24px' }} type="tags" /> &nbsp;
+                          <Popover
+                            content={<a onClick={() => this.openModalCjTag(item.id)}>Close</a>}
+                            title="Title"
+                            trigger="click"
+                            visible={item.check}
+                            onVisibleChange={event => this.handleVisibleChange(event, item.id)}
+                          >
+                            <Icon style={{ fontSize: '24px' }} type="tags" /> &nbsp;
+                          </Popover>
                           <Icon style={{ fontSize: '24px' }} type="unordered-list" />
                         </td>
                       </tr>
