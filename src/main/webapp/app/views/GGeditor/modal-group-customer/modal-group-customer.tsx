@@ -7,10 +7,11 @@ import './modal-group-customer.scss';
 import { IRootState } from 'app/reducers';
 import { getListTagDataAction } from 'app/actions/tag-management';
 import ReactPaginate from 'react-paginate';
-import { Input, Card, Modal } from 'antd';
+import { Input, Card, Modal, DatePicker } from 'antd';
 // import TagModal from "../tag-modal/tag-modal";
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
 import FieldData from './field-data/field-data';
+import moment from 'moment';
 import {
   getListFieldDataAction,
   postInsertCustomerGroupAction,
@@ -27,6 +28,8 @@ import { UPDATE_CUSTOMER_GROUP, COPY_CUSTOMER_GROUP, INSERT_CUSTOMER_GROUP } fro
 import { OPERATOR } from 'app/constants/field-data';
 import { IOpenModal } from 'app/reducers/modal';
 import { ERROR } from 'app/constants/common';
+
+const { MonthPicker, RangePicker } = DatePicker;
 
 interface IGroupModalConfigProps extends StateProps, DispatchProps {
   is_show: boolean;
@@ -337,8 +340,27 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
 
     await this.props.openModal(postRequest);
     await this.props.getListCustomerGroupDataAction('');
-    this.props.toggle(false, this.state.categoryName + ',' + this.state.dateTime, true);
+
+    let customerAdvancedSave = {
+      logicalOperator,
+      advancedSearches
+    };
+    this.props.toggle(false, this.state.categoryName + ',' + this.state.dateTime, customerAdvancedSave, true);
   }
+
+  //validate date old greater date now
+  disabledDate = current => {
+    // Can not select days before today and today
+    return current && current < moment().endOf('day');
+  };
+
+  //get date time event
+  getDateTime = dateTimePicker => {
+    let { dateTime } = this.state;
+    let dateStart = dateTimePicker.format('MMMM Do YYYY, h:mm:ss a');
+    dateTime = dateStart;
+    this.setState({ dateTime });
+  };
 
   render() {
     let { is_show, list_field_data, loading, list_customer_with_condition, totalElements, type_modal } = this.props;
@@ -415,10 +437,13 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
           </div>
           <div className="input-search">
             <label className="input-search_label">Đặt lịch</label>
-            <Input
-              placeholder={'yyyy/mm/dd hh:mm:ss'}
-              onChange={event => this.setState({ dateTime: event.target.value })}
-              maxLength={160}
+            <DatePicker
+              style={{ width: '100%' }}
+              format="YYYY-MM-DD HH:mm:ss"
+              onOk={this.getDateTime}
+              defaultValue={moment('00:00:00', 'HH:mm:ss')}
+              disabledDate={this.disabledDate}
+              showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
             />
           </div>
           {/* Chose condition */}

@@ -58,7 +58,7 @@ const initialCampaignManagament = {
   loading: false,
   statusCampaign: {} as IStatusCampagin,
   listCampaignAuto: [] as IListCampaignAuto[],
-  listNode: []
+  listNode: ''
 };
 
 export type HandleCampaignManagament = typeof initialCampaignManagament;

@@ -4,7 +4,18 @@ import { Row, Col, Popover, Input, Button, Layout, Menu, Breadcrumb, Icon, Selec
 import CustomNode from './node/node';
 import CustomEdges from './egdes/egdes';
 import FlowToolbar from './FlowToolBar/flow-tool-bar';
+import { connect } from 'react-redux';
 import Save from './save/save';
+import {
+  getTreeFolder,
+  insertTreeFolder,
+  editTreeFolder,
+  deleteTreefolder,
+  moveTreeFolder,
+  getListCampaignInfolderDataAction,
+  getNode
+} from 'app/actions/campaign-managament';
+import { IRootState } from 'app/reducers';
 import ConfigEmail from './config-email/config-email';
 import FlowItemPanel from './EditorItemPannel/FlowItemPanel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,6 +23,7 @@ import { faHome, faCopy, faTrashAlt, faUserEdit } from '@fortawesome/free-solid-
 import ModalGroupCustomer from './modal-group-customer/modal-group-customer';
 import FlowContextMenu from './EditorContextMenu/flow-context-menu';
 import { Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap';
+import $ from 'jquery';
 const { Option } = Select;
 const { Header, Content, Footer, Sider } = Layout;
 const { TextArea } = Input;
@@ -23,7 +35,7 @@ import SiderTest from './sider/sider-test';
 const ButtonGroup = Button.Group;
 const { confirm } = ModalAntd;
 
-interface IFlowPageProps {}
+interface IFlowPageProps extends StateProps, DispatchProps {}
 interface IFlowPageState {
   visible: boolean;
   isOpen: boolean;
@@ -36,6 +48,7 @@ interface IFlowPageState {
   titleMail: string;
   isTest: boolean;
   timeStartCampaign: string;
+  advancedSearches: any[];
 }
 
 export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
@@ -50,7 +63,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     isOpenModal: false,
     titleMail: '',
     isTest: false,
-    timeStartCampaign: ''
+    timeStartCampaign: '',
+    advancedSearches: []
   };
   //handler Popup send email
   confirmEmail = async () => {
@@ -66,8 +80,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   };
 
   // handler Open modal
-  getVisible = async (event, valueName, isSuccess) => {
-    let { idNode } = this.state;
+  getVisible = async (event, valueName, searchAdv, isSuccess) => {
+    let { idNode, advancedSearches, timeStartCampaign } = this.state;
     let data = JSON.parse(localStorage.getItem('nodeStore'));
     switch (idNode.param) {
       case 'DATA':
@@ -77,6 +91,9 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             event.label = String(valueName).split(',')[0];
           }
         });
+        timeStartCampaign = String(valueName).split(',')[1];
+        advancedSearches = searchAdv;
+        this.setState({ timeStartCampaign, advancedSearches });
         break;
 
       case 'EMAIL':
@@ -249,7 +266,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                 <label className="label-message">Tên Chiến dịch</label>
               </Col>
               <Col span={12}>
-                <Input style={{ float: 'right', width: '92%' }} />
+                <Input id="name-campaign" style={{ float: 'right', width: '92%' }} />
               </Col>
             </Row>
             <br />
@@ -411,7 +428,27 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   }
   //event save campaign
   saveCampaign = node => {
-    console.log(node);
+    const { idFolder } = this.props;
+    let { timeStartCampaign, advancedSearches } = this.state;
+    let data = {
+      folderId: idFolder,
+      cj: {
+        id: null,
+        name: $('name-campaign').val(),
+        description: $('text-content').val()
+      },
+      cjTags: [
+        {
+          id: '',
+          name: ''
+        }
+      ],
+      flow: {
+        startTime: timeStartCampaign,
+        customerAdvancedSave: advancedSearches,
+        graph: node
+      }
+    };
   };
 
   render() {
@@ -574,4 +611,26 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     );
   }
 }
-export default FlowPage;
+const mapStateToProps = ({ campaignManagament }: IRootState) => ({
+  loading: campaignManagament.loading,
+  list_tree_folder: campaignManagament.tree_folder,
+  idFolder: campaignManagament.listNode
+});
+
+const mapDispatchToProps = {
+  getTreeFolder,
+  insertTreeFolder,
+  editTreeFolder,
+  deleteTreefolder,
+  moveTreeFolder,
+  getListCampaignInfolderDataAction,
+  getNode
+};
+
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(FlowPage);

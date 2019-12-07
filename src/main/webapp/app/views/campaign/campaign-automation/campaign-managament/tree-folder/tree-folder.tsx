@@ -13,7 +13,8 @@ import {
   editTreeFolder,
   deleteTreefolder,
   moveTreeFolder,
-  getListCampaignInfolderDataAction
+  getListCampaignInfolderDataAction,
+  getNode
 } from 'app/actions/campaign-managament';
 import $ from 'jquery';
 import './tree-folder.scss';
@@ -325,13 +326,14 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
   };
 
   getList = async (key, node) => {
-    const { getListCampaignInfolderDataAction, onClick } = this.props;
+    const { getListCampaignInfolderDataAction, onClick, getNode } = this.props;
     let { level } = this.state;
     let id = String(key).split(',')[0];
     level = String(key).split(',')[1];
     if (node) {
       await getListCampaignInfolderDataAction(id, '', '', 0, 4);
       await onClick(id);
+      await getNode(id);
     }
     this.setState({ level });
   };
@@ -471,7 +473,8 @@ const mapDispatchToProps = {
   editTreeFolder,
   deleteTreefolder,
   moveTreeFolder,
-  getListCampaignInfolderDataAction
+  getListCampaignInfolderDataAction,
+  getNode
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
