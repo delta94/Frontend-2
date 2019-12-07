@@ -29,6 +29,7 @@ class FlowItemPanel extends React.Component {
                     size="100*100"
                     shape="custom-node-circle"
                     model={{
+                      value: '',
                       param: 'DATA',
                       code: 'SOURCE',
                       color: '#23C00A',
@@ -48,6 +49,7 @@ class FlowItemPanel extends React.Component {
                     size="100*100"
                     shape="custom-node-circle-multi"
                     model={{
+                      value: '',
                       param: 'EVENT',
                       code: 'EVENT',
                       color: '#FA8C16',
@@ -66,6 +68,7 @@ class FlowItemPanel extends React.Component {
                     size="100*100"
                     shape="custom-node-circle-multi"
                     model={{
+                      value: '',
                       param: 'END',
                       code: 'DES',
                       color: '#FA8C16',
@@ -92,6 +95,7 @@ class FlowItemPanel extends React.Component {
                     size="99*50"
                     shape="custom-node-flow"
                     model={{
+                      value: '',
                       code: 'SEND_MAIL',
                       param: 'MESSAGE',
                       color: '#FA8C16',
@@ -110,6 +114,7 @@ class FlowItemPanel extends React.Component {
                     size="99*50"
                     shape="custom-node-flow"
                     model={{
+                      value: '',
                       code: 'SEND_MAIL',
                       param: 'EMAIL',
                       color: '#FA8C16',
@@ -136,6 +141,7 @@ class FlowItemPanel extends React.Component {
                     size="100*100"
                     shape="custom-node-rhombus"
                     model={{
+                      value: '',
                       code: 'condition',
                       color: '#1890FF',
                       label: 'Decision split',
@@ -155,7 +161,8 @@ class FlowItemPanel extends React.Component {
                     size="100*100"
                     shape="custom-node-rhombus"
                     model={{
-                      code: 'WAIT',
+                      value: '',
+                      code: 'TIMER',
                       param: 'WAIT',
                       color: '#1890FF',
                       label: 'Wait',
@@ -174,6 +181,7 @@ class FlowItemPanel extends React.Component {
                     size="100*100"
                     shape="custom-node-rhombus"
                     model={{
+                      value: '',
                       param: 'WAIT-UNTIL',
                       code: 'TIMER_EVENT',
                       color: '#1890FF',

@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import GGEditor, { Flow } from 'gg-editor';
-import { Row, Col, Popover, Input, Button, Layout, Menu, Breadcrumb, Icon, Select, Modal as ModalAntd } from 'antd';
+import { Row, Col, Popover, Input, Button, Layout, Menu, Breadcrumb, Icon, Select, InputNumber, Modal as ModalAntd } from 'antd';
 import CustomNode from './node/node';
 import CustomEdges from './egdes/egdes';
 import FlowToolbar from './FlowToolBar/flow-tool-bar';
@@ -49,6 +49,8 @@ interface IFlowPageState {
   isTest: boolean;
   timeStartCampaign: string;
   advancedSearches: any[];
+  waitEvent: number;
+  timeWaitEvent: string;
 }
 
 export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
@@ -64,7 +66,9 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     titleMail: '',
     isTest: false,
     timeStartCampaign: '',
-    advancedSearches: []
+    advancedSearches: [],
+    waitEvent: 0,
+    timeWaitEvent: ''
   };
   //handler Popup send email
   confirmEmail = async () => {
@@ -81,7 +85,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
   // handler Open modal
   getVisible = async (event, valueName, searchAdv, isSuccess) => {
-    let { idNode, advancedSearches, timeStartCampaign } = this.state;
+    let { idNode, advancedSearches, timeStartCampaign, timeWaitEvent } = this.state;
     let data = JSON.parse(localStorage.getItem('nodeStore'));
     switch (idNode.param) {
       case 'DATA':
@@ -116,6 +120,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           title: <label className="title-event-wait">THỜI GIAN CHỜ </label>,
           content: this.contentWaitUltil('2'),
           onOk: () => {},
+
           onCancel() {}
         });
         break;
@@ -210,13 +215,30 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
               </Col>
               <Col span={18}>
                 <Col span={17}>
-                  <Input maxLength={160} />
+                  <InputNumber
+                    style={{ width: '100%' }}
+                    min={1}
+                    max={10000}
+                    onChange={event => {
+                      let { waitEvent } = this.state;
+                      waitEvent = event;
+                      this.setState({ waitEvent });
+                    }}
+                  />
                 </Col>
                 <Col span={6} style={{ float: 'right' }}>
-                  <Select style={{ width: '100%' }} onChange={this.handleChange}>
-                    <Option value="jack">Giờ</Option>
-                    <Option value="lucy">Phút</Option>
-                    <Option value="Yiminghe">Giây</Option>
+                  <Select
+                    style={{ width: '100%' }}
+                    onChange={value => {
+                      this.handlerTimeWait(value);
+                    }}
+                  >
+                    <Option value="Y">Năm</Option>
+                    <Option value="M">Tháng</Option>
+                    <Option value="D">Ngày</Option>
+                    <Option value="h">Giờ</Option>
+                    <Option value="m">Phút</Option>
+                    <Option value="s">Giây</Option>
                   </Select>
                 </Col>
               </Col>
@@ -295,6 +317,25 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     }
     return data;
   }
+
+  // add condition time wait
+  handlerTimeWait = async value => {
+    let data = JSON.parse(localStorage.getItem('nodeStore'));
+    let { waitEvent, timeWaitEvent, idNode } = this.state;
+    if (value === 'Y' || value === 'M' || value === 'D') {
+      timeWaitEvent = 'P' + waitEvent + value;
+    } else {
+      timeWaitEvent = 'PT' + waitEvent + value;
+    }
+    await data.nodes.map(event => {
+      if (event.id === idNode.id) {
+        event.value = timeWaitEvent;
+      }
+    });
+    await localStorage.setItem('nodeStore', JSON.stringify(data));
+    await this.setState({ timeWaitEvent, data: JSON.parse(localStorage.getItem('nodeStore')), isUpdateNode: true });
+  };
+
   //add param in modal Send message
   insertAtCursor(newText) {
     const textarea = document.querySelector('textarea');
@@ -316,9 +357,18 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         break;
     }
   };
-
+  // remove item in array
+  remove(arr, item) {
+    for (var i = arr.length; i--; ) {
+      if (arr[i].id === item.id) {
+        arr.splice(i, 1);
+      }
+    }
+    return arr;
+  }
   //delete Node
   deleteModel(id) {
+    debugger;
     let { idNode, idEdge } = this.state;
     let data = {
       nodes: [],
@@ -331,13 +381,12 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     }
     switch (idNode.type ? idNode.type : idEdge.type) {
       case 'node':
-        let index = data.nodes.indexOf(idNode);
-        data.nodes.splice(index, 1);
+        data.nodes = this.remove(data.nodes, idNode);
+        data.edges = this.remove(data.edges, idNode);
         break;
 
       case 'edge':
-        let indexEdge = data.edges.indexOf(idNode);
-        data.edges.splice(indexEdge, 1);
+        data.edges = this.remove(data.edges, idNode);
         break;
 
       default:
@@ -524,11 +573,11 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                         onClick={() => {
                           this.setState({ isTest: true });
                         }}
-                        disabled={dataDisable.nodes.length > 0 ? false : true}
+                        disabled={dataDisable && dataDisable.nodes.length > 0 ? false : true}
                       >
                         Test
                       </Button>
-                      <Button disabled={dataDisable.nodes.length > 0 ? false : true}>Validate</Button>
+                      <Button disabled={dataDisable && dataDisable.nodes.length > 0 ? false : true}>Validate</Button>
                       <Save onClick={this.saveCampaign} />
                     </ButtonGroup>
                   </Col>
