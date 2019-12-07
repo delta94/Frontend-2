@@ -8,7 +8,7 @@ import Save from './save/save';
 import ConfigEmail from './config-email/config-email';
 import FlowItemPanel from './EditorItemPannel/FlowItemPanel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faCopy, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faCopy, faTrashAlt, faUserEdit } from '@fortawesome/free-solid-svg-icons';
 import ModalGroupCustomer from './modal-group-customer/modal-group-customer';
 import FlowContextMenu from './EditorContextMenu/flow-context-menu';
 import { Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap';
@@ -17,6 +17,8 @@ const { Header, Content, Footer, Sider } = Layout;
 const { TextArea } = Input;
 const { SubMenu } = Menu;
 import './style.scss';
+import SiderComponet from './sider/sider-tool';
+import SiderTest from './sider/sider-test';
 
 const ButtonGroup = Button.Group;
 const { confirm } = ModalAntd;
@@ -32,6 +34,8 @@ interface IFlowPageState {
   idEdge: any;
   isOpenModal: boolean;
   titleMail: string;
+  isTest: boolean;
+  timeStartCampaign: string;
 }
 
 export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
@@ -44,9 +48,11 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     isUpdateNode: false,
     idEdge: {},
     isOpenModal: false,
-    titleMail: ''
+    titleMail: '',
+    isTest: false,
+    timeStartCampaign: ''
   };
-
+  //handler Popup send email
   confirmEmail = async () => {
     let { idNode, titleMail } = this.state;
     let data = JSON.parse(localStorage.getItem('nodeStore'));
@@ -59,11 +65,11 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     await this.setState({ isOpenModal: !this.state.isOpenModal, data: JSON.parse(localStorage.getItem('nodeStore')), isUpdateNode: true });
   };
 
-  // show modal
+  // handler Open modal
   getVisible = async (event, valueName, isSuccess) => {
     let { idNode } = this.state;
     let data = JSON.parse(localStorage.getItem('nodeStore'));
-    switch (idNode.code) {
+    switch (idNode.param) {
       case 'DATA':
         this.setState({ visible: event });
         await data.nodes.map(event => {
@@ -92,7 +98,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           width: '55%',
           title: <label className="title-event-wait">THỜI GIAN CHỜ </label>,
           content: this.contentWaitUltil('2'),
-          onOk() {},
+          onOk: () => {},
           onCancel() {}
         });
         break;
@@ -116,14 +122,18 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       await this.setState({ data: JSON.parse(localStorage.getItem('nodeStore')), isUpdateNode: true });
     }
   };
+  //get title email save in Node
   getInfoEmail = (event, value) => {
     let { titleMail } = this.state;
     titleMail = event;
     this.setState({ titleMail });
   };
+
   handleChange(value) {
     console.log(`selected ${value}`);
   }
+
+  //content Modal
   contentWaitUltil(option) {
     let data;
     switch (option) {
@@ -231,12 +241,44 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           </Row>
         );
         break;
+      case '4':
+        data = (
+          <Row>
+            <Row>
+              <Col span={3}>
+                <label className="label-message">Tên Chiến dịch</label>
+              </Col>
+              <Col span={12}>
+                <Input style={{ float: 'right', width: '92%' }} />
+              </Col>
+            </Row>
+            <br />
+            <Row>
+              <Col span={3}>
+                <label className="label-message">Tag</label>
+              </Col>
+              <Col span={12}>
+                <Input style={{ float: 'right', width: '92%' }} />
+              </Col>
+            </Row>
+            <br />
+            <Row>
+              <Col span={4}>
+                <label className="label-message">Mô tả</label>
+              </Col>
+              <Col span={20}>
+                <TextArea id="text-content" rows={4} />
+              </Col>
+            </Row>
+          </Row>
+        );
+        break;
       default:
         break;
     }
     return data;
   }
-
+  //add param in modal Send message
   insertAtCursor(newText) {
     const textarea = document.querySelector('textarea');
     textarea.setRangeText(newText, textarea.selectionStart, textarea.selectionEnd, 'end');
@@ -319,16 +361,32 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     }
   }
 
+  //@@
+  //modal edit info campaign
+  showModalInfoCampaign = () => {
+    confirm({
+      icon: 'none',
+      width: '55%',
+      title: <label className="title-event-wait">CHIẾN DỊCH </label>,
+      content: this.contentWaitUltil('4'),
+      onOk() {},
+      onCancel() {}
+    });
+  };
+
+  //close Popover Setting
   hide = () => {
     this.setState({
       isOpen: false
     });
   };
 
+  // handler Popover Setting
   handleVisibleChange = visible => {
     this.setState({ isOpen: visible });
   };
 
+  //Content Popover Setting
   contentSetting() {
     return (
       <Row>
@@ -351,12 +409,17 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       </Row>
     );
   }
+  //event save campaign
+  saveCampaign = node => {
+    console.log(node);
+  };
 
   render() {
-    let { collapsed, data } = this.state;
+    let { collapsed, data, isTest } = this.state;
     const imgSetting = require('app/assets/utils/images/flow/setting.png');
     const imgAward = require('app/assets/utils/images/flow/award.png');
     const imgMove = require('app/assets/utils/images/flow/move.png');
+    let dataDisable = JSON.parse(localStorage.getItem('nodeStore'));
     return (
       <Fragment>
         <GGEditor
@@ -366,33 +429,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           }}
         >
           <Layout style={{ minHeight: '200vh' }}>
-            <Sider width={370} collapsed={collapsed}>
-              <div className="header-sider">
-                <label className="tool-bar" style={{ display: collapsed ? 'none' : 'contents' }}>
-                  CÔNG CỤ
-                </label>
-                {collapsed ? (
-                  <Icon
-                    type="double-right"
-                    onClick={() => {
-                      this.setState({ collapsed: !collapsed });
-                    }}
-                  />
-                ) : (
-                  <Icon
-                    type="double-left"
-                    onClick={() => {
-                      this.setState({ collapsed: !collapsed });
-                    }}
-                    className="icon-collapse"
-                  />
-                )}
-              </div>
-              <hr />
-              <div className="logo" style={{ display: collapsed ? 'none' : 'block' }}>
-                <FlowItemPanel />
-              </div>
-            </Sider>
+            {isTest ? <SiderTest /> : <SiderComponet />}
             <Layout>
               <Header className="header-flow">
                 <Row>
@@ -414,6 +451,9 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                           <a href="javascript:void(0);">Tạo chiến dịch</a>
                         </Breadcrumb.Item>
                         <label className="ant-breadcrumb-link">Chiến dịch mới</label>
+                        <Button type="link" id="config-name" onClick={this.showModalInfoCampaign}>
+                          <FontAwesomeIcon icon={faUserEdit} />
+                        </Button>
                       </Breadcrumb>
                     </Row>
                   </Col>
@@ -443,9 +483,16 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                   </Col>
                   <Col span={6}>
                     <ButtonGroup>
-                      <Button disabled>Test</Button>
-                      <Button disabled>Validate</Button>
-                      <Save />
+                      <Button
+                        onClick={() => {
+                          this.setState({ isTest: true });
+                        }}
+                        disabled={dataDisable.nodes.length > 0 ? false : true}
+                      >
+                        Test
+                      </Button>
+                      <Button disabled={dataDisable.nodes.length > 0 ? false : true}>Validate</Button>
+                      <Save onClick={this.saveCampaign} />
                     </ButtonGroup>
                   </Col>
                   <Col span={2}>
@@ -497,6 +544,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
               this.setState({ isOpenModal: !this.state.isOpenModal });
             }}
           >
+            {' '}
             GỬI EMAIL
           </ModalHeader>
           <ModalBody>
@@ -509,6 +557,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                 this.setState({ isOpenModal: !this.state.isOpenModal });
               }}
             >
+              {' '}
               Hủy
             </Button>
             <Button

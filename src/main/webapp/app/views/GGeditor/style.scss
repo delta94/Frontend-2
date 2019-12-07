@@ -82,6 +82,27 @@ body {
   height: 0;
 }
 .editor {
+  .title-sider-test {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 18px;
+    /* identical to box height */
+
+    color: #343a40;
+  }
+  .text-sider-text {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+
+    color: #495057;
+    margin-bottom: 4%;
+    margin-left: 5%;
+  }
   .ant-breadcrumb-link {
     font-family: Roboto;
     font-style: normal;
@@ -89,8 +110,14 @@ body {
     font-size: 16px;
     line-height: 19px;
     /* identical to box height */
-
     color: #595c82;
+  }
+  #config-name {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 19px;
   }
 
   .ant-breadcrumb a {
@@ -109,6 +136,7 @@ body {
     text-decoration: none;
     color: greenyellow;
   }
+
   .ant-layout-sider {
     background: white;
   }

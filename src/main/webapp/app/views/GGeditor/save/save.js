@@ -7,11 +7,11 @@ class Save extends React.Component {
     super(props)
   }
 
-  handleClick = () => {
+  handleClick = async () => {
     const { propsAPI } = this.props;
-    console.log(propsAPI.save())
-    propsAPI.save()
-    localStorage.setItem("nodeStore", JSON.stringify(propsAPI.save()))
+   await propsAPI.save()
+   await localStorage.setItem("nodeStore", JSON.stringify(propsAPI.save()))
+   await this.props.onClick(propsAPI.save())
   };
 
 
