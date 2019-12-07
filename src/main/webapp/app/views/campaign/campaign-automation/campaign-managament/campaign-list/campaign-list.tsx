@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Table, Row, Badge, Col } from 'reactstrap';
+import { Button, Table, Row, Badge, Col, Popover, PopoverHeader, PopoverBody } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { IRootState } from 'app/reducers';
 import LoaderAnim from 'react-loaders';
@@ -8,11 +8,12 @@ import Loader from 'react-loader-advanced';
 import ReactPaginate from 'react-paginate';
 import { getListCampaignInfolderDataAction } from 'app/actions/campaign-managament';
 import './campaign-list.scss';
-import { Input, Icon, Checkbox, Menu, Popover, Tag } from 'antd';
+import { Input, Icon, Checkbox, Menu, Tag } from 'antd';
 import CampaignTag from './campaign-tag/campaign-tag';
 import CjTagModal from './cj-tag-modal/cj-tag-modal';
 import { getCjTagsByCjIdAction } from 'app/actions/cj';
 import { STATUS_CJ } from 'app/constants/cj';
+import CJTagPopOver from './cj-popup/cj-popover';
 
 interface ICampaignListProps extends StateProps, DispatchProps {
   folder_id_choose?: string;
@@ -116,32 +117,32 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
     this.props.getListCampaignInfolderDataAction(folderId, textSearch, cjTagIds.join(), activePage, itemsPerPage);
   };
 
-  openModalCjTag = async id => {
-    await this.props.getCjTagsByCjIdAction(id);
-    this.setState({
-      openModalCjTag: true,
-      cjEdit: {
-        cjTags: this.props.valueComboTag,
-        cjId: id
-      }
-    });
-  };
+  // openModalCjTag = async id => {
+  //   await this.props.getCjTagsByCjIdAction(id);
+  //   this.setState({
+  //     openModalCjTag: true,
+  //     cjEdit: {
+  //       cjTags: this.props.valueComboTag,
+  //       cjId: id
+  //     }
+  //   });
+  // };
 
-  toogleModalCjTag = () => {
-    let { openModalCjTag } = this.state;
-    this.setState({
-      openModalCjTag: !openModalCjTag
-    });
-  };
+  // toogleModalCjTag = () => {
+  //   let { openModalCjTag } = this.state;
+  //   this.setState({
+  //     openModalCjTag: !openModalCjTag
+  //   });
+  // };
 
-  closeModalCjTag = () => {
-    this.setState({
-      openModalCjTag: false,
-      cjEdit: {
-        cjTags: []
-      }
-    });
-  };
+  // closeModalCjTag = () => {
+  //   this.setState({
+  //     openModalCjTag: false,
+  //     cjEdit: {
+  //       cjTags: []
+  //     }
+  //   });
+  // };
 
   getCjs = () => {
     let { activePage, itemsPerPage } = this.state;
@@ -176,13 +177,13 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
 
     return (
       <div className="campaign-list">
-        <CjTagModal
+        {/* <CjTagModal
           toogleModalCjTag={this.toogleModalCjTag}
           openModalCjTag={openModalCjTag}
           dataModalTag={cjEdit}
           closeModalCjTag={this.closeModalCjTag}
           getCjs={this.getCjs}
-        />
+        /> */}
         <Loader message={spinner1} show={loading} priority={1}>
           <div>
             {/* Block out */}
@@ -274,15 +275,9 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                           <span> {item.modifiedDate}</span>
                         </td>
                         <td colSpan={15}>
-                          <Popover
-                            content={<a onClick={() => this.openModalCjTag(item.id)}>Close</a>}
-                            title="Title"
-                            trigger="click"
-                            visible={item.check}
-                            onVisibleChange={event => this.handleVisibleChange(event, item.id)}
-                          >
-                            <Icon style={{ fontSize: '24px' }} type="tags" /> &nbsp;
-                          </Popover>
+                          <CJTagPopOver key={item.cjVersionId} dataPopup={item} getCjs={this.getCjs} />
+                          {/* <Icon onClick={() => this.openModalCjTag(item.id)} style={{ fontSize: '24px' }} type="tags" />  */}
+                          &nbsp;
                           <Icon style={{ fontSize: '24px' }} type="unordered-list" />
                         </td>
                       </tr>
