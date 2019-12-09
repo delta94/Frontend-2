@@ -28,3 +28,8 @@
 .pop-data {
   left: 6% !important;
 }
+.tree-data {
+  .ant-tree-node-content-wrapper {
+    height: 100% !important;
+  }
+}

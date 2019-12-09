@@ -6,15 +6,7 @@ import CustomEdges from './egdes/egdes';
 import FlowToolbar from './FlowToolBar/flow-tool-bar';
 import { connect } from 'react-redux';
 import Save from './save/save';
-import {
-  getTreeFolder,
-  insertTreeFolder,
-  editTreeFolder,
-  deleteTreefolder,
-  moveTreeFolder,
-  getListCampaignInfolderDataAction,
-  getNode
-} from 'app/actions/campaign-managament';
+import { saveCampaignAuto, getNode } from 'app/actions/campaign-managament';
 import { IRootState } from 'app/reducers';
 import ConfigEmail from './config-email/config-email';
 import FlowItemPanel from './EditorItemPannel/FlowItemPanel';
@@ -477,8 +469,29 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   }
   //event save campaign
   saveCampaign = node => {
-    const { idFolder } = this.props;
+    const { idFolder, saveCampaignAuto } = this.props;
     let { timeStartCampaign, advancedSearches } = this.state;
+    let graph = {
+      nodes: node.nodes.map(event => {
+        return {
+          type: event.type,
+          label: event.label,
+          code: event.code,
+          value: event.value,
+          id: event.id
+        };
+      }),
+      edges: node.edges.map(value => {
+        return {
+          source: value.source,
+          target: value.target,
+          sourceAnchor: value.sourceAnchor,
+          targetAnchor: value.targetAnchor,
+          id: value.id,
+          value: ''
+        };
+      })
+    };
     let data = {
       folderId: idFolder,
       cj: {
@@ -495,9 +508,10 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       flow: {
         startTime: timeStartCampaign,
         customerAdvancedSave: advancedSearches,
-        graph: node
+        graph: graph
       }
     };
+    saveCampaignAuto(data);
   };
 
   render() {
@@ -667,12 +681,7 @@ const mapStateToProps = ({ campaignManagament }: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  getTreeFolder,
-  insertTreeFolder,
-  editTreeFolder,
-  deleteTreefolder,
-  moveTreeFolder,
-  getListCampaignInfolderDataAction,
+  saveCampaignAuto,
   getNode
 };
 

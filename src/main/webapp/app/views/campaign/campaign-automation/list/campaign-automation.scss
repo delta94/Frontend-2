@@ -6,6 +6,11 @@
   font-style: normal;
   font-weight: normal;
 }
+.table-campaign-auto {
+  background: #ffffff;
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.05);
+  border-radius: 5px;
+}
 #title-campaign-auto {
   height: 60px;
   margin: 3px 0px 12px;
@@ -17,19 +22,82 @@
 }
 
 .body-campaign-auto {
-  background: white;
+  .total-campaign-table {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    color: #343a40;
+    margin: 2% 1% 1% 2%;
+  }
+  .main-table {
+    margin: 0% 2%;
+    width: 97% !important;
+    .table-content {
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 15px;
+      line-height: 18px;
+      /* identical to box height */
+
+      text-decoration-line: underline;
+
+      color: #3866dd;
+      text-align: left;
+    }
+    .row-status {
+      text-align: left;
+    }
+    label {
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 13px;
+      line-height: 15px;
+
+      color: #8a96a2;
+    }
+  }
+
+  .count-campaign {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 37px;
+    text-transform: uppercase;
+    color: #3866dd;
+  }
+  .gutter-row {
+    padding: 10px;
+  }
   .gutter-example .ant-row > div {
     background: transparent;
     border: 0;
   }
+  .top {
+    border-radius: 5px 5px 0px 0px;
+  }
+  .below {
+    border-radius: 0px 0px 5px 5px;
+  }
   .gutter-box {
-    background: #00a0e9;
+    background: #ffffff;
     padding: 5px 0;
     height: 75px;
-    font-size: 18px;
+  }
+  .text {
     font-family: Roboto;
     font-style: normal;
-    font-weight: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 15px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin: 32px;
+    color: #616161;
   }
   thead th {
     color: #545cd8;

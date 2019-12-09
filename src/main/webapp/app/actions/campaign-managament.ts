@@ -6,7 +6,8 @@ import {
   deleteTreeFolderService,
   moveTreeFolderService,
   getStatusCampaignService,
-  getListCampaginService
+  getListCampaginService,
+  saveCampaignAutoService
 } from 'app/services/campaign-managament';
 
 //get Tree Folder
@@ -59,4 +60,9 @@ export const getListCampaginAuto = () => ({
 export const getNode = (data?: any) => ({
   type: CAMPAIGN_MANAGAMENT.GET_NODE,
   payload: data
+});
+
+export const saveCampaignAuto = data => ({
+  type: CAMPAIGN_MANAGAMENT.SAVE_CAMPAIGN_AUTO,
+  payload: saveCampaignAutoService(data)
 });

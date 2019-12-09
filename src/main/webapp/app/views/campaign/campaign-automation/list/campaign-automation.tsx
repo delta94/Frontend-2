@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Translate, translate } from 'react-jhipster';
-import { Table } from 'reactstrap';
-import { Row, Col, Button, Input, Popover, Icon, Modal } from 'antd';
+import { Table, Progress } from 'reactstrap';
+import { Row, Col, Button, Input, Popover, Icon, Modal, Checkbox } from 'antd';
 import $ from 'jquery';
 import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
@@ -33,8 +33,37 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
     location.assign('#/app/views/campaigns/campaign-managament');
   };
 
+  iconStatus = option => {
+    let img;
+    const img_stop = require('app/assets/utils/images/campaign-managament/stop.png');
+    const img_running = require('app/assets/utils/images/campaign-managament/running.png');
+    const img_finish = require('app/assets/utils/images/campaign-managament/finish.png');
+    const img_draf = require('app/assets/utils/images/campaign-managament/draf.png');
+    switch (option) {
+      case 'Draft':
+        img = img_draf;
+        break;
+      case 'Finish':
+        img = img_finish;
+        break;
+      case 'Running':
+        img = img_running;
+        break;
+      case 'Stop':
+        img = img_stop;
+      default:
+        break;
+    }
+    return img;
+  };
+
   render() {
     let { getStatusCampaign, list_campaign_auto } = this.props;
+    const img = require('app/assets/utils/images/campaign-managament/count_campaign.png');
+    const img_campaign_running = require('app/assets/utils/images/campaign-managament/campaign_running.png');
+    const img_finish = require('app/assets/utils/images/campaign-managament/campaign_finish.png');
+    const img_new = require('app/assets/utils/images/campaign-managament/campaign_new.png');
+
     return (
       <Fragment>
         <div id="campaing-auto">
@@ -51,29 +80,50 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
         </div>
         <div className="body-campaign-auto">
           <Row gutter={16}>
-            <Col className="gutter-row" span={6} style={{ textAlign: 'center' }}>
-              <div className="gutter-box">Tổng số chiến dịch</div>
-              <div className="gutter-box">{getStatusCampaign.total}</div>
+            <Col className="gutter-row" span={6}>
+              <div className="gutter-box top">
+                <label className="text">Tổng số chiến dịch</label>
+              </div>
+              <div className="gutter-box below">
+                <img style={{ margin: '0px 32px 17px' }} src={img} />
+                <label className="count-campaign">{getStatusCampaign.total}</label>
+              </div>
             </Col>
-            <Col className="gutter-row" span={6} style={{ textAlign: 'center' }}>
-              <div className="gutter-box">Chiến dịch đang thực hiện</div>
-              <div className="gutter-box">{getStatusCampaign.totalRunning}</div>
+            <Col className="gutter-row" span={6}>
+              <div className="gutter-box top">
+                <label className="text">Chiến dịch đang thực hiện</label>
+              </div>
+              <div className="gutter-box below">
+                <img style={{ margin: '0px 32px 17px', width: '11%' }} src={img_campaign_running} />
+                <label className="count-campaign">{getStatusCampaign.totalRunning}</label>
+              </div>
             </Col>
-            <Col className="gutter-row" span={6} style={{ textAlign: 'center' }}>
-              <div className="gutter-box">Chiến dịch kết thúc</div>
-              <div className="gutter-box">{getStatusCampaign.totalFinish}</div>
+            <Col className="gutter-row" span={6}>
+              <div className="gutter-box top">
+                <label className="text">Chiến dịch kết thúc</label>
+              </div>
+              <div className="gutter-box below">
+                <img style={{ margin: '0px 32px 17px', width: '11%' }} src={img_finish} />
+                <label className="count-campaign">{getStatusCampaign.totalFinish}</label>
+              </div>
             </Col>
-            <Col className="gutter-row" span={6} style={{ textAlign: 'center' }}>
-              <div className="gutter-box">Chiến dịch mới</div>
-              <div className="gutter-box">{getStatusCampaign.totalDraft}</div>
+            <Col className="gutter-row" span={6}>
+              <div className="gutter-box top">
+                <label className="text">Chiến dịch mới</label>
+              </div>
+              <div className="gutter-box below">
+                <img style={{ margin: '0px 32px 17px', width: '11%' }} src={img_new} />
+                <label className="count-campaign">{getStatusCampaign.totalDraft}</label>
+              </div>
             </Col>
           </Row>
           <br />
-          <Row>
-            <Table responsive striped>
+          <Row className="table-campaign-auto">
+            <label className="total-campaign-table">{getStatusCampaign.total} chiến dịch</label>
+            <Table responsive striped className="main-table">
               <thead>
-                <th>Số thứ tự</th>
-                <th>Chiến dịch</th>
+                <th style={{ width: '4%' }} />
+                <th style={{ width: '25%' }}>Chiến dịch</th>
                 <th>Trạng thái</th>
                 <th>Kết quả</th>
                 <th>Chỉnh sửa gần nhất</th>
@@ -83,13 +133,24 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
                   ? list_campaign_auto.map((event, index) => {
                       return (
                         <tr key={index}>
-                          <td>{index}</td>
                           <td>
-                            <a href="#/">{event.name}</a>
-                            <p>Version {event.version}</p>
+                            <Checkbox />
                           </td>
-                          <td>{event.status}</td>
-                          <td>{event.contactNumbers}</td>
+                          <td className="table-content">
+                            <a style={{ marginLeft: '5%' }} href="#/">
+                              {event.name}
+                            </a>
+                            <br />
+                            <label style={{ marginLeft: '5%' }}>Version {event.version}</label>
+                          </td>
+                          <td className="row-status">
+                            <img style={{ margin: '1% 2% 2% 40%' }} src={this.iconStatus(event.status)} />
+                            {event.status}
+                          </td>
+                          <td>
+                            <Progress value={event.contactNumbers} max={event.contactNumbers} />
+                            {event.contactNumbers}
+                          </td>
                           <td>{event.modifiedDate}</td>
                         </tr>
                       );
@@ -97,6 +158,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
                   : ''}
               </tbody>
             </Table>
+            <br />
           </Row>
         </div>
       </Fragment>

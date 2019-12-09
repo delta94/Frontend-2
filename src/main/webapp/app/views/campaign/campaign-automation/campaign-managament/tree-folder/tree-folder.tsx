@@ -97,7 +97,6 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
     treeData = data;
     expandedKeys = expandData;
     this.setState({ treeData: data, expandedKeys: expandData });
-    console.log(treeData);
   }
 
   contentPop = rowInfo => (
@@ -339,6 +338,8 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
   };
 
   render() {
+    const img_folder = require('app/assets/utils/images/campaign-managament/folder.png');
+    const img_files = require('app/assets/utils/images/campaign-managament/files.png');
     let { level } = this.state;
     const loop = data =>
       data.map(item => {
@@ -348,7 +349,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
               key={item.key}
               title={
                 <div>
-                  <Icon type="file" /> {item.title}
+                  <img src={img_files} /> {item.title}
                 </div>
               }
               icon={
@@ -373,7 +374,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
               key={item.key}
               title={
                 <div>
-                  <Icon type="file" /> {item.title}
+                  <img src={img_files} /> {item.title}
                 </div>
               }
               icon={
@@ -431,20 +432,10 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
                       key={item.key}
                       title={
                         <div>
-                          <Icon type="folder" /> {item.title}
+                          <img src={img_folder} /> {item.title}
                         </div>
                       }
-                      icon={
-                        <Popover
-                          overlayClassName="pop-data"
-                          content={this.contentPop(item)}
-                          title="Thông tin"
-                          trigger="hover"
-                          placement="bottomRight"
-                        >
-                          <Icon type="down" />
-                        </Popover>
-                      }
+                      icon={<div />}
                     >
                       {loop(item.children)}
                     </TreeNode>

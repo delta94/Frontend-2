@@ -47,3 +47,9 @@ export const getStatusCampaignService = () => {
 export const getListCampaginService = () => {
   return axios.get(urlCampaign);
 };
+
+//call API save campaign auto
+export const saveCampaignAutoService = data => {
+  const url = `${urlCampaign}/create-process`;
+  return axios.post(url, data);
+};
