@@ -11,11 +11,11 @@
       display: block;
     }
   }
-  // .ant-tree-node-content-wrapper {
-  //   .anticon-down {
-  //     display: none;
-  //   }
-  // }
+  .ant-tree-node-content-wrapper {
+    .anticon-down {
+      display: none;
+    }
+  }
   .anticon-folder-add {
     color: gray;
   }
@@ -32,4 +32,29 @@
   .ant-tree-node-content-wrapper {
     height: 100% !important;
   }
+  .tree-children {
+    .ant-tree-title {
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 15px;
+      line-height: 18px;
+      /* identical to box height */
+
+      color: #6c757d;
+    }
+  }
+  .ant-tree-title {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 18px;
+    /* identical to box height */
+
+    color: #343a40;
+  }
+}
+.row-sort-tree {
+  height: 5%;
 }

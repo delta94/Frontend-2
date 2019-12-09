@@ -1,9 +1,11 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Translate, translate } from 'react-jhipster';
-import { Row, Col, Button, Input, Table, Popover, Icon, Modal } from 'antd';
+import { Row, Col, Button, Input, Table, Breadcrumb, Icon, Modal } from 'antd';
 import $ from 'jquery';
 import LoaderAnim from 'react-loaders';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome, faCopy, faTrashAlt, faUserEdit } from '@fortawesome/free-solid-svg-icons';
 import Loader from 'react-loader-advanced';
 import { openModal, closeModal } from 'app/actions/modal';
 import { IRootState } from 'app/reducers';
@@ -35,14 +37,25 @@ class CampaginManagament extends React.Component<ICampaginManagamentProps, ICamp
     return (
       <Fragment>
         <div>
-          <Row className="header-row" style={{ height: '50px' }}>
-            <label style={{ margin: '10px' }}>DANH SÁCH CHIẾN DỊCH</label>
-          </Row>
           <Row className="row-main">
             <Col span={4} className="d-none d-lg-block h-100 bg-white  align-items-center">
               <TreeFolder onClick={this.getId} />
             </Col>
             <Col span={20} className="h-100 bg-white  align-items-center">
+              <Row className="header-row">
+                <Breadcrumb separator=">">
+                  <Breadcrumb.Item>
+                    <a href="javascript:void(0);">
+                      <FontAwesomeIcon icon={faHome} />
+                    </a>
+                  </Breadcrumb.Item>
+                  <Breadcrumb.Item>
+                    <a href="javascript:void(0);">Chiến dịch tự động</a>
+                  </Breadcrumb.Item>
+
+                  <label className="ant-breadcrumb-link">Danh sách chiến dịch</label>
+                </Breadcrumb>
+              </Row>
               <Campaign folder_id_choose={idTree} />
             </Col>
           </Row>
