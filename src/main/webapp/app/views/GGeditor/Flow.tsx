@@ -537,18 +537,30 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                     <Row>
                       <Breadcrumb separator=">">
                         <Breadcrumb.Item>
-                          <a href="javascript:void(0);">
+                          <a onClick={() => window.location.assign('/#/app/views/customers/user-management')} href="javascript:void(0);">
                             <FontAwesomeIcon icon={faHome} />
                           </a>
                         </Breadcrumb.Item>
                         <Breadcrumb.Item>
-                          <a href="javascript:void(0);">Chiến dịch tự động</a>
+                          <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-auto')} href="javascript:void(0);">
+                            Chiến dịch tự động
+                          </a>
                         </Breadcrumb.Item>
                         <Breadcrumb.Item>
-                          <a href="javascript:void(0);">Danh sách chiến dịch</a>
+                          <a
+                            onClick={() => window.location.assign('/#/app/views/campaigns/campaign-managament')}
+                            href="javascript:void(0);"
+                          >
+                            Danh sách chiến dịch
+                          </a>
                         </Breadcrumb.Item>
                         <Breadcrumb.Item>
-                          <a href="javascript:void(0);">Tạo chiến dịch</a>
+                          <a
+                            onClick={() => window.location.assign('/#/app/views/campaigns/campaign-managament/new')}
+                            href="javascript:void(0);"
+                          >
+                            Tạo chiến dịch
+                          </a>
                         </Breadcrumb.Item>
                         <label className="ant-breadcrumb-link">Chiến dịch mới</label>
                         <Button type="link" id="config-name" onClick={this.showModalInfoCampaign}>

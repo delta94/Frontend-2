@@ -45,12 +45,14 @@ class CampaginManagament extends React.Component<ICampaginManagamentProps, ICamp
               <Row className="header-row">
                 <Breadcrumb separator=">">
                   <Breadcrumb.Item>
-                    <a href="javascript:void(0);">
+                    <a onClick={() => window.location.assign('/#/app/views/customers/user-management')} href="javascript:void(0);">
                       <FontAwesomeIcon icon={faHome} />
                     </a>
                   </Breadcrumb.Item>
                   <Breadcrumb.Item>
-                    <a href="javascript:void(0);">Chiến dịch tự động</a>
+                    <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-auto')} href="javascript:void(0);">
+                      Chiến dịch tự động
+                    </a>
                   </Breadcrumb.Item>
 
                   <label className="ant-breadcrumb-link">Danh sách chiến dịch</label>

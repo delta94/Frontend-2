@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Button, Table, Badge, Popover, PopoverHeader, PopoverBody } from 'reactstrap';
+import { Table, Badge, Popover, PopoverHeader, PopoverBody } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { IRootState } from 'app/reducers';
 import LoaderAnim from 'react-loaders';
@@ -8,7 +8,7 @@ import Loader from 'react-loader-advanced';
 import ReactPaginate from 'react-paginate';
 import { getListCampaignInfolderDataAction } from 'app/actions/campaign-managament';
 import './campaign-list.scss';
-import { Input, Icon, Row, Col, Tag } from 'antd';
+import { Input, Icon, Row, Col, Tag, Button } from 'antd';
 import CampaignTag from './campaign-tag/campaign-tag';
 import CjTagModal from './cj-tag-modal/cj-tag-modal';
 import { getCjTagsByCjIdAction } from 'app/actions/cj';
@@ -117,33 +117,6 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
     this.props.getListCampaignInfolderDataAction(folderId, textSearch, cjTagIds.join(), activePage, itemsPerPage);
   };
 
-  // openModalCjTag = async id => {
-  //   await this.props.getCjTagsByCjIdAction(id);
-  //   this.setState({
-  //     openModalCjTag: true,
-  //     cjEdit: {
-  //       cjTags: this.props.valueComboTag,
-  //       cjId: id
-  //     }
-  //   });
-  // };
-
-  // toogleModalCjTag = () => {
-  //   let { openModalCjTag } = this.state;
-  //   this.setState({
-  //     openModalCjTag: !openModalCjTag
-  //   });
-  // };
-
-  // closeModalCjTag = () => {
-  //   this.setState({
-  //     openModalCjTag: false,
-  //     cjEdit: {
-  //       cjTags: []
-  //     }
-  //   });
-  // };
-
   getCjs = () => {
     let { activePage, itemsPerPage } = this.state;
     let folderId = this.props.folder_id_choose;
@@ -204,13 +177,6 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
 
     return (
       <div className="campaign-list">
-        {/* <CjTagModal
-          toogleModalCjTag={this.toogleModalCjTag}
-          openModalCjTag={openModalCjTag}
-          dataModalTag={cjEdit}
-          closeModalCjTag={this.closeModalCjTag}
-          getCjs={this.getCjs}
-        /> */}
         <Loader message={spinner1} show={loading} priority={1}>
           <div className="block-out">
             {/* Block out */}
@@ -239,7 +205,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                 </Col>
                 <Col span={6} style={{ textAlign: 'right' }}>
                   <Button
-                    color="primary"
+                    type="primary"
                     onClick={() => {
                       window.location.assign('/#/app/views/campaigns/campaign-managament/new');
                     }}
