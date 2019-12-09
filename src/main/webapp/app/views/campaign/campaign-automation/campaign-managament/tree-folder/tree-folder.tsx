@@ -423,6 +423,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
               blockNode
               onDragEnter={this.onDragEnter}
               onDrop={this.onDrop}
+              // showLine = {true}
             >
               {this.state.treeData.map(item => {
                 if (item.children && item.children.length) {
