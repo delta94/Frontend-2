@@ -51,10 +51,17 @@ interface IListCampaignAuto {
   contactNumbers: number;
   modifiedDate: string;
 }
+
 interface IInfoCampaign {
   des: string;
   name: string;
   tag: string;
+}
+
+interface IListDiagram {
+  nodes: any[];
+  edges: any[];
+  groups: any[];
 }
 
 const initialCampaignManagament = {
@@ -64,7 +71,8 @@ const initialCampaignManagament = {
   statusCampaign: {} as IStatusCampagin,
   listCampaignAuto: [] as IListCampaignAuto[],
   listNode: '',
-  listInfoCampaing: {} as IInfoCampaign
+  listInfoCampaing: {} as IInfoCampaign,
+  listDiagram: {} as IListDiagram
 };
 
 export type HandleCampaignManagament = typeof initialCampaignManagament;
@@ -134,6 +142,9 @@ export default (state = initialCampaignManagament, action) => {
 
     case CAMPAIGN_MANAGAMENT.GET_INFO_CAMPAIGN:
       return { ...state, listInfoCampaing: action.payload };
+
+    case CAMPAIGN_MANAGAMENT.GET_DIAGRAM_CAMPAIGN:
+      return { ...state, listDiagram: action.payload };
     default:
       return state;
   }

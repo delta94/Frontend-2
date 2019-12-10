@@ -9,5 +9,6 @@ export const CAMPAIGN_MANAGAMENT = {
   GET_LIST_CAMPAIGN_AUTO: 'campaign-managament/GET_LIST_CAMPAIGN_AUTO',
   SAVE_CAMPAIGN_AUTO: 'campaign-managament/SAVE_CAMPAIGN_AUTO',
   GET_NODE: 'campaign-managament/GET_NODE',
-  GET_INFO_CAMPAIGN: 'campaign-managament/GET_INFO_CAMPAIGN'
+  GET_INFO_CAMPAIGN: 'campaign-managament/GET_INFO_CAMPAIGN',
+  GET_DIAGRAM_CAMPAIGN: 'campaign-managament/GET_DIAGRAM_CAMPAIGN'
 };

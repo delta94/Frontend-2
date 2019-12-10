@@ -73,3 +73,9 @@ export const updateInfoCampaign = (data?: any) => ({
   type: CAMPAIGN_MANAGAMENT.GET_INFO_CAMPAIGN,
   payload: data
 });
+
+//save diagram campaign
+export const getDiagramCampaign = (data?: any) => ({
+  type: CAMPAIGN_MANAGAMENT.GET_DIAGRAM_CAMPAIGN,
+  payload: data
+});
