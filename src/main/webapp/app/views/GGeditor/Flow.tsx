@@ -569,11 +569,11 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                         onClick={() => {
                           this.setState({ isTest: true });
                         }}
-                        disabled={listDiagram && listDiagram.nodes.length > 0 ? false : true}
+                        disabled={listDiagram.nodes && listDiagram.nodes.length > 0 ? false : true}
                       >
                         Test
                       </Button>
-                      <Button disabled={listDiagram && listDiagram.nodes.length > 0 ? false : true}>Validate</Button>
+                      <Button disabled={listDiagram.nodes && listDiagram.nodes.length > 0 ? false : true}>Validate</Button>
                       <Save onClick={this.saveCampaign} />
                     </ButtonGroup>
                   </Col>
