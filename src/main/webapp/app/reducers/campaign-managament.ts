@@ -51,6 +51,11 @@ interface IListCampaignAuto {
   contactNumbers: number;
   modifiedDate: string;
 }
+interface IInfoCampaign {
+  des: string;
+  name: string;
+  tag: string;
+}
 
 const initialCampaignManagament = {
   tree_folder: [] as IDataTreeFolder[],
@@ -58,7 +63,8 @@ const initialCampaignManagament = {
   loading: false,
   statusCampaign: {} as IStatusCampagin,
   listCampaignAuto: [] as IListCampaignAuto[],
-  listNode: ''
+  listNode: '',
+  listInfoCampaing: {} as IInfoCampaign
 };
 
 export type HandleCampaignManagament = typeof initialCampaignManagament;
@@ -121,10 +127,13 @@ export default (state = initialCampaignManagament, action) => {
       };
 
     case CAMPAIGN_MANAGAMENT.GET_CAMPAIGN_IN_FOLDER:
-      return { ...state, data: action.data };
+      return { ...state, data: action.payload };
 
     case CAMPAIGN_MANAGAMENT.GET_NODE:
-      return { ...state, listNode: action.data };
+      return { ...state, listNode: action.payload };
+
+    case CAMPAIGN_MANAGAMENT.GET_INFO_CAMPAIGN:
+      return { ...state, listInfoCampaing: action.payload };
     default:
       return state;
   }

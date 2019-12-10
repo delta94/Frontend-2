@@ -16,6 +16,7 @@ import ModalGroupCustomer from './modal-group-customer/modal-group-customer';
 import FlowContextMenu from './EditorContextMenu/flow-context-menu';
 import { Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap';
 import $ from 'jquery';
+import UpdateInfoCampaign from './modal-update-info/modal-update-info';
 const { Option } = Select;
 const { Header, Content, Footer, Sider } = Layout;
 const { TextArea } = Input;
@@ -36,13 +37,14 @@ interface IFlowPageState {
   collapsed: boolean;
   isUpdateNode: boolean;
   idEdge: any;
-  isOpenModal: boolean;
+  isOpenModalEmail: boolean;
   titleMail: string;
   isTest: boolean;
   timeStartCampaign: string;
   advancedSearches: any[];
   waitEvent: number;
   timeWaitEvent: string;
+  isOpenModalInfo: boolean;
 }
 
 export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
@@ -54,13 +56,14 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     collapsed: false,
     isUpdateNode: false,
     idEdge: {},
-    isOpenModal: false,
+    isOpenModalEmail: false,
     titleMail: '',
     isTest: false,
     timeStartCampaign: '',
     advancedSearches: [],
     waitEvent: 0,
-    timeWaitEvent: ''
+    timeWaitEvent: '',
+    isOpenModalInfo: false
   };
   //handler Popup send email
   confirmEmail = async () => {
@@ -72,7 +75,11 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       }
     });
     await localStorage.setItem('nodeStore', JSON.stringify(data));
-    await this.setState({ isOpenModal: !this.state.isOpenModal, data: JSON.parse(localStorage.getItem('nodeStore')), isUpdateNode: true });
+    await this.setState({
+      isOpenModalEmail: !this.state.isOpenModalEmail,
+      data: JSON.parse(localStorage.getItem('nodeStore')),
+      isUpdateNode: true
+    });
   };
 
   // handler Open modal
@@ -93,7 +100,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         break;
 
       case 'EMAIL':
-        this.setState({ isOpenModal: event });
+        this.setState({ isOpenModalEmail: event });
         break;
       case 'WAIT-UNTIL':
         confirm({
@@ -272,38 +279,6 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           </Row>
         );
         break;
-      case '4':
-        data = (
-          <Row>
-            <Row>
-              <Col span={3}>
-                <label className="label-message">Tên Chiến dịch</label>
-              </Col>
-              <Col span={12}>
-                <Input id="name-campaign" style={{ float: 'right', width: '92%' }} />
-              </Col>
-            </Row>
-            <br />
-            <Row>
-              <Col span={3}>
-                <label className="label-message">Tag</label>
-              </Col>
-              <Col span={12}>
-                <Input style={{ float: 'right', width: '92%' }} />
-              </Col>
-            </Row>
-            <br />
-            <Row>
-              <Col span={4}>
-                <label className="label-message">Mô tả</label>
-              </Col>
-              <Col span={20}>
-                <TextArea id="text-content" rows={4} />
-              </Col>
-            </Row>
-          </Row>
-        );
-        break;
       default:
         break;
     }
@@ -422,14 +397,10 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   //@@
   //modal edit info campaign
   showModalInfoCampaign = () => {
-    confirm({
-      icon: 'none',
-      width: '55%',
-      title: <label className="title-event-wait">CHIẾN DỊCH </label>,
-      content: this.contentWaitUltil('4'),
-      onOk() {},
-      onCancel() {}
-    });
+    let { infoCampaign } = this.props;
+    let { isOpenModalInfo } = this.state;
+    this.setState({ isOpenModalInfo: !isOpenModalInfo });
+    console.log(infoCampaign);
   };
 
   //close Popover Setting
@@ -496,8 +467,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       folderId: idFolder,
       cj: {
         id: null,
-        name: $('name-campaign').val(),
-        description: $('text-content').val()
+        name: '',
+        description: ''
       },
       cjTags: [
         {
@@ -515,13 +486,15 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   };
 
   render() {
-    let { collapsed, data, isTest } = this.state;
+    let { isOpenModalInfo, data, isTest } = this.state;
+    let { infoCampaign } = this.props;
     const imgSetting = require('app/assets/utils/images/flow/setting.png');
     const imgAward = require('app/assets/utils/images/flow/award.png');
     const imgMove = require('app/assets/utils/images/flow/move.png');
     let dataDisable = JSON.parse(localStorage.getItem('nodeStore'));
     return (
       <Fragment>
+        <UpdateInfoCampaign toggleModal={this.showModalInfoCampaign} isOpenModal={isOpenModalInfo} />
         <GGEditor
           className="editor"
           onAfterCommandExecute={command => {
@@ -562,7 +535,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                             Tạo chiến dịch
                           </a>
                         </Breadcrumb.Item>
-                        <label className="ant-breadcrumb-link">Chiến dịch mới</label>
+                        <label className="ant-breadcrumb-link">{infoCampaign.name ? infoCampaign.name : 'Tạo chiến dịch mới'}</label>
                         <Button type="link" id="config-name" onClick={this.showModalInfoCampaign}>
                           <FontAwesomeIcon icon={faUserEdit} />
                         </Button>
@@ -650,10 +623,10 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             title_modal={'CHỌN NHÓM'}
           />
         </div>
-        <Modal className="modal-config-email" isOpen={this.state.isOpenModal}>
+        <Modal className="modal-config-email" isOpen={this.state.isOpenModalEmail}>
           <ModalHeader
             toggle={() => {
-              this.setState({ isOpenModal: !this.state.isOpenModal });
+              this.setState({ isOpenModalEmail: !this.state.isOpenModalEmail });
             }}
           >
             {' '}
@@ -666,7 +639,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             <Button
               color="link"
               onClick={() => {
-                this.setState({ isOpenModal: !this.state.isOpenModal });
+                this.setState({ isOpenModalEmail: !this.state.isOpenModalEmail });
               }}
             >
               {' '}
@@ -689,7 +662,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 const mapStateToProps = ({ campaignManagament }: IRootState) => ({
   loading: campaignManagament.loading,
   list_tree_folder: campaignManagament.tree_folder,
-  idFolder: campaignManagament.listNode
+  idFolder: campaignManagament.listNode,
+  infoCampaign: campaignManagament.listInfoCampaing
 });
 
 const mapDispatchToProps = {
