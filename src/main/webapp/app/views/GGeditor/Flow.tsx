@@ -51,7 +51,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   state: IFlowPageState = {
     visible: false,
     isOpen: false,
-    data: this.props.listDiagram,
+    data: [],
     idNode: {},
     collapsed: false,
     isUpdateNode: false,
@@ -75,23 +75,26 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         event.label = titleMail;
       }
     });
+
     await getDiagramCampaign(data);
     await this.setState({
       isOpenModalEmail: !this.state.isOpenModalEmail,
-      isUpdateNode: true
+      isUpdateNode: true,
+      data: data
     });
   };
 
   // handler Open modal
   getVisible = async (event, valueName, searchAdv, isSuccess) => {
     let { listDiagram, getDiagramCampaign } = this.props;
-    let { idNode, advancedSearches, timeStartCampaign, timeWaitEvent } = this.state;
-    let data = listDiagram;
+    let { idNode, advancedSearches, timeStartCampaign, timeWaitEvent, data } = this.state;
+    console.log(listDiagram);
+    data = listDiagram;
     switch (idNode.param) {
       case 'DATA':
         this.setState({ visible: event });
         await data.nodes.map(event => {
-          if (event.id === idNode.id) {
+          if (event.id === idNode.id && valueName) {
             event.label = String(valueName).split(',')[0];
           }
         });
@@ -139,9 +142,9 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       default:
         break;
     }
-    if (isSuccess) {
+    if (valueName && String(valueName).split(',')[0]) {
       await getDiagramCampaign(data);
-      await this.setState({ isUpdateNode: true });
+      await this.setState({ isUpdateNode: true, data: data });
     }
   };
   //get title email save in Node
@@ -381,7 +384,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         break;
       case 'node':
         if (listDiagram.nodes && Object.keys(listDiagram).length > 0) {
-          data = data = listDiagram;
+          data = listDiagram;
         }
         data.nodes.push(command.addModel);
         getDiagramCampaign(data);
@@ -603,7 +606,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                   edgeDefaultShape: 'custom-edge'
                 }}
                 className="flow"
-                data={listDiagram}
+                data={data}
               />
               <CustomNode />
               <CustomEdges />

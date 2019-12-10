@@ -10,7 +10,6 @@ class Save extends React.Component {
   handleClick = async () => {
     const { propsAPI } = this.props;
    await propsAPI.save()
-   await localStorage.setItem("nodeStore", JSON.stringify(propsAPI.save()))
    await this.props.onClick(propsAPI.save())
   };
 
