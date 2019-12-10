@@ -1,0 +1,38 @@
+1/ Đồng nhất cách khai báo 1 hàm
+export const insertTreeFolderService = data => {};
+=>
+export const insertTreeFolderService = (data: any) => {};
+
+2/ Đồng nhất ghép chuỗi
+axios.get(urlCJ + '/' + folderId + '/cjs',...);
+=>
+const url = `${urlCJ}/${folderId}/cjs`;
+axios.get(url);
+
+3/ Đồng nhất khai báo action types
+CAMPAIGN_MANAGAMENT
+=>
+CAMPAIGN_MANAGAMENT_ACTION_TYPES (like: AUTH_ACTION_TYPES)
+
+export const PROPS_MANAGEMENT = {
+  GET_LIST_PROPS: 'tagManagement/GET_LIST_PROPS',
+  =>
+  GET_LIST_PROPS: 'propsManagement/GET_LIST_PROPS',
+};
+
+4/ Quy hoạch lại css
+className="app-footer" => cùng 01 class khai báo trên 7 file css khác nhau
+className="app-main__outer" => cùng 01 class khai báo trên 5 file css khác nhau
+
+5/ Áp dụng đa ngôn ngữ triệt để
+state = {
+    isShow: false,
+    value: 'Chọn giá trị',
+    classNameMenu: 'topica-dropdown-menu show'
+  };
+
+ placeholder={'Chọn thẻ'}
+
+ <td className="none-data" colSpan={100}>
+   Không có dữ liệu khách hàng
+ </td>
