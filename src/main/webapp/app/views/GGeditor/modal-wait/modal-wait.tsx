@@ -52,7 +52,7 @@ export class ModalTimeWait extends React.Component<IModalTimeWaitProps, IModalTi
     let { isOpenModal } = this.props;
     return (
       <Modal className="modal-message-config" isOpen={isOpenModal}>
-        <ModalHeader toggle={this.toggle}>Chờ Sự kiện</ModalHeader>
+        <ModalHeader toggle={this.toggle}>Thời gian chờ</ModalHeader>
         <ModalBody>
           <Row>
             <Row>
