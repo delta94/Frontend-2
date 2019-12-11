@@ -6,22 +6,34 @@
   position: relative;
 
   .block-out {
+    .col-search-tag {
+      .rw-widget {
+        width: 70%;
+      }
+    }
+    .input-search_label-1 {
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 33px;
+
+      color: #495057;
+    }
+    .label-search {
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 33px;
+
+      color: #495057;
+    }
     padding: 10px 0px;
 
     .ant-input-affix-wrapper {
       height: 33px;
-      position: absolute;
       width: 200px;
-    }
-
-    .input-search_group {
-      display: flex;
-      width: 400px;
-      .input-search_label-1 {
-        line-height: 2;
-        margin-right: 25px;
-        width: 18%;
-      }
     }
   }
 

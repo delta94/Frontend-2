@@ -4,9 +4,10 @@ import './config-email.scss';
 import { Card, Collapse, Button, CardTitle, CardBody, Modal, ModalBody, ModalFooter, ModalHeader, Alert } from 'reactstrap';
 import Dropdown from 'app/layout/DropDown/Dropdown';
 import CKEditor from 'ckeditor4-react';
+import { Row, Col } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
-import { Input } from 'antd';
+import { Input, Button as ButtonAntd } from 'antd';
 import { connect } from 'react-redux';
 import { getContentPageParams, postTestMailLanding } from 'app/actions/user-campaign';
 import { IRootState } from 'app/reducers';
@@ -184,13 +185,6 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
         </Modal>
         <div className="config-email">
           <div className="add-content">
-            <div className="interactive">
-              <label onClick={this.openModalPreview} style={{ textDecoration: 'underline', color: '#3866DD' }}>
-                <FontAwesomeIcon icon={faEye} />
-                <span style={{ paddingLeft: '10px' }}>Preview</span>
-              </label>
-            </div>
-
             {/* Detail */}
             <div className="add-content-detail">
               {/* Title For Detail 1 */}
@@ -199,45 +193,52 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
                 <Collapse isOpen={!showMailForFriend}>
                   <Card>
                     <CardBody>
-                      <div className="input-search_group">
-                        <label className="input-search_label">Tên</label>
-                        <Input
-                          style={{ width: '50%' }}
-                          // placeholder={translate('group-attribute-customer.group-modal-config.name-placeholder')}
-                          onChange={e => this.getValueText('name', e)}
-                          maxLength={160}
-                        />
-                      </div>
-                      <div className="input-search_group">
-                        <label className="input-search_label">Tiêu đề mail</label>
-                        <Input
-                          style={{ width: '50%' }}
-                          // placeholder={'yyyy/mm/dd hh:mm:ss'}
-                          onChange={e => this.getValueText('title', e)}
-                          maxLength={160}
-                        />
-                      </div>
-                      <div className="input-mail-and-more">
-                        <div style={{ width: 'calc(100% - 150px)', display: 'flex', marginBottom: '5px' }}>
-                          <div style={{ padding: '0px 5px', lineHeight: '40px' }}>Chọn mẫu mail</div>
-                          <div>
-                            <Dropdown
-                              selection={true}
-                              defaultValue="Template mail"
-                              listArray={listTemplate}
-                              toggleDropdown={this.toggleLanding}
-                            />
-                          </div>
-                        </div>
-                        <div style={{ right: '0px' }}>
+                      <Row>
+                        <Col span={20}>
+                          <label className="input-search_label">Tên</label>
+                          <Input
+                            style={{ width: '80%' }}
+                            // placeholder={translate('group-attribute-customer.group-modal-config.name-placeholder')}
+                            onChange={e => this.getValueText('name', e)}
+                            maxLength={160}
+                          />
+                        </Col>
+                        <Col span={4} style={{ marginTop: '-5px' }}>
+                          <Dropdown
+                            selection={true}
+                            defaultValue="Template mail"
+                            listArray={listTemplate}
+                            toggleDropdown={this.toggleLanding}
+                          />
+                        </Col>
+                      </Row>
+                      <br />
+                      <Row>
+                        <Col span={20}>
+                          <label className="input-search_label">Tiêu đề mail</label>
+                          <Input
+                            style={{ width: '80%' }}
+                            // placeholder={'yyyy/mm/dd hh:mm:ss'}
+                            onChange={e => this.getValueText('title', e)}
+                            maxLength={160}
+                          />
+                        </Col>
+                        <Col span={4} style={{ marginTop: '-5px' }}>
                           <Dropdown
                             selection={true}
                             defaultValue="Tham số"
                             listArray={listIndexParams}
                             toggleDropdown={this.toggleDropdownParams}
                           />
-                        </div>
-                      </div>
+                        </Col>
+                      </Row>
+                      <br />
+                      <Row>
+                        <ButtonAntd type="primary" onClick={this.openModalPreview} style={{ position: 'absolute', margin: '1% 89%' }}>
+                          Xem trước
+                        </ButtonAntd>
+                      </Row>
+
                       <CkeditorFixed id="editorLanding" data={defaultValueContent} type={FORM_LANDING} />
                     </CardBody>
                   </Card>

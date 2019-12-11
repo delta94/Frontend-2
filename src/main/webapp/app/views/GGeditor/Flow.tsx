@@ -6,7 +6,7 @@ import CustomEdges from './egdes/egdes';
 import FlowToolbar from './FlowToolBar/flow-tool-bar';
 import { connect } from 'react-redux';
 import Save from './save/save';
-import { saveCampaignAuto, getNode } from 'app/actions/campaign-managament';
+import { saveCampaignAuto, getNode, getDiagramCampaign } from 'app/actions/campaign-managament';
 import { IRootState } from 'app/reducers';
 import ConfigEmail from './config-email/config-email';
 import FlowItemPanel from './EditorItemPannel/FlowItemPanel';
@@ -16,6 +16,7 @@ import ModalGroupCustomer from './modal-group-customer/modal-group-customer';
 import FlowContextMenu from './EditorContextMenu/flow-context-menu';
 import { Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap';
 import $ from 'jquery';
+import UpdateInfoCampaign from './modal-update-info/modal-update-info';
 const { Option } = Select;
 const { Header, Content, Footer, Sider } = Layout;
 const { TextArea } = Input;
@@ -36,54 +37,64 @@ interface IFlowPageState {
   collapsed: boolean;
   isUpdateNode: boolean;
   idEdge: any;
-  isOpenModal: boolean;
+  isOpenModalEmail: boolean;
   titleMail: string;
   isTest: boolean;
   timeStartCampaign: string;
   advancedSearches: any[];
   waitEvent: number;
   timeWaitEvent: string;
+  isOpenModalInfo: boolean;
 }
 
 export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   state: IFlowPageState = {
     visible: false,
     isOpen: false,
-    data: JSON.parse(localStorage.getItem('nodeStore')),
+    data: [],
     idNode: {},
     collapsed: false,
     isUpdateNode: false,
     idEdge: {},
-    isOpenModal: false,
+    isOpenModalEmail: false,
     titleMail: '',
     isTest: false,
     timeStartCampaign: '',
     advancedSearches: [],
     waitEvent: 0,
-    timeWaitEvent: ''
+    timeWaitEvent: '',
+    isOpenModalInfo: false
   };
   //handler Popup send email
   confirmEmail = async () => {
     let { idNode, titleMail } = this.state;
-    let data = JSON.parse(localStorage.getItem('nodeStore'));
+    let { listDiagram, getDiagramCampaign } = this.props;
+    let data = listDiagram;
     await data.nodes.map(event => {
       if (event.id === idNode.id) {
         event.label = titleMail;
       }
     });
-    await localStorage.setItem('nodeStore', JSON.stringify(data));
-    await this.setState({ isOpenModal: !this.state.isOpenModal, data: JSON.parse(localStorage.getItem('nodeStore')), isUpdateNode: true });
+
+    await getDiagramCampaign(data);
+    await this.setState({
+      isOpenModalEmail: !this.state.isOpenModalEmail,
+      isUpdateNode: true,
+      data: data
+    });
   };
 
   // handler Open modal
   getVisible = async (event, valueName, searchAdv, isSuccess) => {
-    let { idNode, advancedSearches, timeStartCampaign, timeWaitEvent } = this.state;
-    let data = JSON.parse(localStorage.getItem('nodeStore'));
+    let { listDiagram, getDiagramCampaign } = this.props;
+    let { idNode, advancedSearches, timeStartCampaign, timeWaitEvent, data } = this.state;
+    console.log(listDiagram);
+    data = listDiagram;
     switch (idNode.param) {
       case 'DATA':
         this.setState({ visible: event });
         await data.nodes.map(event => {
-          if (event.id === idNode.id) {
+          if (event.id === idNode.id && valueName) {
             event.label = String(valueName).split(',')[0];
           }
         });
@@ -93,7 +104,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         break;
 
       case 'EMAIL':
-        this.setState({ isOpenModal: event });
+        this.setState({ isOpenModalEmail: event });
         break;
       case 'WAIT-UNTIL':
         confirm({
@@ -131,9 +142,9 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       default:
         break;
     }
-    if (isSuccess) {
-      await localStorage.setItem('nodeStore', JSON.stringify(data));
-      await this.setState({ data: JSON.parse(localStorage.getItem('nodeStore')), isUpdateNode: true });
+    if (valueName && String(valueName).split(',')[0]) {
+      await getDiagramCampaign(data);
+      await this.setState({ isUpdateNode: true, data: data });
     }
   };
   //get title email save in Node
@@ -272,38 +283,6 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           </Row>
         );
         break;
-      case '4':
-        data = (
-          <Row>
-            <Row>
-              <Col span={3}>
-                <label className="label-message">Tên Chiến dịch</label>
-              </Col>
-              <Col span={12}>
-                <Input id="name-campaign" style={{ float: 'right', width: '92%' }} />
-              </Col>
-            </Row>
-            <br />
-            <Row>
-              <Col span={3}>
-                <label className="label-message">Tag</label>
-              </Col>
-              <Col span={12}>
-                <Input style={{ float: 'right', width: '92%' }} />
-              </Col>
-            </Row>
-            <br />
-            <Row>
-              <Col span={4}>
-                <label className="label-message">Mô tả</label>
-              </Col>
-              <Col span={20}>
-                <TextArea id="text-content" rows={4} />
-              </Col>
-            </Row>
-          </Row>
-        );
-        break;
       default:
         break;
     }
@@ -360,16 +339,15 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   }
   //delete Node
   deleteModel(id) {
-    debugger;
+    let { listDiagram, getDiagramCampaign } = this.props;
     let { idNode, idEdge } = this.state;
     let data = {
       nodes: [],
       edges: []
     };
-    let props = JSON.parse(localStorage.getItem('nodeStore')) ? JSON.parse(localStorage.getItem('nodeStore')) : {};
 
-    if (props && Object.keys(props).length > 0) {
-      data = JSON.parse(localStorage.getItem('nodeStore'));
+    if (listDiagram && Object.keys(listDiagram).length > 0) {
+      data = listDiagram;
     }
     switch (idNode.type ? idNode.type : idEdge.type) {
       case 'node':
@@ -384,35 +362,32 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       default:
         break;
     }
-    localStorage.setItem('nodeStore', JSON.stringify(data));
+    getDiagramCampaign(data);
   }
 
   //add node and save in local store
   addModel(command) {
+    let { listDiagram, getDiagramCampaign } = this.props;
     let type = command.type;
     let data = {
       edges: [],
       nodes: [],
       groups: []
     };
-
-    let props = JSON.parse(localStorage.getItem('nodeStore')) ? JSON.parse(localStorage.getItem('nodeStore')) : {};
-
     switch (type) {
       case 'edge':
-        if (props.edges && Object.keys(props).length > 0) {
-          data = JSON.parse(localStorage.getItem('nodeStore'));
+        if (listDiagram.edges && Object.keys(listDiagram).length > 0) {
+          data = listDiagram;
         }
         data.edges.push(command.addModel);
-        localStorage.setItem('nodeStore', JSON.stringify(data));
+        getDiagramCampaign(data);
         break;
       case 'node':
-        if (props.nodes && Object.keys(props).length > 0) {
-          data = JSON.parse(localStorage.getItem('nodeStore'));
+        if (listDiagram.nodes && Object.keys(listDiagram).length > 0) {
+          data = listDiagram;
         }
         data.nodes.push(command.addModel);
-        localStorage.setItem('nodeStore', JSON.stringify(data));
-
+        getDiagramCampaign(data);
         break;
       default:
         break;
@@ -422,14 +397,10 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   //@@
   //modal edit info campaign
   showModalInfoCampaign = () => {
-    confirm({
-      icon: 'none',
-      width: '55%',
-      title: <label className="title-event-wait">CHIẾN DỊCH </label>,
-      content: this.contentWaitUltil('4'),
-      onOk() {},
-      onCancel() {}
-    });
+    let { infoCampaign } = this.props;
+    let { isOpenModalInfo } = this.state;
+    this.setState({ isOpenModalInfo: !isOpenModalInfo });
+    console.log(infoCampaign);
   };
 
   //close Popover Setting
@@ -496,8 +467,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       folderId: idFolder,
       cj: {
         id: null,
-        name: $('name-campaign').val(),
-        description: $('text-content').val()
+        name: '',
+        description: ''
       },
       cjTags: [
         {
@@ -515,13 +486,15 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   };
 
   render() {
-    let { collapsed, data, isTest } = this.state;
+    let { isOpenModalInfo, data, isTest } = this.state;
+    let { infoCampaign, listDiagram } = this.props;
     const imgSetting = require('app/assets/utils/images/flow/setting.png');
     const imgAward = require('app/assets/utils/images/flow/award.png');
     const imgMove = require('app/assets/utils/images/flow/move.png');
-    let dataDisable = JSON.parse(localStorage.getItem('nodeStore'));
+
     return (
       <Fragment>
+        <UpdateInfoCampaign toggleModal={this.showModalInfoCampaign} isOpenModal={isOpenModalInfo} />
         <GGEditor
           className="editor"
           onAfterCommandExecute={command => {
@@ -537,20 +510,32 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                     <Row>
                       <Breadcrumb separator=">">
                         <Breadcrumb.Item>
-                          <a href="javascript:void(0);">
+                          <a onClick={() => window.location.assign('/#/app/views/customers/user-management')} href="javascript:void(0);">
                             <FontAwesomeIcon icon={faHome} />
                           </a>
                         </Breadcrumb.Item>
                         <Breadcrumb.Item>
-                          <a href="javascript:void(0);">Chiến dịch tự động</a>
+                          <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-auto')} href="javascript:void(0);">
+                            Chiến dịch tự động
+                          </a>
                         </Breadcrumb.Item>
                         <Breadcrumb.Item>
-                          <a href="javascript:void(0);">Danh sách chiến dịch</a>
+                          <a
+                            onClick={() => window.location.assign('/#/app/views/campaigns/campaign-managament')}
+                            href="javascript:void(0);"
+                          >
+                            Danh sách chiến dịch
+                          </a>
                         </Breadcrumb.Item>
                         <Breadcrumb.Item>
-                          <a href="javascript:void(0);">Tạo chiến dịch</a>
+                          <a
+                            onClick={() => window.location.assign('/#/app/views/campaigns/campaign-managament/new')}
+                            href="javascript:void(0);"
+                          >
+                            Tạo chiến dịch
+                          </a>
                         </Breadcrumb.Item>
-                        <label className="ant-breadcrumb-link">Chiến dịch mới</label>
+                        <label className="ant-breadcrumb-link">{infoCampaign.name ? infoCampaign.name : 'Tạo chiến dịch mới'}</label>
                         <Button type="link" id="config-name" onClick={this.showModalInfoCampaign}>
                           <FontAwesomeIcon icon={faUserEdit} />
                         </Button>
@@ -587,11 +572,11 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                         onClick={() => {
                           this.setState({ isTest: true });
                         }}
-                        disabled={dataDisable && dataDisable.nodes.length > 0 ? false : true}
+                        disabled={listDiagram.nodes && listDiagram.nodes.length > 0 ? false : true}
                       >
                         Test
                       </Button>
-                      <Button disabled={dataDisable && dataDisable.nodes.length > 0 ? false : true}>Validate</Button>
+                      <Button disabled={listDiagram.nodes && listDiagram.nodes.length > 0 ? false : true}>Validate</Button>
                       <Save onClick={this.saveCampaign} />
                     </ButtonGroup>
                   </Col>
@@ -638,10 +623,10 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             title_modal={'CHỌN NHÓM'}
           />
         </div>
-        <Modal className="modal-config-email" isOpen={this.state.isOpenModal}>
+        <Modal className="modal-config-email" isOpen={this.state.isOpenModalEmail}>
           <ModalHeader
             toggle={() => {
-              this.setState({ isOpenModal: !this.state.isOpenModal });
+              this.setState({ isOpenModalEmail: !this.state.isOpenModalEmail });
             }}
           >
             {' '}
@@ -652,16 +637,16 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           </ModalBody>
           <ModalFooter>
             <Button
-              color="link"
+              type="link"
               onClick={() => {
-                this.setState({ isOpenModal: !this.state.isOpenModal });
+                this.setState({ isOpenModalEmail: !this.state.isOpenModalEmail });
               }}
             >
               {' '}
               Hủy
             </Button>
             <Button
-              color="primary"
+              type="primary"
               onClick={() => {
                 this.confirmEmail();
               }}
@@ -677,12 +662,15 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 const mapStateToProps = ({ campaignManagament }: IRootState) => ({
   loading: campaignManagament.loading,
   list_tree_folder: campaignManagament.tree_folder,
-  idFolder: campaignManagament.listNode
+  idFolder: campaignManagament.listNode,
+  infoCampaign: campaignManagament.listInfoCampaing,
+  listDiagram: campaignManagament.listDiagram
 });
 
 const mapDispatchToProps = {
   saveCampaignAuto,
-  getNode
+  getNode,
+  getDiagramCampaign
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

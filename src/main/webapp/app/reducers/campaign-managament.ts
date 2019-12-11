@@ -52,13 +52,27 @@ interface IListCampaignAuto {
   modifiedDate: string;
 }
 
+interface IInfoCampaign {
+  des: string;
+  name: string;
+  tag: string;
+}
+
+interface IListDiagram {
+  nodes: any[];
+  edges: any[];
+  groups: any[];
+}
+
 const initialCampaignManagament = {
   tree_folder: [] as IDataTreeFolder[],
   campaign: {} as ICampaign,
   loading: false,
   statusCampaign: {} as IStatusCampagin,
   listCampaignAuto: [] as IListCampaignAuto[],
-  listNode: ''
+  listNode: '',
+  listInfoCampaing: {} as IInfoCampaign,
+  listDiagram: {} as IListDiagram
 };
 
 export type HandleCampaignManagament = typeof initialCampaignManagament;
@@ -121,10 +135,16 @@ export default (state = initialCampaignManagament, action) => {
       };
 
     case CAMPAIGN_MANAGAMENT.GET_CAMPAIGN_IN_FOLDER:
-      return { ...state, data: action.data };
+      return { ...state, data: action.payload };
 
     case CAMPAIGN_MANAGAMENT.GET_NODE:
-      return { ...state, listNode: action.data };
+      return { ...state, listNode: action.payload };
+
+    case CAMPAIGN_MANAGAMENT.GET_INFO_CAMPAIGN:
+      return { ...state, listInfoCampaing: action.payload };
+
+    case CAMPAIGN_MANAGAMENT.GET_DIAGRAM_CAMPAIGN:
+      return { ...state, listDiagram: action.payload };
     default:
       return state;
   }

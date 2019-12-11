@@ -346,6 +346,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
         if (item.children && item.children.length) {
           return (
             <TreeNode
+              className="tree-children"
               key={item.key}
               title={
                 <div>
@@ -436,7 +437,17 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
                           <img src={img_folder} /> {item.title}
                         </div>
                       }
-                      icon={<div />}
+                      icon={
+                        <Popover
+                          overlayClassName="pop-data"
+                          content={this.contentPop(item)}
+                          title="Thông tin"
+                          trigger="hover"
+                          placement="bottomRight"
+                        >
+                          <Icon type="down" />
+                        </Popover>
+                      }
                     >
                       {loop(item.children)}
                     </TreeNode>

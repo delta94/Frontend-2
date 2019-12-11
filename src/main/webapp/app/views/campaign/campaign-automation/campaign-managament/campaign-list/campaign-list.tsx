@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Button, Table, Row, Badge, Col, Popover, PopoverHeader, PopoverBody } from 'reactstrap';
+import { Table, Badge, Popover, PopoverHeader, PopoverBody } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { IRootState } from 'app/reducers';
 import LoaderAnim from 'react-loaders';
@@ -8,7 +8,7 @@ import Loader from 'react-loader-advanced';
 import ReactPaginate from 'react-paginate';
 import { getListCampaignInfolderDataAction } from 'app/actions/campaign-managament';
 import './campaign-list.scss';
-import { Input, Icon, Checkbox, Menu, Tag } from 'antd';
+import { Input, Icon, Row, Col, Tag, Button } from 'antd';
 import CampaignTag from './campaign-tag/campaign-tag';
 import CjTagModal from './cj-tag-modal/cj-tag-modal';
 import { getCjTagsByCjIdAction } from 'app/actions/cj';
@@ -117,33 +117,6 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
     this.props.getListCampaignInfolderDataAction(folderId, textSearch, cjTagIds.join(), activePage, itemsPerPage);
   };
 
-  // openModalCjTag = async id => {
-  //   await this.props.getCjTagsByCjIdAction(id);
-  //   this.setState({
-  //     openModalCjTag: true,
-  //     cjEdit: {
-  //       cjTags: this.props.valueComboTag,
-  //       cjId: id
-  //     }
-  //   });
-  // };
-
-  // toogleModalCjTag = () => {
-  //   let { openModalCjTag } = this.state;
-  //   this.setState({
-  //     openModalCjTag: !openModalCjTag
-  //   });
-  // };
-
-  // closeModalCjTag = () => {
-  //   this.setState({
-  //     openModalCjTag: false,
-  //     cjEdit: {
-  //       cjTags: []
-  //     }
-  //   });
-  // };
-
   getCjs = () => {
     let { activePage, itemsPerPage } = this.state;
     let folderId = this.props.folder_id_choose;
@@ -158,16 +131,43 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
 
     const getStatusName = (status: string) => {
-      let result = '';
+      const img_stop = require('app/assets/utils/images/campaign-managament/stop.png');
+      const img_running = require('app/assets/utils/images/campaign-managament/running.png');
+      const img_finish = require('app/assets/utils/images/campaign-managament/finish.png');
+      const img_draf = require('app/assets/utils/images/campaign-managament/draf.png');
+      let result;
       switch (status) {
         case STATUS_CJ.DRAFT:
-          result = 'Bản nháp';
+          result = (
+            <Fragment>
+              <img style={{ margin: '0px 6px 2px' }} src={img_draf} />
+              <label className="count-campaign">Bản nháp</label>
+            </Fragment>
+          );
           break;
         case STATUS_CJ.RUNNING:
-          result = 'Đang thực hiện';
+          result = (
+            <Fragment>
+              <img style={{ margin: '0px 6px 2px' }} src={img_running} />
+              <label className="count-campaign">Đang thực hiện</label>
+            </Fragment>
+          );
           break;
         case STATUS_CJ.FINISH:
-          result = 'Kết thúc';
+          result = (
+            <Fragment>
+              <img style={{ margin: '0px 6px 2px' }} src={img_finish} />
+              <label className="count-campaign">Đang thực hiện</label>
+            </Fragment>
+          );
+          break;
+        case 'Stop':
+          result = (
+            <Fragment>
+              <img style={{ margin: '0px 6px 2px' }} src={img_stop} />
+              <label className="count-campaign">Dừng</label>
+            </Fragment>
+          );
           break;
         default:
           break;
@@ -177,44 +177,35 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
 
     return (
       <div className="campaign-list">
-        {/* <CjTagModal
-          toogleModalCjTag={this.toogleModalCjTag}
-          openModalCjTag={openModalCjTag}
-          dataModalTag={cjEdit}
-          closeModalCjTag={this.closeModalCjTag}
-          getCjs={this.getCjs}
-        /> */}
         <Loader message={spinner1} show={loading} priority={1}>
-          <div>
+          <div className="block-out">
             {/* Block out */}
-            <div className="block-out">
-              <Row>
-                <Col span={4}>
-                  <label className="total-list">{total} chiến dịch</label>
+            <Row>
+              <Col span={6} />
+              <Col span={6}>
+                <label className="label-search">Tìm kiếm chiến dịch</label> &nbsp;
+                <Input
+                  id="searchText"
+                  prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                  value={textSearch}
+                  placeholder="Nhập từ khóa"
+                  onChange={this.onchangeTextSearch}
+                  onPressEnter={() => {
+                    this.getListCampaignInfolderDataAction(folderId, textSearch, strTagId, activePage, itemsPerPage);
+                  }}
+                />
+              </Col>
+              <Col span={12} className="col-search-tag">
+                <Col span={14} style={{ display: 'flex', marginLeft: '16%' }}>
+                  <label className="input-search_label-1">
+                    <Translate contentKey="userManagement.card-tag" />
+                    &nbsp;
+                  </label>
+                  <CampaignTag handleChange={this.handleChange} />
                 </Col>
-                <Col span={8}>
-                  <Input
-                    id="searchText"
-                    prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                    value={textSearch}
-                    placeholder="Tìm kiếm chiến dịch"
-                    onChange={this.onchangeTextSearch}
-                    onPressEnter={() => {
-                      this.getListCampaignInfolderDataAction(folderId, textSearch, strTagId, activePage, itemsPerPage);
-                    }}
-                  />
-                </Col>
-                <Col span={8}>
-                  <div className="input-search_group">
-                    <label className="input-search_label-1">
-                      <Translate contentKey="userManagement.card-tag" />
-                    </label>
-                    <CampaignTag handleChange={this.handleChange} />
-                  </div>
-                </Col>
-                <Col span={4} style={{ textAlign: 'right' }}>
+                <Col span={6} style={{ textAlign: 'right' }}>
                   <Button
-                    color="primary"
+                    type="primary"
                     onClick={() => {
                       window.location.assign('/#/app/views/campaigns/campaign-managament/new');
                     }}
@@ -222,8 +213,9 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                     Tạo mới chiến dịch
                   </Button>
                 </Col>
-              </Row>
-            </div>
+              </Col>
+            </Row>
+            <label>{total} Chiến dịch</label>
             {/* Table? */}
             <Table striped>
               <thead>

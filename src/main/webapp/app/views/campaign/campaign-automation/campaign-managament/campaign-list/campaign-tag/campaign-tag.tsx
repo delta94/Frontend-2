@@ -40,27 +40,17 @@ class CampaignTag extends React.Component<ICampaignTagProps, ICampaignTagState> 
   render() {
     const { comboTag, defaultCate, defaultValue } = this.props;
     return (
-      <div className="campaign-tag-filter">
-        <ReactCSSTransitionGroup
-          component="div"
-          transitionName="TabsAnimation"
-          transitionAppearTimeout={0}
-          transitionEnter={false}
-          transitionLeave={false}
-        >
-          <Multiselect
-            placeholder={'Chọn thẻ'}
-            defaultValue={defaultValue}
-            data={comboTag}
-            value={defaultCate}
-            className="Select-holder"
-            allowCreate="onFilter"
-            onCreate={name => this.handleCreate(name)}
-            onChange={data => this.handleChange(data)}
-            textField="name"
-          />
-        </ReactCSSTransitionGroup>
-      </div>
+      <Multiselect
+        placeholder={'Chọn thẻ'}
+        defaultValue={defaultValue}
+        data={comboTag}
+        value={defaultCate}
+        className="Select-holder"
+        allowCreate="onFilter"
+        onCreate={name => this.handleCreate(name)}
+        onChange={data => this.handleChange(data)}
+        textField="name"
+      />
     );
   }
 }

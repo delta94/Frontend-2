@@ -127,8 +127,8 @@ class CustomNode extends React.Component {
 
     return (
       <Fragment>
-        <RegisterNode name="custom-node-circle" config={configCirle} extend={'flow-circle'} />
-        <RegisterNode name="custom-node-circle-multi" config={configCirleMulti} extend={'flow-circle'} />
+        <RegisterNode name="custom-node-circle" config={configCirle} extend={'flow-rhombus'} />
+        <RegisterNode name="custom-node-circle-multi" config={configCirleMulti} extend={'flow-rhombus'} />
         <RegisterNode name="custom-node-flow" config={configFlow} extend={'flow-rect'} />
         <RegisterNode name="custom-node-rhombus" config={configCondition} extend={'flow-rhombus'} />
       </Fragment>

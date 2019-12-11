@@ -1,4 +1,8 @@
-.group-modal-config {
+.modal-config-ggeditor {
+  .ant-modal-content {
+    width: 200%;
+    margin-left: -40%;
+  }
   position: relative;
 
   .list-title {
@@ -46,7 +50,4 @@
     font-weight: 500;
     height: 35px;
   }
-}
-.modal-config {
-  width: 60% !important;
 }

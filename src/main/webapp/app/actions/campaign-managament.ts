@@ -62,7 +62,20 @@ export const getNode = (data?: any) => ({
   payload: data
 });
 
+//save Campaign
 export const saveCampaignAuto = data => ({
   type: CAMPAIGN_MANAGAMENT.SAVE_CAMPAIGN_AUTO,
   payload: saveCampaignAutoService(data)
+});
+
+// get value edit modal update info campaign
+export const updateInfoCampaign = (data?: any) => ({
+  type: CAMPAIGN_MANAGAMENT.GET_INFO_CAMPAIGN,
+  payload: data
+});
+
+//save diagram campaign
+export const getDiagramCampaign = (data?: any) => ({
+  type: CAMPAIGN_MANAGAMENT.GET_DIAGRAM_CAMPAIGN,
+  payload: data
 });
