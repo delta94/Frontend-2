@@ -82,6 +82,10 @@ body {
   height: 0;
 }
 .editor {
+  .btn-test {
+    float: right;
+    margin-right: 5%;
+  }
   .ant-collapse-header {
     font-family: Roboto;
     font-style: normal;
@@ -96,6 +100,7 @@ body {
     font-weight: 500;
     font-size: 15px;
     line-height: 18px;
+    margin-left: 5%;
     /* identical to box height */
 
     color: #343a40;

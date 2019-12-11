@@ -394,7 +394,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                     <ButtonGroup>
                       <Button
                         onClick={() => {
-                          this.setState({ isTest: true });
+                          this.setState({ isTest: !isTest });
                         }}
                         disabled={listDiagram.nodes && listDiagram.nodes.length > 0 ? false : true}
                       >
