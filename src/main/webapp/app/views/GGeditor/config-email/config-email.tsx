@@ -7,17 +7,18 @@ import CKEditor from 'ckeditor4-react';
 import { Row, Col } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
-import { Input, Button as ButtonAntd } from 'antd';
+import { Input, Button as ButtonAntd, Popover } from 'antd';
 import { connect } from 'react-redux';
 import { getContentPageParams, postTestMailLanding } from 'app/actions/user-campaign';
 import { IRootState } from 'app/reducers';
 import { getContentTemplate, getContentTemplateAsType } from 'app/actions/user-campaign';
 import { openModal } from 'app/actions/modal';
 import { getNavigationContentTemplates } from 'app/actions/navigation-info';
+import TemplateEmail from './template-email/template-email';
 import PreviewLanding from './preview/preview';
 import { IParamester } from 'app/common/model/campaign-navigation.model';
 import { Translate, translate } from 'react-jhipster';
-import { FORM_LANDING, TEMPLATE_ID } from 'app/constants/common';
+import { FORM_LANDING, TEMPLATE_ID, INTRO_MAIL, REWARD_MAIL, EMAIL_EWARD, EMAIL_INTRO } from 'app/constants/common';
 import CkeditorFixed from 'app/layout/ckeditor/CkeditorFixed';
 import { SUBJECT } from 'app/constants/common';
 
@@ -36,6 +37,8 @@ export interface IConfigEmailState {
   subjectLanding: string;
   valueName: string;
   valueTitle: string;
+  visible: boolean;
+  idTemplate: string;
 }
 
 class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailState> {
@@ -47,7 +50,9 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
     paramester: [],
     subjectLanding: '',
     valueName: '',
-    valueTitle: ''
+    valueTitle: '',
+    visible: false,
+    idTemplate: ''
   };
   constructor(props) {
     super(props);
@@ -55,7 +60,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
 
   componentDidMount() {
     this.props.getContentPageParams();
-    this.props.getContentTemplateAsType('LANDING');
+    this.props.getContentTemplateAsType(EMAIL_INTRO);
   }
 
   closeModal = () => {
@@ -71,6 +76,16 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
         this.addText(item.paramCode);
       }
     });
+  };
+
+  hide = () => {
+    this.setState({
+      visible: false
+    });
+  };
+
+  handleVisibleChange = visible => {
+    this.setState({ visible });
   };
 
   addText = text => {
@@ -90,9 +105,11 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
     this.setState({ defaultValueContent: newValue.documentElement.outerHTML });
   };
 
+  // select template email
   toggleLanding = event => {
     this.addContentTemplate(event.id);
-    this.props.getNavigationContentTemplates(event.id, FORM_LANDING, TEMPLATE_ID);
+    this.setState({ idTemplate: event.id });
+    this.hide();
   };
 
   setValueForPopUp = event => {
@@ -115,11 +132,12 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
     this.setState({ defaultValueContentPopup: event });
   };
 
+  //add content in CKeditor
   addContentTemplate = id => {
-    let { listContentTemplateAsTypeLanding } = this.props;
+    let { listContentTemplateAsTypeEmailIntro } = this.props;
     let { defaultValueContent, subjectLanding } = this.state;
 
-    listContentTemplateAsTypeLanding.forEach(item => {
+    listContentTemplateAsTypeEmailIntro.forEach(item => {
       if (item.id === id.toString()) {
         defaultValueContent = item.content;
         subjectLanding = item.name;
@@ -127,7 +145,8 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
     });
 
     this.setState({ defaultValueContent });
-    this.props.getNavigationContentTemplates(subjectLanding, FORM_LANDING, SUBJECT);
+    this.props.getNavigationContentTemplates(id, INTRO_MAIL, 'templateId');
+    this.props.getNavigationContentTemplates(subjectLanding, INTRO_MAIL, SUBJECT);
   };
 
   openModalPreview = () => {
@@ -156,9 +175,9 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
   };
 
   render() {
-    let { showMailForFriend, defaultValueContent, openModal } = this.state;
-    let { listCampainContentParams, listContentTemplateAsTypeLanding } = this.props;
-
+    let { showMailForFriend, defaultValueContent, openModal, idTemplate } = this.state;
+    let { listCampainContentParams, listContentTemplateAsTypeEmailIntro } = this.props;
+    const img_chosse_template = require('app/assets/utils/images/flow/toggleEmail.png');
     let listIndexParams = listCampainContentParams.map(item => {
       return {
         id: item.id,
@@ -166,7 +185,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
       };
     });
 
-    let listTemplate = listContentTemplateAsTypeLanding.map(item => {
+    let listTemplate = listContentTemplateAsTypeEmailIntro.map(item => {
       return { id: item.id, name: item.name };
     });
 
@@ -183,6 +202,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
             </Button>
           </ModalFooter>
         </Modal>
+
         <div className="config-email">
           <div className="add-content">
             {/* Detail */}
@@ -194,7 +214,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
                   <Card>
                     <CardBody>
                       <Row>
-                        <Col span={20}>
+                        <Col span={17}>
                           <label className="input-search_label">Tên</label>
                           <Input
                             style={{ width: '80%' }}
@@ -203,18 +223,44 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
                             maxLength={160}
                           />
                         </Col>
-                        <Col span={4} style={{ marginTop: '-5px' }}>
-                          <Dropdown
-                            selection={true}
-                            defaultValue="Template mail"
-                            listArray={listTemplate}
-                            toggleDropdown={this.toggleLanding}
-                          />
+                        <Col span={7} style={{ textAlign: 'right' }}>
+                          <Popover
+                            placement="bottomRight"
+                            overlayStyle={{ zIndex: 1051, width: '1000px' }}
+                            content={this.props.listContentTemplateAsTypeEmailIntro.map((event, index) => {
+                              return (
+                                <Row key={index}>
+                                  <Row>
+                                    <Dropdown
+                                      selection={true}
+                                      defaultValue="Template mail"
+                                      listArray={listTemplate}
+                                      toggleDropdown={() => this.toggleLanding(event)}
+                                    />
+                                    <br />
+                                  </Row>
+                                  <Row>
+                                    <TemplateEmail id={event.id} htmlDOM={event.content} styleForDOM={''} />
+                                    <div style={{ textAlign: 'center' }}>
+                                      {' '}
+                                      <label className="title-template">{event.name}</label>
+                                    </div>
+                                  </Row>
+                                </Row>
+                              );
+                            })}
+                            title="Email template"
+                            trigger="click"
+                            visible={this.state.visible}
+                            onVisibleChange={this.handleVisibleChange}
+                          >
+                            <img src={img_chosse_template} />
+                          </Popover>
                         </Col>
                       </Row>
                       <br />
                       <Row>
-                        <Col span={20}>
+                        <Col span={17}>
                           <label className="input-search_label">Tiêu đề mail</label>
                           <Input
                             style={{ width: '80%' }}
@@ -223,7 +269,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
                             maxLength={160}
                           />
                         </Col>
-                        <Col span={4} style={{ marginTop: '-5px' }}>
+                        <Col span={7} style={{ marginTop: '-5px' }}>
                           <Dropdown
                             selection={true}
                             defaultValue="Tham số"
@@ -234,12 +280,16 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
                       </Row>
                       <br />
                       <Row>
-                        <ButtonAntd type="primary" onClick={this.openModalPreview} style={{ position: 'absolute', margin: '1% 89%' }}>
+                        <ButtonAntd
+                          type="primary"
+                          onClick={this.openModalPreview}
+                          style={{ position: 'absolute', margin: '1% 89%', background: '#3866DD' }}
+                        >
                           Xem trước
                         </ButtonAntd>
                       </Row>
 
-                      <CkeditorFixed id="editorLanding" data={defaultValueContent} type={FORM_LANDING} />
+                      <CkeditorFixed id="editorLanding" data={defaultValueContent} type={INTRO_MAIL} />
                     </CardBody>
                   </Card>
                 </Collapse>
@@ -259,7 +309,7 @@ const mapStateToProps = ({ userCampaign, navigationInfo }: IRootState) => {
   return {
     listCampainContentParams: userCampaign.listCampainContentParams,
     postRequest: userCampaign.postRequest,
-    listContentTemplateAsTypeLanding: userCampaign.listContentTemplateAsTypeLanding,
+    listContentTemplateAsTypeEmailIntro: userCampaign.listContentTemplateAsTypeEmailIntro,
     navigationInfo
   };
 };

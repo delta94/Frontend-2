@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import GGEditor, { Flow } from 'gg-editor';
-import { Row, Col, Popover, Input, Button, Layout, Menu, Breadcrumb, Icon, Select, InputNumber, Modal as ModalAntd } from 'antd';
+import { Row, Col, Popover, Button, Layout, Breadcrumb, Icon, Modal as ModalAntd } from 'antd';
 import CustomNode from './node/node';
 import CustomEdges from './egdes/egdes';
 import FlowToolbar from './FlowToolBar/flow-tool-bar';
@@ -9,7 +9,6 @@ import Save from './save/save';
 import { saveCampaignAuto, getNode, getDiagramCampaign } from 'app/actions/campaign-managament';
 import { IRootState } from 'app/reducers';
 import ConfigEmail from './config-email/config-email';
-import FlowItemPanel from './EditorItemPannel/FlowItemPanel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faCopy, faTrashAlt, faUserEdit } from '@fortawesome/free-solid-svg-icons';
 import ModalGroupCustomer from './modal-group-customer/modal-group-customer';
@@ -17,53 +16,54 @@ import FlowContextMenu from './EditorContextMenu/flow-context-menu';
 import { Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap';
 import $ from 'jquery';
 import UpdateInfoCampaign from './modal-update-info/modal-update-info';
-const { Option } = Select;
-const { Header, Content, Footer, Sider } = Layout;
-const { TextArea } = Input;
-const { SubMenu } = Menu;
+const { Header } = Layout;
 import './style.scss';
 import SiderComponet from './sider/sider-tool';
+import ConfigMessage from './modal-config-message/modal-config-message';
 import SiderTest from './sider/sider-test';
+import ModalWaitForEvent from './modal-wait-for-event/modal-wait-for-event';
+import ModalTimeWait from './modal-wait/modal-wait';
 
 const ButtonGroup = Button.Group;
-const { confirm } = ModalAntd;
 
 interface IFlowPageProps extends StateProps, DispatchProps {}
 interface IFlowPageState {
   visible: boolean;
   isOpen: boolean;
-  data: any;
-  idNode: any;
   collapsed: boolean;
   isUpdateNode: boolean;
-  idEdge: any;
   isOpenModalEmail: boolean;
-  titleMail: string;
-  isTest: boolean;
-  timeStartCampaign: string;
-  advancedSearches: any[];
-  waitEvent: number;
-  timeWaitEvent: string;
   isOpenModalInfo: boolean;
+  isTest: boolean;
+  isOpenModalWait: boolean;
+  isOpenModalMessage: boolean;
+  isOpenModalWaitForEvent: boolean;
+  titleMail: string;
+  timeStartCampaign: string;
+  data: any;
+  idNode: any;
+  idEdge: any;
+  advancedSearches: any[];
 }
 
 export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   state: IFlowPageState = {
     visible: false,
     isOpen: false,
-    data: [],
-    idNode: {},
     collapsed: false,
     isUpdateNode: false,
-    idEdge: {},
     isOpenModalEmail: false,
-    titleMail: '',
     isTest: false,
-    timeStartCampaign: '',
+    isOpenModalInfo: false,
+    isOpenModalWaitForEvent: false,
+    isOpenModalMessage: false,
+    isOpenModalWait: false,
+    data: [],
     advancedSearches: [],
-    waitEvent: 0,
-    timeWaitEvent: '',
-    isOpenModalInfo: false
+    idNode: {},
+    idEdge: {},
+    titleMail: '',
+    timeStartCampaign: ''
   };
   //handler Popup send email
   confirmEmail = async () => {
@@ -87,7 +87,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   // handler Open modal
   getVisible = async (event, valueName, searchAdv, isSuccess) => {
     let { listDiagram, getDiagramCampaign } = this.props;
-    let { idNode, advancedSearches, timeStartCampaign, timeWaitEvent, data } = this.state;
+    let { idNode, advancedSearches, timeStartCampaign, data, isOpenModalMessage, isOpenModalWaitForEvent, isOpenModalWait } = this.state;
     console.log(listDiagram);
     data = listDiagram;
     switch (idNode.param) {
@@ -102,41 +102,17 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         advancedSearches = searchAdv;
         this.setState({ timeStartCampaign, advancedSearches });
         break;
-
       case 'EMAIL':
         this.setState({ isOpenModalEmail: event });
         break;
       case 'WAIT-UNTIL':
-        confirm({
-          icon: 'none',
-          width: '55%',
-          title: <label className="title-event-wait">CHỜ SỰ KIỆN </label>,
-          content: this.contentWaitUltil('1'),
-          onOk() {},
-          onCancel() {}
-        });
+        this.setState({ isOpenModalWaitForEvent: !isOpenModalWaitForEvent });
         break;
       case 'WAIT':
-        confirm({
-          icon: 'none',
-          width: '55%',
-          title: <label className="title-event-wait">THỜI GIAN CHỜ </label>,
-          content: this.contentWaitUltil('2'),
-          onOk: () => {},
-
-          onCancel() {}
-        });
+        this.setState({ isOpenModalWait: !isOpenModalWait });
         break;
-
       case 'MESSAGE':
-        confirm({
-          icon: 'none',
-          width: '55%',
-          title: <label className="title-event-wait">GỬI TIN NHẮN </label>,
-          content: this.contentWaitUltil('3'),
-          onOk() {},
-          onCancel() {}
-        });
+        this.setState({ isOpenModalMessage: !isOpenModalMessage });
         break;
 
       default:
@@ -154,164 +130,6 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     this.setState({ titleMail });
   };
 
-  handleChange(value) {
-    console.log(`selected ${value}`);
-  }
-
-  //content Modal
-  contentWaitUltil(option) {
-    let data;
-    switch (option) {
-      case '1':
-        data = (
-          <Row>
-            <Row>
-              <Col span={6}>
-                <label className="text-event-wait">Sự kiện</label>
-              </Col>
-              <Col span={18}>
-                <Select defaultValue="lucy" style={{ width: '100%' }} onChange={this.handleChange}>
-                  <Option value="jack">Khách hàng mở mail</Option>
-                  <Option value="lucy">Sinh nhật khách hàng</Option>
-                </Select>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={6}>
-                <label className="text-event-wait">Email</label>
-              </Col>
-              <Col span={18}>
-                <Select defaultValue="lucy" style={{ width: '100%' }} onChange={this.handleChange}>
-                  <Option value="jack">Email 1</Option>
-                  <Option value="lucy">Email 2</Option>
-                  <Option value="Yiminghe">Email 3</Option>
-                </Select>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={6}>
-                <label className="text-event-wait">Kết thúc chờ sau</label>
-              </Col>
-              <Col span={18}>
-                <Col span={17}>
-                  <Input maxLength={160} />
-                </Col>
-                <Col span={6} style={{ float: 'right' }}>
-                  <Select defaultValue="lucy" style={{ width: '100%' }} onChange={this.handleChange}>
-                    <Option value="jack">Giờ</Option>
-                    <Option value="lucy">Phút</Option>
-                    <Option value="Yiminghe">Giây</Option>
-                  </Select>
-                </Col>
-              </Col>
-            </Row>
-          </Row>
-        );
-        break;
-
-      case '2':
-        data = (
-          <Row>
-            <Row>
-              <Col span={6}>
-                <label className="text-event-wait">#</label>
-              </Col>
-              <Col span={18}>
-                <Col span={17}>
-                  <InputNumber
-                    style={{ width: '100%' }}
-                    min={1}
-                    max={10000}
-                    onChange={event => {
-                      let { waitEvent } = this.state;
-                      waitEvent = event;
-                      this.setState({ waitEvent });
-                    }}
-                  />
-                </Col>
-                <Col span={6} style={{ float: 'right' }}>
-                  <Select
-                    style={{ width: '100%' }}
-                    onChange={value => {
-                      this.handlerTimeWait(value);
-                    }}
-                  >
-                    <Option value="Y">Năm</Option>
-                    <Option value="M">Tháng</Option>
-                    <Option value="D">Ngày</Option>
-                    <Option value="h">Giờ</Option>
-                    <Option value="m">Phút</Option>
-                    <Option value="s">Giây</Option>
-                  </Select>
-                </Col>
-              </Col>
-            </Row>
-          </Row>
-        );
-        break;
-
-      case '3':
-        data = (
-          <Row>
-            <Row>
-              <Col span={1}>
-                <label className="label-message">Tên</label>
-              </Col>
-              <Col span={12}>
-                <Input style={{ float: 'right', width: '92%' }} />
-              </Col>
-              <Col span={5} style={{ textAlign: 'center' }}>
-                <label className="label-message">Tham số</label>
-              </Col>
-              <Col span={6}>
-                <Select defaultValue="Tên" style={{ width: '100%' }} onChange={this.insertAtCursor}>
-                  <Option value="{{Tên}}">Tên</Option>
-                  <Option value="{{Email}}">Email</Option>
-                  <Option value="{{Số Điện Thoại}}">Số điện thoại</Option>
-                </Select>
-              </Col>
-            </Row>
-            <br />
-            <Row>
-              <Col span={2}>
-                <label className="label-message">Nội dung</label>
-              </Col>
-              <Col span={22}>
-                <TextArea id="text-content" rows={4} />
-              </Col>
-            </Row>
-          </Row>
-        );
-        break;
-      default:
-        break;
-    }
-    return data;
-  }
-
-  // add condition time wait
-  handlerTimeWait = async value => {
-    let data = JSON.parse(localStorage.getItem('nodeStore'));
-    let { waitEvent, timeWaitEvent, idNode } = this.state;
-    if (value === 'Y' || value === 'M' || value === 'D') {
-      timeWaitEvent = 'P' + waitEvent + value;
-    } else {
-      timeWaitEvent = 'PT' + waitEvent + value;
-    }
-    await data.nodes.map(event => {
-      if (event.id === idNode.id) {
-        event.value = timeWaitEvent;
-      }
-    });
-    await localStorage.setItem('nodeStore', JSON.stringify(data));
-    await this.setState({ timeWaitEvent, data: JSON.parse(localStorage.getItem('nodeStore')), isUpdateNode: true });
-  };
-
-  //add param in modal Send message
-  insertAtCursor(newText) {
-    const textarea = document.querySelector('textarea');
-    textarea.setRangeText(newText, textarea.selectionStart, textarea.selectionEnd, 'end');
-  }
   //excute command
   commandExecute = command => {
     let name = command.command.name;
@@ -328,6 +146,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         break;
     }
   };
+
   // remove item in array
   remove(arr, item) {
     for (var i = arr.length; i--; ) {
@@ -337,6 +156,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     }
     return arr;
   }
+
   //delete Node
   deleteModel(id) {
     let { listDiagram, getDiagramCampaign } = this.props;
@@ -438,6 +258,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       </Row>
     );
   }
+
   //event save campaign
   saveCampaign = node => {
     const { idFolder, saveCampaignAuto } = this.props;
@@ -486,7 +307,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   };
 
   render() {
-    let { isOpenModalInfo, data, isTest } = this.state;
+    let { isOpenModalInfo, idNode, isTest, isOpenModalMessage, isOpenModalWaitForEvent, isOpenModalWait } = this.state;
     let { infoCampaign, listDiagram } = this.props;
     const imgSetting = require('app/assets/utils/images/flow/setting.png');
     const imgAward = require('app/assets/utils/images/flow/award.png');
@@ -495,6 +316,9 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     return (
       <Fragment>
         <UpdateInfoCampaign toggleModal={this.showModalInfoCampaign} isOpenModal={isOpenModalInfo} />
+        <ConfigMessage toggleModal={this.getVisible} isOpenModal={isOpenModalMessage} />
+        <ModalWaitForEvent toggleModal={this.getVisible} isOpenModal={isOpenModalWaitForEvent} />
+        <ModalTimeWait toggleModal={this.getVisible} isOpenModal={isOpenModalWait} idNode={idNode} />
         <GGEditor
           className="editor"
           onAfterCommandExecute={command => {
@@ -606,7 +430,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                   edgeDefaultShape: 'custom-edge'
                 }}
                 className="flow"
-                data={data}
+                data={listDiagram}
               />
               <CustomNode />
               <CustomEdges />
@@ -647,6 +471,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             </Button>
             <Button
               type="primary"
+              style={{ background: '#3866DD' }}
               onClick={() => {
                 this.confirmEmail();
               }}
