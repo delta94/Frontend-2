@@ -17,7 +17,7 @@ class CustomEdge extends React.Component {
         const { color, size } = model;
 
         return {
-          stroke: color || '#E7F0F9',
+          stroke: color || '#E5ECF4',
           lineWidth: size || 5,
           endArrow: true
         };

@@ -637,7 +637,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           </ModalBody>
           <ModalFooter>
             <Button
-              color="link"
+              type="link"
               onClick={() => {
                 this.setState({ isOpenModalEmail: !this.state.isOpenModalEmail });
               }}
@@ -646,7 +646,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
               Hủy
             </Button>
             <Button
-              color="primary"
+              type="primary"
               onClick={() => {
                 this.confirmEmail();
               }}

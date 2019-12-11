@@ -82,6 +82,14 @@ body {
   height: 0;
 }
 .editor {
+  .ant-collapse-header {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 18px;
+    color: #343a40;
+  }
   .title-sider-test {
     font-family: Roboto;
     font-style: normal;
@@ -206,7 +214,7 @@ body {
 }
 .modal-config-email {
   .modal-content {
-    height: 680px;
+    height: 610px;
     width: 200%;
     margin-left: -200px;
   }
