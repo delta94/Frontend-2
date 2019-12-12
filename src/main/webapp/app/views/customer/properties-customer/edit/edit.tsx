@@ -87,12 +87,12 @@ export class Edit extends React.Component<IEditProps, IEditState> {
                             </Label>
                             <Input maxLength={160} addonBefore="%" addonAfter="%" defaultValue={event.personalizationTag} id="tag" />
                           </div>
-                          <div className="option-create">
+                          {/* <div className="option-create">
                             <Label>
                               <Translate contentKey="properties-management.form.default-value" />
                             </Label>
-                            <Input maxLength={160} id="default-value" />
-                          </div>
+                            <Input maxLength={160}  id="default-value" />
+                          </div> */}
                         </Col>
                         <p className="error">{this.state.validField}</p>
                       </Row>

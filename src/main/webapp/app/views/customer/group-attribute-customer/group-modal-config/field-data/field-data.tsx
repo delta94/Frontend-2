@@ -270,9 +270,9 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
 
   // Set advanced data for reuseComponent
   setSearchAdvancedData = (value?: string, type?: string) => {
-    let { searchAdvanced, operator } = this.state;
+    let { searchAdvanced, operator, list_of_operator } = this.state;
     let { id } = this.props;
-    searchAdvanced[type] = value ? value : operator;
+    searchAdvanced[type] = value ? value : operator ? operator : list_of_operator[0];
     this.setState({ searchAdvanced });
     this.props.updateValueFromState(id, searchAdvanced);
   };
