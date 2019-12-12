@@ -18,6 +18,7 @@ class Header extends React.Component {
         return (
             <Fragment>
                 <ReactCSSTransitionGroup
+                    style = {{background : "linear-gradient(90deg, #234FC0 14.55%, #416DDD 89.17%)"}}
                     component="div"
                     className={cx("app-header", headerBackgroundColor, {'header-shadow': enableHeaderShadow})}
                     transitionName="HeaderAnimation"
