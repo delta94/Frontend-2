@@ -275,6 +275,7 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
     searchAdvanced[type] = value ? value : operator ? operator : list_of_operator[0];
     this.setState({ searchAdvanced });
     this.props.updateValueFromState(id, searchAdvanced);
+    console.log(searchAdvanced);
   };
 
   render() {
@@ -388,13 +389,7 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
           <Col span={6}>
             <Select
               key={id + 'select operator'}
-              defaultValue={
-                default_data.operator && default_data.operator
-                  ? default_data.operator
-                  : list_of_operator[0]
-                  ? list_of_operator[0]
-                  : 'Chọn toán tử'
-              }
+              defaultValue={default_data.operator && default_data.operator ? default_data.operator : 'Chọn toán tử'}
               style={{ width: '100%' }}
               onChange={event => this.handleChoseOperator(event)}
             >
