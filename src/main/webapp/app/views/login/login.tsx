@@ -116,8 +116,8 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
 
   render() {
     const backGround = require('app/assets/utils/images/login/Rectangle.png');
-    const imageBg = require('app/assets/utils/images/login/sales-marketing-automation.png');
-    const title = require('app/assets/utils/images/login/title.png');
+    const imageBg = require('app/assets/utils/images/login/sales-marketing-automation.jpg');
+    const title = require('app/assets/utils/images/login/title.jpg');
     const { location, isAuthenticated, /*isAdmin,*/ isConverter, loading, isInterviewer, loginError, modalState, account } = this.props;
     let pathName = 'app/views/customers/user-management';
     const { from } = { from: { pathname: pathName, search: location.search } };

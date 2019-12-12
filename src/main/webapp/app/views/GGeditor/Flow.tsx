@@ -65,6 +65,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     titleMail: '',
     timeStartCampaign: ''
   };
+
   //handler Popup send email
   confirmEmail = async () => {
     let { idNode, titleMail } = this.state;
@@ -88,7 +89,6 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   getVisible = async (event, valueName, searchAdv, isSuccess) => {
     let { listDiagram, getDiagramCampaign } = this.props;
     let { idNode, advancedSearches, timeStartCampaign, data, isOpenModalMessage, isOpenModalWaitForEvent, isOpenModalWait } = this.state;
-    console.log(listDiagram);
     data = listDiagram;
     switch (idNode.param) {
       case 'DATA':
@@ -118,7 +118,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       default:
         break;
     }
-    if (valueName && String(valueName).split(',')[0]) {
+    if (valueName) {
       await getDiagramCampaign(data);
       await this.setState({ isUpdateNode: true, data: data });
     }
@@ -158,7 +158,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   }
 
   //delete Node
-  deleteModel(id) {
+  deleteModel = async id => {
     let { listDiagram, getDiagramCampaign } = this.props;
     let { idNode, idEdge } = this.state;
     let data = {
@@ -173,17 +173,21 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       case 'node':
         data.nodes = this.remove(data.nodes, idNode);
         data.edges = this.remove(data.edges, idNode);
+        await getDiagramCampaign(data);
+
         break;
 
       case 'edge':
         data.edges = this.remove(data.edges, idNode);
+        await getDiagramCampaign(data);
+
         break;
 
       default:
         break;
     }
-    getDiagramCampaign(data);
-  }
+    this.setState({ data });
+  };
 
   //add node and save in local store
   addModel(command) {
@@ -212,6 +216,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       default:
         break;
     }
+    this.setState({ data });
   }
 
   //@@
@@ -307,11 +312,12 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   };
 
   render() {
-    let { isOpenModalInfo, idNode, isTest, isOpenModalMessage, isOpenModalWaitForEvent, isOpenModalWait } = this.state;
+    let { isOpenModalInfo, idNode, isTest, isOpenModalMessage, isOpenModalWaitForEvent, isOpenModalWait, data } = this.state;
     let { infoCampaign, listDiagram } = this.props;
     const imgSetting = require('app/assets/utils/images/flow/setting.png');
     const imgAward = require('app/assets/utils/images/flow/award.png');
     const imgMove = require('app/assets/utils/images/flow/move.png');
+    console.log(data);
 
     return (
       <Fragment>
