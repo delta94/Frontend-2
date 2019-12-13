@@ -1,0 +1,64 @@
+.modal-grid-customer {
+  margin-left: 20%;
+  .modal-content {
+    width: 200%;
+  }
+  .title-grid {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 16px;
+    text-transform: uppercase;
+
+    color: #595c82;
+  }
+  .modal-campaign-name {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    /* identical to box height */
+
+    color: #3866dd;
+  }
+  .justify-content-center {
+    float: right;
+    margin-right: 0%;
+  }
+  .modal-table {
+    .table thead th,
+    .table td {
+      vertical-align: middle;
+    }
+    .table thead th {
+      vertical-align: bottom;
+      border-bottom: 2px solid #e9ecef;
+    }
+    .table th,
+    .table td {
+      padding: 0.55rem;
+      vertical-align: top;
+      border-top: 1px solid #e9ecef;
+    }
+    thead th {
+      color: #545cd8;
+    }
+    thead th,
+    tbody td,
+    tbody td .badge {
+      border-right: 1px solid #dedede;
+    }
+    td,
+    th {
+      border: 1px solid #dddddd;
+      text-align: center;
+    }
+    .table-striped {
+      margin-top: 20px;
+      font-family: Roboto;
+      border-collapse: collapse;
+    }
+  }
+}
