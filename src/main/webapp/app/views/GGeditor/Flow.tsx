@@ -89,18 +89,20 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   getVisible = async (event, valueName, searchAdv, isSuccess) => {
     let { listDiagram, getDiagramCampaign } = this.props;
     let { idNode, advancedSearches, timeStartCampaign, data, isOpenModalMessage, isOpenModalWaitForEvent, isOpenModalWait } = this.state;
-    data = listDiagram;
+    let diagram = data.nodes && data.nodes.length > 0 ? data : data.data;
     switch (idNode.param) {
       case 'DATA':
         this.setState({ visible: event });
-        await data.nodes.map(event => {
-          if (event.id === idNode.id && valueName) {
-            event.label = String(valueName).split(',')[0];
+        diagram.nodes.map(item => {
+          if (item.id === idNode.id && valueName) {
+            item.label = String(valueName).split(',')[0];
           }
         });
         timeStartCampaign = String(valueName).split(',')[1];
         advancedSearches = searchAdv;
-        this.setState({ timeStartCampaign, advancedSearches });
+        await getDiagramCampaign(data);
+
+        this.setState({ timeStartCampaign, advancedSearches, isUpdateNode: true, data: diagram });
         break;
       case 'EMAIL':
         this.setState({ isOpenModalEmail: event });
@@ -117,10 +119,6 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
       default:
         break;
-    }
-    if (valueName) {
-      await getDiagramCampaign(data);
-      await this.setState({ isUpdateNode: true, data: data });
     }
   };
   //get title email save in Node
@@ -173,24 +171,23 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       case 'node':
         data.nodes = this.remove(data.nodes, idNode);
         data.edges = this.remove(data.edges, idNode);
-        await getDiagramCampaign(data);
 
         break;
 
       case 'edge':
         data.edges = this.remove(data.edges, idNode);
-        await getDiagramCampaign(data);
 
         break;
 
       default:
         break;
     }
+    getDiagramCampaign(data);
     this.setState({ data });
   };
 
   //add node and save in local store
-  addModel(command) {
+  addModel = async command => {
     let { listDiagram, getDiagramCampaign } = this.props;
     let type = command.type;
     let data = {
@@ -204,20 +201,19 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           data = listDiagram;
         }
         data.edges.push(command.addModel);
-        getDiagramCampaign(data);
         break;
       case 'node':
         if (listDiagram.nodes && Object.keys(listDiagram).length > 0) {
           data = listDiagram;
         }
         data.nodes.push(command.addModel);
-        getDiagramCampaign(data);
         break;
       default:
         break;
     }
+    await getDiagramCampaign(data);
     this.setState({ data });
-  }
+  };
 
   //@@
   //modal edit info campaign

@@ -32,7 +32,8 @@
       "name": "* Vui lòng nhập tên",
       "option": "* Vui lòng nhập giá trị vào Option",
       "empty-option": "* Vui lòng thêm Option",
-      "empty-type": " * Vui lòng chọn kiểu dữ liệu"
+      "empty-type": " * Vui lòng chọn kiểu dữ liệu",
+      "param-none": " * Vui lòng nhập tham số"
     },
     "edit": {
       "button": "Sửa",
