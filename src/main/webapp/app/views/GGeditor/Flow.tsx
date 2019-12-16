@@ -6,7 +6,7 @@ import CustomEdges from './egdes/egdes';
 import FlowToolbar from './FlowToolBar/flow-tool-bar';
 import { connect } from 'react-redux';
 import Save from './save/save';
-import { saveCampaignAuto, getNode, getDiagramCampaign } from 'app/actions/campaign-managament';
+import { saveCampaignAuto, getNode, getDiagramCampaign, validateCampaign } from 'app/actions/campaign-managament';
 import { IRootState } from 'app/reducers';
 import ConfigEmail from './config-email/config-email';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -90,22 +90,44 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
   // handler Open modal
   getVisible = async (event, valueName, searchAdv, isSuccess) => {
-    let { listDiagram, getDiagramCampaign } = this.props;
+    let { getDiagramCampaign, validateCampaign, listFieldData } = this.props;
     let { idNode, advancedSearches, timeStartCampaign, data, isOpenModalMessage, isOpenModalWaitForEvent, isOpenModalWait } = this.state;
     let diagram = data.nodes && data.nodes.length > 0 ? data : data.data;
     switch (idNode.param) {
       case 'DATA':
         this.setState({ visible: event });
-        diagram.nodes.map(item => {
-          if (item.id === idNode.id && valueName) {
-            item.label = String(valueName).split(',')[0];
-          }
-        });
-        timeStartCampaign = String(valueName).split(',')[1];
-        advancedSearches = searchAdv;
-        await getDiagramCampaign(data);
+        if (valueName) {
+          diagram.nodes.map(item => {
+            if (item.id === idNode.id) {
+              item.label = String(valueName).split(',')[0];
+            }
+          });
+          timeStartCampaign = String(valueName).split(',')[1];
+          advancedSearches = searchAdv;
+          let fieldListCustomer = {
+            id: Math.random()
+              .toString(36)
+              .substr(2, 9),
+            name: valueName ? String(valueName).split(',')[0] : '',
+            timeStartCampaign: timeStartCampaign,
+            advancedSearches: advancedSearches
+          };
+          let dataList = {
+            messageConfig: listFieldData.messageConfig ? listFieldData.messageConfig : [],
+            fieldConfigEmail: listFieldData.emailConfig ? listFieldData.emailConfig : [],
+            listCampign: listFieldData.listCampign ? listFieldData.listCampign : [],
+            timerEvent: listFieldData.timerEvent ? listFieldData.timerEvent : [],
+            timer: listFieldData.timer ? listFieldData.timer : []
+          };
+          dataList.listCampign.push(fieldListCustomer);
+          // get value node list customer
+          await validateCampaign(dataList);
+          // save node in flow
+          await getDiagramCampaign(diagram);
 
-        this.setState({ timeStartCampaign, advancedSearches, isUpdateNode: true, data: diagram });
+          this.setState({ timeStartCampaign, advancedSearches, isUpdateNode: true, data: diagram });
+        }
+
         break;
       case 'EMAIL':
         this.setState({ isOpenModalEmail: event });
@@ -117,6 +139,11 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         this.setState({ isOpenModalWait: !isOpenModalWait });
         break;
       case 'MESSAGE':
+        diagram.nodes.map(item => {
+          if (item.id === idNode.id && valueName) {
+            item.label = valueName.name;
+          }
+        });
         this.setState({ isOpenModalMessage: !isOpenModalMessage });
         break;
 
@@ -224,7 +251,6 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     let { infoCampaign } = this.props;
     let { isOpenModalInfo } = this.state;
     this.setState({ isOpenModalInfo: !isOpenModalInfo });
-    console.log(infoCampaign);
   };
 
   //close Popover Setting
@@ -263,30 +289,42 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     );
   }
 
+  //validate flow
+  validateFlow = () => {
+    let { isValidate, timeStartCampaign, advancedSearches } = this.state;
+    let { listFieldData } = this.props;
+    this.setState({ isTest: false, isValidate: !isValidate });
+    console.log(listFieldData);
+  };
+
   //event save campaign
   saveCampaign = node => {
     const { idFolder, saveCampaignAuto } = this.props;
     let { timeStartCampaign, advancedSearches } = this.state;
     let graph = {
-      nodes: node.nodes.map(event => {
-        return {
-          type: event.type,
-          label: event.label,
-          code: event.code,
-          value: event.value,
-          id: event.id
-        };
-      }),
-      edges: node.edges.map(value => {
-        return {
-          source: value.source,
-          target: value.target,
-          sourceAnchor: value.sourceAnchor,
-          targetAnchor: value.targetAnchor,
-          id: value.id,
-          value: ''
-        };
-      })
+      nodes:
+        node.nodes &&
+        node.nodes.map(event => {
+          return {
+            type: event.type,
+            label: event.label,
+            code: event.code,
+            value: event.value,
+            id: event.id
+          };
+        }),
+      edges:
+        node.edges &&
+        node.edges.map(value => {
+          return {
+            source: value.source,
+            target: value.target,
+            sourceAnchor: value.sourceAnchor,
+            targetAnchor: value.targetAnchor,
+            id: value.id,
+            value: ''
+          };
+        })
     };
     let data = {
       folderId: idFolder,
@@ -308,6 +346,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       }
     };
     saveCampaignAuto(data);
+    console.log(data);
   };
 
   render() {
@@ -316,13 +355,12 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     const imgSetting = require('app/assets/utils/images/flow/setting.png');
     const imgAward = require('app/assets/utils/images/flow/award.png');
     const imgMove = require('app/assets/utils/images/flow/move.png');
-    console.log(listDiagram);
 
     return (
       <Fragment>
         <UpdateInfoCampaign toggleModal={this.showModalInfoCampaign} isOpenModal={isOpenModalInfo} />
         <ConfigMessage toggleModal={this.getVisible} isOpenModal={isOpenModalMessage} />
-        <ModalWaitForEvent toggleModal={this.getVisible} isOpenModal={isOpenModalWaitForEvent} />
+        <ModalWaitForEvent toggleModal={this.getVisible} isOpenModal={isOpenModalWaitForEvent} idNode={idNode} />
         <ModalTimeWait toggleModal={this.getVisible} isOpenModal={isOpenModalWait} idNode={idNode} />
         <GGEditor
           className="editor"
@@ -407,7 +445,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                       </Button>
                       <Button
                         onClick={() => {
-                          this.setState({ isTest: false, isValidate: !isValidate });
+                          this.validateFlow();
                         }}
                         disabled={listDiagram.nodes && listDiagram.nodes.length > 0 ? false : true}
                       >
@@ -501,13 +539,15 @@ const mapStateToProps = ({ campaignManagament }: IRootState) => ({
   list_tree_folder: campaignManagament.tree_folder,
   idFolder: campaignManagament.listNode,
   infoCampaign: campaignManagament.listInfoCampaing,
-  listDiagram: campaignManagament.listDiagram
+  listDiagram: campaignManagament.listDiagram,
+  listFieldData: campaignManagament.listFieldData
 });
 
 const mapDispatchToProps = {
   saveCampaignAuto,
   getNode,
-  getDiagramCampaign
+  getDiagramCampaign,
+  validateCampaign
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

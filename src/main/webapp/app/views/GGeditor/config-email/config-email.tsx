@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { Input, Button as ButtonAntd, Popover } from 'antd';
 import { connect } from 'react-redux';
+import { validateCampaign } from 'app/actions/campaign-managament';
 import { getContentPageParams, postTestMailLanding } from 'app/actions/user-campaign';
 import { IRootState } from 'app/reducers';
 import { getContentTemplate, getContentTemplateAsType } from 'app/actions/user-campaign';
@@ -89,6 +90,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
   };
 
   addText = text => {
+    let { valueName, valueTitle, defaultValueContent } = this.state;
     let sel, range;
     let newWindow = document.getElementsByTagName('iframe')[0].contentWindow;
 
@@ -107,7 +109,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
 
   // select template email
   toggleLanding = event => {
-    this.addContentTemplate(event.id);
+    this.addContentTemplate(event);
     this.setState({ idTemplate: event.id });
     this.hide();
   };
@@ -133,20 +135,39 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
   };
 
   //add content in CKeditor
-  addContentTemplate = id => {
-    let { listContentTemplateAsTypeEmailIntro } = this.props;
-    let { defaultValueContent, subjectLanding } = this.state;
+  addContentTemplate = event => {
+    let { listContentTemplateAsTypeEmailIntro, listFieldData } = this.props;
+    let { defaultValueContent, subjectLanding, valueName, valueTitle } = this.state;
 
     listContentTemplateAsTypeEmailIntro.forEach(item => {
-      if (item.id === id.toString()) {
+      if (item.id === event.id.toString()) {
         defaultValueContent = item.content;
         subjectLanding = item.name;
       }
     });
 
     this.setState({ defaultValueContent });
-    this.props.getNavigationContentTemplates(id, INTRO_MAIL, 'templateId');
+    this.props.getNavigationContentTemplates(event.id, INTRO_MAIL, 'templateId');
     this.props.getNavigationContentTemplates(subjectLanding, INTRO_MAIL, SUBJECT);
+    let emailConfig = {
+      id: Math.random()
+        .toString(36)
+        .substr(2, 9),
+      nameEmail: event.name,
+      valueName,
+      valueTitle,
+      contentEmail: defaultValueContent
+    };
+
+    let data = {
+      messageConfig: listFieldData.messageConfig ? listFieldData.messageConfig : [],
+      emailConfig: listFieldData.emailConfig ? listFieldData.emailConfig : [],
+      listCampign: listFieldData.listCampign ? listFieldData.listCampign : [],
+      timerEvent: listFieldData.timerEvent ? listFieldData.timerEvent : [],
+      timer: listFieldData.timer ? listFieldData.timer : []
+    };
+    data.emailConfig.push(emailConfig);
+    this.props.validateCampaign(data);
   };
 
   openModalPreview = () => {
@@ -305,12 +326,13 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-const mapStateToProps = ({ userCampaign, navigationInfo }: IRootState) => {
+const mapStateToProps = ({ userCampaign, navigationInfo, campaignManagament }: IRootState) => {
   return {
     listCampainContentParams: userCampaign.listCampainContentParams,
     postRequest: userCampaign.postRequest,
     listContentTemplateAsTypeEmailIntro: userCampaign.listContentTemplateAsTypeEmailIntro,
-    navigationInfo
+    navigationInfo,
+    listFieldData: campaignManagament.listFieldData
   };
 };
 
@@ -320,7 +342,8 @@ const mapDispatchToProps = {
   getContentTemplate,
   getContentTemplateAsType,
   getNavigationContentTemplates,
-  openModal
+  openModal,
+  validateCampaign
 };
 
 export default connect(

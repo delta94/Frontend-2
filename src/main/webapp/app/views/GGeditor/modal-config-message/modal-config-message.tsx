@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import $ from 'jquery';
+import { validateCampaign } from 'app/actions/campaign-managament';
 import { Button, Row, Col, Input, Select } from 'antd';
 import { updateInfoCampaign } from 'app/actions/campaign-managament';
 import './modal-config-message.scss';
@@ -18,9 +20,30 @@ interface IConfigMessageState {}
 export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigMessageState> {
   state: IConfigMessageState = {};
 
-  toggle = () => {
+  toggle = value => {
     let { toggleModal, isOpenModal } = this.props;
-    toggleModal(!isOpenModal);
+    toggleModal(!isOpenModal, value);
+  };
+
+  save = () => {
+    let { listFieldData, validateCampaign } = this.props;
+    let data = {
+      messageConfig: listFieldData.messageConfig ? listFieldData.messageConfig : [],
+      fieldConfigEmail: listFieldData.emailConfig ? listFieldData.emailConfig : [],
+      listCampign: listFieldData.listCampign ? listFieldData.listCampign : [],
+      timerEvent: listFieldData.timerEvent ? listFieldData.timerEvent : [],
+      timer: listFieldData.timer ? listFieldData.timer : []
+    };
+    let fieldMessageConfig = {
+      id: Math.random()
+        .toString(36)
+        .substr(2, 9),
+      name: $(`#name-message`).val(),
+      content: $(`#text-content`).val()
+    };
+    data.messageConfig.push(fieldMessageConfig);
+    validateCampaign(data);
+    this.toggle(fieldMessageConfig);
   };
 
   count = () => {
@@ -47,7 +70,7 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
                 <label className="label-message">Tên</label>
               </Col>
               <Col span={14}>
-                <Input style={{ float: 'right', width: '92%' }} />
+                <Input id="name-message" style={{ float: 'right', width: '92%' }} />
               </Col>
               <Col span={3} style={{ textAlign: 'right', paddingRight: '2%' }}>
                 <label className="label-message">Tham số</label>
@@ -76,7 +99,7 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
           <Button type="link" onClick={this.toggle}>
             Hủy
           </Button>
-          <Button type="primary" onClick={this.toggle}>
+          <Button type="primary" onClick={this.save}>
             Chọn
           </Button>{' '}
         </ModalFooter>
@@ -85,11 +108,13 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
   }
 }
 const mapStateToProps = ({ campaignManagament }: IRootState) => ({
-  loading: campaignManagament.loading
+  loading: campaignManagament.loading,
+  listFieldData: campaignManagament.listFieldData
 });
 
 const mapDispatchToProps = {
-  updateInfoCampaign
+  updateInfoCampaign,
+  validateCampaign
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

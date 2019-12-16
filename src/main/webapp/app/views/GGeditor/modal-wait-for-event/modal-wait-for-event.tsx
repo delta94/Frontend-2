@@ -1,33 +1,98 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
+import { validateCampaign, getDiagramCampaign } from 'app/actions/campaign-managament';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { Button, Row, Col, Input, Select } from 'antd';
+import { Button, Row, Col, Input, Select, InputNumber } from 'antd';
 import { updateInfoCampaign } from 'app/actions/campaign-managament';
 import './modal-wait-for-event.scss';
 
 const { TextArea } = Input;
 const { Option } = Select;
-
+const constantEvent = {
+  EVENT: 'event',
+  EMAIL: 'email',
+  END_TIME: 'endTime'
+};
 interface IModalWaitForEventProps extends StateProps, DispatchProps {
   isOpenModal: boolean;
   toggleModal: Function;
+  idNode?: any;
 }
-interface IModalWaitForEventState {}
+interface IModalWaitForEventState {
+  event: string;
+  email: string;
+  time: number;
+  timer: string;
+}
 
 export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, IModalWaitForEventState> {
-  state: IModalWaitForEventState = {};
+  state: IModalWaitForEventState = {
+    event: 'Khách hàng mở mail',
+    email: '',
+    time: 0,
+    timer: ''
+  };
 
   toggle = () => {
     let { toggleModal, isOpenModal } = this.props;
     toggleModal(!isOpenModal);
   };
+  save = async () => {
+    let { event, email, timer } = this.state;
+    let { listFieldData, validateCampaign } = this.props;
+    let data = {
+      messageConfig: listFieldData.messageConfig ? listFieldData.messageConfig : [],
+      emailConfig: listFieldData.emailConfig ? listFieldData.emailConfig : [],
+      listCampign: listFieldData.listCampign ? listFieldData.listCampign : [],
+      timerEvent: listFieldData.timerEvent ? listFieldData.timerEvent : [],
+      timer: listFieldData.timer ? listFieldData.timer : []
+    };
+    let timerEvent = {
+      event,
+      email,
+      timer
+    };
+    data.timerEvent.push(timerEvent);
+    await validateCampaign(data);
+    this.toggle();
+  };
 
-  handleChange(value) {
-    console.log(`selected ${value}`);
+  // add condition time wait
+  handlerTimeWait = async value => {
+    let { idNode, listDiagram, getDiagramCampaign } = this.props;
+    let data = listDiagram;
+    let { time, timer, event } = this.state;
+    if (value === 'Y' || value === 'M' || value === 'D') {
+      timer = 'P' + time + value;
+    } else {
+      timer = 'PT' + time + value;
+    }
+    await data.nodes.map(event => {
+      if (event.id === idNode.id) {
+        event.value = timer;
+        // event.label = this.state.event;
+      }
+    });
+    await getDiagramCampaign(data);
+    await this.setState({ timer });
+  };
+
+  handleChange(value, option) {
+    debugger;
+    switch (option) {
+      case constantEvent.EVENT:
+        this.setState({ event: value });
+        break;
+      case constantEvent.EMAIL:
+        this.setState({ email: value });
+        break;
+      default:
+        break;
+    }
   }
   render() {
-    let { isOpenModal } = this.props;
+    let { isOpenModal, listFieldData } = this.props;
     return (
       <Modal className="modal-message-config" isOpen={isOpenModal}>
         <ModalHeader toggle={this.toggle}>Chờ Sự kiện</ModalHeader>
@@ -38,9 +103,13 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
                 <label className="text-event-wait">Sự kiện</label>
               </Col>
               <Col span={18}>
-                <Select defaultValue="lucy" style={{ width: '100%' }} onChange={this.handleChange}>
-                  <Option value="jack">Khách hàng mở mail</Option>
-                  <Option value="lucy">Sinh nhật khách hàng</Option>
+                <Select
+                  defaultValue="Khách hàng mở mail "
+                  id="event"
+                  style={{ width: '100%' }}
+                  onChange={event => this.handleChange(event, 'event')}
+                >
+                  <Option value="Khách hàng mở mail">Khách hàng mở mail</Option>
                 </Select>
               </Col>
             </Row>
@@ -49,10 +118,15 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
                 <label className="text-event-wait">Email</label>
               </Col>
               <Col span={18}>
-                <Select defaultValue="lucy" style={{ width: '100%' }} onChange={this.handleChange}>
-                  <Option value="jack">Email 1</Option>
-                  <Option value="lucy">Email 2</Option>
-                  <Option value="Yiminghe">Email 3</Option>
+                <Select defaultValue="Vui lòng chọn Email" style={{ width: '100%' }} onChange={() => this.handleChange(event, 'email')}>
+                  {listFieldData.emailConfig &&
+                    listFieldData.emailConfig.map((item, index) => {
+                      return (
+                        <Option key={index} value={item.nameEmail}>
+                          {item.nameEmail}
+                        </Option>
+                      );
+                    })}
                 </Select>
               </Col>
             </Row>
@@ -62,13 +136,25 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
               </Col>
               <Col span={18}>
                 <Col span={17}>
-                  <Input maxLength={160} />
+                  <InputNumber
+                    style={{ width: '100%' }}
+                    min={1}
+                    max={10000}
+                    onChange={event => {
+                      let { time } = this.state;
+                      time = event;
+                      this.setState({ time });
+                    }}
+                  />
                 </Col>
                 <Col span={6} style={{ float: 'right' }}>
-                  <Select defaultValue="lucy" style={{ width: '100%' }} onChange={this.handleChange}>
-                    <Option value="jack">Giờ</Option>
-                    <Option value="lucy">Phút</Option>
-                    <Option value="Yiminghe">Giây</Option>
+                  <Select style={{ width: '100%' }} onChange={this.handlerTimeWait}>
+                    <Option value="Y">Năm</Option>
+                    <Option value="M">Tháng</Option>
+                    <Option value="D">Ngày</Option>
+                    <Option value="h">Giờ</Option>
+                    <Option value="m">Phút</Option>
+                    <Option value="s">Giây</Option>
                   </Select>
                 </Col>
               </Col>
@@ -79,7 +165,7 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
           <Button type="link" onClick={this.toggle}>
             Hủy
           </Button>
-          <Button type="primary" onClick={this.toggle}>
+          <Button type="primary" onClick={this.save}>
             Chọn
           </Button>{' '}
         </ModalFooter>
@@ -88,11 +174,15 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
   }
 }
 const mapStateToProps = ({ campaignManagament }: IRootState) => ({
-  loading: campaignManagament.loading
+  loading: campaignManagament.loading,
+  listFieldData: campaignManagament.listFieldData,
+  listDiagram: campaignManagament.listDiagram
 });
 
 const mapDispatchToProps = {
-  updateInfoCampaign
+  updateInfoCampaign,
+  validateCampaign,
+  getDiagramCampaign
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

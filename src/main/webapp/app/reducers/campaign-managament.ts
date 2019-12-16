@@ -64,6 +64,14 @@ interface IListDiagram {
   groups: any[];
 }
 
+interface IListFieldData {
+  listCampign: any[];
+  emailConfig: any[];
+  messageConfig: any[];
+  timerEvent: any[];
+  timer: any[];
+}
+
 const initialCampaignManagament = {
   tree_folder: [] as IDataTreeFolder[],
   campaign: {} as ICampaign,
@@ -72,7 +80,8 @@ const initialCampaignManagament = {
   listCampaignAuto: [] as IListCampaignAuto[],
   listNode: '',
   listInfoCampaing: {} as IInfoCampaign,
-  listDiagram: {} as IListDiagram
+  listDiagram: {} as IListDiagram,
+  listFieldData: {} as IListFieldData
 };
 
 export type HandleCampaignManagament = typeof initialCampaignManagament;
@@ -145,6 +154,8 @@ export default (state = initialCampaignManagament, action) => {
 
     case CAMPAIGN_MANAGAMENT.GET_DIAGRAM_CAMPAIGN:
       return { ...state, listDiagram: action.payload };
+    case CAMPAIGN_MANAGAMENT.VALIDATE_DIAGRAM_CAMPAIGN:
+      return { ...state, listFieldData: action.payload };
     default:
       return state;
   }

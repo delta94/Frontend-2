@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { Button, Row, Col, Input, Select, InputNumber } from 'antd';
-import { getDiagramCampaign } from 'app/actions/campaign-managament';
+import { getDiagramCampaign, validateCampaign } from 'app/actions/campaign-managament';
 import './modal-wait.scss';
 
 const { TextArea } = Input;
@@ -28,6 +28,24 @@ export class ModalTimeWait extends React.Component<IModalTimeWaitProps, IModalTi
   toggle = () => {
     let { toggleModal, isOpenModal } = this.props;
     toggleModal(!isOpenModal);
+  };
+
+  save = () => {
+    let { validateCampaign, listFieldData } = this.props;
+    let { timeWaitEvent } = this.state;
+    let data = {
+      messageConfig: listFieldData.messageConfig ? listFieldData.messageConfig : [],
+      emailConfig: listFieldData.emailConfig ? listFieldData.emailConfig : [],
+      listCampign: listFieldData.listCampign ? listFieldData.listCampign : [],
+      timerEvent: listFieldData.timerEvent ? listFieldData.timerEvent : [],
+      timer: listFieldData.timer ? listFieldData.timer : []
+    };
+    let timer = {
+      timeWaitEvent
+    };
+    data.timer.push(timer);
+    validateCampaign(data);
+    this.toggle();
   };
 
   // add condition time wait
@@ -95,7 +113,7 @@ export class ModalTimeWait extends React.Component<IModalTimeWaitProps, IModalTi
           <Button type="link" onClick={this.toggle}>
             Hủy
           </Button>
-          <Button type="primary" onClick={this.toggle}>
+          <Button type="primary" onClick={this.save}>
             Chọn
           </Button>{' '}
         </ModalFooter>
@@ -105,11 +123,13 @@ export class ModalTimeWait extends React.Component<IModalTimeWaitProps, IModalTi
 }
 const mapStateToProps = ({ campaignManagament }: IRootState) => ({
   loading: campaignManagament.loading,
-  listDiagram: campaignManagament.listDiagram
+  listDiagram: campaignManagament.listDiagram,
+  listFieldData: campaignManagament.listFieldData
 });
 
 const mapDispatchToProps = {
-  getDiagramCampaign
+  getDiagramCampaign,
+  validateCampaign
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
