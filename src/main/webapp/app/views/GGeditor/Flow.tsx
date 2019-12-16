@@ -105,9 +105,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           timeStartCampaign = String(valueName).split(',')[1];
           advancedSearches = searchAdv;
           let fieldListCustomer = {
-            id: Math.random()
-              .toString(36)
-              .substr(2, 9),
+            id: idNode.id,
             name: valueName ? String(valueName).split(',')[0] : '',
             timeStartCampaign: timeStartCampaign,
             advancedSearches: advancedSearches
@@ -225,6 +223,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       nodes: [],
       groups: []
     };
+
     switch (type) {
       case 'edge':
         if (listDiagram.edges && Object.keys(listDiagram).length > 0) {
@@ -359,7 +358,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     return (
       <Fragment>
         <UpdateInfoCampaign toggleModal={this.showModalInfoCampaign} isOpenModal={isOpenModalInfo} />
-        <ConfigMessage toggleModal={this.getVisible} isOpenModal={isOpenModalMessage} />
+        <ConfigMessage toggleModal={this.getVisible} isOpenModal={isOpenModalMessage} idNode={idNode} />
         <ModalWaitForEvent toggleModal={this.getVisible} isOpenModal={isOpenModalWaitForEvent} idNode={idNode} />
         <ModalTimeWait toggleModal={this.getVisible} isOpenModal={isOpenModalWait} idNode={idNode} />
         <GGEditor
@@ -507,7 +506,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             GỬI EMAIL
           </ModalHeader>
           <ModalBody>
-            <ConfigEmail onClick={this.getInfoEmail} />
+            <ConfigEmail idNode={this.state.idNode} onClick={this.getInfoEmail} />
           </ModalBody>
           <ModalFooter>
             <Button

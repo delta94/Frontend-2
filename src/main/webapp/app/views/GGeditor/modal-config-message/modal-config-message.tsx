@@ -14,6 +14,7 @@ const { Option } = Select;
 interface IConfigMessageProps extends StateProps, DispatchProps {
   isOpenModal: boolean;
   toggleModal: Function;
+  idNode: any;
 }
 interface IConfigMessageState {}
 
@@ -35,9 +36,7 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
       timer: listFieldData.timer ? listFieldData.timer : []
     };
     let fieldMessageConfig = {
-      id: Math.random()
-        .toString(36)
-        .substr(2, 9),
+      id: this.props.idNode.id,
       name: $(`#name-message`).val(),
       content: $(`#text-content`).val()
     };

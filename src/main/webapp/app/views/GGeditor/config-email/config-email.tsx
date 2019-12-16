@@ -27,6 +27,7 @@ import { SUBJECT } from 'app/constants/common';
 
 export interface IConfigEmailProps extends StateProps, DispatchProps {
   onClick: Function;
+  idNode: any;
 }
 
 export interface IConfigEmailState {
@@ -150,9 +151,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
     this.props.getNavigationContentTemplates(event.id, INTRO_MAIL, 'templateId');
     this.props.getNavigationContentTemplates(subjectLanding, INTRO_MAIL, SUBJECT);
     let emailConfig = {
-      id: Math.random()
-        .toString(36)
-        .substr(2, 9),
+      id: this.props.idNode.id,
       nameEmail: event.name,
       valueName,
       valueTitle,

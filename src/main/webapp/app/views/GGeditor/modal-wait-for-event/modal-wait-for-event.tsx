@@ -49,6 +49,7 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
       timer: listFieldData.timer ? listFieldData.timer : []
     };
     let timerEvent = {
+      id: this.props.idNode.id,
       event,
       email,
       timer
