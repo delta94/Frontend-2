@@ -23,6 +23,7 @@ import ConfigMessage from './modal-config-message/modal-config-message';
 import SiderTest from './sider/sider-test';
 import ModalWaitForEvent from './modal-wait-for-event/modal-wait-for-event';
 import ModalTimeWait from './modal-wait/modal-wait';
+import SiderValidate from './sider/sider-validate';
 
 const ButtonGroup = Button.Group;
 
@@ -35,6 +36,7 @@ interface IFlowPageState {
   isOpenModalEmail: boolean;
   isOpenModalInfo: boolean;
   isTest: boolean;
+  isValidate: boolean;
   isOpenModalWait: boolean;
   isOpenModalMessage: boolean;
   isOpenModalWaitForEvent: boolean;
@@ -58,6 +60,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     isOpenModalWaitForEvent: false,
     isOpenModalMessage: false,
     isOpenModalWait: false,
+    isValidate: false,
     data: [],
     advancedSearches: [],
     idNode: {},
@@ -308,7 +311,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   };
 
   render() {
-    let { isOpenModalInfo, idNode, isTest, isOpenModalMessage, isOpenModalWaitForEvent, isOpenModalWait, data } = this.state;
+    let { isOpenModalInfo, idNode, isTest, isOpenModalMessage, isOpenModalWaitForEvent, isOpenModalWait, data, isValidate } = this.state;
     let { infoCampaign, listDiagram } = this.props;
     const imgSetting = require('app/assets/utils/images/flow/setting.png');
     const imgAward = require('app/assets/utils/images/flow/award.png');
@@ -328,7 +331,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           }}
         >
           <Layout style={{ minHeight: '200vh' }}>
-            {isTest ? <SiderTest /> : <SiderComponet />}
+            {isTest ? <SiderTest /> : isValidate ? <SiderValidate /> : <SiderComponet />}
             <Layout>
               <Header className="header-flow">
                 <Row>
@@ -396,13 +399,20 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                     <ButtonGroup>
                       <Button
                         onClick={() => {
-                          this.setState({ isTest: !isTest });
+                          this.setState({ isTest: !isTest, isValidate: false });
                         }}
                         disabled={listDiagram.nodes && listDiagram.nodes.length > 0 ? false : true}
                       >
                         Test
                       </Button>
-                      <Button disabled={listDiagram.nodes && listDiagram.nodes.length > 0 ? false : true}>Validate</Button>
+                      <Button
+                        onClick={() => {
+                          this.setState({ isTest: false, isValidate: !isValidate });
+                        }}
+                        disabled={listDiagram.nodes && listDiagram.nodes.length > 0 ? false : true}
+                      >
+                        Validate
+                      </Button>
                       <Save onClick={this.saveCampaign} />
                     </ButtonGroup>
                   </Col>
