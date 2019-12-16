@@ -137,12 +137,15 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         this.setState({ isOpenModalWait: !isOpenModalWait });
         break;
       case 'MESSAGE':
-        diagram.nodes.map(item => {
-          if (item.id === idNode.id && valueName) {
-            item.label = valueName.name;
-          }
-        });
         this.setState({ isOpenModalMessage: !isOpenModalMessage });
+        if (isOpenModalMessage) {
+          diagram.nodes.map(item => {
+            if (item.id === idNode.id && valueName) {
+              item.label = valueName.name;
+            }
+          });
+        }
+
         break;
 
       default:

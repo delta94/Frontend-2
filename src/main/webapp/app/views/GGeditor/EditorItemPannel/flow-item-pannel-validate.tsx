@@ -149,7 +149,6 @@ const mapStateToProps = ({ campaignManagament }: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  getDiagramCampaign,
   validateCampaign
 };
 
