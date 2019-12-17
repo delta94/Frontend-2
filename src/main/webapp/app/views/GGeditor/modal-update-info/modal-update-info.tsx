@@ -18,12 +18,14 @@ interface IUpdateInfoCampaignState {
   nameCampaign: string;
   strTagId: string;
   valueDes: string;
+  strTagName: string;
 }
 
 export class UpdateInfoCampaign extends React.Component<IUpdateInfoCampaignProps, IUpdateInfoCampaignState> {
   state: IUpdateInfoCampaignState = {
     nameCampaign: '',
     strTagId: '',
+    strTagName: '',
     valueDes: ''
   };
 
@@ -40,8 +42,10 @@ export class UpdateInfoCampaign extends React.Component<IUpdateInfoCampaignProps
 
   handleChange = cjTags => {
     let cjTagIds = cjTags.map((item, index) => item.id);
+    let cjTagNames = cjTags.map((item, index) => item.name);
     this.setState({
-      strTagId: cjTagIds.join()
+      strTagId: cjTagIds.join(),
+      strTagName: cjTagNames.join()
     });
   };
   getDes = event => {
@@ -52,11 +56,12 @@ export class UpdateInfoCampaign extends React.Component<IUpdateInfoCampaignProps
 
   save = async () => {
     const { updateInfoCampaign } = this.props;
-    let { nameCampaign, strTagId, valueDes } = this.state;
+    let { nameCampaign, strTagId, valueDes, strTagName } = this.state;
     let data = {
       name: nameCampaign,
       tag: strTagId,
-      des: valueDes
+      des: valueDes,
+      nameTag: strTagName
     };
     await updateInfoCampaign(data);
     await this.toggle();

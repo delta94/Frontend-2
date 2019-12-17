@@ -325,9 +325,40 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     return valueEdges;
   };
 
+  getEmailConfig = id => {
+    let { listFieldData } = this.props;
+    let data = null;
+    listFieldData.emailConfig &&
+      listFieldData.emailConfig.map(item => {
+        if (id === item.id) {
+          data = {
+            name: item.valueName,
+            title: item.valueTitle,
+            content: item.contentEmail
+          };
+        }
+      });
+    return data;
+  };
+
+  getSmsConfig = id => {
+    let { listFieldData } = this.props;
+    let data = null;
+    listFieldData.messageConfig &&
+      listFieldData.messageConfig.map(item => {
+        if (id === item.id) {
+          data = {
+            name: item.name,
+            content: item.content
+          };
+        }
+      });
+    return data;
+  };
+
   //event save campaign
   saveCampaign = node => {
-    const { idFolder, saveCampaignAuto } = this.props;
+    const { idFolder, saveCampaignAuto, listFieldData, infoCampaign } = this.props;
     let { timeStartCampaign, advancedSearches } = this.state;
     let graph = {
       nodes:
@@ -338,7 +369,10 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             label: event.label,
             code: event.code,
             value: event.value,
-            id: event.id
+            id: event.id,
+            emailConfig: this.getEmailConfig(event.id),
+            smsConfig: this.getSmsConfig(event.id),
+            gatewayConfig: null
           };
         }),
       edges:
@@ -356,15 +390,16 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     };
     let data = {
       folderId: idFolder,
+      // cjVersionId : null,
       cj: {
         id: null,
-        name: '',
-        description: ''
+        name: infoCampaign.name,
+        description: infoCampaign.des
       },
       cjTags: [
         {
-          id: '',
-          name: ''
+          id: infoCampaign.tag,
+          name: infoCampaign.nameTag
         }
       ],
       flow: {

@@ -67,7 +67,7 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
     if (value === 'Y' || value === 'M' || value === 'D') {
       timer = 'P' + time + value;
     } else {
-      timer = 'PT' + time + value;
+      timer = 'PT' + time + value === 'M1' ? 'M' : value;
     }
     await data.nodes.map(event => {
       if (event.id === idNode.id) {
@@ -153,9 +153,9 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
                     <Option value="Y">Năm</Option>
                     <Option value="M">Tháng</Option>
                     <Option value="D">Ngày</Option>
-                    <Option value="h">Giờ</Option>
-                    <Option value="m">Phút</Option>
-                    <Option value="s">Giây</Option>
+                    <Option value="H">Giờ</Option>
+                    <Option value="M1">Phút</Option>
+                    <Option value="S">Giây</Option>
                   </Select>
                 </Col>
               </Col>

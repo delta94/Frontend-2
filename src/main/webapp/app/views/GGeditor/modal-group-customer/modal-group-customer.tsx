@@ -357,7 +357,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
   //get date time event
   getDateTime = dateTimePicker => {
     let { dateTime } = this.state;
-    let dateStart = dateTimePicker.format('MMMM Do YYYY, h:mm:ss a');
+    let dateStart = dateTimePicker.format('YYYY-MM-DD hh:mm:ss');
     dateTime = dateStart;
     this.setState({ dateTime });
   };

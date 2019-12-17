@@ -106,6 +106,24 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
         });
       }
     }
+
+    if (listFieldData.emailConfig && Object.keys(listFieldData.emailConfig).length > 0) {
+      let idEmailConfig = listFieldData.emailConfig.map(item => {
+        return item.id;
+      });
+      let id = idEmailConfig.join().split(',');
+      if (id.length < 2) {
+        data = data.filter(function(item) {
+          return item.id != id;
+        });
+      } else {
+        id.map(value => {
+          data = data.filter(function(item) {
+            return item.id != String(value);
+          });
+        });
+      }
+    }
     localStorage.setItem('isSave', JSON.stringify(data));
     return data;
   };
