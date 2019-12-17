@@ -18,16 +18,7 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
     data: this.props.listDiagram.nodes
   };
 
-  remove(arr, item) {
-    for (var i = arr.length; i--; ) {
-      if (arr[i].id === item) {
-        arr.splice(i, 1);
-      }
-    }
-    return arr;
-  }
-
-  checkNodeEmailConfig = () => {
+  checkNodeConfig = () => {
     let { data } = this.state;
     let { listFieldData } = this.props;
     if (listFieldData.emailConfig && Object.keys(listFieldData.emailConfig).length > 0) {
@@ -115,6 +106,7 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
         });
       }
     }
+    localStorage.setItem('isSave', JSON.stringify(data));
     return data;
   };
 
@@ -122,6 +114,7 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
     let { listFieldData, listDiagram } = this.props;
     let data;
     if (Object.keys(listFieldData).length < 1) {
+      localStorage.setItem('isSave', JSON.stringify(listDiagram.nodes));
       return listDiagram.nodes.map((item, index) => {
         return (
           <Row className="row" key={index}>
@@ -136,7 +129,7 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
         );
       });
     } else {
-      return this.checkNodeEmailConfig().map((item, index) => {
+      return this.checkNodeConfig().map((item, index) => {
         return (
           <Row className="row" key={index}>
             <Col span={24}>
@@ -156,7 +149,7 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
     return (
       <Fragment>
         <Collapse bordered={false} defaultActiveKey={['1']} expandIconPosition="right">
-          <Panel header="Nguồn dữ liệu" key="1">
+          <Panel header="" key="1">
             <ItemPanel className="itemPanel">{this.showNodeValidate()}</ItemPanel>
           </Panel>
         </Collapse>

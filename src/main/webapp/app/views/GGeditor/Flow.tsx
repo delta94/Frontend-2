@@ -40,6 +40,7 @@ interface IFlowPageState {
   isOpenModalWait: boolean;
   isOpenModalMessage: boolean;
   isOpenModalWaitForEvent: boolean;
+  isSave: boolean;
   titleMail: string;
   timeStartCampaign: string;
   data: any;
@@ -61,6 +62,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     isOpenModalMessage: false,
     isOpenModalWait: false,
     isValidate: false,
+    isSave: true,
     data: [],
     advancedSearches: [],
     idNode: {},
@@ -293,10 +295,15 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
   //validate flow
   validateFlow = () => {
+    let hasValidate = JSON.parse(localStorage.getItem('isSave'));
     let { isValidate, timeStartCampaign, advancedSearches } = this.state;
     let { listFieldData } = this.props;
     this.setState({ isTest: false, isValidate: !isValidate });
-    console.log(listFieldData);
+    if (hasValidate.length == 0) {
+      this.setState({ isSave: false });
+    } else {
+      this.setState({ isSave: true });
+    }
   };
 
   //event save campaign
@@ -357,7 +364,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     const imgSetting = require('app/assets/utils/images/flow/setting.png');
     const imgAward = require('app/assets/utils/images/flow/award.png');
     const imgMove = require('app/assets/utils/images/flow/move.png');
-
+    let hasValidate = JSON.parse(localStorage.getItem('isSave'));
     return (
       <Fragment>
         <UpdateInfoCampaign toggleModal={this.showModalInfoCampaign} isOpenModal={isOpenModalInfo} />
@@ -453,11 +460,18 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                       >
                         Validate
                       </Button>
-                      <Save onClick={this.saveCampaign} />
+                      <Save
+                        isSave={listDiagram.nodes && listDiagram.nodes.length > 0 ? this.state.isSave : true}
+                        onClick={this.saveCampaign}
+                      />
                     </ButtonGroup>
                   </Col>
                   <Col span={2}>
-                    <Button type="primary" style={{ float: 'right' }}>
+                    <Button
+                      disabled={listDiagram.nodes && listDiagram.nodes.length > 0 ? this.state.isSave : true}
+                      type="primary"
+                      style={{ float: 'right' }}
+                    >
                       Kích hoạt
                     </Button>
                   </Col>

@@ -11,12 +11,13 @@ class Save extends React.Component {
     const { propsAPI } = this.props;
    await propsAPI.save()
    await this.props.onClick(propsAPI.save())
+   console.log(this.props.isSave)
   };
 
 
   render() {
     return (
-      <Button  onClick={this.handleClick}>Save</Button>
+      <Button disabled = {this.props.isSave} onClick={this.handleClick}>Save</Button>
     );
   }
 }
