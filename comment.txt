@@ -36,3 +36,61 @@ state = {
  <td className="none-data" colSpan={100}>
    Không có dữ liệu khách hàng
  </td>
+
+
+Scanning project for unused dependencies, please wait...
+You can probably remove @fortawesome/fontawesome-free
+You can probably remove @fortawesome/fontawesome-free-solid
+You can probably remove @fullcalendar/core
+You can probably remove @fullcalendar/daygrid
+You can probably remove @fullcalendar/interaction
+You can probably remove @fullcalendar/react
+You can probably remove @fullcalendar/timegrid
+You can probably remove @types/jquery
+You can probably remove animate-sass
+You can probably remove bootstrap-daterangepicker
+You can probably remove html-to-draftjs
+You can probably remove js-file-download
+You can probably remove jsonwebtoken
+You can probably remove loaders.css
+You can probably remove mobx
+You can probably remove mobx-react
+You can probably remove node-sass
+You can probably remove react-addons-shallow-compare
+You can probably remove react-bootstrap-daterangepicker
+You can probably remove react-bootstrap-sweetalert
+You can probably remove react-bootstrap-table2-paginator
+You can probably remove react-chartist
+You can probably remove react-chat-elements
+You can probably remove react-dropdown
+You can probably remove react-filterable-table
+You can probably remove react-flag-icon-css
+You can probably remove react-froala-wysiwyg
+You can probably remove react-getscreen
+You can probably remove react-google-login
+You can probably remove react-google-maps
+You can probably remove react-icons
+You can probably remove react-js-pagination
+You can probably remove react-loadable
+You can probably remove react-map-gl
+You can probably remove react-multistep
+You can probably remove react-native-search-bar
+You can probably remove react-nouislider
+You can probably remove react-on-screen
+You can probably remove react-pagify
+You can probably remove react-progress-steps
+You can probably remove react-redux-form
+You can probably remove react-scripts
+You can probably remove react-scroll
+You can probably remove react-scrollspy
+You can probably remove react-sizeme
+You can probably remove react-syntax-highlighter
+You can probably remove react-widgets-globalize
+You can probably remove react-widgets-moment
+You can probably remove redux-form
+You can probably remove redux-logger
+You can probably remove slick-carousel
+You can probably remove svg-react-loader
+You can probably remove window-resize-listener-react
+
+Process finished with exit code 0
