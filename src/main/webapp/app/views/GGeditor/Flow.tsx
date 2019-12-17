@@ -306,6 +306,25 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     }
   };
 
+  getValueEdges = (sourceAnchor, source) => {
+    let valueEdges: string;
+    let { listDiagram } = this.props;
+    listDiagram.nodes.map(event => {
+      if (source === event.id) {
+        if (event.code === 'TIMER_EVENT' || event.code === 'TIMER') {
+          if (sourceAnchor === 3) {
+            return (valueEdges = 'true');
+          } else if (sourceAnchor === 1) {
+            return (valueEdges = 'false');
+          }
+        } else {
+          return (valueEdges = '');
+        }
+      }
+    });
+    return valueEdges;
+  };
+
   //event save campaign
   saveCampaign = node => {
     const { idFolder, saveCampaignAuto } = this.props;
@@ -331,7 +350,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             sourceAnchor: value.sourceAnchor,
             targetAnchor: value.targetAnchor,
             id: value.id,
-            value: ''
+            value: this.getValueEdges(value.sourceAnchor, value.source)
           };
         })
     };
