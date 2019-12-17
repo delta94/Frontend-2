@@ -404,6 +404,8 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
 
     return (
       <Modal
+        destroyOnClose
+        maskClosable={false}
         visible={is_show}
         title={title_modal ? title_modal.toUpperCase() : ''}
         style={{ width: '700px' }}

@@ -1104,7 +1104,6 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
               </Row>
               <br />
             </div>
-            <Loader message={spinner1} show={loading} priority={1} />
           </div>
         </Fragment>
       </Loader>

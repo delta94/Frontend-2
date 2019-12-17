@@ -1,53 +1,81 @@
-.group-btn {
-  display: flex;
-  padding: 0px 28px;
-}
-.group-btn .form-control {
-  height: 70%;
-}
-.group-btn .save-right {
-  margin-left: 5%;
-  width: 18%;
-}
-.hands {
-  background: #ffffff;
-  border: 1px solid #e9ecef;
-  box-sizing: border-box;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
-}
-.modal-tab {
-  background: #f7f7f7;
-  border: 1px solid #e9ecef;
-  box-sizing: border-box;
-}
-.name-th span {
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 16px;
+.handler-modal {
+  .title-modal-select {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 23px;
 
-  /* #333333 */
+    color: #2d3843;
+  }
+  .total-contact {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 16px;
+    text-transform: uppercase;
 
-  color: #000000;
-}
-.dialog-content td {
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 16px;
+    color: #595c82;
+  }
+  .modal-content {
+    width: 210%;
+  }
+  .group-btn {
+    display: flex;
+    padding: 0px 28px;
+  }
+  .group-btn .save-right {
+    margin-left: 5%;
+    width: 18%;
+    margin-top: 1%;
+    background: #3866dd;
+  }
+  .hands {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
+  }
+  .modal-tab {
+    background: #f7f7f7;
+    border: 1px solid #e9ecef;
+    box-sizing: border-box;
+  }
+  .name-th span {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
 
-  color: #45484a;
+    /* #333333 */
+
+    color: #000000;
+  }
+  .dialog-content td {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+
+    color: #45484a;
+  }
+  .group-btn .pe-7s-search {
+    position: absolute;
+    margin-left: 65%;
+    color: #3866dd;
+    font-size: 18px;
+    margin-top: 8px;
+  }
+  .handler-modal .modal-content {
+    height: 500px;
+    width: 232% !important;
+  }
 }
-.group-btn .pe-7s-search {
-  position: absolute;
-  margin-left: 65%;
-  color: #3866dd;
-  font-size: 18px;
-  margin-top: 8px;
-}
-.handler-modal .modal-content {
-  height: 500px;
-  width: 232% !important;
+
+.modal-open .modal {
+  overflow-x: auto !important;
+  overflow-y: auto;
 }

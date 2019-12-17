@@ -62,7 +62,7 @@ export const getNode = (data?: any) => ({
   payload: data
 });
 
-//save Campaign
+//save Campaign in db
 export const saveCampaignAuto = data => ({
   type: CAMPAIGN_MANAGAMENT.SAVE_CAMPAIGN_AUTO,
   payload: saveCampaignAutoService(data)
@@ -77,5 +77,11 @@ export const updateInfoCampaign = (data?: any) => ({
 //save diagram campaign
 export const getDiagramCampaign = (data?: any) => ({
   type: CAMPAIGN_MANAGAMENT.GET_DIAGRAM_CAMPAIGN,
+  payload: data
+});
+
+//validate node in flow
+export const validateCampaign = (data: any) => ({
+  type: CAMPAIGN_MANAGAMENT.VALIDATE_DIAGRAM_CAMPAIGN,
   payload: data
 });

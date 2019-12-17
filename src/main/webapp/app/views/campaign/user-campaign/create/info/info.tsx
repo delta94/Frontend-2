@@ -213,6 +213,7 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
               <div style={{ padding: '0px 15px' }}>
                 <Script value={this.state} onClick={this.onClick} />
               </div>
+              <br />
             </Card>
           </div>
         </div>

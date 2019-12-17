@@ -28,7 +28,7 @@
   font-style: normal;
   font-weight: normal;
   font-size: 13px;
-  line-height: 22px;
+  line-height: 100%;
   border-top: 1px solid #e9ecef;
   padding: 10px;
 }
@@ -47,6 +47,7 @@
   border: 1px solid #e9ecef;
   box-sizing: border-box;
   border-radius: 3px;
+  height: 93%;
 }
 .cartitle-customer {
   font-family: Roboto;

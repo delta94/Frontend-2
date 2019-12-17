@@ -13,6 +13,7 @@ import { ACTIVE_PAGE } from 'app/constants/pagination.constants';
 import { ITEMS_PER_MODAL_TABLE } from 'app/constants/common';
 import Ionicon from 'react-ionicons';
 import SweetAlert from 'sweetalert-react';
+import './modal.scss';
 
 export const KEY_ENTER = 'Enter';
 
@@ -122,9 +123,9 @@ class ModalDisplay extends React.Component<IModalDisplayProps, IModalDisplayStat
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
 
     return (
-      <Modal isOpen={isOpen} fade={false}>
+      <Modal className="modal-grid-customer" isOpen={isOpen} fade={false}>
         <ModalHeader>
-          <span>
+          <span className="title-grid">
             <Translate contentKey="campaign.modal.title" />
           </span>
 

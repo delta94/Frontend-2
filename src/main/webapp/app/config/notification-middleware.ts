@@ -84,7 +84,7 @@ export default () => next => action => {
                 // addErrorAlert(data.errorMessage, `error.response.${data.errorCode}`);
               } else {
                 addErrorAlert(details ? details : data.message);
-                toast.error(details ? details : data.message);
+                toast.error(details ? details : data.message, { autoClose: false });
               }
               break;
 

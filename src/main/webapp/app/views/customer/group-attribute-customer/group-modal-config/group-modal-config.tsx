@@ -175,6 +175,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
 
     if (advancedSearchesData.length === 1) logicalOperator = '';
     this.setState({ advancedSearchesData, advancedSearches, logicalOperator });
+    console.log(advancedSearch, 'data');
   };
 
   // Add new component to list_field_data_cpn
@@ -418,7 +419,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
                 <Button
                   color="primary"
                   style={{ float: 'right', margin: '3px' }}
-                  onClick={this.getDataListCustomer}
+                  onClick={event => this.getDataListCustomer(event)}
                   disabled={list_field_data_cpn.length === 0 ? true : false}
                 >
                   <Translate contentKey="group-attribute-customer.apply" />

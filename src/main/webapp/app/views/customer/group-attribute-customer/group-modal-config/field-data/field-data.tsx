@@ -71,11 +71,6 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
     default_title: ''
   };
 
-  componentDidMount() {
-    let { list_of_operator } = this.state;
-    this.setSearchAdvancedData(list_of_operator[0], 'operator');
-  }
-
   static getDerivedStateFromProps(nextProps, prevState) {
     let { default_data, list_field_data, type_modal } = nextProps;
     let {
@@ -157,7 +152,6 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
 
   // Chose type of render in reuseComponent
   handleChoseOption = item_value => {
-    console.log(item_value);
     let { searchAdvanced } = this.state;
     let type = item_value.type;
     let fieldId = item_value.id;
@@ -216,9 +210,12 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
 
   // Chose operator for reuseComponent
   handleChoseOperator = event => {
-    console.log(event);
-    this.setState({ operator: event });
-    this.setSearchAdvancedData(event, 'operator');
+    let { operator } = this.state;
+    if (event) {
+      operator = event;
+    }
+    this.setState({ operator });
+    this.setSearchAdvancedData(operator, 'operator');
   };
 
   // Put value checkbox
@@ -273,11 +270,12 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
 
   // Set advanced data for reuseComponent
   setSearchAdvancedData = (value?: string, type?: string) => {
-    let { searchAdvanced } = this.state;
+    let { searchAdvanced, operator, list_of_operator } = this.state;
     let { id } = this.props;
-    searchAdvanced[type] = value;
+    searchAdvanced[type] = value ? value : operator ? operator : list_of_operator[0];
     this.setState({ searchAdvanced });
     this.props.updateValueFromState(id, searchAdvanced);
+    console.log(searchAdvanced);
   };
 
   render() {
@@ -391,13 +389,7 @@ class FieldData extends React.Component<IFieldDataProps, IFieldDataState> {
           <Col span={6}>
             <Select
               key={id + 'select operator'}
-              defaultValue={
-                default_data.operator && default_data.operator
-                  ? default_data.operator
-                  : list_of_operator[0]
-                  ? list_of_operator[0]
-                  : 'Chọn toán tử'
-              }
+              defaultValue={default_data.operator && default_data.operator ? default_data.operator : 'Chọn toán tử'}
               style={{ width: '100%' }}
               onChange={event => this.handleChoseOperator(event)}
             >

@@ -101,7 +101,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
             transitionEnter={false}
             transitionLeave={false}
           >
-            <Container fluid className="container-create">
+            <div className="container-create">
               <div className="title-page">
                 <div className="title-head">
                   <Translate contentKey="campaign.title-create-screen" />
@@ -132,7 +132,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
               <div style={{ display: isDisplayTable ? 'block' : 'none' }}>
                 <Navigation onClick={this.isDisable} />
               </div>
-            </Container>
+            </div>
           </ReactCSSTransitionGroup>
         </div>
       </Fragment>

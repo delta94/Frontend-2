@@ -47,9 +47,9 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
               {' '}
               <Checkbox className="text-sider-text">Chọn khách hàng</Checkbox>
             </Col>
-            <Col span={24}>
+            <Col span={24} style={{ textAlign: 'center' }}>
               {' '}
-              <Select defaultValue="Tên" style={{ width: '92%' }}>
+              <Select style={{ width: '92%' }}>
                 <Option value="{{Tên}}">item 1</Option>
                 <Option value="{{Email}}">item 2</Option>
                 <Option value="{{Số Điện Thoại}}">item 3</Option>
@@ -61,9 +61,9 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
               {' '}
               <Checkbox className="text-sider-text">Email rest</Checkbox>
             </Col>
-            <Col span={24}>
+            <Col span={24} style={{ textAlign: 'center' }}>
               {' '}
-              <Select defaultValue="Tên" style={{ width: '92%' }}>
+              <Select style={{ width: '92%' }}>
                 <Option value="{{Tên}}">item 1</Option>
                 <Option value="{{Email}}">item 2</Option>
                 <Option value="{{Số Điện Thoại}}">item 3</Option>
@@ -75,12 +75,14 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
               {' '}
               <Checkbox className="text-sider-text">SDT test</Checkbox>
             </Col>
-            <Col span={24}>
+            <Col span={24} style={{ textAlign: 'center' }}>
               {' '}
-              <Input />
+              <Input style={{ width: '92%' }} />
             </Col>
           </Row>
-          <Button type="primary">Test</Button>
+          <Button className="btn-test" type="primary">
+            Test
+          </Button>
         </div>
       </Sider>
     );

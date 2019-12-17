@@ -21,8 +21,7 @@
   &:hover {
     @if $hamburger-hover-use-filter == true {
       filter: $hamburger-hover-filter;
-    }
-    @else {
+    } @else {
       opacity: $hamburger-hover-opacity;
     }
   }
@@ -31,8 +30,7 @@
     &:hover {
       @if $hamburger-hover-use-filter == true {
         filter: $hamburger-active-hover-filter;
-      }
-      @else {
+      } @else {
         opacity: $hamburger-active-hover-opacity;
       }
     }
@@ -62,7 +60,8 @@
   &::after {
     width: $hamburger-layer-width;
     height: $hamburger-layer-height;
-    background-color: $hamburger-layer-color;
+    background-color: #b3c4f0 !important;
+
     border-radius: $hamburger-layer-border-radius;
     position: absolute;
     transition-property: transform;
@@ -72,7 +71,7 @@
 
   &::before,
   &::after {
-    content: "";
+    content: '';
     display: block;
   }
 

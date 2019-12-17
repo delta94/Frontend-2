@@ -248,7 +248,6 @@
 
 #userCreate .app-inner-layout__sidebar {
   float: left;
-  width: 24%;
   height: 674px;
   position: relative;
 }
@@ -333,12 +332,11 @@
   font-size: 24px;
 }
 #userCreate .title-page {
-  width: 104, 5%;
+  width: 101%;
   padding: 15px;
-  margin: 0px 0px 10px;
+  margin: 0px -7px 10px;
   position: relative;
   background: rgba(255, 255, 255, 0.55);
-
   align-content: center;
   align-items: center;
 }
@@ -591,17 +589,14 @@ $color_border: rgba(206, 206, 206, 0.687);
   display: none;
 }
 
-.tab-content {
+#userCreate .tab-content {
   width: 100%;
-  padding-top: 20px;
+  padding: 0px 2%;
 }
 
 .row-content-info {
   height: 620px;
   background-color: white;
-}
-#userCreate .app-inner-layout {
-  display: flex;
 }
 #userCreate .card-title {
   font-family: Roboto;

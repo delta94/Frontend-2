@@ -1,4 +1,14 @@
 .modal-config-email {
+  .modal-title {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 16px;
+    text-transform: uppercase;
+
+    color: #595c82;
+  }
   .input-search_label {
     width: 120px !important;
     line-height: 35px;
@@ -54,14 +64,13 @@
         border-radius: 3px;
 
         .content-detail {
-          border: 1px solid #ced4da;
           border-radius: 3px;
           padding: 0px 2px;
 
           .add-content-detail-title {
             display: flex;
             position: relative;
-            background: #eff9ff;
+            background: #fff;
             box-sizing: border-box;
             border-radius: 3px;
             line-height: 44px;
@@ -98,6 +107,9 @@
               margin: 0px 5px 0px 0px;
             }
           }
+          .card {
+            box-shadow: none;
+          }
         }
       }
     }
@@ -116,8 +128,17 @@
 }
 .modal-config-preview {
   .modal-content {
-    height: 680px;
+    height: 295px;
     width: 200%;
     margin-left: -200px;
   }
+}
+.title-template {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+
+  color: #97a3b4;
 }

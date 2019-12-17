@@ -221,26 +221,14 @@ export default (state: UserManagementState = initialState, action): UserManageme
     case FAILURE(USER_MANAGE_ACTION_TYPES.POST_SAVE_ADVANCED_SEARCH):
       return {
         ...state,
-        loading: false,
-        dataModal: {
-          show: true,
-          title: 'Thất bại',
-          type: 'error',
-          text: 'Lưu tìm kiếm thất bại'
-        }
+        loading: false
       };
 
     // TODO: Delete Advanced search
     case FAILURE(USER_MANAGE_ACTION_TYPES.DELETE_ADVANCED_SEARCH):
       return {
         ...state,
-        loading: false,
-        dataModal: {
-          show: true,
-          title: 'Thành công',
-          type: 'success',
-          text: 'Xóa tìm kiếm thất bại'
-        }
+        loading: false
       };
 
     case SUCCESS(USER_MANAGE_ACTION_TYPES.COMPARE_USER):

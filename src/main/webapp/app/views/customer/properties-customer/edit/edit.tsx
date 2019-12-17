@@ -49,14 +49,18 @@ export class Edit extends React.Component<IEditProps, IEditState> {
       title: $(`input#field-name`).val(),
       personalizationTag: tag
     };
-    await this.props.updateProp(id, data);
-    this.props.getListProp();
-    this.props.openModal({
-      show: true,
-      type: 'success',
-      title: translate('modal-data.title.success'),
-      text: translate('properties-management.edit.complete')
-    });
+    if (tag) {
+      await this.props.updateProp(id, data);
+      this.props.getListProp();
+      this.props.openModal({
+        show: true,
+        type: 'success',
+        title: translate('modal-data.title.success'),
+        text: translate('properties-management.edit.complete')
+      });
+    } else {
+      this.setState({ validField: translate('properties-management.error.param-none') });
+    }
   };
 
   render() {
@@ -86,15 +90,17 @@ export class Edit extends React.Component<IEditProps, IEditState> {
                               <Translate contentKey="properties-management.form.persionalization" />
                             </Label>
                             <Input maxLength={160} addonBefore="%" addonAfter="%" defaultValue={event.personalizationTag} id="tag" />
+                            <p style={{ textAlign: 'center' }} className="error">
+                              {this.state.validField}
+                            </p>
                           </div>
-                          <div className="option-create">
+                          {/* <div className="option-create">
                             <Label>
                               <Translate contentKey="properties-management.form.default-value" />
                             </Label>
-                            <Input maxLength={160} id="default-value" />
-                          </div>
+                            <Input maxLength={160}  id="default-value" />
+                          </div> */}
                         </Col>
-                        <p className="error">{this.state.validField}</p>
                       </Row>
                     );
                   }

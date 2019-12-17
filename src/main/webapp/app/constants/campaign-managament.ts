@@ -10,5 +10,6 @@ export const CAMPAIGN_MANAGAMENT = {
   SAVE_CAMPAIGN_AUTO: 'campaign-managament/SAVE_CAMPAIGN_AUTO',
   GET_NODE: 'campaign-managament/GET_NODE',
   GET_INFO_CAMPAIGN: 'campaign-managament/GET_INFO_CAMPAIGN',
-  GET_DIAGRAM_CAMPAIGN: 'campaign-managament/GET_DIAGRAM_CAMPAIGN'
+  GET_DIAGRAM_CAMPAIGN: 'campaign-managament/GET_DIAGRAM_CAMPAIGN',
+  VALIDATE_DIAGRAM_CAMPAIGN: 'campaign-managament/VALIDATE_DIAGRAM_CAMPAIGN'
 };

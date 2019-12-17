@@ -1,5 +1,6 @@
 import React, { Fragment, Component, useState } from 'react';
 import { Col, Row, CardTitle, Button, ModalBody, Table, Modal, ModalHeader, Label, Input } from 'reactstrap';
+import { Button as ButtonAntd } from 'antd';
 import './customer-dialog.scss';
 import Loader from 'react-loader-advanced';
 import LoaderAnim from 'react-loaders';
@@ -131,29 +132,30 @@ class CustomerDialog extends React.Component<CustomerDialogProps, CustomerDialog
             this.props.onClick(this.props.showModal);
           }}
         >
-          <span>
+          <span className="title-modal-select">
             {' '}
             <Translate contentKey="campaign.choose-folder" />{' '}
           </span>
         </ModalHeader>
 
         <ModalBody>
-          <Row>
+          <Row className="modal-select-customer">
             <Col md="3">
-              <legend>
+              <label className="total-contact">
                 <Translate contentKey="campaign.total-contract" /> {total}
-              </legend>
+              </label>
             </Col>
             <Col md="3" />
             <Col md="6" className="group-btn">
               <Input type="text" className="form-control" onKeyDown={this.search} placeholder="Tìm kiếm" /> <i className="pe-7s-search" />
-              <Button color="primary" type="submit" className="save-right" onClick={this.handlerSaveForm}>
+              <ButtonAntd type="primary" className="save-right" onClick={this.handlerSaveForm}>
                 <FontAwesomeIcon icon="save" />
                 &nbsp;
                 <Translate contentKey="entity.action.save" />
-              </Button>
+              </ButtonAntd>
             </Col>
           </Row>
+          <br />
           <Row>
             <Col md="3" className="import-cus">
               <CategoryDialog handleChange={this.handleChange} />
