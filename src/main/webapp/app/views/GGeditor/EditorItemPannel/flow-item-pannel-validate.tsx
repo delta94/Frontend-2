@@ -9,10 +9,14 @@ import './index.scss';
 const { Panel } = Collapse;
 
 interface IFlowItemValidateProps extends StateProps, DispatchProps {}
-interface IFlowItemValidateState {}
+interface IFlowItemValidateState {
+  data: any[];
+}
 
 class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItemValidateState> {
-  state = {};
+  state: IFlowItemValidateState = {
+    data: this.props.listDiagram.nodes
+  };
 
   remove(arr, item) {
     for (var i = arr.length; i--; ) {
@@ -24,18 +28,22 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
   }
 
   checkNodeEmailConfig = () => {
-    let { listFieldData, listDiagram } = this.props;
-    let data = listDiagram.nodes;
+    let { data } = this.state;
+    let { listFieldData } = this.props;
     if (listFieldData.emailConfig && Object.keys(listFieldData.emailConfig).length > 0) {
       let idEmailConfig = listFieldData.emailConfig.map(item => {
         return item.id;
       });
       let id = idEmailConfig.join().split(',');
       if (id.length < 2) {
-        data = this.remove(data, idEmailConfig.join());
+        data = data.filter(function(item) {
+          return item.id != id;
+        });
       } else {
         id.map(value => {
-          data = this.remove(data, String(value));
+          data = data.filter(function(item) {
+            return item.id != String(value);
+          });
         });
       }
     }
@@ -45,10 +53,14 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
       });
       let id = idlistCampign.join().split(',');
       if (id.length < 2) {
-        data = this.remove(data, idlistCampign.join());
+        data = data.filter(function(item) {
+          return item.id != id;
+        });
       } else {
         id.map(value => {
-          data = this.remove(data, String(value));
+          data = data.filter(function(item) {
+            return item.id != String(value);
+          });
         });
       }
     }
@@ -58,10 +70,14 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
       });
       let id = idMessageConfig.join().split(',');
       if (id.length < 2) {
-        data = this.remove(data, idMessageConfig.join());
+        data = data.filter(function(item) {
+          return item.id != id;
+        });
       } else {
         id.map(value => {
-          data = this.remove(data, String(value));
+          data = data.filter(function(item) {
+            return item.id != String(value);
+          });
         });
       }
     }
@@ -71,10 +87,14 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
       });
       let id = idTimer.join().split(',');
       if (id.length < 2) {
-        data = this.remove(data, idTimer.join());
+        data = data.filter(function(item) {
+          return item.id != id;
+        });
       } else {
         id.map(value => {
-          data = this.remove(data, String(value));
+          data = data.filter(function(item) {
+            return item.id != String(value);
+          });
         });
       }
     }
@@ -84,57 +104,60 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
       });
       let id = idTimerEvent.join().split(',');
       if (id.length < 2) {
-        data = this.remove(data, idTimerEvent.join());
+        data = data.filter(function(item) {
+          return item.id != id;
+        });
       } else {
         id.map(value => {
-          data = this.remove(data, String(value));
+          data = data.filter(function(item) {
+            return item.id != String(value);
+          });
         });
       }
     }
     return data;
   };
 
-  render() {
+  showNodeValidate = () => {
     let { listFieldData, listDiagram } = this.props;
     let data;
-    const showNodeValidate = () => {
-      let { listFieldData, listDiagram } = this.props;
-      if (Object.keys(listFieldData).length < 1) {
-        return listDiagram.nodes.map((item, index) => {
-          return (
-            <Row className="row" key={index}>
-              <Col span={24}>
-                <Item type="" size="" shape="" src={item.icon} />
-                <div>
-                  <label>{item.label}</label>
-                </div>
-                <label>Chưa cấu hình thông tin</label>
-              </Col>
-            </Row>
-          );
-        });
-      } else {
-        data = this.checkNodeEmailConfig();
-        return data.map((item, index) => {
-          return (
-            <Row className="row" key={index}>
-              <Col span={24}>
-                <Item type="" size="" shape="" src={item.icon} />
-                <div>
-                  <label>{item.label}</label>
-                </div>
-                <label>Chưa cấu hình thông tin</label>
-              </Col>
-            </Row>
-          );
-        });
-      }
-    };
+    if (Object.keys(listFieldData).length < 1) {
+      return listDiagram.nodes.map((item, index) => {
+        return (
+          <Row className="row" key={index}>
+            <Col span={24}>
+              <Item type="" size="" shape="" src={item.icon} />
+              <div>
+                <label>{item.label}</label>
+              </div>
+              <label>Chưa cấu hình thông tin</label>
+            </Col>
+          </Row>
+        );
+      });
+    } else {
+      return this.checkNodeEmailConfig().map((item, index) => {
+        return (
+          <Row className="row" key={index}>
+            <Col span={24}>
+              <Item type="" size="" shape="" src={item.icon} />
+              <div>
+                <label>{item.label}</label>
+              </div>
+              <label>Chưa cấu hình thông tin</label>
+            </Col>
+          </Row>
+        );
+      });
+    }
+  };
+
+  render() {
     return (
       <Fragment>
         <Collapse bordered={false} defaultActiveKey={['1']} expandIconPosition="right">
           <Panel header="Nguồn dữ liệu" key="1">
-            <ItemPanel className="itemPanel">{showNodeValidate()}</ItemPanel>
+            <ItemPanel className="itemPanel">{this.showNodeValidate()}</ItemPanel>
           </Panel>
         </Collapse>
       </Fragment>
