@@ -14,7 +14,6 @@ import { faHome, faCopy, faTrashAlt, faUserEdit } from '@fortawesome/free-solid-
 import ModalGroupCustomer from './modal-group-customer/modal-group-customer';
 import FlowContextMenu from './EditorContextMenu/flow-context-menu';
 import { Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap';
-import $ from 'jquery';
 import UpdateInfoCampaign from './modal-update-info/modal-update-info';
 const { Header } = Layout;
 import './style.scss';
@@ -358,7 +357,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
   //event save campaign
   saveCampaign = node => {
-    const { idFolder, saveCampaignAuto, listFieldData, infoCampaign } = this.props;
+    const { idFolder, saveCampaignAuto, infoVersion, infoCampaign } = this.props;
     let { timeStartCampaign, advancedSearches } = this.state;
     let graph = {
       nodes:
@@ -390,7 +389,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     };
     let data = {
       folderId: idFolder,
-      // cjVersionId : null,
+      cjVersionId: infoVersion.idVersion ? infoVersion.idVersion : null,
       cj: {
         id: null,
         name: infoCampaign.name,
@@ -414,7 +413,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
   render() {
     let { isOpenModalInfo, idNode, isTest, isOpenModalMessage, isOpenModalWaitForEvent, isOpenModalWait, data, isValidate } = this.state;
-    let { infoCampaign, listDiagram } = this.props;
+    let { infoCampaign, listDiagram, infoVersion } = this.props;
     const imgSetting = require('app/assets/utils/images/flow/setting.png');
     const imgAward = require('app/assets/utils/images/flow/award.png');
     const imgMove = require('app/assets/utils/images/flow/move.png');
@@ -464,7 +463,9 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                             Tạo chiến dịch
                           </a>
                         </Breadcrumb.Item>
-                        <label className="ant-breadcrumb-link">{infoCampaign.name ? infoCampaign.name : 'Tạo chiến dịch mới'}</label>
+                        <label className="ant-breadcrumb-link">
+                          {infoVersion.nameVersion ? infoVersion.nameVersion : infoCampaign.name ? infoCampaign.name : 'Tạo chiến dịch mới'}
+                        </label>
                         <Button type="link" id="config-name" onClick={this.showModalInfoCampaign}>
                           <FontAwesomeIcon icon={faUserEdit} />
                         </Button>
@@ -609,7 +610,8 @@ const mapStateToProps = ({ campaignManagament }: IRootState) => ({
   idFolder: campaignManagament.listNode,
   infoCampaign: campaignManagament.listInfoCampaing,
   listDiagram: campaignManagament.listDiagram,
-  listFieldData: campaignManagament.listFieldData
+  listFieldData: campaignManagament.listFieldData,
+  infoVersion: campaignManagament.infoVersion
 });
 
 const mapDispatchToProps = {

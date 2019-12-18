@@ -279,7 +279,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                                 <Icon type="snippets" />
                                 <Button
                                   onClick={() => {
-                                    window.location.assign('/#/app/views/campaigns/campaign-managament/version');
+                                    window.location.assign(`/#/app/views/campaigns/campaign-managament/version/${item.cjVersionId}`);
                                   }}
                                   type="link"
                                 >

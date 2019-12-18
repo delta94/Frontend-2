@@ -1,5 +1,5 @@
 import react, { Fragment } from 'react';
-
+import { saveCampaignAutoVersion } from 'app/actions/campaign-managament';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Button, Table, Row, Badge, Col, Icon, Card, Tag } from 'antd';
@@ -10,17 +10,28 @@ import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { getListCampaignInfolderDataAction } from 'app/actions/campaign-managament';
 import './create-campaign.scss';
 
 interface ICreateCampaignProps extends StateProps, DispatchProps {}
 
-interface ICreateCampaignState {}
+interface ICreateCampaignState {
+  infoVersion: {
+    nameVersion: string;
+    idVersion: string;
+  };
+}
 
 class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampaignState> {
-  state: ICreateCampaignState = {};
+  state: ICreateCampaignState = {
+    infoVersion: {
+      nameVersion: '',
+      idVersion: null
+    }
+  };
 
   render() {
+    const { saveCampaignAutoVersion } = this.props;
+    const { infoVersion } = this.state;
     return (
       <div className="container-create">
         <Row className="row-title">
@@ -31,6 +42,7 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
             <Button
               type="primary"
               onClick={() => {
+                saveCampaignAutoVersion(infoVersion);
                 window.location.assign('#/flow');
               }}
             >
@@ -107,7 +119,9 @@ const mapStateToProps = ({ campaignManagament, cjState }: IRootState) => ({
   loading: campaignManagament.loading
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  saveCampaignAutoVersion
+};
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

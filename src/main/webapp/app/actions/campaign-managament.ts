@@ -98,3 +98,8 @@ export const testCampaign = data => ({
   type: CAMPAIGN_MANAGAMENT.TEST_CAMPAIGN,
   payload: testCampaignService(data)
 });
+
+export const saveCampaignAutoVersion = (data: any) => ({
+  type: CAMPAIGN_MANAGAMENT.SAVE_CAMPAIGN_AUTO_VERSION,
+  payload: data
+});

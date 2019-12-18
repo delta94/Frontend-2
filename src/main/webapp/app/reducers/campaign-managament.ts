@@ -78,6 +78,11 @@ interface IListEmailTest {
   email: string;
 }
 
+interface IInfoVersion {
+  nameVersion: string;
+  idVersion: string;
+}
+
 const initialCampaignManagament = {
   tree_folder: [] as IDataTreeFolder[],
   campaign: {} as ICampaign,
@@ -88,7 +93,8 @@ const initialCampaignManagament = {
   listInfoCampaing: {} as IInfoCampaign,
   listDiagram: {} as IListDiagram,
   listFieldData: {} as IListFieldData,
-  listEmailTest: [] as IListEmailTest[]
+  listEmailTest: [] as IListEmailTest[],
+  infoVersion: {} as IInfoVersion
 };
 
 export type HandleCampaignManagament = typeof initialCampaignManagament;
@@ -172,6 +178,8 @@ export default (state = initialCampaignManagament, action) => {
       return { ...state, listDiagram: action.payload };
     case CAMPAIGN_MANAGAMENT.VALIDATE_DIAGRAM_CAMPAIGN:
       return { ...state, listFieldData: action.payload };
+    case CAMPAIGN_MANAGAMENT.SAVE_CAMPAIGN_AUTO_VERSION:
+      return { ...state, infoVersion: action.payload };
     default:
       return state;
   }

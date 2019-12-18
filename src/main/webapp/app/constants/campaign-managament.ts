@@ -13,5 +13,6 @@ export const CAMPAIGN_MANAGAMENT = {
   GET_DIAGRAM_CAMPAIGN: 'campaign-managament/GET_DIAGRAM_CAMPAIGN',
   VALIDATE_DIAGRAM_CAMPAIGN: 'campaign-managament/VALIDATE_DIAGRAM_CAMPAIGN',
   GET_EMAIL_TEST: 'campaign-managament/GET_EMAIL_TEST',
-  TEST_CAMPAIGN: 'campaign-managament/TEST_CAMPAIGN'
+  TEST_CAMPAIGN: 'campaign-managament/TEST_CAMPAIGN',
+  SAVE_CAMPAIGN_AUTO_VERSION: 'campaign-managament/SAVE_CAMPAIGN_AUTO_VERSION'
 };
