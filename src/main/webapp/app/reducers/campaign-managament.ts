@@ -73,6 +73,11 @@ interface IListFieldData {
   timer: any[];
 }
 
+interface IListEmailTest {
+  id: string;
+  email: string;
+}
+
 const initialCampaignManagament = {
   tree_folder: [] as IDataTreeFolder[],
   campaign: {} as ICampaign,
@@ -82,7 +87,8 @@ const initialCampaignManagament = {
   listNode: '',
   listInfoCampaing: {} as IInfoCampaign,
   listDiagram: {} as IListDiagram,
-  listFieldData: {} as IListFieldData
+  listFieldData: {} as IListFieldData,
+  listEmailTest: [] as IListEmailTest[]
 };
 
 export type HandleCampaignManagament = typeof initialCampaignManagament;
@@ -92,6 +98,7 @@ export default (state = initialCampaignManagament, action) => {
     case REQUEST(CAMPAIGN_MANAGAMENT.GET_LIST_CAMPAIGN_AUTO):
     case REQUEST(CAMPAIGN_MANAGAMENT.COUNT_CAMPAIGN):
     case REQUEST(CAMPAIGN_MANAGAMENT.GET_TREE_FOLDER):
+    case REQUEST(CAMPAIGN_MANAGAMENT.GET_EMAIL_TEST):
       return {
         ...state,
         loading: true
@@ -99,14 +106,22 @@ export default (state = initialCampaignManagament, action) => {
     case FAILURE(CAMPAIGN_MANAGAMENT.GET_LIST_CAMPAIGN_AUTO):
     case FAILURE(CAMPAIGN_MANAGAMENT.COUNT_CAMPAIGN):
     case FAILURE(CAMPAIGN_MANAGAMENT.GET_TREE_FOLDER):
+    case FAILURE(CAMPAIGN_MANAGAMENT.GET_EMAIL_TEST):
       return {
         ...state,
         loading: false
       };
+
+    case SUCCESS(CAMPAIGN_MANAGAMENT.GET_EMAIL_TEST):
+      return {
+        ...state,
+        loading: false,
+        listEmailTest: action.payload.data
+      };
     case SUCCESS(CAMPAIGN_MANAGAMENT.GET_LIST_CAMPAIGN_AUTO):
       return {
         ...state,
-        loading: true,
+        loading: false,
         listCampaignAuto: action.payload.data
       };
 

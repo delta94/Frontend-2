@@ -53,3 +53,14 @@ export const saveCampaignAutoService = data => {
   const url = `${urlCampaign}/create-process`;
   return axios.post(url, data);
 };
+
+//call API list Email tesst
+export const getEmailTestService = () => {
+  return axios.get(`v1/email-white-lists`);
+};
+
+//call Api test Campaign
+export const testCampaignService = data => {
+  const url = `${urlCampaign}/test`;
+  return axios.post(url, data);
+};

@@ -11,5 +11,7 @@ export const CAMPAIGN_MANAGAMENT = {
   GET_NODE: 'campaign-managament/GET_NODE',
   GET_INFO_CAMPAIGN: 'campaign-managament/GET_INFO_CAMPAIGN',
   GET_DIAGRAM_CAMPAIGN: 'campaign-managament/GET_DIAGRAM_CAMPAIGN',
-  VALIDATE_DIAGRAM_CAMPAIGN: 'campaign-managament/VALIDATE_DIAGRAM_CAMPAIGN'
+  VALIDATE_DIAGRAM_CAMPAIGN: 'campaign-managament/VALIDATE_DIAGRAM_CAMPAIGN',
+  GET_EMAIL_TEST: 'campaign-managament/GET_EMAIL_TEST',
+  TEST_CAMPAIGN: 'campaign-managament/TEST_CAMPAIGN'
 };

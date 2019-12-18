@@ -57,7 +57,8 @@ export class ModalTimeWait extends React.Component<IModalTimeWaitProps, IModalTi
     if (value === 'Y' || value === 'M' || value === 'D') {
       timeWaitEvent = 'P' + waitEvent + value;
     } else {
-      timeWaitEvent = 'PT' + waitEvent + value === 'M1' ? 'M' : value;
+      let time = value === 'M1' ? 'M' : value;
+      timeWaitEvent = 'PT' + waitEvent + time;
     }
     await data.nodes.map(event => {
       if (event.id === idNode.id) {

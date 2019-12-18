@@ -67,7 +67,8 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
     if (value === 'Y' || value === 'M' || value === 'D') {
       timer = 'P' + time + value;
     } else {
-      timer = 'PT' + time + value === 'M1' ? 'M' : value;
+      let timeSelect = value === 'M1' ? 'M' : value;
+      timer = 'PT' + time + timeSelect;
     }
     await data.nodes.map(event => {
       if (event.id === idNode.id) {
@@ -80,7 +81,6 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
   };
 
   handleChange(value, option) {
-    debugger;
     switch (option) {
       case constantEvent.EVENT:
         this.setState({ event: value });

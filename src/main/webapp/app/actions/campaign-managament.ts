@@ -7,7 +7,9 @@ import {
   moveTreeFolderService,
   getStatusCampaignService,
   getListCampaginService,
-  saveCampaignAutoService
+  saveCampaignAutoService,
+  getEmailTestService,
+  testCampaignService
 } from 'app/services/campaign-managament';
 
 //get Tree Folder
@@ -84,4 +86,15 @@ export const getDiagramCampaign = (data?: any) => ({
 export const validateCampaign = (data: any) => ({
   type: CAMPAIGN_MANAGAMENT.VALIDATE_DIAGRAM_CAMPAIGN,
   payload: data
+});
+// get list Email test
+export const getEmailTest = () => ({
+  type: CAMPAIGN_MANAGAMENT.GET_EMAIL_TEST,
+  payload: getEmailTestService()
+});
+
+// Test campaign
+export const testCampaign = data => ({
+  type: CAMPAIGN_MANAGAMENT.TEST_CAMPAIGN,
+  payload: testCampaignService(data)
 });
