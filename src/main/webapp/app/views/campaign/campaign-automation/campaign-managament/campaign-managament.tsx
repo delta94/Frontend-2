@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Translate, translate } from 'react-jhipster';
-import { Row, Col, Button, Input, Table, Breadcrumb, Icon, Modal } from 'antd';
+import { Row, Col, Breadcrumb, Modal } from 'antd';
 import $ from 'jquery';
 import LoaderAnim from 'react-loaders';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faCopy, faTrashAlt, faUserEdit } from '@fortawesome/free-solid-svg-icons';
+import { faHome } from '@fortawesome/free-solid-svg-icons';
 import Loader from 'react-loader-advanced';
 import { openModal, closeModal } from 'app/actions/modal';
 import { IRootState } from 'app/reducers';

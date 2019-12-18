@@ -2,13 +2,15 @@ import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Table, Badge, Popover, PopoverHeader, PopoverBody } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { IRootState } from 'app/reducers';
 import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import ReactPaginate from 'react-paginate';
 import { getListCampaignInfolderDataAction } from 'app/actions/campaign-managament';
 import './campaign-list.scss';
-import { Input, Icon, Row, Col, Tag, Button } from 'antd';
+import { Input, Icon, Row, Col, Tag, Button, Popover as PopverAnt } from 'antd';
 import CampaignTag from './campaign-tag/campaign-tag';
 import CjTagModal from './cj-tag-modal/cj-tag-modal';
 import { getCjTagsByCjIdAction } from 'app/actions/cj';
@@ -270,7 +272,27 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                           <CJTagPopOver key={item.cjVersionId} dataPopup={item} getCjs={this.getCjs} />
                           {/* <Icon onClick={() => this.openModalCjTag(item.id)} style={{ fontSize: '24px' }} type="tags" />  */}
                           &nbsp;
-                          <Icon style={{ fontSize: '24px' }} type="unordered-list" />
+                          <PopverAnt
+                            overlayClassName="pop-version"
+                            content={
+                              <div>
+                                <Icon type="snippets" />
+                                <Button
+                                  onClick={() => {
+                                    window.location.assign('/#/app/views/campaigns/campaign-managament/version');
+                                  }}
+                                  type="link"
+                                >
+                                  Xem danh sách version
+                                </Button>
+                              </div>
+                            }
+                            title=""
+                            trigger="click"
+                          >
+                            {/* <Icon style={{ fontSize: '24px' }} type="unordered-list" /> */}
+                            <FontAwesomeIcon style={{ fontSize: '24px', verticalAlign: 'inherit', color: '#3866DD' }} icon={faEllipsisH} />
+                          </PopverAnt>
                         </td>
                       </tr>
                     );

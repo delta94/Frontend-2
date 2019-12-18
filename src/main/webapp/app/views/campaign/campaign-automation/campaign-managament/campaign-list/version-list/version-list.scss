@@ -1,0 +1,39 @@
+.version {
+  .ant-breadcrumb {
+    padding: 15px;
+  }
+  .ant-breadcrumb-link {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 19px;
+    /* identical to box height */
+
+    color: #595c82;
+  }
+  .ant-breadcrumb a {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 19px;
+    /* identical to box height */
+
+    text-decoration-line: underline;
+
+    color: #3866dd;
+  }
+
+  .ant-breadcrumb a:hover {
+    text-decoration: none;
+    color: greenyellow;
+  }
+  .container-version {
+    padding-top: 15px;
+  }
+  .body-version {
+    padding: 15px;
+    text-align: right;
+  }
+}

@@ -94,7 +94,7 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
     let { listDiagram } = this.props;
     listDiagram.nodes.map(event => {
       if (source === event.id) {
-        if (event.code === 'TIMER_EVENT' || event.code === 'TIMER') {
+        if (event.code === 'TIMER_EVENT' || event.code === 'TIMER' || event.code === 'GATEWAY') {
           if (sourceAnchor === 3) {
             return (valueEdges = 'true');
           } else if (sourceAnchor === 1) {

@@ -311,7 +311,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     let { listDiagram } = this.props;
     listDiagram.nodes.map(event => {
       if (source === event.id) {
-        if (event.code === 'TIMER_EVENT' || event.code === 'TIMER') {
+        if (event.code === 'TIMER_EVENT' || event.code === 'TIMER' || event.code === 'GATEWAY') {
           if (sourceAnchor === 3) {
             return (valueEdges = 'true');
           } else if (sourceAnchor === 1) {
@@ -418,7 +418,6 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     const imgSetting = require('app/assets/utils/images/flow/setting.png');
     const imgAward = require('app/assets/utils/images/flow/award.png');
     const imgMove = require('app/assets/utils/images/flow/move.png');
-    let hasValidate = JSON.parse(localStorage.getItem('isSave'));
     return (
       <Fragment>
         <UpdateInfoCampaign toggleModal={this.showModalInfoCampaign} isOpenModal={isOpenModalInfo} />
