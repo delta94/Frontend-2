@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
-import { Row, Col, Breadcrumb, Button, Progress, Modal } from 'antd';
-import Checkbox from '@material-ui/core/Checkbox';
+import { Row, Col, Breadcrumb, Button, Progress, Modal, Checkbox } from 'antd';
+// import Checkbox from '@material-ui/core/Checkbox';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
 import { saveCampaignAutoVersion, getListVersion, deleteVersion, stopVersion } from 'app/actions/campaign-managament';
@@ -26,6 +26,7 @@ interface IVersionListState {
     cjId: string;
   };
   listCjId: any[];
+  listVersion: any[];
 }
 export class VersionList extends React.Component<IVersionListProps, IVersionListState> {
   state: IVersionListState = {
@@ -34,10 +35,11 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
       idVersion: '',
       cjId: ''
     },
-    listCjId: []
+    listCjId: [],
+    listVersion: []
   };
 
-  componentDidMount() {
+  componentDidMount = async () => {
     const { campaign_list, getListVersion } = this.props;
     let data =
       campaign_list &&
@@ -56,15 +58,46 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
       window.location.assign('/#/app/views/campaigns/campaign-managament');
     } else {
       this.setState({ infoVersion: data[0] });
-      getListVersion(data[0].cjId);
+      await getListVersion(data[0].cjId);
+      this.customListVersion();
+    }
+  };
+
+  // render component when props change
+  componentWillReceiveProps(props) {
+    let { listVersion } = this.state;
+    if (listVersion != props.list_version) {
+      this.setState({
+        listVersion: props.list_version.map(event => {
+          return {
+            ...event,
+            checked: false
+          };
+        }),
+        listCjId: []
+      });
     }
   }
 
+  customListVersion = () => {
+    const { list_version } = this.props;
+    this.setState({
+      listVersion:
+        list_version &&
+        list_version.map(item => {
+          return {
+            ...item,
+            checked: false
+          };
+        })
+    });
+  };
+
   createVersion = async () => {
-    const { saveCampaignAutoVersion, list_version } = this.props;
-    const { infoVersion } = this.state;
+    const { saveCampaignAutoVersion } = this.props;
+    const { infoVersion, listVersion } = this.state;
     let isHaveDraf = false;
-    list_version.map(item => {
+    listVersion.map(item => {
       if (item.status === constant_version.DRAFT) {
         isHaveDraf = true;
       }
@@ -105,10 +138,8 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
     return img;
   };
 
-  changeCheckBox = event => {
+  filterID = (isCheck, value) => {
     let { listCjId } = this.state;
-    let value: string = event.target.value;
-    let isCheck: boolean = event.target.checked;
     if (isCheck) {
       listCjId.push(value);
     } else {
@@ -119,14 +150,28 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
     this.setState({ listCjId });
   };
 
+  changeCheckBox = (event, value) => {
+    let isCheck: boolean = event.target.checked;
+    let { listVersion } = this.state;
+    listVersion &&
+      listVersion.map(item => {
+        if (item.cjVersionId === value) {
+          item.checked = isCheck;
+        }
+      });
+    this.setState({ listVersion });
+    this.filterID(isCheck, value);
+  };
+
   deleteVersion = () => {
-    const { deleteVersion, list_version } = this.props;
+    const { deleteVersion } = this.props;
+    let { listVersion } = this.state;
     let isRunning: boolean = false;
     let nameVersion: number;
     let { listCjId } = this.state;
     if (listCjId && listCjId.length > 0) {
       listCjId.map(event => {
-        list_version.map(item => {
+        listVersion.map(item => {
           if (item.cjVersionId === event) {
             if (item.status === 'Running') {
               isRunning = true;
@@ -204,14 +249,14 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
   };
 
   handleStopVersion = () => {
-    const { list_version } = this.props;
+    let { listVersion } = this.state;
     let isRunning: boolean = false;
     let nameVersion: number;
     let idVersion: string;
     let { listCjId } = this.state;
     if (listCjId && listCjId.length > 0) {
       listCjId.map(event => {
-        list_version.map(item => {
+        listVersion.map(item => {
           if (item.cjVersionId === event) {
             if (item.status === 'Running') {
               isRunning = true;
@@ -232,12 +277,11 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
   };
 
   render() {
-    let { infoVersion } = this.state;
-    const { list_version } = this.props;
+    let { infoVersion, listVersion } = this.state;
     const imgCopy = require('app/assets/utils/images/campaign-managament/copy-version.png');
     const imgDelete = require('app/assets/utils/images/campaign-managament/delete-version.png');
     const imgLine = require('app/assets/utils/images/campaign-managament/line-version.png');
-
+    console.log(listVersion);
     const eventStatus = option => {
       let data;
 
@@ -310,7 +354,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
               </Button>
             </Row>
             <br />
-            <label className="count-version">{list_version.length} version</label>
+            <label className="count-version">{listVersion.length} version</label>
             <Table responsive striped className="main-table-version">
               <thead>
                 <th style={{ width: '4%' }} />
@@ -320,33 +364,24 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
                 <th>Chỉnh sửa gần nhất</th>
               </thead>
               <tbody>
-                {list_version
-                  ? list_version.map((event, index) => {
+                {listVersion
+                  ? listVersion.map((item, index) => {
                       return (
                         <tr key={index}>
                           <td>
-                            <Checkbox
-                              onChange={this.changeCheckBox}
-                              value={event.cjVersionId}
-                              color="primary"
-                              inputProps={{ 'aria-label': 'secondary checkbox' }}
-                            />
+                            <Checkbox checked={item.checked} onChange={e => this.changeCheckBox(e, item.cjVersionId)} />
                           </td>
                           <td className="table-content">
-                            <a style={{ marginLeft: '5%' }} href="#/">
-                              {event.name}
-                            </a>
-                            <br />
-                            <label style={{ marginLeft: '5%' }}>Version {event.version}</label>
+                            <label style={{ marginLeft: '5%' }}>Version {item.version}</label>
                           </td>
                           <td className="row-status">
-                            <img className="img-status" src={this.iconStatus(event.status)} />
-                            {eventStatus(event.status)}
+                            <img className="img-status" src={this.iconStatus(item.status)} />
+                            {eventStatus(item.status)}
                           </td>
                           <td>
-                            <Progress status="active" percent={10} format={percent => `${percent}/${event.contactNumbers} contact`} />
+                            <Progress status="active" percent={10} format={percent => `${percent}/${item.contactNumbers} contact`} />
                           </td>
-                          <td>{event.modifiedDate}</td>
+                          <td>{item.modifiedDate}</td>
                         </tr>
                       );
                     })
