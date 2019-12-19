@@ -15,5 +15,7 @@ export const CAMPAIGN_MANAGAMENT = {
   GET_EMAIL_TEST: 'campaign-managament/GET_EMAIL_TEST',
   TEST_CAMPAIGN: 'campaign-managament/TEST_CAMPAIGN',
   SAVE_CAMPAIGN_AUTO_VERSION: 'campaign-managament/SAVE_CAMPAIGN_AUTO_VERSION',
-  GET_LIST_VERSION: 'campaign-managament/GET_LIST_VERSION'
+  GET_LIST_VERSION: 'campaign-managament/GET_LIST_VERSION',
+  DELETE_VERSION: 'campaign-managament/DELETE_VERSION',
+  STOP_VERSION: 'campaign-managament/STOP_VERSION'
 };

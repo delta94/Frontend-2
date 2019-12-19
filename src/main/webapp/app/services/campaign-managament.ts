@@ -73,3 +73,15 @@ export const getListVersionService = id => {
   const url = `${urlCampaign}/${id}/cj-versions`;
   return axios.get(url, { headers: authHeaders });
 };
+
+//call API delete version
+export const deleteVersionService = data => {
+  const url = `${urlVersion}/delete`;
+  return axios.post(url, data);
+};
+
+//call API stop version
+export const stopVersionService = id => {
+  const url = `${urlVersion}/${id}/stop`;
+  return axios.post(url);
+};

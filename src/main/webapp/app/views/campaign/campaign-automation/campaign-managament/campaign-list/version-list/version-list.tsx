@@ -5,11 +5,12 @@ import { Row, Col, Breadcrumb, Button, Progress, Modal } from 'antd';
 import Checkbox from '@material-ui/core/Checkbox';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
-import { saveCampaignAutoVersion, getListVersion } from 'app/actions/campaign-managament';
+import { saveCampaignAutoVersion, getListVersion, deleteVersion, stopVersion } from 'app/actions/campaign-managament';
 import './version-list.scss';
 import { Container, Card, Table } from 'reactstrap';
 import { RouteComponentProps } from 'react-router-dom';
 
+const { confirm } = Modal;
 const constant_version = {
   DRAFT: 'Draft',
   FINISH: 'Finish',
@@ -24,6 +25,7 @@ interface IVersionListState {
     idVersion: string;
     cjId: string;
   };
+  listCjId: any[];
 }
 export class VersionList extends React.Component<IVersionListProps, IVersionListState> {
   state: IVersionListState = {
@@ -31,7 +33,8 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
       nameVersion: '',
       idVersion: '',
       cjId: ''
-    }
+    },
+    listCjId: []
   };
 
   componentDidMount() {
@@ -103,7 +106,129 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
   };
 
   changeCheckBox = event => {
-    console.log(event.target.value);
+    let { listCjId } = this.state;
+    let value: string = event.target.value;
+    let isCheck: boolean = event.target.checked;
+    if (isCheck) {
+      listCjId.push(value);
+    } else {
+      listCjId = listCjId.filter(function(item) {
+        return item != value;
+      });
+    }
+    this.setState({ listCjId });
+  };
+
+  deleteVersion = () => {
+    const { deleteVersion, list_version } = this.props;
+    let isRunning: boolean = false;
+    let nameVersion: number;
+    let { listCjId } = this.state;
+    if (listCjId && listCjId.length > 0) {
+      listCjId.map(event => {
+        list_version.map(item => {
+          if (item.cjVersionId === event) {
+            if (item.status === 'Running') {
+              isRunning = true;
+              nameVersion = item.version;
+            }
+          }
+        });
+      });
+      if (isRunning) {
+        Modal.error({
+          title: 'Lỗi',
+          content: `Version${nameVersion} đang thực hiện không thể xóa`,
+          okText: 'Đồng ý'
+        });
+      } else {
+        confirm({
+          title: 'Bạn có thực sự muốn xóa version này ?',
+          content: '',
+          onOk: async () => {
+            await deleteVersion(listCjId);
+            this.refresh;
+          },
+          onCancel() {},
+          okText: 'Đồng ý',
+          cancelText: 'Hủy bỏ'
+        });
+      }
+    } else {
+      Modal.warning({
+        title: 'Thông báo',
+        content: 'Vui lòng chọn ô cần xóa',
+        okText: 'Đồng ý'
+      });
+    }
+  };
+
+  //refresh page
+  refresh = async () => {
+    const { getListVersion } = this.props;
+    let { infoVersion } = this.state;
+    await getListVersion(infoVersion.cjId);
+  };
+
+  //handle validate for Stop version
+  validateStopVersion = (isRunning, nameVersion, idVersion) => {
+    const { stopVersion } = this.props;
+    let { listCjId } = this.state;
+    if (listCjId && listCjId.length === 1) {
+      if (isRunning) {
+        confirm({
+          title: `Bạn có thực sự muốn dừng version ${nameVersion} này ?`,
+          content: '',
+          onOk: async () => {
+            await stopVersion(idVersion);
+            this.refresh();
+          },
+          onCancel() {},
+          okText: 'Đồng ý',
+          cancelText: 'Hủy bỏ'
+        });
+      } else {
+        Modal.warning({
+          title: 'Thông báo',
+          content: 'Vui lòng chọn version có trạng thái đang thực hiện',
+          okText: 'Đồng ý'
+        });
+      }
+    } else {
+      Modal.warning({
+        title: 'Thông báo',
+        content: 'Chỉ được phép dừng 1 version',
+        okText: 'Đồng ý'
+      });
+    }
+  };
+
+  handleStopVersion = () => {
+    const { list_version } = this.props;
+    let isRunning: boolean = false;
+    let nameVersion: number;
+    let idVersion: string;
+    let { listCjId } = this.state;
+    if (listCjId && listCjId.length > 0) {
+      listCjId.map(event => {
+        list_version.map(item => {
+          if (item.cjVersionId === event) {
+            if (item.status === 'Running') {
+              isRunning = true;
+              idVersion = item.cjVersionId;
+              nameVersion = item.version;
+            }
+          }
+        });
+      });
+      this.validateStopVersion(isRunning, nameVersion, idVersion);
+    } else {
+      Modal.warning({
+        title: 'Thông báo',
+        content: 'Vui lòng chọn version bạn muốn dừng',
+        okText: 'Đồng ý'
+      });
+    }
   };
 
   render() {
@@ -168,7 +293,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
                 {' '}
                 <img src={imgCopy} />{' '}
               </Button>
-              <Button type="link">
+              <Button onClick={this.deleteVersion} type="link">
                 <img src={imgDelete} />
               </Button>
               &nbsp; &nbsp;
@@ -176,7 +301,11 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
               <Button onClick={this.createVersion} type="primary" style={{ background: '#3866DD', marginLeft: '2%' }}>
                 Tạo version mới
               </Button>
-              <Button type="primary" style={{ background: '#97A3B4', marginLeft: '1%' }}>
+              <Button
+                onClick={this.handleStopVersion}
+                type="primary"
+                style={{ background: '#97A3B4', marginLeft: '1%', borderColor: 'unset' }}
+              >
                 Dừng version
               </Button>
             </Row>
@@ -185,7 +314,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
             <Table responsive striped className="main-table-version">
               <thead>
                 <th style={{ width: '4%' }} />
-                <th style={{ width: '25%' }}>Chiến dịch</th>
+                <th style={{ width: '25%' }}>Version</th>
                 <th>Trạng thái</th>
                 <th style={{ width: '25%' }}>Kết quả</th>
                 <th>Chỉnh sửa gần nhất</th>
@@ -238,7 +367,9 @@ const mapStateToProps = ({ campaignManagament }: IRootState) => ({
 
 const mapDispatchToProps = {
   saveCampaignAutoVersion,
-  getListVersion
+  getListVersion,
+  deleteVersion,
+  stopVersion
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

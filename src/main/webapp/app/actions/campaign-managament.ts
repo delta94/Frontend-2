@@ -10,7 +10,9 @@ import {
   saveCampaignAutoService,
   getEmailTestService,
   testCampaignService,
-  getListVersionService
+  getListVersionService,
+  deleteVersionService,
+  stopVersionService
 } from 'app/services/campaign-managament';
 
 //get Tree Folder
@@ -111,4 +113,16 @@ export const saveCampaignAutoVersion = (data: any) => ({
 export const getListVersion = id => ({
   type: CAMPAIGN_MANAGAMENT.GET_LIST_VERSION,
   payload: getListVersionService(id)
+});
+
+//delete version
+export const deleteVersion = data => ({
+  type: CAMPAIGN_MANAGAMENT.DELETE_VERSION,
+  payload: deleteVersionService(data)
+});
+
+//stop version
+export const stopVersion = id => ({
+  type: CAMPAIGN_MANAGAMENT.STOP_VERSION,
+  payload: stopVersionService(id)
 });
