@@ -82,7 +82,16 @@ interface IInfoVersion {
   nameVersion: string;
   idVersion: string;
 }
-
+interface IListVersion {
+  id: string;
+  name: string;
+  cjVersionId: string;
+  version: number;
+  tags: string;
+  status: string;
+  contactNumbers: string;
+  modifiedDate: string;
+}
 const initialCampaignManagament = {
   tree_folder: [] as IDataTreeFolder[],
   campaign: {} as ICampaign,
@@ -94,7 +103,8 @@ const initialCampaignManagament = {
   listDiagram: {} as IListDiagram,
   listFieldData: {} as IListFieldData,
   listEmailTest: [] as IListEmailTest[],
-  infoVersion: {} as IInfoVersion
+  infoVersion: {} as IInfoVersion,
+  listVersion: [] as IListVersion[]
 };
 
 export type HandleCampaignManagament = typeof initialCampaignManagament;
@@ -105,10 +115,12 @@ export default (state = initialCampaignManagament, action) => {
     case REQUEST(CAMPAIGN_MANAGAMENT.COUNT_CAMPAIGN):
     case REQUEST(CAMPAIGN_MANAGAMENT.GET_TREE_FOLDER):
     case REQUEST(CAMPAIGN_MANAGAMENT.GET_EMAIL_TEST):
+    case REQUEST(CAMPAIGN_MANAGAMENT.GET_LIST_VERSION):
       return {
         ...state,
         loading: true
       };
+    case FAILURE(CAMPAIGN_MANAGAMENT.GET_LIST_VERSION):
     case FAILURE(CAMPAIGN_MANAGAMENT.GET_LIST_CAMPAIGN_AUTO):
     case FAILURE(CAMPAIGN_MANAGAMENT.COUNT_CAMPAIGN):
     case FAILURE(CAMPAIGN_MANAGAMENT.GET_TREE_FOLDER):
@@ -118,6 +130,12 @@ export default (state = initialCampaignManagament, action) => {
         loading: false
       };
 
+    case SUCCESS(CAMPAIGN_MANAGAMENT.GET_LIST_VERSION):
+      return {
+        ...state,
+        loading: false,
+        listVersion: action.payload.data
+      };
     case SUCCESS(CAMPAIGN_MANAGAMENT.GET_EMAIL_TEST):
       return {
         ...state,

@@ -18,6 +18,7 @@ interface ICreateCampaignState {
   infoVersion: {
     nameVersion: string;
     idVersion: string;
+    cjId: string;
   };
 }
 
@@ -25,7 +26,8 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
   state: ICreateCampaignState = {
     infoVersion: {
       nameVersion: '',
-      idVersion: null
+      idVersion: null,
+      cjId: null
     }
   };
 

@@ -9,7 +9,8 @@ import {
   getListCampaginService,
   saveCampaignAutoService,
   getEmailTestService,
-  testCampaignService
+  testCampaignService,
+  getListVersionService
 } from 'app/services/campaign-managament';
 
 //get Tree Folder
@@ -99,7 +100,15 @@ export const testCampaign = data => ({
   payload: testCampaignService(data)
 });
 
+/* API Version */
+// get id and name version to save campaign
 export const saveCampaignAutoVersion = (data: any) => ({
   type: CAMPAIGN_MANAGAMENT.SAVE_CAMPAIGN_AUTO_VERSION,
   payload: data
+});
+
+//get list version
+export const getListVersion = id => ({
+  type: CAMPAIGN_MANAGAMENT.GET_LIST_VERSION,
+  payload: getListVersionService(id)
 });

@@ -3,6 +3,7 @@ import axios from 'axios';
 
 const urlCJ = 'v1/cj-folders';
 const urlCampaign = 'v1/cjs';
+const urlVersion = 'v1/cj-versions';
 
 //call API get list Tree
 export const getTreeFolderService = () => {
@@ -59,8 +60,16 @@ export const getEmailTestService = () => {
   return axios.get(`v1/email-white-lists`);
 };
 
+/* call API Version */
+
 //call Api test Campaign
 export const testCampaignService = data => {
   const url = `${urlCampaign}/test`;
   return axios.post(url, data);
+};
+
+//call API get list version
+export const getListVersionService = id => {
+  const url = `${urlCampaign}/${id}/cj-versions`;
+  return axios.get(url, { headers: authHeaders });
 };
