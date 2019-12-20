@@ -85,3 +85,9 @@ export const stopVersionService = id => {
   const url = `${urlVersion}/${id}/stop`;
   return axios.post(url);
 };
+
+//call API clone version
+export const cloneVersionService = id => {
+  const url = `${urlVersion}/${id}`;
+  return axios.get(url);
+};

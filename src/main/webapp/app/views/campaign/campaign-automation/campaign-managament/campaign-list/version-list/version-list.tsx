@@ -5,7 +5,14 @@ import { Row, Col, Breadcrumb, Button, Progress, Modal, Checkbox } from 'antd';
 // import Checkbox from '@material-ui/core/Checkbox';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
-import { saveCampaignAutoVersion, getListVersion, deleteVersion, stopVersion } from 'app/actions/campaign-managament';
+import {
+  saveCampaignAutoVersion,
+  getListVersion,
+  cloneVersion,
+  deleteVersion,
+  stopVersion,
+  getDiagramCampaign
+} from 'app/actions/campaign-managament';
 import './version-list.scss';
 import { Container, Card, Table } from 'reactstrap';
 import { RouteComponentProps } from 'react-router-dom';
@@ -163,8 +170,31 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
     this.filterID(isCheck, value);
   };
 
-  deleteVersion = () => {
+  //delete version if version another version running
+  handleDelete = (isRunning, nameVersion, listCjId) => {
     const { deleteVersion } = this.props;
+    if (isRunning) {
+      Modal.error({
+        title: 'Lỗi',
+        content: `Version${nameVersion} đang thực hiện không thể xóa`,
+        okText: 'Đồng ý'
+      });
+    } else {
+      confirm({
+        title: 'Bạn có thực sự muốn xóa version này ?',
+        content: '',
+        onOk: async () => {
+          await deleteVersion(listCjId);
+          this.refresh;
+        },
+        onCancel() {},
+        okText: 'Đồng ý',
+        cancelText: 'Hủy bỏ'
+      });
+    }
+  };
+
+  deleteVersion = () => {
     let { listVersion } = this.state;
     let isRunning: boolean = false;
     let nameVersion: number;
@@ -180,25 +210,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
           }
         });
       });
-      if (isRunning) {
-        Modal.error({
-          title: 'Lỗi',
-          content: `Version${nameVersion} đang thực hiện không thể xóa`,
-          okText: 'Đồng ý'
-        });
-      } else {
-        confirm({
-          title: 'Bạn có thực sự muốn xóa version này ?',
-          content: '',
-          onOk: async () => {
-            await deleteVersion(listCjId);
-            this.refresh;
-          },
-          onCancel() {},
-          okText: 'Đồng ý',
-          cancelText: 'Hủy bỏ'
-        });
-      }
+      this.handleDelete(isRunning, nameVersion, listCjId);
     } else {
       Modal.warning({
         title: 'Thông báo',
@@ -276,6 +288,39 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
     }
   };
 
+  cloneVersion = async () => {
+    let { list_clone_version, getDiagramCampaign } = this.props;
+    console.log(list_clone_version.flowDetail.graph);
+    await getDiagramCampaign(list_clone_version.flowDetail.graph);
+    window.location.assign(`#/flow`);
+  };
+
+  copyVersion = () => {
+    let { cloneVersion } = this.props;
+    let versionLast: number = 0;
+    let idVersionlast: string = '';
+    let { listVersion, listCjId } = this.state;
+    listVersion.map(item => {
+      if (item.status != constant_version.DRAFT) {
+        if (item.version > versionLast) {
+          versionLast = item.version;
+          idVersionlast = item.cjVersionId;
+        }
+      }
+    });
+    confirm({
+      title: `Bạn có muốn nhân bản chiến dịch này ?`,
+      content: '',
+      onOk: async () => {
+        await cloneVersion(idVersionlast);
+        this.cloneVersion();
+      },
+      onCancel() {},
+      okText: 'Đồng ý',
+      cancelText: 'Hủy bỏ'
+    });
+  };
+
   render() {
     let { infoVersion, listVersion } = this.state;
     const imgCopy = require('app/assets/utils/images/campaign-managament/copy-version.png');
@@ -333,7 +378,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
         <Container fluid className="container-version">
           <Card>
             <Row className="body-version">
-              <Button type="link">
+              <Button onClick={this.copyVersion} type="link">
                 {' '}
                 <img src={imgCopy} />{' '}
               </Button>
@@ -397,14 +442,17 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
 }
 const mapStateToProps = ({ campaignManagament }: IRootState) => ({
   campaign_list: campaignManagament.campaign.data,
-  list_version: campaignManagament.listVersion
+  list_version: campaignManagament.listVersion,
+  list_clone_version: campaignManagament.cloneInfoVersion
 });
 
 const mapDispatchToProps = {
   saveCampaignAutoVersion,
   getListVersion,
   deleteVersion,
-  stopVersion
+  stopVersion,
+  cloneVersion,
+  getDiagramCampaign
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

@@ -70,6 +70,13 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     timeStartCampaign: ''
   };
 
+  componentDidMount() {
+    let { listDiagram, getDiagramCampaign } = this.props;
+    if (listDiagram.nodes && listDiagram.nodes.length === 0) {
+      getDiagramCampaign([]);
+    }
+  }
+
   //handler Popup send email
   confirmEmail = async () => {
     let { idNode, titleMail } = this.state;
@@ -407,8 +414,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         graph: graph
       }
     };
-    saveCampaignAuto(data);
-    console.log(data);
+    // saveCampaignAuto(data);
+    console.log(node);
   };
 
   render() {
@@ -550,7 +557,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                   edgeDefaultShape: 'custom-edge'
                 }}
                 className="flow"
-                data={listDiagram}
+                data={listDiagram.nodes && listDiagram.nodes.length > 0 ? listDiagram : []}
               />
               <CustomNode />
               <CustomEdges />

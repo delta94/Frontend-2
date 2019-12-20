@@ -1,6 +1,6 @@
 import { CAMPAIGN_MANAGAMENT } from 'app/constants/campaign-managament';
 import { REQUEST, FAILURE, SUCCESS } from './action-type.util';
-import { number } from 'prop-types';
+import { IListCloneVersion } from 'app/common/model/campaign-managament.model';
 
 interface IDataTreeFolder {
   id: string;
@@ -104,13 +104,15 @@ const initialCampaignManagament = {
   listFieldData: {} as IListFieldData,
   listEmailTest: [] as IListEmailTest[],
   infoVersion: {} as IInfoVersion,
-  listVersion: [] as IListVersion[]
+  listVersion: [] as IListVersion[],
+  cloneInfoVersion: {} as IListCloneVersion
 };
 
 export type HandleCampaignManagament = typeof initialCampaignManagament;
 
 export default (state = initialCampaignManagament, action) => {
   switch (action.type) {
+    case REQUEST(CAMPAIGN_MANAGAMENT.CLONE_VERSION):
     case REQUEST(CAMPAIGN_MANAGAMENT.GET_LIST_CAMPAIGN_AUTO):
     case REQUEST(CAMPAIGN_MANAGAMENT.COUNT_CAMPAIGN):
     case REQUEST(CAMPAIGN_MANAGAMENT.GET_TREE_FOLDER):
@@ -120,6 +122,7 @@ export default (state = initialCampaignManagament, action) => {
         ...state,
         loading: true
       };
+    case CAMPAIGN_MANAGAMENT.CLONE_VERSION:
     case FAILURE(CAMPAIGN_MANAGAMENT.GET_LIST_VERSION):
     case FAILURE(CAMPAIGN_MANAGAMENT.GET_LIST_CAMPAIGN_AUTO):
     case FAILURE(CAMPAIGN_MANAGAMENT.COUNT_CAMPAIGN):
@@ -127,6 +130,13 @@ export default (state = initialCampaignManagament, action) => {
     case FAILURE(CAMPAIGN_MANAGAMENT.GET_EMAIL_TEST):
       return {
         ...state,
+        loading: false
+      };
+
+    case SUCCESS(CAMPAIGN_MANAGAMENT.CLONE_VERSION):
+      return {
+        ...state,
+        cloneInfoVersion: action.payload.data,
         loading: false
       };
 

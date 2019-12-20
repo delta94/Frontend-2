@@ -17,5 +17,6 @@ export const CAMPAIGN_MANAGAMENT = {
   SAVE_CAMPAIGN_AUTO_VERSION: 'campaign-managament/SAVE_CAMPAIGN_AUTO_VERSION',
   GET_LIST_VERSION: 'campaign-managament/GET_LIST_VERSION',
   DELETE_VERSION: 'campaign-managament/DELETE_VERSION',
-  STOP_VERSION: 'campaign-managament/STOP_VERSION'
+  STOP_VERSION: 'campaign-managament/STOP_VERSION',
+  CLONE_VERSION: 'campaign-managament/CLONE_VERSION'
 };

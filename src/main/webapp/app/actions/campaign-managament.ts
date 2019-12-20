@@ -12,7 +12,8 @@ import {
   testCampaignService,
   getListVersionService,
   deleteVersionService,
-  stopVersionService
+  stopVersionService,
+  cloneVersionService
 } from 'app/services/campaign-managament';
 
 //get Tree Folder
@@ -125,4 +126,10 @@ export const deleteVersion = data => ({
 export const stopVersion = id => ({
   type: CAMPAIGN_MANAGAMENT.STOP_VERSION,
   payload: stopVersionService(id)
+});
+
+//clone info version
+export const cloneVersion = id => ({
+  type: CAMPAIGN_MANAGAMENT.CLONE_VERSION,
+  payload: cloneVersionService(id)
 });
