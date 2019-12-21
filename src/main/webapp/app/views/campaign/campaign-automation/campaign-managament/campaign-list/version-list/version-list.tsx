@@ -431,9 +431,11 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
   };
 
   viewVersion = async id => {
+    let { infoVersion } = this.state;
     const { cloneVersion } = this.props;
     await cloneVersion(id);
     await this.cloneVersion();
+    await saveCampaignAutoVersion(infoVersion);
     window.location.assign('#/flow/details');
   };
 

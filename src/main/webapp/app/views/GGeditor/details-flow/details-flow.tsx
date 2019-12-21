@@ -156,6 +156,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   render() {
     const imgSetting = require('app/assets/utils/images/flow/setting.png');
     let { clone_version, listDiagram, list_version, infoVersion, loading } = this.props;
+    console.log(infoVersion.nameVersion);
     const eventStatus = option => {
       let data;
 
