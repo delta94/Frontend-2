@@ -401,7 +401,6 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
       groups: []
     };
     await getDiagramCampaign(data);
-    window.location.assign(`#/flow`);
   };
 
   copyVersion = () => {
@@ -422,7 +421,8 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
       content: '',
       onOk: async () => {
         await cloneVersion(idVersionlast);
-        this.cloneVersion();
+        await this.cloneVersion();
+        window.location.assign(`#/flow`);
       },
       onCancel() {},
       okText: 'Đồng ý',
@@ -430,7 +430,10 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
     });
   };
 
-  viewVersion = id => {
+  viewVersion = async id => {
+    const { cloneVersion } = this.props;
+    await cloneVersion(id);
+    await this.cloneVersion();
     window.location.assign('#/flow/details');
   };
 
