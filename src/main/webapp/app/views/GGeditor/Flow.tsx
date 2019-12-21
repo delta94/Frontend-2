@@ -17,6 +17,7 @@ import { Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap';
 import UpdateInfoCampaign from './modal-update-info/modal-update-info';
 const { Header } = Layout;
 import './style.scss';
+import { code_node } from 'app/common/model/campaign-managament.model';
 import SiderComponet from './sider/sider-tool';
 import ConfigMessage from './modal-config-message/modal-config-message';
 import SiderTest from './sider/sider-test';
@@ -101,8 +102,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     let { getDiagramCampaign, validateCampaign, listFieldData } = this.props;
     let { idNode, advancedSearches, timeStartCampaign, data, isOpenModalMessage, isOpenModalWaitForEvent, isOpenModalWait } = this.state;
     let diagram = data.nodes && data.nodes.length > 0 ? data : data.data;
-    switch (idNode.param) {
-      case 'DATA':
+    switch (idNode.code) {
+      case code_node.SOURCE:
         this.setState({ visible: event });
         if (valueName) {
           diagram.nodes.map(item => {
@@ -135,16 +136,16 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         }
 
         break;
-      case 'EMAIL':
+      case code_node.SEND_MAIL:
         this.setState({ isOpenModalEmail: event });
         break;
-      case 'WAIT-UNTIL':
+      case code_node.TIMER_EVENT:
         this.setState({ isOpenModalWaitForEvent: !isOpenModalWaitForEvent });
         break;
-      case 'WAIT':
+      case code_node.TIMER:
         this.setState({ isOpenModalWait: !isOpenModalWait });
         break;
-      case 'MESSAGE':
+      case code_node.SEND_SMS:
         this.setState({ isOpenModalMessage: !isOpenModalMessage });
         if (isOpenModalMessage) {
           diagram.nodes.map(item => {
@@ -424,6 +425,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     const imgSetting = require('app/assets/utils/images/flow/setting.png');
     const imgAward = require('app/assets/utils/images/flow/award.png');
     const imgMove = require('app/assets/utils/images/flow/move.png');
+    console.log(listDiagram);
     return (
       <Fragment>
         <UpdateInfoCampaign toggleModal={this.showModalInfoCampaign} isOpenModal={isOpenModalInfo} />

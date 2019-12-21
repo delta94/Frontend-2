@@ -4,8 +4,8 @@ import { Minimap } from 'gg-editor';
 
 const EditorMinimap = () => {
   return (
-    <Card type="inner" size="small" title="Minimap" bordered={false}>
-      <Minimap height={200} />
+    <Card type="inner" size="default" title="Minimap" bordered={false}>
+      <Minimap width={500} height={500} />
     </Card>
   );
 };

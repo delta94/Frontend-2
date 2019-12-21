@@ -159,7 +159,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
           result = (
             <Fragment>
               <img style={{ margin: '0px 6px 2px' }} src={img_finish} />
-              <label className="count-campaign">Đang thực hiện</label>
+              <label className="count-campaign">Kết thúc</label>
             </Fragment>
           );
           break;

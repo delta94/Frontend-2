@@ -5,6 +5,7 @@ import { Row, Col, Breadcrumb, Button, Progress, Modal, Checkbox } from 'antd';
 // import Checkbox from '@material-ui/core/Checkbox';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { img_node, const_shape } from 'app/common/model/campaign-managament.model';
 import {
   saveCampaignAutoVersion,
   getListVersion,
@@ -23,6 +24,17 @@ const constant_version = {
   FINISH: 'Finish',
   RUNNING: 'Running',
   STOP: 'Stop'
+};
+
+const code_node = {
+  SOURCE: 'SOURCE',
+  EVENT: 'EVENT',
+  DES: 'DES',
+  SEND_SMS: 'SEND_SMS',
+  SEND_MAIL: 'SEND_MAIL',
+  GATEWAY: 'GATEWAY',
+  TIMER: 'TIMER',
+  TIMER_EVENT: 'TIMER_EVENT'
 };
 
 interface IVersionListProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
@@ -101,7 +113,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
   };
 
   createVersion = async () => {
-    const { saveCampaignAutoVersion } = this.props;
+    const { saveCampaignAutoVersion, getDiagramCampaign } = this.props;
     const { infoVersion, listVersion } = this.state;
     let isHaveDraf = false;
     listVersion.map(item => {
@@ -116,6 +128,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
         okText: 'Đồng ý'
       });
     } else {
+      await getDiagramCampaign([]);
       await saveCampaignAutoVersion(infoVersion);
       window.location.assign('/#/flow');
     }
@@ -288,10 +301,106 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
     }
   };
 
+  customNode(code, option) {
+    let data: string;
+    switch (option) {
+      case 'shape':
+        switch (code) {
+          case code_node.EVENT:
+          case code_node.SOURCE:
+            data = const_shape.CIRCLE;
+            break;
+
+          case code_node.SEND_MAIL:
+          case code_node.SEND_SMS:
+            data = const_shape.FLOW;
+            break;
+
+          case code_node.TIMER:
+          case code_node.TIMER_EVENT:
+          case code_node.GATEWAY:
+            data = const_shape.RHOMSBUS;
+            break;
+          case code_node.DES:
+            data = const_shape.CIRCLE;
+            break;
+          default:
+            break;
+        }
+        break;
+      case 'icon':
+        switch (code) {
+          case code_node.EVENT:
+            data = img_node.EVENT;
+            break;
+
+          case code_node.SOURCE:
+            data = img_node.SOURCE;
+            break;
+
+          case code_node.SEND_MAIL:
+            data = img_node.SEND_MAIL;
+            break;
+
+          case code_node.SEND_SMS:
+            data = img_node.SEND_SMS;
+            break;
+
+          case code_node.TIMER:
+            data = img_node.TIMER;
+            break;
+
+          case code_node.TIMER_EVENT:
+            data = img_node.TIMER_EVENT;
+            break;
+
+          case code_node.GATEWAY:
+            data = img_node.GATEWAY;
+            break;
+
+          case code_node.DES:
+            data = img_node.END;
+            break;
+          default:
+            break;
+        }
+        break;
+      default:
+        break;
+    }
+
+    return data;
+  }
+
   cloneVersion = async () => {
     let { list_clone_version, getDiagramCampaign } = this.props;
-    console.log(list_clone_version.flowDetail.graph);
-    await getDiagramCampaign(list_clone_version.flowDetail.graph);
+    let x: number = 0;
+    let graph = list_clone_version.flowDetail.graph;
+    let data = {
+      nodes: graph.nodes.map(item => {
+        x = x + 200;
+        return {
+          type: item.type,
+          size: '95*95',
+          shape: this.customNode(item.code, 'shape'),
+          value: item.value,
+          code: item.code,
+          label: item.label,
+          backgroud: '#23C00A',
+          emailConfig: item.emailConfig,
+          smsConfig: item.smsConfig,
+          color: '#1890FF',
+          icon: this.customNode(item.code, 'icon'),
+          labelOffsetY: 60,
+          x: x,
+          y: 140,
+          id: item.id
+        };
+      }),
+      edges: list_clone_version.flowDetail.graph.edges,
+      groups: []
+    };
+    await getDiagramCampaign(data);
     window.location.assign(`#/flow`);
   };
 
@@ -319,6 +428,10 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
       okText: 'Đồng ý',
       cancelText: 'Hủy bỏ'
     });
+  };
+
+  viewVersion = id => {
+    window.location.assign('#/flow/details');
   };
 
   render() {
@@ -376,7 +489,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
           </Breadcrumb>
         </Row>
         <Container fluid className="container-version">
-          <Card>
+          <Card style={{ height: '650px' }}>
             <Row className="body-version">
               <Button onClick={this.copyVersion} type="link">
                 {' '}
@@ -416,7 +529,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
                           <td>
                             <Checkbox checked={item.checked} onChange={e => this.changeCheckBox(e, item.cjVersionId)} />
                           </td>
-                          <td className="table-content">
+                          <td className="table-content" onClick={() => this.viewVersion(item.cjVersionId)}>
                             <label style={{ marginLeft: '5%' }}>Version {item.version}</label>
                           </td>
                           <td className="row-status">

@@ -1,5 +1,5 @@
 import react, { Fragment } from 'react';
-import { saveCampaignAutoVersion } from 'app/actions/campaign-managament';
+import { saveCampaignAutoVersion, getDiagramCampaign } from 'app/actions/campaign-managament';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Button, Table, Row, Badge, Col, Icon, Card, Tag } from 'antd';
@@ -32,7 +32,7 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
   };
 
   render() {
-    const { saveCampaignAutoVersion } = this.props;
+    const { saveCampaignAutoVersion, getDiagramCampaign } = this.props;
     const { infoVersion } = this.state;
     return (
       <div className="container-create">
@@ -44,6 +44,7 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
             <Button
               type="primary"
               onClick={() => {
+                getDiagramCampaign([]);
                 saveCampaignAutoVersion(infoVersion);
                 window.location.assign('#/flow');
               }}
@@ -122,7 +123,8 @@ const mapStateToProps = ({ campaignManagament, cjState }: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  saveCampaignAutoVersion
+  saveCampaignAutoVersion,
+  getDiagramCampaign
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
