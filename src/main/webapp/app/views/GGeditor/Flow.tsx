@@ -24,6 +24,7 @@ import SiderTest from './sider/sider-test';
 import ModalWaitForEvent from './modal-wait-for-event/modal-wait-for-event';
 import ModalTimeWait from './modal-wait/modal-wait';
 import SiderValidate from './sider/sider-validate';
+import FlowDiagramEditor from './flow-diagram-editor';
 
 const ButtonGroup = Button.Group;
 
@@ -499,6 +500,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                   <FlowToolbar />
                 </Col>
               </Row>
+              <FlowDiagramEditor />
               <Flow
                 // onClick= {(e)=> {this.setState({isUpdate:true})}}
                 onClick={e => {
