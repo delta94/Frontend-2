@@ -105,6 +105,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
   setPageIndex = pageIndex => {
     let { strTagId, textSearch, itemsPerPage } = this.state;
     let folderId = this.props.folder_id_choose;
+    this.setState({ activePage: parseInt(pageIndex) });
     this.getListCampaignInfolderDataAction(folderId, textSearch, strTagId, parseInt(pageIndex), itemsPerPage);
   };
 
@@ -245,7 +246,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                   list_camp.map((item, index) => {
                     return (
                       <tr key={index}>
-                        <td colSpan={5}>{index + 1}</td>
+                        <td colSpan={5}>{this.state.activePage * this.state.itemsPerPage + index + 1}</td>
                         <td colSpan={25} id="name">
                           <p> {item.name}</p>
                           <p>Version {item.version}</p>

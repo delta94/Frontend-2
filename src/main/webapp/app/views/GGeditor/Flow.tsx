@@ -6,7 +6,14 @@ import CustomEdges from './egdes/egdes';
 import FlowToolbar from './FlowToolBar/flow-tool-bar';
 import { connect } from 'react-redux';
 import Save from './save/save';
-import { saveCampaignAuto, getNode, getDiagramCampaign, validateCampaign } from 'app/actions/campaign-managament';
+import {
+  saveCampaignAuto,
+  getNode,
+  getDiagramCampaign,
+  validateCampaign,
+  cloneVersion,
+  saveCampaignAutoVersion
+} from 'app/actions/campaign-managament';
 import { IRootState } from 'app/reducers';
 import ConfigEmail from './config-email/config-email';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -17,7 +24,7 @@ import { Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap';
 import UpdateInfoCampaign from './modal-update-info/modal-update-info';
 const { Header } = Layout;
 import './style.scss';
-import { code_node } from 'app/common/model/campaign-managament.model';
+import { code_node, img_node, const_shape } from 'app/common/model/campaign-managament.model';
 import SiderComponet from './sider/sider-tool';
 import ConfigMessage from './modal-config-message/modal-config-message';
 import SiderTest from './sider/sider-test';
@@ -26,6 +33,12 @@ import ModalTimeWait from './modal-wait/modal-wait';
 import SiderValidate from './sider/sider-validate';
 
 const ButtonGroup = Button.Group;
+const constant_version = {
+  DRAFT: 'Draft',
+  FINISH: 'Finish',
+  RUNNING: 'Running',
+  STOP: 'Stop'
+};
 
 interface IFlowPageProps extends StateProps, DispatchProps {}
 interface IFlowPageState {
@@ -276,12 +289,138 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     this.setState({ isOpen: visible });
   };
 
+  replicateCampaign = async () => {
+    let { list_clone_version, cloneVersion, saveCampaignAutoVersion } = this.props;
+    let infoVersion = {
+      type: 'action',
+      nameVersion: '',
+      idVersion: '',
+      cjId: '',
+      status: ''
+    };
+    await cloneVersion(list_clone_version.id);
+    await this.cloneVersion('create');
+    await saveCampaignAutoVersion(infoVersion);
+    this.hide();
+  };
+
+  cloneVersion = async option => {
+    let { list_clone_version, getDiagramCampaign } = this.props;
+    let x: number = 0;
+    let graph = list_clone_version.flowDetail.graph;
+    let data = {
+      nodes: graph.nodes.map(item => {
+        // if user chosse view process version
+        let dataProcess = option === 'view' ? (item.countAct ? `(${item.countAct})` : '') : '';
+
+        x = x + 200;
+        return {
+          type: item.type,
+          size: '95*95',
+          shape: this.customNode(item.code, 'shape'),
+          value: item.value,
+          code: item.code,
+          label: item.label + dataProcess,
+          backgroud: '#23C00A',
+          emailConfig: item.emailConfig,
+          smsConfig: item.smsConfig,
+          color: '#1890FF',
+          icon: this.customNode(item.code, 'icon'),
+          labelOffsetY: 60,
+          countAct: item.countAct,
+          x: x,
+          y: 140,
+          id: item.id
+        };
+      }),
+      edges: list_clone_version.flowDetail.graph.edges,
+      groups: []
+    };
+    await getDiagramCampaign(data);
+  };
+
+  customNode(code, option) {
+    let data: string;
+    switch (option) {
+      case 'shape':
+        switch (code) {
+          case code_node.EVENT:
+          case code_node.SOURCE:
+            data = const_shape.CIRCLE;
+            break;
+
+          case code_node.SEND_MAIL:
+          case code_node.SEND_SMS:
+            data = const_shape.FLOW;
+            break;
+
+          case code_node.TIMER:
+          case code_node.TIMER_EVENT:
+          case code_node.GATEWAY:
+            data = const_shape.RHOMSBUS;
+            break;
+          case code_node.DES:
+            data = const_shape.CIRCLE;
+            break;
+          default:
+            break;
+        }
+        break;
+      case 'icon':
+        switch (code) {
+          case code_node.EVENT:
+            data = img_node.EVENT;
+            break;
+
+          case code_node.SOURCE:
+            data = img_node.SOURCE;
+            break;
+
+          case code_node.SEND_MAIL:
+            data = img_node.SEND_MAIL;
+            break;
+
+          case code_node.SEND_SMS:
+            data = img_node.SEND_SMS;
+            break;
+
+          case code_node.TIMER:
+            data = img_node.TIMER;
+            break;
+
+          case code_node.TIMER_EVENT:
+            data = img_node.TIMER_EVENT;
+            break;
+
+          case code_node.GATEWAY:
+            data = img_node.GATEWAY;
+            break;
+
+          case code_node.DES:
+            data = img_node.END;
+            break;
+          default:
+            break;
+        }
+        break;
+      default:
+        break;
+    }
+
+    return data;
+  }
+
   //Content Popover Setting
   contentSetting() {
     return (
       <Row>
         <Row>
-          <Button type="link" onClick={this.hide} className="btn-multi">
+          <Button
+            disabled={this.props.list_clone_version.id ? false : true}
+            type="link"
+            onClick={this.replicateCampaign}
+            className="btn-multi"
+          >
             <FontAwesomeIcon icon={faCopy} /> &nbsp; <label>Nhân bản chiến dịch</label>
           </Button>
         </Row>
@@ -415,8 +554,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         graph: graph
       }
     };
-    // saveCampaignAuto(data);
-    console.log(node);
+    saveCampaignAuto(data);
+    // console.log(node);
   };
 
   render() {
@@ -620,14 +759,17 @@ const mapStateToProps = ({ campaignManagament }: IRootState) => ({
   infoCampaign: campaignManagament.listInfoCampaing,
   listDiagram: campaignManagament.listDiagram,
   listFieldData: campaignManagament.listFieldData,
-  infoVersion: campaignManagament.infoVersion
+  infoVersion: campaignManagament.infoVersion,
+  list_clone_version: campaignManagament.cloneInfoVersion
 });
 
 const mapDispatchToProps = {
   saveCampaignAuto,
   getNode,
   getDiagramCampaign,
-  validateCampaign
+  validateCampaign,
+  cloneVersion,
+  saveCampaignAutoVersion
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
