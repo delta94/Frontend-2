@@ -363,7 +363,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
   };
 
   render() {
-    let { is_show, list_field_data, loading, list_customer_with_condition, totalElements, type_modal } = this.props;
+    let { is_show, list_field_data, loading, list_customer_with_condition, totalElements, type_modal, info_version } = this.props;
     let { list_field_data_cpn, logicalOperator, advancedSearches, categoryName, pageIndex } = this.state;
     let list_field_render =
       list_field_data_cpn && list_field_data_cpn.length > 0
@@ -457,7 +457,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
                   color="primary"
                   style={{ float: 'right', margin: '3px' }}
                   onClick={this.getDataListCustomer}
-                  disabled={list_field_data_cpn.length === 0 ? true : false}
+                  disabled={info_version.nameVersion ? true : list_field_data_cpn.length === 0 ? true : false}
                 >
                   <Translate contentKey="group-attribute-customer.apply" />
                 </Button>
@@ -573,14 +573,15 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
   }
 }
 
-const mapStateToProps = ({ tagDataState, groupCustomerState }: IRootState) => ({
+const mapStateToProps = ({ tagDataState, groupCustomerState, campaignManagament }: IRootState) => ({
   loading: groupCustomerState.list_customer_with_condition_index.loading,
   totalElements: groupCustomerState.list_customer_with_condition_index.totalElements,
   list_field_data: groupCustomerState.list_field_data,
   list_customer_with_condition: groupCustomerState.list_customer_with_condition,
   postRequest: groupCustomerState.postRequest,
   single_group_field: groupCustomerState.single_customer_field,
-  list_group_customer: groupCustomerState.list_group_customer
+  list_group_customer: groupCustomerState.list_group_customer,
+  info_version: campaignManagament.infoVersion
 });
 
 const mapDispatchToProps = {

@@ -5,6 +5,7 @@ export interface IListCloneVersion {
   status: string;
   flow: string;
   description: string;
+  countAct: string;
   flowDetail: {
     graph: {
       nodes: [
@@ -68,3 +69,74 @@ export const code_node = {
   TIMER: 'TIMER',
   TIMER_EVENT: 'TIMER_EVENT'
 };
+
+export interface IListVersion {
+  id: string;
+  name: string;
+  cjVersionId: string;
+  version: number;
+  tags: string;
+  status: string;
+  contactNumbers: string;
+  modifiedDate: string;
+}
+
+export interface ICampaign {
+  total: number;
+  data: [
+    {
+      id: string;
+      name: string;
+      cjVersionId: string;
+      version: number;
+      tags: string;
+      status: string;
+      contactNumbers: number;
+      modifiedDate: string;
+    }
+  ];
+}
+
+export interface IDataTreeFolder {
+  id: string;
+  name: string;
+  path: string;
+  parentId: string;
+  cjFolders: [
+    {
+      id: string;
+      name: string;
+      path: string;
+      parentId: string;
+      cjFolders: any[];
+    }
+  ];
+}
+
+export interface IListCampaignAuto {
+  id: string;
+  name: string;
+  cjVersionId: string;
+  version: number;
+  tags: string;
+  status: string;
+  contactNumbers: number;
+  modifiedDate: string;
+}
+
+export interface IListCustomerVersionProcess {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  mobile: string;
+  state: string;
+  processInstanceId: string;
+}
+
+export interface IListCustomerInteractive {
+  activityId: string;
+  activityName: string;
+  startTime: string;
+  endTime: string;
+}

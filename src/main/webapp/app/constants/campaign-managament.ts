@@ -18,5 +18,7 @@ export const CAMPAIGN_MANAGAMENT = {
   GET_LIST_VERSION: 'campaign-managament/GET_LIST_VERSION',
   DELETE_VERSION: 'campaign-managament/DELETE_VERSION',
   STOP_VERSION: 'campaign-managament/STOP_VERSION',
-  CLONE_VERSION: 'campaign-managament/CLONE_VERSION'
+  CLONE_VERSION: 'campaign-managament/CLONE_VERSION',
+  LIST_CUSTOMER_VERSION_PROCESS: 'campaign-managament/LIST_CUSTOMER_VERSION_PROCESS',
+  VIEW_INTERACTIVE: 'campaign-managament/VIEW_INTERACTIVE'
 };

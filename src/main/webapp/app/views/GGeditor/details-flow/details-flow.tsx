@@ -3,22 +3,25 @@ import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import CustomNode from '../node/node';
 import Loader from 'react-loader-advanced';
-import { Card } from 'reactstrap';
+import { Card, Table, CardBody } from 'reactstrap';
 import CustomEdges from '../egdes/egdes';
 import GGEditor, { Flow } from 'gg-editor';
-import { Row, Col, Select, Button, Layout, Breadcrumb, Icon, Modal as ModalAntd } from 'antd';
+import { Row, Col, Select, Button, Layout, Breadcrumb, Collapse, Modal as ModalAntd } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
-import { cloneVersion, getDiagramCampaign } from 'app/actions/campaign-managament';
+import { cloneVersion, getDiagramCampaign, getListCustomerVersionProcess, viewInteractive } from 'app/actions/campaign-managament';
 import { img_node, const_shape } from 'app/common/model/campaign-managament.model';
 import LoaderAnim from 'react-loaders';
+import ModalInteractive from './modal-interactive/modal-interactive';
 import './details-flow.scss';
-import { listUserService } from 'app/services/user-management';
 
+const { Panel } = Collapse;
 const { Option } = Select;
 const { Header } = Layout;
 interface IFlowPageProps extends StateProps, DispatchProps {}
-interface IFlowPageState {}
+interface IFlowPageState {
+  isOpenModal: boolean;
+}
 
 const constant_version = {
   DRAFT: 'Draft',
@@ -37,7 +40,9 @@ const code_node = {
   TIMER_EVENT: 'TIMER_EVENT'
 };
 export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
-  state: IFlowPageState = {};
+  state: IFlowPageState = {
+    isOpenModal: false
+  };
 
   componentDidMount() {
     let { clone_version } = this.props;
@@ -47,9 +52,10 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   }
 
   selectVersion = async id => {
-    const { cloneVersion } = this.props;
+    const { cloneVersion, getListCustomerVersionProcess } = this.props;
     await cloneVersion(id);
     await this.cloneVersion();
+    await getListCustomerVersionProcess('', id, 0);
   };
 
   customNode(code, option) {
@@ -130,19 +136,21 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     let data = {
       nodes: graph.nodes.map(item => {
         x = x + 200;
+        let countDataProcess = item.countAct ? `(${item.countAct})` : '';
         return {
           type: item.type,
           size: '95*95',
           shape: this.customNode(item.code, 'shape'),
           value: item.value,
           code: item.code,
-          label: item.label,
+          label: item.label + countDataProcess,
           backgroud: '#23C00A',
           emailConfig: item.emailConfig,
           smsConfig: item.smsConfig,
           color: '#1890FF',
           icon: this.customNode(item.code, 'icon'),
           labelOffsetY: 60,
+          countAct: item.countAct,
           x: x,
           y: 140,
           id: item.id
@@ -153,10 +161,28 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     };
     await getDiagramCampaign(data);
   };
+
+  viewInteractive = async id => {
+    let { isOpenModal } = this.state;
+    const { viewInteractive } = this.props;
+    this.setState({ isOpenModal: !isOpenModal });
+    if (!isOpenModal) {
+      await viewInteractive(id);
+    }
+  };
   render() {
     const imgSetting = require('app/assets/utils/images/flow/setting.png');
-    let { clone_version, listDiagram, list_version, infoVersion, loading } = this.props;
-    console.log(infoVersion.nameVersion);
+    const img_history = require('app/assets/utils/images/flow/history.png');
+    let {
+      clone_version,
+      listDiagram,
+      list_version,
+      countCustomerVersionProcess,
+      infoVersion,
+      loading,
+      list_customer_version_process
+    } = this.props;
+    let { isOpenModal } = this.state;
     const eventStatus = option => {
       let data;
 
@@ -180,6 +206,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
     return (
       <Loader message={spinner1} show={loading} priority={1}>
+        <ModalInteractive onClick={this.viewInteractive} isOpenModal={isOpenModal} />
         <GGEditor className="editor-details">
           <Layout style={{ minHeight: '200vh' }}>
             <Header className="header-flow">
@@ -249,6 +276,46 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                 />
               </Card>
             </Row>
+            <Row style={{ padding: '0% 1% 1% 1%' }}>
+              <Card>
+                <Collapse bordered={false} defaultActiveKey={['1']} expandIconPosition="right">
+                  <Panel header="Lịch sử" key="1">
+                    <CardBody className="card-body-details">
+                      <p>{countCustomerVersionProcess} Bản ghi</p>
+                      <Table responsive striped className="main-table-version">
+                        <thead>
+                          <th />
+                          <th>Tên</th>
+                          <th>Họ</th>
+                          <th>Email</th>
+                          <th>Số điện thoại</th>
+                          <th>Trạng thái</th>
+                          <th />
+                        </thead>
+                        <tbody>
+                          {list_customer_version_process &&
+                            list_customer_version_process.map((item, index) => {
+                              return (
+                                <tr key={index}>
+                                  <td>{index + 1}</td>
+                                  <td>{item.firstName}</td>
+                                  <td>{item.lastName}</td>
+                                  <td>{item.email}</td>
+                                  <td>{item.mobile}</td>
+                                  <td>{item.state}</td>
+                                  <td>
+                                    <img src={img_history} onClick={() => this.viewInteractive(item.processInstanceId)} />
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                        </tbody>
+                      </Table>
+                    </CardBody>
+                  </Panel>
+                </Collapse>
+              </Card>
+            </Row>
             <CustomNode />
             <CustomEdges />
           </Layout>
@@ -265,11 +332,15 @@ const mapStateToProps = ({ campaignManagament }: IRootState) => ({
   infoVersion: campaignManagament.infoVersion,
   list_version: campaignManagament.listVersion,
   clone_version: campaignManagament.cloneInfoVersion,
-  getDiagramCampaign
+  list_customer_version_process: campaignManagament.listCustomerVersionProcess,
+  countCustomerVersionProcess: campaignManagament.countCustomerVersionProcess
 });
 
 const mapDispatchToProps = {
-  cloneVersion
+  cloneVersion,
+  getDiagramCampaign,
+  getListCustomerVersionProcess,
+  viewInteractive
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

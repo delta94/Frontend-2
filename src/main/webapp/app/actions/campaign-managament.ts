@@ -13,7 +13,9 @@ import {
   getListVersionService,
   deleteVersionService,
   stopVersionService,
-  cloneVersionService
+  cloneVersionService,
+  getListCustomerVersionProcessService,
+  viewInteractiveService
 } from 'app/services/campaign-managament';
 
 //get Tree Folder
@@ -132,4 +134,16 @@ export const stopVersion = id => ({
 export const cloneVersion = id => ({
   type: CAMPAIGN_MANAGAMENT.CLONE_VERSION,
   payload: cloneVersionService(id)
+});
+
+//get list version customer process
+export const getListCustomerVersionProcess = (textSearch: string, id, page?: number) => ({
+  type: CAMPAIGN_MANAGAMENT.LIST_CUSTOMER_VERSION_PROCESS,
+  payload: getListCustomerVersionProcessService(textSearch, id, page)
+});
+
+// view Interactive customer
+export const viewInteractive = id => ({
+  type: CAMPAIGN_MANAGAMENT.VIEW_INTERACTIVE,
+  payload: viewInteractiveService(id)
 });

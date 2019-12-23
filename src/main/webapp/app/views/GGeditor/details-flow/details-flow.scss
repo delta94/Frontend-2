@@ -81,18 +81,69 @@ body {
   height: 0;
 }
 .editor-details {
+  height: 800px;
+  overflow: auto;
+  .ant-collapse-header {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 16px;
+
+    color: #9aa8b4 !important;
+  }
+  .card-body-details {
+    background: rgba(249, 250, 251, 0.5);
+    border-radius: 5px 5px 0px 0px;
+  }
+  thead th {
+    color: #545cd8;
+  }
+  .table-striped {
+    margin-top: 0px !important;
+    td {
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 15px;
+      line-height: 18px;
+      /* identical to box height */
+
+      color: #343a40;
+    }
+  }
+
+  .table-responsive {
+    display: block;
+    overflow-x: auto;
+  }
+  .table thead th,
+  .table td {
+    vertical-align: middle;
+  }
+  .table thead th {
+    border-bottom: 2px solid #e9ecef;
+  }
+  .table th,
+  .table td {
+    padding: 0.55rem;
+    border-top: 1px solid #e9ecef;
+  }
+  thead th,
+  tbody td,
+  tbody td .badge {
+    border-right: 1px solid #dedede;
+  }
+  td,
+  th {
+    border: 1px solid #dddddd;
+    text-align: center;
+  }
   .btn-test {
     float: right;
     margin-right: 5%;
   }
-  .ant-collapse-header {
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 15px;
-    line-height: 18px;
-    color: #343a40;
-  }
+
   .title-sider-test {
     font-family: Roboto;
     font-style: normal;

@@ -12,7 +12,8 @@ import {
   cloneVersion,
   deleteVersion,
   stopVersion,
-  getDiagramCampaign
+  getDiagramCampaign,
+  getListCustomerVersionProcess
 } from 'app/actions/campaign-managament';
 import './version-list.scss';
 import { Container, Card, Table } from 'reactstrap';
@@ -372,12 +373,14 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
     return data;
   }
 
-  cloneVersion = async () => {
+  cloneVersion = async option => {
     let { list_clone_version, getDiagramCampaign } = this.props;
     let x: number = 0;
     let graph = list_clone_version.flowDetail.graph;
     let data = {
       nodes: graph.nodes.map(item => {
+        let dataProcess = option === 'view' ? (item.countAct ? `(${item.countAct})` : '') : '';
+
         x = x + 200;
         return {
           type: item.type,
@@ -385,13 +388,14 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
           shape: this.customNode(item.code, 'shape'),
           value: item.value,
           code: item.code,
-          label: item.label,
+          label: item.label + dataProcess,
           backgroud: '#23C00A',
           emailConfig: item.emailConfig,
           smsConfig: item.smsConfig,
           color: '#1890FF',
           icon: this.customNode(item.code, 'icon'),
           labelOffsetY: 60,
+          countAct: item.countAct,
           x: x,
           y: 140,
           id: item.id
@@ -404,10 +408,10 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
   };
 
   copyVersion = () => {
-    let { cloneVersion } = this.props;
+    let { cloneVersion, saveCampaignAutoVersion } = this.props;
     let versionLast: number = 0;
     let idVersionlast: string = '';
-    let { listVersion, listCjId } = this.state;
+    let { listVersion, infoVersion } = this.state;
     listVersion.map(item => {
       if (item.status != constant_version.DRAFT) {
         if (item.version > versionLast) {
@@ -421,7 +425,8 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
       content: '',
       onOk: async () => {
         await cloneVersion(idVersionlast);
-        await this.cloneVersion();
+        await this.cloneVersion('copy');
+        await saveCampaignAutoVersion(infoVersion);
         window.location.assign(`#/flow`);
       },
       onCancel() {},
@@ -432,10 +437,11 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
 
   viewVersion = async id => {
     let { infoVersion } = this.state;
-    const { cloneVersion } = this.props;
+    const { cloneVersion, saveCampaignAutoVersion, getListCustomerVersionProcess } = this.props;
     await cloneVersion(id);
-    await this.cloneVersion();
+    await this.cloneVersion('view');
     await saveCampaignAutoVersion(infoVersion);
+    await getListCustomerVersionProcess('', id, 0);
     window.location.assign('#/flow/details');
   };
 
@@ -570,7 +576,8 @@ const mapDispatchToProps = {
   deleteVersion,
   stopVersion,
   cloneVersion,
-  getDiagramCampaign
+  getDiagramCampaign,
+  getListCustomerVersionProcess
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

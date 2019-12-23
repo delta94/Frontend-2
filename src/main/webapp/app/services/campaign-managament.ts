@@ -91,3 +91,14 @@ export const cloneVersionService = id => {
   const url = `${urlVersion}/${id}`;
   return axios.get(url);
 };
+
+//call API get list customer version process
+export const getListCustomerVersionProcessService = (textSearch: string, id, page?: number) => {
+  const url = `${urlVersion}/${id}/customers`;
+  return axios.get(url, { params: { page, pageSize: 10, textSearch } });
+};
+
+export const viewInteractiveService = id => {
+  const url = `v1/history/activity-instance`;
+  return axios.get(url, { params: { processInstanceId: id } });
+};
