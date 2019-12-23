@@ -41,9 +41,11 @@ const code_node = {
 interface IVersionListProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
 interface IVersionListState {
   infoVersion: {
+    type: string;
     nameVersion: string;
     idVersion: string;
     cjId: string;
+    status: string;
   };
   listCjId: any[];
   listVersion: any[];
@@ -51,9 +53,11 @@ interface IVersionListState {
 export class VersionList extends React.Component<IVersionListProps, IVersionListState> {
   state: IVersionListState = {
     infoVersion: {
+      type: '',
       nameVersion: '',
       idVersion: '',
-      cjId: ''
+      cjId: '',
+      status: ''
     },
     listCjId: [],
     listVersion: []
@@ -67,9 +71,11 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
         .map(event => {
           if (event.cjVersionId === this.props.match.params.id) {
             return {
+              type: 'copy',
               nameVersion: event.name,
               idVersion: event.cjVersionId,
-              cjId: event.id
+              cjId: event.id,
+              status: event.status
             };
           }
         })
@@ -438,6 +444,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
   viewVersion = async id => {
     let { infoVersion } = this.state;
     const { cloneVersion, saveCampaignAutoVersion, getListCustomerVersionProcess } = this.props;
+    infoVersion.idVersion = id;
     await cloneVersion(id);
     await this.cloneVersion('view');
     await saveCampaignAutoVersion(infoVersion);

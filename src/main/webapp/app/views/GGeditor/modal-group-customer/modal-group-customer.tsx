@@ -457,7 +457,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
                   color="primary"
                   style={{ float: 'right', margin: '3px' }}
                   onClick={this.getDataListCustomer}
-                  disabled={info_version.nameVersion ? true : list_field_data_cpn.length === 0 ? true : false}
+                  disabled={info_version.type == 'copy' ? true : list_field_data_cpn.length === 0 ? true : false}
                 >
                   <Translate contentKey="group-attribute-customer.apply" />
                 </Button>

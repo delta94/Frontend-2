@@ -2,14 +2,22 @@ import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import CustomNode from '../node/node';
+import { Translate, translate } from 'react-jhipster';
 import Loader from 'react-loader-advanced';
 import { Card, Table, CardBody } from 'reactstrap';
+import ReactPaginate from 'react-paginate';
 import CustomEdges from '../egdes/egdes';
 import GGEditor, { Flow } from 'gg-editor';
-import { Row, Col, Select, Button, Layout, Breadcrumb, Collapse, Modal as ModalAntd } from 'antd';
+import { Row, Col, Input, Select, Button, Layout, Breadcrumb, Collapse, Modal } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
-import { cloneVersion, getDiagramCampaign, getListCustomerVersionProcess, viewInteractive } from 'app/actions/campaign-managament';
+import {
+  cloneVersion,
+  getDiagramCampaign,
+  getListCustomerVersionProcess,
+  viewInteractive,
+  stopVersion
+} from 'app/actions/campaign-managament';
 import { img_node, const_shape } from 'app/common/model/campaign-managament.model';
 import LoaderAnim from 'react-loaders';
 import ModalInteractive from './modal-interactive/modal-interactive';
@@ -18,9 +26,14 @@ import './details-flow.scss';
 const { Panel } = Collapse;
 const { Option } = Select;
 const { Header } = Layout;
+const { confirm } = Modal;
 interface IFlowPageProps extends StateProps, DispatchProps {}
 interface IFlowPageState {
   isOpenModal: boolean;
+  active_page: number;
+  itemsPerPage: number;
+  idCjersion: string;
+  textSearch: string;
 }
 
 const constant_version = {
@@ -41,7 +54,11 @@ const code_node = {
 };
 export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   state: IFlowPageState = {
-    isOpenModal: false
+    isOpenModal: false,
+    active_page: 0,
+    itemsPerPage: 0,
+    idCjersion: '',
+    textSearch: ''
   };
 
   componentDidMount() {
@@ -170,6 +187,45 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       await viewInteractive(id);
     }
   };
+  handlePagination = activePage => {
+    let { textSearch } = this.state;
+    const { getListCustomerVersionProcess, infoVersion } = this.props;
+    getListCustomerVersionProcess('', infoVersion.idVersion, activePage.selected);
+  };
+
+  search = event => {
+    if (event.key === 'Enter') {
+      const textSearch = event.target.value;
+      const { active_page } = this.state;
+      const { getListCustomerVersionProcess, infoVersion } = this.props;
+      this.setState({
+        ...this.state,
+        textSearch,
+        active_page: 0
+      });
+      this.props.getListCustomerVersionProcess(textSearch, infoVersion.idVersion, active_page);
+    }
+  };
+
+  stopVersion = async () => {
+    const { clone_version, stopVersion, cloneVersion } = this.props;
+    if (clone_version.status === 'Running') {
+      await stopVersion(clone_version.id);
+      await cloneVersion(clone_version.id);
+      await this.cloneVersion();
+    } else {
+      Modal.warning({
+        title: 'Thông báo',
+        content: 'Chỉ dừng version có trạng thái : Đang thực hiện',
+        okText: 'Đồng ý'
+      });
+    }
+  };
+  createNewVersion = () => {
+    const { getDiagramCampaign } = this.props;
+    getDiagramCampaign([]);
+    window.location.assign(`#/flow`);
+  };
   render() {
     const imgSetting = require('app/assets/utils/images/flow/setting.png');
     const img_history = require('app/assets/utils/images/flow/history.png');
@@ -238,7 +294,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
               <Col span={24} style={{ padding: '1%' }}>
                 <Col span={4}>
                   <label>Phiên bản: </label>{' '}
-                  <Select onChange={this.selectVersion} style={{ width: '20%' }} defaultValue={clone_version.version}>
+                  <Select onChange={this.selectVersion} style={{ width: '25%' }} defaultValue={clone_version.version}>
                     {list_version &&
                       list_version.map((item, index) => {
                         return (
@@ -256,8 +312,15 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                   <img src={imgSetting} />
                 </Col>
                 <Col span={4} style={{ float: 'right' }}>
-                  <Button type="primary">Tạo mới version</Button>
-                  <Button type="primary" style={{ background: '#97A3B4', borderColor: 'unset', float: 'right' }}>
+                  <Button
+                    onClick={() => {
+                      this.createNewVersion();
+                    }}
+                    type="primary"
+                  >
+                    Tạo mới version
+                  </Button>
+                  <Button onClick={this.stopVersion} type="primary" style={{ background: '#97A3B4', borderColor: 'unset', float: 'right' }}>
                     Dừng version
                   </Button>
                 </Col>
@@ -281,7 +344,14 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                 <Collapse bordered={false} defaultActiveKey={['1']} expandIconPosition="right">
                   <Panel header="Lịch sử" key="1">
                     <CardBody className="card-body-details">
-                      <p>{countCustomerVersionProcess} Bản ghi</p>
+                      <label>{countCustomerVersionProcess} Bản ghi</label>
+                      <Input
+                        style={{ width: '20%', float: 'right', marginBottom: '1%' }}
+                        type="text"
+                        className="form-control"
+                        onKeyDown={this.search}
+                        placeholder={translate('userManagement.home.search-placer')}
+                      />
                       <Table responsive striped className="main-table-version">
                         <thead>
                           <th />
@@ -311,6 +381,26 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                             })}
                         </tbody>
                       </Table>
+                      <Row className="justify-content-center" style={{ float: 'right', marginTop: '1%' }}>
+                        {countCustomerVersionProcess >= 10 ? (
+                          <ReactPaginate
+                            previousLabel={'<'}
+                            nextLabel={'>'}
+                            breakLabel={'...'}
+                            breakClassName={'break-me'}
+                            pageCount={Math.ceil(countCustomerVersionProcess / 10)}
+                            marginPagesDisplayed={1}
+                            pageRangeDisplayed={3}
+                            onPageChange={this.handlePagination}
+                            containerClassName={'pagination'}
+                            subContainerClassName={'pages pagination'}
+                            activeClassName={'active'}
+                            forcePage={this.state.active_page}
+                          />
+                        ) : (
+                          ''
+                        )}
+                      </Row>
                     </CardBody>
                   </Panel>
                 </Collapse>
@@ -340,7 +430,8 @@ const mapDispatchToProps = {
   cloneVersion,
   getDiagramCampaign,
   getListCustomerVersionProcess,
-  viewInteractive
+  viewInteractive,
+  stopVersion
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

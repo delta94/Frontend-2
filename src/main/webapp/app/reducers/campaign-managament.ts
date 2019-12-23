@@ -44,8 +44,10 @@ interface IListEmailTest {
 }
 
 interface IInfoVersion {
+  type: string;
   nameVersion: string;
   idVersion: string;
+  status: string;
 }
 
 const initialCampaignManagament = {

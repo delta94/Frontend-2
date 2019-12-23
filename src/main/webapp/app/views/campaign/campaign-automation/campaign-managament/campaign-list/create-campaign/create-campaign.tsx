@@ -16,6 +16,7 @@ interface ICreateCampaignProps extends StateProps, DispatchProps {}
 
 interface ICreateCampaignState {
   infoVersion: {
+    type: string;
     nameVersion: string;
     idVersion: string;
     cjId: string;
@@ -25,6 +26,7 @@ interface ICreateCampaignState {
 class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampaignState> {
   state: ICreateCampaignState = {
     infoVersion: {
+      type: null,
       nameVersion: '',
       idVersion: null,
       cjId: null
