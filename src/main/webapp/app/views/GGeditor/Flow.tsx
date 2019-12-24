@@ -564,9 +564,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   disableActivebtn = () => {
     let { listDiagram, list_clone_version, infoVersion } = this.props;
     let result: boolean = true;
-    result = list_clone_version.id ? false : infoVersion.idVersion ? false : true;
-    if (listDiagram.nodes.length > 0) {
-      result = false;
+    if (listDiagram.nodes && listDiagram.nodes.length > 0) {
+      result = list_clone_version.id ? false : infoVersion.idVersion ? false : true;
     }
     return result;
   };
@@ -590,7 +589,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             this.commandExecute(command);
           }}
         >
-          <Layout style={{ minHeight: '200vh' }}>
+          <Layout>
             {isTest ? <SiderTest /> : isValidate ? <SiderValidate /> : <SiderComponet />}
             <Layout>
               <Header className="header-flow">
@@ -711,7 +710,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                 graph={{
                   edgeDefaultShape: 'custom-edge',
                   width: 1180,
-                  heigth: 300
+                  height: 500
                 }}
                 className="flow"
                 data={listDiagram.nodes && listDiagram.nodes.length > 0 ? listDiagram : []}
