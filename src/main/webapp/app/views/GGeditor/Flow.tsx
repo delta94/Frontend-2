@@ -33,12 +33,6 @@ import ModalTimeWait from './modal-wait/modal-wait';
 import SiderValidate from './sider/sider-validate';
 
 const ButtonGroup = Button.Group;
-const constant_version = {
-  DRAFT: 'Draft',
-  FINISH: 'Finish',
-  RUNNING: 'Running',
-  STOP: 'Stop'
-};
 
 interface IFlowPageProps extends StateProps, DispatchProps {}
 interface IFlowPageState {
@@ -457,7 +451,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     let { listDiagram } = this.props;
     listDiagram.nodes.map(event => {
       if (source === event.id) {
-        if (event.code === 'TIMER_EVENT' || event.code === 'TIMER' || event.code === 'GATEWAY') {
+        if (event.code === code_node.TIMER_EVENT || event.code === code_node.TIMER || event.code === code_node.GATEWAY) {
           if (sourceAnchor === 3) {
             return (valueEdges = 'true');
           } else if (sourceAnchor === 1) {
@@ -695,7 +689,9 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                 }}
                 // onMouseMove = {(e)=>{}}
                 graph={{
-                  edgeDefaultShape: 'custom-edge'
+                  edgeDefaultShape: 'custom-edge',
+                  width: 1180,
+                  heigth: 300
                 }}
                 className="flow"
                 data={listDiagram.nodes && listDiagram.nodes.length > 0 ? listDiagram : []}

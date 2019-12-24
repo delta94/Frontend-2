@@ -23,6 +23,11 @@ body {
   flex: 1;
 }
 .editor {
+  .ant-layout.ant-layout-has-sider > .ant-layout,
+  .ant-layout.ant-layout-has-sider > .ant-layout-content {
+    overflow-x: visible;
+  }
+  overflow: auto;
   display: flex;
   flex: 1;
   flex-direction: column;
