@@ -1,20 +1,25 @@
-import { DefaultNodeModel, DiagramEngine, DiagramModel, DiagramWidget } from 'mrblenny-storm-react-diagrams';
+import { DefaultNodeModel, DiagramEngine, DiagramModel, DiagramWidget } from 'storm-react-diagrams';
 import * as React from 'react';
 // import the custom models
-import { ConditionNodeModel, DecisionNodeModel, ForkNodeModel, MergeNodeModel, ProcessNodeModel, StartNodeModel } from './FlowNodeModel';
 import {
-  ConditionNodeFactory,
-  DecisionNodeFactory,
-  EndNodeFactory,
-  ForkNodeFactory,
-  JoinNodeFactory,
-  MergeNodeFactory,
-  ProcessNodeFactory,
-  StartNodeFactory
+  ConditionNodeModel,
+  ContactSourceStartNodeModel,
+  EmailProcessNodeModel,
+  parseNode,
+  SmsProcessNodeModel,
+  TimeWaitingDecisionNodeModel
+} from './FlowNodeModel';
+import {
+  ContactSourceStartNodeFactory,
+  EmailProcessNodeFactory,
+  SmsProcessNodeFactory,
+  TimeWaitingDecisionNodeFactory,
+  EndNodeFactory
 } from './FlowNodeFactory';
 import { FlowNodePortFactory } from './FlowNodePortFactory';
 import { FlowNodePortModel } from './FlowNodePortModel';
 import './index.scss';
+import SAMPLE_DATA from './data';
 
 export default () => {
   //1) setup the diagram engine
@@ -23,14 +28,11 @@ export default () => {
 
   // register some other factories as well
   engine.registerPortFactory(new FlowNodePortFactory('flow', config => new FlowNodePortModel()));
-  engine.registerNodeFactory(new ConditionNodeFactory());
-  engine.registerNodeFactory(new DecisionNodeFactory());
+  engine.registerNodeFactory(new ContactSourceStartNodeFactory());
+  engine.registerNodeFactory(new EmailProcessNodeFactory());
+  engine.registerNodeFactory(new SmsProcessNodeFactory());
+  engine.registerNodeFactory(new TimeWaitingDecisionNodeFactory());
   engine.registerNodeFactory(new EndNodeFactory());
-  engine.registerNodeFactory(new ForkNodeFactory());
-  engine.registerNodeFactory(new JoinNodeFactory());
-  engine.registerNodeFactory(new MergeNodeFactory());
-  engine.registerNodeFactory(new ProcessNodeFactory());
-  engine.registerNodeFactory(new StartNodeFactory());
 
   //2) setup the diagram model
   var model = new DiagramModel();
@@ -41,8 +43,15 @@ export default () => {
   node1.setPosition(100, 150);
 
   //3-B) create our new custom node
-  var node2 = new ConditionNodeModel();
+  var node2 = new TimeWaitingDecisionNodeModel();
   node2.setPosition(250, 108);
+
+  for (let node of SAMPLE_DATA.flow.graph.nodes) {
+    let nodeModel = parseNode(node);
+    if (nodeModel) {
+      model.addNode(nodeModel);
+    }
+  }
 
   var node3 = new DefaultNodeModel('Node 3', 'red');
   var port3 = node3.addInPort('In');

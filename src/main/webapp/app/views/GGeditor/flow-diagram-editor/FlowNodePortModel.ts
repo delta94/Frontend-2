@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { LinkModel, DiagramEngine, PortModel, DefaultLinkModel } from 'mrblenny-storm-react-diagrams';
+import { LinkModel, DiagramEngine, PortModel, DefaultLinkModel } from 'storm-react-diagrams';
 
 export class FlowNodePortModel extends PortModel {
   position: string | 'top' | 'bottom' | 'left' | 'right';

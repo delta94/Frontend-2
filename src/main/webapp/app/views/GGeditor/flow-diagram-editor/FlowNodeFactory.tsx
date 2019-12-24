@@ -1,113 +1,74 @@
-import * as SRD from 'mrblenny-storm-react-diagrams';
+import * as SRD from 'storm-react-diagrams';
 import {
-  ConditionNodeModel,
-  DecisionNodeModel,
+  ContactSourceStartNodeModel,
+  EmailProcessNodeModel,
   EndNodeModel,
-  ForkNodeModel,
-  JoinNodeModel,
-  MergeNodeModel,
-  ProcessNodeModel,
-  StartNodeModel
+  SmsProcessNodeModel,
+  TimeWaitingDecisionNodeModel
 } from './FlowNodeModel';
 import * as React from 'react';
 import { FlowNodeWidget } from './FlowNodeWidget';
-const DecisionWaitingIcon = require('./icons/decision_time_waiting.png');
 
-export class DecisionNodeFactory extends SRD.AbstractNodeFactory {
+const DefaultIcon = require('./icons/default.png');
+const DecisionNodeTimeWaitingIcon = require('./icons/decision_time_waiting.png');
+const StartNodeContactSourceIcon = require('./icons/start_contact_source.png');
+const EndNodeIcon = require('./icons/end.png');
+const ProcessNodeEmailIcon = require('./icons/process_email.png');
+const ProcessNodeSmsIcon = require('./icons/process_sms.png');
+
+export class ContactSourceStartNodeFactory extends SRD.AbstractNodeFactory {
   constructor() {
-    super('decision');
+    super('start_contact_source');
   }
 
   generateReactWidget(diagramEngine: SRD.DiagramEngine, node: SRD.NodeModel): JSX.Element {
-    return <FlowNodeWidget node={node} icon={DecisionWaitingIcon} />;
+    return <FlowNodeWidget node={node} icon={StartNodeContactSourceIcon} />;
   }
 
   getNewInstance() {
-    return new DecisionNodeModel();
+    return new ContactSourceStartNodeModel();
   }
 }
 
-export class MergeNodeFactory extends SRD.AbstractNodeFactory {
+export class EmailProcessNodeFactory extends SRD.AbstractNodeFactory {
   constructor() {
-    super('merge');
+    super('process_email');
   }
 
   generateReactWidget(diagramEngine: SRD.DiagramEngine, node: SRD.NodeModel): JSX.Element {
-    return <FlowNodeWidget node={node} icon={DecisionWaitingIcon} />;
+    return <FlowNodeWidget node={node} icon={ProcessNodeEmailIcon} />;
   }
 
   getNewInstance() {
-    return new MergeNodeModel();
+    return new EmailProcessNodeModel();
   }
 }
 
-export class ForkNodeFactory extends SRD.AbstractNodeFactory {
+export class SmsProcessNodeFactory extends SRD.AbstractNodeFactory {
   constructor() {
-    super('fork');
+    super('process_sms');
   }
 
   generateReactWidget(diagramEngine: SRD.DiagramEngine, node: SRD.NodeModel): JSX.Element {
-    return <FlowNodeWidget node={node} icon={DecisionWaitingIcon} />;
+    return <FlowNodeWidget node={node} icon={ProcessNodeSmsIcon} />;
   }
 
   getNewInstance() {
-    return new ForkNodeModel();
+    return new SmsProcessNodeModel();
   }
 }
 
-export class JoinNodeFactory extends SRD.AbstractNodeFactory {
+export class TimeWaitingDecisionNodeFactory extends SRD.AbstractNodeFactory {
   constructor() {
-    super('join');
+    super('decision_time_waiting');
   }
 
   generateReactWidget(diagramEngine: SRD.DiagramEngine, node: SRD.NodeModel): JSX.Element {
-    return <FlowNodeWidget node={node} icon={DecisionWaitingIcon} />;
+    return <FlowNodeWidget node={node} icon={DecisionNodeTimeWaitingIcon} />;
   }
 
   getNewInstance() {
-    return new JoinNodeModel();
-  }
-}
-
-export class ConditionNodeFactory extends SRD.AbstractNodeFactory {
-  constructor() {
-    super('condition');
-  }
-
-  generateReactWidget(diagramEngine: SRD.DiagramEngine, node: SRD.NodeModel): JSX.Element {
-    return <FlowNodeWidget node={node} icon={DecisionWaitingIcon} />;
-  }
-
-  getNewInstance() {
-    return new ConditionNodeModel();
-  }
-}
-
-export class ProcessNodeFactory extends SRD.AbstractNodeFactory {
-  constructor() {
-    super('process');
-  }
-
-  generateReactWidget(diagramEngine: SRD.DiagramEngine, node: SRD.NodeModel): JSX.Element {
-    return <FlowNodeWidget node={node} icon={DecisionWaitingIcon} />;
-  }
-
-  getNewInstance() {
-    return new ProcessNodeModel();
-  }
-}
-
-export class StartNodeFactory extends SRD.AbstractNodeFactory {
-  constructor() {
-    super('start');
-  }
-
-  generateReactWidget(diagramEngine: SRD.DiagramEngine, node: SRD.NodeModel): JSX.Element {
-    return <FlowNodeWidget node={node} icon={DecisionWaitingIcon} />;
-  }
-
-  getNewInstance() {
-    return new StartNodeModel();
+    return new TimeWaitingDecisionNodeModel();
   }
 }
 
@@ -117,10 +78,67 @@ export class EndNodeFactory extends SRD.AbstractNodeFactory {
   }
 
   generateReactWidget(diagramEngine: SRD.DiagramEngine, node: SRD.NodeModel): JSX.Element {
-    return <FlowNodeWidget node={node} icon={DecisionWaitingIcon} />;
+    return <FlowNodeWidget node={node} icon={EndNodeIcon} />;
   }
 
   getNewInstance() {
     return new EndNodeModel();
   }
 }
+
+//
+// export class MergeNodeFactory extends SRD.AbstractNodeFactory {
+//   constructor() {
+//     super('merge');
+//   }
+//
+//   generateReactWidget(diagramEngine: SRD.DiagramEngine, node: SRD.NodeModel): JSX.Element {
+//     return <FlowNodeWidget node={node} icon={DefaultIcon} />;
+//   }
+//
+//   getNewInstance() {
+//     return new MergeNodeModel();
+//   }
+// }
+//
+// export class ForkNodeFactory extends SRD.AbstractNodeFactory {
+//   constructor() {
+//     super('fork');
+//   }
+//
+//   generateReactWidget(diagramEngine: SRD.DiagramEngine, node: SRD.NodeModel): JSX.Element {
+//     return <FlowNodeWidget node={node} icon={DefaultIcon} />;
+//   }
+//
+//   getNewInstance() {
+//     return new ForkNodeModel();
+//   }
+// }
+//
+// export class JoinNodeFactory extends SRD.AbstractNodeFactory {
+//   constructor() {
+//     super('join');
+//   }
+//
+//   generateReactWidget(diagramEngine: SRD.DiagramEngine, node: SRD.NodeModel): JSX.Element {
+//     return <FlowNodeWidget node={node} icon={DefaultIcon} />;
+//   }
+//
+//   getNewInstance() {
+//     return new JoinNodeModel();
+//   }
+// }
+//
+// export class ConditionNodeFactory extends SRD.AbstractNodeFactory {
+//   constructor() {
+//     super('condition');
+//   }
+//
+//   generateReactWidget(diagramEngine: SRD.DiagramEngine, node: SRD.NodeModel): JSX.Element {
+//     return <FlowNodeWidget node={node} icon={DefaultIcon} />;
+//   }
+//
+//   getNewInstance() {
+//     return new ConditionNodeModel();
+//   }
+// }

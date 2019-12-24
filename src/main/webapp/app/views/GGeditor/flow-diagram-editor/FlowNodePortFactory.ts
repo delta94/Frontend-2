@@ -1,4 +1,4 @@
-import { PortModel, AbstractPortFactory } from 'mrblenny-storm-react-diagrams';
+import { PortModel, AbstractPortFactory } from 'storm-react-diagrams';
 
 export class FlowNodePortFactory extends AbstractPortFactory {
   cb: (initialConfig?: any) => PortModel;

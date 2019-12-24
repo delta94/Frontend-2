@@ -1,22 +1,22 @@
 import * as React from 'react';
-import { NodeModel, PortWidget } from 'mrblenny-storm-react-diagrams';
+import { NodeModel, PortWidget } from 'storm-react-diagrams';
 const DefaultIcon = require('./icons/default.png');
 
 export interface FlowNodeWidgetProps {
-  node: NodeModel;
   width: number;
   height: number;
   icon: string;
+  node: NodeModel;
 }
 
 export interface FlowNodeWidgetState {}
 
 export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNodeWidgetState> {
   public static defaultProps: FlowNodeWidgetProps = {
-    width: 96,
-    height: 96,
-    node: null,
-    icon: DefaultIcon
+    width: 64,
+    height: 64,
+    icon: DefaultIcon,
+    node: null
   };
 
   constructor(props: FlowNodeWidgetProps) {
@@ -25,7 +25,7 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
   }
 
   renderLeftPort() {
-    if (this.props.node.getPort('left') != null) {
+    if (this.props.node && this.props.node.getPort('left')) {
       return (
         <div
           style={{
@@ -42,7 +42,7 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
   }
 
   renderTopPort() {
-    if (this.props.node.getPort('top') != null) {
+    if (this.props.node && this.props.node.getPort('top')) {
       return (
         <div
           style={{
@@ -59,7 +59,7 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
   }
 
   renderRightPort() {
-    if (this.props.node.getPort('right') != null) {
+    if (this.props.node && this.props.node.getPort('right')) {
       return (
         <div
           style={{
@@ -76,7 +76,7 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
   }
 
   renderBottomPort() {
-    if (this.props.node.getPort('bottom') != null) {
+    if (this.props.node && this.props.node.getPort('bottom')) {
       return (
         <div
           style={{
@@ -93,6 +93,7 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
   }
 
   renderIcon() {
+    let alias = this.props.node ? this.props.node.getType() + '_' + this.props.node.getID() : '';
     return (
       <svg
         width={this.props.width}
@@ -101,7 +102,9 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
           __html:
             `
             <defs>
-              <pattern id="image" patternUnits="userSpaceOnUse" height="` +
+              <pattern id="` +
+            alias +
+            `_image" patternUnits="userSpaceOnUse" height="` +
             this.props.height +
             `" width="` +
             this.props.width +
@@ -119,7 +122,9 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
             this.props.height +
             `" width="` +
             this.props.width +
-            `" fill="url(#image)"/>
+            `" fill="url(#` +
+            alias +
+            `_image)"/>
         `
         }}
       />
