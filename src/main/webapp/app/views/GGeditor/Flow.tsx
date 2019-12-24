@@ -290,17 +290,17 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   };
 
   replicateCampaign = async () => {
-    let { list_clone_version, cloneVersion, saveCampaignAutoVersion } = this.props;
-    let infoVersion = {
+    let { list_clone_version, cloneVersion, saveCampaignAutoVersion, infoVersion } = this.props;
+    let dataInfoVersion = {
       type: 'action',
       nameVersion: '',
       idVersion: '',
       cjId: '',
       status: ''
     };
-    await cloneVersion(list_clone_version.id);
+    await cloneVersion(list_clone_version && list_clone_version.id ? list_clone_version.id : infoVersion.idVersion);
     await this.cloneVersion('create');
-    await saveCampaignAutoVersion(infoVersion);
+    await saveCampaignAutoVersion(dataInfoVersion);
     this.hide();
   };
 
@@ -416,7 +416,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       <Row>
         <Row>
           <Button
-            disabled={this.props.list_clone_version.id ? false : true}
+            disabled={this.props.list_clone_version.id ? false : this.props.infoVersion.idVersion ? false : true}
             type="link"
             onClick={this.replicateCampaign}
             className="btn-multi"

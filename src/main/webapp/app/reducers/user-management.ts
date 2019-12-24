@@ -1,4 +1,3 @@
-import { IModalData } from 'app/reducers/user-management';
 import { MODAL_ACTION } from './../constants/modal';
 import axios from 'axios';
 import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } from 'react-jhipster';

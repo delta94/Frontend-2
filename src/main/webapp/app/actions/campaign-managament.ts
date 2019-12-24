@@ -147,3 +147,8 @@ export const viewInteractive = id => ({
   type: CAMPAIGN_MANAGAMENT.VIEW_INTERACTIVE,
   payload: viewInteractiveService(id)
 });
+
+//reset data
+export const resetData = () => ({
+  type: CAMPAIGN_MANAGAMENT.RESET_DATA_CAMPAIGN
+});

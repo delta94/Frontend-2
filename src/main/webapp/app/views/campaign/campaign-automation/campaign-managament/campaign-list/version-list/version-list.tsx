@@ -457,7 +457,6 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
     const imgCopy = require('app/assets/utils/images/campaign-managament/copy-version.png');
     const imgDelete = require('app/assets/utils/images/campaign-managament/delete-version.png');
     const imgLine = require('app/assets/utils/images/campaign-managament/line-version.png');
-    console.log(listVersion);
     const eventStatus = option => {
       let data;
 

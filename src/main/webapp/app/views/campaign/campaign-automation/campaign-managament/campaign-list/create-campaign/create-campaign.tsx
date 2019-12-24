@@ -1,5 +1,5 @@
 import react, { Fragment } from 'react';
-import { saveCampaignAutoVersion, getDiagramCampaign } from 'app/actions/campaign-managament';
+import { saveCampaignAutoVersion, getDiagramCampaign, resetData } from 'app/actions/campaign-managament';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Button, Table, Row, Badge, Col, Icon, Card, Tag } from 'antd';
@@ -20,16 +20,18 @@ interface ICreateCampaignState {
     nameVersion: string;
     idVersion: string;
     cjId: string;
+    status: string;
   };
 }
 
 class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampaignState> {
   state: ICreateCampaignState = {
     infoVersion: {
-      type: null,
+      type: '',
       nameVersion: '',
-      idVersion: null,
-      cjId: null
+      idVersion: '',
+      cjId: '',
+      status: ''
     }
   };
 
@@ -46,8 +48,7 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
             <Button
               type="primary"
               onClick={() => {
-                getDiagramCampaign([]);
-                saveCampaignAutoVersion(infoVersion);
+                this.props.resetData();
                 window.location.assign('#/flow');
               }}
             >
@@ -126,7 +127,8 @@ const mapStateToProps = ({ campaignManagament, cjState }: IRootState) => ({
 
 const mapDispatchToProps = {
   saveCampaignAutoVersion,
-  getDiagramCampaign
+  getDiagramCampaign,
+  resetData
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

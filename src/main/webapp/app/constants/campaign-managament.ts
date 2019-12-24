@@ -20,5 +20,6 @@ export const CAMPAIGN_MANAGAMENT = {
   STOP_VERSION: 'campaign-managament/STOP_VERSION',
   CLONE_VERSION: 'campaign-managament/CLONE_VERSION',
   LIST_CUSTOMER_VERSION_PROCESS: 'campaign-managament/LIST_CUSTOMER_VERSION_PROCESS',
-  VIEW_INTERACTIVE: 'campaign-managament/VIEW_INTERACTIVE'
+  VIEW_INTERACTIVE: 'campaign-managament/VIEW_INTERACTIVE',
+  RESET_DATA_CAMPAIGN: 'campaign-managament/RESET_DATA_CAMPAIGN'
 };

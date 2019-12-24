@@ -178,7 +178,10 @@ export default (state = initialCampaignManagament, action) => {
 
     case CAMPAIGN_MANAGAMENT.GET_INFO_CAMPAIGN:
       return { ...state, listInfoCampaing: action.payload };
-
+    case CAMPAIGN_MANAGAMENT.RESET_DATA_CAMPAIGN:
+      return {
+        ...initialCampaignManagament
+      };
     case CAMPAIGN_MANAGAMENT.GET_DIAGRAM_CAMPAIGN:
       return { ...state, listDiagram: action.payload };
     case CAMPAIGN_MANAGAMENT.VALIDATE_DIAGRAM_CAMPAIGN:
