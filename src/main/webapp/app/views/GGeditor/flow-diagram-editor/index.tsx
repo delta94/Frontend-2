@@ -5,6 +5,7 @@ import {
   ConditionNodeModel,
   ContactSourceStartNodeModel,
   EmailProcessNodeModel,
+  FlowNodeModel,
   parseNode,
   SmsProcessNodeModel,
   TimeWaitingDecisionNodeModel
@@ -53,6 +54,21 @@ export default () => {
     }
   }
 
+  for (let edge of SAMPLE_DATA.flow.graph.edges) {
+    let sourceNode = model.getNode(edge.source);
+    let targetNode = model.getNode(edge.target);
+    if (sourceNode instanceof FlowNodeModel && targetNode instanceof FlowNodeModel) {
+      let sourcePort = sourceNode.getDefaultOutPort();
+      let targetPort = targetNode.getDefaultInPort();
+      if (sourceNode && targetPort && sourcePort.canLinkToPort(targetPort)) {
+        let link = sourcePort.createLinkModel();
+        link.setSourcePort(sourcePort);
+        link.setTargetPort(targetPort);
+        model.addLink(link);
+      }
+    }
+  }
+
   var node3 = new DefaultNodeModel('Node 3', 'red');
   var port3 = node3.addInPort('In');
   node3.setPosition(500, 150);
@@ -68,5 +84,5 @@ export default () => {
   engine.setDiagramModel(model);
 
   //6) render the diagram!
-  return <DiagramWidget className="srd-demo-canvas" diagramEngine={engine} />;
+  return <DiagramWidget className="srd-flow-canvas" diagramEngine={engine} allowLooseLinks={false} />;
 };

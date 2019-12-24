@@ -1,4 +1,4 @@
-import { NodeModel } from 'storm-react-diagrams';
+import { NodeModel, PortModel } from 'storm-react-diagrams';
 import { FlowNodePortModel } from './FlowNodePortModel';
 import { FlowNodeConfig } from 'app/views/GGeditor/flow-diagram-editor/FlowNodeConfig';
 
@@ -11,6 +11,14 @@ export class FlowNodeModel extends NodeModel {
   setConfig(config: FlowNodeConfig) {
     this.config = config;
   }
+
+  getDefaultInPort(): PortModel | null {
+    return null;
+  }
+
+  getDefaultOutPort(): PortModel | null {
+    return null;
+  }
 }
 
 export class DecisionNodeModel extends FlowNodeModel {
@@ -19,6 +27,14 @@ export class DecisionNodeModel extends FlowNodeModel {
     this.addPort(new FlowNodePortModel('left')); //in
     this.addPort(new FlowNodePortModel('bottom')); //out
     this.addPort(new FlowNodePortModel('right')); //out
+  }
+
+  getDefaultInPort(): PortModel | null {
+    return this.getPort('left');
+  }
+
+  getDefaultOutPort(): PortModel | null {
+    return this.getPort('right');
   }
 }
 
@@ -29,6 +45,14 @@ export class MergeNodeModel extends FlowNodeModel {
     this.addPort(new FlowNodePortModel('bottom')); //in
     this.addPort(new FlowNodePortModel('right')); //out
   }
+
+  getDefaultInPort(): PortModel | null {
+    return this.getPort('left');
+  }
+
+  getDefaultOutPort(): PortModel | null {
+    return this.getPort('right');
+  }
 }
 
 export class ForkNodeModel extends FlowNodeModel {
@@ -37,6 +61,14 @@ export class ForkNodeModel extends FlowNodeModel {
     this.addPort(new FlowNodePortModel('left')); //in
     this.addPort(new FlowNodePortModel('top')); //out
     this.addPort(new FlowNodePortModel('bottom')); //out
+  }
+
+  getDefaultInPort(): PortModel | null {
+    return this.getPort('left');
+  }
+
+  getDefaultOutPort(): PortModel | null {
+    return this.getPort('top');
   }
 }
 
@@ -47,6 +79,14 @@ export class JoinNodeModel extends FlowNodeModel {
     this.addPort(new FlowNodePortModel('bottom')); //in
     this.addPort(new FlowNodePortModel('right')); //out
   }
+
+  getDefaultInPort(): PortModel | null {
+    return this.getPort('top');
+  }
+
+  getDefaultOutPort(): PortModel | null {
+    return this.getPort('right');
+  }
 }
 
 export class ConditionNodeModel extends FlowNodeModel {
@@ -54,6 +94,14 @@ export class ConditionNodeModel extends FlowNodeModel {
     super(nodeType, id);
     this.addPort(new FlowNodePortModel('left')); //in
     this.addPort(new FlowNodePortModel('right')); //out
+  }
+
+  getDefaultInPort(): PortModel | null {
+    return this.getPort('left');
+  }
+
+  getDefaultOutPort(): PortModel | null {
+    return this.getPort('right');
   }
 }
 
@@ -63,6 +111,14 @@ export class ProcessNodeModel extends FlowNodeModel {
     this.addPort(new FlowNodePortModel('left')); //in
     this.addPort(new FlowNodePortModel('right')); //out
   }
+
+  getDefaultInPort(): PortModel | null {
+    return this.getPort('left');
+  }
+
+  getDefaultOutPort(): PortModel | null {
+    return this.getPort('right');
+  }
 }
 
 export class StartNodeModel extends FlowNodeModel {
@@ -70,12 +126,28 @@ export class StartNodeModel extends FlowNodeModel {
     super(nodeType, id);
     this.addPort(new FlowNodePortModel('right')); //out
   }
+
+  getDefaultInPort(): PortModel | null {
+    return null;
+  }
+
+  getDefaultOutPort(): PortModel | null {
+    return this.getPort('right');
+  }
 }
 
 export class EndNodeModel extends FlowNodeModel {
   constructor(id?: string) {
     super('end', id);
     this.addPort(new FlowNodePortModel('left')); //in
+  }
+
+  getDefaultInPort(): PortModel | null {
+    return this.getPort('left');
+  }
+
+  getDefaultOutPort(): PortModel | null {
+    return null;
   }
 }
 
@@ -119,7 +191,7 @@ export class TimeWaitingDecisionNodeModel extends DecisionNodeModel {
         }
  */
 
-const createNodeModel = (code: string, id: string) => {
+const createNodeModel = (code: string, id: string): FlowNodeModel | null => {
   if (code === 'SOURCE') return new ContactSourceStartNodeModel(id);
   else if (code === 'SEND_MAIL') return new EmailProcessNodeModel(id);
   else if (code === 'SEND_SMS') return new SmsProcessNodeModel(id);
@@ -128,7 +200,7 @@ const createNodeModel = (code: string, id: string) => {
   return null;
 };
 
-export function parseNode(node: any) {
+export function parseNode(node: any): FlowNodeModel | null {
   let nodeModel = createNodeModel(node.code, node.id);
   if (nodeModel) {
     nodeModel.setPosition(node.x ? node.x : 0, node.y ? node.y : 0);

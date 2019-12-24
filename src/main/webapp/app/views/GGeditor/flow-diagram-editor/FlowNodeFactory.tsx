@@ -22,7 +22,7 @@ export class ContactSourceStartNodeFactory extends SRD.AbstractNodeFactory {
   }
 
   generateReactWidget(diagramEngine: SRD.DiagramEngine, node: SRD.NodeModel): JSX.Element {
-    return <FlowNodeWidget node={node} icon={StartNodeContactSourceIcon} />;
+    return <FlowNodeWidget node={node} icon={StartNodeContactSourceIcon} width={68} height={68} />;
   }
 
   getNewInstance() {
@@ -64,7 +64,7 @@ export class TimeWaitingDecisionNodeFactory extends SRD.AbstractNodeFactory {
   }
 
   generateReactWidget(diagramEngine: SRD.DiagramEngine, node: SRD.NodeModel): JSX.Element {
-    return <FlowNodeWidget node={node} icon={DecisionNodeTimeWaitingIcon} />;
+    return <FlowNodeWidget node={node} icon={DecisionNodeTimeWaitingIcon} width={90} height={90} />;
   }
 
   getNewInstance() {
@@ -78,7 +78,7 @@ export class EndNodeFactory extends SRD.AbstractNodeFactory {
   }
 
   generateReactWidget(diagramEngine: SRD.DiagramEngine, node: SRD.NodeModel): JSX.Element {
-    return <FlowNodeWidget node={node} icon={EndNodeIcon} />;
+    return <FlowNodeWidget node={node} icon={EndNodeIcon} width={68} height={68} />;
   }
 
   getNewInstance() {

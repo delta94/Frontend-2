@@ -23,4 +23,14 @@ export class FlowNodePortModel extends PortModel {
   createLinkModel(): LinkModel {
     return new DefaultLinkModel();
   }
+
+  link(port: FlowNodePortModel): LinkModel | null {
+    if (port && this.canLinkToPort(port)) {
+      let link = this.createLinkModel();
+      link.setSourcePort(this);
+      link.setTargetPort(port);
+      return link;
+    }
+    return null;
+  }
 }
