@@ -98,7 +98,13 @@ export const getListCustomerVersionProcessService = (textSearch: string, id, pag
   return axios.get(url, { params: { page, pageSize: 10, textSearch } });
 };
 
+// Call API list customer interactive
 export const viewInteractiveService = id => {
   const url = `v1/history/activity-instance`;
   return axios.get(url, { params: { processInstanceId: id } });
+};
+
+export const activeProcessCampaignService = id => {
+  const url = `${urlVersion}/${id}/start-process`;
+  return axios.post(url);
 };

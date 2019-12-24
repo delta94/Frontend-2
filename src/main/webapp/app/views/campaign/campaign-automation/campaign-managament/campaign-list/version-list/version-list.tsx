@@ -205,7 +205,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
         content: '',
         onOk: async () => {
           await deleteVersion(listCjId);
-          this.refresh;
+          this.refresh();
         },
         onCancel() {},
         okText: 'Đồng ý',

@@ -12,7 +12,8 @@ import {
   getDiagramCampaign,
   validateCampaign,
   cloneVersion,
-  saveCampaignAutoVersion
+  saveCampaignAutoVersion,
+  activeProcessCampaign
 } from 'app/actions/campaign-managament';
 import { IRootState } from 'app/reducers';
 import ConfigEmail from './config-email/config-email';
@@ -552,9 +553,27 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     // console.log(node);
   };
 
+  activeProcess = () => {
+    const { activeProcessCampaign, list_clone_version, infoVersion } = this.props;
+    let data = list_clone_version.id ? list_clone_version.id : infoVersion.idVersion ? infoVersion.idVersion : '';
+    if (data) {
+      activeProcessCampaign(data);
+    }
+  };
+
+  disableActivebtn = () => {
+    let { listDiagram, list_clone_version, infoVersion } = this.props;
+    let result: boolean = true;
+    result = list_clone_version.id ? false : infoVersion.idVersion ? false : true;
+    if (listDiagram.nodes.length > 0) {
+      result = false;
+    }
+    return result;
+  };
+
   render() {
     let { isOpenModalInfo, idNode, isTest, isOpenModalMessage, isOpenModalWaitForEvent, isOpenModalWait, data, isValidate } = this.state;
-    let { infoCampaign, listDiagram, infoVersion } = this.props;
+    let { infoCampaign, listDiagram, infoVersion, list_clone_version } = this.props;
     const imgSetting = require('app/assets/utils/images/flow/setting.png');
     const imgAward = require('app/assets/utils/images/flow/award.png');
     const imgMove = require('app/assets/utils/images/flow/move.png');
@@ -644,7 +663,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                         onClick={() => {
                           this.setState({ isTest: !isTest, isValidate: false });
                         }}
-                        disabled={listDiagram.nodes && listDiagram.nodes.length > 0 ? false : true}
+                        disabled={this.disableActivebtn()}
                       >
                         Test
                       </Button>
@@ -664,7 +683,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                   </Col>
                   <Col span={2}>
                     <Button
-                      disabled={listDiagram.nodes && listDiagram.nodes.length > 0 ? this.state.isSave : true}
+                      onClick={this.activeProcess}
+                      disabled={list_clone_version.id ? false : infoVersion.idVersion ? false : true}
                       type="primary"
                       style={{ float: 'right' }}
                     >
@@ -765,7 +785,8 @@ const mapDispatchToProps = {
   getDiagramCampaign,
   validateCampaign,
   cloneVersion,
-  saveCampaignAutoVersion
+  saveCampaignAutoVersion,
+  activeProcessCampaign
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
