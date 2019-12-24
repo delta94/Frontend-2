@@ -108,3 +108,9 @@ export const activeProcessCampaignService = id => {
   const url = `${urlVersion}/${id}/start-process`;
   return axios.post(url);
 };
+
+// call API Template campaign
+export const getTemplateCampaignService = () => {
+  const url = `v1/cj-templates`;
+  return axios.get(url);
+};

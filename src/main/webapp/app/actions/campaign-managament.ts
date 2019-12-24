@@ -16,7 +16,8 @@ import {
   cloneVersionService,
   getListCustomerVersionProcessService,
   viewInteractiveService,
-  activeProcessCampaignService
+  activeProcessCampaignService,
+  getTemplateCampaignService
 } from 'app/services/campaign-managament';
 
 //get Tree Folder
@@ -158,4 +159,10 @@ export const resetData = () => ({
 export const activeProcessCampaign = id => ({
   type: CAMPAIGN_MANAGAMENT.ACTIVE_PROCESS_CAMPAIGN,
   payload: activeProcessCampaignService(id)
+});
+
+// get template campaign automation
+export const getTemplateCampaign = () => ({
+  type: CAMPAIGN_MANAGAMENT.GET_TEMPLATE_CAMPAIGN,
+  payload: getTemplateCampaignService()
 });

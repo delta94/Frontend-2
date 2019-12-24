@@ -7,7 +7,8 @@ import {
   IDataTreeFolder,
   IListCampaignAuto,
   IListCustomerVersionProcess,
-  IListCustomerInteractive
+  IListCustomerInteractive,
+  IListTemplateCampaign
 } from 'app/common/model/campaign-managament.model';
 
 interface IStatusCampagin {
@@ -66,13 +67,15 @@ const initialCampaignManagament = {
   cloneInfoVersion: {} as IListCloneVersion,
   listCustomerVersionProcess: [] as IListCustomerVersionProcess[],
   countCustomerVersionProcess: 0,
-  listCustomerInteractive: [] as IListCustomerInteractive[]
+  listCustomerInteractive: [] as IListCustomerInteractive[],
+  listTemplateCampaign: [] as IListTemplateCampaign[]
 };
 
 export type HandleCampaignManagament = typeof initialCampaignManagament;
 
 export default (state = initialCampaignManagament, action) => {
   switch (action.type) {
+    case REQUEST(CAMPAIGN_MANAGAMENT.GET_TEMPLATE_CAMPAIGN):
     case REQUEST(CAMPAIGN_MANAGAMENT.VIEW_INTERACTIVE):
     case REQUEST(CAMPAIGN_MANAGAMENT.LIST_CUSTOMER_VERSION_PROCESS):
     case REQUEST(CAMPAIGN_MANAGAMENT.CLONE_VERSION):
@@ -85,6 +88,7 @@ export default (state = initialCampaignManagament, action) => {
         ...state,
         loading: true
       };
+    case FAILURE(CAMPAIGN_MANAGAMENT.GET_TEMPLATE_CAMPAIGN):
     case FAILURE(CAMPAIGN_MANAGAMENT.VIEW_INTERACTIVE):
     case FAILURE(CAMPAIGN_MANAGAMENT.LIST_CUSTOMER_VERSION_PROCESS):
     case FAILURE(CAMPAIGN_MANAGAMENT.CLONE_VERSION):
@@ -96,6 +100,12 @@ export default (state = initialCampaignManagament, action) => {
       return {
         ...state,
         loading: false
+      };
+    case SUCCESS(CAMPAIGN_MANAGAMENT.GET_TEMPLATE_CAMPAIGN):
+      return {
+        ...state,
+        loading: false,
+        listTemplateCampaign: action.payload.data
       };
     case SUCCESS(CAMPAIGN_MANAGAMENT.VIEW_INTERACTIVE):
       return {

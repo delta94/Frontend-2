@@ -140,3 +140,13 @@ export interface IListCustomerInteractive {
   startTime: string;
   endTime: string;
 }
+
+export interface IListTemplateCampaign {
+  id: string;
+  name: string;
+  difficulty: number;
+  status: string;
+  flow: string;
+  description: string;
+  thumbnail: string;
+}

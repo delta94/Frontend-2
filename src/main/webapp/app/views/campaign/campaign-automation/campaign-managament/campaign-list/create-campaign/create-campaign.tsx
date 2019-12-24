@@ -1,8 +1,8 @@
 import react, { Fragment } from 'react';
-import { saveCampaignAutoVersion, getDiagramCampaign, resetData } from 'app/actions/campaign-managament';
+import { saveCampaignAutoVersion, getDiagramCampaign, resetData, getTemplateCampaign } from 'app/actions/campaign-managament';
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Table, Row, Badge, Col, Icon, Card, Tag } from 'antd';
+import { Button, Table, Row, Badge, Col, Breadcrumb, Card, Tag } from 'antd';
 import { Container } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { IRootState } from 'app/reducers';
@@ -34,18 +34,67 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
       status: ''
     }
   };
+  componentDidMount() {
+    const { getTemplateCampaign } = this.props;
+    getTemplateCampaign();
+  }
+
+  difficulty = option => {
+    let result = {
+      difficulty: '',
+      color: ''
+    };
+    switch (option) {
+      case 0:
+        result.difficulty = 'ĐƠN GIẢN';
+        result.color = '#42C37F';
+        break;
+      case 1:
+        result.difficulty = 'TRUNG BÌNH';
+        result.color = '#9CA9AC';
+        break;
+      case 2:
+        result.difficulty = 'PHỨC TẠP';
+        result.color = '#F46C6C';
+        break;
+      default:
+        break;
+    }
+    return result;
+  };
 
   render() {
-    const { saveCampaignAutoVersion, getDiagramCampaign } = this.props;
-    const { infoVersion } = this.state;
+    const { list_template } = this.props;
     return (
       <div className="container-create">
         <Row className="row-title">
           <Col span={20}>
-            <FontAwesomeIcon icon={faHome} /> > <label className="title"> Chiến dịch tự động > Danh sách chiến dịch > Tạo Chiến dịch</label>
+            <Breadcrumb separator=">">
+              <Breadcrumb.Item>
+                <a onClick={() => window.location.assign('/#/app/views/customers/user-management')} href="javascript:void(0);">
+                  <FontAwesomeIcon icon={faHome} />
+                </a>
+              </Breadcrumb.Item>
+              <Breadcrumb.Item>
+                <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-auto')} href="javascript:void(0);">
+                  Chiến dịch tự động
+                </a>
+              </Breadcrumb.Item>
+              <Breadcrumb.Item>
+                <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-managament')} href="javascript:void(0);">
+                  Danh sách chiến dịch
+                </a>
+              </Breadcrumb.Item>
+              <Breadcrumb.Item>
+                <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-managament/new')} href="javascript:void(0);">
+                  Tạo chiến dịch
+                </a>
+              </Breadcrumb.Item>
+            </Breadcrumb>
           </Col>
-          <Col span={4}>
+          <Col span={4} style={{ textAlign: 'right' }}>
             <Button
+              style={{ background: '#3866DD' }}
               type="primary"
               onClick={() => {
                 this.props.resetData();
@@ -60,60 +109,24 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
         <br />
         <Container fluid>
           <Card>
-            <Row gutter={16}>
-              <Col className="gutter-row" span={6}>
-                <div className="gutter-box">
-                  <label className="text-title">Chúc mừng sinh nhật</label>
-                  <Tag style={{ float: 'right' }} color="#108ee9">
-                    #nhóm 1
-                  </Tag>
-                  <p>
-                    Chiến dịch gửi quà chúc mừng khách hàng nhân ngày sinh nhật, tặng quà khách hàng VIP sử đã sử dụng trên 100.000.000 tiền
-                    sản phẩm...{' '}
-                  </p>
-                  <Tag color="#87d068">Đơn giản</Tag>
-                </div>
-              </Col>
-              <Col className="gutter-row" span={6}>
-                <div className="gutter-box">
-                  <label className="text-title">Chúc mừng sinh nhật</label>
-                  <Tag style={{ float: 'right' }} color="#108ee9">
-                    #nhóm 1
-                  </Tag>
-                  <p>
-                    Chiến dịch gửi quà chúc mừng khách hàng nhân ngày sinh nhật, tặng quà khách hàng VIP sử đã sử dụng trên 100.000.000 tiền
-                    sản phẩm...{' '}
-                  </p>
-                  <Tag color="#87d068">Đơn giản</Tag>
-                </div>
-              </Col>
-              <Col className="gutter-row" span={6}>
-                <div className="gutter-box">
-                  <label className="text-title">Chúc mừng sinh nhật</label>
-                  <Tag style={{ float: 'right' }} color="#108ee9">
-                    #nhóm 1
-                  </Tag>
-                  <p>
-                    Chiến dịch gửi quà chúc mừng khách hàng nhân ngày sinh nhật, tặng quà khách hàng VIP sử đã sử dụng trên 100.000.000 tiền
-                    sản phẩm...{' '}
-                  </p>
-                  <Tag color="#87d068">Đơn giản</Tag>
-                </div>
-              </Col>
-              <Col className="gutter-row" span={6}>
-                <div className="gutter-box">
-                  <label className="text-title">Chúc mừng sinh nhật</label>
-                  <Tag style={{ float: 'right' }} color="#108ee9">
-                    #nhóm 1
-                  </Tag>
-                  <p>
-                    Chiến dịch gửi quà chúc mừng khách hàng nhân ngày sinh nhật, tặng quà khách hàng VIP sử đã sử dụng trên 100.000.000 tiền
-                    sản phẩm...{' '}
-                  </p>
-                  <Tag color="#87d068">Đơn giản</Tag>
-                </div>
-              </Col>
-            </Row>
+            <div className="count-campaign">{list_template ? list_template.length : ''} chiến dịch mẫu </div>
+            {list_template &&
+              list_template.map((item, index) => {
+                return (
+                  <Col className="gutter-row" span={8} key={index}>
+                    <div className="gutter-box">
+                      <label className="text-title">{item.name}</label>
+                      <Tag className="tag-group-content" style={{ margin: '1% 5%' }} color="#E6E8E9">
+                        <label>#NHÓM 1</label>
+                      </Tag>
+                      <p>{item.description}</p>
+                      <Tag color={this.difficulty(item.difficulty).color} style={{ margin: '7% 3%' }}>
+                        <label style={{ lineHeight: '0' }}>{this.difficulty(item.difficulty).difficulty}</label>
+                      </Tag>
+                    </div>
+                  </Col>
+                );
+              })}
           </Card>
         </Container>
       </div>
@@ -122,13 +135,15 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
 }
 
 const mapStateToProps = ({ campaignManagament, cjState }: IRootState) => ({
-  loading: campaignManagament.loading
+  loading: campaignManagament.loading,
+  list_template: campaignManagament.listTemplateCampaign
 });
 
 const mapDispatchToProps = {
   saveCampaignAutoVersion,
   getDiagramCampaign,
-  resetData
+  resetData,
+  getTemplateCampaign
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

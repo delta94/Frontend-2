@@ -580,9 +580,9 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             this.commandExecute(command);
           }}
         >
-          <Layout>
+          <Layout className="layout-flow">
             {isTest ? <SiderTest /> : isValidate ? <SiderValidate /> : <SiderComponet />}
-            <Layout>
+            <Layout style={{ maxWidth: '76.8%' }}>
               <Header className="header-flow">
                 <Row>
                   <Col span={24} className="titleContent">
@@ -700,7 +700,6 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                 // onMouseMove = {(e)=>{}}
                 graph={{
                   edgeDefaultShape: 'custom-edge',
-                  width: 1180,
                   height: 500
                 }}
                 className="flow"
