@@ -582,7 +582,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         >
           <Layout className="layout-flow">
             {isTest ? <SiderTest /> : isValidate ? <SiderValidate /> : <SiderComponet />}
-            <Layout style={{ maxWidth: '76.8%' }}>
+            <Layout style={{ maxWidth: '80.8%' }}>
               <Header className="header-flow">
                 <Row>
                   <Col span={24} className="titleContent">

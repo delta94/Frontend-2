@@ -96,9 +96,11 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
             <Button
               style={{ background: '#3866DD' }}
               type="primary"
-              onClick={() => {
-                this.props.resetData();
-                window.location.assign('#/flow');
+              onClick={async () => {
+                await this.props.getDiagramCampaign([]);
+                await this.props.saveCampaignAutoVersion(this.state.infoVersion);
+                await this.props.resetData();
+                await window.location.assign('#/flow');
               }}
             >
               <FontAwesomeIcon icon={faPlus} />
