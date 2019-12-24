@@ -561,15 +561,6 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     }
   };
 
-  disableActivebtn = () => {
-    let { listDiagram, list_clone_version, infoVersion } = this.props;
-    let result: boolean = true;
-    if (listDiagram.nodes && listDiagram.nodes.length > 0) {
-      result = list_clone_version.id ? false : infoVersion.idVersion ? false : true;
-    }
-    return result;
-  };
-
   render() {
     let { isOpenModalInfo, idNode, isTest, isOpenModalMessage, isOpenModalWaitForEvent, isOpenModalWait, data, isValidate } = this.state;
     let { infoCampaign, listDiagram, infoVersion, list_clone_version } = this.props;
@@ -662,7 +653,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                         onClick={() => {
                           this.setState({ isTest: !isTest, isValidate: false });
                         }}
-                        disabled={this.disableActivebtn()}
+                        disabled={listDiagram.nodes && listDiagram.nodes.length > 0 ? false : true}
                       >
                         Test
                       </Button>
@@ -683,7 +674,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                   <Col span={2}>
                     <Button
                       onClick={this.activeProcess}
-                      disabled={list_clone_version.id ? false : infoVersion.idVersion ? false : true}
+                      disabled={listDiagram.nodes && listDiagram.nodes.length > 0 ? false : true}
                       type="primary"
                       style={{ float: 'right' }}
                     >
