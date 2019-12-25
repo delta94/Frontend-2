@@ -433,8 +433,9 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
             <DatePicker
               className="ant-input"
               selected={this.state.selectDate}
+              timeFormat="HH:mm"
               onChange={date => {
-                this.setState({ dateTime: moment(new Date(date)).format('YYYY-MM-DD hh:mm:ss'), selectDate: date });
+                this.setState({ dateTime: moment(new Date(date)).format('YYYY-MM-DD HH:mm:ss'), selectDate: date });
               }}
               showTimeSelect
               minDate={subDays(new Date(), 0)}
