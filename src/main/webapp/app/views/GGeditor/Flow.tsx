@@ -3,8 +3,11 @@ import GGEditor, { Flow } from 'gg-editor';
 import { Row, Col, Popover, Button, Layout, Breadcrumb, Icon, Modal as ModalAntd } from 'antd';
 import CustomNode from './node/node';
 import CustomEdges from './egdes/egdes';
+import SweetAlert from 'sweetalert-react';
 import FlowToolbar from './FlowToolBar/flow-tool-bar';
+import { openModal, closeModal } from 'app/actions/modal';
 import { connect } from 'react-redux';
+import { Translate, translate } from 'react-jhipster';
 import Save from './save/save';
 import {
   saveCampaignAuto,
@@ -498,8 +501,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   };
 
   //event save campaign
-  saveCampaign = node => {
-    const { idFolder, saveCampaignAuto, infoVersion, infoCampaign } = this.props;
+  saveCampaign = async node => {
+    const { idFolder, saveCampaignAuto, infoVersion, infoCampaign, openModal } = this.props;
     let { timeStartCampaign, advancedSearches } = this.state;
     let graph = {
       nodes:
@@ -549,28 +552,47 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         graph: graph
       }
     };
-    saveCampaignAuto(data);
+    await saveCampaignAuto(data);
+    await openModal({
+      show: true,
+      type: 'success',
+      title: translate('modal-data.title.success'),
+      text: 'Lưu chiến dịch thành công'
+    });
     // console.log(node);
   };
 
-  activeProcess = () => {
-    debugger;
-    const { activeProcessCampaign, list_clone_version, infoVersion } = this.props;
-    let data = list_clone_version.id ? list_clone_version.id : infoVersion.idVersion ? infoVersion.idVersion : '';
+  activeProcess = async () => {
+    const { activeProcessCampaign, list_clone_version, infoVersion, id_active, openModal } = this.props;
+    let data = list_clone_version.id ? list_clone_version.id : infoVersion.idVersion ? infoVersion.idVersion : id_active ? id_active : '';
     if (data) {
-      activeProcessCampaign(data);
+      await activeProcessCampaign(data);
+      await openModal({
+        show: true,
+        type: 'success',
+        title: translate('modal-data.title.success'),
+        text: 'Kích hoạt chiến dịch thành công'
+      });
     }
   };
 
   render() {
     let { isOpenModalInfo, idNode, isTest, isOpenModalMessage, isOpenModalWaitForEvent, isOpenModalWait, data, isValidate } = this.state;
-    let { infoCampaign, listDiagram, infoVersion, id_active } = this.props;
+    let { infoCampaign, listDiagram, infoVersion, id_active, modalState } = this.props;
     const imgSetting = require('app/assets/utils/images/flow/setting.png');
     const imgAward = require('app/assets/utils/images/flow/award.png');
     const imgMove = require('app/assets/utils/images/flow/move.png');
     console.log(listDiagram);
     return (
       <Fragment>
+        <SweetAlert
+          title={modalState.title ? modalState.title : 'No title'}
+          confirmButtonColor=""
+          show={modalState.show ? modalState.show : false}
+          text={modalState.text ? modalState.text : 'No'}
+          type={modalState.type ? modalState.type : 'error'}
+          onConfirm={() => this.props.closeModal()}
+        />
         <UpdateInfoCampaign toggleModal={this.showModalInfoCampaign} isOpenModal={isOpenModalInfo} />
         <ConfigMessage toggleModal={this.getVisible} isOpenModal={isOpenModalMessage} idNode={idNode} />
         <ModalWaitForEvent toggleModal={this.getVisible} isOpenModal={isOpenModalWaitForEvent} idNode={idNode} />
@@ -673,7 +695,12 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                     </ButtonGroup>
                   </Col>
                   <Col span={2}>
-                    <Button onClick={this.activeProcess} disabled={id_active ? false : true} type="primary" style={{ float: 'right' }}>
+                    <Button
+                      onClick={() => this.activeProcess()}
+                      disabled={id_active ? false : true}
+                      type="primary"
+                      style={{ float: 'right' }}
+                    >
                       Kích hoạt
                     </Button>
                   </Col>
@@ -753,7 +780,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     );
   }
 }
-const mapStateToProps = ({ campaignManagament }: IRootState) => ({
+const mapStateToProps = ({ campaignManagament, handleModal }: IRootState) => ({
   loading: campaignManagament.loading,
   list_tree_folder: campaignManagament.tree_folder,
   idFolder: campaignManagament.listNode,
@@ -762,7 +789,8 @@ const mapStateToProps = ({ campaignManagament }: IRootState) => ({
   listFieldData: campaignManagament.listFieldData,
   infoVersion: campaignManagament.infoVersion,
   list_clone_version: campaignManagament.cloneInfoVersion,
-  id_active: campaignManagament.idActive
+  id_active: campaignManagament.idActive,
+  modalState: handleModal.data
 });
 
 const mapDispatchToProps = {
@@ -772,7 +800,9 @@ const mapDispatchToProps = {
   validateCampaign,
   cloneVersion,
   saveCampaignAutoVersion,
-  activeProcessCampaign
+  activeProcessCampaign,
+  openModal,
+  closeModal
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

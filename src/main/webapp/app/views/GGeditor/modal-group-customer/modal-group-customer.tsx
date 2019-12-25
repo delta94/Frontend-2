@@ -338,7 +338,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
         break;
     }
 
-    await this.props.openModal(postRequest);
+    // await this.props.openModal(postRequest);
     // await this.props.getListCustomerGroupDataAction('');
 
     let customerAdvancedSave = {

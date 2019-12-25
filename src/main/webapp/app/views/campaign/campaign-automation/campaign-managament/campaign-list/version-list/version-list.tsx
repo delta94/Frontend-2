@@ -329,7 +329,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
             data = const_shape.RHOMSBUS;
             break;
           case code_node.DES:
-            data = const_shape.CIRCLE;
+            data = const_shape.END_NODE;
             break;
           default:
             break;
