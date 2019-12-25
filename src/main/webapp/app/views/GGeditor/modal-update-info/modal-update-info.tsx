@@ -68,7 +68,7 @@ export class UpdateInfoCampaign extends React.Component<IUpdateInfoCampaignProps
   };
 
   render() {
-    let { isOpenModal } = this.props;
+    let { isOpenModal, listInfoCampaing } = this.props;
     let { nameCampaign } = this.state;
     return (
       <Modal className="modal-info-title" isOpen={isOpenModal}>
@@ -80,7 +80,12 @@ export class UpdateInfoCampaign extends React.Component<IUpdateInfoCampaignProps
                 <label className="label-message">Tên Chiến dịch</label>
               </Col>
               <Col span={18}>
-                <Input onChange={this.getNameCampaign} id="name-campaign" style={{ float: 'right', width: '95%' }} />
+                <Input
+                  defaultValue={listInfoCampaing.name ? listInfoCampaing.name : 'Tạo mới chiến dịch'}
+                  onChange={this.getNameCampaign}
+                  id="name-campaign"
+                  style={{ float: 'right', width: '95%' }}
+                />
               </Col>
             </Row>
             <br />
@@ -116,7 +121,8 @@ export class UpdateInfoCampaign extends React.Component<IUpdateInfoCampaignProps
   }
 }
 const mapStateToProps = ({ campaignManagament }: IRootState) => ({
-  loading: campaignManagament.loading
+  loading: campaignManagament.loading,
+  listInfoCampaing: campaignManagament.listInfoCampaing
 });
 
 const mapDispatchToProps = {

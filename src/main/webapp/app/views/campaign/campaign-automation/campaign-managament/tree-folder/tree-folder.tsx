@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import { Translate, translate } from 'react-jhipster';
 import { Tree } from 'antd';
 import { Row, Col, Button, Input, Table, Popover, Icon, Modal } from 'antd';
-import SortableTree from 'react-sortable-tree';
-import FileExplorerTheme from 'react-sortable-tree-theme-file-explorer';
 import { openModal, closeModal } from 'app/actions/modal';
 import { IRootState } from 'app/reducers';
 import {
@@ -327,14 +325,14 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
   getList = async (key, node) => {
     const { getListCampaignInfolderDataAction, onClick, getNode } = this.props;
     let { level } = this.state;
-    let id = String(key).split(',')[0];
+    let id = String(key).split(',')[0] === '0-0' ? '-99' : String(key).split(',')[0];
     level = String(key).split(',')[1];
     if (node) {
       await getListCampaignInfolderDataAction(id, '', '', 0, 4);
       await onClick(id);
       await getNode(id);
     }
-    this.setState({ level });
+    this.setState({ level: level ? level : '' });
   };
 
   render() {
@@ -426,6 +424,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
               onDrop={this.onDrop}
               // showLine = {true}
             >
+              <TreeNode title={<div>Tất cả chiến dịch</div>} />
               {this.state.treeData.map(item => {
                 if (item.children && item.children.length) {
                   return (
@@ -434,7 +433,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
                       key={item.key}
                       title={
                         <div>
-                          <img src={img_folder} /> {item.title}
+                          <img src={img_files} /> {item.title}
                         </div>
                       }
                       icon={

@@ -154,7 +154,8 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
             id: event.id,
             emailConfig: this.getEmailConfig(event.id),
             smsConfig: this.getSmsConfig(event.id),
-            gatewayConfig: null
+            gatewayConfig: null,
+            timerEventConfig: null
           };
         }),
       edges:
@@ -173,7 +174,7 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
     let data = {
       emailTest: isCheckEmail ? email : '',
       mobileTest: isCheckPhone ? phone : '',
-      customer: isCheckCustomer ? customer : '',
+      customer: isCheckCustomer ? customer[0] : '',
       graph
     };
     testCampaign(data);

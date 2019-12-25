@@ -184,8 +184,8 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
           <div className="block-out">
             {/* Block out */}
             <Row>
-              <Col span={5} />
-              <Col span={7}>
+              <Col span={4} />
+              <Col span={8}>
                 <label className="label-search">Tìm kiếm chiến dịch</label> &nbsp;
                 <Input
                   id="searchText"

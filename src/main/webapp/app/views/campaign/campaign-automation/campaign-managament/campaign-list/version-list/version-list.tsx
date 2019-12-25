@@ -414,6 +414,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
   };
 
   copyVersion = () => {
+    debugger;
     let { cloneVersion, saveCampaignAutoVersion } = this.props;
     let versionLast: number = 0;
     let idVersionlast: string = '';
@@ -426,19 +427,21 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
         }
       }
     });
-    confirm({
-      title: `Bạn có muốn nhân bản chiến dịch này ?`,
-      content: '',
-      onOk: async () => {
-        await cloneVersion(idVersionlast);
-        await this.cloneVersion('copy');
-        await saveCampaignAutoVersion(infoVersion);
-        window.location.assign(`#/flow`);
-      },
-      onCancel() {},
-      okText: 'Đồng ý',
-      cancelText: 'Hủy bỏ'
-    });
+    if (idVersionlast) {
+      confirm({
+        title: `Bạn có muốn nhân bản chiến dịch này ?`,
+        content: '',
+        onOk: async () => {
+          await cloneVersion(idVersionlast);
+          await this.cloneVersion('copy');
+          await saveCampaignAutoVersion(infoVersion);
+          window.location.assign(`#/flow`);
+        },
+        onCancel() {},
+        okText: 'Đồng ý',
+        cancelText: 'Hủy bỏ'
+      });
+    }
   };
 
   viewVersion = async id => {
