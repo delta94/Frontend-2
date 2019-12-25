@@ -208,7 +208,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
   //delete Node
   deleteModel = async id => {
-    let { listDiagram, getDiagramCampaign } = this.props;
+    let { listDiagram, getDiagramCampaign, listFieldData, validateCampaign } = this.props;
     let { idNode, idEdge } = this.state;
     let data = {
       nodes: [],
@@ -222,7 +222,11 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       case 'node':
         data.nodes = this.remove(data.nodes, idNode);
         data.edges = this.remove(data.edges, idNode);
-
+        if (idNode.code === 'SEND_MAIL') {
+          let data = this.remove(listFieldData.emailConfig, idNode);
+          listFieldData.emailConfig = data;
+          validateCampaign(listFieldData);
+        }
         break;
 
       case 'edge':
