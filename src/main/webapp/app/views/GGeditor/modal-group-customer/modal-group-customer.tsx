@@ -2,12 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Button, Table, Row } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
+import { subDays } from 'date-fns';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './modal-group-customer.scss';
+import DatePicker from 'react-datepicker';
 import { IRootState } from 'app/reducers';
 import { getListTagDataAction } from 'app/actions/tag-management';
 import ReactPaginate from 'react-paginate';
-import { Input, Card, Modal, DatePicker } from 'antd';
+import { Input, Card, Modal } from 'antd';
 // import TagModal from "../tag-modal/tag-modal";
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
 import FieldData from './field-data/field-data';
@@ -67,7 +69,8 @@ interface IGroupModalConfigState {
     categoryName?: string;
     customerAdvancedSave?: any;
   };
-  dateTime?: string;
+  dateTime?: any;
+  selectDate: any;
 }
 
 export function makeRandomId(length: number): string {
@@ -97,7 +100,8 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
       categoryName: '',
       customerAdvancedSave: {}
     },
-    dateTime: ''
+    dateTime: new Date(),
+    selectDate: new Date()
   };
 
   componentDidMount() {
@@ -346,21 +350,8 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
       advancedSearches
     };
     this.props.toggle(false, this.state.categoryName + ',' + this.state.dateTime, customerAdvancedSave, true);
+    console.log(this.state.dateTime);
   }
-
-  //validate date old greater date now
-  disabledDate = current => {
-    // Can not select days before today and today
-    return current && current < moment().endOf('day');
-  };
-
-  //get date time event
-  getDateTime = dateTimePicker => {
-    let { dateTime } = this.state;
-    let dateStart = dateTimePicker.format('YYYY-MM-DD hh:mm:ss');
-    dateTime = dateStart;
-    this.setState({ dateTime });
-  };
 
   render() {
     let { is_show, list_field_data, loading, list_customer_with_condition, totalElements, type_modal, info_version } = this.props;
@@ -440,12 +431,14 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
           <div className="input-search">
             <label className="input-search_label">Đặt lịch</label>
             <DatePicker
-              style={{ width: '100%' }}
-              format="YYYY-MM-DD HH:mm:ss"
-              onOk={this.getDateTime}
-              defaultValue={moment('00:00:00', 'HH:mm:ss')}
-              disabledDate={this.disabledDate}
-              showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
+              className="ant-input"
+              selected={this.state.selectDate}
+              onChange={date => {
+                this.setState({ dateTime: moment(new Date(date)).format('YYYY-MM-DD hh:mm:ss'), selectDate: date });
+              }}
+              showTimeSelect
+              minDate={subDays(new Date(), 0)}
+              dateFormat="yyyy/MM/dd hh:mm:ss"
             />
           </div>
           {/* Chose condition */}

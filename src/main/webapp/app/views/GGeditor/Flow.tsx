@@ -638,7 +638,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                           </a>
                         </Breadcrumb.Item>
                         <label className="ant-breadcrumb-link">
-                          {infoVersion.nameVersion ? infoVersion.nameVersion : infoCampaign.name ? infoCampaign.name : 'Tạo chiến dịch mới'}
+                          {infoCampaign.name ? infoCampaign.name : infoVersion.nameVersion ? infoVersion.nameVersion : 'Tạo chiến dịch mới'}
                         </label>
                         <Button type="link" id="config-name" onClick={this.showModalInfoCampaign}>
                           <FontAwesomeIcon icon={faUserEdit} />
