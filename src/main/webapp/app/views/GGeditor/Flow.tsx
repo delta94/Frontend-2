@@ -554,6 +554,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   };
 
   activeProcess = () => {
+    debugger;
     const { activeProcessCampaign, list_clone_version, infoVersion } = this.props;
     let data = list_clone_version.id ? list_clone_version.id : infoVersion.idVersion ? infoVersion.idVersion : '';
     if (data) {
@@ -563,7 +564,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
   render() {
     let { isOpenModalInfo, idNode, isTest, isOpenModalMessage, isOpenModalWaitForEvent, isOpenModalWait, data, isValidate } = this.state;
-    let { infoCampaign, listDiagram, infoVersion, list_clone_version } = this.props;
+    let { infoCampaign, listDiagram, infoVersion, id_active } = this.props;
     const imgSetting = require('app/assets/utils/images/flow/setting.png');
     const imgAward = require('app/assets/utils/images/flow/award.png');
     const imgMove = require('app/assets/utils/images/flow/move.png');
@@ -672,12 +673,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                     </ButtonGroup>
                   </Col>
                   <Col span={2}>
-                    <Button
-                      onClick={this.activeProcess}
-                      disabled={listDiagram.nodes && listDiagram.nodes.length > 0 ? false : true}
-                      type="primary"
-                      style={{ float: 'right' }}
-                    >
+                    <Button onClick={this.activeProcess} disabled={id_active ? false : true} type="primary" style={{ float: 'right' }}>
                       Kích hoạt
                     </Button>
                   </Col>
@@ -765,7 +761,8 @@ const mapStateToProps = ({ campaignManagament }: IRootState) => ({
   listDiagram: campaignManagament.listDiagram,
   listFieldData: campaignManagament.listFieldData,
   infoVersion: campaignManagament.infoVersion,
-  list_clone_version: campaignManagament.cloneInfoVersion
+  list_clone_version: campaignManagament.cloneInfoVersion,
+  id_active: campaignManagament.idActive
 });
 
 const mapDispatchToProps = {

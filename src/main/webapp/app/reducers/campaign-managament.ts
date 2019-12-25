@@ -68,7 +68,8 @@ const initialCampaignManagament = {
   listCustomerVersionProcess: [] as IListCustomerVersionProcess[],
   countCustomerVersionProcess: 0,
   listCustomerInteractive: [] as IListCustomerInteractive[],
-  listTemplateCampaign: [] as IListTemplateCampaign[]
+  listTemplateCampaign: [] as IListTemplateCampaign[],
+  idActive: ''
 };
 
 export type HandleCampaignManagament = typeof initialCampaignManagament;
@@ -100,6 +101,12 @@ export default (state = initialCampaignManagament, action) => {
       return {
         ...state,
         loading: false
+      };
+    case SUCCESS(CAMPAIGN_MANAGAMENT.SAVE_CAMPAIGN_AUTO):
+      return {
+        ...state,
+        loading: false,
+        idActive: action.payload.data
       };
     case SUCCESS(CAMPAIGN_MANAGAMENT.GET_TEMPLATE_CAMPAIGN):
       return {

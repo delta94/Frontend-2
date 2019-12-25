@@ -1,5 +1,11 @@
 import react, { Fragment } from 'react';
-import { saveCampaignAutoVersion, getDiagramCampaign, resetData, getTemplateCampaign } from 'app/actions/campaign-managament';
+import {
+  saveCampaignAutoVersion,
+  getDiagramCampaign,
+  resetData,
+  getTemplateCampaign,
+  updateInfoCampaign
+} from 'app/actions/campaign-managament';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Button, Table, Row, Badge, Col, Breadcrumb, Card, Tag } from 'antd';
@@ -97,6 +103,7 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
               style={{ background: '#3866DD' }}
               type="primary"
               onClick={async () => {
+                await this.props.updateInfoCampaign({});
                 await this.props.getDiagramCampaign([]);
                 await this.props.saveCampaignAutoVersion(this.state.infoVersion);
                 await this.props.resetData();
@@ -145,7 +152,8 @@ const mapDispatchToProps = {
   saveCampaignAutoVersion,
   getDiagramCampaign,
   resetData,
-  getTemplateCampaign
+  getTemplateCampaign,
+  updateInfoCampaign
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
