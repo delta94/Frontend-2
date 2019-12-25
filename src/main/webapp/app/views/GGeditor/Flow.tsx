@@ -439,15 +439,9 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
   //validate flow
   validateFlow = () => {
-    let hasValidate = JSON.parse(localStorage.getItem('isSave'));
-    let { isValidate, timeStartCampaign, advancedSearches } = this.state;
+    let { isValidate } = this.state;
     let { listFieldData } = this.props;
     this.setState({ isTest: false, isValidate: !isValidate });
-    if (hasValidate.length == 0) {
-      this.setState({ isSave: false });
-    } else {
-      this.setState({ isSave: true });
-    }
   };
 
   getValueEdges = (sourceAnchor, source) => {
@@ -537,7 +531,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       cjVersionId: infoVersion.idVersion ? infoVersion.idVersion : null,
       cj: {
         id: null,
-        name: infoCampaign.name,
+        name: infoCampaign.name ? infoCampaign.name : infoVersion.nameVersion ? infoVersion.nameVersion : 'Tạo chiến dịch mới',
         description: infoCampaign.des
       },
       cjTags: [
@@ -582,7 +576,13 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     const imgSetting = require('app/assets/utils/images/flow/setting.png');
     const imgAward = require('app/assets/utils/images/flow/award.png');
     const imgMove = require('app/assets/utils/images/flow/move.png');
-    console.log(listDiagram);
+    let hasValidate = JSON.parse(localStorage.getItem('isSave'));
+    let isSave;
+    if (hasValidate.length <= 1) {
+      isSave = false;
+    } else {
+      this.setState({ isSave: true });
+    }
     return (
       <Fragment>
         <SweetAlert
@@ -688,10 +688,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                       >
                         Validate
                       </Button>
-                      <Save
-                        isSave={listDiagram.nodes && listDiagram.nodes.length > 0 ? this.state.isSave : true}
-                        onClick={this.saveCampaign}
-                      />
+                      <Save isSave={this.state.isSave} onClick={this.saveCampaign} />
                     </ButtonGroup>
                   </Col>
                   <Col span={2}>
