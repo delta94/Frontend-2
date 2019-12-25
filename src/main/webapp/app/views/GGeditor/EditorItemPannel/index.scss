@@ -1,3 +1,49 @@
+.validate-main {
+  .ant-collapse-item {
+    border: none;
+  }
+  .itemPanel {
+    flex: 1;
+    background: white;
+
+    .ant-card {
+      background: #fafafa;
+    }
+
+    .ant-card-body {
+      display: block;
+      flex-direction: column;
+      align-items: center;
+
+      > div {
+        margin-bottom: 16px;
+      }
+    }
+
+    .row {
+      text-align: left;
+      border-bottom: 1px solid #f1f4f6;
+      margin-bottom: 5%;
+    }
+    label {
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 12px;
+      line-height: 14px;
+
+      color: #97a3b4;
+    }
+    .not-config {
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 12px;
+      color: #6c757d;
+    }
+  }
+}
+
 .itemPanel {
   flex: 1;
   background: white;
@@ -24,4 +70,13 @@
   max-width: max-content !important;
   min-width: auto !important;
   width: auto !important;
+}
+.config-validate {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 19px;
+
+  color: #3866dd;
 }

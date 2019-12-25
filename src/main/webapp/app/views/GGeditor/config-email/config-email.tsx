@@ -193,10 +193,22 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
     this.setState({ valueTitle, valueName });
     onClick(valueName, valueTitle);
   };
-
+  getNameEmail = () => {
+    const { listFieldData, idNode } = this.props;
+    let data =
+      listFieldData.emailConfig &&
+      listFieldData.emailConfig.map(item => {
+        if (item.id === idNode.id) {
+          return {
+            name: item.valueName
+          };
+        }
+      });
+    return data && data[0] ? data[0].name : '';
+  };
   render() {
     let { showMailForFriend, defaultValueContent, openModal, idTemplate } = this.state;
-    let { listCampainContentParams, listContentTemplateAsTypeEmailIntro } = this.props;
+    let { listCampainContentParams, listContentTemplateAsTypeEmailIntro, listFieldData } = this.props;
     const img_chosse_template = require('app/assets/utils/images/flow/toggleEmail.png');
     let listIndexParams = listCampainContentParams.map(item => {
       return {
@@ -237,6 +249,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
                         <Col span={17}>
                           <label className="input-search_label">Tên</label>
                           <Input
+                            defaultValue={this.getNameEmail()}
                             style={{ width: '80%' }}
                             // placeholder={translate('group-attribute-customer.group-modal-config.name-placeholder')}
                             onChange={e => this.getValueText('name', e)}
@@ -309,7 +322,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
                         </ButtonAntd>
                       </Row>
 
-                      <CkeditorFixed id="editorLanding" data={defaultValueContent} type={INTRO_MAIL} />
+                      <CkeditorFixed id="editorLanding" data={defaultValueContent} />
                     </CardBody>
                   </Card>
                 </Collapse>

@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 import { getDiagramCampaign, validateCampaign } from 'app/actions/campaign-managament';
 import { IRootState } from 'app/reducers';
 import { ItemPanel, Item } from 'gg-editor';
+import { Translate, translate } from 'react-jhipster';
+import { openModal, closeModal } from 'app/actions/modal';
+import SiderComponet from '../sider/sider-tool';
 import './index.scss';
 
 const { Panel } = Collapse;
@@ -18,8 +21,20 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
     data: this.props.listDiagram.nodes
   };
 
+  remove(arr, item) {
+    for (var i = arr.length; i--; ) {
+      if (arr[i].code === item) {
+        arr.splice(i, 1);
+      }
+    }
+    return arr;
+  }
+
   checkNodeConfig = () => {
     let { data } = this.state;
+    data = data.filter(function(item) {
+      return item.code != 'DES';
+    });
     let { listFieldData } = this.props;
     if (listFieldData.emailConfig && Object.keys(listFieldData.emailConfig).length > 0) {
       let idEmailConfig = listFieldData.emailConfig.map(item => {
@@ -124,16 +139,17 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
         });
       }
     }
-    localStorage.setItem('isSave', JSON.stringify(data));
     return data;
   };
 
   showNodeValidate = () => {
     let { listFieldData, listDiagram } = this.props;
-    let data;
+    let { data } = this.state;
+    data = data.filter(function(item) {
+      return item.code != 'DES';
+    });
     if (Object.keys(listFieldData).length < 1) {
-      localStorage.setItem('isSave', JSON.stringify(listDiagram.nodes));
-      return listDiagram.nodes.map((item, index) => {
+      return data.map((item, index) => {
         return (
           <Row className="row" key={index}>
             <Col span={24}>
@@ -141,7 +157,7 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
               <div>
                 <label>{item.label}</label>
               </div>
-              <label>Chưa cấu hình thông tin</label>
+              <label className="not-config">Chưa cấu hình thông tin</label>
             </Col>
           </Row>
         );
@@ -155,7 +171,7 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
               <div>
                 <label>{item.label}</label>
               </div>
-              <label>Chưa cấu hình thông tin</label>
+              <label className="not-config">Chưa cấu hình thông tin</label>
             </Col>
           </Row>
         );
@@ -163,12 +179,27 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
     }
   };
 
+  showComplete = () => {
+    const { openModal } = this.props;
+    localStorage.setItem('isSave', 'true');
+
+    openModal({
+      show: true,
+      type: 'success',
+      title: translate('modal-data.title.success'),
+      text: 'Cấu hình chiến dịch thành công'
+    });
+    return <label className="config-validate"> </label>;
+  };
+
   render() {
     return (
       <Fragment>
-        <Collapse bordered={false} defaultActiveKey={['1']} expandIconPosition="right">
+        <Collapse className="validate-main" bordered={false} defaultActiveKey={['1']} expandIconPosition="right">
           <Panel header="" key="1">
-            <ItemPanel className="itemPanel">{this.showNodeValidate()}</ItemPanel>
+            <ItemPanel className="itemPanel">
+              {this.showNodeValidate() && this.showNodeValidate().length > 0 ? this.showNodeValidate() : this.showComplete()}
+            </ItemPanel>
           </Panel>
         </Collapse>
       </Fragment>
@@ -183,7 +214,9 @@ const mapStateToProps = ({ campaignManagament }: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  validateCampaign
+  validateCampaign,
+  openModal,
+  closeModal
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

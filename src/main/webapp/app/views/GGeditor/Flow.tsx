@@ -259,6 +259,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           data = listDiagram;
         }
         data.nodes.push(command.addModel);
+        this.setState({ isSave: true });
         break;
       default:
         break;
@@ -439,9 +440,10 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
   //validate flow
   validateFlow = () => {
-    let { isValidate } = this.state;
-    let { listFieldData } = this.props;
+    let { isValidate, isSave } = this.state;
     this.setState({ isTest: false, isValidate: !isValidate });
+    let hasValidate = JSON.parse(localStorage.getItem('isSave')) === true ? false : true;
+    this.setState({ isSave: hasValidate });
   };
 
   getValueEdges = (sourceAnchor, source) => {
@@ -510,7 +512,9 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             id: event.id,
             emailConfig: this.getEmailConfig(event.id),
             smsConfig: this.getSmsConfig(event.id),
-            gatewayConfig: null
+            gatewayConfig: null,
+            x: event.x,
+            y: event.y
           };
         }),
       edges:
@@ -576,13 +580,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     const imgSetting = require('app/assets/utils/images/flow/setting.png');
     const imgAward = require('app/assets/utils/images/flow/award.png');
     const imgMove = require('app/assets/utils/images/flow/move.png');
-    let hasValidate = JSON.parse(localStorage.getItem('isSave'));
-    let isSave;
-    if (hasValidate.length <= 1) {
-      isSave = false;
-    } else {
-      this.setState({ isSave: true });
-    }
+
     return (
       <Fragment>
         <SweetAlert
