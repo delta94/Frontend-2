@@ -1,8 +1,11 @@
 import * as SRD from 'storm-react-diagrams';
 import {
+  ConditionDecisionNodeModel,
   ContactSourceStartNodeModel,
   EmailProcessNodeModel,
   EndNodeModel,
+  EventSourceStartNodeModel,
+  EventWaitingDecisionNodeModel,
   SmsProcessNodeModel,
   TimeWaitingDecisionNodeModel
 } from './FlowNodeModel';
@@ -10,19 +13,22 @@ import * as React from 'react';
 import { FlowNodeWidget } from './FlowNodeWidget';
 
 const DefaultIcon = require('./icons/default.png');
-const DecisionNodeTimeWaitingIcon = require('./icons/decision_time_waiting.png');
-const StartNodeContactSourceIcon = require('./icons/start_contact_source.png');
+const ConditionDecisionNodeIcon = require('./icons/decision_condition.png');
+const TimeWaitingDecisionNodeIcon = require('./icons/decision_time_waiting.png');
+const EventWaitingDecisionNodeIcon = require('./icons/decision_event_waiting.png');
+const ContactSourceStartNodeIcon = require('./icons/start_contact_source.png');
+const EventSourceStartNodeIcon = require('./icons/start_event_source.png');
 const EndNodeIcon = require('./icons/end.png');
-const ProcessNodeEmailIcon = require('./icons/process_email.png');
-const ProcessNodeSmsIcon = require('./icons/process_sms.png');
+const EmailProcessNodeIcon = require('./icons/process_email.png');
+const SmsProcessNodeIcon = require('./icons/process_sms.png');
 
 export class ContactSourceStartNodeFactory extends SRD.AbstractNodeFactory {
   constructor() {
-    super('start_contact_source');
+    super(ContactSourceStartNodeModel.TYPE);
   }
 
   generateReactWidget(diagramEngine: SRD.DiagramEngine, node: SRD.NodeModel): JSX.Element {
-    return <FlowNodeWidget node={node} icon={StartNodeContactSourceIcon} width={68} height={68} />;
+    return <FlowNodeWidget node={node} icon={ContactSourceStartNodeIcon} width={68} height={68} />;
   }
 
   getNewInstance() {
@@ -30,13 +36,27 @@ export class ContactSourceStartNodeFactory extends SRD.AbstractNodeFactory {
   }
 }
 
-export class EmailProcessNodeFactory extends SRD.AbstractNodeFactory {
+export class EventSourceStartNodeFactory extends SRD.AbstractNodeFactory {
   constructor() {
-    super('process_email');
+    super(EventSourceStartNodeModel.TYPE);
   }
 
   generateReactWidget(diagramEngine: SRD.DiagramEngine, node: SRD.NodeModel): JSX.Element {
-    return <FlowNodeWidget node={node} icon={ProcessNodeEmailIcon} />;
+    return <FlowNodeWidget node={node} icon={EventSourceStartNodeIcon} width={68} height={68} />;
+  }
+
+  getNewInstance() {
+    return new EventSourceStartNodeModel();
+  }
+}
+
+export class EmailProcessNodeFactory extends SRD.AbstractNodeFactory {
+  constructor() {
+    super(EmailProcessNodeModel.TYPE);
+  }
+
+  generateReactWidget(diagramEngine: SRD.DiagramEngine, node: SRD.NodeModel): JSX.Element {
+    return <FlowNodeWidget node={node} icon={EmailProcessNodeIcon} />;
   }
 
   getNewInstance() {
@@ -46,11 +66,11 @@ export class EmailProcessNodeFactory extends SRD.AbstractNodeFactory {
 
 export class SmsProcessNodeFactory extends SRD.AbstractNodeFactory {
   constructor() {
-    super('process_sms');
+    super(SmsProcessNodeModel.TYPE);
   }
 
   generateReactWidget(diagramEngine: SRD.DiagramEngine, node: SRD.NodeModel): JSX.Element {
-    return <FlowNodeWidget node={node} icon={ProcessNodeSmsIcon} />;
+    return <FlowNodeWidget node={node} icon={SmsProcessNodeIcon} />;
   }
 
   getNewInstance() {
@@ -60,11 +80,11 @@ export class SmsProcessNodeFactory extends SRD.AbstractNodeFactory {
 
 export class TimeWaitingDecisionNodeFactory extends SRD.AbstractNodeFactory {
   constructor() {
-    super('decision_time_waiting');
+    super(TimeWaitingDecisionNodeModel.TYPE);
   }
 
   generateReactWidget(diagramEngine: SRD.DiagramEngine, node: SRD.NodeModel): JSX.Element {
-    return <FlowNodeWidget node={node} icon={DecisionNodeTimeWaitingIcon} width={90} height={90} />;
+    return <FlowNodeWidget node={node} icon={TimeWaitingDecisionNodeIcon} width={90} height={90} />;
   }
 
   getNewInstance() {
@@ -72,9 +92,37 @@ export class TimeWaitingDecisionNodeFactory extends SRD.AbstractNodeFactory {
   }
 }
 
+export class EventWaitingDecisionNodeFactory extends SRD.AbstractNodeFactory {
+  constructor() {
+    super(EventWaitingDecisionNodeModel.TYPE);
+  }
+
+  generateReactWidget(diagramEngine: SRD.DiagramEngine, node: SRD.NodeModel): JSX.Element {
+    return <FlowNodeWidget node={node} icon={EventWaitingDecisionNodeIcon} width={90} height={90} />;
+  }
+
+  getNewInstance() {
+    return new EventWaitingDecisionNodeModel();
+  }
+}
+
+export class ConditionDecisionNodeFactory extends SRD.AbstractNodeFactory {
+  constructor() {
+    super(ConditionDecisionNodeModel.TYPE);
+  }
+
+  generateReactWidget(diagramEngine: SRD.DiagramEngine, node: SRD.NodeModel): JSX.Element {
+    return <FlowNodeWidget node={node} icon={ConditionDecisionNodeIcon} width={90} height={90} />;
+  }
+
+  getNewInstance() {
+    return new ConditionDecisionNodeModel();
+  }
+}
+
 export class EndNodeFactory extends SRD.AbstractNodeFactory {
   constructor() {
-    super('end');
+    super(EndNodeModel.TYPE);
   }
 
   generateReactWidget(diagramEngine: SRD.DiagramEngine, node: SRD.NodeModel): JSX.Element {
