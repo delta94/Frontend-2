@@ -39,6 +39,7 @@ interface IGroupModalConfigProps extends StateProps, DispatchProps {
   title_modal: string;
   type_modal?: string;
   id_list_customer?: string;
+  idNode: any;
 }
 
 interface IAdvancedSearchesData {
@@ -352,9 +353,29 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
     this.props.toggle(false, this.state.categoryName + ',' + this.state.dateTime, customerAdvancedSave, true);
     console.log(this.state.dateTime);
   }
+  getNameGroup = () => {
+    const { listFieldData } = this.props;
+    let result: string;
+    listFieldData.listCampign &&
+      listFieldData.listCampign.map(item => {
+        if (item.id === this.props.idNode.id) {
+          result = item.name;
+        }
+      });
+    return result;
+  };
 
   render() {
-    let { is_show, list_field_data, loading, list_customer_with_condition, totalElements, type_modal, info_version } = this.props;
+    let {
+      is_show,
+      list_field_data,
+      loading,
+      list_customer_with_condition,
+      totalElements,
+      type_modal,
+      info_version,
+      listFieldData
+    } = this.props;
     let { list_field_data_cpn, logicalOperator, advancedSearches, categoryName, pageIndex } = this.state;
     let list_field_render =
       list_field_data_cpn && list_field_data_cpn.length > 0
@@ -423,6 +444,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
               <Translate contentKey="group-attribute-customer.group-name" />
             </label>
             <Input
+              defaultValue={this.getNameGroup()}
               placeholder={translate('group-attribute-customer.group-modal-config.name-placeholder')}
               onChange={event => this.setState({ categoryName: event.target.value })}
               maxLength={160}
@@ -433,13 +455,14 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
             <DatePicker
               className="ant-input"
               selected={this.state.selectDate}
+              timeIntervals={10}
               timeFormat="HH:mm"
               onChange={date => {
                 this.setState({ dateTime: moment(new Date(date)).format('YYYY-MM-DD HH:mm:ss'), selectDate: date });
               }}
               showTimeSelect
               minDate={subDays(new Date(), 0)}
-              dateFormat="yyyy/MM/dd hh:mm:ss"
+              dateFormat="yyyy/MM/dd hh:mm:ss aa"
             />
           </div>
           {/* Chose condition */}
@@ -575,7 +598,8 @@ const mapStateToProps = ({ tagDataState, groupCustomerState, campaignManagament 
   postRequest: groupCustomerState.postRequest,
   single_group_field: groupCustomerState.single_customer_field,
   list_group_customer: groupCustomerState.list_group_customer,
-  info_version: campaignManagament.infoVersion
+  info_version: campaignManagament.infoVersion,
+  listFieldData: campaignManagament.listFieldData
 });
 
 const mapDispatchToProps = {

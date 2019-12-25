@@ -31,15 +31,18 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
   }
 
   checkNodeConfig = () => {
+    localStorage.removeItem('isSave');
     let { data } = this.state;
     data = data.filter(function(item) {
       return item.code != 'DES';
     });
     let { listFieldData } = this.props;
-    if (listFieldData.emailConfig && Object.keys(listFieldData.emailConfig).length > 0) {
-      let idEmailConfig = listFieldData.emailConfig.map(item => {
-        return item.id;
-      });
+    if (Object.keys(listFieldData.emailConfig).length > 0) {
+      let idEmailConfig =
+        listFieldData.emailConfig &&
+        listFieldData.emailConfig.map(item => {
+          return item.id;
+        });
       let id = idEmailConfig.join().split(',');
       if (id.length < 2) {
         data = data.filter(function(item) {
@@ -122,23 +125,6 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
       }
     }
 
-    if (listFieldData.emailConfig && Object.keys(listFieldData.emailConfig).length > 0) {
-      let idEmailConfig = listFieldData.emailConfig.map(item => {
-        return item.id;
-      });
-      let id = idEmailConfig.join().split(',');
-      if (id.length < 2) {
-        data = data.filter(function(item) {
-          return item.id != id;
-        });
-      } else {
-        id.map(value => {
-          data = data.filter(function(item) {
-            return item.id != String(value);
-          });
-        });
-      }
-    }
     return data;
   };
 
@@ -148,6 +134,7 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
     data = data.filter(function(item) {
       return item.code != 'DES';
     });
+    localStorage.removeItem('isSave');
     if (Object.keys(listFieldData).length < 1) {
       return data.map((item, index) => {
         return (

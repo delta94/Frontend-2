@@ -45,7 +45,7 @@ class FlowItemPanel extends React.Component {
                   />
                   <label>Danh sách khách hàng</label>
                 </Col>
-                <Col span={8}>
+                {/* <Col span={8}>
                   <Item
                     type="node"
                     size="95*95"
@@ -65,7 +65,7 @@ class FlowItemPanel extends React.Component {
                     src="data:image/png;base64,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"
                   />
                   <label>Sự kiện</label>
-                </Col>
+                </Col> */}
                 <Col span={8}>
                   <Item
                     type="node"

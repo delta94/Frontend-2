@@ -102,7 +102,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
     await getDiagramCampaign(data);
     await this.setState({
-      isOpenModalEmail: !this.state.isOpenModalEmail,
+      isOpenModalEmail: false,
       isUpdateNode: true,
       data: data
     });
@@ -132,7 +132,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           };
           let dataList = {
             messageConfig: listFieldData.messageConfig ? listFieldData.messageConfig : [],
-            fieldConfigEmail: listFieldData.emailConfig ? listFieldData.emailConfig : [],
+            emailConfig: listFieldData.emailConfig ? listFieldData.emailConfig : [],
             listCampign: listFieldData.listCampign ? listFieldData.listCampign : [],
             timerEvent: listFieldData.timerEvent ? listFieldData.timerEvent : [],
             timer: listFieldData.timer ? listFieldData.timer : []
@@ -440,10 +440,13 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
   //validate flow
   validateFlow = () => {
+    debugger;
     let { isValidate, isSave } = this.state;
     this.setState({ isTest: false, isValidate: !isValidate });
-    let hasValidate = JSON.parse(localStorage.getItem('isSave')) === true ? false : true;
-    this.setState({ isSave: hasValidate });
+    if (isValidate) {
+      let hasValidate = JSON.parse(localStorage.getItem('isSave')) === true ? false : true;
+      this.setState({ isSave: hasValidate });
+    }
   };
 
   getValueEdges = (sourceAnchor, source) => {
@@ -534,7 +537,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       folderId: idFolder,
       cjVersionId: infoVersion.idVersion ? infoVersion.idVersion : null,
       cj: {
-        id: null,
+        id: this.props.list_clone_version.id ? this.props.list_clone_version.id : null,
         name: infoCampaign.name ? infoCampaign.name : infoVersion.nameVersion ? infoVersion.nameVersion : 'Tạo chiến dịch mới',
         description: infoCampaign.des
       },
@@ -736,6 +739,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             id_list_customer={''}
             toggle={this.getVisible}
             title_modal={'CHỌN NHÓM'}
+            idNode={this.state.idNode}
           />
         </div>
         <Modal className="modal-config-email" isOpen={this.state.isOpenModalEmail}>
