@@ -8,7 +8,7 @@ import { IRootState } from 'app/reducers';
 import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import ReactPaginate from 'react-paginate';
-import { getListCampaignInfolderDataAction } from 'app/actions/campaign-managament';
+import { getListCampaignInfolderDataAction, cloneVersion } from 'app/actions/campaign-managament';
 import './campaign-list.scss';
 import { Input, Icon, Row, Col, Tag, Button, Popover as PopverAnt } from 'antd';
 import CampaignTag from './campaign-tag/campaign-tag';
@@ -53,7 +53,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
   componentDidMount() {
     let { strTagId, textSearch, activePage, itemsPerPage } = this.state;
     let folderId = this.props.folder_id_choose;
-    this.getListCampaignInfolderDataAction(folderId ? folderId : '-1', textSearch, strTagId, activePage, itemsPerPage);
+    this.getListCampaignInfolderDataAction(folderId ? folderId : '-99', textSearch, strTagId, activePage, itemsPerPage);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -124,6 +124,10 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
     let { activePage, itemsPerPage } = this.state;
     let folderId = this.props.folder_id_choose;
     this.getListCampaignInfolderDataAction(folderId, '', '', activePage, itemsPerPage);
+  };
+
+  viewCampaign = () => {
+    const { cloneVersion } = this.props;
   };
 
   render() {
@@ -248,7 +252,10 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                       <tr key={index}>
                         <td colSpan={5}>{this.state.activePage * this.state.itemsPerPage + index + 1}</td>
                         <td colSpan={25} id="name">
-                          <p> {item.name}</p>
+                          <Button onClick={this.viewCampaign} type="link">
+                            {' '}
+                            {item.name}
+                          </Button>
                           <p>Version {item.version}</p>
                           {item.tags
                             ? item.tags.split(',').map((value, index) => {
@@ -343,7 +350,7 @@ const mapStateToProps = ({ campaignManagament, cjState }: IRootState) => ({
   valueComboTag: cjState.cj_tags
 });
 
-const mapDispatchToProps = { getListCampaignInfolderDataAction, getCjTagsByCjIdAction };
+const mapDispatchToProps = { getListCampaignInfolderDataAction, getCjTagsByCjIdAction, cloneVersion };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

@@ -80,7 +80,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
           }
         })
         .filter(Boolean);
-    if (campaign_list === undefined) {
+    if (campaign_list === undefined || data[0] === undefined) {
       window.location.assign('/#/app/views/campaigns/campaign-managament');
     } else {
       this.setState({ infoVersion: data[0] });

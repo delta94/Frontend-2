@@ -382,7 +382,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                         </tbody>
                       </Table>
                       <Row className="justify-content-center" style={{ float: 'right', marginTop: '1%' }}>
-                        {countCustomerVersionProcess >= 10 ? (
+                        {countCustomerVersionProcess >= 5 ? (
                           <ReactPaginate
                             previousLabel={'<'}
                             nextLabel={'>'}

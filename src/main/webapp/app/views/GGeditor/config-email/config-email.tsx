@@ -182,7 +182,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
     this.props.getNavigationContentTemplates(subjectLanding, INTRO_MAIL, SUBJECT);
     let emailConfig = {
       id: this.props.idNode.id,
-      nameEmail: event.name,
+      nameEmail: event.subject,
       valueName,
       valueTitle,
       contentEmail: defaultValueContent,

@@ -8,7 +8,8 @@ import {
   IListCampaignAuto,
   IListCustomerVersionProcess,
   IListCustomerInteractive,
-  IListTemplateCampaign
+  IListTemplateCampaign,
+  ISaveCampaign
 } from 'app/common/model/campaign-managament.model';
 
 interface IStatusCampagin {
@@ -69,7 +70,7 @@ const initialCampaignManagament = {
   countCustomerVersionProcess: 0,
   listCustomerInteractive: [] as IListCustomerInteractive[],
   listTemplateCampaign: [] as IListTemplateCampaign[],
-  idActive: ''
+  idActive: {} as ISaveCampaign
 };
 
 export type HandleCampaignManagament = typeof initialCampaignManagament;

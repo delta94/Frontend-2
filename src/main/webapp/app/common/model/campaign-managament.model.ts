@@ -154,3 +154,8 @@ export interface IListTemplateCampaign {
   description: string;
   thumbnail: string;
 }
+
+export interface ISaveCampaign {
+  id: string;
+  cjID: string;
+}

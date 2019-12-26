@@ -510,40 +510,43 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     const { idFolder, saveCampaignAuto, infoVersion, infoCampaign, openModal, listFieldData } = this.props;
     let { timeStartCampaign, advancedSearches } = this.state;
     let nodeMetaData: any[] = [];
-    listFieldData.emailConfig.forEach(value =>
-      nodeMetaData.push({
-        nodeId: value.id,
-        code: code_node.SEND_MAIL,
-        nodeConfig: {
-          id: value.idEmail,
-          name: value.valueName,
-          titlle: value.valueTitle,
-          content: value.contentEmail
-        }
-      })
-    );
+    listFieldData.emailConfig &&
+      listFieldData.emailConfig.forEach(value =>
+        nodeMetaData.push({
+          nodeId: value.id,
+          code: code_node.SEND_MAIL,
+          nodeConfig: {
+            id: value.idEmail,
+            name: value.valueName,
+            titlle: value.valueTitle,
+            content: value.contentEmail
+          }
+        })
+      );
 
-    listFieldData.messageConfig.forEach(value =>
-      nodeMetaData.push({
-        nodeId: value.id,
-        code: code_node.SEND_SMS,
-        nodeConfig: {
-          id: '',
-          name: value.name,
-          content: value.content
-        }
-      })
-    );
-    listFieldData.timerEvent.forEach(value =>
-      nodeMetaData.push({
-        nodeId: value.id,
-        code: code_node.SEND_SMS,
-        nodeConfig: {
-          eventType: value.email,
-          emailTemplateId: value.idEmail
-        }
-      })
-    );
+    listFieldData.messageConfig &&
+      listFieldData.messageConfig.forEach(value =>
+        nodeMetaData.push({
+          nodeId: value.id,
+          code: code_node.SEND_SMS,
+          nodeConfig: {
+            id: '',
+            name: value.name,
+            content: value.content
+          }
+        })
+      );
+    listFieldData.timerEvent &&
+      listFieldData.timerEvent.forEach(value =>
+        nodeMetaData.push({
+          nodeId: value.id,
+          code: code_node.SEND_SMS,
+          nodeConfig: {
+            eventType: value.email,
+            emailTemplateId: value.idEmail
+          }
+        })
+      );
     let graph = {
       nodes:
         node.nodes &&
@@ -573,9 +576,9 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     };
     let data = {
       folderId: idFolder,
-      cjVersionId: infoVersion.idVersion ? infoVersion.idVersion : null,
+      cjVersionId: this.props.id_active.cjID ? this.props.id_active.cjID : null,
       cj: {
-        id: this.props.list_clone_version.id ? this.props.list_clone_version.id : null,
+        id: this.props.id_active.id ? this.props.id_active.id : null,
         name: infoCampaign.name ? infoCampaign.name : infoVersion.nameVersion ? infoVersion.nameVersion : 'Tạo chiến dịch mới',
         description: infoCampaign.des
       },
