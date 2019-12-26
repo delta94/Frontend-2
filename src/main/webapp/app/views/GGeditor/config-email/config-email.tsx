@@ -35,7 +35,7 @@ import TemplateEmail from './template-email/template-email';
 import PreviewLanding from './preview/preview';
 import { IParamester } from 'app/common/model/campaign-navigation.model';
 import { Translate, translate } from 'react-jhipster';
-import { FORM_LANDING, TEMPLATE_ID, INTRO_MAIL, REWARD_MAIL, EMAIL_EWARD, EMAIL_INTRO } from 'app/constants/common';
+import { FORM_LANDING, TEMPLATE_ID, INTRO_MAIL, EMAIL_ALL, EMAIL_EWARD, EMAIL_INTRO } from 'app/constants/common';
 import CkeditorFixed from 'app/layout/ckeditor/CkeditorFixed';
 import { SUBJECT } from 'app/constants/common';
 
@@ -82,7 +82,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
 
   componentDidMount() {
     this.props.getContentPageParams();
-    this.props.getContentTemplateAsType(EMAIL_INTRO);
+    this.props.getContentTemplateAsType(EMAIL_ALL);
   }
 
   closeModal = () => {
@@ -209,7 +209,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
     this.setState({ openModal: false });
   };
 
-  getValueText = (option, item) => {
+  getValueText = async (option, item) => {
     const { onClick } = this.props;
     let { valueName, valueTitle } = this.state;
     switch (option) {
@@ -226,12 +226,12 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
     onClick(valueName, valueTitle);
   };
   getNameEmail = () => {
-    const { listFieldData, idNode } = this.props;
+    const { list_diagram, idNode } = this.props;
     let data;
-    listFieldData.emailConfig &&
-      listFieldData.emailConfig.map(item => {
+    list_diagram.nodes &&
+      list_diagram.nodes.map(item => {
         if (item.id === idNode.id) {
-          data = item.valueName;
+          data = item.label;
         }
       });
     return data;
@@ -369,7 +369,8 @@ const mapStateToProps = ({ userCampaign, navigationInfo, campaignManagament }: I
     postRequest: userCampaign.postRequest,
     listContentTemplateAsTypeEmailIntro: userCampaign.listContentTemplateAsTypeEmailIntro,
     navigationInfo,
-    listFieldData: campaignManagament.listFieldData
+    listFieldData: campaignManagament.listFieldData,
+    list_diagram: campaignManagament.listDiagram
   };
 };
 

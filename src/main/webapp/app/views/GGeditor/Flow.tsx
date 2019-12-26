@@ -92,7 +92,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   //handler Popup send email
   confirmEmail = async () => {
     let { idNode, titleMail } = this.state;
-    let { listDiagram, getDiagramCampaign } = this.props;
+    let { listDiagram, getDiagramCampaign, listFieldData, validateCampaign } = this.props;
     let data = listDiagram;
     await data.nodes.map(event => {
       if (event.id === idNode.id) {
@@ -174,6 +174,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   //get title email save in Node
   getInfoEmail = (event, value) => {
     let { titleMail } = this.state;
+    const { validateCampaign, listFieldData } = this.props;
     titleMail = event;
     this.setState({ titleMail });
   };
@@ -553,9 +554,6 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             code: event.code,
             value: event.value,
             id: event.id,
-            // emailConfig: this.getEmailConfig(event.id),
-            // smsConfig: this.getSmsConfig(event.id),
-            // gatewayConfig: null,
             x: event.x,
             y: event.y
           };
@@ -605,16 +603,12 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   };
 
   activeProcess = async () => {
-    const { activeProcessCampaign, list_clone_version, infoVersion, id_active, openModal } = this.props;
+    const { activeProcessCampaign, list_clone_version, infoVersion, id_active, openModal, cloneVersion } = this.props;
     let data = list_clone_version.id ? list_clone_version.id : infoVersion.idVersion ? infoVersion.idVersion : id_active ? id_active : '';
     if (data) {
       await activeProcessCampaign(data);
-      await openModal({
-        show: true,
-        type: 'success',
-        title: translate('modal-data.title.success'),
-        text: 'Kích hoạt chiến dịch thành công'
-      });
+      await cloneVersion(data);
+      await window.location.assign(`/#/app/views/campaigns/campaign-managament`);
     }
   };
 

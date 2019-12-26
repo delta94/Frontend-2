@@ -151,6 +151,10 @@ export const getContentTemplateAsTypeService = type => {
   if (type) {
     defaultTemplate = type;
   }
+  if (type === 'EMAIL_ALL') {
+    const url = `v1/content?contentType=${type}`;
+    return axios.get(url);
+  }
   const requestUrl = `${`v1/content-template?templateType=${defaultTemplate}`}`;
   return axios.get(requestUrl);
 };

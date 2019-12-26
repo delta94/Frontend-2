@@ -162,6 +162,9 @@ export const getContentTemplateAsType = typeContent => {
     case 'LANDING':
       type = USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_LANDING;
       break;
+    case 'EMAIL_ALL':
+      type = USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL_ALL;
+      break;
     default:
       break;
   }

@@ -16,3 +16,4 @@ export const TEMPLATE_ID = 'templateId';
 export const SUCCESS = 'success';
 export const ERROR = 'error';
 export const WARNING = 'warning';
+export const EMAIL_ALL = 'EMAIL_ALL';

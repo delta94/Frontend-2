@@ -1,6 +1,5 @@
 import { IOpenModal } from './modal';
 import { ICategory } from './../common/model/category.model';
-import { IPostMail } from './user-campaign';
 import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
 import { IUser } from 'app/common/model/user.model';
 import { USER_CAMPAIGN_ACTION_TYPES } from 'app/constants/user-campaign';
@@ -394,6 +393,12 @@ export default (state: UserCampaignState = initialState, action): UserCampaignSt
         ...state,
         loading: false,
         listContentTemplateAsTypeEmailEward: action.payload.data
+      };
+    case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL_ALL):
+      return {
+        ...state,
+        loading: false,
+        listContentTemplateAsTypeEmailIntro: action.payload.data
       };
 
     case SUCCESS(USER_CAMPAIGN_ACTION_TYPES.GET_CONTENT_TEMPLATE_AS_TYPE_EMAIL_INTRO):

@@ -352,7 +352,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
               }}
               color="primary"
             >
-              <Translate contentKey="properties-management.button-field" />
+              Thêm mới khách hàng
             </Button>{' '}
           </ModalFooter>
         </Modal>
