@@ -25,6 +25,7 @@ interface IModalWaitForEventState {
   time: number;
   timer: string;
   date: string;
+  idEmail: string;
 }
 
 export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, IModalWaitForEventState> {
@@ -33,7 +34,8 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
     email: '',
     time: 0,
     timer: '',
-    date: ''
+    date: '',
+    idEmail: ''
   };
 
   toggle = () => {
@@ -41,7 +43,7 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
     toggleModal(!isOpenModal);
   };
   save = async () => {
-    let { event, email, timer, time, date } = this.state;
+    let { event, email, timer, time, date, idEmail } = this.state;
     let { listFieldData, validateCampaign } = this.props;
     let data = {
       messageConfig: listFieldData.messageConfig ? listFieldData.messageConfig : [],
@@ -56,7 +58,8 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
       email,
       timer,
       date,
-      time
+      time,
+      idEmail
     };
     data.timerEvent.push(timerEvent);
     await validateCampaign(data);
@@ -106,12 +109,14 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
 
   handleChange(value, option) {
     let result: string;
+    let { idEmail } = this.state;
     const { listFieldData } = this.props;
     listFieldData.emailConfig &&
       listFieldData.emailConfig.map(item => {
         debugger;
         if (item.id === value) {
           result = item.nameEmail;
+          idEmail = item.id;
         }
       });
     switch (option) {
@@ -119,7 +124,7 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
         this.setState({ event: value });
         break;
       case constantEvent.EMAIL:
-        this.setState({ email: result });
+        this.setState({ email: result, idEmail });
         break;
       default:
         break;

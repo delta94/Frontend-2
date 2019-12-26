@@ -158,16 +158,15 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         break;
       case code_node.SEND_SMS:
         this.setState({ isOpenModalMessage: !isOpenModalMessage });
-        if (isOpenModalMessage) {
+        if (isOpenModalMessage && valueName) {
           diagram.nodes.map(item => {
-            if (item.id === idNode.id && valueName) {
+            if (item.id === idNode.id) {
               item.label = valueName.name;
             }
           });
+          await getDiagramCampaign(diagram);
         }
-
         break;
-
       default:
         break;
     }
@@ -198,12 +197,15 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
   // remove item in array
   remove(arr, item) {
-    for (var i = arr.length; i--; ) {
-      if (arr[i].id === item.id) {
-        arr.splice(i, 1);
+    if (arr && arr.length > 0) {
+      for (var i = arr.length; i--; ) {
+        if (arr[i].id === item.id) {
+          arr.splice(i, 1);
+        }
       }
+      return arr;
     }
-    return arr;
+    return [];
   }
 
   //delete Node
@@ -444,7 +446,6 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
   //validate flow
   validateFlow = () => {
-    debugger;
     let { isValidate, isSave } = this.state;
     this.setState({ isTest: false, isValidate: !isValidate });
     if (isValidate) {
@@ -505,8 +506,43 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
   //event save campaign
   saveCampaign = async node => {
-    const { idFolder, saveCampaignAuto, infoVersion, infoCampaign, openModal } = this.props;
+    const { idFolder, saveCampaignAuto, infoVersion, infoCampaign, openModal, listFieldData } = this.props;
     let { timeStartCampaign, advancedSearches } = this.state;
+    let nodeMetaData: any[] = [];
+    listFieldData.emailConfig.forEach(value =>
+      nodeMetaData.push({
+        nodeId: value.id,
+        code: code_node.SEND_MAIL,
+        nodeConfig: {
+          id: value.idEmail,
+          name: value.valueName,
+          titlle: value.valueTitle,
+          content: value.contentEmail
+        }
+      })
+    );
+
+    listFieldData.messageConfig.forEach(value =>
+      nodeMetaData.push({
+        nodeId: value.id,
+        code: code_node.SEND_SMS,
+        nodeConfig: {
+          id: '',
+          name: value.name,
+          content: value.content
+        }
+      })
+    );
+    listFieldData.timerEvent.forEach(value =>
+      nodeMetaData.push({
+        nodeId: value.id,
+        code: code_node.SEND_SMS,
+        nodeConfig: {
+          eventType: value.email,
+          emailTemplateId: value.idEmail
+        }
+      })
+    );
     let graph = {
       nodes:
         node.nodes &&
@@ -517,9 +553,9 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             code: event.code,
             value: event.value,
             id: event.id,
-            emailConfig: this.getEmailConfig(event.id),
-            smsConfig: this.getSmsConfig(event.id),
-            gatewayConfig: null,
+            // emailConfig: this.getEmailConfig(event.id),
+            // smsConfig: this.getSmsConfig(event.id),
+            // gatewayConfig: null,
             x: event.x,
             y: event.y
           };
@@ -554,6 +590,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       flow: {
         startTime: timeStartCampaign,
         customerAdvancedSave: advancedSearches,
+        nodeMetaData: nodeMetaData,
+
         graph: graph
       }
     };
@@ -564,7 +602,6 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       title: translate('modal-data.title.success'),
       text: 'Lưu chiến dịch thành công'
     });
-    // console.log(node);
   };
 
   activeProcess = async () => {
@@ -656,10 +693,10 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
               <Row type="flex" className="editorHd">
                 <Col span={24} style={{ borderBottom: '0.25px solid', padding: '1%' }}>
                   <Col span={4}>
-                    <label>Phiên bản: 1.0</label>
+                    <label>Phiên bản: {this.props.list_clone_version.status ? this.props.list_clone_version.version : '1.0'}</label>
                   </Col>
                   <Col span={8}>
-                    <label>Trạng Thái : Bản nháp</label>
+                    <label>Trạng Thái : {this.props.list_clone_version.status ? this.props.list_clone_version.status : 'Bản nháp'}</label>
                   </Col>
                   <Col span={4}>
                     <img src={imgMove} /> &nbsp;

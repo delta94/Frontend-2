@@ -101,7 +101,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
       categoryName: '',
       customerAdvancedSave: {}
     },
-    dateTime: new Date(),
+    dateTime: '',
     selectDate: new Date()
   };
 

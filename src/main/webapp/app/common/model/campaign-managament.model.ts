@@ -5,6 +5,7 @@ export interface IListCloneVersion {
   status: string;
   flow: string;
   description: string;
+  nodeMetaData: string;
   countAct: string;
   flowDetail: {
     graph: {
@@ -18,6 +19,8 @@ export interface IListCloneVersion {
           emailConfig: string;
           smsConfig: string;
           countAct: string;
+          x: number;
+          y: number;
         }
       ];
       edges: [

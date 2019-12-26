@@ -58,6 +58,7 @@ export interface IConfigEmailState {
   visible: boolean;
   idTemplate: string;
   isOpenDropdown: boolean;
+  idEmail: boolean;
 }
 
 class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailState> {
@@ -72,7 +73,8 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
     valueTitle: '',
     visible: false,
     idTemplate: '',
-    isOpenDropdown: false
+    isOpenDropdown: false,
+    idEmail: false
   };
   constructor(props) {
     super(props);
@@ -165,12 +167,13 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
   //add content in CKeditor
   addContentTemplate = event => {
     let { listContentTemplateAsTypeEmailIntro, listFieldData } = this.props;
-    let { defaultValueContent, subjectLanding, valueName, valueTitle } = this.state;
+    let { defaultValueContent, subjectLanding, valueName, valueTitle, idEmail } = this.state;
 
     listContentTemplateAsTypeEmailIntro.forEach(item => {
       if (item.id === event.id.toString()) {
         defaultValueContent = item.content;
         subjectLanding = item.name;
+        idEmail = item.id;
       }
     });
 
@@ -182,7 +185,8 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
       nameEmail: event.name,
       valueName,
       valueTitle,
-      contentEmail: defaultValueContent
+      contentEmail: defaultValueContent,
+      idEmail
     };
 
     let data = {
@@ -300,7 +304,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
                       <br />
                       <Row>
                         <Col span={17}>
-                          <label className="input-search_label">Tiêu đề mail</label>
+                          <label className="input-search_label">Chọn email</label>
                           <UncontrolledButtonDropdown style={{ width: '81%' }}>
                             <DropdownToggle caret className="mb-2 mr-2" style={{ width: '80%' }} color="info" outline>
                               {this.contentEmail()}

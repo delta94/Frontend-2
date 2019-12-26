@@ -381,13 +381,11 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
 
   cloneVersion = async option => {
     let { list_clone_version, getDiagramCampaign } = this.props;
-    let x: number = 0;
     let graph = list_clone_version.flowDetail.graph;
     let data = {
       nodes: graph.nodes.map(item => {
         let dataProcess = option === 'view' ? (item.countAct ? `(${item.countAct})` : '') : '';
 
-        x = x + 200;
         return {
           type: item.type,
           size: '95*95',
@@ -402,8 +400,8 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
           icon: this.customNode(item.code, 'icon'),
           labelOffsetY: 60,
           countAct: item.countAct,
-          x: x,
-          y: 140,
+          x: item.x,
+          y: item.y,
           id: item.id
         };
       }),
