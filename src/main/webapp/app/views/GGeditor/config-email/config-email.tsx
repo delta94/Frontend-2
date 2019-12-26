@@ -1,7 +1,23 @@
 import React, { Component, Fragment } from 'react';
 import './config-email.scss';
 
-import { Card, Collapse, Button, CardTitle, CardBody, Modal, ModalBody, ModalFooter, ModalHeader, Alert } from 'reactstrap';
+import {
+  Card,
+  Collapse,
+  Button,
+  UncontrolledButtonDropdown,
+  CardBody,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  DropdownToggle,
+  Dropdown as DropdownReacts,
+  DropdownMenu,
+  DropdownItem,
+  Col as ColReact,
+  Row as RowReact
+} from 'reactstrap';
 import Dropdown from 'app/layout/DropDown/Dropdown';
 import CKEditor from 'ckeditor4-react';
 import { Row, Col } from 'antd';
@@ -41,6 +57,7 @@ export interface IConfigEmailState {
   valueTitle: string;
   visible: boolean;
   idTemplate: string;
+  isOpenDropdown: boolean;
 }
 
 class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailState> {
@@ -54,7 +71,8 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
     valueName: '',
     valueTitle: '',
     visible: false,
-    idTemplate: ''
+    idTemplate: '',
+    isOpenDropdown: false
   };
   constructor(props) {
     super(props);
@@ -79,6 +97,15 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
       }
     });
   };
+
+  remove(arr, item) {
+    for (var i = arr.length; i--; ) {
+      if (arr[i].id === item.id) {
+        arr.splice(i, 1);
+      }
+    }
+    return arr;
+  }
 
   hide = () => {
     this.setState({
@@ -165,6 +192,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
       timerEvent: listFieldData.timerEvent ? listFieldData.timerEvent : [],
       timer: listFieldData.timer ? listFieldData.timer : []
     };
+    data.emailConfig = this.remove(data.emailConfig, this.props.idNode);
     data.emailConfig.push(emailConfig);
     this.props.validateCampaign(data);
   };
@@ -195,30 +223,42 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
   };
   getNameEmail = () => {
     const { listFieldData, idNode } = this.props;
-    let data =
-      listFieldData.emailConfig &&
+    let data;
+    listFieldData.emailConfig &&
       listFieldData.emailConfig.map(item => {
         if (item.id === idNode.id) {
-          return {
-            name: item.valueName
-          };
+          data = item.valueName;
         }
       });
-    return data && data[0] ? data[0].name : '';
+    return data;
   };
+
+  contentEmail = () => {
+    let result;
+    const { listFieldData, idNode } = this.props;
+    listFieldData.emailConfig &&
+      listFieldData.emailConfig.map(item => {
+        if (item.id === idNode.id) {
+          result = item.nameEmail;
+          this.state.defaultValueContent = item.contentEmail;
+        }
+      });
+    return <label>{result ? result : 'Vui lòng chọn Email'}</label>;
+  };
+
   render() {
     let { showMailForFriend, defaultValueContent, openModal, idTemplate } = this.state;
     let { listCampainContentParams, listContentTemplateAsTypeEmailIntro, listFieldData } = this.props;
-    const img_chosse_template = require('app/assets/utils/images/flow/toggleEmail.png');
-    let listIndexParams = listCampainContentParams.map(item => {
-      return {
-        id: item.id,
-        name: item.paramName
-      };
-    });
 
     let listTemplate = listContentTemplateAsTypeEmailIntro.map(item => {
-      return { id: item.id, name: item.name };
+      return {
+        id: item.id,
+        name: item.name,
+        content: item.content,
+        description: item.description,
+        thumbnail: item.thumbnail,
+        subject: item.subject
+      };
     });
 
     return (
@@ -256,73 +296,54 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
                             maxLength={160}
                           />
                         </Col>
-                        <Col span={7} style={{ textAlign: 'right' }}>
-                          <Popover
-                            placement="bottomRight"
-                            overlayStyle={{ zIndex: 1051, width: '1000px' }}
-                            content={this.props.listContentTemplateAsTypeEmailIntro.map((event, index) => {
-                              return (
-                                <Row key={index}>
-                                  <Row>
-                                    <Dropdown
-                                      selection={true}
-                                      defaultValue="Template mail"
-                                      listArray={listTemplate}
-                                      toggleDropdown={() => this.toggleLanding(event)}
-                                    />
-                                    <br />
-                                  </Row>
-                                  <Row>
-                                    <TemplateEmail id={event.id} htmlDOM={event.content} styleForDOM={''} />
-                                    <div style={{ textAlign: 'center' }}>
-                                      {' '}
-                                      <label className="title-template">{event.name}</label>
-                                    </div>
-                                  </Row>
-                                </Row>
-                              );
-                            })}
-                            title="Email template"
-                            trigger="click"
-                            visible={this.state.visible}
-                            onVisibleChange={this.handleVisibleChange}
-                          >
-                            <img src={img_chosse_template} />
-                          </Popover>
-                        </Col>
                       </Row>
                       <br />
                       <Row>
                         <Col span={17}>
                           <label className="input-search_label">Tiêu đề mail</label>
-                          <Input
-                            style={{ width: '80%' }}
-                            // placeholder={'yyyy/mm/dd hh:mm:ss'}
-                            onChange={e => this.getValueText('title', e)}
-                            maxLength={160}
-                          />
+                          <UncontrolledButtonDropdown style={{ width: '81%' }}>
+                            <DropdownToggle caret className="mb-2 mr-2" style={{ width: '80%' }} color="info" outline>
+                              {this.contentEmail()}
+                            </DropdownToggle>
+
+                            <DropdownMenu className="dropdown-menu-xl">
+                              <div className="grid-menu grid-menu-xl grid-menu-3col">
+                                <RowReact className="no-gutters">
+                                  {listTemplate &&
+                                    listTemplate.map((item, index) => {
+                                      return (
+                                        <ColReact xl="4" sm="6">
+                                          <Button
+                                            key={index}
+                                            href="javascript:void(0)"
+                                            className="btn-icon-vertical btn-square btn-transition"
+                                            outline
+                                            color="link"
+                                          >
+                                            <DropdownItem>
+                                              <img
+                                                onClick={() => this.toggleLanding(item)}
+                                                style={{ width: '100%' }}
+                                                src={item.thumbnail}
+                                                alt={item.subject}
+                                              />
+                                            </DropdownItem>
+                                            {item.subject}
+                                          </Button>
+                                        </ColReact>
+                                      );
+                                    })}
+                                </RowReact>
+                              </div>
+                            </DropdownMenu>
+                          </UncontrolledButtonDropdown>
                         </Col>
                         <Col span={7} style={{ marginTop: '-5px' }}>
-                          <Dropdown
-                            selection={true}
-                            defaultValue="Tham số"
-                            listArray={listIndexParams}
-                            toggleDropdown={this.toggleDropdownParams}
-                          />
+                          <ButtonAntd type="primary" onClick={this.openModalPreview} style={{ marginTop: '2%', background: '#3866DD' }}>
+                            Xem trước
+                          </ButtonAntd>
                         </Col>
                       </Row>
-                      <br />
-                      <Row>
-                        <ButtonAntd
-                          type="primary"
-                          onClick={this.openModalPreview}
-                          style={{ position: 'absolute', margin: '1% 89%', background: '#3866DD' }}
-                        >
-                          Xem trước
-                        </ButtonAntd>
-                      </Row>
-
-                      <CkeditorFixed id="editorLanding" data={defaultValueContent} />
                     </CardBody>
                   </Card>
                 </Collapse>

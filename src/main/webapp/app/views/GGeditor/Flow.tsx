@@ -110,9 +110,9 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
   // handler Open modal
   getVisible = async (event, valueName, searchAdv, isSuccess) => {
-    let { getDiagramCampaign, validateCampaign, listFieldData } = this.props;
+    let { getDiagramCampaign, validateCampaign, listFieldData, listDiagram } = this.props;
     let { idNode, advancedSearches, timeStartCampaign, data, isOpenModalMessage, isOpenModalWaitForEvent, isOpenModalWait } = this.state;
-    let diagram = data.nodes && data.nodes.length > 0 ? data : data.data;
+    let diagram = listDiagram;
     switch (idNode.code) {
       case code_node.SOURCE:
         this.setState({ visible: event });
