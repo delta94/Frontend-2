@@ -621,7 +621,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     const { activeProcessCampaign, list_clone_version, infoVersion, id_active, openModal, cloneVersion } = this.props;
     let data = id_active.id ? id_active.id : '';
     if (data) {
-      await activeProcessCampaign(data);
+      await activeProcessCampaign(data ? data : list_clone_version.id ? list_clone_version.id : '');
       await cloneVersion(data);
       await window.location.assign(`/#/app/views/campaigns/campaign-managament`);
       notification['success']({
@@ -749,7 +749,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                   <Col span={2}>
                     <Button
                       onClick={() => this.activeProcess()}
-                      // disabled={id_active ? false : true}
+                      disabled={id_active ? false : true}
                       type="primary"
                       style={{ float: 'right' }}
                     >
