@@ -408,6 +408,11 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
       edges: list_clone_version.flowDetail.graph.edges,
       groups: []
     };
+    if (list_clone_version.status === 'Draft') {
+      window.location.assign('#/flow');
+    } else {
+      window.location.assign('#/flow/details');
+    }
     await getDiagramCampaign(data);
   };
 
@@ -449,12 +454,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
     await cloneVersion(id);
     await this.cloneVersion('view');
     await saveCampaignAutoVersion(infoVersion);
-    if (list_clone_version.status === 'Draft') {
-      window.location.assign('#/flow');
-    } else {
-      await getListCustomerVersionProcess('', id, 0);
-      window.location.assign('#/flow/details');
-    }
+    await getListCustomerVersionProcess('', id, 0);
   };
 
   render() {
