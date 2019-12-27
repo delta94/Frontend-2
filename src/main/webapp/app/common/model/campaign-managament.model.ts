@@ -8,6 +8,12 @@ export interface IListCloneVersion {
   nodeMetaData: string;
   countAct: string;
   flowDetail: {
+    startTime: string;
+    customerAdvancedSave: {
+      advancedSearches: [{}];
+      logicalOperator: string;
+    };
+    nodeMetaData: [{}];
     graph: {
       nodes: [
         {

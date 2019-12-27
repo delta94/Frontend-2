@@ -57,7 +57,7 @@ interface IFlowPageState {
   data: any;
   idNode: any;
   idEdge: any;
-  advancedSearches: any[];
+  advancedSearches: {};
 }
 
 export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
@@ -507,7 +507,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
   //event save campaign
   saveCampaign = async node => {
-    const { idFolder, saveCampaignAuto, infoVersion, infoCampaign, openModal, listFieldData } = this.props;
+    const { idFolder, saveCampaignAuto, infoVersion, infoCampaign, openModal, listFieldData, list_clone_version } = this.props;
     let { timeStartCampaign, advancedSearches } = this.state;
     let nodeMetaData: any[] = [];
     listFieldData.emailConfig &&
@@ -575,10 +575,10 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         })
     };
     let data = {
-      folderId: idFolder,
-      cjVersionId: this.props.id_active.cjId ? this.props.id_active.id : null,
+      folderId: idFolder ? idFolder : list_clone_version.id,
+      cjVersionId: this.props.id_active.cjId ? this.props.id_active.id : list_clone_version.id ? list_clone_version.id : null,
       cj: {
-        id: this.props.id_active.id ? this.props.id_active.cjId : null,
+        id: this.props.id_active.id ? this.props.id_active.cjId : list_clone_version.cjId ? list_clone_version.cjId : null,
         name: infoCampaign.name ? infoCampaign.name : infoVersion.nameVersion ? infoVersion.nameVersion : 'Tạo chiến dịch mới',
         description: infoCampaign.des
       },
@@ -589,11 +589,23 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         }
       ],
       flow: {
-        startTime: timeStartCampaign,
-        customerAdvancedSave: advancedSearches,
-        nodeMetaData: nodeMetaData,
+        startTime: timeStartCampaign
+          ? timeStartCampaign
+          : list_clone_version.flowDetail.startTime
+          ? list_clone_version.flowDetail.startTime
+          : null,
+        customerAdvancedSave: advancedSearches
+          ? advancedSearches
+          : list_clone_version.flowDetail.customerAdvancedSave
+          ? list_clone_version.flowDetail.customerAdvancedSave
+          : null,
+        nodeMetaData: nodeMetaData
+          ? nodeMetaData
+          : list_clone_version.flowDetail.nodeMetaData
+          ? list_clone_version.flowDetail.nodeMetaData
+          : null,
 
-        graph: graph
+        graph: graph ? graph : list_clone_version.flowDetail.graph ? list_clone_version.flowDetail.graph : []
       }
     };
     await saveCampaignAuto(data);

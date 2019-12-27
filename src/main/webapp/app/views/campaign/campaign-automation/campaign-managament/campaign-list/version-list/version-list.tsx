@@ -444,13 +444,17 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
 
   viewVersion = async id => {
     let { infoVersion } = this.state;
-    const { cloneVersion, saveCampaignAutoVersion, getListCustomerVersionProcess } = this.props;
+    const { cloneVersion, saveCampaignAutoVersion, getListCustomerVersionProcess, list_clone_version } = this.props;
     infoVersion.idVersion = id;
     await cloneVersion(id);
     await this.cloneVersion('view');
     await saveCampaignAutoVersion(infoVersion);
-    await getListCustomerVersionProcess('', id, 0);
-    window.location.assign('#/flow/details');
+    if (list_clone_version.status === 'Draft') {
+      window.location.assign('#/flow');
+    } else {
+      await getListCustomerVersionProcess('', id, 0);
+      window.location.assign('#/flow/details');
+    }
   };
 
   render() {
