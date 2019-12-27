@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import GGEditor, { Flow } from 'gg-editor';
-import { Row, Col, Popover, Button, Layout, Breadcrumb, Icon, Modal as ModalAntd } from 'antd';
+import { Row, Col, Popover, Button, Layout, Breadcrumb, Icon, Modal as ModalAntd, notification } from 'antd';
 import CustomNode from './node/node';
 import CustomEdges from './egdes/egdes';
 import SweetAlert from 'sweetalert-react';
@@ -576,9 +576,9 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     };
     let data = {
       folderId: idFolder,
-      cjVersionId: this.props.id_active.cjID ? this.props.id_active.cjID : null,
+      cjVersionId: this.props.id_active.cjId ? this.props.id_active.id : null,
       cj: {
-        id: this.props.id_active.id ? this.props.id_active.id : null,
+        id: this.props.id_active.id ? this.props.id_active.cjId : null,
         name: infoCampaign.name ? infoCampaign.name : infoVersion.nameVersion ? infoVersion.nameVersion : 'Tạo chiến dịch mới',
         description: infoCampaign.des
       },
@@ -607,11 +607,15 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
   activeProcess = async () => {
     const { activeProcessCampaign, list_clone_version, infoVersion, id_active, openModal, cloneVersion } = this.props;
-    let data = list_clone_version.id ? list_clone_version.id : infoVersion.idVersion ? infoVersion.idVersion : id_active ? id_active : '';
+    let data = id_active.id ? id_active.id : '';
     if (data) {
       await activeProcessCampaign(data);
       await cloneVersion(data);
       await window.location.assign(`/#/app/views/campaigns/campaign-managament`);
+      notification['success']({
+        message: 'thành công',
+        description: 'Bạn vừa kích hoạt chiến dịch thành công.'
+      });
     }
   };
 

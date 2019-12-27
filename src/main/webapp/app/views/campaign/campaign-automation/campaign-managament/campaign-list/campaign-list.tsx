@@ -126,6 +126,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
     this.getListCampaignInfolderDataAction(folderId, '', '', activePage, itemsPerPage);
   };
 
+  //view campaign
   viewCampaign = () => {
     const { cloneVersion } = this.props;
   };

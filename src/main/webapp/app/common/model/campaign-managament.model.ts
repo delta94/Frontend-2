@@ -157,5 +157,5 @@ export interface IListTemplateCampaign {
 
 export interface ISaveCampaign {
   id: string;
-  cjID: string;
+  cjId: string;
 }
