@@ -126,6 +126,11 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
     this.getListCampaignInfolderDataAction(folderId, '', '', activePage, itemsPerPage);
   };
 
+  getCjsCallBack = folderId => {
+    let { activePage, itemsPerPage } = this.state;
+    this.getListCampaignInfolderDataAction(folderId, '', '', activePage, itemsPerPage);
+  };
+
   //view campaign
   viewCampaign = () => {
     const { cloneVersion } = this.props;
@@ -278,7 +283,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                           <span> {item.modifiedDate}</span>
                         </td>
                         <td colSpan={15}>
-                          <CJTagPopOver key={item.cjVersionId} dataPopup={item} getCjs={this.getCjs} />
+                          <CJTagPopOver key={item.cjVersionId} dataPopup={item} getCjs={this.getCjsCallBack} />
                           {/* <Icon onClick={() => this.openModalCjTag(item.id)} style={{ fontSize: '24px' }} type="tags" />  */}
                           &nbsp;
                           <PopverAnt

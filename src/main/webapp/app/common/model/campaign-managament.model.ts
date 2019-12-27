@@ -98,6 +98,7 @@ export interface ICampaign {
       id: string;
       name: string;
       cjVersionId: string;
+      cjFolderId: string;
       version: number;
       tags: string;
       status: string;

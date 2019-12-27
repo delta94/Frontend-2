@@ -17,6 +17,7 @@ interface ICjTagPopOverProps extends StateProps, DispatchProps {
     id: string;
     name: string;
     cjVersionId: string;
+    cjFolderId: string;
     version: number;
     tags: string;
     status: string;
@@ -58,7 +59,7 @@ class CJTagPopOver extends React.Component<ICjTagPopOverProps, TCjTagPopOverStat
     };
     await this.props.updateCjTagsAction(cjEdit);
     this.closePopup();
-    this.props.getCjs();
+    this.props.getCjs(this.props.dataPopup.cjFolderId);
   };
 
   togglePopup = async () => {
@@ -118,7 +119,7 @@ class CJTagPopOver extends React.Component<ICjTagPopOverProps, TCjTagPopOverStat
   };
 
   refreshListCjTag = () => {
-    this.props.getCjs();
+    this.props.getCjs(this.props.dataPopup.cjFolderId);
     this.closePopup();
   };
 
