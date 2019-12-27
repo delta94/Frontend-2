@@ -749,7 +749,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                   <Col span={2}>
                     <Button
                       onClick={() => this.activeProcess()}
-                      disabled={id_active ? false : true}
+                      // disabled={id_active ? false : true}
                       type="primary"
                       style={{ float: 'right' }}
                     >
