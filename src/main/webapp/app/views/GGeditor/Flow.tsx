@@ -75,7 +75,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     isValidate: false,
     isSave: true,
     data: [],
-    advancedSearches: [],
+    advancedSearches: {},
     idNode: {},
     idEdge: {},
     titleMail: '',
