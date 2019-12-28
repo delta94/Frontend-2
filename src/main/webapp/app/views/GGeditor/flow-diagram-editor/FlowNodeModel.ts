@@ -33,6 +33,8 @@ export class FlowNodeModel extends NodeModel {
 
 export class DecisionNodeModel extends FlowNodeModel {
   static TYPE: string = 'decision';
+  static WIDTH: number = 90;
+  static HEIGHT: number = 90;
 
   constructor(nodeType: string = DecisionNodeModel.TYPE, id?: string) {
     super(nodeType, id);
@@ -61,7 +63,9 @@ export class DecisionNodeModel extends FlowNodeModel {
 }
 
 export class MergeNodeModel extends FlowNodeModel {
-  static TYPE: string = 'fork';
+  static TYPE: string = 'merge';
+  static WIDTH: number = 68;
+  static HEIGHT: number = 68;
 
   constructor(nodeType: string = MergeNodeModel.TYPE, id?: string) {
     super(nodeType, id);
@@ -91,6 +95,8 @@ export class MergeNodeModel extends FlowNodeModel {
 
 export class ForkNodeModel extends FlowNodeModel {
   static TYPE: string = 'fork';
+  static WIDTH: number = 68;
+  static HEIGHT: number = 68;
 
   constructor(nodeType: string = ForkNodeModel.TYPE, id?: string) {
     super(nodeType, id);
@@ -120,6 +126,8 @@ export class ForkNodeModel extends FlowNodeModel {
 
 export class JoinNodeModel extends FlowNodeModel {
   static TYPE: string = 'join';
+  static WIDTH: number = 68;
+  static HEIGHT: number = 68;
 
   constructor(nodeType: string = JoinNodeModel.TYPE, id?: string) {
     super(nodeType, id);
@@ -149,6 +157,8 @@ export class JoinNodeModel extends FlowNodeModel {
 
 export class ProcessNodeModel extends FlowNodeModel {
   static TYPE: string = 'process';
+  static WIDTH: number = 64;
+  static HEIGHT: number = 64;
 
   constructor(nodeType: string = ProcessNodeModel.TYPE, id?: string) {
     super(nodeType, id);
@@ -177,6 +187,8 @@ export class ProcessNodeModel extends FlowNodeModel {
 
 export class StartNodeModel extends FlowNodeModel {
   static TYPE: string = 'start';
+  static WIDTH: number = 68;
+  static HEIGHT: number = 68;
 
   constructor(nodeType: string = StartNodeModel.TYPE, id?: string) {
     super(nodeType, id);
@@ -203,6 +215,8 @@ export class StartNodeModel extends FlowNodeModel {
 
 export class EndNodeModel extends FlowNodeModel {
   static TYPE: string = 'end';
+  static WIDTH: number = 68;
+  static HEIGHT: number = 68;
 
   constructor(id?: string) {
     super(EndNodeModel.TYPE, id);

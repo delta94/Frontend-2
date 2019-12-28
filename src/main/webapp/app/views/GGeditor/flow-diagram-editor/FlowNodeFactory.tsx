@@ -2,11 +2,14 @@ import * as SRD from 'storm-react-diagrams';
 import {
   ConditionDecisionNodeModel,
   ContactSourceStartNodeModel,
+  DecisionNodeModel,
   EmailProcessNodeModel,
   EndNodeModel,
   EventSourceStartNodeModel,
   EventWaitingDecisionNodeModel,
+  ProcessNodeModel,
   SmsProcessNodeModel,
+  StartNodeModel,
   TimeWaitingDecisionNodeModel
 } from './FlowNodeModel';
 import * as React from 'react';
@@ -28,7 +31,7 @@ export class ContactSourceStartNodeFactory extends SRD.AbstractNodeFactory {
   }
 
   generateReactWidget(diagramEngine: SRD.DiagramEngine, node: SRD.NodeModel): JSX.Element {
-    return <FlowNodeWidget node={node} icon={ContactSourceStartNodeIcon} width={68} height={68} />;
+    return <FlowNodeWidget node={node} icon={ContactSourceStartNodeIcon} width={StartNodeModel.WIDTH} height={StartNodeModel.HEIGHT} />;
   }
 
   getNewInstance() {
@@ -42,7 +45,7 @@ export class EventSourceStartNodeFactory extends SRD.AbstractNodeFactory {
   }
 
   generateReactWidget(diagramEngine: SRD.DiagramEngine, node: SRD.NodeModel): JSX.Element {
-    return <FlowNodeWidget node={node} icon={EventSourceStartNodeIcon} width={68} height={68} />;
+    return <FlowNodeWidget node={node} icon={EventSourceStartNodeIcon} width={StartNodeModel.WIDTH} height={StartNodeModel.HEIGHT} />;
   }
 
   getNewInstance() {
@@ -56,7 +59,7 @@ export class EmailProcessNodeFactory extends SRD.AbstractNodeFactory {
   }
 
   generateReactWidget(diagramEngine: SRD.DiagramEngine, node: SRD.NodeModel): JSX.Element {
-    return <FlowNodeWidget node={node} icon={EmailProcessNodeIcon} />;
+    return <FlowNodeWidget node={node} icon={EmailProcessNodeIcon} width={ProcessNodeModel.WIDTH} height={ProcessNodeModel.HEIGHT} />;
   }
 
   getNewInstance() {
@@ -70,7 +73,7 @@ export class SmsProcessNodeFactory extends SRD.AbstractNodeFactory {
   }
 
   generateReactWidget(diagramEngine: SRD.DiagramEngine, node: SRD.NodeModel): JSX.Element {
-    return <FlowNodeWidget node={node} icon={SmsProcessNodeIcon} />;
+    return <FlowNodeWidget node={node} icon={SmsProcessNodeIcon} width={ProcessNodeModel.WIDTH} height={ProcessNodeModel.HEIGHT} />;
   }
 
   getNewInstance() {
@@ -84,7 +87,9 @@ export class TimeWaitingDecisionNodeFactory extends SRD.AbstractNodeFactory {
   }
 
   generateReactWidget(diagramEngine: SRD.DiagramEngine, node: SRD.NodeModel): JSX.Element {
-    return <FlowNodeWidget node={node} icon={TimeWaitingDecisionNodeIcon} width={90} height={90} />;
+    return (
+      <FlowNodeWidget node={node} icon={TimeWaitingDecisionNodeIcon} width={DecisionNodeModel.WIDTH} height={DecisionNodeModel.HEIGHT} />
+    );
   }
 
   getNewInstance() {
@@ -98,7 +103,9 @@ export class EventWaitingDecisionNodeFactory extends SRD.AbstractNodeFactory {
   }
 
   generateReactWidget(diagramEngine: SRD.DiagramEngine, node: SRD.NodeModel): JSX.Element {
-    return <FlowNodeWidget node={node} icon={EventWaitingDecisionNodeIcon} width={90} height={90} />;
+    return (
+      <FlowNodeWidget node={node} icon={EventWaitingDecisionNodeIcon} width={DecisionNodeModel.WIDTH} height={DecisionNodeModel.HEIGHT} />
+    );
   }
 
   getNewInstance() {
@@ -112,7 +119,9 @@ export class ConditionDecisionNodeFactory extends SRD.AbstractNodeFactory {
   }
 
   generateReactWidget(diagramEngine: SRD.DiagramEngine, node: SRD.NodeModel): JSX.Element {
-    return <FlowNodeWidget node={node} icon={ConditionDecisionNodeIcon} width={90} height={90} />;
+    return (
+      <FlowNodeWidget node={node} icon={ConditionDecisionNodeIcon} width={DecisionNodeModel.WIDTH} height={DecisionNodeModel.HEIGHT} />
+    );
   }
 
   getNewInstance() {
@@ -126,7 +135,7 @@ export class EndNodeFactory extends SRD.AbstractNodeFactory {
   }
 
   generateReactWidget(diagramEngine: SRD.DiagramEngine, node: SRD.NodeModel): JSX.Element {
-    return <FlowNodeWidget node={node} icon={EndNodeIcon} width={68} height={68} />;
+    return <FlowNodeWidget node={node} icon={EndNodeIcon} width={EndNodeModel.WIDTH} height={EndNodeModel.HEIGHT} />;
   }
 
   getNewInstance() {
