@@ -62,7 +62,24 @@
   }
 
   #name {
+    a {
+      color: #3866dd;
+      font-size: 15px;
+
+      text-decoration-line: underline;
+    }
+    span {
+      color: #8a96a2;
+
+      font-size: 13px;
+    }
     max-width: 200px;
+    text-align: left;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 22px;
+    /* identical to box height */
   }
 
   #status {
@@ -93,5 +110,8 @@
     line-height: 16px;
 
     color: #6c757d;
+  }
+  .ant-progress-outer {
+    width: 60% !important;
   }
 }

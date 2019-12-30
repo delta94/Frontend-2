@@ -552,7 +552,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
                             <Checkbox checked={item.checked} onChange={e => this.changeCheckBox(e, item.cjVersionId)} />
                           </td>
                           <td className="table-content" onClick={() => this.viewVersion(item.cjVersionId)}>
-                            <label style={{ marginLeft: '5%' }}>Version {item.version}</label>
+                            <span style={{ marginLeft: '5%' }}>Version {item.version}</span>
                           </td>
                           <td className="row-status">
                             <img className="img-status" src={this.iconStatus(item.status)} />

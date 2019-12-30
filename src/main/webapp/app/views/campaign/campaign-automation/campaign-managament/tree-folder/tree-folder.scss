@@ -6,13 +6,13 @@
   .ant-tree-node-content-wrapper:hover {
     color: #3866dd;
 
-    .anticon-down {
-      float: left;
-      display: block;
+    .fa-ellipsis-h {
+      display: inline-block;
+      font-size: 16px;
     }
   }
   .ant-tree-node-content-wrapper {
-    .anticon-down {
+    .fa-ellipsis-h {
       display: none;
     }
   }

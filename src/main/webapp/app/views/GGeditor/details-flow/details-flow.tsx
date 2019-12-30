@@ -261,7 +261,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     };
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
     return (
-      <Loader message={spinner1} show={loading} priority={1}>
+      <Loader message={spinner1} show={loading} priority={1} style={{ overflow: 'auto' }}>
         <ModalInteractive onClick={this.viewInteractive} isOpenModal={isOpenModal} />
         <GGEditor className="editor-details">
           <Layout style={{ minHeight: '200vh' }}>

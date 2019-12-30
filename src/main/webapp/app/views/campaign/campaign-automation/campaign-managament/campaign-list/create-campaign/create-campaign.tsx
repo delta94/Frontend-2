@@ -1,4 +1,3 @@
-import react, { Fragment } from 'react';
 import {
   saveCampaignAutoVersion,
   getDiagramCampaign,
@@ -6,18 +5,34 @@ import {
   getTemplateCampaign,
   updateInfoCampaign
 } from 'app/actions/campaign-managament';
+import { img_node, const_shape } from 'app/common/model/campaign-managament.model';
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Table, Row, Badge, Col, Breadcrumb, Card, Tag } from 'antd';
-import { Container } from 'reactstrap';
+import { Button, Table, Row, Badge, Col, Breadcrumb, Card, Tag, Layout, Popover } from 'antd';
+import { Container, Collapse } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { IRootState } from 'app/reducers';
+import CustomNode from 'app/views/GGeditor/node/node';
+import CustomEdges from 'app/views/GGeditor/egdes/egdes';
 import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faPlus } from '@fortawesome/free-solid-svg-icons';
+import GGEditor, { Flow } from 'gg-editor';
 import './create-campaign.scss';
+const { Panel } = Collapse;
+const { Header } = Layout;
 
+const code_node = {
+  SOURCE: 'SOURCE',
+  EVENT: 'EVENT',
+  DES: 'DES',
+  SEND_SMS: 'SEND_SMS',
+  SEND_MAIL: 'SEND_MAIL',
+  GATEWAY: 'GATEWAY',
+  TIMER: 'TIMER',
+  TIMER_EVENT: 'TIMER_EVENT'
+};
 interface ICreateCampaignProps extends StateProps, DispatchProps {}
 
 interface ICreateCampaignState {
@@ -28,6 +43,8 @@ interface ICreateCampaignState {
     cjId: string;
     status: string;
   };
+  isViewtemp: boolean;
+  contentFlow: string;
 }
 
 class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampaignState> {
@@ -38,7 +55,9 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
       idVersion: '',
       cjId: '',
       status: ''
-    }
+    },
+    isViewtemp: false,
+    contentFlow: ''
   };
   componentDidMount() {
     const { getTemplateCampaign } = this.props;
@@ -67,6 +86,111 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
         break;
     }
     return result;
+  };
+
+  customNode(code, option) {
+    let data: string;
+    switch (option) {
+      case 'shape':
+        switch (code) {
+          case code_node.EVENT:
+          case code_node.SOURCE:
+            data = const_shape.CIRCLE;
+            break;
+
+          case code_node.SEND_MAIL:
+          case code_node.SEND_SMS:
+            data = const_shape.FLOW;
+            break;
+
+          case code_node.TIMER:
+          case code_node.TIMER_EVENT:
+          case code_node.GATEWAY:
+            data = const_shape.RHOMSBUS;
+            break;
+          case code_node.DES:
+            data = const_shape.CIRCLE;
+            break;
+          default:
+            break;
+        }
+        break;
+      case 'icon':
+        switch (code) {
+          case code_node.EVENT:
+            data = img_node.EVENT;
+            break;
+
+          case code_node.SOURCE:
+            data = img_node.SOURCE;
+            break;
+
+          case code_node.SEND_MAIL:
+            data = img_node.SEND_MAIL;
+            break;
+
+          case code_node.SEND_SMS:
+            data = img_node.SEND_SMS;
+            break;
+
+          case code_node.TIMER:
+            data = img_node.TIMER;
+            break;
+
+          case code_node.TIMER_EVENT:
+            data = img_node.TIMER_EVENT;
+            break;
+
+          case code_node.GATEWAY:
+            data = img_node.GATEWAY;
+            break;
+
+          case code_node.DES:
+            data = img_node.END;
+            break;
+          default:
+            break;
+        }
+        break;
+      default:
+        break;
+    }
+
+    return data;
+  }
+
+  cloneVersion = async item => {
+    let { getDiagramCampaign } = this.props;
+    let x: number = 0;
+    let clone_version = JSON.parse(item);
+    let graph = clone_version.graph;
+    let data = {
+      nodes: graph.nodes.map(item => {
+        let countDataProcess = item.countAct ? `(${item.countAct})` : '';
+        return {
+          type: item.type,
+          size: '95*95',
+          shape: this.customNode(item.code, 'shape'),
+          value: item.value,
+          code: item.code,
+          label: item.label + countDataProcess,
+          backgroud: '#23C00A',
+          emailConfig: item.emailConfig,
+          smsConfig: item.smsConfig,
+          color: '#1890FF',
+          icon: this.customNode(item.code, 'icon'),
+          labelOffsetY: 60,
+          countAct: item.countAct,
+          x: item.x,
+          y: item.y,
+          id: item.id
+        };
+      }),
+      edges: graph.edges,
+      groups: []
+    };
+    this.setState({ isViewtemp: !this.state.isViewtemp });
+    await getDiagramCampaign(data);
   };
 
   render() {
@@ -122,17 +246,43 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
             {list_template &&
               list_template.map((item, index) => {
                 return (
-                  <Col className="gutter-row" span={8} key={index}>
-                    <div className="gutter-box">
-                      <label className="text-title">{item.name}</label>
-                      <Tag className="tag-group-content" style={{ margin: '1% 5%' }} color="#E6E8E9">
-                        <label>#NHÓM 1</label>
-                      </Tag>
-                      <p>{item.description}</p>
-                      <Tag color={this.difficulty(item.difficulty).color} style={{ margin: '7% 3%' }}>
-                        <label style={{ lineHeight: '0' }}>{this.difficulty(item.difficulty).difficulty}</label>
-                      </Tag>
-                    </div>
+                  <Col className="gutter-row" span={8} key={index} onClick={() => this.cloneVersion(item.flow)}>
+                    <Popover
+                      content={
+                        <GGEditor className="editor-create">
+                          <Flow
+                            graph={{
+                              edgeDaefultShape: 'custom-edge',
+                              height: 300
+                            }}
+                            className="flow"
+                            style={{ minHeight: '300px' }}
+                            data={this.props.listDiagram}
+                            shortcut={{ delete: false }}
+                          />
+                          <label>{item.description}</label>
+                          <br />
+                          <Button type="primary" onClick={() => window.location.assign(`#/flow`)}>
+                            Chọn
+                          </Button>
+                          <CustomNode />
+                          <CustomEdges />
+                        </GGEditor>
+                      }
+                      title=""
+                      trigger="click"
+                    >
+                      <div className="gutter-box">
+                        <label className="text-title">{item.name}</label>
+                        <Tag className="tag-group-content" style={{ margin: '1% 5%' }} color="#E6E8E9">
+                          <label>#NHÓM 1</label>
+                        </Tag>
+                        <p>{item.description}</p>
+                        <Tag color={this.difficulty(item.difficulty).color} style={{ margin: '7% 3%' }}>
+                          <label style={{ lineHeight: '0' }}>{this.difficulty(item.difficulty).difficulty}</label>
+                        </Tag>
+                      </div>
+                    </Popover>
                   </Col>
                 );
               })}
@@ -145,7 +295,8 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
 
 const mapStateToProps = ({ campaignManagament, cjState }: IRootState) => ({
   loading: campaignManagament.loading,
-  list_template: campaignManagament.listTemplateCampaign
+  list_template: campaignManagament.listTemplateCampaign,
+  listDiagram: campaignManagament.listDiagram
 });
 
 const mapDispatchToProps = {

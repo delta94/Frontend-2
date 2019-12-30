@@ -5,6 +5,8 @@ import { Tree } from 'antd';
 import { Row, Col, Button, Input, Table, Popover, Icon, Modal } from 'antd';
 import { openModal, closeModal } from 'app/actions/modal';
 import { IRootState } from 'app/reducers';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome, faArrowDown, faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import {
   getTreeFolder,
   insertTreeFolder,
@@ -347,7 +349,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
               className="tree-children"
               key={item.key}
               title={
-                <div>
+                <div style={{ lineHeight: '2' }}>
                   <img src={img_files} /> {item.title}
                 </div>
               }
@@ -359,7 +361,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
                   trigger="hover"
                   placement="bottomRight"
                 >
-                  <Icon type="down" />
+                  <FontAwesomeIcon icon={faEllipsisH} />
                 </Popover>
               }
             >
@@ -372,7 +374,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
             <TreeNode
               key={item.key}
               title={
-                <div>
+                <div style={{ lineHeight: '2' }}>
                   <img src={img_files} /> {item.title}
                 </div>
               }
@@ -384,7 +386,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
                   trigger="hover"
                   placement="bottomRight"
                 >
-                  <Icon type="down" />
+                  <FontAwesomeIcon icon={faEllipsisH} />
                 </Popover>
               }
             />
@@ -432,7 +434,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
                       className="tree-node"
                       key={item.key}
                       title={
-                        <div>
+                        <div style={{ lineHeight: '2' }}>
                           <img src={img_files} /> {item.title}
                         </div>
                       }
@@ -444,7 +446,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
                           trigger="hover"
                           placement="bottomRight"
                         >
-                          <Icon type="down" />
+                          <FontAwesomeIcon icon={faEllipsisH} />
                         </Popover>
                       }
                     >

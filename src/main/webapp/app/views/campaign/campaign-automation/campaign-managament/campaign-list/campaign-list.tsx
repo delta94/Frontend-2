@@ -10,7 +10,7 @@ import Loader from 'react-loader-advanced';
 import ReactPaginate from 'react-paginate';
 import { getListCampaignInfolderDataAction, cloneVersion } from 'app/actions/campaign-managament';
 import './campaign-list.scss';
-import { Input, Icon, Row, Col, Tag, Button, Popover as PopverAnt } from 'antd';
+import { Input, Icon, Row, Col, Tag, Button, Popover as PopverAnt, Progress } from 'antd';
 import CampaignTag from './campaign-tag/campaign-tag';
 import CjTagModal from './cj-tag-modal/cj-tag-modal';
 import { getCjTagsByCjIdAction } from 'app/actions/cj';
@@ -242,7 +242,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                   <th colSpan={20} id="status">
                     Trạng thái
                   </th>
-                  <th colSpan={15} id="contact-number">
+                  <th colSpan={15} style={{ width: '25%' }}>
                     Kết quả
                   </th>
                   <th colSpan={20} id="contact-number">
@@ -258,15 +258,14 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                       <tr key={index}>
                         <td colSpan={5}>{this.state.activePage * this.state.itemsPerPage + index + 1}</td>
                         <td colSpan={25} id="name">
-                          <Button onClick={this.viewCampaign} type="link">
-                            {' '}
-                            {item.name}
-                          </Button>
-                          <p>Version {item.version}</p>
+                          {' '}
+                          <a style={{ marginLeft: '5%' }}>{item.name}</a> <br />
+                          <span style={{ marginLeft: '5%' }}>Version {item.version}</span>
+                          <br />
                           {item.tags
                             ? item.tags.split(',').map((value, index) => {
                                 return (
-                                  <Tag color="blue" key={index}>
+                                  <Tag style={{ marginLeft: '5%' }} color="blue" key={index}>
                                     {value}
                                   </Tag>
                                 );
@@ -276,8 +275,8 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                         <td colSpan={20} id="status">
                           {getStatusName(item.status)}
                         </td>
-                        <td colSpan={15} id="contact-number">
-                          <span> {item.contactNumbers}</span>
+                        <td colSpan={15}>
+                          <Progress status="active" percent={10} format={percent => `${percent}/${item.contactNumbers} contact`} />
                         </td>
                         <td colSpan={15} id="modifier-date">
                           <span> {item.modifiedDate}</span>
