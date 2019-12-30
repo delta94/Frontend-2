@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { LinkModel, DiagramEngine, PortModel, DefaultLinkModel } from 'storm-react-diagrams';
+import { DefaultLinkModel, DiagramEngine, LinkModel, PortModel } from 'storm-react-diagrams';
 
 export class FlowNodePortModel extends PortModel {
   static TOP: string = 'top';

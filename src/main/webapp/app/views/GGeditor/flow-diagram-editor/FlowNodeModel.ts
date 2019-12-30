@@ -1,17 +1,42 @@
 import { NodeModel, PortModel } from 'storm-react-diagrams';
 import { FlowNodePortModel } from './FlowNodePortModel';
-import { FlowNodeConfig } from 'app/views/GGeditor/flow-diagram-editor/FlowNodeConfig';
+import { FlowNodeConfig } from './FlowNodeConfig';
 
 export class FlowNodeModel extends NodeModel {
   static TYPE: string = 'default';
 
-  config: FlowNodeConfig;
   constructor(nodeType: string = FlowNodeModel.TYPE, id?: string) {
     super(nodeType, id);
   }
 
-  setConfig(config: FlowNodeConfig) {
-    this.config = config;
+  private _config: FlowNodeConfig;
+
+  get config(): FlowNodeConfig {
+    return this._config;
+  }
+
+  set config(value: FlowNodeConfig) {
+    this._config = value;
+  }
+
+  private _dropZoneVisible: boolean = false;
+
+  get dropZoneVisible(): boolean {
+    return this._dropZoneVisible;
+  }
+
+  set dropZoneVisible(value: boolean) {
+    this._dropZoneVisible = value;
+  }
+
+  private _onDrop: any = null;
+
+  get onDrop(): any {
+    return this._onDrop;
+  }
+
+  set onDrop(value: any) {
+    this._onDrop = value;
   }
 
   getDefaultInPort(): PortModel | null {
@@ -297,16 +322,16 @@ export class ConditionDecisionNodeModel extends DecisionNodeModel {
   }
 }
 
-const createNodeModel = (code: string, id: string): FlowNodeModel | null => {
-  if (code === 'SOURCE') return new ContactSourceStartNodeModel(id);
-  if (code === 'SEND_MAIL') return new EmailProcessNodeModel(id);
-  if (code === 'SEND_SMS') return new SmsProcessNodeModel(id);
-  if (code === 'TIMER') return new TimeWaitingDecisionNodeModel(id);
-  if (code === 'TIMER_EVENT') return new EventWaitingDecisionNodeModel(id);
-  if (code === 'GATEWAY') return new ConditionDecisionNodeModel(id);
-  if (code === 'DES') return new EndNodeModel(id);
+export function createNodeModel(code: string, id: string): FlowNodeModel | null {
+  if (code === 'SOURCE' || code === ContactSourceStartNodeModel.TYPE) return new ContactSourceStartNodeModel(id);
+  if (code === 'SEND_MAIL' || code === EmailProcessNodeModel.TYPE) return new EmailProcessNodeModel(id);
+  if (code === 'SEND_SMS' || code === SmsProcessNodeModel.TYPE) return new SmsProcessNodeModel(id);
+  if (code === 'TIMER' || code === TimeWaitingDecisionNodeModel.TYPE) return new TimeWaitingDecisionNodeModel(id);
+  if (code === 'TIMER_EVENT' || code === EventWaitingDecisionNodeModel.TYPE) return new EventWaitingDecisionNodeModel(id);
+  if (code === 'GATEWAY' || code === ConditionDecisionNodeModel.TYPE) return new ConditionDecisionNodeModel(id);
+  if (code === 'DES' || code === EndNodeModel.TYPE) return new EndNodeModel(id);
   return null;
-};
+}
 
 export function parseNode(node: any): FlowNodeModel | null {
   let nodeModel = createNodeModel(node.code, node.id);
