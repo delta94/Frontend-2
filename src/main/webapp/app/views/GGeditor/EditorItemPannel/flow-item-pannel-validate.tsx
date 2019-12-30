@@ -172,12 +172,17 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
   };
 
   render() {
+    const { list_clone_verion } = this.props;
     return (
       <Fragment>
         <Collapse className="validate-main" bordered={false} defaultActiveKey={['1']} expandIconPosition="right">
           <Panel header="" key="1">
             <ItemPanel className="itemPanel">
-              {this.showNodeValidate() && this.showNodeValidate().length > 0 ? this.showNodeValidate() : this.showComplete()}
+              {list_clone_verion && Object.keys(list_clone_verion).length > 0
+                ? this.showComplete()
+                : this.showNodeValidate() && this.showNodeValidate().length > 0
+                ? this.showNodeValidate()
+                : this.showComplete()}
             </ItemPanel>
           </Panel>
         </Collapse>
@@ -189,7 +194,8 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
 const mapStateToProps = ({ campaignManagament }: IRootState) => ({
   loading: campaignManagament.loading,
   listDiagram: campaignManagament.listDiagram,
-  listFieldData: campaignManagament.listFieldData
+  listFieldData: campaignManagament.listFieldData,
+  list_clone_verion: campaignManagament.cloneInfoVersion
 });
 
 const mapDispatchToProps = {

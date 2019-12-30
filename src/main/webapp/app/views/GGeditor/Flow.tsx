@@ -618,9 +618,9 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
   activeProcess = async () => {
     const { activeProcessCampaign, list_clone_version, infoVersion, id_active, openModal, cloneVersion } = this.props;
-    let data = id_active.id ? id_active.id : '';
+    let data = id_active.id ? id_active.id : list_clone_version.id ? list_clone_version.id : '';
     if (data) {
-      await activeProcessCampaign(data ? data : list_clone_version.id ? list_clone_version.id : '');
+      await activeProcessCampaign(data);
       await cloneVersion(data);
       await window.location.assign(`/#/app/views/campaigns/campaign-managament`);
       notification['success']({
