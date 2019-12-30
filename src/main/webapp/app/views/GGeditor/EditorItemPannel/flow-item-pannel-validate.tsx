@@ -167,16 +167,8 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
   };
 
   showComplete = () => {
-    const { openModal } = this.props;
     localStorage.setItem('isSave', 'true');
-
-    openModal({
-      show: true,
-      type: 'success',
-      title: translate('modal-data.title.success'),
-      text: 'Cấu hình chiến dịch thành công'
-    });
-    return <label className="config-validate"> </label>;
+    return <label className="config-validate"> Cấu hình chiến dịch thành công </label>;
   };
 
   render() {

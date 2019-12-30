@@ -106,7 +106,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
     let { strTagId, textSearch, itemsPerPage } = this.state;
     let folderId = this.props.folder_id_choose;
     this.setState({ activePage: parseInt(pageIndex) });
-    this.getListCampaignInfolderDataAction(folderId, textSearch, strTagId, parseInt(pageIndex), itemsPerPage);
+    this.getListCampaignInfolderDataAction(folderId ? folderId : '-99', textSearch, strTagId, parseInt(pageIndex), itemsPerPage);
   };
 
   handleChange = cjTags => {
@@ -204,7 +204,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                   placeholder="Nhập từ khóa"
                   onChange={this.onchangeTextSearch}
                   onPressEnter={() => {
-                    this.getListCampaignInfolderDataAction(folderId, textSearch, strTagId, activePage, itemsPerPage);
+                    this.getListCampaignInfolderDataAction(folderId ? folderId : '-99', textSearch, strTagId, activePage, itemsPerPage);
                   }}
                 />
               </Col>

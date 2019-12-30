@@ -2,7 +2,8 @@ import React from 'react';
 import { IRootState } from 'app/reducers';
 import { connect } from 'react-redux';
 import { getEmailTest, testCampaign } from 'app/actions/campaign-managament';
-import { Row, Col, Checkbox, Input, Button, Layout, Icon, Select } from 'antd';
+import { Row, Col, Checkbox, Input, Button, Layout, Icon, Select, notification } from 'antd';
+import { code_node, img_node, const_shape } from 'app/common/model/campaign-managament.model';
 const { Sider } = Layout;
 const { Option } = Select;
 interface ISiderTestProps extends StateProps, DispatchProps {}
@@ -108,40 +109,47 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
     return valueEdges;
   };
 
-  getEmailConfig = id => {
-    let { listFieldData } = this.props;
-    let data = null;
-    listFieldData.emailConfig &&
-      listFieldData.emailConfig.map(item => {
-        if (id === item.id) {
-          data = {
-            name: item.valueName,
-            title: item.valueTitle,
-            content: item.contentEmail
-          };
-        }
-      });
-    return data;
-  };
-
-  getSmsConfig = id => {
-    let { listFieldData } = this.props;
-    let data = null;
-    listFieldData.messageConfig &&
-      listFieldData.messageConfig.map(item => {
-        if (id === item.id) {
-          data = {
-            name: item.name,
-            content: item.content
-          };
-        }
-      });
-    return data;
-  };
-
-  testProcess = () => {
+  testProcess = async () => {
     let { isCheckCustomer, isCheckEmail, isCheckPhone, customer, email, phone } = this.state;
-    let { listDiagram, testCampaign } = this.props;
+    let { listDiagram, testCampaign, listFieldData } = this.props;
+    let nodeMetaData: any[] = [];
+    listFieldData.emailConfig &&
+      listFieldData.emailConfig.forEach(value =>
+        nodeMetaData.push({
+          nodeId: value.id,
+          code: code_node.SEND_MAIL,
+          nodeConfig: {
+            id: value.idEmail,
+            name: value.valueName,
+            titlle: value.valueTitle,
+            content: value.contentEmail
+          }
+        })
+      );
+
+    listFieldData.messageConfig &&
+      listFieldData.messageConfig.forEach(value =>
+        nodeMetaData.push({
+          nodeId: value.id,
+          code: code_node.SEND_SMS,
+          nodeConfig: {
+            id: value.id,
+            name: value.name,
+            content: value.content
+          }
+        })
+      );
+    listFieldData.timerEvent &&
+      listFieldData.timerEvent.forEach(value =>
+        nodeMetaData.push({
+          nodeId: value.id,
+          code: code_node.TIMER_EVENT,
+          nodeConfig: {
+            eventType: value.email,
+            emailTemplateId: value.idEmail
+          }
+        })
+      );
     let graph = {
       nodes:
         listDiagram.nodes &&
@@ -150,12 +158,10 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
             type: event.type,
             label: event.label,
             code: event.code,
-            value: event.code === 'TIMER_EVENT' || event.code === 'TIMER' ? ' PT3S' : event.value,
+            value: event.value,
             id: event.id,
-            emailConfig: this.getEmailConfig(event.id),
-            smsConfig: this.getSmsConfig(event.id),
-            gatewayConfig: null,
-            timerEventConfig: null
+            x: event.x,
+            y: event.y
           };
         }),
       edges:
@@ -175,10 +181,15 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
       emailTest: isCheckEmail ? email : '',
       mobileTest: isCheckPhone ? phone : '',
       customer: isCheckCustomer ? customer[0] : '',
+      nodeMetaData,
       graph
     };
-    testCampaign(data);
-    console.log(data);
+    localStorage.setItem('isActive', 'true');
+    await testCampaign(data);
+    notification['success']({
+      message: 'thành công',
+      description: 'Dữ liệu test thành công'
+    });
   };
 
   render() {

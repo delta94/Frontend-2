@@ -17,7 +17,7 @@ class Save extends React.Component {
   render() {
     return (
       <Button
-      //  disabled = {this.props.isSave}
+       disabled = {this.props.isDisable}
         onClick={this.handleClick}>Save</Button>
     );
   }

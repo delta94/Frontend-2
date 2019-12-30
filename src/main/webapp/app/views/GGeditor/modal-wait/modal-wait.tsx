@@ -50,6 +50,7 @@ export class ModalTimeWait extends React.Component<IModalTimeWaitProps, IModalTi
     };
     data.timer.push(timer);
     validateCampaign(data);
+    localStorage.removeItem('isSave');
     this.toggle();
   };
 

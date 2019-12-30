@@ -40,6 +40,7 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
       name: $(`#name-message`).val(),
       content: $(`#text-content`).val()
     };
+    localStorage.removeItem('isSave');
     data.messageConfig = this.remove(data.messageConfig, this.props.idNode);
     data.messageConfig.push(fieldMessageConfig);
     validateCampaign(data);

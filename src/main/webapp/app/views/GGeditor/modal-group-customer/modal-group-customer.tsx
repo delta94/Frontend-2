@@ -422,7 +422,10 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
         title={title_modal ? title_modal.toUpperCase() : ''}
         style={{ width: '700px' }}
         className="modal-config-ggeditor"
-        onOk={() => this.props.toggle()}
+        onOk={() => {
+          localStorage.removeItem('isSave');
+          this.props.toggle();
+        }}
         onCancel={this.closeConfigModal}
         footer={[
           <Button key="submit" color="none" onClick={() => this.props.toggle()}>

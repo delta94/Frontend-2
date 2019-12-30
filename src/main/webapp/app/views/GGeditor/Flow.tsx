@@ -84,6 +84,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
   componentDidMount() {
     let { listDiagram, getDiagramCampaign } = this.props;
+    localStorage.removeItem('isSave');
     if (listDiagram.nodes && listDiagram.nodes.length === 0) {
       getDiagramCampaign([]);
     }
@@ -139,6 +140,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           };
           dataList.listCampign.push(fieldListCustomer);
           // get value node list customer
+          localStorage.removeItem('isSave');
           await validateCampaign(dataList);
           // save node in flow
           await getDiagramCampaign(diagram);
@@ -240,6 +242,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       default:
         break;
     }
+    localStorage.removeItem('isSave');
     getDiagramCampaign(data);
     this.setState({ data });
   };
@@ -271,6 +274,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       default:
         break;
     }
+    localStorage.removeItem('isSave');
     await getDiagramCampaign(data);
     this.setState({ data });
   };
@@ -530,7 +534,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           nodeId: value.id,
           code: code_node.SEND_SMS,
           nodeConfig: {
-            id: '',
+            id: value.id,
             name: value.name,
             content: value.content
           }
@@ -540,7 +544,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       listFieldData.timerEvent.forEach(value =>
         nodeMetaData.push({
           nodeId: value.id,
-          code: code_node.SEND_SMS,
+          code: code_node.TIMER_EVENT,
           nodeConfig: {
             eventType: value.email,
             emailTemplateId: value.idEmail
@@ -582,16 +586,11 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         name: infoCampaign.name ? infoCampaign.name : infoVersion.nameVersion ? infoVersion.nameVersion : 'Tạo chiến dịch mới',
         description: infoCampaign.des
       },
-      cjTags: [
-        {
-          id: infoCampaign.tag,
-          name: infoCampaign.nameTag
-        }
-      ],
+      cjTags: infoCampaign.tag,
       flow: {
         startTime: timeStartCampaign
           ? timeStartCampaign
-          : list_clone_version.flowDetail.startTime
+          : list_clone_version.flowDetail.startTime && list_clone_version.flowDetail.startTime
           ? list_clone_version.flowDetail.startTime
           : null,
         customerAdvancedSave: advancedSearches
@@ -731,7 +730,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                         onClick={() => {
                           this.setState({ isTest: !isTest, isValidate: false });
                         }}
-                        disabled={listDiagram.nodes && listDiagram.nodes.length > 0 ? false : true}
+                        disabled={JSON.parse(localStorage.getItem('isSave')) ? false : true}
                       >
                         Test
                       </Button>
@@ -743,13 +742,13 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                       >
                         Validate
                       </Button>
-                      <Save isSave={this.state.isSave} onClick={this.saveCampaign} />
+                      <Save isDisable={listDiagram.nodes && listDiagram.nodes.length > 0 ? false : true} onClick={this.saveCampaign} />
                     </ButtonGroup>
                   </Col>
                   <Col span={2}>
                     <Button
                       onClick={() => this.activeProcess()}
-                      disabled={id_active ? false : true}
+                      disabled={JSON.parse(localStorage.getItem('isSave')) ? false : true}
                       type="primary"
                       style={{ float: 'right' }}
                     >
@@ -822,6 +821,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
               type="primary"
               style={{ background: '#3866DD' }}
               onClick={() => {
+                localStorage.removeItem('isSave');
                 this.confirmEmail();
               }}
             >

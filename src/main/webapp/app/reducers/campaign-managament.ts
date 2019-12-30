@@ -23,7 +23,6 @@ interface IInfoCampaign {
   des: string;
   name: string;
   tag: string;
-  nameTag: string;
 }
 
 interface IListDiagram {

@@ -61,6 +61,7 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
       time,
       idEmail
     };
+    localStorage.removeItem('isSave');
     data.timerEvent.push(timerEvent);
     await validateCampaign(data);
     this.toggle();
