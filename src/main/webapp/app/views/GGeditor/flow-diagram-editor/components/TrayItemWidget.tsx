@@ -1,9 +1,10 @@
 import * as React from 'react';
+import { createFlowNodeWidget } from '../FlowNodeFactory';
 
 export interface TrayItemWidgetProps {
   model: any;
-  color?: string;
-  name: string;
+  onDragStart: any;
+  onDragEnd: any;
 }
 
 export interface TrayItemWidgetState {}
@@ -17,14 +18,18 @@ export class TrayItemWidget extends React.Component<TrayItemWidgetProps, TrayIte
   render() {
     return (
       <div
-        style={{ borderColor: this.props.color }}
+        // style={{ borderColor: this.props.color }}
         draggable={true}
         onDragStart={event => {
-          event.dataTransfer.setData('storm-diagram-node', JSON.stringify(this.props.model));
+          if (this.props.onDragStart) this.props.onDragStart(event);
+          event.dataTransfer.setData('flow-diagram-node', JSON.stringify(this.props.model));
+        }}
+        onDragEnd={event => {
+          if (this.props.onDragEnd) this.props.onDragEnd(event);
         }}
         className="tray-item"
       >
-        {this.props.name}
+        {createFlowNodeWidget(this.props.model.type, null, false, false)}
       </div>
     );
   }

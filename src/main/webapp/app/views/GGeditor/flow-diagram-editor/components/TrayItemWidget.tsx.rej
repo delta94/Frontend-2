@@ -1,0 +1,49 @@
+diff a/src/main/webapp/app/views/GGeditor/flow-diagram-editor/components/TrayItemWidget.tsx b/src/main/webapp/app/views/GGeditor/flow-diagram-editor/components/TrayItemWidget.tsx	(rejected hunks)
+@@ -1 +1 @@
+-import * as React from "react";
++import * as React from 'react';
+@@ -4,3 +4,3 @@ export interface TrayItemWidgetProps {
+-	model: any;
+-	color?: string;
+-	name: string;
++  model: any;
++  color?: string;
++  name: string;
+@@ -12,4 +12,4 @@ export class TrayItemWidget extends React.Component<TrayItemWidgetProps, TrayIte
+-	constructor(props: TrayItemWidgetProps) {
+-		super(props);
+-		this.state = {};
+-	}
++  constructor(props: TrayItemWidgetProps) {
++    super(props);
++    this.state = {};
++  }
+@@ -17,14 +17,14 @@ export class TrayItemWidget extends React.Component<TrayItemWidgetProps, TrayIte
+-	render() {
+-		return (
+-			<div
+-				style={{ borderColor: this.props.color }}
+-				draggable={true}
+-				onDragStart={event => {
+-					event.dataTransfer.setData("storm-diagram-node", JSON.stringify(this.props.model));
+-				}}
+-				className="tray-item"
+-			>
+-				{this.props.name}
+-			</div>
+-		);
+-	}
++  render() {
++    return (
++      <div
++        style={{ borderColor: this.props.color }}
++        draggable={true}
++        onDragStart={event => {
++          event.dataTransfer.setData('storm-diagram-node', JSON.stringify(this.props.model));
++        }}
++        className="tray-item"
++      >
++        {this.props.name}
++      </div>
++    );
++  }

@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 export interface TrayWidgetProps {}
-
 export interface TrayWidgetState {}
 
 export class TrayWidget extends React.Component<TrayWidgetProps, TrayWidgetState> {

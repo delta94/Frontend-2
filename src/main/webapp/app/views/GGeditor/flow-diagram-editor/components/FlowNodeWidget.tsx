@@ -1,12 +1,21 @@
 import * as React from 'react';
 import { NodeModel, PortWidget } from 'storm-react-diagrams';
-const DefaultIcon = require('./icons/default.png');
+import * as _ from 'lodash';
+import { FlowNodeModel } from 'app/views/GGeditor/flow-diagram-editor/FlowNodeModel';
+
+const DefaultIcon = require('../icons/default.png');
 
 export interface FlowNodeWidgetProps {
   width: number;
   height: number;
+  type: string;
   icon: string;
+  title: string;
   node: NodeModel;
+  portVisible: boolean;
+  dropZoneWidth: number;
+  dropZoneHeight: number;
+  dropZoneVisible: boolean;
 }
 
 export interface FlowNodeWidgetState {}
@@ -15,8 +24,14 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
   public static defaultProps: FlowNodeWidgetProps = {
     width: 64,
     height: 64,
+    type: 'flow_node',
     icon: DefaultIcon,
-    node: null
+    title: '',
+    node: null,
+    portVisible: true,
+    dropZoneWidth: 64,
+    dropZoneHeight: 64,
+    dropZoneVisible: false
   };
 
   constructor(props: FlowNodeWidgetProps) {
@@ -25,7 +40,7 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
   }
 
   renderLeftPort() {
-    if (this.props.node && this.props.node.getPort('left')) {
+    if (this.props.portVisible && this.props.node && this.props.node.getPort('left')) {
       return (
         <div
           style={{
@@ -42,7 +57,7 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
   }
 
   renderTopPort() {
-    if (this.props.node && this.props.node.getPort('top')) {
+    if (this.props.portVisible && this.props.node && this.props.node.getPort('top')) {
       return (
         <div
           style={{
@@ -59,7 +74,7 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
   }
 
   renderRightPort() {
-    if (this.props.node && this.props.node.getPort('right')) {
+    if (this.props.portVisible && this.props.node && this.props.node.getPort('right')) {
       return (
         <div
           style={{
@@ -76,7 +91,7 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
   }
 
   renderBottomPort() {
-    if (this.props.node && this.props.node.getPort('bottom')) {
+    if (this.props.portVisible && this.props.node && this.props.node.getPort('bottom')) {
       return (
         <div
           style={{
@@ -92,8 +107,35 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
     }
   }
 
+  renderDropZone() {
+    if (this.props.dropZoneVisible && (!this.props.node || (this.props.node instanceof FlowNodeModel && this.props.node.dropZoneVisible))) {
+      return (
+        <div
+          onDrop={event => {
+            if (this.props.node && this.props.node instanceof FlowNodeModel && this.props.node.onDrop) {
+              let data = JSON.parse(event.dataTransfer.getData('flow-diagram-node'));
+              this.props.node.onDrop(this.props.node, data);
+            }
+          }}
+          style={{
+            position: 'absolute',
+            zIndex: 10,
+            borderWidth: 2,
+            borderRadius: 6,
+            borderColor: '#D1D2DE',
+            borderStyle: 'dashed',
+            top: (this.props.height - this.props.dropZoneHeight) / 2,
+            left: -1.1 * this.props.dropZoneWidth,
+            width: this.props.dropZoneWidth,
+            height: this.props.dropZoneHeight
+          }}
+        ></div>
+      );
+    }
+  }
+
   renderIcon() {
-    let alias = this.props.node ? this.props.node.getType() + '_' + this.props.node.getID() : '';
+    let alias = this.props.node ? this.props.node.getType() + '_' + this.props.node.getID() : this.props.type;
     return (
       <svg
         width={this.props.width}
@@ -146,6 +188,7 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
         {this.renderTopPort()}
         {this.renderRightPort()}
         {this.renderBottomPort()}
+        {this.renderDropZone()}
       </div>
     );
   }
