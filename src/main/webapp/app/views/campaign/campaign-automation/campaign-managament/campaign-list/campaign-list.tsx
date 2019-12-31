@@ -8,13 +8,20 @@ import { IRootState } from 'app/reducers';
 import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import ReactPaginate from 'react-paginate';
-import { getListCampaignInfolderDataAction, cloneVersion } from 'app/actions/campaign-managament';
+import {
+  getListCampaignInfolderDataAction,
+  cloneVersion,
+  getDiagramCampaign,
+  saveCampaignAutoVersion,
+  getListCustomerVersionProcess
+} from 'app/actions/campaign-managament';
 import './campaign-list.scss';
 import { Input, Icon, Row, Col, Tag, Button, Popover as PopverAnt, Progress } from 'antd';
 import CampaignTag from './campaign-tag/campaign-tag';
 import CjTagModal from './cj-tag-modal/cj-tag-modal';
 import { getCjTagsByCjIdAction } from 'app/actions/cj';
 import { STATUS_CJ } from 'app/constants/cj';
+import { img_node, const_shape } from 'app/common/model/campaign-managament.model';
 import CJTagPopOver from './cj-popup/cj-popover';
 
 interface ICampaignListProps extends StateProps, DispatchProps {
@@ -34,6 +41,17 @@ interface ICampaignListState {
   list_camp: any[];
   visible: boolean;
 }
+
+const code_node = {
+  SOURCE: 'SOURCE',
+  EVENT: 'EVENT',
+  DES: 'DES',
+  SEND_SMS: 'SEND_SMS',
+  SEND_MAIL: 'SEND_MAIL',
+  GATEWAY: 'GATEWAY',
+  TIMER: 'TIMER',
+  TIMER_EVENT: 'TIMER_EVENT'
+};
 
 class CampaignList extends React.Component<ICampaignListProps, ICampaignListState> {
   state: ICampaignListState = {
@@ -134,6 +152,130 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
   //view campaign
   viewCampaign = () => {
     const { cloneVersion } = this.props;
+  };
+
+  customNode(code, option) {
+    let data: string;
+    switch (option) {
+      case 'shape':
+        switch (code) {
+          case code_node.EVENT:
+          case code_node.SOURCE:
+            data = const_shape.CIRCLE;
+            break;
+
+          case code_node.SEND_MAIL:
+          case code_node.SEND_SMS:
+            data = const_shape.FLOW;
+            break;
+
+          case code_node.TIMER:
+          case code_node.TIMER_EVENT:
+          case code_node.GATEWAY:
+            data = const_shape.RHOMSBUS;
+            break;
+          case code_node.DES:
+            data = const_shape.END_NODE;
+            break;
+          default:
+            break;
+        }
+        break;
+      case 'icon':
+        switch (code) {
+          case code_node.EVENT:
+            data = img_node.EVENT;
+            break;
+
+          case code_node.SOURCE:
+            data = img_node.SOURCE;
+            break;
+
+          case code_node.SEND_MAIL:
+            data = img_node.SEND_MAIL;
+            break;
+
+          case code_node.SEND_SMS:
+            data = img_node.SEND_SMS;
+            break;
+
+          case code_node.TIMER:
+            data = img_node.TIMER;
+            break;
+
+          case code_node.TIMER_EVENT:
+            data = img_node.TIMER_EVENT;
+            break;
+
+          case code_node.GATEWAY:
+            data = img_node.GATEWAY;
+            break;
+
+          case code_node.DES:
+            data = img_node.END;
+            break;
+          default:
+            break;
+        }
+        break;
+      default:
+        break;
+    }
+
+    return data;
+  }
+
+  cloneVersion = async option => {
+    let { list_clone_version, getDiagramCampaign } = this.props;
+    let graph = list_clone_version.flowDetail.graph;
+    let data = {
+      nodes: graph.nodes.map(item => {
+        let dataProcess = option === 'view' ? (item.countAct ? `(${item.countAct})` : '') : '';
+
+        return {
+          type: item.type,
+          size: '95*95',
+          shape: this.customNode(item.code, 'shape'),
+          value: item.value,
+          code: item.code,
+          label: item.label + dataProcess,
+          backgroud: '#23C00A',
+          emailConfig: item.emailConfig,
+          smsConfig: item.smsConfig,
+          color: '#1890FF',
+          icon: this.customNode(item.code, 'icon'),
+          labelOffsetY: 60,
+          countAct: item.countAct,
+          x: item.x,
+          y: item.y,
+          id: item.id
+        };
+      }),
+      edges: list_clone_version.flowDetail.graph.edges,
+      groups: []
+    };
+    if (list_clone_version.status === 'Draft') {
+      window.location.assign('#/flow');
+    } else {
+      window.location.assign('#/flow/details');
+    }
+    await getDiagramCampaign(data);
+  };
+
+  viewVersion = async id => {
+    let infoVersion = {
+      type: '',
+      nameVersion: '',
+      idVersion: '',
+      cjId: '',
+      status: ''
+    };
+    const { cloneVersion, saveCampaignAutoVersion, getListCustomerVersionProcess } = this.props;
+    infoVersion.idVersion = id;
+    await cloneVersion(id);
+    await this.cloneVersion('view');
+    await saveCampaignAutoVersion(infoVersion);
+    await getListCustomerVersionProcess('', id, 0);
   };
 
   render() {
@@ -237,9 +379,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                   <th className="checkbox-td" colSpan={5}>
                     STT
                   </th>
-                  <th colSpan={25} id="name">
-                    Chiến dịch
-                  </th>
+                  <th colSpan={25}>Chiến dịch</th>
                   <th colSpan={20} id="status">
                     Trạng thái
                   </th>
@@ -260,7 +400,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                         <td colSpan={5}>{this.state.activePage * this.state.itemsPerPage + index + 1}</td>
                         <td colSpan={25} id="name">
                           {' '}
-                          <a>{item.name}</a> <br />
+                          <a onClick={() => this.viewVersion(item.cjVersionId)}>{item.name}</a> <br />
                           <span>Version {item.version}</span>
                           <br />
                           {item.tags
@@ -353,10 +493,18 @@ const mapStateToProps = ({ campaignManagament, cjState }: IRootState) => ({
   loading: campaignManagament.loading,
   campaign_list: campaignManagament.campaign.data,
   total: campaignManagament.campaign.total,
-  valueComboTag: cjState.cj_tags
+  valueComboTag: cjState.cj_tags,
+  list_clone_version: campaignManagament.cloneInfoVersion
 });
 
-const mapDispatchToProps = { getListCampaignInfolderDataAction, getCjTagsByCjIdAction, cloneVersion };
+const mapDispatchToProps = {
+  getListCampaignInfolderDataAction,
+  getCjTagsByCjIdAction,
+  cloneVersion,
+  getDiagramCampaign,
+  saveCampaignAutoVersion,
+  getListCustomerVersionProcess
+};
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

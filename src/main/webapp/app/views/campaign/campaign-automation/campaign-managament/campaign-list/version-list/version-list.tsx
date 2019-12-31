@@ -445,6 +445,12 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
         okText: 'Đồng ý',
         cancelText: 'Hủy bỏ'
       });
+    } else {
+      Modal.warning({
+        title: 'Thông báo',
+        content: 'Không thể nhân bản trạng thái : "Bản nháp" ',
+        okText: 'Đồng ý'
+      });
     }
   };
 
