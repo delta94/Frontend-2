@@ -125,6 +125,24 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
       }
     }
 
+    if (Object.keys(listFieldData.getway).length > 0) {
+      let idGetway = listFieldData.getway.map(item => {
+        return item.id;
+      });
+      let id = idGetway.join().split(',');
+      if (id.length < 2) {
+        data = data.filter(function(item) {
+          return item.id != id;
+        });
+      } else {
+        id.map(value => {
+          data = data.filter(function(item) {
+            return item.id != String(value);
+          });
+        });
+      }
+    }
+
     return data;
   };
 

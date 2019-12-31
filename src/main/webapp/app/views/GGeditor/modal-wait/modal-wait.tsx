@@ -40,7 +40,8 @@ export class ModalTimeWait extends React.Component<IModalTimeWaitProps, IModalTi
       emailConfig: listFieldData.emailConfig ? listFieldData.emailConfig : [],
       listCampign: listFieldData.listCampign ? listFieldData.listCampign : [],
       timerEvent: listFieldData.timerEvent ? listFieldData.timerEvent : [],
-      timer: listFieldData.timer ? listFieldData.timer : []
+      timer: listFieldData.timer ? listFieldData.timer : [],
+      getway: listFieldData.getway ? listFieldData.getway : []
     };
     let timer = {
       id: this.props.idNode.id,

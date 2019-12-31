@@ -37,6 +37,7 @@ interface IListFieldData {
   messageConfig: any[];
   timerEvent: any[];
   timer: any[];
+  getway: any[];
 }
 
 interface IListEmailTest {

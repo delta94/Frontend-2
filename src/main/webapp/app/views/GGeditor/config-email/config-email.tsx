@@ -194,7 +194,8 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
       emailConfig: listFieldData.emailConfig ? listFieldData.emailConfig : [],
       listCampign: listFieldData.listCampign ? listFieldData.listCampign : [],
       timerEvent: listFieldData.timerEvent ? listFieldData.timerEvent : [],
-      timer: listFieldData.timer ? listFieldData.timer : []
+      timer: listFieldData.timer ? listFieldData.timer : [],
+      getway: listFieldData.getway ? listFieldData.getway : []
     };
     data.emailConfig = this.remove(data.emailConfig, this.props.idNode);
     data.emailConfig.push(emailConfig);

@@ -35,6 +35,7 @@ import SiderTest from './sider/sider-test';
 import ModalWaitForEvent from './modal-wait-for-event/modal-wait-for-event';
 import ModalTimeWait from './modal-wait/modal-wait';
 import SiderValidate from './sider/sider-validate';
+import ModalGateWay from './modal-gateway/modal-gateway';
 
 const ButtonGroup = Button.Group;
 
@@ -138,7 +139,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             emailConfig: listFieldData.emailConfig ? listFieldData.emailConfig : [],
             listCampign: listFieldData.listCampign ? listFieldData.listCampign : [],
             timerEvent: listFieldData.timerEvent ? listFieldData.timerEvent : [],
-            timer: listFieldData.timer ? listFieldData.timer : []
+            timer: listFieldData.timer ? listFieldData.timer : [],
+            getway: listFieldData.getway ? listFieldData.getway : []
           };
           dataList.listCampign.push(fieldListCustomer);
           // get value node list customer
@@ -172,6 +174,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         }
         break;
       case code_node.GATEWAY:
+        this.setState({ isOpenGateWay: !this.state.isOpenGateWay });
         break;
       default:
         break;
@@ -555,6 +558,17 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           }
         })
       );
+    listFieldData.getway &&
+      listFieldData.getway.forEach(value =>
+        nodeMetaData.push({
+          nodeId: value.id,
+          code: code_node.GATEWAY,
+          nodeConfig: {
+            logicalOperator: value.logicalOperator,
+            advancedSearches: value.advancedSearches
+          }
+        })
+      );
     let graph = {
       nodes:
         node.nodes &&
@@ -651,6 +665,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           type={modalState.type ? modalState.type : 'error'}
           onConfirm={() => this.props.closeModal()}
         />
+        <ModalGateWay is_show={this.state.isOpenGateWay} toggle={this.getVisible} type_modal={'empty'} idNode={this.state.idNode} />
         <UpdateInfoCampaign toggleModal={this.showModalInfoCampaign} isOpenModal={isOpenModalInfo} />
         <ConfigMessage toggleModal={this.getVisible} isOpenModal={isOpenModalMessage} idNode={idNode} />
         <ModalWaitForEvent toggleModal={this.getVisible} isOpenModal={isOpenModalWaitForEvent} idNode={idNode} />

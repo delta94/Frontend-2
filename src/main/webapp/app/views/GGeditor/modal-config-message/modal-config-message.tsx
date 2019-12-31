@@ -33,7 +33,8 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
       emailConfig: listFieldData.emailConfig ? listFieldData.emailConfig : [],
       listCampign: listFieldData.listCampign ? listFieldData.listCampign : [],
       timerEvent: listFieldData.timerEvent ? listFieldData.timerEvent : [],
-      timer: listFieldData.timer ? listFieldData.timer : []
+      timer: listFieldData.timer ? listFieldData.timer : [],
+      getway: listFieldData.getway ? listFieldData.getway : []
     };
     let fieldMessageConfig = {
       id: this.props.idNode.id,
