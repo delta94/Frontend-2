@@ -195,9 +195,10 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
             {/* Block out */}
             <Row>
               <Col span={4} />
-              <Col span={8}>
+              <Col span={11}>
                 <label className="label-search">Tìm kiếm chiến dịch</label> &nbsp;
                 <Input
+                  style={{ float: 'right' }}
                   id="searchText"
                   prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
                   value={textSearch}
@@ -208,11 +209,11 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                   }}
                 />
               </Col>
-              <Col span={12} className="col-search-tag">
+              <Col span={8} className="col-search-tag">
                 <Col span={14} style={{ display: 'flex', marginLeft: '16%' }}>
                   <label className="input-search_label-1">
                     <Translate contentKey="userManagement.card-tag" />
-                    &nbsp;
+                    &nbsp; &nbsp;
                   </label>
                   <CampaignTag handleChange={this.handleChange} />
                 </Col>
@@ -259,13 +260,13 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                         <td colSpan={5}>{this.state.activePage * this.state.itemsPerPage + index + 1}</td>
                         <td colSpan={25} id="name">
                           {' '}
-                          <a style={{ marginLeft: '5%' }}>{item.name}</a> <br />
-                          <span style={{ marginLeft: '5%' }}>Version {item.version}</span>
+                          <a>{item.name}</a> <br />
+                          <span>Version {item.version}</span>
                           <br />
                           {item.tags
                             ? item.tags.split(',').map((value, index) => {
                                 return (
-                                  <Tag style={{ marginLeft: '5%' }} color="blue" key={index}>
+                                  <Tag color="blue" key={index}>
                                     {value}
                                   </Tag>
                                 );

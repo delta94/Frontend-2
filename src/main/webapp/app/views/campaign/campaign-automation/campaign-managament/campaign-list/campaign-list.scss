@@ -12,6 +12,8 @@
 
   .block-out {
     .col-search-tag {
+      float: right;
+      margin-right: 3%;
       .rw-widget {
         width: 70%;
       }
@@ -27,6 +29,7 @@
       color: #495057;
     }
     .label-search {
+      margin-left: 42%;
       font-family: Roboto;
       font-style: normal;
       font-weight: normal;

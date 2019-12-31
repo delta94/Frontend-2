@@ -6,6 +6,8 @@ import { Row, Col, Breadcrumb, Button, Progress, Modal, Checkbox } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
 import { img_node, const_shape } from 'app/common/model/campaign-managament.model';
+import Loader from 'react-loader-advanced';
+import LoaderAnim from 'react-loaders';
 import {
   saveCampaignAutoVersion,
   getListVersion,
@@ -417,7 +419,6 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
   };
 
   copyVersion = () => {
-    debugger;
     let { cloneVersion, saveCampaignAutoVersion } = this.props;
     let versionLast: number = 0;
     let idVersionlast: string = '';
@@ -449,7 +450,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
 
   viewVersion = async id => {
     let { infoVersion } = this.state;
-    const { cloneVersion, saveCampaignAutoVersion, getListCustomerVersionProcess, list_clone_version } = this.props;
+    const { cloneVersion, saveCampaignAutoVersion, getListCustomerVersionProcess } = this.props;
     infoVersion.idVersion = id;
     await cloneVersion(id);
     await this.cloneVersion('view');
@@ -462,6 +463,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
     const imgCopy = require('app/assets/utils/images/campaign-managament/copy-version.png');
     const imgDelete = require('app/assets/utils/images/campaign-managament/delete-version.png');
     const imgLine = require('app/assets/utils/images/campaign-managament/line-version.png');
+    const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
     const eventStatus = option => {
       let data;
 
@@ -483,102 +485,105 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
       return data;
     };
     return (
-      <div className="version">
-        <Row className="header-row">
-          <Breadcrumb separator=">">
-            <Breadcrumb.Item>
-              <a onClick={() => window.location.assign('/#/app/views/customers/user-management')} href="javascript:void(0);">
-                <FontAwesomeIcon icon={faHome} />
-              </a>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>
-              <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-auto')} href="javascript:void(0);">
-                Chiến dịch tự động
-              </a>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>
-              <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-managament')} href="javascript:void(0);">
-                Danh sách chiến dịch
-              </a>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>
-              <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-managament')} href="javascript:void(0);">
-                {infoVersion.nameVersion}
-              </a>
-            </Breadcrumb.Item>
+      <Loader message={spinner1} show={this.props.loading} priority={1}>
+        <div className="version">
+          <Row className="header-row">
+            <Breadcrumb separator=">">
+              <Breadcrumb.Item>
+                <a onClick={() => window.location.assign('/#/app/views/customers/user-management')} href="javascript:void(0);">
+                  <FontAwesomeIcon icon={faHome} />
+                </a>
+              </Breadcrumb.Item>
+              <Breadcrumb.Item>
+                <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-auto')} href="javascript:void(0);">
+                  Chiến dịch tự động
+                </a>
+              </Breadcrumb.Item>
+              <Breadcrumb.Item>
+                <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-managament')} href="javascript:void(0);">
+                  Danh sách chiến dịch
+                </a>
+              </Breadcrumb.Item>
+              <Breadcrumb.Item>
+                <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-managament')} href="javascript:void(0);">
+                  {infoVersion.nameVersion}
+                </a>
+              </Breadcrumb.Item>
 
-            <label className="ant-breadcrumb-link">Version</label>
-          </Breadcrumb>
-        </Row>
-        <Container fluid className="container-version">
-          <Card style={{ height: '650px' }}>
-            <Row className="body-version">
-              <Button onClick={this.copyVersion} type="link">
-                {' '}
-                <img src={imgCopy} />{' '}
-              </Button>
-              <Button onClick={this.deleteVersion} type="link">
-                <img src={imgDelete} />
-              </Button>
-              &nbsp; &nbsp;
-              <img src={imgLine} />
-              <Button onClick={this.createVersion} type="primary" style={{ background: '#3866DD', marginLeft: '2%' }}>
-                Tạo version mới
-              </Button>
-              <Button
-                onClick={this.handleStopVersion}
-                type="primary"
-                style={{ background: '#97A3B4', marginLeft: '1%', borderColor: 'unset' }}
-              >
-                Dừng version
-              </Button>
-            </Row>
-            <br />
-            <label className="count-version">{listVersion.length} version</label>
-            <Table responsive striped className="main-table-version">
-              <thead>
-                <th style={{ width: '4%' }} />
-                <th style={{ width: '25%' }}>Version</th>
-                <th>Trạng thái</th>
-                <th style={{ width: '25%' }}>Kết quả</th>
-                <th>Chỉnh sửa gần nhất</th>
-              </thead>
-              <tbody>
-                {listVersion
-                  ? listVersion.map((item, index) => {
-                      return (
-                        <tr key={index}>
-                          <td>
-                            <Checkbox checked={item.checked} onChange={e => this.changeCheckBox(e, item.cjVersionId)} />
-                          </td>
-                          <td className="table-content" onClick={() => this.viewVersion(item.cjVersionId)}>
-                            <span style={{ marginLeft: '5%' }}>Version {item.version}</span>
-                          </td>
-                          <td className="row-status">
-                            <img className="img-status" src={this.iconStatus(item.status)} />
-                            {eventStatus(item.status)}
-                          </td>
-                          <td>
-                            <Progress status="active" percent={10} format={percent => `${percent}/${item.contactNumbers} contact`} />
-                          </td>
-                          <td>{item.modifiedDate}</td>
-                        </tr>
-                      );
-                    })
-                  : ''}
-              </tbody>
-            </Table>
-            <br />
-          </Card>
-        </Container>
-      </div>
+              <label className="ant-breadcrumb-link">Version</label>
+            </Breadcrumb>
+          </Row>
+          <Container fluid className="container-version">
+            <Card style={{ height: '650px' }}>
+              <Row className="body-version">
+                <Button onClick={this.copyVersion} type="link">
+                  {' '}
+                  <img src={imgCopy} />{' '}
+                </Button>
+                <Button onClick={this.deleteVersion} type="link">
+                  <img src={imgDelete} />
+                </Button>
+                &nbsp; &nbsp;
+                <img src={imgLine} />
+                <Button onClick={this.createVersion} type="primary" style={{ background: '#3866DD', marginLeft: '2%' }}>
+                  Tạo version mới
+                </Button>
+                <Button
+                  onClick={this.handleStopVersion}
+                  type="primary"
+                  style={{ background: '#97A3B4', marginLeft: '1%', borderColor: 'unset' }}
+                >
+                  Dừng version
+                </Button>
+              </Row>
+              <br />
+              <label className="count-version">{listVersion.length} version</label>
+              <Table responsive striped className="main-table-version">
+                <thead>
+                  <th style={{ width: '4%' }} />
+                  <th style={{ width: '25%' }}>Version</th>
+                  <th>Trạng thái</th>
+                  <th style={{ width: '25%' }}>Kết quả</th>
+                  <th>Chỉnh sửa gần nhất</th>
+                </thead>
+                <tbody>
+                  {listVersion
+                    ? listVersion.map((item, index) => {
+                        return (
+                          <tr key={index}>
+                            <td>
+                              <Checkbox checked={item.checked} onChange={e => this.changeCheckBox(e, item.cjVersionId)} />
+                            </td>
+                            <td className="table-content" onClick={() => this.viewVersion(item.cjVersionId)}>
+                              <span style={{ marginLeft: '5%' }}>Version {item.version}</span>
+                            </td>
+                            <td className="row-status">
+                              <img className="img-status" src={this.iconStatus(item.status)} />
+                              {eventStatus(item.status)}
+                            </td>
+                            <td>
+                              <Progress status="active" percent={10} format={percent => `${percent}/${item.contactNumbers} contact`} />
+                            </td>
+                            <td>{item.modifiedDate}</td>
+                          </tr>
+                        );
+                      })
+                    : ''}
+                </tbody>
+              </Table>
+              <br />
+            </Card>
+          </Container>
+        </div>
+      </Loader>
     );
   }
 }
 const mapStateToProps = ({ campaignManagament }: IRootState) => ({
   campaign_list: campaignManagament.campaign.data,
   list_version: campaignManagament.listVersion,
-  list_clone_version: campaignManagament.cloneInfoVersion
+  list_clone_version: campaignManagament.cloneInfoVersion,
+  loading: campaignManagament.loading
 });
 
 const mapDispatchToProps = {
