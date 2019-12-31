@@ -159,7 +159,7 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
 
   renderDropZone(portName: string) {
     if (this.props.dropZoneVisible && this.props.node && this.props.node instanceof FlowNodeModel && this.props.node.dropZoneVisible) {
-      let port = this.props.node.getInPort(portName);
+      let port = this.props.node.getOutPort(portName);
       if (port) {
         return (
           <div

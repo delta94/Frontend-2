@@ -55,6 +55,18 @@ export class FlowNodeModel extends NodeModel {
     return null;
   }
 
+  getInPortOrDefault(pos?: string): PortModel | null {
+    let port = this.getInPort(pos);
+    if (port) return port;
+    return this.getDefaultInPort();
+  }
+
+  getOutPortOrDefault(pos?: string): PortModel | null {
+    let port = this.getOutPort(pos);
+    if (port) return port;
+    return this.getDefaultOutPort();
+  }
+
   getInPorts(): { [s: string]: PortModel } {
     return null;
   }
@@ -86,12 +98,12 @@ export class DecisionNodeModel extends FlowNodeModel {
 
   getInPort(pos?: string): PortModel | null {
     if (pos && pos === FlowNodePortModel.LEFT) return this.getPort(pos);
-    return this.getDefaultInPort();
+    return null;
   }
 
   getOutPort(pos?: string): PortModel | null {
     if (pos && (pos === FlowNodePortModel.RIGHT || pos === FlowNodePortModel.BOTTOM)) return this.getPort(pos);
-    return this.getDefaultOutPort();
+    return null;
   }
 
   getInPorts(): { [s: string]: PortModel } {
@@ -130,12 +142,12 @@ export class MergeNodeModel extends FlowNodeModel {
 
   getInPort(pos?: string): PortModel | null {
     if (pos && (pos === FlowNodePortModel.LEFT || pos === FlowNodePortModel.BOTTOM)) return this.getPort(pos);
-    return this.getDefaultInPort();
+    return null;
   }
 
   getOutPort(pos?: string): PortModel | null {
     if (pos && pos === FlowNodePortModel.RIGHT) return this.getPort(pos);
-    return this.getDefaultOutPort();
+    return null;
   }
 
   getInPorts(): { [s: string]: PortModel } {
@@ -174,12 +186,12 @@ export class ForkNodeModel extends FlowNodeModel {
 
   getInPort(pos?: string): PortModel | null {
     if (pos && pos === FlowNodePortModel.LEFT) return this.getPort(pos);
-    return this.getDefaultInPort();
+    return null;
   }
 
   getOutPort(pos?: string): PortModel | null {
     if (pos && (pos === FlowNodePortModel.TOP || pos === FlowNodePortModel.BOTTOM)) return this.getPort(pos);
-    return this.getDefaultOutPort();
+    return null;
   }
 
   getInPorts(): { [s: string]: PortModel } {
@@ -219,12 +231,12 @@ export class JoinNodeModel extends FlowNodeModel {
 
   getInPort(pos?: string): PortModel | null {
     if (pos && (pos === FlowNodePortModel.TOP || pos === FlowNodePortModel.BOTTOM)) return this.getPort(pos);
-    return this.getDefaultInPort();
+    return null;
   }
 
   getOutPort(pos?: string): PortModel | null {
     if (pos && pos === FlowNodePortModel.RIGHT) return this.getPort(pos);
-    return this.getDefaultOutPort();
+    return null;
   }
 
   getInPorts(): { [s: string]: PortModel } {
@@ -263,12 +275,12 @@ export class ProcessNodeModel extends FlowNodeModel {
 
   getInPort(pos?: string): PortModel | null {
     if (pos && pos === FlowNodePortModel.LEFT) return this.getPort(pos);
-    return this.getDefaultInPort();
+    return null;
   }
 
   getOutPort(pos?: string): PortModel | null {
     if (pos && pos === FlowNodePortModel.RIGHT) return this.getPort(pos);
-    return this.getDefaultOutPort();
+    return null;
   }
 
   getInPorts(): { [s: string]: PortModel } {
@@ -309,7 +321,7 @@ export class StartNodeModel extends FlowNodeModel {
 
   getOutPort(pos?: string): PortModel | null {
     if (pos && pos === FlowNodePortModel.RIGHT) return this.getPort(pos);
-    return this.getDefaultOutPort();
+    return null;
   }
 
   getInPorts(): { [s: string]: PortModel } {
@@ -343,7 +355,7 @@ export class EndNodeModel extends FlowNodeModel {
 
   getInPort(pos?: string): PortModel | null {
     if (pos && pos === FlowNodePortModel.LEFT) return this.getPort(pos);
-    return this.getDefaultInPort();
+    return null;
   }
 
   getOutPort(pos?: string): PortModel | null {

@@ -24,6 +24,7 @@ import {
   SmsProcessNodeFactory,
   TimeWaitingDecisionNodeFactory
 } from './FlowNodeFactory';
+import { GroupProcess } from 'app/views/GGeditor/flow-diagram-editor/GroupProcess';
 const uuidv4 = require('uuid/v4');
 
 const GRID_SIZE = {
@@ -35,13 +36,12 @@ const PORT_SIZE = {
   height: 8
 };
 
-export class FlowDiagramApplication {
+export class FlowDiagramEditor {
   protected activeModel: DiagramModel;
   protected diagramEngine: DiagramEngine;
 
   constructor() {
     this.activeModel = new DiagramModel();
-    this.activeModel.setLocked(true);
 
     this.diagramEngine = new DiagramEngine();
     this.diagramEngine.installDefaultFactories();
@@ -57,6 +57,14 @@ export class FlowDiagramApplication {
     this.diagramEngine.registerNodeFactory(new EndNodeFactory());
 
     this.diagramEngine.setDiagramModel(this.activeModel);
+  }
+
+  public lock() {
+    this.activeModel.setLocked(true);
+  }
+
+  public unlock() {
+    this.activeModel.setLocked(false);
   }
 
   private static setDropZoneVisible(model: DiagramModel, dropZoneVisible: boolean) {
@@ -106,13 +114,13 @@ export class FlowDiagramApplication {
     for (let key in ports) {
       let port = ports[key];
       if (port && (!currentPort || port.id !== currentPort.id) && key === FlowNodePortModel.LEFT)
-        FlowDiagramApplication.arrangeFromPort(port, FlowNodePortModel.LEFT, x, y);
+        FlowDiagramEditor.arrangeFromPort(port, FlowNodePortModel.LEFT, x, y);
       else if (port && (!currentPort || port.id !== currentPort.id) && key === FlowNodePortModel.RIGHT)
-        FlowDiagramApplication.arrangeFromPort(port, FlowNodePortModel.RIGHT, x, y);
+        FlowDiagramEditor.arrangeFromPort(port, FlowNodePortModel.RIGHT, x, y);
       else if (port && (!currentPort || port.id !== currentPort.id) && key === FlowNodePortModel.TOP)
-        FlowDiagramApplication.arrangeFromPort(port, FlowNodePortModel.TOP, x, y);
+        FlowDiagramEditor.arrangeFromPort(port, FlowNodePortModel.TOP, x, y);
       else if (port && (!currentPort || port.id !== currentPort.id) && key === FlowNodePortModel.BOTTOM)
-        FlowDiagramApplication.arrangeFromPort(port, FlowNodePortModel.BOTTOM, x, y);
+        FlowDiagramEditor.arrangeFromPort(port, FlowNodePortModel.BOTTOM, x, y);
     }
   }
 
@@ -126,13 +134,13 @@ export class FlowDiagramApplication {
         let nextNode = nextPort.getNode();
         if (nextNode) {
           if (currentPosition === FlowNodePortModel.LEFT)
-            FlowDiagramApplication.arrangeFromNode(nextNode, nextPort, nextX - GRID_SIZE.width, nextY - i * GRID_SIZE.height);
+            FlowDiagramEditor.arrangeFromNode(nextNode, nextPort, nextX - GRID_SIZE.width, nextY - i * GRID_SIZE.height);
           else if (currentPosition === FlowNodePortModel.RIGHT)
-            FlowDiagramApplication.arrangeFromNode(nextNode, nextPort, nextX + GRID_SIZE.width, nextY + i * GRID_SIZE.height);
+            FlowDiagramEditor.arrangeFromNode(nextNode, nextPort, nextX + GRID_SIZE.width, nextY + i * GRID_SIZE.height);
           else if (currentPosition === FlowNodePortModel.TOP)
-            FlowDiagramApplication.arrangeFromNode(nextNode, nextPort, nextX - (i + 1) * GRID_SIZE.width, nextY - GRID_SIZE.height);
+            FlowDiagramEditor.arrangeFromNode(nextNode, nextPort, nextX - (i + 1) * GRID_SIZE.width, nextY - GRID_SIZE.height);
           else if (currentPosition === FlowNodePortModel.BOTTOM)
-            FlowDiagramApplication.arrangeFromNode(nextNode, nextPort, nextX + (i + 1) * GRID_SIZE.width, nextY + GRID_SIZE.height);
+            FlowDiagramEditor.arrangeFromNode(nextNode, nextPort, nextX + (i + 1) * GRID_SIZE.width, nextY + GRID_SIZE.height);
           i++;
         }
       }
@@ -140,11 +148,11 @@ export class FlowDiagramApplication {
   }
 
   public setDropZoneVisible(dropZoneVisible: boolean) {
-    FlowDiagramApplication.setDropZoneVisible(this.activeModel, dropZoneVisible);
+    FlowDiagramEditor.setDropZoneVisible(this.activeModel, dropZoneVisible);
   }
 
   public setOnDropEventHandler(onDropEventHandler: any) {
-    FlowDiagramApplication.setOnDropEventHandler(this.activeModel, onDropEventHandler);
+    FlowDiagramEditor.setOnDropEventHandler(this.activeModel, onDropEventHandler);
   }
 
   public init(nodes: any, edges: any) {
@@ -159,8 +167,8 @@ export class FlowDiagramApplication {
       let sourceNode = this.activeModel.getNode(edge.source);
       let targetNode = this.activeModel.getNode(edge.target);
       if (sourceNode instanceof FlowNodeModel && targetNode instanceof FlowNodeModel) {
-        let sourcePort = sourceNode.getOutPort(mapToPortPosition(edge.sourceAnchor));
-        let targetPort = targetNode.getInPort(mapToPortPosition(edge.targetAnchor));
+        let sourcePort = sourceNode.getOutPortOrDefault(mapToPortPosition(edge.sourceAnchor));
+        let targetPort = targetNode.getInPortOrDefault(mapToPortPosition(edge.targetAnchor));
         if (sourceNode && targetPort && sourcePort.canLinkToPort(targetPort)) {
           let link = sourcePort.createLinkModel();
           link.setSourcePort(sourcePort);
@@ -171,35 +179,38 @@ export class FlowDiagramApplication {
     }
   }
 
-  public insertProcessTemplate(nextNode: NodeModel, processTemplateName: string): boolean {
-    if (nextNode && nextNode instanceof FlowNodeModel) {
-      let node: NodeModel = null;
-      if (processTemplateName === EmailProcessNodeModel.TYPE) {
-        node = createNodeModel(EmailProcessNodeModel.TYPE, uuidv4());
-      } else if (processTemplateName === SmsProcessNodeModel.TYPE) {
-        node = createNodeModel(SmsProcessNodeModel.TYPE, uuidv4());
-      }
-      if (node && node instanceof FlowNodeModel) {
+  public insert(groupProcess: GroupProcess, position: PortModel) {
+    if (groupProcess && groupProcess.isValid() && position) {
+      for (let node of groupProcess.nodes) {
         this.activeModel.addNode(node);
-
-        let defaultInPort = node.getDefaultInPort();
-        let nextDefaultInPort = nextNode.getDefaultInPort();
-        let links = nextDefaultInPort.getLinks();
-        for (let key in links) {
-          links[key].setTargetPort(defaultInPort);
-        }
-
-        let defaultOutPort = node.getDefaultOutPort();
-        let link = defaultOutPort.createLinkModel();
-        link.setSourcePort(defaultOutPort);
-        link.setTargetPort(nextDefaultInPort);
-        this.activeModel.addLink(link);
-
-        return true;
       }
-    }
 
-    return false;
+      for (let link of groupProcess.links) {
+        this.activeModel.addLink(link);
+      }
+
+      // //swap input
+      // let inLinks = connectedPort.getLinks();
+      // for (let key in inLinks) {
+      //   let inLink = inLinks[key];
+      //   let sourcePort = inLink.getSourcePort();
+      //   let newInLink = sourcePort.createLinkModel();
+      //   newInLink.setSourcePort(sourcePort);
+      //   newInLink.setTargetPort(inPort);
+      //
+      //   this.activeModel.removeLink(inLink);
+      //   this.activeModel.addLink(newInLink);
+      // }
+      // // swap output
+      //
+      // for (let outPort of outPorts) {
+      //   console.log(outPort);
+      //   let outLink = outPort.createLinkModel();
+      //   outLink.setSourcePort(outPort);
+      //   outLink.setTargetPort(connectedPort);
+      //   this.activeModel.addLink(outLink);
+      // }
+    }
   }
 
   public getActiveDiagram(): DiagramModel {
@@ -211,6 +222,6 @@ export class FlowDiagramApplication {
   }
 
   public autoArrange() {
-    FlowDiagramApplication.arrangeFromNode(FlowDiagramApplication.getStartNode(this.activeModel), null, 100, 100);
+    FlowDiagramEditor.arrangeFromNode(FlowDiagramEditor.getStartNode(this.activeModel), null, 100, 100);
   }
 }

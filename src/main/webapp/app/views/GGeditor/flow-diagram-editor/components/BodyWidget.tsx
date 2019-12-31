@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { TrayWidget } from './TrayWidget';
-import { FlowDiagramApplication } from '../FlowDiagramApplication';
+import { FlowDiagramEditor } from '../FlowDiagramEditor';
 import { TrayItemWidget } from './TrayItemWidget';
 import { DiagramWidget } from 'storm-react-diagrams';
 import {
@@ -12,10 +12,11 @@ import {
   EventWaitingDecisionNodeModel,
   SmsProcessNodeModel,
   TimeWaitingDecisionNodeModel
-} from 'app/views/GGeditor/flow-diagram-editor/FlowNodeModel';
+} from '../FlowNodeModel';
+import { SendEmailGroupProcess } from 'app/views/GGeditor/flow-diagram-editor/GroupProcess';
 
 export interface BodyWidgetProps {
-  app: FlowDiagramApplication;
+  editor: FlowDiagramEditor;
 }
 
 export interface BodyWidgetState {}
@@ -23,19 +24,17 @@ export interface BodyWidgetState {}
 export class BodyWidget extends React.Component<BodyWidgetProps, BodyWidgetState> {
   constructor(props: BodyWidgetProps) {
     super(props);
-    // this.handleOnDragStart = this.handleOnDragStart.bind(this);
-    // this.handleOnDragEnd = this.handleOnDragEnd.bind(this);
     this.state = {};
   }
 
   render() {
     const handleOnDragStart = event => {
-      this.props.app.setDropZoneVisible(true);
+      this.props.editor.setDropZoneVisible(true);
       this.forceUpdate();
     };
 
     const handleOnDragEnd = event => {
-      this.props.app.setDropZoneVisible(false);
+      this.props.editor.setDropZoneVisible(false);
       this.forceUpdate();
     };
 
@@ -70,10 +69,10 @@ export class BodyWidget extends React.Component<BodyWidgetProps, BodyWidgetState
           <div
             className="diagram-layer"
             onDragOver={event => {
-              // event.preventDefault();
+              event.preventDefault();
             }}
           >
-            <DiagramWidget className="srd-flow-canvas" diagramEngine={this.props.app.getDiagramEngine()} smartRouting={true} />
+            <DiagramWidget className="srd-flow-canvas" diagramEngine={this.props.editor.getDiagramEngine()} smartRouting={true} />
           </div>
         </div>
       </div>
