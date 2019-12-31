@@ -60,6 +60,7 @@ interface IFlowPageState {
   idNode: any;
   idEdge: any;
   advancedSearches: {};
+  nameGroup: string;
 }
 
 export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
@@ -82,7 +83,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     idNode: {},
     idEdge: {},
     titleMail: '',
-    timeStartCampaign: ''
+    timeStartCampaign: '',
+    nameGroup: ''
   };
 
   componentDidMount() {
@@ -115,7 +117,16 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   // handler Open modal
   getVisible = async (event, valueName, searchAdv, isSuccess) => {
     let { getDiagramCampaign, validateCampaign, listFieldData, listDiagram } = this.props;
-    let { idNode, advancedSearches, timeStartCampaign, data, isOpenModalMessage, isOpenModalWaitForEvent, isOpenModalWait } = this.state;
+    let {
+      idNode,
+      advancedSearches,
+      timeStartCampaign,
+      data,
+      isOpenModalMessage,
+      isOpenModalWaitForEvent,
+      isOpenModalWait,
+      nameGroup
+    } = this.state;
     let diagram = listDiagram;
     switch (idNode.code) {
       case code_node.SOURCE:
@@ -124,6 +135,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           diagram.nodes.map(item => {
             if (item.id === idNode.id) {
               item.label = String(valueName).split(',')[0];
+              nameGroup = String(valueName).split(',')[0];
             }
           });
           timeStartCampaign = String(valueName).split(',')[1];
@@ -149,7 +161,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           // save node in flow
           await getDiagramCampaign(diagram);
 
-          this.setState({ timeStartCampaign, advancedSearches, isUpdateNode: true, data: diagram });
+          this.setState({ timeStartCampaign, advancedSearches, isUpdateNode: true, data: diagram, nameGroup });
         }
 
         break;
@@ -519,7 +531,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   //event save campaign
   saveCampaign = async node => {
     const { idFolder, saveCampaignAuto, infoVersion, infoCampaign, openModal, listFieldData, list_clone_version } = this.props;
-    let { timeStartCampaign, advancedSearches } = this.state;
+    let { timeStartCampaign, advancedSearches, nameGroup } = this.state;
     let nodeMetaData: any[] = [];
     listFieldData.emailConfig &&
       listFieldData.emailConfig.forEach(value =>
@@ -606,6 +618,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       },
       cjTags: infoCampaign.tag,
       flow: {
+        customerGroupName: nameGroup,
         startTime: timeStartCampaign
           ? timeStartCampaign
           : list_clone_version.flowDetail.startTime && list_clone_version.flowDetail.startTime
