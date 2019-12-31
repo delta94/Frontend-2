@@ -52,6 +52,7 @@ interface IFlowPageState {
   isOpenModalMessage: boolean;
   isOpenModalWaitForEvent: boolean;
   isSave: boolean;
+  isOpenGateWay: boolean;
   titleMail: string;
   timeStartCampaign: string;
   data: any;
@@ -74,6 +75,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     isOpenModalWait: false,
     isValidate: false,
     isSave: true,
+    isOpenGateWay: false,
     data: [],
     advancedSearches: {},
     idNode: {},
@@ -168,6 +170,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           });
           await getDiagramCampaign(diagram);
         }
+        break;
+      case code_node.GATEWAY:
         break;
       default:
         break;
