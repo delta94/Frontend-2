@@ -21,6 +21,7 @@ interface IUpdateInfoCampaignState {
     name: string;
   };
   valueDes: string;
+  defaulftTag: any[];
 }
 
 export class UpdateInfoCampaign extends React.Component<IUpdateInfoCampaignProps, IUpdateInfoCampaignState> {
@@ -30,7 +31,8 @@ export class UpdateInfoCampaign extends React.Component<IUpdateInfoCampaignProps
       id: '',
       name: ''
     },
-    valueDes: ''
+    valueDes: '',
+    defaulftTag: []
   };
 
   toggle = () => {
@@ -46,7 +48,8 @@ export class UpdateInfoCampaign extends React.Component<IUpdateInfoCampaignProps
 
   handleChange = cjTags => {
     this.setState({
-      strTag: cjTags
+      strTag: cjTags,
+      defaulftTag: cjTags
     });
   };
   getDes = event => {
@@ -94,7 +97,7 @@ export class UpdateInfoCampaign extends React.Component<IUpdateInfoCampaignProps
                 <label className="label-message">Tag</label>
               </Col>
               <Col span={18}>
-                <CampaignTag handleChange={this.handleChange} />
+                <CampaignTag defaultValue={this.state.defaulftTag} handleChange={this.handleChange} />
               </Col>
             </Row>
             <br />
@@ -103,7 +106,7 @@ export class UpdateInfoCampaign extends React.Component<IUpdateInfoCampaignProps
                 <label className="label-message">Mô tả</label>
               </Col>
               <Col span={18}>
-                <TextArea onChange={this.getDes} style={{ width: '95%' }} id="text-content" rows={4} />
+                <TextArea defaultValue={listInfoCampaing.des} onChange={this.getDes} style={{ width: '95%' }} id="text-content" rows={4} />
               </Col>
             </Row>
           </Row>
