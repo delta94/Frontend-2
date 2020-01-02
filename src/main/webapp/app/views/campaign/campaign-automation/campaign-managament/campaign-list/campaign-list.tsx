@@ -111,7 +111,6 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
 
   handleVisibleChange = async (visible, id) => {
     let { list_camp } = this.state;
-
     if (visible) {
       await this.props.getCjTagsByCjIdAction(id);
     }
@@ -121,7 +120,6 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
           event.check = visible;
         }
       });
-
     this.setState({ visible, list_camp, list_tag_default: this.props.valueComboTag });
   };
 
@@ -131,7 +129,6 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
 
   onchangeTextSearch = event => {
     this.setState({
-      ...this.state,
       textSearch: event.target.value
     });
   };
@@ -313,13 +310,14 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
       id,
       cjTags: this.state.list_tag
     };
-    this.props.updateCjTagsAction(cjEdit);
+    await this.props.updateCjTagsAction(cjEdit);
     this.handleVisibleChange(false, id);
     await this.getCjs();
   };
   handleChangeTagCj = cjTags => {
     this.setState({
-      list_tag: cjTags
+      list_tag: cjTags,
+      list_tag_default: this.props.valueComboTag
     });
   };
 
@@ -332,7 +330,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
     let result = (
       <div id="cj-tag-popover-body">
         <div className="combobox-cj-tag">
-          <CampaignTag handleChange={this.handleChangeTagCj} defaultValue={this.props.valueComboTag} />
+          <CampaignTag handleChange={this.handleChangeTagCj} defaultValue={this.state.list_tag_default} />
         </div>
         <div className="link">
           <Button type="link" onClick={() => this.toogleModalCjTagInsert(item.id)}>
