@@ -255,7 +255,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
             </Col>
             <Col span={12} style={{ textAlign: 'right', margin: '10px' }}>
               <Button type="primary" onClick={this.movePage}>
-                Quản lý Chiến dịch
+                Quản lý chiến dịch
               </Button>
             </Col>
           </Row>

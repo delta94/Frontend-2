@@ -34,13 +34,14 @@ class CJTagInsertModal extends React.Component<ICjTagInsertModalProps, ICjTagIns
 
   onChangeInput = (value, type) => {
     let cjTag = this.state.cjTag;
-    cjTag[type] = value;
+    cjTag[type] = value.replace(',', '||');
     this.setState({ cjTag: cjTag });
   };
 
   submit = async () => {
     let { createCjTagAction, closeModalCjTagInsert, getCjTagsAction, dataModalTag, refreshListCjTag } = this.props;
     let { cjTag } = this.state;
+    cjTag.name.replace(',', '||');
     let cjTagData = {
       cjTag: cjTag,
       cjId: dataModalTag

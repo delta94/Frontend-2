@@ -80,7 +80,7 @@ export class UpdateInfoCampaign extends React.Component<IUpdateInfoCampaignProps
           <Row>
             <Row>
               <Col span={5}>
-                <label className="label-message">Tên Chiến dịch</label>
+                <label className="label-message">Tên chiến dịch</label>
               </Col>
               <Col span={18}>
                 <Input
