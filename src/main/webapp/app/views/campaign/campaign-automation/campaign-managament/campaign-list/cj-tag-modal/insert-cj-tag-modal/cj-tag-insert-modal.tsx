@@ -33,6 +33,9 @@ class CJTagInsertModal extends React.Component<ICjTagInsertModalProps, ICjTagIns
   };
 
   onChangeInput = (value, type) => {
+    if (value && value.includes(',')) {
+      value = value.replace(',', '');
+    }
     let cjTag = this.state.cjTag;
     cjTag[type] = value;
     this.setState({ cjTag: cjTag });
