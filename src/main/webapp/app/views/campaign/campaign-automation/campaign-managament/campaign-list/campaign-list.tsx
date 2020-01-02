@@ -110,18 +110,23 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
   };
 
   handleVisibleChange = async (visible, id) => {
-    let { list_camp } = this.state;
     if (visible) {
       await this.props.getCjTagsByCjIdAction(id);
+      this.setState({ list_tag_default: this.props.valueComboTag });
     }
+    await this.checkVisible(visible, id);
+  };
+
+  checkVisible(visible, id) {
+    let { list_camp } = this.state;
     list_camp &&
       list_camp.map(event => {
         if (event.id === id) {
           event.check = visible;
         }
       });
-    this.setState({ visible, list_camp, list_tag_default: this.props.valueComboTag });
-  };
+    this.setState({ visible, list_camp });
+  }
 
   getListCampaignInfolderDataAction = (folderId, textSearch, strTagId, pageIndex, pageSize) => {
     this.props.getListCampaignInfolderDataAction(folderId ? folderId : '-99', textSearch, strTagId, pageIndex, pageSize);
