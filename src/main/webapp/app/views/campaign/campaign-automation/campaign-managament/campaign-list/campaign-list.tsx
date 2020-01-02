@@ -7,6 +7,9 @@ import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { IRootState } from 'app/reducers';
 import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
+import { updateCjTagsAction, getCjTagsByCjIdAction } from 'app/actions/cj';
+import CjTagInsertModal from 'app/views/campaign/campaign-automation/campaign-managament/campaign-list/cj-tag-modal/insert-cj-tag-modal/cj-tag-insert-modal';
+import CjTagListModal from 'app/views/campaign/campaign-automation/campaign-managament/campaign-list/cj-tag-modal/list-cj-tag-modal/cj-tag-list-modal';
 import ReactPaginate from 'react-paginate';
 import {
   getListCampaignInfolderDataAction,
@@ -19,7 +22,6 @@ import './campaign-list.scss';
 import { Input, Icon, Row, Col, Tag, Button, Popover as PopverAnt, Progress } from 'antd';
 import CampaignTag from './campaign-tag/campaign-tag';
 import CjTagModal from './cj-tag-modal/cj-tag-modal';
-import { getCjTagsByCjIdAction } from 'app/actions/cj';
 import { STATUS_CJ } from 'app/constants/cj';
 import { img_node, const_shape } from 'app/common/model/campaign-managament.model';
 import CJTagPopOver from './cj-popup/cj-popover';
@@ -40,6 +42,11 @@ interface ICampaignListState {
   };
   list_camp: any[];
   visible: boolean;
+  isOpenModalInsert: boolean;
+  id: string;
+  list_tag: any[];
+  isOpenModalList: boolean;
+  list_tag_default: any[];
 }
 
 const code_node = {
@@ -65,7 +72,12 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
       cjId: '-1'
     },
     list_camp: [],
-    visible: false
+    visible: false,
+    isOpenModalInsert: false,
+    id: '',
+    list_tag: [],
+    isOpenModalList: false,
+    list_tag_default: []
   };
 
   componentDidMount() {
@@ -97,20 +109,24 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
     });
   };
 
-  handleVisibleChange = (visible, id) => {
+  handleVisibleChange = async (visible, id) => {
     let { list_camp } = this.state;
 
+    if (visible) {
+      await this.props.getCjTagsByCjIdAction(id);
+    }
     list_camp &&
       list_camp.map(event => {
         if (event.id === id) {
           event.check = visible;
         }
       });
-    this.setState({ visible, list_camp });
+
+    this.setState({ visible, list_camp, list_tag_default: this.props.valueComboTag });
   };
 
   getListCampaignInfolderDataAction = (folderId, textSearch, strTagId, pageIndex, pageSize) => {
-    this.props.getListCampaignInfolderDataAction(folderId, textSearch, strTagId, pageIndex, pageSize);
+    this.props.getListCampaignInfolderDataAction(folderId ? folderId : '-99', textSearch, strTagId, pageIndex, pageSize);
   };
 
   onchangeTextSearch = event => {
@@ -132,26 +148,21 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
     let folderId = this.props.folder_id_choose;
     const { textSearch, activePage, itemsPerPage } = this.state;
     this.setState({
-      ...this.state,
-      strTagId: cjTagIds.join()
+      strTagId: cjTagIds.join(),
+      list_tag: cjTags
     });
-    this.props.getListCampaignInfolderDataAction(folderId, textSearch, cjTagIds.join(), activePage, itemsPerPage);
+    this.props.getListCampaignInfolderDataAction(folderId ? folderId : '-99', textSearch, cjTagIds.join(), activePage, itemsPerPage);
   };
 
   getCjs = () => {
-    let { activePage, itemsPerPage } = this.state;
+    let { activePage, itemsPerPage, id } = this.state;
     let folderId = this.props.folder_id_choose;
     this.getListCampaignInfolderDataAction(folderId, '', '', activePage, itemsPerPage);
   };
 
   getCjsCallBack = folderId => {
     let { activePage, itemsPerPage } = this.state;
-    this.getListCampaignInfolderDataAction(folderId, '', '', activePage, itemsPerPage);
-  };
-
-  //view campaign
-  viewCampaign = () => {
-    const { cloneVersion } = this.props;
+    this.getListCampaignInfolderDataAction(folderId ? folderId : '-99', '', '', activePage, itemsPerPage);
   };
 
   customNode(code, option) {
@@ -278,13 +289,82 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
     await getListCustomerVersionProcess('', id, 0);
   };
 
+  toogleModalCjTagInsert = id => {
+    this.setState({ isOpenModalInsert: true, id });
+  };
+
+  closeModalCjTagInsert = () => {
+    let { textSearch, strTagId, activePage, itemsPerPage, id } = this.state;
+    this.setState({ isOpenModalInsert: false });
+    this.getListCampaignInfolderDataAction(
+      this.props.folder_id_choose ? this.props.folder_id_choose : '-99',
+      textSearch,
+      strTagId,
+      activePage,
+      itemsPerPage
+    );
+  };
+  closeModalCjTagList = () => {
+    this.setState({ isOpenModalList: false });
+  };
+
+  handleSubmitTag = async id => {
+    let cjEdit = {
+      id,
+      cjTags: this.state.list_tag
+    };
+    this.props.updateCjTagsAction(cjEdit);
+    this.handleVisibleChange(false, id);
+    await this.getCjs();
+  };
+  handleChangeTagCj = cjTags => {
+    this.setState({
+      list_tag: cjTags
+    });
+  };
+
+  toogleModalCjTagList = id => {
+    this.setState({ isOpenModalList: true, id });
+  };
+
+  contentTag = item => {
+    const img_tag = require('app/assets/utils/images/campaign-managament/tag-list.png');
+    let result = (
+      <div id="cj-tag-popover-body">
+        <div className="combobox-cj-tag">
+          <CampaignTag handleChange={this.handleChangeTagCj} defaultValue={this.props.valueComboTag} />
+        </div>
+        <div className="link">
+          <Button type="link" onClick={() => this.toogleModalCjTagInsert(item.id)}>
+            <img src={img_tag} />
+            <span>Thêm mới tag</span>
+          </Button>
+          <Button type="link" onClick={() => this.toogleModalCjTagList(item.id)} style={{ float: 'right', textDecoration: 'underline' }}>
+            <Icon type="menu" />
+            <span>Danh sách tag</span>
+          </Button>
+        </div>
+        <br />
+        <div className="cj-tag-popup-footer" style={{ textAlign: 'right' }}>
+          <Button onClick={() => this.handleVisibleChange(false, item.id)} className="btn-cancel">
+            Hủy
+          </Button>
+          <Button onClick={() => this.handleSubmitTag(item.id)} type="primary">
+            Chọn
+          </Button>
+        </div>
+      </div>
+    );
+    return result;
+  };
+
   render() {
     let { campaign_list, total, loading } = this.props;
     let { textSearch, strTagId, activePage, itemsPerPage, openModalCjTag, cjEdit, list_camp } = this.state;
     let folderId = this.props.folder_id_choose;
     let totalPages = Math.ceil(total / 4);
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
-
+    const img_tag = require('app/assets/utils/images/campaign-managament/tag-list.png');
     const getStatusName = (status: string) => {
       const img_stop = require('app/assets/utils/images/campaign-managament/stop.png');
       const img_running = require('app/assets/utils/images/campaign-managament/running.png');
@@ -332,6 +412,19 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
 
     return (
       <div className="campaign-list">
+        <CjTagInsertModal
+          toogleModalCjTagInsert={this.toogleModalCjTagInsert}
+          isOpenModalCjTagInsert={this.state.isOpenModalInsert}
+          closeModalCjTagInsert={this.closeModalCjTagInsert}
+          dataModalTag={this.state.id}
+          refreshListCjTag={this.getCjs}
+        />
+        <CjTagListModal
+          toogleModalCjTagList={this.toogleModalCjTagList}
+          isOpenModalCjTag={this.state.isOpenModalList}
+          closeModalCjTag={this.closeModalCjTagList}
+          refreshListCjTag={this.getCjs}
+        />
         <Loader message={spinner1} show={loading} priority={1}>
           <div className="block-out">
             {/* Block out */}
@@ -423,8 +516,19 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                           <span> {item.modifiedDate}</span>
                         </td>
                         <td colSpan={15}>
-                          <CJTagPopOver key={item.cjVersionId} dataPopup={item} getCjs={this.getCjsCallBack} />
+                          {/* <CJTagPopOver key={item.cjVersionId} dataPopup={item} getCjs={this.getCjsCallBack} /> */}
                           {/* <Icon onClick={() => this.openModalCjTag(item.id)} style={{ fontSize: '24px' }} type="tags" />  */}
+                          <PopverAnt
+                            overlayClassName="pop-tag"
+                            content={this.contentTag(item)}
+                            title="Chọn tag"
+                            trigger="click"
+                            placement="bottomRight"
+                            visible={item.check}
+                            onVisibleChange={visible => this.handleVisibleChange(visible, item.id)}
+                          >
+                            <img src={img_tag} />
+                          </PopverAnt>
                           &nbsp;
                           <PopverAnt
                             overlayClassName="pop-version"
@@ -503,7 +607,8 @@ const mapDispatchToProps = {
   cloneVersion,
   getDiagramCampaign,
   saveCampaignAutoVersion,
-  getListCustomerVersionProcess
+  getListCustomerVersionProcess,
+  updateCjTagsAction
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
