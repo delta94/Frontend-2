@@ -6,7 +6,7 @@ import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { openModal, closeModal } from 'app/actions/modal';
 import './user-management.scss';
-import { ITEMS_PER_PAGE, ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
+import { ITEMS_PER_PAGE, ACTIVE_PAGE } from 'app/constants/pagination.constants';
 import {
   getUser,
   exportFile,
@@ -30,19 +30,14 @@ import LoaderAnim from 'react-loaders';
 import SweetAlert from 'sweetalert-react';
 import Loader from 'react-loader-advanced';
 import CreateUser from '../create/create';
-import Ionicon from 'react-ionicons';
-import Import from 'app/views/customer/user-management/import/import';
 import $ from 'jquery';
-import { IUser } from 'app/common/model/user.model';
 import { ISearchAdvanced } from 'app/common/model/group-attribute-customer';
 import FieldData from '../../group-attribute-customer/group-modal-config/field-data/field-data';
 import { makeRandomId } from '../../group-attribute-customer/group-modal-config/group-modal-config';
 import { OPERATOR } from 'app/constants/field-data';
 import { getListFieldDataAction } from 'app/actions/group-attribute-customer';
 import { getFindUserInManagerWithActionData } from 'app/actions/user-management';
-import { faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { Collapse } from 'reactstrap';
-import { INSERT_CUSTOMER_GROUP } from 'app/constants/group-atrribute-customer';
 import { IModalData } from 'app/reducers/user-management';
 import { ERROR } from 'app/constants/common';
 import SearchSaveModal from './search-save-modal/search-save-modal';
@@ -1155,7 +1150,4 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UserManagement);
+export default connect(mapStateToProps, mapDispatchToProps)(UserManagement);

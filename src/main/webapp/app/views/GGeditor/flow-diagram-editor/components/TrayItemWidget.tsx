@@ -18,7 +18,6 @@ export class TrayItemWidget extends React.Component<TrayItemWidgetProps, TrayIte
   render() {
     return (
       <div
-        // style={{ borderColor: this.props.color }}
         draggable={true}
         onDragStart={event => {
           if (this.props.onDragStart) this.props.onDragStart(event);

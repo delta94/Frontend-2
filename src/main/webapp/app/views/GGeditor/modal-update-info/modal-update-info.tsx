@@ -16,15 +16,23 @@ interface IUpdateInfoCampaignProps extends StateProps, DispatchProps {
 }
 interface IUpdateInfoCampaignState {
   nameCampaign: string;
-  strTagId: string;
+  strTag: {
+    id: string;
+    name: string;
+  };
   valueDes: string;
+  defaulftTag: any[];
 }
 
 export class UpdateInfoCampaign extends React.Component<IUpdateInfoCampaignProps, IUpdateInfoCampaignState> {
   state: IUpdateInfoCampaignState = {
     nameCampaign: '',
-    strTagId: '',
-    valueDes: ''
+    strTag: {
+      id: '',
+      name: ''
+    },
+    valueDes: '',
+    defaulftTag: []
   };
 
   toggle = () => {
@@ -39,9 +47,9 @@ export class UpdateInfoCampaign extends React.Component<IUpdateInfoCampaignProps
   };
 
   handleChange = cjTags => {
-    let cjTagIds = cjTags.map((item, index) => item.id);
     this.setState({
-      strTagId: cjTagIds.join()
+      strTag: cjTags,
+      defaulftTag: cjTags
     });
   };
   getDes = event => {
@@ -52,10 +60,10 @@ export class UpdateInfoCampaign extends React.Component<IUpdateInfoCampaignProps
 
   save = async () => {
     const { updateInfoCampaign } = this.props;
-    let { nameCampaign, strTagId, valueDes } = this.state;
+    let { nameCampaign, strTag, valueDes } = this.state;
     let data = {
       name: nameCampaign,
-      tag: strTagId,
+      tag: strTag,
       des: valueDes
     };
     await updateInfoCampaign(data);
@@ -63,7 +71,7 @@ export class UpdateInfoCampaign extends React.Component<IUpdateInfoCampaignProps
   };
 
   render() {
-    let { isOpenModal } = this.props;
+    let { isOpenModal, listInfoCampaing } = this.props;
     let { nameCampaign } = this.state;
     return (
       <Modal className="modal-info-title" isOpen={isOpenModal}>
@@ -75,7 +83,12 @@ export class UpdateInfoCampaign extends React.Component<IUpdateInfoCampaignProps
                 <label className="label-message">Tên Chiến dịch</label>
               </Col>
               <Col span={18}>
-                <Input onChange={this.getNameCampaign} id="name-campaign" style={{ float: 'right', width: '95%' }} />
+                <Input
+                  defaultValue={listInfoCampaing.name ? listInfoCampaing.name : 'Tạo mới chiến dịch'}
+                  onChange={this.getNameCampaign}
+                  id="name-campaign"
+                  style={{ float: 'right', width: '95%' }}
+                />
               </Col>
             </Row>
             <br />
@@ -84,7 +97,7 @@ export class UpdateInfoCampaign extends React.Component<IUpdateInfoCampaignProps
                 <label className="label-message">Tag</label>
               </Col>
               <Col span={18}>
-                <CampaignTag handleChange={this.handleChange} />
+                <CampaignTag defaultValue={this.state.defaulftTag} handleChange={this.handleChange} />
               </Col>
             </Row>
             <br />
@@ -93,7 +106,7 @@ export class UpdateInfoCampaign extends React.Component<IUpdateInfoCampaignProps
                 <label className="label-message">Mô tả</label>
               </Col>
               <Col span={18}>
-                <TextArea onChange={this.getDes} style={{ width: '95%' }} id="text-content" rows={4} />
+                <TextArea defaultValue={listInfoCampaing.des} onChange={this.getDes} style={{ width: '95%' }} id="text-content" rows={4} />
               </Col>
             </Row>
           </Row>
@@ -111,7 +124,8 @@ export class UpdateInfoCampaign extends React.Component<IUpdateInfoCampaignProps
   }
 }
 const mapStateToProps = ({ campaignManagament }: IRootState) => ({
-  loading: campaignManagament.loading
+  loading: campaignManagament.loading,
+  listInfoCampaing: campaignManagament.listInfoCampaing
 });
 
 const mapDispatchToProps = {
@@ -121,7 +135,4 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UpdateInfoCampaign);
+export default connect(mapStateToProps, mapDispatchToProps)(UpdateInfoCampaign);

@@ -33,6 +33,9 @@ class CJTagInsertModal extends React.Component<ICjTagInsertModalProps, ICjTagIns
   };
 
   onChangeInput = (value, type) => {
+    if (value && value.includes(',')) {
+      value = value.replace(',', '');
+    }
     let cjTag = this.state.cjTag;
     cjTag[type] = value;
     this.setState({ cjTag: cjTag });
@@ -124,7 +127,4 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CJTagInsertModal);
+export default connect(mapStateToProps, mapDispatchToProps)(CJTagInsertModal);

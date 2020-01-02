@@ -17,12 +17,14 @@ interface IModalTimeWaitProps extends StateProps, DispatchProps {
 interface IModalTimeWaitState {
   waitEvent: number;
   timeWaitEvent: string;
+  date: string;
 }
 
 export class ModalTimeWait extends React.Component<IModalTimeWaitProps, IModalTimeWaitState> {
   state: IModalTimeWaitState = {
     waitEvent: 0,
-    timeWaitEvent: ''
+    timeWaitEvent: '',
+    date: ''
   };
 
   toggle = () => {
@@ -32,20 +34,24 @@ export class ModalTimeWait extends React.Component<IModalTimeWaitProps, IModalTi
 
   save = () => {
     let { validateCampaign, listFieldData } = this.props;
-    let { timeWaitEvent } = this.state;
+    let { timeWaitEvent, waitEvent, date } = this.state;
     let data = {
       messageConfig: listFieldData.messageConfig ? listFieldData.messageConfig : [],
       emailConfig: listFieldData.emailConfig ? listFieldData.emailConfig : [],
       listCampign: listFieldData.listCampign ? listFieldData.listCampign : [],
       timerEvent: listFieldData.timerEvent ? listFieldData.timerEvent : [],
-      timer: listFieldData.timer ? listFieldData.timer : []
+      timer: listFieldData.timer ? listFieldData.timer : [],
+      getway: listFieldData.getway ? listFieldData.getway : []
     };
     let timer = {
       id: this.props.idNode.id,
-      timeWaitEvent
+      timeWaitEvent,
+      waitEvent,
+      date
     };
     data.timer.push(timer);
     validateCampaign(data);
+    localStorage.removeItem('isSave');
     this.toggle();
   };
 
@@ -53,19 +59,65 @@ export class ModalTimeWait extends React.Component<IModalTimeWaitProps, IModalTi
   handlerTimeWait = async value => {
     let { idNode, listDiagram, getDiagramCampaign } = this.props;
     let data = listDiagram;
+    let { date } = this.state;
+    switch (value) {
+      case 'Y':
+        date = 'Năm';
+        break;
+      case 'M':
+        date = 'Tháng';
+        break;
+      case 'D':
+        date = 'Ngày';
+        break;
+      case 'H':
+        date = 'Giờ';
+        break;
+      case 'M1':
+        date = 'Phút';
+      case 'S':
+        date = 'Giây';
+      default:
+        break;
+    }
     let { waitEvent, timeWaitEvent } = this.state;
     if (value === 'Y' || value === 'M' || value === 'D') {
       timeWaitEvent = 'P' + waitEvent + value;
     } else {
-      timeWaitEvent = 'PT' + waitEvent + value;
+      let time = value === 'M1' ? 'M' : value;
+      timeWaitEvent = 'PT' + waitEvent + time;
     }
     await data.nodes.map(event => {
       if (event.id === idNode.id) {
         event.value = timeWaitEvent;
       }
     });
+    await this.setState({ timeWaitEvent, date });
+
     await getDiagramCampaign(data);
-    await this.setState({ timeWaitEvent });
+  };
+  getNumber = () => {
+    const { listFieldData } = this.props;
+    let result: number;
+    listFieldData.timer &&
+      listFieldData.timer.map(item => {
+        if (item.id === this.props.idNode.id) {
+          result = item.waitEvent;
+        }
+      });
+    return result;
+  };
+
+  getDate = () => {
+    const { listFieldData } = this.props;
+    let result: string;
+    listFieldData.timer &&
+      listFieldData.timer.map(item => {
+        if (item.id === this.props.idNode.id) {
+          result = item.date;
+        }
+      });
+    return result;
   };
   render() {
     let { isOpenModal } = this.props;
@@ -81,6 +133,7 @@ export class ModalTimeWait extends React.Component<IModalTimeWaitProps, IModalTi
               <Col span={18}>
                 <Col span={17}>
                   <InputNumber
+                    defaultValue={this.getNumber()}
                     style={{ width: '100%' }}
                     min={1}
                     max={10000}
@@ -93,6 +146,7 @@ export class ModalTimeWait extends React.Component<IModalTimeWaitProps, IModalTi
                 </Col>
                 <Col span={6} style={{ float: 'right' }}>
                   <Select
+                    defaultValue={this.getDate()}
                     style={{ width: '100%' }}
                     onChange={value => {
                       this.handlerTimeWait(value);
@@ -101,9 +155,9 @@ export class ModalTimeWait extends React.Component<IModalTimeWaitProps, IModalTi
                     <Option value="Y">Năm</Option>
                     <Option value="M">Tháng</Option>
                     <Option value="D">Ngày</Option>
-                    <Option value="h">Giờ</Option>
-                    <Option value="m">Phút</Option>
-                    <Option value="s">Giây</Option>
+                    <Option value="H">Giờ</Option>
+                    <Option value="M1">Phút</Option>
+                    <Option value="S">Giây</Option>
                   </Select>
                 </Col>
               </Col>
@@ -136,7 +190,4 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ModalTimeWait);
+export default connect(mapStateToProps, mapDispatchToProps)(ModalTimeWait);

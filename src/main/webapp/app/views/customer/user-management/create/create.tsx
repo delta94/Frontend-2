@@ -352,7 +352,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
               }}
               color="primary"
             >
-              <Translate contentKey="properties-management.button-field" />
+              Thêm mới khách hàng
             </Button>{' '}
           </ModalFooter>
         </Modal>
@@ -377,7 +377,4 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Create);
+export default connect(mapStateToProps, mapDispatchToProps)(Create);

@@ -30,20 +30,32 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
     let { listFieldData, validateCampaign } = this.props;
     let data = {
       messageConfig: listFieldData.messageConfig ? listFieldData.messageConfig : [],
-      fieldConfigEmail: listFieldData.emailConfig ? listFieldData.emailConfig : [],
+      emailConfig: listFieldData.emailConfig ? listFieldData.emailConfig : [],
       listCampign: listFieldData.listCampign ? listFieldData.listCampign : [],
       timerEvent: listFieldData.timerEvent ? listFieldData.timerEvent : [],
-      timer: listFieldData.timer ? listFieldData.timer : []
+      timer: listFieldData.timer ? listFieldData.timer : [],
+      getway: listFieldData.getway ? listFieldData.getway : []
     };
     let fieldMessageConfig = {
       id: this.props.idNode.id,
       name: $(`#name-message`).val(),
       content: $(`#text-content`).val()
     };
+    localStorage.removeItem('isSave');
+    data.messageConfig = this.remove(data.messageConfig, this.props.idNode);
     data.messageConfig.push(fieldMessageConfig);
     validateCampaign(data);
     this.toggle(fieldMessageConfig);
   };
+
+  remove(arr, item) {
+    for (var i = arr.length; i--; ) {
+      if (arr[i].id === item.id) {
+        arr.splice(i, 1);
+      }
+    }
+    return arr;
+  }
 
   count = () => {
     let total = $('#text-content').val();
@@ -57,8 +69,32 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
     textarea.setRangeText(newText, textarea.selectionStart, textarea.selectionEnd, 'end');
   }
 
+  getNameSms = () => {
+    const { listFieldData, idNode } = this.props;
+    let result: string;
+    listFieldData.messageConfig &&
+      listFieldData.messageConfig.map(item => {
+        if (item.id === idNode.id) {
+          result = item.name;
+        }
+      });
+    return result;
+  };
+
+  getNameContent = () => {
+    const { listFieldData, idNode } = this.props;
+    let result: string;
+    listFieldData.messageConfig &&
+      listFieldData.messageConfig.map(item => {
+        if (item.id === idNode.id) {
+          result = item.content;
+        }
+      });
+    return result;
+  };
   render() {
     let { isOpenModal } = this.props;
+    let nameSMS = this.getNameSms();
     return (
       <Modal className="modal-message-config" isOpen={isOpenModal}>
         <ModalHeader toggle={this.toggle}>Gửi SMS</ModalHeader>
@@ -69,7 +105,7 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
                 <label className="label-message">Tên</label>
               </Col>
               <Col span={14}>
-                <Input id="name-message" style={{ float: 'right', width: '92%' }} />
+                <Input defaultValue={nameSMS} id="name-message" style={{ float: 'right', width: '92%' }} />
               </Col>
               <Col span={3} style={{ textAlign: 'right', paddingRight: '2%' }}>
                 <label className="label-message">Tham số</label>
@@ -88,7 +124,7 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
                 <label className="label-message">Nội dung</label>
               </Col>
               <Col span={22}>
-                <TextArea onKeyUp={() => this.count()} id="text-content" maxLength={160} rows={10} />
+                <TextArea defaultValue={this.getNameContent()} onKeyUp={() => this.count()} id="text-content" maxLength={160} rows={10} />
                 <p id="total">0/160</p>
               </Col>
             </Row>
@@ -119,7 +155,4 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ConfigMessage);
+export default connect(mapStateToProps, mapDispatchToProps)(ConfigMessage);

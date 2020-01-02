@@ -24,6 +24,8 @@ interface IModalWaitForEventState {
   email: string;
   time: number;
   timer: string;
+  date: string;
+  idEmail: string;
 }
 
 export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, IModalWaitForEventState> {
@@ -31,7 +33,9 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
     event: 'Khách hàng mở mail',
     email: '',
     time: 0,
-    timer: ''
+    timer: '',
+    date: '',
+    idEmail: ''
   };
 
   toggle = () => {
@@ -39,21 +43,26 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
     toggleModal(!isOpenModal);
   };
   save = async () => {
-    let { event, email, timer } = this.state;
+    let { event, email, timer, time, date, idEmail } = this.state;
     let { listFieldData, validateCampaign } = this.props;
     let data = {
       messageConfig: listFieldData.messageConfig ? listFieldData.messageConfig : [],
       emailConfig: listFieldData.emailConfig ? listFieldData.emailConfig : [],
       listCampign: listFieldData.listCampign ? listFieldData.listCampign : [],
       timerEvent: listFieldData.timerEvent ? listFieldData.timerEvent : [],
-      timer: listFieldData.timer ? listFieldData.timer : []
+      timer: listFieldData.timer ? listFieldData.timer : [],
+      getway: listFieldData.getway ? listFieldData.getway : []
     };
     let timerEvent = {
       id: this.props.idNode.id,
       event,
       email,
-      timer
+      timer,
+      date,
+      time,
+      idEmail
     };
+    localStorage.removeItem('isSave');
     data.timerEvent.push(timerEvent);
     await validateCampaign(data);
     this.toggle();
@@ -63,11 +72,32 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
   handlerTimeWait = async value => {
     let { idNode, listDiagram, getDiagramCampaign } = this.props;
     let data = listDiagram;
-    let { time, timer, event } = this.state;
+    let { time, timer, event, date } = this.state;
+    switch (value) {
+      case 'Y':
+        date = 'Năm';
+        break;
+      case 'M':
+        date = 'Tháng';
+        break;
+      case 'D':
+        date = 'Ngày';
+        break;
+      case 'H':
+        date = 'Giờ';
+        break;
+      case 'M1':
+        date = 'Phút';
+      case 'S':
+        date = 'Giây';
+      default:
+        break;
+    }
     if (value === 'Y' || value === 'M' || value === 'D') {
       timer = 'P' + time + value;
     } else {
-      timer = 'PT' + time + value;
+      let timeSelect = value === 'M1' ? 'M' : value;
+      timer = 'PT' + time + timeSelect;
     }
     await data.nodes.map(event => {
       if (event.id === idNode.id) {
@@ -76,22 +106,70 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
       }
     });
     await getDiagramCampaign(data);
-    await this.setState({ timer });
+    await this.setState({ timer, date });
   };
 
   handleChange(value, option) {
-    debugger;
+    let result: string;
+    let { idEmail } = this.state;
+    const { listFieldData } = this.props;
+    listFieldData.emailConfig &&
+      listFieldData.emailConfig.map(item => {
+        debugger;
+        if (item.id === value) {
+          result = item.nameEmail;
+          idEmail = item.id;
+        }
+      });
     switch (option) {
       case constantEvent.EVENT:
         this.setState({ event: value });
         break;
       case constantEvent.EMAIL:
-        this.setState({ email: value });
+        this.setState({ email: result, idEmail });
         break;
       default:
         break;
     }
   }
+
+  getNumber = () => {
+    const { listFieldData } = this.props;
+    let result: number;
+    listFieldData.timerEvent &&
+      listFieldData.timerEvent.map(item => {
+        if (item.id === this.props.idNode.id) {
+          result = item.time;
+        }
+      });
+    return result;
+  };
+
+  getDate = () => {
+    const { listFieldData } = this.props;
+    let result: string;
+    listFieldData.timerEvent &&
+      listFieldData.timerEvent.map(item => {
+        if (item.id === this.props.idNode.id) {
+          result = item.date;
+        }
+      });
+    return result;
+  };
+
+  getNameEmail = () => {
+    const { listFieldData } = this.props;
+    let result: string;
+    listFieldData.timerEvent &&
+      listFieldData.timerEvent.map(item => {
+        if (item.id === this.props.idNode.id) {
+          result = item.email;
+          console.log(result);
+        }
+      });
+    return result ? result : 'Vui lòng chọn Email';
+  };
+
   render() {
     let { isOpenModal, listFieldData } = this.props;
     return (
@@ -119,11 +197,11 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
                 <label className="text-event-wait">Email</label>
               </Col>
               <Col span={18}>
-                <Select defaultValue="Vui lòng chọn Email" style={{ width: '100%' }} onChange={() => this.handleChange(event, 'email')}>
+                <Select defaultValue={this.getNameEmail()} style={{ width: '100%' }} onChange={event => this.handleChange(event, 'email')}>
                   {listFieldData.emailConfig &&
                     listFieldData.emailConfig.map((item, index) => {
                       return (
-                        <Option key={index} value={item.nameEmail}>
+                        <Option key={index} value={item.id}>
                           {item.nameEmail}
                         </Option>
                       );
@@ -138,6 +216,7 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
               <Col span={18}>
                 <Col span={17}>
                   <InputNumber
+                    defaultValue={this.getNumber()}
                     style={{ width: '100%' }}
                     min={1}
                     max={10000}
@@ -149,13 +228,13 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
                   />
                 </Col>
                 <Col span={6} style={{ float: 'right' }}>
-                  <Select style={{ width: '100%' }} onChange={this.handlerTimeWait}>
+                  <Select defaultValue={this.getDate()} style={{ width: '100%' }} onChange={this.handlerTimeWait}>
                     <Option value="Y">Năm</Option>
                     <Option value="M">Tháng</Option>
                     <Option value="D">Ngày</Option>
-                    <Option value="h">Giờ</Option>
-                    <Option value="m">Phút</Option>
-                    <Option value="s">Giây</Option>
+                    <Option value="H">Giờ</Option>
+                    <Option value="M1">Phút</Option>
+                    <Option value="S">Giây</Option>
                   </Select>
                 </Col>
               </Col>
@@ -189,7 +268,4 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ModalWaitForEvent);
+export default connect(mapStateToProps, mapDispatchToProps)(ModalWaitForEvent);

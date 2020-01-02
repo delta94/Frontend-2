@@ -2,12 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Button, Table, Row } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
+import { subDays } from 'date-fns';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './modal-group-customer.scss';
+import DatePicker from 'react-datepicker';
 import { IRootState } from 'app/reducers';
 import { getListTagDataAction } from 'app/actions/tag-management';
 import ReactPaginate from 'react-paginate';
-import { Input, Card, Modal, DatePicker } from 'antd';
+import { Input, Card, Modal } from 'antd';
 // import TagModal from "../tag-modal/tag-modal";
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
 import FieldData from './field-data/field-data';
@@ -37,6 +39,7 @@ interface IGroupModalConfigProps extends StateProps, DispatchProps {
   title_modal: string;
   type_modal?: string;
   id_list_customer?: string;
+  idNode: any;
 }
 
 interface IAdvancedSearchesData {
@@ -67,7 +70,8 @@ interface IGroupModalConfigState {
     categoryName?: string;
     customerAdvancedSave?: any;
   };
-  dateTime?: string;
+  dateTime?: any;
+  selectDate: any;
 }
 
 export function makeRandomId(length: number): string {
@@ -97,7 +101,8 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
       categoryName: '',
       customerAdvancedSave: {}
     },
-    dateTime: ''
+    dateTime: '',
+    selectDate: new Date()
   };
 
   componentDidMount() {
@@ -338,32 +343,39 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
         break;
     }
 
-    await this.props.openModal(postRequest);
-    await this.props.getListCustomerGroupDataAction('');
+    // await this.props.openModal(postRequest);
+    // await this.props.getListCustomerGroupDataAction('');
 
     let customerAdvancedSave = {
       logicalOperator,
       advancedSearches
     };
     this.props.toggle(false, this.state.categoryName + ',' + this.state.dateTime, customerAdvancedSave, true);
+    console.log(this.state.dateTime);
   }
-
-  //validate date old greater date now
-  disabledDate = current => {
-    // Can not select days before today and today
-    return current && current < moment().endOf('day');
-  };
-
-  //get date time event
-  getDateTime = dateTimePicker => {
-    let { dateTime } = this.state;
-    let dateStart = dateTimePicker.format('MMMM Do YYYY, h:mm:ss a');
-    dateTime = dateStart;
-    this.setState({ dateTime });
+  getNameGroup = () => {
+    const { listFieldData } = this.props;
+    let result: string;
+    listFieldData.listCampign &&
+      listFieldData.listCampign.map(item => {
+        if (item.id === this.props.idNode.id) {
+          result = item.name;
+        }
+      });
+    return result;
   };
 
   render() {
-    let { is_show, list_field_data, loading, list_customer_with_condition, totalElements, type_modal } = this.props;
+    let {
+      is_show,
+      list_field_data,
+      loading,
+      list_customer_with_condition,
+      totalElements,
+      type_modal,
+      info_version,
+      listFieldData
+    } = this.props;
     let { list_field_data_cpn, logicalOperator, advancedSearches, categoryName, pageIndex } = this.state;
     let list_field_render =
       list_field_data_cpn && list_field_data_cpn.length > 0
@@ -410,7 +422,10 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
         title={title_modal ? title_modal.toUpperCase() : ''}
         style={{ width: '700px' }}
         className="modal-config-ggeditor"
-        onOk={() => this.props.toggle()}
+        onOk={() => {
+          localStorage.removeItem('isSave');
+          this.props.toggle();
+        }}
         onCancel={this.closeConfigModal}
         footer={[
           <Button key="submit" color="none" onClick={() => this.props.toggle()}>
@@ -432,6 +447,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
               <Translate contentKey="group-attribute-customer.group-name" />
             </label>
             <Input
+              defaultValue={this.getNameGroup()}
               placeholder={translate('group-attribute-customer.group-modal-config.name-placeholder')}
               onChange={event => this.setState({ categoryName: event.target.value })}
               maxLength={160}
@@ -440,12 +456,16 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
           <div className="input-search">
             <label className="input-search_label">Đặt lịch</label>
             <DatePicker
-              style={{ width: '100%' }}
-              format="YYYY-MM-DD HH:mm:ss"
-              onOk={this.getDateTime}
-              defaultValue={moment('00:00:00', 'HH:mm:ss')}
-              disabledDate={this.disabledDate}
-              showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
+              className="ant-input"
+              selected={this.state.selectDate}
+              timeIntervals={10}
+              timeFormat="HH:mm"
+              onChange={date => {
+                this.setState({ dateTime: moment(new Date(date)).format('YYYY-MM-DD HH:mm:ss'), selectDate: date });
+              }}
+              showTimeSelect
+              minDate={subDays(new Date(), 0)}
+              dateFormat="yyyy/MM/dd hh:mm:ss aa"
             />
           </div>
           {/* Chose condition */}
@@ -457,7 +477,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
                   color="primary"
                   style={{ float: 'right', margin: '3px' }}
                   onClick={this.getDataListCustomer}
-                  disabled={list_field_data_cpn.length === 0 ? true : false}
+                  disabled={info_version.type == 'copy' ? true : list_field_data_cpn.length === 0 ? true : false}
                 >
                   <Translate contentKey="group-attribute-customer.apply" />
                 </Button>
@@ -573,14 +593,16 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
   }
 }
 
-const mapStateToProps = ({ tagDataState, groupCustomerState }: IRootState) => ({
+const mapStateToProps = ({ tagDataState, groupCustomerState, campaignManagament }: IRootState) => ({
   loading: groupCustomerState.list_customer_with_condition_index.loading,
   totalElements: groupCustomerState.list_customer_with_condition_index.totalElements,
   list_field_data: groupCustomerState.list_field_data,
   list_customer_with_condition: groupCustomerState.list_customer_with_condition,
   postRequest: groupCustomerState.postRequest,
   single_group_field: groupCustomerState.single_customer_field,
-  list_group_customer: groupCustomerState.list_group_customer
+  list_group_customer: groupCustomerState.list_group_customer,
+  info_version: campaignManagament.infoVersion,
+  listFieldData: campaignManagament.listFieldData
 });
 
 const mapDispatchToProps = {
@@ -597,7 +619,4 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(GroupModalConfig);
+export default connect(mapStateToProps, mapDispatchToProps)(GroupModalConfig);

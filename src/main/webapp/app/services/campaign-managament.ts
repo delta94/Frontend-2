@@ -3,6 +3,7 @@ import axios from 'axios';
 
 const urlCJ = 'v1/cj-folders';
 const urlCampaign = 'v1/cjs';
+const urlVersion = 'v1/cj-versions';
 
 //call API get list Tree
 export const getTreeFolderService = () => {
@@ -34,7 +35,7 @@ export const moveTreeFolderService = data => {
 };
 
 export const getListCampaignInfolder = (folderId: string, textSearch?: string, tagIds?: string, page?: number, pageSize?: number) => {
-  return axios.get(urlCJ + '/' + folderId + '/cjs', { params: { textSearch, tagIds, page, pageSize } });
+  return axios.get(urlCJ + '/' + folderId + '/cjs', { params: { textSearch, tagIds, page, pageSize }, headers: { authHeaders } });
 };
 
 // call API count status campaign
@@ -52,4 +53,64 @@ export const getListCampaginService = () => {
 export const saveCampaignAutoService = data => {
   const url = `${urlCampaign}/create-process`;
   return axios.post(url, data);
+};
+
+//call API list Email tesst
+export const getEmailTestService = () => {
+  return axios.get(`v1/email-white-lists`);
+};
+
+/* call API Version */
+
+//call Api test Campaign
+export const testCampaignService = data => {
+  const url = `${urlCampaign}/test-process`;
+  return axios.post(url, data);
+};
+
+//call API get list version
+export const getListVersionService = id => {
+  const url = `${urlCampaign}/${id}/cj-versions`;
+  return axios.get(url, { headers: authHeaders });
+};
+
+//call API delete version
+export const deleteVersionService = data => {
+  const url = `${urlVersion}/delete`;
+  return axios.post(url, data);
+};
+
+//call API stop version
+export const stopVersionService = id => {
+  const url = `${urlVersion}/${id}/stop`;
+  return axios.post(url);
+};
+
+//call API clone version
+export const cloneVersionService = id => {
+  const url = `${urlVersion}/${id}`;
+  return axios.get(url);
+};
+
+//call API get list customer version process
+export const getListCustomerVersionProcessService = (textSearch: string, id, page?: number) => {
+  const url = `${urlVersion}/${id}/customers`;
+  return axios.get(url, { params: { page, pageSize: 10, textSearch } });
+};
+
+// Call API list customer interactive
+export const viewInteractiveService = id => {
+  const url = `v1/history/activity-instance`;
+  return axios.get(url, { params: { processInstanceId: id } });
+};
+
+export const activeProcessCampaignService = id => {
+  const url = `${urlVersion}/${id}/start-process`;
+  return axios.post(url);
+};
+
+// call API Template campaign
+export const getTemplateCampaignService = () => {
+  const url = `v1/cj-templates`;
+  return axios.get(url);
 };

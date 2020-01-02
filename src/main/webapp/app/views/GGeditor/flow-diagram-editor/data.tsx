@@ -1,33 +1,38 @@
-const SAMPLE_DATA = {
-  folderId: 'd9b34973-cc89-4791-98ef-278e7513757d',
-
-  cj: {
-    id: '8e8df3d9-694f-43d8-91a9-7f7db3ca72b4',
-    name: 'chien dich dac biet no en',
-    description: ''
-  },
-  cjTags: [
-    {
-      id: '4abef027-1bac-4490-a088-ec324ee98ead',
-      name: 'KhachVIP'
-    }
-  ],
+const DEFAULT_DATA = {
   flow: {
-    startTime: '2019-12-24 09:13:00',
-    customerAdvancedSave: {
-      logicalOperator: 'OR',
-      advancedSearches: [
+    graph: {
+      nodes: [
         {
-          fieldId: 'lastName',
-          fieldCode: 'lastName',
-          fieldType: 'Text Input',
-          fieldValue: 'EQUAL',
-          fieldTitle: 'Họ',
-          operator: 'CONTAIN',
-          value: 'linh'
+          type: 'node',
+          label: '',
+          code: 'SOURCE',
+          value: '',
+          id: 'START'
+        },
+        {
+          type: 'node',
+          label: '',
+          code: 'DES',
+          value: '',
+          id: 'END'
+        }
+      ],
+      edges: [
+        {
+          source: 'START',
+          target: 'END',
+          sourceAnchor: 3,
+          targetAnchor: 2,
+          id: 'START-END',
+          value: ''
         }
       ]
-    },
+    }
+  }
+};
+
+const SAMPLE_DATA = {
+  flow: {
     graph: {
       nodes: [
         {
@@ -296,4 +301,5 @@ const SAMPLE_DATA = {
     }
   }
 };
-export default SAMPLE_DATA;
+
+export default DEFAULT_DATA;

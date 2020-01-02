@@ -138,7 +138,7 @@ export class ContactSourceStartNodeFactory extends AbstractNodeFactory {
   }
 
   generateReactWidget(diagramEngine: DiagramEngine, node: NodeModel): JSX.Element {
-    return createFlowNodeWidget(ContactSourceStartNodeModel.TYPE, node, true, false);
+    return createFlowNodeWidget(ContactSourceStartNodeModel.TYPE, node, true, true);
   }
 
   getNewInstance() {
@@ -152,7 +152,7 @@ export class EventSourceStartNodeFactory extends AbstractNodeFactory {
   }
 
   generateReactWidget(diagramEngine: DiagramEngine, node: NodeModel): JSX.Element {
-    return createFlowNodeWidget(EventSourceStartNodeModel.TYPE, node, true, false);
+    return createFlowNodeWidget(EventSourceStartNodeModel.TYPE, node, true, true);
   }
 
   getNewInstance() {
@@ -236,7 +236,7 @@ export class EndNodeFactory extends AbstractNodeFactory {
   }
 
   generateReactWidget(diagramEngine: DiagramEngine, node: NodeModel): JSX.Element {
-    return createFlowNodeWidget(EndNodeModel.TYPE, node, true, true);
+    return createFlowNodeWidget(EndNodeModel.TYPE, node, true, false);
   }
 
   getNewInstance() {

@@ -7,7 +7,17 @@ import {
   moveTreeFolderService,
   getStatusCampaignService,
   getListCampaginService,
-  saveCampaignAutoService
+  saveCampaignAutoService,
+  getEmailTestService,
+  testCampaignService,
+  getListVersionService,
+  deleteVersionService,
+  stopVersionService,
+  cloneVersionService,
+  getListCustomerVersionProcessService,
+  viewInteractiveService,
+  activeProcessCampaignService,
+  getTemplateCampaignService
 } from 'app/services/campaign-managament';
 
 //get Tree Folder
@@ -84,4 +94,75 @@ export const getDiagramCampaign = (data?: any) => ({
 export const validateCampaign = (data: any) => ({
   type: CAMPAIGN_MANAGAMENT.VALIDATE_DIAGRAM_CAMPAIGN,
   payload: data
+});
+// get list Email test
+export const getEmailTest = () => ({
+  type: CAMPAIGN_MANAGAMENT.GET_EMAIL_TEST,
+  payload: getEmailTestService()
+});
+
+// Test campaign
+export const testCampaign = data => ({
+  type: CAMPAIGN_MANAGAMENT.TEST_CAMPAIGN,
+  payload: testCampaignService(data)
+});
+
+/* API Version */
+// get id and name version to save campaign
+export const saveCampaignAutoVersion = (data: any) => ({
+  type: CAMPAIGN_MANAGAMENT.SAVE_CAMPAIGN_AUTO_VERSION,
+  payload: data
+});
+
+//get list version
+export const getListVersion = id => ({
+  type: CAMPAIGN_MANAGAMENT.GET_LIST_VERSION,
+  payload: getListVersionService(id)
+});
+
+//delete version
+export const deleteVersion = data => ({
+  type: CAMPAIGN_MANAGAMENT.DELETE_VERSION,
+  payload: deleteVersionService(data)
+});
+
+//stop version
+export const stopVersion = id => ({
+  type: CAMPAIGN_MANAGAMENT.STOP_VERSION,
+  payload: stopVersionService(id)
+});
+
+//clone info version
+export const cloneVersion = id => ({
+  type: CAMPAIGN_MANAGAMENT.CLONE_VERSION,
+  payload: cloneVersionService(id)
+});
+
+//get list version customer process
+export const getListCustomerVersionProcess = (textSearch: string, id, page?: number) => ({
+  type: CAMPAIGN_MANAGAMENT.LIST_CUSTOMER_VERSION_PROCESS,
+  payload: getListCustomerVersionProcessService(textSearch, id, page)
+});
+
+// view Interactive customer
+export const viewInteractive = id => ({
+  type: CAMPAIGN_MANAGAMENT.VIEW_INTERACTIVE,
+  payload: viewInteractiveService(id)
+});
+
+//reset data
+export const resetData = () => ({
+  type: CAMPAIGN_MANAGAMENT.RESET_DATA_CAMPAIGN
+});
+
+// active process campaign automation
+export const activeProcessCampaign = id => ({
+  type: CAMPAIGN_MANAGAMENT.ACTIVE_PROCESS_CAMPAIGN,
+  payload: activeProcessCampaignService(id)
+});
+
+// get template campaign automation
+export const getTemplateCampaign = () => ({
+  type: CAMPAIGN_MANAGAMENT.GET_TEMPLATE_CAMPAIGN,
+  payload: getTemplateCampaignService()
 });

@@ -17,6 +17,7 @@ interface ICjTagPopOverProps extends StateProps, DispatchProps {
     id: string;
     name: string;
     cjVersionId: string;
+    cjFolderId: string;
     version: number;
     tags: string;
     status: string;
@@ -58,7 +59,7 @@ class CJTagPopOver extends React.Component<ICjTagPopOverProps, TCjTagPopOverStat
     };
     await this.props.updateCjTagsAction(cjEdit);
     this.closePopup();
-    this.props.getCjs();
+    this.props.getCjs(this.props.dataPopup.cjFolderId);
   };
 
   togglePopup = async () => {
@@ -118,13 +119,14 @@ class CJTagPopOver extends React.Component<ICjTagPopOverProps, TCjTagPopOverStat
   };
 
   refreshListCjTag = () => {
-    this.props.getCjs();
+    this.props.getCjs(this.props.dataPopup.cjFolderId);
     this.closePopup();
   };
 
   render() {
     let { dataPopup } = this.props;
     let { isOpenModalCjTagInsert, isOpenModalCjTagList, cjId, cjTagsDefault, isOpen } = this.state;
+    const img_tag = require('app/assets/utils/images/campaign-managament/tag-list.png');
 
     return (
       <span>
@@ -142,7 +144,7 @@ class CJTagPopOver extends React.Component<ICjTagPopOverProps, TCjTagPopOverStat
           refreshListCjTag={this.refreshListCjTag}
         />
         <Button className="mr-1" color="white" id={'Popover-' + dataPopup.cjVersionId} type="button">
-          <Icon style={{ fontSize: '24px' }} type="tags" />
+          <img src={img_tag} />
         </Button>
         <Popover
           placement={'bottom-end'}
@@ -200,7 +202,4 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CJTagPopOver);
+export default connect(mapStateToProps, mapDispatchToProps)(CJTagPopOver);

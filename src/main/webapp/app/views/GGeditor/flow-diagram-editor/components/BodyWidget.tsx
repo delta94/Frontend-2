@@ -13,7 +13,6 @@ import {
   SmsProcessNodeModel,
   TimeWaitingDecisionNodeModel
 } from '../FlowNodeModel';
-import { SendEmailGroupProcess } from 'app/views/GGeditor/flow-diagram-editor/GroupProcess';
 
 export interface BodyWidgetProps {
   editor: FlowDiagramEditor;

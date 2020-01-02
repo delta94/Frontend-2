@@ -1,3 +1,8 @@
+.pop-version {
+  .anticon-snippets {
+    vertical-align: unset !important;
+  }
+}
 .campaign-list {
   padding: 30px 10px 20px 10px;
   background-color: #fff;
@@ -7,10 +12,13 @@
 
   .block-out {
     .col-search-tag {
+      float: right;
+      margin-right: 3%;
       .rw-widget {
         width: 70%;
       }
     }
+
     .input-search_label-1 {
       font-family: Roboto;
       font-style: normal;
@@ -21,6 +29,7 @@
       color: #495057;
     }
     .label-search {
+      margin-left: 42%;
       font-family: Roboto;
       font-style: normal;
       font-weight: normal;
@@ -56,7 +65,24 @@
   }
 
   #name {
+    a {
+      color: #3866dd;
+      font-size: 15px;
+
+      text-decoration-line: underline;
+    }
+    span {
+      color: #8a96a2;
+
+      font-size: 13px;
+    }
     max-width: 200px;
+    text-align: left;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 22px;
+    /* identical to box height */
   }
 
   #status {
@@ -87,5 +113,8 @@
     line-height: 16px;
 
     color: #6c757d;
+  }
+  .ant-progress-outer {
+    width: 60% !important;
   }
 }

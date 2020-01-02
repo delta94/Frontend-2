@@ -25,6 +25,7 @@ import {
   TimeWaitingDecisionNodeFactory
 } from './FlowNodeFactory';
 import { GroupProcess } from 'app/views/GGeditor/flow-diagram-editor/GroupProcess';
+import DEFAULT_DATA from 'app/views/GGeditor/flow-diagram-editor/data';
 const uuidv4 = require('uuid/v4');
 
 const GRID_SIZE = {
@@ -97,51 +98,58 @@ export class FlowDiagramEditor {
   }
 
   private static arrangeFromNode(currentNode: NodeModel, currentPort: PortModel, x: number, y: number) {
-    if (currentNode instanceof StartNodeModel)
-      currentNode.setPosition(x - PORT_SIZE.width / 2 - StartNodeModel.WIDTH / 2, y - PORT_SIZE.height / 2 - StartNodeModel.HEIGHT / 2);
-    else if (currentNode instanceof ProcessNodeModel)
-      currentNode.setPosition(x - PORT_SIZE.width / 2 - ProcessNodeModel.WIDTH / 2, y - PORT_SIZE.height / 2 - ProcessNodeModel.HEIGHT / 2);
-    else if (currentNode instanceof DecisionNodeModel)
-      currentNode.setPosition(
-        x - PORT_SIZE.width / 2 - DecisionNodeModel.WIDTH / 2,
-        y - PORT_SIZE.height / 2 - DecisionNodeModel.HEIGHT / 2
-      );
-    else if (currentNode instanceof EndNodeModel)
-      currentNode.setPosition(x - PORT_SIZE.width / 2 - EndNodeModel.WIDTH / 2, y - PORT_SIZE.height / 2 - EndNodeModel.HEIGHT / 2);
-    else currentNode.setPosition(x, y);
+    if (currentNode) {
+      if (currentNode instanceof StartNodeModel)
+        currentNode.setPosition(x - PORT_SIZE.width / 2 - StartNodeModel.WIDTH / 2, y - PORT_SIZE.height / 2 - StartNodeModel.HEIGHT / 2);
+      else if (currentNode instanceof ProcessNodeModel)
+        currentNode.setPosition(
+          x - PORT_SIZE.width / 2 - ProcessNodeModel.WIDTH / 2,
+          y - PORT_SIZE.height / 2 - ProcessNodeModel.HEIGHT / 2
+        );
+      else if (currentNode instanceof DecisionNodeModel)
+        currentNode.setPosition(
+          x - PORT_SIZE.width / 2 - DecisionNodeModel.WIDTH / 2,
+          y - PORT_SIZE.height / 2 - DecisionNodeModel.HEIGHT / 2
+        );
+      else if (currentNode instanceof EndNodeModel)
+        currentNode.setPosition(x - PORT_SIZE.width / 2 - EndNodeModel.WIDTH / 2, y - PORT_SIZE.height / 2 - EndNodeModel.HEIGHT / 2);
+      else currentNode.setPosition(x, y);
 
-    let ports = currentNode.getPorts();
-    for (let key in ports) {
-      let port = ports[key];
-      if (port && (!currentPort || port.id !== currentPort.id) && key === FlowNodePortModel.LEFT)
-        FlowDiagramEditor.arrangeFromPort(port, FlowNodePortModel.LEFT, x, y);
-      else if (port && (!currentPort || port.id !== currentPort.id) && key === FlowNodePortModel.RIGHT)
-        FlowDiagramEditor.arrangeFromPort(port, FlowNodePortModel.RIGHT, x, y);
-      else if (port && (!currentPort || port.id !== currentPort.id) && key === FlowNodePortModel.TOP)
-        FlowDiagramEditor.arrangeFromPort(port, FlowNodePortModel.TOP, x, y);
-      else if (port && (!currentPort || port.id !== currentPort.id) && key === FlowNodePortModel.BOTTOM)
-        FlowDiagramEditor.arrangeFromPort(port, FlowNodePortModel.BOTTOM, x, y);
+      let ports = currentNode.getPorts();
+      for (let key in ports) {
+        let port = ports[key];
+        if (port && (!currentPort || port.id !== currentPort.id) && key === FlowNodePortModel.LEFT)
+          FlowDiagramEditor.arrangeFromPort(port, FlowNodePortModel.LEFT, x, y);
+        else if (port && (!currentPort || port.id !== currentPort.id) && key === FlowNodePortModel.RIGHT)
+          FlowDiagramEditor.arrangeFromPort(port, FlowNodePortModel.RIGHT, x, y);
+        else if (port && (!currentPort || port.id !== currentPort.id) && key === FlowNodePortModel.TOP)
+          FlowDiagramEditor.arrangeFromPort(port, FlowNodePortModel.TOP, x, y);
+        else if (port && (!currentPort || port.id !== currentPort.id) && key === FlowNodePortModel.BOTTOM)
+          FlowDiagramEditor.arrangeFromPort(port, FlowNodePortModel.BOTTOM, x, y);
+      }
     }
   }
 
   private static arrangeFromPort(currentPort: PortModel, currentPosition: string, nextX: number, nextY: number) {
-    let links = currentPort.getLinks();
-    let i = 0;
-    for (let key in links) {
-      let link = links[key];
-      if (link) {
-        let nextPort = link.getSourcePort().id === currentPort.id ? link.getTargetPort() : link.getSourcePort();
-        let nextNode = nextPort.getNode();
-        if (nextNode) {
-          if (currentPosition === FlowNodePortModel.LEFT)
-            FlowDiagramEditor.arrangeFromNode(nextNode, nextPort, nextX - GRID_SIZE.width, nextY - i * GRID_SIZE.height);
-          else if (currentPosition === FlowNodePortModel.RIGHT)
-            FlowDiagramEditor.arrangeFromNode(nextNode, nextPort, nextX + GRID_SIZE.width, nextY + i * GRID_SIZE.height);
-          else if (currentPosition === FlowNodePortModel.TOP)
-            FlowDiagramEditor.arrangeFromNode(nextNode, nextPort, nextX - (i + 1) * GRID_SIZE.width, nextY - GRID_SIZE.height);
-          else if (currentPosition === FlowNodePortModel.BOTTOM)
-            FlowDiagramEditor.arrangeFromNode(nextNode, nextPort, nextX + (i + 1) * GRID_SIZE.width, nextY + GRID_SIZE.height);
-          i++;
+    if (currentPort) {
+      let links = currentPort.getLinks();
+      let i = 0;
+      for (let key in links) {
+        let link = links[key];
+        if (link) {
+          let nextPort = link.getSourcePort().id === currentPort.id ? link.getTargetPort() : link.getSourcePort();
+          let nextNode = nextPort.getNode();
+          if (nextNode) {
+            if (currentPosition === FlowNodePortModel.LEFT)
+              FlowDiagramEditor.arrangeFromNode(nextNode, nextPort, nextX - GRID_SIZE.width, nextY - i * GRID_SIZE.height);
+            else if (currentPosition === FlowNodePortModel.RIGHT)
+              FlowDiagramEditor.arrangeFromNode(nextNode, nextPort, nextX + GRID_SIZE.width, nextY + i * GRID_SIZE.height);
+            else if (currentPosition === FlowNodePortModel.TOP)
+              FlowDiagramEditor.arrangeFromNode(nextNode, nextPort, nextX - (i + 1) * GRID_SIZE.width, nextY - GRID_SIZE.height);
+            else if (currentPosition === FlowNodePortModel.BOTTOM)
+              FlowDiagramEditor.arrangeFromNode(nextNode, nextPort, nextX + (i + 1) * GRID_SIZE.width, nextY + GRID_SIZE.height);
+            i++;
+          }
         }
       }
     }
@@ -156,14 +164,14 @@ export class FlowDiagramEditor {
   }
 
   public init(nodes: any, edges: any) {
-    for (let node of nodes) {
+    for (let node of nodes ? nodes : DEFAULT_DATA.flow.graph.nodes) {
       let nodeModel = parseNode(node);
       if (nodeModel) {
         this.activeModel.addNode(nodeModel);
       }
     }
 
-    for (let edge of edges) {
+    for (let edge of edges ? edges : DEFAULT_DATA.flow.graph.edges) {
       let sourceNode = this.activeModel.getNode(edge.source);
       let targetNode = this.activeModel.getNode(edge.target);
       if (sourceNode instanceof FlowNodeModel && targetNode instanceof FlowNodeModel) {
