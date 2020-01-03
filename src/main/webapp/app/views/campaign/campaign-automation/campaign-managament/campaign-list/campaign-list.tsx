@@ -110,10 +110,6 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
   };
 
   handleVisibleChange = async (visible, id) => {
-    if (visible) {
-      await this.props.getCjTagsByCjIdAction(id);
-      this.setState({ list_tag_default: this.props.valueComboTag });
-    }
     await this.checkVisible(visible, id);
   };
 
@@ -528,11 +524,17 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                             trigger="click"
                             placement="bottomRight"
                             visible={item.check}
-                            onVisibleChange={visible => this.handleVisibleChange(visible, item.id)}
+                            onVisibleChange={async visible => {
+                              if (visible) {
+                                await this.props.getCjTagsByCjIdAction(item.id);
+                                this.setState({ list_tag_default: this.props.valueComboTag });
+                              }
+                              this.handleVisibleChange(visible, item.id);
+                            }}
                           >
                             <img src={img_tag} />
                           </PopverAnt>
-                          &nbsp;
+                          &nbsp; &nbsp;
                           <PopverAnt
                             overlayClassName="pop-version"
                             content={
