@@ -18,7 +18,8 @@ import {
   viewInteractiveService,
   activeProcessCampaignService,
   getTemplateCampaignService,
-  cloneVersionByIdService
+  cloneVersionByIdService,
+  validateGraphService
 } from 'app/services/campaign-managament';
 
 //get Tree Folder
@@ -62,9 +63,9 @@ export const statusCampaign = () => ({
 });
 
 // get list CJ
-export const getListCampaginAuto = () => ({
+export const getListCampaginAuto = (status: string, page?: number, pageSize?: number) => ({
   type: CAMPAIGN_MANAGAMENT.GET_LIST_CAMPAIGN_AUTO,
-  payload: getListCampaginService()
+  payload: getListCampaginService(status, page, pageSize)
 });
 
 //get value from Flow
@@ -172,4 +173,10 @@ export const getTemplateCampaign = () => ({
 export const cloneVersionById = id => ({
   type: CAMPAIGN_MANAGAMENT.CLONE_VERSION_BY_ID,
   payload: cloneVersionByIdService(id)
+});
+
+// validate graph
+export const validateGraph = id => ({
+  type: CAMPAIGN_MANAGAMENT.VALIDATE_GRAPH,
+  payload: validateGraphService(id)
 });
