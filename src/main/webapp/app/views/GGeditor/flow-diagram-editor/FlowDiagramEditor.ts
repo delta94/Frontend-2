@@ -88,6 +88,26 @@ export class FlowDiagramEditor {
     }
   }
 
+  private static setOnClickEventHandler(model: DiagramModel, onClickEventHandler: any) {
+    let nodes = model.getNodes();
+    for (let key in nodes) {
+      let node = nodes[key];
+      if (node && node instanceof FlowNodeModel) {
+        node.onClick = onClickEventHandler;
+      }
+    }
+  }
+
+  private static setOnAddClickEventHandler(model: DiagramModel, onAddClickEventHandler: any) {
+    let nodes = model.getNodes();
+    for (let key in nodes) {
+      let node = nodes[key];
+      if (node && node instanceof FlowNodeModel) {
+        node.onAddClick = onAddClickEventHandler;
+      }
+    }
+  }
+
   private static getStartNode(model: DiagramModel): FlowNodeModel | null {
     let nodes = model.getNodes();
     for (let key in nodes) {
@@ -161,6 +181,14 @@ export class FlowDiagramEditor {
 
   public setOnDropEventHandler(onDropEventHandler: any) {
     FlowDiagramEditor.setOnDropEventHandler(this.activeModel, onDropEventHandler);
+  }
+
+  public setOnClickEventHandler(onClickEventHandler: any) {
+    FlowDiagramEditor.setOnClickEventHandler(this.activeModel, onClickEventHandler);
+  }
+
+  public setOnAddClickEventHandler(onAddClickEventHandler: any) {
+    FlowDiagramEditor.setOnAddClickEventHandler(this.activeModel, onAddClickEventHandler);
   }
 
   public load(nodes: any, edges: any) {

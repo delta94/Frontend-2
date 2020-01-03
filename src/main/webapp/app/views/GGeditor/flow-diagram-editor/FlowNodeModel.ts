@@ -39,6 +39,26 @@ export class FlowNodeModel extends NodeModel {
     this._onDrop = value;
   }
 
+  private _onClick: any = null;
+
+  get onClick(): any {
+    return this._onClick;
+  }
+
+  set onClick(value: any) {
+    this._onClick = value;
+  }
+
+  private _onAddClick: any = null;
+
+  get onAddClick(): any {
+    return this._onAddClick;
+  }
+
+  set onAddClick(value: any) {
+    this._onAddClick = value;
+  }
+
   getDefaultInPort(): PortModel | null {
     return null;
   }
@@ -447,6 +467,42 @@ export function parseNode(node: any): FlowNodeModel | null {
     nodeModel.setPosition(node.x ? node.x : 0, node.y ? node.y : 0);
   }
   return nodeModel;
+}
+
+function getNodeCode(type: string) {
+  switch (type) {
+    case ContactSourceStartNodeModel.TYPE:
+      return 'SOURCE';
+    case EmailProcessNodeModel.TYPE:
+      return 'SEND_MAIL';
+    case SmsProcessNodeModel.TYPE:
+      return 'SEND_SMS';
+    case TimeWaitingDecisionNodeModel.TYPE:
+      return 'TIMER';
+    case EventWaitingDecisionNodeModel.TYPE:
+      return 'TIMER_EVENT';
+    case ConditionDecisionNodeModel.TYPE:
+      return 'GATEWAY';
+    case EndNodeModel.TYPE:
+      return 'DES';
+    default:
+      return '';
+  }
+}
+
+export function toNode(nodeModel: FlowNodeModel): any | null {
+  if (nodeModel) {
+    return {
+      type: 'node',
+      label: '',
+      code: getNodeCode(nodeModel.getType()),
+      value: '',
+      id: nodeModel.getID(),
+      x: nodeModel.x,
+      y: nodeModel.y
+    };
+  }
+  return null;
 }
 
 export function mapToPortPosition(pos: any): string | null {

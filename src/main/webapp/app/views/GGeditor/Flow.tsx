@@ -68,6 +68,7 @@ import {
   TrayWidget
 } from './flow-diagram-editor';
 import { DiagramWidget } from 'storm-react-diagrams';
+import { toNode } from 'app/views/GGeditor/flow-diagram-editor/FlowNodeModel';
 
 const ButtonGroup = Button.Group;
 
@@ -129,14 +130,30 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     console.log(listDiagram.edges);
     this.editor.load(listDiagram.nodes, listDiagram.edges);
     this.editor.autoArrange();
-    this.editor.setOnDropEventHandler((port, data) => {
+    this.editor.setOnDropEventHandler((node, port, data) => {
       console.log('setOnDropEventHandler');
+      console.log(node);
       console.log(port);
       console.log(data);
 
       // editor.insert(new SendEmailGroupProcess(data.type), port);
       //editor.autoArrange();
       // this.forceUpdate();
+    });
+    this.editor.setOnAddClickEventHandler((node, port) => {
+      console.log('setOnAddClickEventHandler');
+      console.log(node);
+      console.log(port);
+    });
+    this.editor.setOnClickEventHandler(nodeModel => {
+      console.log('setOnClickEventHandler');
+      console.log(nodeModel);
+      console.log(toNode(nodeModel));
+
+      this.setState({ idNode: toNode(nodeModel) });
+      this.getVisible(true, '', '', true).then(() => {
+        console.log('setOnClickEventHandler:getVisible');
+      });
     });
   }
 
@@ -930,15 +947,6 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       </div>
     );
   }
-  //   onClick={e => {
-  //   console.log(e);
-  //   if (e.item && e.item.type === 'node') {
-  //   this.setState({ idNode: e.item && e.item.type === 'node' ? e.item.model : '' });
-  // }
-  // if (e.item && e.item.type === 'edge') {
-  //   this.setState({ idEdge: e.item && e.item.type === 'edge' ? e.item.model : '' });
-  // }
-  // }}
 
   render() {
     let { isOpenModalInfo, idNode, isTest, isOpenModalMessage, isOpenModalWaitForEvent, isOpenModalWait, data, isValidate } = this.state;

@@ -90,84 +90,21 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
     }
   }
 
-  // renderLeftPort() {
-  //   if (this.props.portVisible && this.props.node && this.props.node.getPort('left')) {
-  //     return (
-  //       <div
-  //         style={{
-  //           position: 'absolute',
-  //           zIndex: 10,
-  //           top: this.props.height / 2 - 8,
-  //           left: -8
-  //         }}
-  //       >
-  //         <PortWidget name="left" node={this.props.node} />
-  //       </div>
-  //     );
-  //   }
-  // }
-  //
-  // renderTopPort() {
-  //   if (this.props.portVisible && this.props.node && this.props.node.getPort('top')) {
-  //     return (
-  //       <div
-  //         style={{
-  //           position: 'absolute',
-  //           zIndex: 10,
-  //           left: this.props.height / 2 - 8,
-  //           top: -8
-  //         }}
-  //       >
-  //         <PortWidget name="top" node={this.props.node} />
-  //       </div>
-  //     );
-  //   }
-  // }
-  //
-  // renderRightPort() {
-  //   if (this.props.portVisible && this.props.node && this.props.node.getPort('right')) {
-  //     return (
-  //       <div
-  //         style={{
-  //           position: 'absolute',
-  //           zIndex: 10,
-  //           left: this.props.width - 8,
-  //           top: this.props.height / 2 - 8
-  //         }}
-  //       >
-  //         <PortWidget name="right" node={this.props.node} />
-  //       </div>
-  //     );
-  //   }
-  // }
-  //
-  // renderBottomPort() {
-  //   if (this.props.portVisible && this.props.node && this.props.node.getPort('bottom')) {
-  //     return (
-  //       <div
-  //         style={{
-  //           position: 'absolute',
-  //           zIndex: 10,
-  //           left: this.props.width / 2 - 8,
-  //           top: this.props.height - 8
-  //         }}
-  //       >
-  //         <PortWidget name="bottom" node={this.props.node} />
-  //       </div>
-  //     );
-  //   }
-  // }
-
   renderDropZone(portName: string) {
     if (this.props.dropZoneVisible && this.props.node && this.props.node instanceof FlowNodeModel) {
       let port = this.props.node.getOutPort(portName);
       if (port) {
         return (
           <div
+            onClick={event => {
+              if (this.props.node && this.props.node instanceof FlowNodeModel && this.props.node.onAddClick) {
+                this.props.node.onAddClick(this.props.node, port);
+              }
+            }}
             onDrop={event => {
               if (this.props.node && this.props.node instanceof FlowNodeModel && this.props.node.onDrop) {
                 let data = JSON.parse(event.dataTransfer.getData('flow-diagram-node'));
-                this.props.node.onDrop(port, data);
+                this.props.node.onDrop(this.props.node, port, data);
               }
             }}
             style={{
@@ -197,6 +134,11 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
     let alias = this.props.node ? this.props.node.getType() + '_' + this.props.node.getID() : this.props.type;
     return (
       <svg
+        onClick={event => {
+          if (this.props.node && this.props.node instanceof FlowNodeModel && this.props.node.onClick) {
+            this.props.node.onClick(this.props.node);
+          }
+        }}
         width={this.props.width}
         height={this.props.height}
         dangerouslySetInnerHTML={{
@@ -251,11 +193,6 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
         {this.renderDropZone(FlowNodePortModel.LEFT)}
         {this.renderDropZone(FlowNodePortModel.RIGHT)}
         {this.renderDropZone(FlowNodePortModel.BOTTOM)}
-        {/*{this.renderLeftPort()}*/}
-        {/*{this.renderTopPort()}*/}
-        {/*{this.renderRightPort()}*/}
-        {/*{this.renderBottomPort()}*/}
-        {/*{this.renderDropZone()}*/}
       </div>
     );
   }
