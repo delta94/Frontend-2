@@ -58,10 +58,10 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
   }
 
   getDropZoneTop(portName: string): number | null {
-    if (portName === FlowNodePortModel.TOP) return -1.1 * this.props.dropZoneHeight;
+    if (portName === FlowNodePortModel.TOP) return -1.1 * this.props.height;
     if (portName === FlowNodePortModel.LEFT) return (this.props.height - this.props.dropZoneHeight) / 2 - 1;
     if (portName === FlowNodePortModel.RIGHT) return (this.props.height - this.props.dropZoneHeight) / 2 - 1;
-    if (portName === FlowNodePortModel.BOTTOM) return +1.1 * this.props.dropZoneHeight;
+    if (portName === FlowNodePortModel.BOTTOM) return +1.1 * this.props.height;
     return null;
   }
 
@@ -181,7 +181,8 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
         style={{
           position: 'relative',
           width: this.props.width,
-          height: this.props.height
+          height: this.props.height,
+          cursor: 'pointer'
         }}
       >
         {this.renderIcon()}

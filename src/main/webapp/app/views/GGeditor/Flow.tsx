@@ -62,13 +62,14 @@ import {
   EventSourceStartNodeModel,
   EventWaitingDecisionNodeModel,
   FlowDiagramEditor,
+  GroupProcess,
   SmsProcessNodeModel,
   TimeWaitingDecisionNodeModel,
+  toNode,
   TrayItemWidget,
   TrayWidget
 } from './flow-diagram-editor';
 import { DiagramWidget } from 'storm-react-diagrams';
-import { toNode } from 'app/views/GGeditor/flow-diagram-editor/FlowNodeModel';
 
 const ButtonGroup = Button.Group;
 
@@ -125,35 +126,31 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     let { listDiagram } = this.props;
     this.editor = new FlowDiagramEditor();
     this.editor.lock();
-    console.log('componentWillMount');
-    console.log(listDiagram.nodes);
-    console.log(listDiagram.edges);
-    this.editor.load(listDiagram.nodes, listDiagram.edges);
-    this.editor.autoArrange();
-    this.editor.setOnDropEventHandler((node, port, data) => {
-      console.log('setOnDropEventHandler');
-      console.log(node);
-      console.log(port);
-      console.log(data);
-
-      // editor.insert(new SendEmailGroupProcess(data.type), port);
-      //editor.autoArrange();
-      // this.forceUpdate();
+    this.editor.setDiagramData({
+      nodes: listDiagram.nodes,
+      edges: listDiagram.edges
+    });
+    this.editor.autoArrange(false);
+    this.editor.setOnDropEventHandler(async (node, port, data) => {
+      // console.log('setOnDropEventHandler');
+      // console.log(node);
+      // console.log(port);
+      // console.log(data);
+      let groupProcess = GroupProcess.createGroupProcess(data.type);
+      if (groupProcess && port) {
+        await this.editor.add(groupProcess, port);
+        await this.editor.autoArrange(true);
+      }
+      //this.editor.getDiagramData();
     });
     this.editor.setOnAddClickEventHandler((node, port) => {
       console.log('setOnAddClickEventHandler');
       console.log(node);
       console.log(port);
     });
-    this.editor.setOnClickEventHandler(nodeModel => {
-      console.log('setOnClickEventHandler');
-      console.log(nodeModel);
-      console.log(toNode(nodeModel));
-
-      this.setState({ idNode: toNode(nodeModel) });
-      this.getVisible(true, '', '', true).then(() => {
-        console.log('setOnClickEventHandler:getVisible');
-      });
+    this.editor.setOnClickEventHandler(async nodeModel => {
+      await this.setState({ idNode: toNode(nodeModel) });
+      await this.getVisible(true, '', '', true);
     });
   }
 

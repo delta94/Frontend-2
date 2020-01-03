@@ -1,16 +1,5 @@
-import { DiagramEngine, DiagramModel, NodeModel, PortModel } from 'storm-react-diagrams';
-import {
-  createNodeModel,
-  DecisionNodeModel,
-  EmailProcessNodeModel,
-  EndNodeModel,
-  FlowNodeModel,
-  mapToPortPosition,
-  parseNode,
-  ProcessNodeModel,
-  SmsProcessNodeModel,
-  StartNodeModel
-} from './FlowNodeModel';
+import { DiagramEngine, DiagramModel, LinkModel, NodeModel, PortModel } from 'storm-react-diagrams';
+import { DecisionNodeModel, EndNodeModel, FlowNodeModel, ProcessNodeModel, SmsProcessNodeModel, StartNodeModel } from './FlowNodeModel';
 import { FlowNodePortModel } from './FlowNodePortModel';
 
 import { FlowNodePortFactory } from './FlowNodePortFactory';
@@ -24,9 +13,9 @@ import {
   SmsProcessNodeFactory,
   TimeWaitingDecisionNodeFactory
 } from './FlowNodeFactory';
-import { GroupProcess } from 'app/views/GGeditor/flow-diagram-editor/GroupProcess';
-import DEFAULT_DATA from 'app/views/GGeditor/flow-diagram-editor/data';
-const uuidv4 = require('uuid/v4');
+import { GroupProcess } from './GroupProcess';
+import DEFAULT_DATA from './data';
+import { mapToPortPosition, parseNode, toEdge, toNode } from './FlowDiagramUtil';
 
 const GRID_SIZE = {
   width: 160,
@@ -60,12 +49,76 @@ export class FlowDiagramEditor {
     this.diagramEngine.setDiagramModel(this.activeModel);
   }
 
+  private _locked: boolean = false;
   public lock() {
+    this._locked = true;
     this.activeModel.setLocked(true);
   }
 
   public unlock() {
+    this._locked = true;
     this.activeModel.setLocked(false);
+  }
+
+  get locked(): boolean {
+    return this._locked;
+  }
+
+  public getDiagramData() {
+    let data = {
+      nodes: [],
+      edges: []
+    };
+    let nodes = this.activeModel.getNodes();
+    for (let key in nodes) {
+      let node = nodes[key];
+      if (node && node instanceof FlowNodeModel) {
+        data.nodes.push(toNode(node));
+      }
+    }
+
+    let links = this.activeModel.getLinks();
+    for (let key in links) {
+      let link = links[key];
+      if (link && link instanceof LinkModel) {
+        data.edges.push(toEdge(link));
+      }
+    }
+
+    return data;
+  }
+
+  public setDiagramData(data: any) {
+    this.activeModel = new DiagramModel();
+    this.activeModel.setLocked(this.locked);
+    this.diagramEngine.setDiagramModel(this.activeModel);
+
+    for (let node of data.nodes ? data.nodes : DEFAULT_DATA.flow.graph.nodes) {
+      let nodeModel = parseNode(node);
+      if (nodeModel) {
+        if (nodeModel instanceof FlowNodeModel) {
+          nodeModel.onAddClick = this.onAddClickEventHandler;
+          nodeModel.onClick = this.onClickEventHandler;
+          nodeModel.onDrop = this.onDropEventHandler;
+        }
+        this.activeModel.addNode(nodeModel);
+      }
+    }
+
+    for (let edge of data.edges ? data.edges : DEFAULT_DATA.flow.graph.edges) {
+      let sourceNode = this.activeModel.getNode(edge.source);
+      let targetNode = this.activeModel.getNode(edge.target);
+      if (sourceNode instanceof FlowNodeModel && targetNode instanceof FlowNodeModel) {
+        let sourcePort = sourceNode.getOutPortOrDefault(mapToPortPosition(edge.sourceAnchor));
+        let targetPort = targetNode.getInPortOrDefault(mapToPortPosition(edge.targetAnchor));
+        if (sourceNode && targetPort && sourcePort.canLinkToPort(targetPort)) {
+          let link = sourcePort.createLinkModel();
+          link.setSourcePort(sourcePort);
+          link.setTargetPort(targetPort);
+          this.activeModel.addLink(link);
+        }
+      }
+    }
   }
 
   private static setDropZoneVisible(model: DiagramModel, dropZoneVisible: boolean) {
@@ -78,7 +131,7 @@ export class FlowDiagramEditor {
     }
   }
 
-  private static setOnDropEventHandler(model: DiagramModel, onDropEventHandler: any) {
+  private static setOnDropEventHandler(model: DiagramModel, onDropEventHandler: Function) {
     let nodes = model.getNodes();
     for (let key in nodes) {
       let node = nodes[key];
@@ -88,7 +141,7 @@ export class FlowDiagramEditor {
     }
   }
 
-  private static setOnClickEventHandler(model: DiagramModel, onClickEventHandler: any) {
+  private static setOnClickEventHandler(model: DiagramModel, onClickEventHandler: Function) {
     let nodes = model.getNodes();
     for (let key in nodes) {
       let node = nodes[key];
@@ -98,7 +151,7 @@ export class FlowDiagramEditor {
     }
   }
 
-  private static setOnAddClickEventHandler(model: DiagramModel, onAddClickEventHandler: any) {
+  private static setOnAddClickEventHandler(model: DiagramModel, onAddClickEventHandler: Function) {
     let nodes = model.getNodes();
     for (let key in nodes) {
       let node = nodes[key];
@@ -179,73 +232,51 @@ export class FlowDiagramEditor {
     FlowDiagramEditor.setDropZoneVisible(this.activeModel, dropZoneVisible);
   }
 
-  public setOnDropEventHandler(onDropEventHandler: any) {
+  onDropEventHandler: Function = null;
+  public setOnDropEventHandler(onDropEventHandler: Function) {
+    this.onDropEventHandler = onDropEventHandler;
     FlowDiagramEditor.setOnDropEventHandler(this.activeModel, onDropEventHandler);
   }
 
-  public setOnClickEventHandler(onClickEventHandler: any) {
+  onClickEventHandler: Function = null;
+  public setOnClickEventHandler(onClickEventHandler: Function) {
+    this.onClickEventHandler = onClickEventHandler;
     FlowDiagramEditor.setOnClickEventHandler(this.activeModel, onClickEventHandler);
   }
 
-  public setOnAddClickEventHandler(onAddClickEventHandler: any) {
+  onAddClickEventHandler: Function = null;
+  public setOnAddClickEventHandler(onAddClickEventHandler: Function) {
+    this.onAddClickEventHandler = onAddClickEventHandler;
     FlowDiagramEditor.setOnAddClickEventHandler(this.activeModel, onAddClickEventHandler);
-  }
-
-  public load(nodes: any, edges: any) {
-    for (let node of nodes ? nodes : DEFAULT_DATA.flow.graph.nodes) {
-      let nodeModel = parseNode(node);
-      if (nodeModel) {
-        this.activeModel.addNode(nodeModel);
-      }
-    }
-
-    for (let edge of edges ? edges : DEFAULT_DATA.flow.graph.edges) {
-      let sourceNode = this.activeModel.getNode(edge.source);
-      let targetNode = this.activeModel.getNode(edge.target);
-      if (sourceNode instanceof FlowNodeModel && targetNode instanceof FlowNodeModel) {
-        let sourcePort = sourceNode.getOutPortOrDefault(mapToPortPosition(edge.sourceAnchor));
-        let targetPort = targetNode.getInPortOrDefault(mapToPortPosition(edge.targetAnchor));
-        if (sourceNode && targetPort && sourcePort.canLinkToPort(targetPort)) {
-          let link = sourcePort.createLinkModel();
-          link.setSourcePort(sourcePort);
-          link.setTargetPort(targetPort);
-          this.activeModel.addLink(link);
-        }
-      }
-    }
   }
 
   public add(groupProcess: GroupProcess, position: PortModel) {
     if (groupProcess && groupProcess.isValid() && position) {
       for (let node of groupProcess.nodes) {
-        this.activeModel.addNode(node);
+        if (node) {
+          if (node instanceof FlowNodeModel) {
+            node.onAddClick = this.onAddClickEventHandler;
+            node.onClick = this.onClickEventHandler;
+            node.onDrop = this.onDropEventHandler;
+          }
+          this.activeModel.addNode(node);
+        }
       }
 
       for (let link of groupProcess.links) {
         this.activeModel.addLink(link);
       }
 
-      // //swap input
-      // let inLinks = connectedPort.getLinks();
-      // for (let key in inLinks) {
-      //   let inLink = inLinks[key];
-      //   let sourcePort = inLink.getSourcePort();
-      //   let newInLink = sourcePort.createLinkModel();
-      //   newInLink.setSourcePort(sourcePort);
-      //   newInLink.setTargetPort(inPort);
-      //
-      //   this.activeModel.removeLink(inLink);
-      //   this.activeModel.addLink(newInLink);
-      // }
-      // // swap output
-      //
-      // for (let outPort of outPorts) {
-      //   console.log(outPort);
-      //   let outLink = outPort.createLinkModel();
-      //   outLink.setSourcePort(outPort);
-      //   outLink.setTargetPort(connectedPort);
-      //   this.activeModel.addLink(outLink);
-      // }
+      let outLinks = position.getLinks();
+      for (let key in outLinks) {
+        let outLink = outLinks[key];
+        outLink.setSourcePort(groupProcess.outPort);
+      }
+
+      let inLink = position.createLinkModel();
+      inLink.setSourcePort(position);
+      inLink.setTargetPort(groupProcess.inPort);
+      this.activeModel.addLink(inLink);
     }
   }
 
@@ -257,7 +288,10 @@ export class FlowDiagramEditor {
     return this.diagramEngine;
   }
 
-  public autoArrange() {
+  public autoArrange(rebuild: boolean) {
+    if (rebuild) {
+      this.setDiagramData(this.getDiagramData());
+    }
     FlowDiagramEditor.arrangeFromNode(FlowDiagramEditor.getStartNode(this.activeModel), null, 100, 100);
   }
 }

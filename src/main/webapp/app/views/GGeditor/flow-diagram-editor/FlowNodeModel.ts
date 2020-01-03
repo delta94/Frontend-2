@@ -1,7 +1,6 @@
 import { NodeModel, PortModel } from 'storm-react-diagrams';
 import { FlowNodePortModel } from './FlowNodePortModel';
 import { FlowNodeConfig } from './FlowNodeConfig';
-const uuidv4 = require('uuid/v4');
 export class FlowNodeModel extends NodeModel {
   static TYPE: string = 'default';
 
@@ -29,33 +28,33 @@ export class FlowNodeModel extends NodeModel {
     this._dropZoneVisible = value;
   }
 
-  private _onDrop: any = null;
+  private _onDrop: Function = null;
 
-  get onDrop(): any {
+  get onDrop(): Function {
     return this._onDrop;
   }
 
-  set onDrop(value: any) {
+  set onDrop(value: Function) {
     this._onDrop = value;
   }
 
-  private _onClick: any = null;
+  private _onClick: Function = null;
 
-  get onClick(): any {
+  get onClick(): Function {
     return this._onClick;
   }
 
-  set onClick(value: any) {
+  set onClick(value: Function) {
     this._onClick = value;
   }
 
-  private _onAddClick: any = null;
+  private _onAddClick: Function = null;
 
-  get onAddClick(): any {
+  get onAddClick(): Function {
     return this._onAddClick;
   }
 
-  set onAddClick(value: any) {
+  set onAddClick(value: Function) {
     this._onAddClick = value;
   }
 
@@ -447,68 +446,4 @@ export class ConditionDecisionNodeModel extends DecisionNodeModel {
   constructor(id?: string) {
     super(ConditionDecisionNodeModel.TYPE, id);
   }
-}
-
-export function createNodeModel(code: string, id: string): FlowNodeModel | null {
-  let uuid = id && id !== '' ? id : uuidv4();
-  if (code === 'SOURCE' || code === ContactSourceStartNodeModel.TYPE) return new ContactSourceStartNodeModel(uuid);
-  if (code === 'SEND_MAIL' || code === EmailProcessNodeModel.TYPE) return new EmailProcessNodeModel(uuid);
-  if (code === 'SEND_SMS' || code === SmsProcessNodeModel.TYPE) return new SmsProcessNodeModel(uuid);
-  if (code === 'TIMER' || code === TimeWaitingDecisionNodeModel.TYPE) return new TimeWaitingDecisionNodeModel(uuid);
-  if (code === 'TIMER_EVENT' || code === EventWaitingDecisionNodeModel.TYPE) return new EventWaitingDecisionNodeModel(uuid);
-  if (code === 'GATEWAY' || code === ConditionDecisionNodeModel.TYPE) return new ConditionDecisionNodeModel(uuid);
-  if (code === 'DES' || code === EndNodeModel.TYPE) return new EndNodeModel(uuid);
-  return null;
-}
-
-export function parseNode(node: any): FlowNodeModel | null {
-  let nodeModel = createNodeModel(node.code, node.id);
-  if (nodeModel) {
-    nodeModel.setPosition(node.x ? node.x : 0, node.y ? node.y : 0);
-  }
-  return nodeModel;
-}
-
-function getNodeCode(type: string) {
-  switch (type) {
-    case ContactSourceStartNodeModel.TYPE:
-      return 'SOURCE';
-    case EmailProcessNodeModel.TYPE:
-      return 'SEND_MAIL';
-    case SmsProcessNodeModel.TYPE:
-      return 'SEND_SMS';
-    case TimeWaitingDecisionNodeModel.TYPE:
-      return 'TIMER';
-    case EventWaitingDecisionNodeModel.TYPE:
-      return 'TIMER_EVENT';
-    case ConditionDecisionNodeModel.TYPE:
-      return 'GATEWAY';
-    case EndNodeModel.TYPE:
-      return 'DES';
-    default:
-      return '';
-  }
-}
-
-export function toNode(nodeModel: FlowNodeModel): any | null {
-  if (nodeModel) {
-    return {
-      type: 'node',
-      label: '',
-      code: getNodeCode(nodeModel.getType()),
-      value: '',
-      id: nodeModel.getID(),
-      x: nodeModel.x,
-      y: nodeModel.y
-    };
-  }
-  return null;
-}
-
-export function mapToPortPosition(pos: any): string | null {
-  if (pos === FlowNodePortModel.TOP || pos === 0 || pos === '0') return FlowNodePortModel.TOP;
-  if (pos === FlowNodePortModel.BOTTOM || pos === 1 || pos === '1') return FlowNodePortModel.BOTTOM;
-  if (pos === FlowNodePortModel.LEFT || pos === 2 || pos === '2') return FlowNodePortModel.LEFT;
-  if (pos === FlowNodePortModel.RIGHT || pos === 3 || pos === '3') return FlowNodePortModel.RIGHT;
-  return null;
 }
