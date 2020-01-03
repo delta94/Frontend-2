@@ -52,6 +52,7 @@ export interface ICampaginAutoState {
   };
   hover: boolean;
   idTree: string;
+  activePage: number;
 }
 
 class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoState> {
@@ -64,7 +65,8 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
       idVersion: '',
       cjId: '',
       status: ''
-    }
+    },
+    activePage: 0
   };
 
   componentDidMount = async () => {
@@ -231,6 +233,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
 
   setPageIndex = pageIndex => {
     const { getListCampaginAuto } = this.props;
+    this.setState({ activePage: parseInt(pageIndex) });
     getListCampaginAuto('', parseInt(pageIndex), 5);
   };
 
@@ -321,7 +324,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
               <label className="total-campaign-table">{getStatusCampaign.total} chiến dịch</label>
               <Table responsive striped className="main-table">
                 <thead>
-                  <th style={{ width: '4%' }} />
+                  <th style={{ width: '4%' }}>STT</th>
                   <th style={{ width: '25%' }}>Chiến dịch</th>
                   <th>Trạng thái</th>
                   <th style={{ width: '25%' }}>Kết quả</th>
@@ -332,9 +335,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
                     ? list_campaign_auto.map((event, index) => {
                         return (
                           <tr key={index}>
-                            <td>
-                              <Checkbox />
-                            </td>
+                            <td>{this.state.activePage * 5 + index + 1}</td>
                             <td className="table-content">
                               <a
                                 style={{ marginLeft: '5%' }}
@@ -367,13 +368,13 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
               <br />
               <div className="navigation1">
                 {getStatusCampaign.total && parseInt(getStatusCampaign.total) >= 4 ? (
-                  <Row className="justify-content-center" style={{ float: 'right' }}>
+                  <Row className="justify-content-center" style={{ float: 'right', marginRight: '1%' }}>
                     <ReactPaginate
                       previousLabel={'<'}
                       nextLabel={'>'}
                       breakLabel={'...'}
                       breakClassName={'break-me'}
-                      pageCount={Math.ceil(parseInt(getStatusCampaign.total) / 10)}
+                      pageCount={Math.ceil(parseInt(getStatusCampaign.total) / 5)}
                       marginPagesDisplayed={2}
                       pageRangeDisplayed={5}
                       onPageChange={event => this.setPageIndex(event.selected)}

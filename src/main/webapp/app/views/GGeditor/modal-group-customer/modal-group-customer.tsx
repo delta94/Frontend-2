@@ -31,8 +31,6 @@ import { OPERATOR } from 'app/constants/field-data';
 import { IOpenModal } from 'app/reducers/modal';
 import { ERROR } from 'app/constants/common';
 
-const { MonthPicker, RangePicker } = DatePicker;
-
 interface IGroupModalConfigProps extends StateProps, DispatchProps {
   is_show: boolean;
   toggle: Function;
@@ -374,7 +372,8 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
       totalElements,
       type_modal,
       info_version,
-      listFieldData
+      listFieldData,
+      openModal
     } = this.props;
     let { list_field_data_cpn, logicalOperator, advancedSearches, categoryName, pageIndex } = this.state;
     let list_field_render =
@@ -435,7 +434,18 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
             key="back"
             color="primary"
             disabled={advancedSearches && categoryName && categoryName.trim() !== '' ? false : true}
-            onClick={() => this.execFunctionRequest()}
+            onClick={() => {
+              if (totalElements > 0) {
+                this.execFunctionRequest();
+              } else {
+                openModal({
+                  show: true,
+                  type: 'error',
+                  title: translate('modal-data.title.error'),
+                  text: 'Vui lòng chọn lại danh sách khác hàng'
+                });
+              }
+            }}
           >
             <Translate contentKey="group-attribute-customer.save" />
           </Button>
