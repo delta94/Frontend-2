@@ -127,7 +127,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     console.log('componentWillMount');
     console.log(listDiagram.nodes);
     console.log(listDiagram.edges);
-    this.editor.init(listDiagram.nodes, listDiagram.edges);
+    this.editor.load(listDiagram.nodes, listDiagram.edges);
     this.editor.autoArrange();
     this.editor.setOnDropEventHandler((port, data) => {
       console.log('setOnDropEventHandler');

@@ -1,7 +1,7 @@
 import { NodeModel, PortModel } from 'storm-react-diagrams';
 import { FlowNodePortModel } from './FlowNodePortModel';
 import { FlowNodeConfig } from './FlowNodeConfig';
-
+const uuidv4 = require('uuid/v4');
 export class FlowNodeModel extends NodeModel {
   static TYPE: string = 'default';
 
@@ -430,13 +430,14 @@ export class ConditionDecisionNodeModel extends DecisionNodeModel {
 }
 
 export function createNodeModel(code: string, id: string): FlowNodeModel | null {
-  if (code === 'SOURCE' || code === ContactSourceStartNodeModel.TYPE) return new ContactSourceStartNodeModel(id);
-  if (code === 'SEND_MAIL' || code === EmailProcessNodeModel.TYPE) return new EmailProcessNodeModel(id);
-  if (code === 'SEND_SMS' || code === SmsProcessNodeModel.TYPE) return new SmsProcessNodeModel(id);
-  if (code === 'TIMER' || code === TimeWaitingDecisionNodeModel.TYPE) return new TimeWaitingDecisionNodeModel(id);
-  if (code === 'TIMER_EVENT' || code === EventWaitingDecisionNodeModel.TYPE) return new EventWaitingDecisionNodeModel(id);
-  if (code === 'GATEWAY' || code === ConditionDecisionNodeModel.TYPE) return new ConditionDecisionNodeModel(id);
-  if (code === 'DES' || code === EndNodeModel.TYPE) return new EndNodeModel(id);
+  let uuid = id && id !== '' ? id : uuidv4();
+  if (code === 'SOURCE' || code === ContactSourceStartNodeModel.TYPE) return new ContactSourceStartNodeModel(uuid);
+  if (code === 'SEND_MAIL' || code === EmailProcessNodeModel.TYPE) return new EmailProcessNodeModel(uuid);
+  if (code === 'SEND_SMS' || code === SmsProcessNodeModel.TYPE) return new SmsProcessNodeModel(uuid);
+  if (code === 'TIMER' || code === TimeWaitingDecisionNodeModel.TYPE) return new TimeWaitingDecisionNodeModel(uuid);
+  if (code === 'TIMER_EVENT' || code === EventWaitingDecisionNodeModel.TYPE) return new EventWaitingDecisionNodeModel(uuid);
+  if (code === 'GATEWAY' || code === ConditionDecisionNodeModel.TYPE) return new ConditionDecisionNodeModel(uuid);
+  if (code === 'DES' || code === EndNodeModel.TYPE) return new EndNodeModel(uuid);
   return null;
 }
 

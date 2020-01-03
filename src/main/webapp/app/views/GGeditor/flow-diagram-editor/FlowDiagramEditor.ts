@@ -163,7 +163,7 @@ export class FlowDiagramEditor {
     FlowDiagramEditor.setOnDropEventHandler(this.activeModel, onDropEventHandler);
   }
 
-  public init(nodes: any, edges: any) {
+  public load(nodes: any, edges: any) {
     for (let node of nodes ? nodes : DEFAULT_DATA.flow.graph.nodes) {
       let nodeModel = parseNode(node);
       if (nodeModel) {
@@ -187,7 +187,7 @@ export class FlowDiagramEditor {
     }
   }
 
-  public insert(groupProcess: GroupProcess, position: PortModel) {
+  public add(groupProcess: GroupProcess, position: PortModel) {
     if (groupProcess && groupProcess.isValid() && position) {
       for (let node of groupProcess.nodes) {
         this.activeModel.addNode(node);

@@ -5,6 +5,7 @@ import { FlowNodeModel } from '../FlowNodeModel';
 import { FlowNodePortModel } from '../FlowNodePortModel';
 
 const DefaultIcon = require('../icons/default.png');
+const AddIcon = require('../icons/add.png');
 
 export interface FlowNodeWidgetProps {
   width: number;
@@ -30,8 +31,8 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
     title: '',
     node: null,
     portVisible: true,
-    dropZoneWidth: 64,
-    dropZoneHeight: 64,
+    dropZoneWidth: 48,
+    dropZoneHeight: 48,
     dropZoneVisible: false
   };
 
@@ -58,16 +59,16 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
 
   getDropZoneTop(portName: string): number | null {
     if (portName === FlowNodePortModel.TOP) return -1.1 * this.props.dropZoneHeight;
-    if (portName === FlowNodePortModel.LEFT) return (this.props.height - this.props.dropZoneHeight) / 2;
-    if (portName === FlowNodePortModel.RIGHT) return (this.props.height - this.props.dropZoneHeight) / 2;
+    if (portName === FlowNodePortModel.LEFT) return (this.props.height - this.props.dropZoneHeight) / 2 - 1;
+    if (portName === FlowNodePortModel.RIGHT) return (this.props.height - this.props.dropZoneHeight) / 2 - 1;
     if (portName === FlowNodePortModel.BOTTOM) return +1.1 * this.props.dropZoneHeight;
     return null;
   }
 
   getDropZoneLeft(portName: string): number | null {
     if (portName === FlowNodePortModel.TOP) return (this.props.width - this.props.dropZoneWidth) / 2;
-    if (portName === FlowNodePortModel.LEFT) return -1.1 * this.props.dropZoneWidth;
-    if (portName === FlowNodePortModel.RIGHT) return +1.1 * this.props.dropZoneWidth;
+    if (portName === FlowNodePortModel.LEFT) return -1.1 * this.props.width;
+    if (portName === FlowNodePortModel.RIGHT) return +1.1 * this.props.width;
     if (portName === FlowNodePortModel.BOTTOM) return (this.props.width - this.props.dropZoneWidth) / 2;
     return null;
   }
@@ -158,7 +159,7 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
   // }
 
   renderDropZone(portName: string) {
-    if (this.props.dropZoneVisible && this.props.node && this.props.node instanceof FlowNodeModel && this.props.node.dropZoneVisible) {
+    if (this.props.dropZoneVisible && this.props.node && this.props.node instanceof FlowNodeModel) {
       let port = this.props.node.getOutPort(portName);
       if (port) {
         return (
@@ -174,14 +175,19 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
               zIndex: 10,
               borderWidth: 2,
               borderRadius: 6,
-              borderColor: '#D1D2DE',
+              borderColor: this.props.node.dropZoneVisible ? '#D1D2DE' : 'transparent',
               borderStyle: 'dashed',
               top: this.getDropZoneTop(portName),
               left: this.getDropZoneLeft(portName),
               width: this.props.dropZoneWidth,
-              height: this.props.dropZoneHeight
+              height: this.props.dropZoneHeight,
+              backgroundImage: `url(${AddIcon})`,
+              backgroundRepeat: 'no-repeat',
+              backgroundSize: 'cover'
             }}
-          ></div>
+          >
+            {' '}
+          </div>
         );
       }
     }
