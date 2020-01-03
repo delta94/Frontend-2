@@ -63,7 +63,7 @@ const code_node = {
 class CampaignList extends React.Component<ICampaignListProps, ICampaignListState> {
   state: ICampaignListState = {
     activePage: 0,
-    itemsPerPage: 4,
+    itemsPerPage: 7,
     textSearch: '',
     strTagId: '',
     openModalCjTag: false,
@@ -371,7 +371,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
     let { campaign_list, total, loading } = this.props;
     let { textSearch, strTagId, activePage, itemsPerPage, openModalCjTag, cjEdit, list_camp } = this.state;
     let folderId = this.props.folder_id_choose;
-    let totalPages = Math.ceil(total / 4);
+    let totalPages = Math.ceil(total / 7);
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
     const img_tag = require('app/assets/utils/images/campaign-managament/tag-list.png');
     const getStatusName = (status: string) => {
