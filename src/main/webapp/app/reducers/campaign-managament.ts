@@ -70,8 +70,7 @@ const initialCampaignManagament = {
   countCustomerVersionProcess: 0,
   listCustomerInteractive: [] as IListCustomerInteractive[],
   listTemplateCampaign: [] as IListTemplateCampaign[],
-  idActive: {} as ISaveCampaign,
-  clone_version_by_id: {} as IListCloneVersion
+  idActive: {} as ISaveCampaign
 };
 
 export type HandleCampaignManagament = typeof initialCampaignManagament;
@@ -110,7 +109,7 @@ export default (state = initialCampaignManagament, action) => {
       return {
         ...state,
         loading: false,
-        clone_version_by_id: action.payload.data
+        cloneInfoVersion: action.payload.data
       };
 
     case SUCCESS(CAMPAIGN_MANAGAMENT.SAVE_CAMPAIGN_AUTO):

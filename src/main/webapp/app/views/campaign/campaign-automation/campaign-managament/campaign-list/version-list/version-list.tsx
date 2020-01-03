@@ -15,7 +15,8 @@ import {
   deleteVersion,
   stopVersion,
   getDiagramCampaign,
-  getListCustomerVersionProcess
+  getListCustomerVersionProcess,
+  cloneVersionById
 } from 'app/actions/campaign-managament';
 import './version-list.scss';
 import { Container, Card, Table } from 'reactstrap';
@@ -122,22 +123,44 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
   };
 
   createVersion = async () => {
-    const { saveCampaignAutoVersion, getDiagramCampaign } = this.props;
+    const { saveCampaignAutoVersion, getDiagramCampaign, cloneVersionById } = this.props;
     const { infoVersion, listVersion } = this.state;
     let isHaveDraf = false;
+    let idDraft: string = '';
     listVersion.map(item => {
       if (item.status === constant_version.DRAFT) {
         isHaveDraf = true;
+        idDraft = item.id;
       }
     });
+    let idVersionlast: string = '';
+    let versionLast: number = 0;
+    listVersion.map(item => {
+      if (item.status != constant_version.DRAFT) {
+        if (item.version > versionLast) {
+          versionLast = item.version;
+          idVersionlast = item.id;
+        }
+      }
+    });
+
     if (isHaveDraf) {
-      Modal.warning({
+      Modal.confirm({
         title: 'THÔNG BÁO',
-        content: 'Chiến dịch đã có bản nháp, không thể tạo version mới ',
-        okText: 'Đồng ý'
+        content: 'Chiến dịch đã có bản nháp, không thể tạo version mới, bạn có muốn tiếp tục chỉnh sửa bản nháp hiện tại ? ',
+        onCancel: () => {},
+        onOk: async () => {
+          await cloneVersionById(idDraft);
+          await this.cloneVersion('flow');
+          await saveCampaignAutoVersion(infoVersion);
+          window.location.assign('#/flow');
+        },
+        okText: 'Đồng ý',
+        cancelText: 'Hủy bỏ'
       });
     } else {
-      await getDiagramCampaign([]);
+      await cloneVersionById(idVersionlast);
+      await this.cloneVersion('flow');
       await saveCampaignAutoVersion(infoVersion);
       window.location.assign('/#/flow');
     }
@@ -613,7 +636,8 @@ const mapDispatchToProps = {
   stopVersion,
   cloneVersion,
   getDiagramCampaign,
-  getListCustomerVersionProcess
+  getListCustomerVersionProcess,
+  cloneVersionById
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
