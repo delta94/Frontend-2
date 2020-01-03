@@ -155,7 +155,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
   getCjs = () => {
     let { activePage, itemsPerPage, id } = this.state;
     let folderId = this.props.folder_id_choose;
-    this.getListCampaignInfolderDataAction(folderId, '', '', activePage, itemsPerPage);
+    this.getListCampaignInfolderDataAction(folderId ? folderId : '-99', '', '', activePage, itemsPerPage);
   };
 
   getCjsCallBack = folderId => {
@@ -529,7 +529,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                           <span> {item.modifiedDate}</span>
                         </td>
                         <td colSpan={15}>
-                          <CJTagPopOver key={item.cjVersionId} dataPopup={item} getCjs={this.getCjsCallBack} />
+                          <CJTagPopOver key={item.cjVersionId} dataPopup={item} getCjs={this.getCjs} />
                           {/* <Icon onClick={() => this.openModalCjTag(item.id)} style={{ fontSize: '24px' }} type="tags" />  */}
                           {/* <PopverAnt
                             overlayClassName="pop-tag"

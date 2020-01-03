@@ -34,7 +34,7 @@ class CJTagListModal extends React.Component<ICjTagListModalProps, ICjTagListMod
       content: 'Bạn thực sự muốn xóa ?',
       onOk: async () => {
         await deleteCjTagAction(cjTag.id);
-        await getCjTagsAction();
+        //await getCjTagsAction();
         await refreshListCjTag();
         closeModalCjTag();
       },
