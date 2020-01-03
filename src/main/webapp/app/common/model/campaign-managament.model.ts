@@ -133,6 +133,7 @@ export interface IListCampaignAuto {
   status: string;
   contactNumbers: number;
   modifiedDate: string;
+  contactCompleted: number;
 }
 
 export interface IListCustomerVersionProcess {

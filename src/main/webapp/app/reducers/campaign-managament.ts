@@ -151,7 +151,7 @@ export default (state = initialCampaignManagament, action) => {
       return {
         ...state,
         loading: false,
-        listCampaignAuto: action.payload.data
+        listCampaignAuto: action.payload.data.data
       };
 
     case SUCCESS(CAMPAIGN_MANAGAMENT.COUNT_CAMPAIGN):
