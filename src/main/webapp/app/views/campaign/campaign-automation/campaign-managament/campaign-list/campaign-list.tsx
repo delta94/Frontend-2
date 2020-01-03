@@ -357,6 +357,16 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
     return result;
   };
 
+  countContact = (contactCompleted, allContact) => {
+    let result: number = 0;
+    if (allContact === 0) {
+      return result;
+    } else {
+      result = (contactCompleted / allContact) * 100;
+    }
+    return result;
+  };
+
   render() {
     let { campaign_list, total, loading } = this.props;
     let { textSearch, strTagId, activePage, itemsPerPage, openModalCjTag, cjEdit, list_camp } = this.state;
@@ -509,7 +519,11 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                           {getStatusName(item.status)}
                         </td>
                         <td colSpan={15}>
-                          <Progress status="active" percent={10} format={percent => `${percent}/${item.contactNumbers} contact`} />
+                          <Progress
+                            status="active"
+                            percent={this.countContact(item.contactCompleted, item.contactNumbers)}
+                            format={percent => `${item.contactCompleted}/${item.contactNumbers} contact`}
+                          />
                         </td>
                         <td colSpan={15} id="modifier-date">
                           <span> {item.modifiedDate}</span>
