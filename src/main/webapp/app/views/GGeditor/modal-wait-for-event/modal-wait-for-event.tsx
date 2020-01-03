@@ -268,7 +268,4 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ModalWaitForEvent);
+export default connect(mapStateToProps, mapDispatchToProps)(ModalWaitForEvent);

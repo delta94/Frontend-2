@@ -25,7 +25,12 @@ $app-header-logo-bg: rgba(255, 255, 255, .9);
 
   .app-footer .app-footer__inner,
   .app-header {
-    background: $app-header-bg;
+    background: linear-gradient(90deg, #234FC0 14.55%, #416DDD 89.17%);
+  }
+
+  .widget-heading,
+  .widget-subheading {
+    color: #FFFFFF;
   }
 
   &.fixed-header {

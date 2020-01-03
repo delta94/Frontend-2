@@ -147,7 +147,11 @@ class CustomNode extends React.Component {
         return keyShape;
       },
 
-      anchor: [[0.5, 1], [0, 0.5], [1, 0.5]]
+      anchor: [
+        [0.5, 1],
+        [0, 0.5],
+        [1, 0.5]
+      ]
     };
 
     return (

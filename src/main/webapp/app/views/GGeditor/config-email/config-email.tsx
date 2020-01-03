@@ -385,7 +385,4 @@ const mapDispatchToProps = {
   validateCampaign
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ConfigEmail);
+export default connect(mapStateToProps, mapDispatchToProps)(ConfigEmail);

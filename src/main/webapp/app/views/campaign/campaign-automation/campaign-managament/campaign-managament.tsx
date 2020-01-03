@@ -77,7 +77,4 @@ const mapDispatchToProps = { openModal, closeModal, getTreeFolder, insertTreeFol
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CampaginManagament);
+export default connect(mapStateToProps, mapDispatchToProps)(CampaginManagament);

@@ -1,6 +1,22 @@
 import React, { Fragment } from 'react';
-import GGEditor, { Flow } from 'gg-editor';
-import { Row, Col, Popover, Button, Layout, Breadcrumb, Icon, Modal as ModalAntd, notification } from 'antd';
+import GGEditor, { Flow, Item, ItemPanel } from 'gg-editor';
+import {
+  Row,
+  Col,
+  Popover,
+  Button,
+  Layout,
+  Breadcrumb,
+  Icon,
+  Modal as ModalAntd,
+  notification,
+  Checkbox,
+  Select,
+  Input,
+  Collapse
+} from 'antd';
+const { Sider } = Layout;
+const { Panel } = Collapse;
 import CustomNode from './node/node';
 import CustomEdges from './egdes/egdes';
 import SweetAlert from 'sweetalert-react';
@@ -36,6 +52,24 @@ import ModalWaitForEvent from './modal-wait-for-event/modal-wait-for-event';
 import ModalTimeWait from './modal-wait/modal-wait';
 import SiderValidate from './sider/sider-validate';
 import ModalGateWay from './modal-gateway/modal-gateway';
+
+import './flow-diagram-editor/index.scss';
+import {
+  ConditionDecisionNodeModel,
+  ContactSourceStartNodeModel,
+  EmailProcessNodeModel,
+  EndNodeModel,
+  EventSourceStartNodeModel,
+  EventWaitingDecisionNodeModel,
+  FlowDiagramEditor,
+  GroupProcess,
+  SmsProcessNodeModel,
+  TimeWaitingDecisionNodeModel,
+  toNode,
+  TrayItemWidget,
+  TrayWidget
+} from './flow-diagram-editor';
+import { DiagramWidget } from 'storm-react-diagrams';
 
 const ButtonGroup = Button.Group;
 
@@ -86,6 +120,39 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     timeStartCampaign: '',
     nameGroup: ''
   };
+  editor: FlowDiagramEditor;
+
+  componentWillMount() {
+    let { listDiagram } = this.props;
+    this.editor = new FlowDiagramEditor();
+    this.editor.lock();
+    this.editor.setDiagramData({
+      nodes: listDiagram.nodes,
+      edges: listDiagram.edges
+    });
+    this.editor.autoArrange(false);
+    this.editor.setOnDropEventHandler(async (node, port, data) => {
+      // console.log('setOnDropEventHandler');
+      // console.log(node);
+      // console.log(port);
+      // console.log(data);
+      let groupProcess = GroupProcess.createGroupProcess(data.type);
+      if (groupProcess && port) {
+        await this.editor.add(groupProcess, port);
+        await this.editor.autoArrange(true);
+      }
+      //this.editor.getDiagramData();
+    });
+    this.editor.setOnAddClickEventHandler((node, port) => {
+      console.log('setOnAddClickEventHandler');
+      console.log(node);
+      console.log(port);
+    });
+    this.editor.setOnClickEventHandler(async nodeModel => {
+      await this.setState({ idNode: toNode(nodeModel) });
+      await this.getVisible(true, '', '', true);
+    });
+  }
 
   componentDidMount() {
     let { listDiagram, getDiagramCampaign } = this.props;
@@ -94,6 +161,16 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       getDiagramCampaign([]);
     }
   }
+
+  handleOnDragStart = async event => {
+    this.editor.setDropZoneVisible(true);
+    this.forceUpdate();
+  };
+
+  handleOnDragEnd = async event => {
+    this.editor.setDropZoneVisible(false);
+    this.forceUpdate();
+  };
 
   //handler Popup send email
   confirmEmail = async () => {
@@ -662,6 +739,213 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     }
   };
 
+  renderTrayItemWidget(type: string) {
+    return <TrayItemWidget model={{ type: type }} onDragStart={this.handleOnDragStart} onDragEnd={this.handleOnDragEnd} />;
+  }
+
+  renderTrayWidget() {
+    let { collapsed } = this.state;
+    return (
+      <Sider width={370} collapsed={collapsed}>
+        <div className="header-sider">
+          <label className="tool-bar" style={{ display: collapsed ? 'none' : 'contents' }}>
+            CÔNG CỤ
+          </label>
+          {collapsed ? (
+            <Icon
+              type="double-right"
+              onClick={() => {
+                this.setState({ collapsed: !collapsed });
+              }}
+            />
+          ) : (
+            <Icon
+              type="double-left"
+              onClick={() => {
+                this.setState({ collapsed: !collapsed });
+              }}
+              className="icon-collapse"
+            />
+          )}
+        </div>
+        <hr />
+        <div className="logo" style={{ display: collapsed ? 'none' : 'block' }}>
+          <Fragment>
+            <Collapse bordered={false} defaultActiveKey={['1']} expandIconPosition="right">
+              <Panel header="Nguồn dữ liệu" key="1">
+                <Row className="row">
+                  <Col span={8}>
+                    {this.renderTrayItemWidget(ContactSourceStartNodeModel.TYPE)}
+                    <label>Khách hàng</label>
+                  </Col>
+                  <Col span={8}>
+                    {this.renderTrayItemWidget(EventSourceStartNodeModel.TYPE)}
+                    <label>Sự kiện</label>
+                  </Col>
+                </Row>
+              </Panel>
+            </Collapse>
+            <Collapse bordered={false} defaultActiveKey={['2']} expandIconPosition="right">
+              <Panel header="Messages" key="2">
+                <Row className="row">
+                  <Col span={8}>
+                    {this.renderTrayItemWidget(SmsProcessNodeModel.TYPE)}
+                    <label>Gửi tin nhắn</label>
+                  </Col>
+                  <Col span={8}>
+                    {this.renderTrayItemWidget(EmailProcessNodeModel.TYPE)}
+                    <label>Gửi Email</label>
+                  </Col>
+                </Row>
+              </Panel>
+            </Collapse>
+            <Collapse bordered={false} defaultActiveKey={['3']} expandIconPosition="right">
+              <Panel header="Điều kiện" key="3">
+                <Row className="row">
+                  <Col span={8}>
+                    {this.renderTrayItemWidget(ConditionDecisionNodeModel.TYPE)}
+                    <label>Rẻ nhánh điều kiện</label>
+                  </Col>
+
+                  <Col span={8}>
+                    {this.renderTrayItemWidget(TimeWaitingDecisionNodeModel.TYPE)}
+                    <label>Chờ</label>
+                  </Col>
+                  <Col span={8}>
+                    {this.renderTrayItemWidget(EventWaitingDecisionNodeModel.TYPE)}
+                    <label>Chờ sự kiện</label>
+                  </Col>
+                </Row>
+              </Panel>
+            </Collapse>
+            {/* // </Sider> */}
+          </Fragment>
+        </div>
+      </Sider>
+    );
+  }
+
+  renderFlowDiagram() {
+    let { isOpenModalInfo, idNode, isTest, isOpenModalMessage, isOpenModalWaitForEvent, isOpenModalWait, data, isValidate } = this.state;
+    let { infoCampaign, listDiagram, infoVersion, id_active, modalState } = this.props;
+    const imgSetting = require('app/assets/utils/images/flow/setting.png');
+    const imgAward = require('app/assets/utils/images/flow/award.png');
+    const imgMove = require('app/assets/utils/images/flow/move.png');
+
+    return (
+      <div className="editor">
+        <Layout className="layout-flow">
+          {isTest ? <SiderTest /> : isValidate ? <SiderValidate /> : this.renderTrayWidget()}
+          <Layout style={{ maxWidth: '80.8%', height: '100%' }}>
+            <Header className="header-flow">
+              <Row>
+                <Col span={24} className="titleContent">
+                  <Row>
+                    <Breadcrumb separator=">">
+                      <Breadcrumb.Item>
+                        <a onClick={() => window.location.assign('/#/app/views/customers/user-management')} href="javascript:void(0);">
+                          <FontAwesomeIcon icon={faHome} />
+                        </a>
+                      </Breadcrumb.Item>
+                      <Breadcrumb.Item>
+                        <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-auto')} href="javascript:void(0);">
+                          Chiến dịch tự động
+                        </a>
+                      </Breadcrumb.Item>
+                      <Breadcrumb.Item>
+                        <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-managament')} href="javascript:void(0);">
+                          Danh sách chiến dịch
+                        </a>
+                      </Breadcrumb.Item>
+                      <Breadcrumb.Item>
+                        <a
+                          onClick={() => window.location.assign('/#/app/views/campaigns/campaign-managament/new')}
+                          href="javascript:void(0);"
+                        >
+                          Tạo chiến dịch
+                        </a>
+                      </Breadcrumb.Item>
+                      <label className="ant-breadcrumb-link">
+                        {infoCampaign.name ? infoCampaign.name : infoVersion.nameVersion ? infoVersion.nameVersion : 'Tạo chiến dịch mới'}
+                      </label>
+                      <Button type="link" id="config-name" onClick={this.showModalInfoCampaign}>
+                        <FontAwesomeIcon icon={faUserEdit} />
+                      </Button>
+                    </Breadcrumb>
+                  </Row>
+                </Col>
+              </Row>
+            </Header>
+            <Row type="flex" className="editorHd">
+              <Col span={24} style={{ borderBottom: '0.25px solid', padding: '1%' }}>
+                <Col span={4}>
+                  <label>Phiên bản: {this.props.list_clone_version.status ? this.props.list_clone_version.version : '1.0'}</label>
+                </Col>
+                <Col span={8}>
+                  <label>Trạng Thái : {this.props.list_clone_version.status ? this.props.list_clone_version.status : 'Bản nháp'}</label>
+                </Col>
+                <Col span={4}>
+                  <img src={imgMove} /> &nbsp;
+                  <Popover
+                    content={this.contentSetting()}
+                    visible={this.state.isOpen}
+                    placement="bottom"
+                    onVisibleChange={this.handleVisibleChange}
+                    title=""
+                    trigger="click"
+                  >
+                    <img src={imgSetting} /> &nbsp;
+                  </Popover>
+                  <img src={imgAward} />
+                </Col>
+                <Col span={6}>
+                  <ButtonGroup>
+                    <Button
+                      onClick={() => {
+                        this.setState({ isTest: !isTest, isValidate: false });
+                      }}
+                      disabled={JSON.parse(localStorage.getItem('isSave')) ? false : true}
+                    >
+                      Test
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        this.validateFlow();
+                      }}
+                      disabled={listDiagram.nodes && listDiagram.nodes.length > 0 ? false : true}
+                    >
+                      Validate
+                    </Button>
+                    <Save isDisable={listDiagram.nodes && listDiagram.nodes.length > 0 ? false : true} onClick={this.saveCampaign} />
+                  </ButtonGroup>
+                </Col>
+                <Col span={2}>
+                  <Button
+                    onClick={() => this.activeProcess()}
+                    disabled={JSON.parse(localStorage.getItem('isSave')) ? false : true}
+                    type="primary"
+                    style={{ float: 'right' }}
+                  >
+                    Kích hoạt
+                  </Button>
+                </Col>
+              </Col>
+            </Row>
+
+            <div
+              className="diagram-layer"
+              onDragOver={event => {
+                event.preventDefault();
+              }}
+            >
+              <DiagramWidget className="srd-flow-canvas" diagramEngine={this.editor.getDiagramEngine()} smartRouting={true} />
+            </div>
+          </Layout>
+        </Layout>
+      </div>
+    );
+  }
+
   render() {
     let { isOpenModalInfo, idNode, isTest, isOpenModalMessage, isOpenModalWaitForEvent, isOpenModalWait, data, isValidate } = this.state;
     let { infoCampaign, listDiagram, infoVersion, id_active, modalState } = this.props;
@@ -684,140 +968,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         <ConfigMessage toggleModal={this.getVisible} isOpenModal={isOpenModalMessage} idNode={idNode} />
         <ModalWaitForEvent toggleModal={this.getVisible} isOpenModal={isOpenModalWaitForEvent} idNode={idNode} />
         <ModalTimeWait toggleModal={this.getVisible} isOpenModal={isOpenModalWait} idNode={idNode} />
-        <GGEditor
-          className="editor"
-          onAfterCommandExecute={command => {
-            this.commandExecute(command);
-          }}
-        >
-          <Layout className="layout-flow">
-            {isTest ? <SiderTest /> : isValidate ? <SiderValidate /> : <SiderComponet />}
-            <Layout style={{ maxWidth: '80.8%' }}>
-              <Header className="header-flow">
-                <Row>
-                  <Col span={24} className="titleContent">
-                    <Row>
-                      <Breadcrumb separator=">">
-                        <Breadcrumb.Item>
-                          <a onClick={() => window.location.assign('/#/app/views/customers/user-management')} href="javascript:void(0);">
-                            <FontAwesomeIcon icon={faHome} />
-                          </a>
-                        </Breadcrumb.Item>
-                        <Breadcrumb.Item>
-                          <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-auto')} href="javascript:void(0);">
-                            Chiến dịch tự động
-                          </a>
-                        </Breadcrumb.Item>
-                        <Breadcrumb.Item>
-                          <a
-                            onClick={() => window.location.assign('/#/app/views/campaigns/campaign-managament')}
-                            href="javascript:void(0);"
-                          >
-                            Danh sách chiến dịch
-                          </a>
-                        </Breadcrumb.Item>
-                        <Breadcrumb.Item>
-                          <a
-                            onClick={() => window.location.assign('/#/app/views/campaigns/campaign-managament/new')}
-                            href="javascript:void(0);"
-                          >
-                            Tạo chiến dịch
-                          </a>
-                        </Breadcrumb.Item>
-                        <label className="ant-breadcrumb-link">
-                          {infoCampaign.name ? infoCampaign.name : infoVersion.nameVersion ? infoVersion.nameVersion : 'Tạo chiến dịch mới'}
-                        </label>
-                        <Button type="link" id="config-name" onClick={this.showModalInfoCampaign}>
-                          <FontAwesomeIcon icon={faUserEdit} />
-                        </Button>
-                      </Breadcrumb>
-                    </Row>
-                  </Col>
-                </Row>
-              </Header>
-              <Row type="flex" className="editorHd">
-                <Col span={24} style={{ borderBottom: '0.25px solid', padding: '1%' }}>
-                  <Col span={4}>
-                    <label>Phiên bản: {this.props.list_clone_version.status ? this.props.list_clone_version.version : '1.0'}</label>
-                  </Col>
-                  <Col span={8}>
-                    <label>Trạng Thái : {this.props.list_clone_version.status ? this.props.list_clone_version.status : 'Bản nháp'}</label>
-                  </Col>
-                  <Col span={4}>
-                    <img src={imgMove} /> &nbsp;
-                    <Popover
-                      content={this.contentSetting()}
-                      visible={this.state.isOpen}
-                      placement="bottom"
-                      onVisibleChange={this.handleVisibleChange}
-                      title=""
-                      trigger="click"
-                    >
-                      <img src={imgSetting} /> &nbsp;
-                    </Popover>
-                    <img src={imgAward} />
-                  </Col>
-                  <Col span={6}>
-                    <ButtonGroup>
-                      <Button
-                        onClick={() => {
-                          this.setState({ isTest: !isTest, isValidate: false });
-                        }}
-                        disabled={JSON.parse(localStorage.getItem('isSave')) ? false : true}
-                      >
-                        Test
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          this.validateFlow();
-                        }}
-                        disabled={listDiagram.nodes && listDiagram.nodes.length > 0 ? false : true}
-                      >
-                        Validate
-                      </Button>
-                      <Save isDisable={listDiagram.nodes && listDiagram.nodes.length > 0 ? false : true} onClick={this.saveCampaign} />
-                    </ButtonGroup>
-                  </Col>
-                  <Col span={2}>
-                    <Button
-                      onClick={() => this.activeProcess()}
-                      disabled={JSON.parse(localStorage.getItem('isSave')) ? false : true}
-                      type="primary"
-                      style={{ float: 'right' }}
-                    >
-                      Kích hoạt
-                    </Button>
-                  </Col>
-                </Col>
-                <Col span={24} style={{ padding: '0% 23%' }}>
-                  <FlowToolbar />
-                </Col>
-              </Row>
-              <Flow
-                // onClick= {(e)=> {this.setState({isUpdate:true})}}
-                onClick={e => {
-                  console.log(e);
-                  if (e.item && e.item.type === 'node') {
-                    this.setState({ idNode: e.item && e.item.type === 'node' ? e.item.model : '' });
-                  }
-                  if (e.item && e.item.type === 'edge') {
-                    this.setState({ idEdge: e.item && e.item.type === 'edge' ? e.item.model : '' });
-                  }
-                }}
-                // onMouseMove = {(e)=>{}}
-                graph={{
-                  edgeDefaultShape: 'custom-edge',
-                  height: 500
-                }}
-                className="flow"
-                data={listDiagram.nodes && listDiagram.nodes.length > 0 ? listDiagram : []}
-              />
-              <CustomNode />
-              <CustomEdges />
-            </Layout>
-          </Layout>
-          <FlowContextMenu onClick={this.getVisible} />
-        </GGEditor>
+        {this.renderFlowDiagram()}
         <div className="content-group-modal-attribute">
           <ModalGroupCustomer
             is_show={this.state.visible}
@@ -894,7 +1045,4 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(FlowPage);
+export default connect(mapStateToProps, mapDispatchToProps)(FlowPage);

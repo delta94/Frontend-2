@@ -437,7 +437,4 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(FlowPage);
+export default connect(mapStateToProps, mapDispatchToProps)(FlowPage);
