@@ -608,6 +608,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           };
         })
     };
+    let date = new Date();
     let data = {
       folderId: idFolder ? idFolder : list_clone_version.id,
       cjVersionId: this.props.id_active.cjId ? this.props.id_active.id : list_clone_version.id ? list_clone_version.id : null,
@@ -621,9 +622,9 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         customerGroupName: nameGroup,
         startTime: timeStartCampaign
           ? timeStartCampaign
-          : list_clone_version.flowDetail.startTime && list_clone_version.flowDetail.startTime
+          : Object.keys(list_clone_version).length > 0
           ? list_clone_version.flowDetail.startTime
-          : null,
+          : `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`,
         customerAdvancedSave: advancedSearches
           ? advancedSearches
           : list_clone_version.flowDetail.customerAdvancedSave

@@ -16,10 +16,7 @@ interface IUpdateInfoCampaignProps extends StateProps, DispatchProps {
 }
 interface IUpdateInfoCampaignState {
   nameCampaign: string;
-  strTag: {
-    id: string;
-    name: string;
-  };
+  strTag: any[];
   valueDes: string;
   defaulftTag: any[];
 }
@@ -27,10 +24,7 @@ interface IUpdateInfoCampaignState {
 export class UpdateInfoCampaign extends React.Component<IUpdateInfoCampaignProps, IUpdateInfoCampaignState> {
   state: IUpdateInfoCampaignState = {
     nameCampaign: '',
-    strTag: {
-      id: '',
-      name: ''
-    },
+    strTag: [],
     valueDes: '',
     defaulftTag: []
   };
