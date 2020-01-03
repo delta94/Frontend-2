@@ -3,6 +3,26 @@
     vertical-align: unset !important;
   }
 }
+.pop-tag {
+  max-width: 20%;
+  .link {
+    span {
+      text-decoration: underline;
+      padding-left: 5%;
+    }
+  }
+  .btn-cancel {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+
+    color: #343a40;
+    border: unset;
+  }
+}
 .campaign-list {
   padding: 30px 10px 20px 10px;
   background-color: #fff;

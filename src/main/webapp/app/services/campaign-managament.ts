@@ -114,3 +114,9 @@ export const getTemplateCampaignService = () => {
   const url = `v1/cj-templates`;
   return axios.get(url);
 };
+
+//call Api clone version by Id
+export const cloneVersionByIdService = id => {
+  const url = `${urlCampaign}/${id}/versions/clone`;
+  return axios.get(url);
+};

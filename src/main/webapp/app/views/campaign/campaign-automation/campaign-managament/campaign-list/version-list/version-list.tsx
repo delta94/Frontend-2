@@ -464,6 +464,16 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
     await getListCustomerVersionProcess('', id, 0);
   };
 
+  countContact = (contactCompleted, allContact) => {
+    let result: number = 0;
+    if (allContact === 0) {
+      return result;
+    } else {
+      result = (contactCompleted / allContact) * 100;
+    }
+    return result;
+  };
+
   render() {
     let { infoVersion, listVersion } = this.state;
     const imgCopy = require('app/assets/utils/images/campaign-managament/copy-version.png');
@@ -568,7 +578,11 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
                               {eventStatus(item.status)}
                             </td>
                             <td>
-                              <Progress status="active" percent={10} format={percent => `${percent}/${item.contactNumbers} contact`} />
+                              <Progress
+                                status="active"
+                                percent={this.countContact(item.contactCompleted, item.contactNumbers)}
+                                format={percent => `${item.contactCompleted}/${item.contactNumbers} contact`}
+                              />
                             </td>
                             <td>{item.modifiedDate}</td>
                           </tr>

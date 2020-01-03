@@ -84,11 +84,15 @@ export interface IListVersion {
   id: string;
   name: string;
   cjVersionId: string;
+  cjFolderId: string;
   version: number;
   tags: string;
   status: string;
   contactNumbers: string;
   modifiedDate: string;
+  contactCompleted: string;
+  currentVersion: string;
+  flow: string;
 }
 
 export interface ICampaign {
@@ -133,6 +137,7 @@ export interface IListCampaignAuto {
   status: string;
   contactNumbers: number;
   modifiedDate: string;
+  contactCompleted: number;
 }
 
 export interface IListCustomerVersionProcess {

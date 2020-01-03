@@ -37,13 +37,14 @@ class CJTagInsertModal extends React.Component<ICjTagInsertModalProps, ICjTagIns
       value = value.replace(',', '');
     }
     let cjTag = this.state.cjTag;
-    cjTag[type] = value;
+    cjTag[type] = value.replace(',', '||');
     this.setState({ cjTag: cjTag });
   };
 
   submit = async () => {
-    let { createCjTagAction, closeModalCjTagInsert, getCjTagsAction, dataModalTag, refreshListCjTag } = this.props;
+    let { createCjTagAction, closeModalCjTagInsert, getCjTagsAction, dataModalTag } = this.props;
     let { cjTag } = this.state;
+    cjTag.name.replace(',', '||');
     let cjTagData = {
       cjTag: cjTag,
       cjId: dataModalTag
@@ -52,7 +53,6 @@ class CJTagInsertModal extends React.Component<ICjTagInsertModalProps, ICjTagIns
     if (cjTag.name && cjTag.name.trim() !== '') {
       await createCjTagAction(cjTagData);
       await getCjTagsAction();
-      await refreshListCjTag();
       closeModalCjTagInsert();
       this.resetField();
     }

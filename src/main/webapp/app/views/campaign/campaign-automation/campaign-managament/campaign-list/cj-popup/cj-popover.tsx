@@ -44,8 +44,6 @@ class CJTagPopOver extends React.Component<ICjTagPopOverProps, TCjTagPopOverStat
     isOpenModalCjTagList: false
   };
 
-  componentDidMount() {}
-
   handleChange = cjTags => {
     this.setState({
       cjTags: cjTags

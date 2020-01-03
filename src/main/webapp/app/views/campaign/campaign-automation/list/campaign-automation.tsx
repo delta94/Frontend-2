@@ -218,6 +218,16 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
     await getListCustomerVersionProcess('', id, 0);
   };
 
+  countContact = (contactCompleted, allContact) => {
+    let result: number = 0;
+    if (allContact === 0) {
+      return result;
+    } else {
+      result = (contactCompleted / allContact) * 100;
+    }
+    return result;
+  };
+
   render() {
     let { getStatusCampaign, list_campaign_auto } = this.props;
     const img = require('app/assets/utils/images/campaign-managament/count_campaign.png');
@@ -255,7 +265,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
             </Col>
             <Col span={12} style={{ textAlign: 'right', margin: '10px' }}>
               <Button type="primary" onClick={this.movePage}>
-                Quản lý Chiến dịch
+                Quản lý chiến dịch
               </Button>
             </Col>
           </Row>
@@ -311,7 +321,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
                 <th>Chỉnh sửa gần nhất</th>
               </thead>
               <tbody>
-                {list_campaign_auto
+                {list_campaign_auto && list_campaign_auto.length > 0
                   ? list_campaign_auto.map((event, index) => {
                       return (
                         <tr key={index}>
@@ -330,7 +340,11 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
                             {eventStatus(event.status)}
                           </td>
                           <td>
-                            <Progress status="active" percent={10} format={percent => `${percent}/${event.contactNumbers} contact`} />
+                            <Progress
+                              status="active"
+                              percent={this.countContact(event.contactCompleted, event.contactNumbers)}
+                              format={percent => `${event.contactCompleted}/${event.contactNumbers} contact`}
+                            />
                           </td>
                           <td>{event.modifiedDate}</td>
                         </tr>
