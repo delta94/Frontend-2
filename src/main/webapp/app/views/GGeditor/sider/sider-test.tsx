@@ -122,7 +122,7 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
             id: value.idEmail,
             name: value.valueName,
             titlle: value.valueTitle,
-            content: value.contentEmail
+            content: null
           }
         })
       );

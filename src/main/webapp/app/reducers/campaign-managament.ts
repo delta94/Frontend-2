@@ -28,7 +28,7 @@ interface IInfoCampaign {
 interface IListDiagram {
   nodes: any[];
   edges: any[];
-  groups: any[];
+  // groups: any[];
 }
 
 interface IListFieldData {
@@ -109,7 +109,8 @@ export default (state = initialCampaignManagament, action) => {
       return {
         ...state,
         loading: false,
-        cloneInfoVersion: action.payload.data
+        cloneInfoVersion: action.payload.data,
+        idActive : {}
       };
 
     case SUCCESS(CAMPAIGN_MANAGAMENT.SAVE_CAMPAIGN_AUTO):
