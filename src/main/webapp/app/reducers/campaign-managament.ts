@@ -110,7 +110,7 @@ export default (state = initialCampaignManagament, action) => {
         ...state,
         loading: false,
         cloneInfoVersion: action.payload.data,
-        idActive : {}
+        // idActive : {}
       };
 
     case SUCCESS(CAMPAIGN_MANAGAMENT.SAVE_CAMPAIGN_AUTO):
