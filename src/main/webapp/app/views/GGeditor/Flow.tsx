@@ -698,15 +698,15 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       },
       cjTags: list_clone_version.cjTags && list_clone_version.cjTags.length > 0 ? list_clone_version.cjTags : infoCampaign.tag,
       flow: {
-        customerGroupName: list_clone_version.flowDetail.customerGroupName ? list_clone_version.flowDetail.customerGroupName : nameGroup,
-        startTime: list_clone_version.flowDetail.startTime ? list_clone_version.flowDetail.startTime : timeStartCampaign
+        customerGroupName: Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.customerGroupName : nameGroup,
+        startTime: Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.startTime : timeStartCampaign
           ? timeStartCampaign
           : `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`,
-        customerAdvancedSave: Object.keys(list_clone_version.flowDetail.customerAdvancedSave).length > 0 ? list_clone_version.flowDetail.customerAdvancedSave : advancedSearches
+        customerAdvancedSave: Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.customerAdvancedSave : advancedSearches
           ? advancedSearches
             : null,
         nodeMetaData: Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.nodeMetaData : nodeMetaData ? nodeMetaData : [],
-        graph: Object.keys(list_clone_version).length > 0 ?  list_clone_version.flowDetail.graph : graph ? list_clone_version.flowDetail.graph : []
+        graph: Object.keys(list_clone_version).length > 0 ?  list_clone_version.flowDetail.graph : graph ? graph : []
       }
     };
     await saveCampaignAuto(data);
