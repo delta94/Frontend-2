@@ -379,21 +379,21 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
     let list_field_render =
       list_field_data_cpn && list_field_data_cpn.length > 0
         ? list_field_data_cpn.map(item => {
-            if (item.id)
-              return (
-                <FieldData
-                  type_modal={type_modal}
-                  key={item.id}
-                  id={item.id}
-                  last_index={item.last_index}
-                  logicalOperator={logicalOperator}
-                  default_data={item.default_data}
-                  updateValueFromState={this.updateValueFromState}
-                  deleteComponentById={this.deleteComponentById}
-                  updateRelationshipFromState={this.updateRelationshipFromState}
-                />
-              );
-          })
+          if (item.id)
+            return (
+              <FieldData
+                type_modal={type_modal}
+                key={item.id}
+                id={item.id}
+                last_index={item.last_index}
+                logicalOperator={logicalOperator}
+                default_data={item.default_data}
+                updateValueFromState={this.updateValueFromState}
+                deleteComponentById={this.deleteComponentById}
+                updateRelationshipFromState={this.updateRelationshipFromState}
+              />
+            );
+        })
         : [];
 
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
@@ -487,7 +487,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
                   color="primary"
                   style={{ float: 'right', margin: '3px' }}
                   onClick={this.getDataListCustomer}
-                  disabled={info_version.type == 'copy' ? true : list_field_data_cpn.length === 0 ? true : false}
+                  disabled={info_version.type == 'copy' ? true : false}
                 >
                   <Translate contentKey="group-attribute-customer.apply" />
                 </Button>
@@ -566,12 +566,12 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
                         );
                       })
                     ) : (
-                      <tr>
-                        <td className="none-data" colSpan={100}>
-                          <Translate contentKey="group-attribute-customer.none-data-list-customer" />
-                        </td>
-                      </tr>
-                    )}
+                        <tr>
+                          <td className="none-data" colSpan={100}>
+                            <Translate contentKey="group-attribute-customer.none-data-list-customer" />
+                          </td>
+                        </tr>
+                      )}
                   </tbody>
                 </Table>
               </div>

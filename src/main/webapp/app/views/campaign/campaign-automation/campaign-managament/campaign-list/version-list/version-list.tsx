@@ -41,7 +41,7 @@ const code_node = {
   TIMER_EVENT: 'TIMER_EVENT'
 };
 
-interface IVersionListProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
+interface IVersionListProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> { }
 interface IVersionListState {
   infoVersion: {
     type: string;
@@ -148,7 +148,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
       Modal.confirm({
         title: 'THÔNG BÁO',
         content: 'Chiến dịch đã có bản nháp, không thể tạo version mới, bạn có muốn tiếp tục chỉnh sửa bản nháp hiện tại ? ',
-        onCancel: () => {},
+        onCancel: () => { },
         onOk: async () => {
           await cloneVersionById(idDraft);
           await this.cloneVersion('flow');
@@ -195,7 +195,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
     if (isCheck) {
       listCjId.push(value);
     } else {
-      listCjId = listCjId.filter(function(item) {
+      listCjId = listCjId.filter(function (item) {
         return item != value;
       });
     }
@@ -232,7 +232,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
           await deleteVersion(listCjId);
           this.refresh();
         },
-        onCancel() {},
+        onCancel() { },
         okText: 'Đồng ý',
         cancelText: 'Hủy bỏ'
       });
@@ -285,7 +285,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
             await stopVersion(idVersion);
             this.refresh();
           },
-          onCancel() {},
+          onCancel() { },
           okText: 'Đồng ý',
           cancelText: 'Hủy bỏ'
         });
@@ -442,15 +442,16 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
   };
 
   copyVersion = () => {
-    let { cloneVersion, saveCampaignAutoVersion } = this.props;
+    let { cloneVersionById, saveCampaignAutoVersion, list_clone_version } = this.props;
     let versionLast: number = 0;
     let idVersionlast: string = '';
     let { listVersion, infoVersion } = this.state;
     listVersion.map(item => {
+      debugger
       if (item.status != constant_version.DRAFT) {
         if (item.version > versionLast) {
           versionLast = item.version;
-          idVersionlast = item.cjVersionId;
+          idVersionlast = item.id;
         }
       }
     });
@@ -459,12 +460,12 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
         title: `Bạn có muốn nhân bản chiến dịch này ?`,
         content: '',
         onOk: async () => {
-          await cloneVersion(idVersionlast);
+          await cloneVersionById(idVersionlast);
           await this.cloneVersion('copy');
           await saveCampaignAutoVersion(infoVersion);
           window.location.assign(`#/flow`);
         },
-        onCancel() {},
+        onCancel() { },
         okText: 'Đồng ý',
         cancelText: 'Hủy bỏ'
       });
@@ -588,29 +589,29 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
                 <tbody>
                   {listVersion
                     ? listVersion.map((item, index) => {
-                        return (
-                          <tr key={index}>
-                            <td>
-                              <Checkbox checked={item.checked} onChange={e => this.changeCheckBox(e, item.cjVersionId)} />
-                            </td>
-                            <td className="table-content" onClick={() => this.viewVersion(item.cjVersionId)}>
-                              <span style={{ marginLeft: '5%' }}>Version {item.version}</span>
-                            </td>
-                            <td className="row-status">
-                              <img className="img-status" src={this.iconStatus(item.status)} />
-                              {eventStatus(item.status)}
-                            </td>
-                            <td>
-                              <Progress
-                                status="active"
-                                percent={this.countContact(item.contactCompleted, item.contactNumbers)}
-                                format={percent => `${item.contactCompleted}/${item.contactNumbers} contact`}
-                              />
-                            </td>
-                            <td>{item.modifiedDate}</td>
-                          </tr>
-                        );
-                      })
+                      return (
+                        <tr key={index}>
+                          <td>
+                            <Checkbox checked={item.checked} onChange={e => this.changeCheckBox(e, item.cjVersionId)} />
+                          </td>
+                          <td className="table-content" onClick={() => this.viewVersion(item.cjVersionId)}>
+                            <span style={{ marginLeft: '5%' }}>Version {item.version}</span>
+                          </td>
+                          <td className="row-status">
+                            <img className="img-status" src={this.iconStatus(item.status)} />
+                            {eventStatus(item.status)}
+                          </td>
+                          <td>
+                            <Progress
+                              status="active"
+                              percent={this.countContact(item.contactCompleted, item.contactNumbers)}
+                              format={percent => `${item.contactCompleted}/${item.contactNumbers} contact`}
+                            />
+                          </td>
+                          <td>{item.modifiedDate}</td>
+                        </tr>
+                      );
+                    })
                     : ''}
                 </tbody>
               </Table>

@@ -19,7 +19,7 @@ import {
   activeProcessCampaignService,
   getTemplateCampaignService,
   cloneVersionByIdService,
-  validateGraphService
+  validateGraphService,
 } from 'app/services/campaign-managament';
 
 //get Tree Folder
