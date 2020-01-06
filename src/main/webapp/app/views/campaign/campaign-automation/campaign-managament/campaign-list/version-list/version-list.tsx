@@ -125,6 +125,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
   createVersion = async () => {
     const { saveCampaignAutoVersion, getDiagramCampaign, cloneVersionById } = this.props;
     const { infoVersion, listVersion } = this.state;
+    infoVersion.type = ''
     let isHaveDraf = false;
     let idDraft: string = '';
     listVersion.map(item => {
@@ -447,7 +448,6 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
     let idVersionlast: string = '';
     let { listVersion, infoVersion } = this.state;
     listVersion.map(item => {
-      debugger
       if (item.status != constant_version.DRAFT) {
         if (item.version > versionLast) {
           versionLast = item.version;

@@ -209,7 +209,7 @@ export default (state = initialCampaignManagament, action) => {
     case CAMPAIGN_MANAGAMENT.RESET_DATA_CAMPAIGN:
       return {
         ...state,
-        cloneInfoVersion: []
+        listFieldData: []
       };
     case CAMPAIGN_MANAGAMENT.GET_DIAGRAM_CAMPAIGN:
       return { ...state, listDiagram: action.payload };

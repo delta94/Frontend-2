@@ -688,25 +688,25 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         })
     };
     let date = new Date();
+
+    let cjTags = infoCampaign.tag && infoCampaign.tag.length > 0 ? infoCampaign.tag : list_clone_version.cjTags && list_clone_version.cjTags.length > 0 ? list_clone_version.cjTags : []
+    let startTime = timeStartCampaign ? timeStartCampaign : Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.startTime : `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`
     let data = {
-      folderId: list_clone_version.id ? idFolder : idFolder,
-      cjVersionId: list_clone_version.id ? list_clone_version.id : this.props.id_active.cjId ? this.props.id_active.id : null,
+      folderId: Object.keys(list_clone_version).length > 0 ? list_clone_version.id : idFolder ? idFolder : '-99',
+      cjVersionId: Object.keys(list_clone_version).length > 0 ? list_clone_version.id : this.props.id_active.cjId ? this.props.id_active.id : null,
       cj: {
-        id: list_clone_version.cjId ? list_clone_version.cjId : this.props.id_active.id ? this.props.id_active.cjId : null,
-        name: list_clone_version.name ? list_clone_version.name : infoCampaign.name ? infoCampaign.name : 'Tạo chiến dịch mới',
-        description: list_clone_version.description ? list_clone_version.description : infoCampaign.des
+        id: Object.keys(list_clone_version).length > 0 ? list_clone_version.cjId : this.props.id_active.id ? this.props.id_active.cjId : null,
+        name: infoCampaign.name ? infoCampaign.name : list_clone_version.name ? list_clone_version.name : 'Tạo chiến dịch mới',
+        description: infoCampaign.des ? infoCampaign.des : list_clone_version.description ? list_clone_version.description : infoCampaign.des
       },
-      cjTags: list_clone_version.cjTags && list_clone_version.cjTags.length > 0 ? list_clone_version.cjTags : infoCampaign.tag,
+      cjTags: cjTags,
       flow: {
-        customerGroupName: Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.customerGroupName : nameGroup,
-        startTime: Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.startTime : timeStartCampaign
-          ? timeStartCampaign
-          : `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`,
-        customerAdvancedSave: Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.customerAdvancedSave : advancedSearches
-          ? advancedSearches
+        customerGroupName: nameGroup ? nameGroup : Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.customerGroupName : '',
+        startTime: startTime,
+        customerAdvancedSave: Object.keys(advancedSearches).length > 0 ? advancedSearches : Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.customerAdvancedSave
           : null,
-        nodeMetaData: Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.nodeMetaData : nodeMetaData ? nodeMetaData : [],
-        graph: Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.graph : graph ? graph : []
+        nodeMetaData: nodeMetaData && nodeMetaData.length > 0 ? nodeMetaData : Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.nodeMetaData : [],
+        graph: Object.keys(graph).length > 0 ? graph : Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.graph : []
       }
     };
     await saveCampaignAuto(data);
@@ -945,11 +945,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
   render() {
     let { isOpenModalInfo, idNode, isTest, isOpenModalMessage, isOpenModalWaitForEvent, isOpenModalWait, data, isValidate } = this.state;
-    let { infoCampaign, listDiagram, infoVersion, id_active, modalState } = this.props;
-    const imgSetting = require('app/assets/utils/images/flow/setting.png');
-    const imgAward = require('app/assets/utils/images/flow/award.png');
-    const imgMove = require('app/assets/utils/images/flow/move.png');
-
+    let { modalState } = this.props;
+    console.log(this.props.list_clone_version)
     return (
       <Fragment>
         <SweetAlert

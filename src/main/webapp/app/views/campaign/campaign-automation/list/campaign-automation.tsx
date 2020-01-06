@@ -15,7 +15,8 @@ import {
   cloneVersion,
   saveCampaignAutoVersion,
   getListCustomerVersionProcess,
-  getDiagramCampaign
+  getDiagramCampaign,
+  validateCampaign
 } from 'app/actions/campaign-managament';
 import { img_node, const_shape } from 'app/common/model/campaign-managament.model';
 import './campaign-automation.scss';
@@ -215,7 +216,9 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
     let { infoVersion } = this.state;
     const { cloneVersion, saveCampaignAutoVersion, getListCustomerVersionProcess } = this.props;
     infoVersion.idVersion = id;
+    infoVersion.type = 'copy'
     await cloneVersion(id);
+    await validateCampaign ([])
     await this.cloneVersion('view');
     await saveCampaignAutoVersion(infoVersion);
     await getListCustomerVersionProcess('', id, 0);
@@ -411,7 +414,8 @@ const mapDispatchToProps = {
   cloneVersion,
   saveCampaignAutoVersion,
   getDiagramCampaign,
-  getListCustomerVersionProcess
+  getListCustomerVersionProcess,
+  validateCampaign
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

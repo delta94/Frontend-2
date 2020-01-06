@@ -273,7 +273,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
 
   viewVersion = async id => {
     let infoVersion = {
-      type: '',
+      type: 'copy',
       nameVersion: '',
       idVersion: '',
       cjId: '',

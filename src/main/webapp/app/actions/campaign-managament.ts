@@ -135,10 +135,17 @@ export const stopVersion = id => ({
 });
 
 //clone info version
-export const cloneVersion = id => ({
+export const cloneVersion = id => async dispatch =>{
+  const result = await dispatch({
   type: CAMPAIGN_MANAGAMENT.CLONE_VERSION,
   payload: cloneVersionService(id)
-});
+  })
+  await dispatch(resetData())
+  await dispatch(validateCampaign([]))
+  await dispatch(saveCampaignAutoVersion([]))
+  await dispatch(updateInfoCampaign({}))
+  return result
+};
 
 //get list version customer process
 export const getListCustomerVersionProcess = (textSearch: string, id, page?: number) => ({

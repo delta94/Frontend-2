@@ -349,9 +349,10 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
       advancedSearches
     };
     this.props.toggle(false, this.state.categoryName + ',' + this.state.dateTime, customerAdvancedSave, true);
-    console.log(this.state.dateTime);
   }
   getNameGroup = () => {
+    debugger
+
     const { listFieldData } = this.props;
     let result: string;
     listFieldData.listCampign &&
@@ -412,7 +413,6 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
       default:
         break;
     }
-
     return (
       <Modal
         destroyOnClose
@@ -487,7 +487,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
                   color="primary"
                   style={{ float: 'right', margin: '3px' }}
                   onClick={this.getDataListCustomer}
-                  disabled={info_version.type == 'copy' ? true : false}
+                  disabled={info_version.type === 'copy' ? false : true}
                 >
                   <Translate contentKey="group-attribute-customer.apply" />
                 </Button>
