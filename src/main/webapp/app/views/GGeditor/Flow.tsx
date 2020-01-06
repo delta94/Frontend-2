@@ -704,9 +704,9 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           : `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`,
         customerAdvancedSave: Object.keys(list_clone_version.flowDetail.customerAdvancedSave).length > 0 ? list_clone_version.flowDetail.customerAdvancedSave : advancedSearches
           ? advancedSearches
-          : null,
+            : null,
         nodeMetaData: Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.nodeMetaData : nodeMetaData ? nodeMetaData : [],
-        graph: Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.graph : graph ? graph : []
+        graph: Object.keys(list_clone_version).length > 0 ?  list_clone_version.flowDetail.graph : graph ? list_clone_version.flowDetail.graph : []
       }
     };
     await saveCampaignAuto(data);
