@@ -2,11 +2,11 @@ import React from 'react';
 import { IRootState } from 'app/reducers';
 import { connect } from 'react-redux';
 import { getEmailTest, testCampaign } from 'app/actions/campaign-managament';
-import { Row, Col, Checkbox, Input, Button, Layout, Icon, Select, notification } from 'antd';
+import { Row, Col, Checkbox, Input, Button, Layout, Icon, Select, notification, Modal } from 'antd';
 import { code_node, img_node, const_shape } from 'app/common/model/campaign-managament.model';
 const { Sider } = Layout;
 const { Option } = Select;
-interface ISiderTestProps extends StateProps, DispatchProps {}
+interface ISiderTestProps extends StateProps, DispatchProps { }
 interface ISiderTestState {
   collapsed: boolean;
   customer: {};
@@ -185,11 +185,20 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
       graph
     };
     localStorage.setItem('isActive', 'true');
-    await testCampaign(data);
-    notification['success']({
-      message: 'thành công',
-      description: 'Dữ liệu test thành công'
-    });
+    let vnfont = /((09|03|07|08|05)+([0-9]{8})$)/g;
+    if (!vnfont.test(String(phone))) {
+      Modal.error({
+        title: 'Thông báo',
+        content: 'Vui lòng nhập đúng định dạng số điện thoại',
+        okText: 'Đồng ý'
+      });
+    } else {
+      await testCampaign(data);
+      notification['success']({
+        message: 'thành công',
+        description: 'Dữ liệu test thành công'
+      });
+    }
   };
 
   render() {
@@ -210,14 +219,14 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
               }}
             />
           ) : (
-            <Icon
-              type="double-left"
-              onClick={() => {
-                this.setState({ collapsed: !collapsed });
-              }}
-              className="icon-collapse"
-            />
-          )}
+              <Icon
+                type="double-left"
+                onClick={() => {
+                  this.setState({ collapsed: !collapsed });
+                }}
+                className="icon-collapse"
+              />
+            )}
         </div>
         <hr />
         <div className="logo" style={{ display: collapsed ? 'none' : 'block' }}>
@@ -270,12 +279,12 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
             <Col span={24}>
               {' '}
               <Checkbox className="text-sider-text" onChange={event => this.handleChangeCheckBox(event, constCheckBox.CHECK_BOX_PHONE)}>
-                SDT test
+                SĐT test
               </Checkbox>
             </Col>
             <Col span={24} style={{ textAlign: 'center' }}>
               {' '}
-              <Input style={{ width: '92%' }} onChange={event => this.handleChange(event, constantEvent.PHONE)} />
+              <Input maxLength={11} style={{ width: '92%' }} onChange={event => this.handleChange(event, constantEvent.PHONE)} />
             </Col>
           </Row>
           <Button onClick={this.testProcess} className="btn-test" type="primary">

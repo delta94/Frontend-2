@@ -689,33 +689,24 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     };
     let date = new Date();
     let data = {
-      folderId: idFolder ? idFolder : list_clone_version.id,
-      cjVersionId: this.props.id_active.cjId ? this.props.id_active.id : list_clone_version.id ? list_clone_version.id : null,
+      folderId: list_clone_version.id ? idFolder : idFolder,
+      cjVersionId: list_clone_version.id ? list_clone_version.id : this.props.id_active.cjId ? this.props.id_active.id : null,
       cj: {
-        id: this.props.id_active.id ? this.props.id_active.cjId : list_clone_version.cjId ? list_clone_version.cjId : null,
-        name: infoCampaign.name ? infoCampaign.name : infoVersion.nameVersion ? infoVersion.nameVersion : 'Tạo chiến dịch mới',
-        description: infoCampaign.des
+        id: list_clone_version.cjId ? list_clone_version.cjId : this.props.id_active.id ? this.props.id_active.cjId : null,
+        name: Object.keys(list_clone_version).length > 0 ? list_clone_version.name : infoCampaign.name ? infoCampaign.name : 'Tạo chiến dịch mới',
+        description: list_clone_version.description ? list_clone_version.description : infoCampaign.des
       },
-      cjTags: infoCampaign.tag,
+      cjTags: list_clone_version.cjTags && list_clone_version.cjTags.length > 0 ? list_clone_version.cjTags : infoCampaign.tag,
       flow: {
-        customerGroupName: nameGroup,
-        startTime: timeStartCampaign
+        customerGroupName: list_clone_version.flowDetail.customerGroupName ? list_clone_version.flowDetail.customerGroupName : nameGroup,
+        startTime: list_clone_version.flowDetail.startTime ? list_clone_version.flowDetail.startTime : timeStartCampaign
           ? timeStartCampaign
-          : Object.keys(list_clone_version).length > 0
-            ? list_clone_version.flowDetail.startTime
-            : `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`,
-        customerAdvancedSave: advancedSearches
+          : `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`,
+        customerAdvancedSave: Object.keys(list_clone_version.flowDetail.customerAdvancedSave).length > 0 ? list_clone_version.flowDetail.customerAdvancedSave : advancedSearches
           ? advancedSearches
-          : list_clone_version.flowDetail.customerAdvancedSave
-            ? list_clone_version.flowDetail.customerAdvancedSave
-            : null,
-        nodeMetaData: nodeMetaData ? nodeMetaData : Object.keys(list_clone_version).length > 0?  list_clone_version.flowDetail.nodeMetaData : []
-          ? nodeMetaData
-          : list_clone_version.flowDetail.nodeMetaData
-            ? list_clone_version.flowDetail.nodeMetaData
-            : null,
-
-        graph: graph ? graph : list_clone_version.flowDetail.graph ? list_clone_version.flowDetail.graph : []
+          : null,
+        nodeMetaData: Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.nodeMetaData : nodeMetaData ? nodeMetaData : [],
+        graph: Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.graph : graph ? graph : []
       }
     };
     await saveCampaignAuto(data);
@@ -829,7 +820,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
   renderFlowDiagram() {
     let { isOpenModalInfo, idNode, isTest, isOpenModalMessage, isOpenModalWaitForEvent, isOpenModalWait, data, isValidate } = this.state;
-    let { infoCampaign, listDiagram, infoVersion, id_active, modalState } = this.props;
+    let { infoCampaign, listDiagram, infoVersion, id_active, list_clone_version } = this.props;
     let dataNode = this.editor.getDiagramData()
     const imgSetting = require('app/assets/utils/images/flow/setting.png');
     const imgAward = require('app/assets/utils/images/flow/award.png');
@@ -869,7 +860,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                         </a>
                       </Breadcrumb.Item>
                       <label className="ant-breadcrumb-link">
-                        {infoCampaign.name ? infoCampaign.name : infoVersion.nameVersion ? infoVersion.nameVersion : 'Tạo chiến dịch mới'}
+                        {infoCampaign.name ? infoCampaign.name : list_clone_version.name ? list_clone_version.name : 'Tạo chiến dịch mới'}
                       </label>
                       <Button type="link" id="config-name" onClick={this.showModalInfoCampaign}>
                         <FontAwesomeIcon icon={faUserEdit} />
@@ -914,9 +905,9 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                     <Button
                       onClick={() => {
                         this.validateFlow();
-                          if (Object.keys(id_active).length > 0 && !this.state.isValidate) {
-                            this.props.validateGraph(id_active.id)
-                          }
+                        if (Object.keys(id_active).length > 0 && !this.state.isValidate) {
+                          this.props.validateGraph(id_active.id)
+                        }
                       }}
                       disabled={id_active.id && id_active.id.length > 0 ? false : true}
                     >

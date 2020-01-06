@@ -442,7 +442,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
                   show: true,
                   type: 'error',
                   title: translate('modal-data.title.error'),
-                  text: 'Vui lòng chọn lại danh sách khác hàng'
+                  text: 'Vui lòng chọn ít nhất 1 khách hàng'
                 });
               }
             }}
