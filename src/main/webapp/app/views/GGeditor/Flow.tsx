@@ -693,7 +693,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       cjVersionId: list_clone_version.id ? list_clone_version.id : this.props.id_active.cjId ? this.props.id_active.id : null,
       cj: {
         id: list_clone_version.cjId ? list_clone_version.cjId : this.props.id_active.id ? this.props.id_active.cjId : null,
-        name: Object.keys(list_clone_version).length > 0 ? list_clone_version.name : infoCampaign.name ? infoCampaign.name : 'Tạo chiến dịch mới',
+        name: list_clone_version.name ? list_clone_version.name : infoCampaign.name ? infoCampaign.name : 'Tạo chiến dịch mới',
         description: list_clone_version.description ? list_clone_version.description : infoCampaign.des
       },
       cjTags: list_clone_version.cjTags && list_clone_version.cjTags.length > 0 ? list_clone_version.cjTags : infoCampaign.tag,
@@ -704,9 +704,9 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           : `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`,
         customerAdvancedSave: Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.customerAdvancedSave : advancedSearches
           ? advancedSearches
-            : null,
+          : null,
         nodeMetaData: Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.nodeMetaData : nodeMetaData ? nodeMetaData : [],
-        graph: Object.keys(list_clone_version).length > 0 ?  list_clone_version.flowDetail.graph : graph ? graph : []
+        graph: Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.graph : graph ? graph : []
       }
     };
     await saveCampaignAuto(data);
