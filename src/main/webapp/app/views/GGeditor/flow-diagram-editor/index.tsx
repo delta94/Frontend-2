@@ -1,4 +1,4 @@
-import { FlowDiagramEditor } from './FlowDiagramEditor';
+import { FlowDiagramEditor, FlowDiagramEditorHandlers } from './FlowDiagramEditor';
 import { TrayWidget } from './components/TrayWidget';
 import { TrayItemWidget } from './components/TrayItemWidget';
 import { DiagramWidget } from 'storm-react-diagrams';
@@ -20,6 +20,7 @@ export {
   TrayItemWidget,
   DiagramWidget,
   FlowDiagramEditor,
+  FlowDiagramEditorHandlers,
   ConditionDecisionNodeModel,
   ContactSourceStartNodeModel,
   EmailProcessNodeModel,

@@ -115,7 +115,7 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
     const { listFieldData } = this.props;
     listFieldData.emailConfig &&
       listFieldData.emailConfig.map(item => {
-        debugger;
+        //debugger;
         if (item.id === value) {
           result = item.nameEmail;
           idEmail = item.id;

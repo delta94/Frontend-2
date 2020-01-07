@@ -11,11 +11,11 @@
   path {
     fill: none;
     pointer-events: all;
-    stroke: #83bf66 !important;
+    stroke: #c2d5a0 !important;
   }
 
   &--path-selected {
-    stroke: #83bf66 !important;
+    stroke: #c2d5a0 !important;
     stroke-dasharray: 10, 2;
     animation: dash 1s linear infinite;
   }

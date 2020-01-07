@@ -158,7 +158,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
     }
     switch (option) {
       case 'create':
-        debugger;
+        //debugger;
         if (Number(level) < 3) {
           confirm({
             title: 'Tạo thư mục',

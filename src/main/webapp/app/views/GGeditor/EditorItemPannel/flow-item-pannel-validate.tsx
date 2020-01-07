@@ -8,12 +8,19 @@ import { Translate, translate } from 'react-jhipster';
 import { openModal, closeModal } from 'app/actions/modal';
 import SiderComponet from '../sider/sider-tool';
 import './index.scss';
-import { FlowDiagramEditor, TrayItemWidget, ContactSourceStartNodeModel, EventSourceStartNodeModel, SmsProcessNodeModel, EmailProcessNodeModel } from '../flow-diagram-editor';
+import {
+  FlowDiagramEditor,
+  TrayItemWidget,
+  ContactSourceStartNodeModel,
+  EventSourceStartNodeModel,
+  SmsProcessNodeModel,
+  EmailProcessNodeModel
+} from '../flow-diagram-editor';
 import { code_node } from 'app/common/model/campaign-managament.model';
 
 const { Panel } = Collapse;
 
-interface IFlowItemValidateProps extends StateProps, DispatchProps { }
+interface IFlowItemValidateProps extends StateProps, DispatchProps {}
 interface IFlowItemValidateState {
   data: any[];
 }
@@ -22,28 +29,27 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
   state: IFlowItemValidateState = {
     data: this.props.listDiagram.nodes
   };
-  editor: FlowDiagramEditor
+  editor: FlowDiagramEditor;
 
   componentWillMount() {
     let { listDiagram } = this.props;
+    //TODO ????
     this.editor = new FlowDiagramEditor();
-    this.editor.lock();
     this.editor.setDiagramData({
       nodes: listDiagram.nodes,
       edges: listDiagram.edges
     });
-    this.editor.autoArrange(false);
   }
 
   renderTrayItemWidget(type: string) {
-    return <TrayItemWidget model={{ type: type }} isDrag = {false} />;
+    return <TrayItemWidget model={{ type: type }} isDrag={false} />;
   }
 
   checkNodeConfig = () => {
     localStorage.removeItem('isSave');
     let { data } = this.state;
-    data = this.editor.getDiagramData().nodes
-    data = data.filter(function (item) {
+    data = this.editor.getDiagramData().nodes;
+    data = data.filter(function(item) {
       return item.code != 'DES';
     });
     let { listFieldData } = this.props;
@@ -55,12 +61,12 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
         });
       let id = idEmailConfig.join().split(',');
       if (id.length < 2) {
-        data = data.filter(function (item) {
+        data = data.filter(function(item) {
           return item.id != id;
         });
       } else {
         id.map(value => {
-          data = data.filter(function (item) {
+          data = data.filter(function(item) {
             return item.id != String(value);
           });
         });
@@ -72,12 +78,12 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
       });
       let id = idlistCampign.join().split(',');
       if (id.length < 2) {
-        data = data.filter(function (item) {
+        data = data.filter(function(item) {
           return item.id != id;
         });
       } else {
         id.map(value => {
-          data = data.filter(function (item) {
+          data = data.filter(function(item) {
             return item.id != String(value);
           });
         });
@@ -89,12 +95,12 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
       });
       let id = idMessageConfig.join().split(',');
       if (id.length < 2) {
-        data = data.filter(function (item) {
+        data = data.filter(function(item) {
           return item.id != id;
         });
       } else {
         id.map(value => {
-          data = data.filter(function (item) {
+          data = data.filter(function(item) {
             return item.id != String(value);
           });
         });
@@ -106,12 +112,12 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
       });
       let id = idTimer.join().split(',');
       if (id.length < 2) {
-        data = data.filter(function (item) {
+        data = data.filter(function(item) {
           return item.id != id;
         });
       } else {
         id.map(value => {
-          data = data.filter(function (item) {
+          data = data.filter(function(item) {
             return item.id != String(value);
           });
         });
@@ -123,12 +129,12 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
       });
       let id = idTimerEvent.join().split(',');
       if (id.length < 2) {
-        data = data.filter(function (item) {
+        data = data.filter(function(item) {
           return item.id != id;
         });
       } else {
         id.map(value => {
-          data = data.filter(function (item) {
+          data = data.filter(function(item) {
             return item.id != String(value);
           });
         });
@@ -141,12 +147,12 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
       });
       let id = idGetway.join().split(',');
       if (id.length < 2) {
-        data = data.filter(function (item) {
+        data = data.filter(function(item) {
           return item.id != id;
         });
       } else {
         id.map(value => {
-          data = data.filter(function (item) {
+          data = data.filter(function(item) {
             return item.id != String(value);
           });
         });
@@ -156,12 +162,11 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
     return data;
   };
 
-  
   showNodeValidate = () => {
     let { listFieldData, listDiagram } = this.props;
     let { data } = this.state;
-    data = this.editor.getDiagramData().nodes
-    data = data.filter(function (item) {
+    data = this.editor.getDiagramData().nodes;
+    data = data.filter(function(item) {
       return item.code != 'DES';
     });
     localStorage.removeItem('isSave');
@@ -184,7 +189,7 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
         return (
           <Row className="row" key={index}>
             <Col span={24}>
-            {this.renderTrayItemWidget(item.params)}
+              {this.renderTrayItemWidget(item.params)}
               <div>
                 <label>{item.label}</label>
               </div>
@@ -207,11 +212,7 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
       <Fragment>
         <Collapse className="validate-main" bordered={false} defaultActiveKey={['1']} expandIconPosition="right">
           <Panel header="" key="1">
-            {
-             
-               this.showNodeValidate() && this.showNodeValidate().length > 0
-                ? this.showNodeValidate()
-                : this.showComplete()}
+            {this.showNodeValidate() && this.showNodeValidate().length > 0 ? this.showNodeValidate() : this.showComplete()}
           </Panel>
         </Collapse>
       </Fragment>

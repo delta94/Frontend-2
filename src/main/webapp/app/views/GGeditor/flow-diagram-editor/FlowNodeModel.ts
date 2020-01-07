@@ -424,8 +424,8 @@ export class SmsProcessNodeModel extends ProcessNodeModel {
   }
 }
 
-export class TimeWaitingDecisionNodeModel extends DecisionNodeModel {
-  static TYPE: string = 'decision_time_waiting';
+export class TimeWaitingDecisionNodeModel extends ProcessNodeModel {
+  static TYPE: string = 'process_time_waiting';
 
   constructor(id?: string) {
     super(TimeWaitingDecisionNodeModel.TYPE, id);
