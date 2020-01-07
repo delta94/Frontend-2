@@ -135,13 +135,9 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
       }
     });
     let idVersionlast: string = '';
-    let versionLast: number = 0;
     listVersion.map(item => {
       if (item.status != constant_version.DRAFT) {
-        if (item.version > versionLast) {
-          versionLast = item.version;
-          idVersionlast = item.id;
-        }
+        idVersionlast = item.id;
       }
     });
 
