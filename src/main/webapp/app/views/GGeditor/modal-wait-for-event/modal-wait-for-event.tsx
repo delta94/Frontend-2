@@ -46,6 +46,7 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
 
   toggle = () => {
     let { toggleModal, isOpenModal } = this.props;
+    this.setState({ event_error: '', mail_error: '', time_error: '' })
     toggleModal(!isOpenModal);
   };
   save = async () => {

@@ -18,17 +18,20 @@ interface IModalTimeWaitState {
   waitEvent: number;
   timeWaitEvent: string;
   date: string;
+  waitEvent_error: string;
 }
 
 export class ModalTimeWait extends React.Component<IModalTimeWaitProps, IModalTimeWaitState> {
   state: IModalTimeWaitState = {
     waitEvent: 0,
     timeWaitEvent: '',
-    date: ''
+    date: '',
+    waitEvent_error: '',
   };
 
   toggle = () => {
     let { toggleModal, isOpenModal } = this.props;
+    this.setState({ waitEvent_error: ''})
     toggleModal(!isOpenModal);
   };
 
@@ -49,11 +52,33 @@ export class ModalTimeWait extends React.Component<IModalTimeWaitProps, IModalTi
       waitEvent,
       date
     };
-    data.timer.push(timer);
-    validateCampaign(data);
-    localStorage.removeItem('isSave');
-    this.toggle();
+    if (this.checkValidate()) {
+      data.timer.push(timer);
+      validateCampaign(data);
+      localStorage.removeItem('isSave');
+      this.toggle();
+    }
   };
+
+  checkValidate = (): boolean => {
+    let { waitEvent_error, waitEvent, date } = this.state
+    let result: boolean = true
+    if (waitEvent < 1) {
+      waitEvent_error = "* Vui lòng chọn thời gian chờ"
+    } else {
+      waitEvent_error = ""
+    }
+    if (!date) {
+      waitEvent_error = "* Vui lòng chọn thời gian chờ"
+    } else {
+      waitEvent_error = ""
+    }
+    if (waitEvent_error.length > 0) {
+      result = false
+    }
+    this.setState({ waitEvent_error })
+    return result
+  }
 
   // add condition time wait
   handlerTimeWait = async value => {
@@ -162,14 +187,15 @@ export class ModalTimeWait extends React.Component<IModalTimeWaitProps, IModalTi
                   </Select>
                 </Col>
               </Col>
+              <p className="error" style={{ color: "red" }}>{this.state.waitEvent_error}</p>
             </Row>
           </Row>
         </ModalBody>
         <ModalFooter>
-          <Button type="link" onClick={this.toggle}>
+          <Button type="link" style={{ color: "black" }} onClick={this.toggle}>
             Hủy
           </Button>
-          <Button type="primary" onClick={this.save}>
+          <Button type="primary" style={{ background: '#3866DD' }} onClick={this.save}>
             Chọn
           </Button>{' '}
         </ModalFooter>
