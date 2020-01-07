@@ -135,9 +135,13 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
       }
     });
     let idVersionlast: string = '';
+    let versionLast: number = 0;
     listVersion.map(item => {
       if (item.status != constant_version.DRAFT) {
-        idVersionlast = item.id;
+        if (item.version > versionLast) {
+          versionLast = item.version;
+          idVersionlast = item.id;
+        }
       }
     });
 
@@ -445,12 +449,9 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
     let { listVersion, infoVersion } = this.state;
     listVersion.map(item => {
       if (item.cjVersionId === listCjId[0]) {
-        if (item.status != constant_version.DRAFT) {
-          idVersionlast = item.id;
-        }
+        idVersionlast = item.id;
       }
     });
-    console.log(idVersionlast)
     if (idVersionlast) {
       confirm({
         title: `Bạn có muốn nhân bản chiến dịch này ?`,
