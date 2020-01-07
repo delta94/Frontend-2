@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import { validateCampaign, getDiagramCampaign } from 'app/actions/campaign-managament';
-import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Button as ButtonReacts } from 'reactstrap';
 import { Button, Row, Col, Input, Select, InputNumber } from 'antd';
 import { updateInfoCampaign } from 'app/actions/campaign-managament';
 import './modal-wait-for-event.scss';
@@ -26,6 +26,9 @@ interface IModalWaitForEventState {
   timer: string;
   date: string;
   idEmail: string;
+  event_error: string;
+  mail_error: string;
+  time_error: string;
 }
 
 export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, IModalWaitForEventState> {
@@ -35,7 +38,10 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
     time: 0,
     timer: '',
     date: '',
-    idEmail: ''
+    idEmail: '',
+    event_error: '',
+    mail_error: '',
+    time_error: '',
   };
 
   toggle = () => {
@@ -62,11 +68,35 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
       time,
       idEmail
     };
-    localStorage.removeItem('isSave');
-    data.timerEvent.push(timerEvent);
-    await validateCampaign(data);
-    this.toggle();
+    if (this.checkValidate()) {
+      localStorage.removeItem('isSave');
+      data.timerEvent.push(timerEvent);
+      await validateCampaign(data);
+      this.toggle();
+    }
   };
+
+  checkValidate = (): boolean => {
+    let result: boolean = true
+    let { email, time, date, mail_error, time_error } = this.state;
+    if (!email) {
+      mail_error = "* Vui lòng chọn email"
+    } else {
+      mail_error = ""
+    }
+    if (time < 1) {
+      time_error = "* Vui lòng chọn thời gian kết thúc"
+    } else if (!date) {
+      time_error = "* Vui lòng chọn thời gian kết thúc"
+    } else {
+      time_error = ""
+    }
+    if (time_error.length > 0 || mail_error.length > 0) {
+      result = false
+    }
+    this.setState({ time_error, mail_error })
+    return result
+  }
 
   // add condition time wait
   handlerTimeWait = async value => {
@@ -88,8 +118,7 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
         break;
       case 'M1':
         date = 'Phút';
-      case 'S':
-        date = 'Giây';
+        break;
       default:
         break;
     }
@@ -102,7 +131,6 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
     await data.nodes.map(event => {
       if (event.id === idNode.id) {
         event.value = timer;
-        // event.label = this.state.event;
       }
     });
     await getDiagramCampaign(data);
@@ -115,7 +143,6 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
     const { listFieldData } = this.props;
     listFieldData.emailConfig &&
       listFieldData.emailConfig.map(item => {
-        debugger;
         if (item.id === value) {
           result = item.nameEmail;
           idEmail = item.id;
@@ -164,7 +191,6 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
       listFieldData.timerEvent.map(item => {
         if (item.id === this.props.idNode.id) {
           result = item.email;
-          console.log(result);
         }
       });
     return result ? result : 'Vui lòng chọn Email';
@@ -208,6 +234,7 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
                     })}
                 </Select>
               </Col>
+              <p className="error">{this.state.mail_error}</p>
             </Row>
             <Row>
               <Col span={6}>
@@ -234,20 +261,20 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
                     <Option value="D">Ngày</Option>
                     <Option value="H">Giờ</Option>
                     <Option value="M1">Phút</Option>
-                    <Option value="S">Giây</Option>
                   </Select>
                 </Col>
               </Col>
+              <p className="error">{this.state.time_error}</p>
             </Row>
           </Row>
         </ModalBody>
         <ModalFooter>
-          <Button type="link" onClick={this.toggle}>
+          <ButtonReacts color="none" onClick={this.toggle}>
             Hủy
-          </Button>
-          <Button type="primary" onClick={this.save}>
+          </ButtonReacts>
+          <ButtonReacts color="primary" style={{ background: '#3866DD' }} onClick={this.save}>
             Chọn
-          </Button>{' '}
+          </ButtonReacts>{' '}
         </ModalFooter>
       </Modal>
     );

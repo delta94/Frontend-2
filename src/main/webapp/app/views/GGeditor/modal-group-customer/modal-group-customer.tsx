@@ -351,8 +351,6 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
     this.props.toggle(false, this.state.categoryName + ',' + this.state.dateTime, customerAdvancedSave, true);
   }
   getNameGroup = () => {
-    debugger
-
     const { listFieldData } = this.props;
     let result: string;
     listFieldData.listCampign &&

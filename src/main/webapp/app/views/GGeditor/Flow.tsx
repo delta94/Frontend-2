@@ -173,25 +173,6 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     this.forceUpdate();
   };
 
-  //handler Popup send email
-  confirmEmail = async () => {
-    let { idNode, titleMail } = this.state;
-    let { listDiagram, getDiagramCampaign, listFieldData, validateCampaign } = this.props;
-    let data = listDiagram;
-    await data.nodes.map(event => {
-      if (event.id === idNode.id) {
-        event.label = titleMail;
-      }
-    });
-
-    await getDiagramCampaign(data);
-    await this.setState({
-      isOpenModalEmail: false,
-      isUpdateNode: true,
-      data: data
-    });
-  };
-
   // handler Open modal
   getVisible = async (event, valueName, searchAdv, isSuccess) => {
     let { getDiagramCampaign, validateCampaign, listFieldData, listDiagram } = this.props;
@@ -944,9 +925,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   }
 
   render() {
-    let { isOpenModalInfo, idNode, isTest, isOpenModalMessage, isOpenModalWaitForEvent, isOpenModalWait, data, isValidate } = this.state;
+    let { isOpenModalInfo, idNode, isTest, isOpenModalMessage, isOpenModalWaitForEvent, isOpenModalWait, data, isOpenModalEmail } = this.state;
     let { modalState } = this.props;
-    console.log(this.props.list_clone_version)
     return (
       <Fragment>
         <SweetAlert
@@ -962,51 +942,13 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         <ConfigMessage toggleModal={this.getVisible} isOpenModal={isOpenModalMessage} idNode={idNode} />
         <ModalWaitForEvent toggleModal={this.getVisible} isOpenModal={isOpenModalWaitForEvent} idNode={idNode} />
         <ModalTimeWait toggleModal={this.getVisible} isOpenModal={isOpenModalWait} idNode={idNode} />
+        <ConfigEmail toggleModal={this.getVisible} isOpenModal={isOpenModalEmail} idNode={idNode} />
         {this.renderFlowDiagram()}
         <div className="content-group-modal-attribute">
-          <ModalGroupCustomer
-            is_show={this.state.visible}
-            type_modal={'empty'}
-            id_list_customer={''}
-            toggle={this.getVisible}
-            title_modal={'CHỌN NHÓM'}
-            idNode={this.state.idNode}
+        <ModalGroupCustomer is_show={this.state.visible} type_modal={'empty'} id_list_customer={''} toggle={this.getVisible} title_modal={'CHỌN NHÓM'} idNode={this.state.idNode}
           />
         </div>
-        <Modal className="modal-config-email" isOpen={this.state.isOpenModalEmail}>
-          <ModalHeader
-            toggle={() => {
-              this.setState({ isOpenModalEmail: !this.state.isOpenModalEmail });
-            }}
-          >
-            {' '}
-            GỬI EMAIL
-          </ModalHeader>
-          <ModalBody>
-            <ConfigEmail idNode={this.state.idNode} onClick={this.getInfoEmail} />
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              type="link"
-              onClick={() => {
-                this.setState({ isOpenModalEmail: !this.state.isOpenModalEmail });
-              }}
-            >
-              {' '}
-              Hủy
-            </Button>
-            <Button
-              type="primary"
-              style={{ background: '#3866DD' }}
-              onClick={() => {
-                localStorage.removeItem('isSave');
-                this.confirmEmail();
-              }}
-            >
-              Chọn
-            </Button>{' '}
-          </ModalFooter>
-        </Modal>
+
       </Fragment>
     );
   }

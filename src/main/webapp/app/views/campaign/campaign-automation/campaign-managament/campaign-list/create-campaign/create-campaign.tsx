@@ -50,7 +50,7 @@ interface ICreateCampaignState {
 class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampaignState> {
   state: ICreateCampaignState = {
     infoVersion: {
-      type: '',
+      type: 'copy',
       nameVersion: '',
       idVersion: '',
       cjId: '',
