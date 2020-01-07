@@ -91,7 +91,7 @@ export class UpdateInfoCampaign extends React.Component<IUpdateInfoCampaignProps
                 <label className="label-message">Tag</label>
               </Col>
               <Col span={18}>
-                <CampaignTag defaultValue={defaulftTag && defaulftTag.length > 0 ? defaulftTag : Object.keys(list_clone_version).length > 0 ? list_clone_version.cjTags : []} handleChange={this.handleChange} />
+                <CampaignTag defaultValue={listInfoCampaing.tag && listInfoCampaing.tag.length > 0 ? listInfoCampaing.tag : Object.keys(list_clone_version).length > 0 ? list_clone_version.cjTags : []} handleChange={this.handleChange} />
               </Col>
             </Row>
             <br />

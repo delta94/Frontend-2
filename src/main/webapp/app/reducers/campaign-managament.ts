@@ -22,7 +22,7 @@ interface IStatusCampagin {
 interface IInfoCampaign {
   des: string;
   name: string;
-  tag: string;
+  tag: [];
 }
 
 interface IListDiagram {

@@ -32,7 +32,8 @@ import {
   cloneVersion,
   saveCampaignAutoVersion,
   activeProcessCampaign,
-  validateGraph
+  validateGraph,
+  cloneVersionById
 } from 'app/actions/campaign-managament';
 import { IRootState } from 'app/reducers';
 import ConfigEmail from './config-email/config-email';
@@ -377,15 +378,15 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   };
 
   replicateCampaign = async () => {
-    let { list_clone_version, cloneVersion, saveCampaignAutoVersion, infoVersion } = this.props;
+    let { list_clone_version, cloneVersionById, saveCampaignAutoVersion, infoVersion } = this.props;
     let dataInfoVersion = {
-      type: 'action',
+      type: 'copy',
       nameVersion: '',
       idVersion: '',
       cjId: '',
       status: ''
     };
-    await cloneVersion(list_clone_version && list_clone_version.id ? list_clone_version.id : infoVersion.idVersion);
+    await cloneVersionById(list_clone_version && list_clone_version.id ? list_clone_version.id : infoVersion.idVersion);
     await this.cloneVersion('create');
     await saveCampaignAutoVersion(dataInfoVersion);
     this.hide();
@@ -511,7 +512,6 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             <FontAwesomeIcon icon={faCopy} /> &nbsp; <label>Nhân bản chiến dịch</label>
           </Button>
         </Row>
-        <hr />
         <Row>
           <Button type="link" onClick={this.hide} className="btn-multi">
             <FontAwesomeIcon icon={faTrashAlt} color="red" /> &nbsp; <label style={{ color: 'red' }}>Xóa version này</label>
@@ -673,7 +673,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     let cjTags = infoCampaign.tag && infoCampaign.tag.length > 0 ? infoCampaign.tag : list_clone_version.cjTags && list_clone_version.cjTags.length > 0 ? list_clone_version.cjTags : []
     let startTime = timeStartCampaign ? timeStartCampaign : Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.startTime : `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`
     let data = {
-      folderId: Object.keys(list_clone_version).length > 0 ? list_clone_version.id : idFolder ? idFolder : '-99',
+      folderId: idFolder ? idFolder : '-99',
       cjVersionId: Object.keys(list_clone_version).length > 0 ? list_clone_version.id : this.props.id_active.cjId ? this.props.id_active.id : null,
       cj: {
         id: Object.keys(list_clone_version).length > 0 ? list_clone_version.cjId : this.props.id_active.id ? this.props.id_active.cjId : null,
@@ -854,7 +854,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             <Row type="flex" className="editorHd">
               <Col span={24} style={{ borderBottom: '0.25px solid', padding: '1%' }}>
                 <Col span={4}>
-                  <label>Phiên bản: {this.props.list_clone_version.status ? this.props.list_clone_version.version : '1.0'}</label>
+                  <label>Phiên bản: {'1.0'}</label>
                 </Col>
                 <Col span={8}>
                   <label>Trạng Thái : {this.props.list_clone_version.status ? this.props.list_clone_version.status : 'Bản nháp'}</label>
@@ -945,7 +945,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         <ConfigEmail toggleModal={this.getVisible} isOpenModal={isOpenModalEmail} idNode={idNode} />
         {this.renderFlowDiagram()}
         <div className="content-group-modal-attribute">
-        <ModalGroupCustomer is_show={this.state.visible} type_modal={'empty'} id_list_customer={''} toggle={this.getVisible} title_modal={'CHỌN NHÓM'} idNode={this.state.idNode}
+          <ModalGroupCustomer is_show={this.state.visible} type_modal={'empty'} id_list_customer={''} toggle={this.getVisible} title_modal={'CHỌN NHÓM'} idNode={this.state.idNode}
           />
         </div>
 
@@ -976,7 +976,8 @@ const mapDispatchToProps = {
   activeProcessCampaign,
   openModal,
   closeModal,
-  validateGraph
+  validateGraph,
+  cloneVersionById
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

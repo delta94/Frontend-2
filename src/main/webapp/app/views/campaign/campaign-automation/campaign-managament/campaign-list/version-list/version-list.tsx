@@ -125,7 +125,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
   createVersion = async () => {
     const { saveCampaignAutoVersion, getDiagramCampaign, cloneVersionById } = this.props;
     const { infoVersion, listVersion } = this.state;
-    infoVersion.type = ''
+    infoVersion.type = 'copy'
     let isHaveDraf = false;
     let idDraft: string = '';
     listVersion.map(item => {
@@ -443,18 +443,18 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
   };
 
   copyVersion = () => {
-    let { cloneVersionById, saveCampaignAutoVersion, list_clone_version } = this.props;
-    let versionLast: number = 0;
+    let { cloneVersionById, saveCampaignAutoVersion } = this.props;
+    let { listCjId } = this.state
     let idVersionlast: string = '';
     let { listVersion, infoVersion } = this.state;
     listVersion.map(item => {
-      if (item.status != constant_version.DRAFT) {
-        if (item.version > versionLast) {
-          versionLast = item.version;
+      if (item.cjVersionId === listCjId[0]) {
+        if (item.status != constant_version.DRAFT) {
           idVersionlast = item.id;
         }
       }
     });
+    console.log(idVersionlast)
     if (idVersionlast) {
       confirm({
         title: `Bạn có muốn nhân bản chiến dịch này ?`,
@@ -499,7 +499,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
   };
 
   render() {
-    let { infoVersion, listVersion } = this.state;
+    let { infoVersion, listVersion, listCjId } = this.state;
     const imgCopy = require('app/assets/utils/images/campaign-managament/copy-version.png');
     const imgDelete = require('app/assets/utils/images/campaign-managament/delete-version.png');
     const imgLine = require('app/assets/utils/images/campaign-managament/line-version.png');
@@ -556,7 +556,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
           <Container fluid className="container-version">
             <Card style={{ height: '650px' }}>
               <Row className="body-version">
-                <Button onClick={this.copyVersion} type="link">
+                <Button disabled={listCjId.length === 1 ? false : true} onClick={this.copyVersion} type="link">
                   {' '}
                   <img src={imgCopy} />{' '}
                 </Button>

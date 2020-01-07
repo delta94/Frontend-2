@@ -229,7 +229,7 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
               onClick={async () => {
                 let data = {
                   name: 'Tạo chiến dịch mới',
-                  tag: [],
+                  tag: [''],
                   des: ''
                 };
                 await this.props.updateInfoCampaign(data);
