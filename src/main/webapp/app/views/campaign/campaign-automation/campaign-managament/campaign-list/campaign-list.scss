@@ -30,6 +30,9 @@
   height: auto;
   position: relative;
 
+  .ant-progress-inner {
+    background: #e2e5e7;
+  }
   .block-out {
     .col-search-tag {
       float: right;

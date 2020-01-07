@@ -16,10 +16,7 @@ interface IUpdateInfoCampaignProps extends StateProps, DispatchProps {
 }
 interface IUpdateInfoCampaignState {
   nameCampaign: string;
-  strTag: {
-    id: string;
-    name: string;
-  };
+  strTag: any[];
   valueDes: string;
   defaulftTag: any[];
 }
@@ -27,10 +24,7 @@ interface IUpdateInfoCampaignState {
 export class UpdateInfoCampaign extends React.Component<IUpdateInfoCampaignProps, IUpdateInfoCampaignState> {
   state: IUpdateInfoCampaignState = {
     nameCampaign: '',
-    strTag: {
-      id: '',
-      name: ''
-    },
+    strTag: [],
     valueDes: '',
     defaulftTag: []
   };
@@ -71,8 +65,8 @@ export class UpdateInfoCampaign extends React.Component<IUpdateInfoCampaignProps
   };
 
   render() {
-    let { isOpenModal, listInfoCampaing } = this.props;
-    let { nameCampaign } = this.state;
+    let { isOpenModal, listInfoCampaing, list_clone_version } = this.props;
+    let { defaulftTag } = this.state;
     return (
       <Modal className="modal-info-title" isOpen={isOpenModal}>
         <ModalHeader toggle={this.toggle}>Chiến dịch mới</ModalHeader>
@@ -84,7 +78,7 @@ export class UpdateInfoCampaign extends React.Component<IUpdateInfoCampaignProps
               </Col>
               <Col span={18}>
                 <Input
-                  defaultValue={listInfoCampaing.name ? listInfoCampaing.name : 'Tạo mới chiến dịch'}
+                  defaultValue={listInfoCampaing.name ? listInfoCampaing.name : list_clone_version.name ? list_clone_version.name : "Tạo chiến dịch mới"}
                   onChange={this.getNameCampaign}
                   id="name-campaign"
                   style={{ float: 'right', width: '95%' }}
@@ -97,7 +91,7 @@ export class UpdateInfoCampaign extends React.Component<IUpdateInfoCampaignProps
                 <label className="label-message">Tag</label>
               </Col>
               <Col span={18}>
-                <CampaignTag defaultValue={this.state.defaulftTag} handleChange={this.handleChange} />
+                <CampaignTag defaultValue={defaulftTag && defaulftTag.length > 0 ? defaulftTag : Object.keys(list_clone_version).length > 0 ? list_clone_version.cjTags : []} handleChange={this.handleChange} />
               </Col>
             </Row>
             <br />
@@ -106,7 +100,7 @@ export class UpdateInfoCampaign extends React.Component<IUpdateInfoCampaignProps
                 <label className="label-message">Mô tả</label>
               </Col>
               <Col span={18}>
-                <TextArea defaultValue={listInfoCampaing.des} onChange={this.getDes} style={{ width: '95%' }} id="text-content" rows={4} />
+                <TextArea defaultValue={listInfoCampaing.des ? listInfoCampaing.des : list_clone_version.description ? list_clone_version.description : ''} onChange={this.getDes} style={{ width: '95%' }} id="text-content" rows={4} />
               </Col>
             </Row>
           </Row>
@@ -125,7 +119,8 @@ export class UpdateInfoCampaign extends React.Component<IUpdateInfoCampaignProps
 }
 const mapStateToProps = ({ campaignManagament }: IRootState) => ({
   loading: campaignManagament.loading,
-  listInfoCampaing: campaignManagament.listInfoCampaing
+  listInfoCampaing: campaignManagament.listInfoCampaing,
+  list_clone_version: campaignManagament.cloneInfoVersion
 });
 
 const mapDispatchToProps = {

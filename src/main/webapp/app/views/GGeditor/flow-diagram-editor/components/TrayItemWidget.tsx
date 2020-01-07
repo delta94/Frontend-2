@@ -3,11 +3,12 @@ import { createFlowNodeWidget } from '../FlowNodeFactory';
 
 export interface TrayItemWidgetProps {
   model: any;
-  onDragStart: any;
-  onDragEnd: any;
+  onDragStart?: any;
+  onDragEnd?: any;
+  isDrag?: boolean
 }
 
-export interface TrayItemWidgetState {}
+export interface TrayItemWidgetState { }
 
 export class TrayItemWidget extends React.Component<TrayItemWidgetProps, TrayItemWidgetState> {
   constructor(props: TrayItemWidgetProps) {
@@ -16,19 +17,20 @@ export class TrayItemWidget extends React.Component<TrayItemWidgetProps, TrayIte
   }
 
   render() {
+    const { isDrag, onDragStart, onDragEnd, model } = this.props
     return (
       <div
-        draggable={true}
+        draggable={isDrag}
         onDragStart={event => {
-          if (this.props.onDragStart) this.props.onDragStart(event);
-          event.dataTransfer.setData('flow-diagram-node', JSON.stringify(this.props.model));
+          if (onDragStart) this.props.onDragStart(event);
+          event.dataTransfer.setData('flow-diagram-node', JSON.stringify(model));
         }}
         onDragEnd={event => {
-          if (this.props.onDragEnd) this.props.onDragEnd(event);
+          if (onDragEnd) this.props.onDragEnd(event);
         }}
         className="tray-item"
       >
-        {createFlowNodeWidget(this.props.model.type, null, false, false)}
+        {createFlowNodeWidget(model.type, null, false, false)}
       </div>
     );
   }

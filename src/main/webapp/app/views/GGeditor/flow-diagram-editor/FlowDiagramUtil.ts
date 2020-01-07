@@ -73,6 +73,7 @@ export function toNode(nodeModel: FlowNodeModel): any | null {
       type: 'node',
       label: '',
       code: getNodeCode(nodeModel.getType()),
+      params : nodeModel.getType(),
       value: '',
       id: nodeModel.getID(),
       x: nodeModel.x,

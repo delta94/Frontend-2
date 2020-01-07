@@ -31,8 +31,6 @@ import { OPERATOR } from 'app/constants/field-data';
 import { IOpenModal } from 'app/reducers/modal';
 import { ERROR } from 'app/constants/common';
 
-const { MonthPicker, RangePicker } = DatePicker;
-
 interface IGroupModalConfigProps extends StateProps, DispatchProps {
   is_show: boolean;
   toggle: Function;
@@ -351,9 +349,10 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
       advancedSearches
     };
     this.props.toggle(false, this.state.categoryName + ',' + this.state.dateTime, customerAdvancedSave, true);
-    console.log(this.state.dateTime);
   }
   getNameGroup = () => {
+    debugger
+
     const { listFieldData } = this.props;
     let result: string;
     listFieldData.listCampign &&
@@ -374,27 +373,28 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
       totalElements,
       type_modal,
       info_version,
-      listFieldData
+      listFieldData,
+      openModal
     } = this.props;
     let { list_field_data_cpn, logicalOperator, advancedSearches, categoryName, pageIndex } = this.state;
     let list_field_render =
       list_field_data_cpn && list_field_data_cpn.length > 0
         ? list_field_data_cpn.map(item => {
-            if (item.id)
-              return (
-                <FieldData
-                  type_modal={type_modal}
-                  key={item.id}
-                  id={item.id}
-                  last_index={item.last_index}
-                  logicalOperator={logicalOperator}
-                  default_data={item.default_data}
-                  updateValueFromState={this.updateValueFromState}
-                  deleteComponentById={this.deleteComponentById}
-                  updateRelationshipFromState={this.updateRelationshipFromState}
-                />
-              );
-          })
+          if (item.id)
+            return (
+              <FieldData
+                type_modal={type_modal}
+                key={item.id}
+                id={item.id}
+                last_index={item.last_index}
+                logicalOperator={logicalOperator}
+                default_data={item.default_data}
+                updateValueFromState={this.updateValueFromState}
+                deleteComponentById={this.deleteComponentById}
+                updateRelationshipFromState={this.updateRelationshipFromState}
+              />
+            );
+        })
         : [];
 
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
@@ -413,7 +413,6 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
       default:
         break;
     }
-
     return (
       <Modal
         destroyOnClose
@@ -435,7 +434,18 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
             key="back"
             color="primary"
             disabled={advancedSearches && categoryName && categoryName.trim() !== '' ? false : true}
-            onClick={() => this.execFunctionRequest()}
+            onClick={() => {
+              if (totalElements > 0) {
+                this.execFunctionRequest();
+              } else {
+                openModal({
+                  show: true,
+                  type: 'error',
+                  title: translate('modal-data.title.error'),
+                  text: 'Vui lòng chọn ít nhất 1 khách hàng'
+                });
+              }
+            }}
           >
             <Translate contentKey="group-attribute-customer.save" />
           </Button>
@@ -477,7 +487,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
                   color="primary"
                   style={{ float: 'right', margin: '3px' }}
                   onClick={this.getDataListCustomer}
-                  disabled={info_version.type == 'copy' ? true : list_field_data_cpn.length === 0 ? true : false}
+                  disabled={info_version.type === 'copy' ? false : true}
                 >
                   <Translate contentKey="group-attribute-customer.apply" />
                 </Button>
@@ -556,12 +566,12 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
                         );
                       })
                     ) : (
-                      <tr>
-                        <td className="none-data" colSpan={100}>
-                          <Translate contentKey="group-attribute-customer.none-data-list-customer" />
-                        </td>
-                      </tr>
-                    )}
+                        <tr>
+                          <td className="none-data" colSpan={100}>
+                            <Translate contentKey="group-attribute-customer.none-data-list-customer" />
+                          </td>
+                        </tr>
+                      )}
                   </tbody>
                 </Table>
               </div>

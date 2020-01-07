@@ -45,8 +45,8 @@ export const getStatusCampaignService = () => {
 };
 
 // call API get list campaign auto
-export const getListCampaginService = () => {
-  return axios.get(urlCampaign);
+export const getListCampaginService = (status: string, page?: number, pageSize?: number) => {
+  return axios.get(urlCampaign, { params: { status, page, pageSize } });
 };
 
 //call API save campaign auto
@@ -118,5 +118,11 @@ export const getTemplateCampaignService = () => {
 //call Api clone version by Id
 export const cloneVersionByIdService = id => {
   const url = `${urlCampaign}/${id}/versions/clone`;
+  return axios.get(url);
+};
+
+//call API validate Graph
+export const validateGraphService = id => {
+  const url = `${urlVersion}/${id}/validate`;
   return axios.get(url);
 };

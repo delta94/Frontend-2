@@ -57,7 +57,7 @@ class CJTagPopOver extends React.Component<ICjTagPopOverProps, TCjTagPopOverStat
     };
     await this.props.updateCjTagsAction(cjEdit);
     this.closePopup();
-    this.props.getCjs(this.props.dataPopup.cjFolderId);
+    this.props.getCjs();
   };
 
   togglePopup = async () => {
@@ -117,7 +117,7 @@ class CJTagPopOver extends React.Component<ICjTagPopOverProps, TCjTagPopOverStat
   };
 
   refreshListCjTag = () => {
-    this.props.getCjs(this.props.dataPopup.cjFolderId);
+    this.props.getCjs();
     this.closePopup();
   };
 

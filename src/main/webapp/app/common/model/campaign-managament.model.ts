@@ -2,12 +2,15 @@ export interface IListCloneVersion {
   id: string;
   cjId: string;
   version: string;
+  name : string;
+  cjTags : [];
   status: string;
   flow: string;
   description: string;
   nodeMetaData: string;
   countAct: string;
   flowDetail: {
+    customerGroupName : string;
     startTime: string;
     customerAdvancedSave: {
       advancedSearches: [{}];

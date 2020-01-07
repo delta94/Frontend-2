@@ -75,8 +75,10 @@ export class ModalTimeWait extends React.Component<IModalTimeWaitProps, IModalTi
         break;
       case 'M1':
         date = 'Phút';
+        break;
       case 'S':
         date = 'Giây';
+        break;
       default:
         break;
     }
@@ -157,7 +159,6 @@ export class ModalTimeWait extends React.Component<IModalTimeWaitProps, IModalTi
                     <Option value="D">Ngày</Option>
                     <Option value="H">Giờ</Option>
                     <Option value="M1">Phút</Option>
-                    <Option value="S">Giây</Option>
                   </Select>
                 </Col>
               </Col>

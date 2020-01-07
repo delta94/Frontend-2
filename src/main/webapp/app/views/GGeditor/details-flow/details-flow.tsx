@@ -238,6 +238,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       loading,
       list_customer_version_process
     } = this.props;
+    console.log(clone_version.name)
+
     let { isOpenModal } = this.state;
     const eventStatus = option => {
       let data;
@@ -285,7 +287,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                       </a>
                     </Breadcrumb.Item>
 
-                    <label className="ant-breadcrumb-link">{infoVersion.nameVersion}</label>
+                    <label className="ant-breadcrumb-link">{clone_version.name}</label>
                   </Breadcrumb>
                 </Col>
               </Row>

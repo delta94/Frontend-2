@@ -63,7 +63,7 @@ const code_node = {
 class CampaignList extends React.Component<ICampaignListProps, ICampaignListState> {
   state: ICampaignListState = {
     activePage: 0,
-    itemsPerPage: 4,
+    itemsPerPage: 7,
     textSearch: '',
     strTagId: '',
     openModalCjTag: false,
@@ -155,7 +155,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
   getCjs = () => {
     let { activePage, itemsPerPage, id } = this.state;
     let folderId = this.props.folder_id_choose;
-    this.getListCampaignInfolderDataAction(folderId, '', '', activePage, itemsPerPage);
+    this.getListCampaignInfolderDataAction(folderId ? folderId : '-99', '', '', activePage, itemsPerPage);
   };
 
   getCjsCallBack = folderId => {
@@ -273,7 +273,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
 
   viewVersion = async id => {
     let infoVersion = {
-      type: '',
+      type: 'copy',
       nameVersion: '',
       idVersion: '',
       cjId: '',
@@ -371,7 +371,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
     let { campaign_list, total, loading } = this.props;
     let { textSearch, strTagId, activePage, itemsPerPage, openModalCjTag, cjEdit, list_camp } = this.state;
     let folderId = this.props.folder_id_choose;
-    let totalPages = Math.ceil(total / 4);
+    let totalPages = Math.ceil(total / 7);
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
     const img_tag = require('app/assets/utils/images/campaign-managament/tag-list.png');
     const getStatusName = (status: string) => {
@@ -529,9 +529,9 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                           <span> {item.modifiedDate}</span>
                         </td>
                         <td colSpan={15}>
-                          {/* <CJTagPopOver key={item.cjVersionId} dataPopup={item} getCjs={this.getCjsCallBack} /> */}
+                          <CJTagPopOver key={item.cjVersionId} dataPopup={item} getCjs={this.getCjs} />
                           {/* <Icon onClick={() => this.openModalCjTag(item.id)} style={{ fontSize: '24px' }} type="tags" />  */}
-                          <PopverAnt
+                          {/* <PopverAnt
                             overlayClassName="pop-tag"
                             content={this.contentTag(item)}
                             title="Chọn tag"
@@ -547,7 +547,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                             }}
                           >
                             <img src={img_tag} />
-                          </PopverAnt>
+                          </PopverAnt> */}
                           &nbsp; &nbsp;
                           <PopverAnt
                             overlayClassName="pop-version"

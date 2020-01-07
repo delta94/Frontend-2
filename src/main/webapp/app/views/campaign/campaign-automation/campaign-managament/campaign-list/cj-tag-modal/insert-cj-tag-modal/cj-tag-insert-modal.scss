@@ -4,10 +4,16 @@
     background: #ffffff;
   }
 
-  .cj-tag-insert-input {
-    display: flex;
-    span {
-      margin-right: 10px;
+  .cj-tag-insert-content {
+    .cj-tag-insert-input {
+      display: flex;
+      span {
+        margin-right: 10px;
+      }
+    }
+    .message-error {
+      color: red;
+      margin: 5px 0px 0px 30px;
     }
   }
 }

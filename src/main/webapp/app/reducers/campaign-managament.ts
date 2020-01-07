@@ -28,7 +28,7 @@ interface IInfoCampaign {
 interface IListDiagram {
   nodes: any[];
   edges: any[];
-  groups: any[];
+  // groups: any[];
 }
 
 interface IListFieldData {
@@ -77,6 +77,7 @@ export type HandleCampaignManagament = typeof initialCampaignManagament;
 
 export default (state = initialCampaignManagament, action) => {
   switch (action.type) {
+    case REQUEST(CAMPAIGN_MANAGAMENT.CLONE_VERSION_BY_ID):
     case REQUEST(CAMPAIGN_MANAGAMENT.GET_TEMPLATE_CAMPAIGN):
     case REQUEST(CAMPAIGN_MANAGAMENT.VIEW_INTERACTIVE):
     case REQUEST(CAMPAIGN_MANAGAMENT.LIST_CUSTOMER_VERSION_PROCESS):
@@ -90,6 +91,7 @@ export default (state = initialCampaignManagament, action) => {
         ...state,
         loading: true
       };
+    case FAILURE(CAMPAIGN_MANAGAMENT.CLONE_VERSION_BY_ID):
     case FAILURE(CAMPAIGN_MANAGAMENT.GET_TEMPLATE_CAMPAIGN):
     case FAILURE(CAMPAIGN_MANAGAMENT.VIEW_INTERACTIVE):
     case FAILURE(CAMPAIGN_MANAGAMENT.LIST_CUSTOMER_VERSION_PROCESS):
@@ -103,6 +105,14 @@ export default (state = initialCampaignManagament, action) => {
         ...state,
         loading: false
       };
+    case SUCCESS(CAMPAIGN_MANAGAMENT.CLONE_VERSION_BY_ID):
+      return {
+        ...state,
+        loading: false,
+        cloneInfoVersion: action.payload.data,
+        // idActive : {}
+      };
+
     case SUCCESS(CAMPAIGN_MANAGAMENT.SAVE_CAMPAIGN_AUTO):
       return {
         ...state,
@@ -199,7 +209,7 @@ export default (state = initialCampaignManagament, action) => {
     case CAMPAIGN_MANAGAMENT.RESET_DATA_CAMPAIGN:
       return {
         ...state,
-        cloneInfoVersion: []
+        listFieldData: []
       };
     case CAMPAIGN_MANAGAMENT.GET_DIAGRAM_CAMPAIGN:
       return { ...state, listDiagram: action.payload };
