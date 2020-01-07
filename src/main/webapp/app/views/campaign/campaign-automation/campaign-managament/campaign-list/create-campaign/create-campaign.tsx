@@ -33,7 +33,7 @@ const code_node = {
   TIMER: 'TIMER',
   TIMER_EVENT: 'TIMER_EVENT'
 };
-interface ICreateCampaignProps extends StateProps, DispatchProps {}
+interface ICreateCampaignProps extends StateProps, DispatchProps { }
 
 interface ICreateCampaignState {
   infoVersion: {
@@ -227,7 +227,12 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
               style={{ background: '#3866DD' }}
               type="primary"
               onClick={async () => {
-                await this.props.updateInfoCampaign({});
+                let data = {
+                  name: 'Tạo chiến dịch mới',
+                  tag: [],
+                  des: ''
+                };
+                await this.props.updateInfoCampaign(data);
                 await this.props.getDiagramCampaign([]);
                 await this.props.saveCampaignAutoVersion(this.state.infoVersion);
                 await this.props.resetData();
