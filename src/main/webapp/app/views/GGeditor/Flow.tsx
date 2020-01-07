@@ -674,9 +674,9 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     let startTime = timeStartCampaign ? timeStartCampaign : Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.startTime : `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`
     let data = {
       folderId: idFolder ? idFolder : '-99',
-      cjVersionId: Object.keys(list_clone_version).length > 0 ? list_clone_version.id : this.props.id_active.cjId ? this.props.id_active.id : null,
+      cjVersionId: Object.keys(list_clone_version).length > 0 ? list_clone_version.id ? list_clone_version.id : this.props.id_active.cjId ? this.props.id_active.id : null : this.props.id_active.cjId ? this.props.id_active.id : null,
       cj: {
-        id: Object.keys(list_clone_version).length > 0 ? list_clone_version.cjId : this.props.id_active.id ? this.props.id_active.cjId : null,
+        id: Object.keys(list_clone_version).length > 0 ? list_clone_version.cjId ? list_clone_version.cjId : this.props.id_active.id ? this.props.id_active.cjId : null  : this.props.id_active.id ? this.props.id_active.cjId : null,
         name: infoCampaign.name ? infoCampaign.name : list_clone_version.name ? list_clone_version.name : 'Tạo chiến dịch mới',
         description: infoCampaign.des ? infoCampaign.des : list_clone_version.description ? list_clone_version.description : infoCampaign.des
       },

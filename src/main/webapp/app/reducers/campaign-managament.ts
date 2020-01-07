@@ -106,6 +106,7 @@ export default (state = initialCampaignManagament, action) => {
         loading: false
       };
     case SUCCESS(CAMPAIGN_MANAGAMENT.CLONE_VERSION_BY_ID):
+      action.payload.data.cjId = null
       return {
         ...state,
         loading: false,
