@@ -280,7 +280,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         <Layout style={{ minHeight: '200vh' }}>
           <Header className="header-flow" style={{ background: "#F9FAFB" }}>
             <Row>
-              <Col span={24} className="titleContent">
+              <Col span={24} className="titleContent-detail">
                 <Breadcrumb separator=">">
                   <Breadcrumb.Item>
                     <a onClick={() => window.location.assign('/#/app/views/customers/user-management')} href="javascript:void(0);">
