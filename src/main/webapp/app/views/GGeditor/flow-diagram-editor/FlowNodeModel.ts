@@ -8,6 +8,25 @@ export class FlowNodeModel extends NodeModel {
     super(nodeType, id);
   }
 
+  private _offsetX: number = -1;
+  private _offsetY: number = -1;
+
+  get offsetX(): number {
+    return this._offsetX;
+  }
+
+  set offsetX(value: number) {
+    this._offsetX = value;
+  }
+
+  get offsetY(): number {
+    return this._offsetY;
+  }
+
+  set offsetY(value: number) {
+    this._offsetY = value;
+  }
+
   private _config: FlowNodeConfig;
 
   get config(): FlowNodeConfig {

@@ -1,5 +1,6 @@
 import * as _ from 'lodash';
 import { DefaultLinkModel, DiagramEngine, LinkModel, PortModel } from 'storm-react-diagrams';
+import { RightAngleLinkModel } from './RightAngleLinkModel';
 
 export class FlowNodePortModel extends PortModel {
   static TOP: string = 'top';
@@ -25,11 +26,11 @@ export class FlowNodePortModel extends PortModel {
     this.position = data.position;
   }
 
-  createLinkModel(): LinkModel {
-    return new DefaultLinkModel();
+  createLinkModel(): RightAngleLinkModel {
+    return new RightAngleLinkModel();
   }
 
-  link(port: FlowNodePortModel): LinkModel | null {
+  link(port: FlowNodePortModel): RightAngleLinkModel | null {
     if (port && this.canLinkToPort(port)) {
       let link = this.createLinkModel();
       link.setSourcePort(this);

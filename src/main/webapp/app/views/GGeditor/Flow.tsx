@@ -136,9 +136,10 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       let groupProcess = GroupProcess.createGroupProcess(data.type);
       if (groupProcess && port) {
         await this.editor.addGroupProcess(groupProcess, port);
+        await localStorage.removeItem('isSave');
+        await this.props.getDiagramCampaign(this.editor.getDiagramData());
+        await this.forceUpdate();
       }
-      await localStorage.removeItem('isSave');
-      await this.props.getDiagramCampaign(this.editor.getDiagramData());
     };
     handlers.onClickEventHandler = async nodeModel => {
       await this.setState({ idNode: toNode(nodeModel) });
@@ -968,7 +969,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                 event.preventDefault();
               }}
             >
-              <DiagramWidget className="srd-flow-canvas" diagramEngine={this.editor.getDiagramEngine()} smartRouting={true} />
+              <DiagramWidget className="srd-flow-canvas" diagramEngine={this.editor.getDiagramEngine()} smartRouting={false} />
             </div>
           </Layout>
         </Layout>

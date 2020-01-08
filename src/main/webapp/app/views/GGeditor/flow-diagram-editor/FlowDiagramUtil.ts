@@ -26,6 +26,8 @@ export function createNodeModel(code: string, id: string): FlowNodeModel | null 
 export function parseNode(node: any): FlowNodeModel | null {
   let nodeModel = createNodeModel(node.code, node.id);
   if (nodeModel) {
+    // nodeModel.x = node.x ? node.x : 0;
+    // nodeModel.y = node.y ? node.y : 0;
     nodeModel.setPosition(node.x ? node.x : 0, node.y ? node.y : 0);
   }
   return nodeModel;
@@ -73,7 +75,7 @@ export function toNode(nodeModel: FlowNodeModel): any | null {
       type: 'node',
       label: '',
       code: getNodeCode(nodeModel.getType()),
-      params : nodeModel.getType(),
+      params: nodeModel.getType(),
       value: '',
       id: nodeModel.getID(),
       x: nodeModel.x,
