@@ -1,4 +1,4 @@
-import { LinkModel, NodeModel, PortModel } from 'storm-react-diagrams';
+import { LinkModel, NodeModel, PointModel, PortModel } from 'storm-react-diagrams';
 import {
   ConditionDecisionNodeModel,
   EmailProcessNodeModel,

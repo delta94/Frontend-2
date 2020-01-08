@@ -7,7 +7,7 @@ import {
   resetListCloneVersion
 } from 'app/actions/campaign-managament';
 import { img_node, const_shape } from 'app/common/model/campaign-managament.model';
-import React from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Button, Table, Row, Badge, Col, Breadcrumb, Card, Tag, Layout, Popover } from 'antd';
 import { Container, Collapse } from 'reactstrap';
@@ -19,7 +19,8 @@ import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faPlus } from '@fortawesome/free-solid-svg-icons';
-import GGEditor, { Flow } from 'gg-editor';
+import { FlowDiagramEditor, GroupProcess } from 'app/views/GGeditor/flow-diagram-editor';
+import { DiagramWidget, DiagramEngine } from 'storm-react-diagrams';
 import './create-campaign.scss';
 const { Panel } = Collapse;
 const { Header } = Layout;
@@ -60,10 +61,20 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
     isViewtemp: false,
     contentFlow: ''
   };
+  editor: FlowDiagramEditor;
   componentDidMount() {
     const { getTemplateCampaign } = this.props;
     getTemplateCampaign();
   }
+  componentWillMount() {
+    let { listDiagram } = this.props;
+    this.editor = new FlowDiagramEditor();
+    this.editor.setDiagramData({
+      nodes: listDiagram.nodes,
+      edges: listDiagram.edges
+    });
+  }
+
 
   difficulty = option => {
     let result = {
@@ -253,28 +264,27 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
             {list_template &&
               list_template.map((item, index) => {
                 return (
-                  <Col className="gutter-row" span={8} key={index} onClick={() => this.cloneVersion(item.flow)}>
+                  <Col className="gutter-row" span={8} key={index} onClick={async () => {
+                    await this.cloneVersion(item.flow)
+                    let { listDiagram } = this.props;
+                    console.log('listDiagram', listDiagram);
+                    this.editor = new FlowDiagramEditor();
+                    this.editor.setDiagramData({
+                      nodes: listDiagram.nodes,
+                      edges: listDiagram.edges
+                    });
+                  }}>
                     <Popover
                       content={
-                        <GGEditor className="editor-create">
-                          <Flow
-                            graph={{
-                              edgeDaefultShape: 'custom-edge',
-                              height: 300
-                            }}
-                            className="flow"
-                            style={{ minHeight: '300px' }}
-                            data={this.props.listDiagram}
-                            shortcut={{ delete: false }}
-                          />
+
+                        <Fragment>
+                          <DiagramWidget className="srd-flow-canvas" diagramEngine={this.editor.getDiagramEngine() } smartRouting={false} />
                           <label>{item.description}</label>
                           <br />
                           <Button type="primary" onClick={() => window.location.assign(`#/flow`)}>
                             Chọn
                           </Button>
-                          <CustomNode />
-                          <CustomEdges />
-                        </GGEditor>
+                        </Fragment>
                       }
                       title=""
                       trigger="click"
