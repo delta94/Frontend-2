@@ -174,3 +174,10 @@ export interface ISaveCampaign {
   id: string;
   cjId: string;
 }
+
+export interface IListValidate {
+  nodeId : string;
+  nodeCode : string;
+  label : string;
+  errors : [];
+}

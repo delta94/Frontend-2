@@ -3,7 +3,8 @@ import {
   getDiagramCampaign,
   resetData,
   getTemplateCampaign,
-  updateInfoCampaign
+  updateInfoCampaign,
+  resetListCloneVersion
 } from 'app/actions/campaign-managament';
 import { img_node, const_shape } from 'app/common/model/campaign-managament.model';
 import React from 'react';
@@ -236,6 +237,7 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
                 await this.props.getDiagramCampaign([]);
                 await this.props.saveCampaignAutoVersion(this.state.infoVersion);
                 await this.props.resetData();
+                await this.props.resetListCloneVersion()
                 await window.location.assign('#/flow');
               }}
             >
@@ -309,7 +311,8 @@ const mapDispatchToProps = {
   getDiagramCampaign,
   resetData,
   getTemplateCampaign,
-  updateInfoCampaign
+  updateInfoCampaign,
+  resetListCloneVersion
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

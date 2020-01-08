@@ -589,6 +589,18 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
   //event save campaign
   saveCampaign = async () => {
+    const { saveCampaignAuto, openModal } = this.props;
+    await saveCampaignAuto(this.getDataDiagram());
+    await openModal({
+      show: true,
+      type: 'success',
+      title: translate('modal-data.title.success'),
+      text: 'Lưu chiến dịch thành công'
+    });
+  };
+
+  //get Data diagram 
+  getDataDiagram = () => {
     let node = this.editor.getDiagramData()
     const { idFolder, saveCampaignAuto, infoVersion, infoCampaign, openModal, listFieldData, list_clone_version } = this.props;
     let { timeStartCampaign, advancedSearches, nameGroup } = this.state;
@@ -626,7 +638,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           code: code_node.TIMER_EVENT,
           nodeConfig: {
             eventType: value.email,
-            emailTemplateId: value.idEmail
+            emailTemplateId: null
           }
         })
       );
@@ -671,16 +683,16 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     let date = new Date();
 
     let cjTags = infoCampaign.tag && infoCampaign.tag.length > 0 ? infoCampaign.tag : list_clone_version.cjTags && list_clone_version.cjTags.length > 0 ? list_clone_version.cjTags : []
-    let startTime = timeStartCampaign ? timeStartCampaign : Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.startTime : `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`
+    let startTime = timeStartCampaign ? timeStartCampaign : Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.startTime : `${date.toISOString().substr(0, 10)} ${date.toLocaleTimeString()}`
     let data = {
       folderId: idFolder ? idFolder : '-99',
       cjVersionId: Object.keys(list_clone_version).length > 0 ? list_clone_version.id ? list_clone_version.id : this.props.id_active.cjId ? this.props.id_active.id : null : this.props.id_active.cjId ? this.props.id_active.id : null,
       cj: {
-        id: Object.keys(list_clone_version).length > 0 ? list_clone_version.cjId ? list_clone_version.cjId : this.props.id_active.id ? this.props.id_active.cjId : null  : this.props.id_active.id ? this.props.id_active.cjId : null,
+        id: Object.keys(list_clone_version).length > 0 ? list_clone_version.cjId ? list_clone_version.cjId : this.props.id_active.id ? this.props.id_active.cjId : null : this.props.id_active.id ? this.props.id_active.cjId : null,
         name: infoCampaign.name ? infoCampaign.name : list_clone_version.name ? list_clone_version.name : 'Tạo chiến dịch mới',
         description: infoCampaign.des ? infoCampaign.des : list_clone_version.description ? list_clone_version.description : infoCampaign.des
       },
-      cjTags: cjTags && cjTags.length > 0 ? cjTags[0] === ""  ? [] : cjTags : cjTags,
+      cjTags: cjTags && cjTags.length > 0 ? cjTags[0] === "" ? [] : cjTags : cjTags,
       flow: {
         customerGroupName: nameGroup ? nameGroup : Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.customerGroupName : '',
         startTime: startTime,
@@ -690,14 +702,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         graph: Object.keys(graph).length > 0 ? graph : Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.graph : []
       }
     };
-    await saveCampaignAuto(data);
-    await openModal({
-      show: true,
-      type: 'success',
-      title: translate('modal-data.title.success'),
-      text: 'Lưu chiến dịch thành công'
-    });
-  };
+    return data
+  }
 
   activeProcess = async () => {
     const { activeProcessCampaign, list_clone_version, infoVersion, id_active, openModal, cloneVersion } = this.props;
@@ -801,7 +807,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
   renderFlowDiagram() {
     let { isOpenModalInfo, idNode, isTest, isOpenModalMessage, isOpenModalWaitForEvent, isOpenModalWait, data, isValidate } = this.state;
-    let { infoCampaign, listDiagram, infoVersion, id_active, list_clone_version } = this.props;
+    let { infoCampaign, listDiagram, list_validate, id_active, list_clone_version } = this.props;
     let dataNode = this.editor.getDiagramData()
     const imgSetting = require('app/assets/utils/images/flow/setting.png');
     const imgAward = require('app/assets/utils/images/flow/award.png');
@@ -879,15 +885,15 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                       onClick={() => {
                         this.setState({ isTest: !isTest, isValidate: false });
                       }}
-                      disabled={JSON.parse(localStorage.getItem('isSave')) ? false : true}
+                      disabled={JSON.parse(localStorage.getItem('isSave'))  ? false : true}
                     >
                       Test
                     </Button>
                     <Button
-                      onClick={() => {
+                      onClick={async () => {
                         this.validateFlow();
                         if (Object.keys(id_active).length > 0 && !this.state.isValidate) {
-                          this.props.validateGraph(id_active.id)
+                          this.props.validateGraph(this.getDataDiagram())
                         }
                       }}
                       disabled={id_active.id && id_active.id.length > 0 ? false : true}
@@ -900,7 +906,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                 <Col span={2}>
                   <Button
                     onClick={() => this.activeProcess()}
-                    disabled={JSON.parse(localStorage.getItem('isSave')) ? false : true}
+                    disabled={JSON.parse(localStorage.getItem('isSave'))  ? false : true}
                     type="primary"
                     style={{ float: 'right' }}
                   >
@@ -962,7 +968,8 @@ const mapStateToProps = ({ campaignManagament, handleModal }: IRootState) => ({
   infoVersion: campaignManagament.infoVersion,
   list_clone_version: campaignManagament.cloneInfoVersion,
   id_active: campaignManagament.idActive,
-  modalState: handleModal.data
+  modalState: handleModal.data,
+  list_validate: campaignManagament.list_validate
 });
 
 const mapDispatchToProps = {

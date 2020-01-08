@@ -105,11 +105,10 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
 
   componentDidMount() {
     let { logicalOperator, advancedSearches, pageIndex, pageSize } = this.state;
-    debugger
     let { list_clone_version } = this.props
     if (Object.keys(list_clone_version).length > 0) {
-      logicalOperator = list_clone_version.flowDetail.customerAdvancedSave.logicalOperator
-      advancedSearches = list_clone_version.flowDetail.customerAdvancedSave.advancedSearches
+      logicalOperator = list_clone_version.flowDetail.customerAdvancedSave === null ?  '' : list_clone_version.flowDetail.customerAdvancedSave.logicalOperator 
+      advancedSearches = list_clone_version.flowDetail.customerAdvancedSave === null ? [] : list_clone_version.flowDetail.customerAdvancedSave.advancedSearches
     }
     this.props.getListFieldDataAction();
     this.props.getFindCustomerWithConditionAction({

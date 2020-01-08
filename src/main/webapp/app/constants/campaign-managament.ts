@@ -25,5 +25,6 @@ export const CAMPAIGN_MANAGAMENT = {
   ACTIVE_PROCESS_CAMPAIGN: 'campaign-managament/ACTIVE_PROCESS_CAMPAIGN',
   GET_TEMPLATE_CAMPAIGN: 'campaign-managament/GET_TEMPLATE_CAMPAIGN',
   CLONE_VERSION_BY_ID: 'campaign-managament/CLONE_VERSION_BY_ID',
-  VALIDATE_GRAPH: 'campaign-managament/VALIDATE_GRAPH'
+  VALIDATE_GRAPH: 'campaign-managament/VALIDATE_GRAPH',
+  RESET_VERSION : 'campaign-managament/RESET_VERSION'
 };

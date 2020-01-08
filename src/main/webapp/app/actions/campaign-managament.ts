@@ -154,7 +154,6 @@ export const cloneVersion = id => async dispatch => {
   })
   await dispatch(resetData())
   await dispatch(validateCampaign([]))
-  await dispatch(saveCampaignAutoVersion([]))
   await dispatch(updateInfoCampaign({}))
   return result
 };
@@ -190,7 +189,11 @@ export const getTemplateCampaign = () => ({
 
 
 // validate graph
-export const validateGraph = id => ({
+export const validateGraph = (data) => ({
   type: CAMPAIGN_MANAGAMENT.VALIDATE_GRAPH,
-  payload: validateGraphService(id)
+  payload: validateGraphService(data)
 });
+
+export const resetListCloneVersion = () => ({
+  type: CAMPAIGN_MANAGAMENT.RESET_VERSION
+})
