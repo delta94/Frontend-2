@@ -16,13 +16,20 @@ interface IConfigMessageProps extends StateProps, DispatchProps {
   toggleModal: Function;
   idNode: any;
 }
-interface IConfigMessageState {}
+interface IConfigMessageState {
+  message_error: string;
+  content_error: string;
+}
 
 export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigMessageState> {
-  state: IConfigMessageState = {};
+  state: IConfigMessageState = {
+    message_error: '',
+    content_error: '',
+  };
 
   toggle = value => {
     let { toggleModal, isOpenModal } = this.props;
+    this.setState({ content_error: '', message_error: '' })
     toggleModal(!isOpenModal, value);
   };
 
@@ -41,15 +48,42 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
       name: $(`#name-message`).val(),
       content: $(`#text-content`).val()
     };
-    localStorage.removeItem('isSave');
-    data.messageConfig = this.remove(data.messageConfig, this.props.idNode);
-    data.messageConfig.push(fieldMessageConfig);
-    validateCampaign(data);
-    this.toggle(fieldMessageConfig);
+    if (this.checkValidate()) {
+      localStorage.removeItem('isSave');
+      data.messageConfig = this.remove(data.messageConfig, this.props.idNode);
+      data.messageConfig.push(fieldMessageConfig);
+      validateCampaign(data);
+      this.toggle(fieldMessageConfig);
+    }
   };
 
+  checkValidate = (): boolean => {
+    let { content_error, message_error } = this.state
+    let count: number = 0
+    let result: boolean = true
+    let message: string = String($(`#name-message`).val())
+    let content: string = String($(`#text-content`).val())
+    if (!message) {
+      count++;
+      message_error = "* Vui lòng nhập tên"
+    } else {
+      message_error = ""
+    }
+    if (!content) {
+      count++;
+      content_error = "* Vui lòng nhập nội dung"
+    } else {
+      content_error = ""
+    }
+    if (count > 0) {
+      result = false
+    }
+    this.setState({ content_error, message_error })
+    return result
+  }
+
   remove(arr, item) {
-    for (var i = arr.length; i--; ) {
+    for (var i = arr.length; i--;) {
       if (arr[i].id === item.id) {
         arr.splice(i, 1);
       }
@@ -60,7 +94,7 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
   count = () => {
     let total = $('#text-content').val();
     total = String(total).replace(/\s/g, '');
-    document.getElementById('total').innerHTML = `${total.length}/160`;
+    document.getElementById('total').innerHTML = `${total.length}/240`;
   };
 
   //add param in modal Send message
@@ -105,11 +139,12 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
                 <label className="label-message">Tên</label>
               </Col>
               <Col span={14}>
-                <Input defaultValue={nameSMS} id="name-message" style={{ float: 'right', width: '92%' }} />
+                <Input defaultValue={nameSMS} id="name-message" maxLength={160} style={{ float: 'right', width: '92%' }} />
               </Col>
               <Col span={3} style={{ textAlign: 'right', paddingRight: '2%' }}>
                 <label className="label-message">Tham số</label>
               </Col>
+
               <Col span={6}>
                 <Select defaultValue="Tên" style={{ width: '100%' }} onChange={this.insertAtCursor}>
                   <Option value="{{Tên}}">Tên</Option>
@@ -118,23 +153,25 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
                 </Select>
               </Col>
             </Row>
+            <p className="error" style={{ color: "red", marginLeft: "9%" }}>{this.state.message_error}</p>
             <br />
             <Row>
               <Col span={2}>
                 <label className="label-message">Nội dung</label>
               </Col>
               <Col span={22}>
-                <TextArea defaultValue={this.getNameContent()} onKeyUp={() => this.count()} id="text-content" maxLength={160} rows={10} />
-                <p id="total">0/160</p>
+                <TextArea defaultValue={this.getNameContent()} onKeyUp={() => this.count()} id="text-content" maxLength={240} rows={10} />
+                <p id="total">0/240</p>
               </Col>
             </Row>
+            <p className="error" style={{ color: "red", marginLeft: "9%" }}>{this.state.content_error}</p>
           </Row>
         </ModalBody>
         <ModalFooter>
-          <Button type="link" onClick={this.toggle}>
+          <Button type="link" style={{ color: "black" }} onClick={this.toggle}>
             Hủy
           </Button>
-          <Button type="primary" onClick={this.save}>
+          <Button type="primary" style={{ background: "#3866DD" }} onClick={this.save}>
             Chọn
           </Button>{' '}
         </ModalFooter>

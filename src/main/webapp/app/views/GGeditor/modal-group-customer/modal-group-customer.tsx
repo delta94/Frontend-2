@@ -105,10 +105,15 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
 
   componentDidMount() {
     let { logicalOperator, advancedSearches, pageIndex, pageSize } = this.state;
+    let { list_clone_version } = this.props
+    if (Object.keys(list_clone_version).length > 0) {
+      logicalOperator = list_clone_version.flowDetail.customerAdvancedSave === null ?  '' : list_clone_version.flowDetail.customerAdvancedSave.logicalOperator 
+      advancedSearches = list_clone_version.flowDetail.customerAdvancedSave === null ? [] : list_clone_version.flowDetail.customerAdvancedSave.advancedSearches
+    }
     this.props.getListFieldDataAction();
     this.props.getFindCustomerWithConditionAction({
-      logicalOperator,
-      advancedSearches,
+      logicalOperator: logicalOperator,
+      advancedSearches: advancedSearches,
       page: pageIndex,
       pageSize
     });
@@ -351,8 +356,6 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
     this.props.toggle(false, this.state.categoryName + ',' + this.state.dateTime, customerAdvancedSave, true);
   }
   getNameGroup = () => {
-    //debugger
-
     const { listFieldData } = this.props;
     let result: string;
     listFieldData.listCampign &&
@@ -612,7 +615,8 @@ const mapStateToProps = ({ tagDataState, groupCustomerState, campaignManagament 
   single_group_field: groupCustomerState.single_customer_field,
   list_group_customer: groupCustomerState.list_group_customer,
   info_version: campaignManagament.infoVersion,
-  listFieldData: campaignManagament.listFieldData
+  listFieldData: campaignManagament.listFieldData,
+  list_clone_version: campaignManagament.cloneInfoVersion
 });
 
 const mapDispatchToProps = {

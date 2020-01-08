@@ -1,21 +1,11 @@
 import React, { Fragment } from 'react';
 import { Card, Row, Col, Collapse } from 'antd';
 import { connect } from 'react-redux';
-import { getDiagramCampaign, validateCampaign } from 'app/actions/campaign-managament';
+import { validateCampaign } from 'app/actions/campaign-managament';
 import { IRootState } from 'app/reducers';
-import { ItemPanel, Item } from 'gg-editor';
-import { Translate, translate } from 'react-jhipster';
 import { openModal, closeModal } from 'app/actions/modal';
-import SiderComponet from '../sider/sider-tool';
 import './index.scss';
-import {
-  FlowDiagramEditor,
-  TrayItemWidget,
-  ContactSourceStartNodeModel,
-  EventSourceStartNodeModel,
-  SmsProcessNodeModel,
-  EmailProcessNodeModel
-} from '../flow-diagram-editor';
+import { FlowDiagramEditor, TrayItemWidget, ContactSourceStartNodeModel, EventSourceStartNodeModel, SmsProcessNodeModel, EmailProcessNodeModel, TimeWaitingDecisionNodeModel, EventWaitingDecisionNodeModel, ConditionDecisionNodeModel } from '../flow-diagram-editor';
 import { code_node } from 'app/common/model/campaign-managament.model';
 
 const { Panel } = Collapse;
@@ -45,161 +35,44 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
     return <TrayItemWidget model={{ type: type }} isDrag={false} />;
   }
 
-  checkNodeConfig = () => {
-    localStorage.removeItem('isSave');
-    let { data } = this.state;
-    data = this.editor.getDiagramData().nodes;
-    data = data.filter(function(item) {
-      return item.code != 'DES';
-    });
-    let { listFieldData } = this.props;
-    if (Object.keys(listFieldData.emailConfig).length > 0) {
-      let idEmailConfig =
-        listFieldData.emailConfig &&
-        listFieldData.emailConfig.map(item => {
-          return item.id;
-        });
-      let id = idEmailConfig.join().split(',');
-      if (id.length < 2) {
-        data = data.filter(function(item) {
-          return item.id != id;
-        });
-      } else {
-        id.map(value => {
-          data = data.filter(function(item) {
-            return item.id != String(value);
-          });
-        });
-      }
+  getParam(type) {
+    switch (type) {
+      case code_node.SOURCE:
+        return ContactSourceStartNodeModel.TYPE
+      case code_node.EVENT:
+        return EventSourceStartNodeModel.TYPE
+      case code_node.SEND_MAIL:
+        return EmailProcessNodeModel.TYPE
+      case code_node.SEND_SMS:
+        return SmsProcessNodeModel.TYPE
+      case code_node.TIMER:
+        return TimeWaitingDecisionNodeModel.TYPE
+      case code_node.TIMER_EVENT:
+        return EventWaitingDecisionNodeModel.TYPE
+      case code_node.GATEWAY:
+        return ConditionDecisionNodeModel.TYPE
     }
-    if (Object.keys(listFieldData.listCampign).length > 0) {
-      let idlistCampign = listFieldData.listCampign.map(item => {
-        return item.id;
-      });
-      let id = idlistCampign.join().split(',');
-      if (id.length < 2) {
-        data = data.filter(function(item) {
-          return item.id != id;
-        });
-      } else {
-        id.map(value => {
-          data = data.filter(function(item) {
-            return item.id != String(value);
-          });
-        });
-      }
-    }
-    if (Object.keys(listFieldData.messageConfig).length > 0) {
-      let idMessageConfig = listFieldData.messageConfig.map(item => {
-        return item.id;
-      });
-      let id = idMessageConfig.join().split(',');
-      if (id.length < 2) {
-        data = data.filter(function(item) {
-          return item.id != id;
-        });
-      } else {
-        id.map(value => {
-          data = data.filter(function(item) {
-            return item.id != String(value);
-          });
-        });
-      }
-    }
-    if (Object.keys(listFieldData.timer).length > 0) {
-      let idTimer = listFieldData.timer.map(item => {
-        return item.id;
-      });
-      let id = idTimer.join().split(',');
-      if (id.length < 2) {
-        data = data.filter(function(item) {
-          return item.id != id;
-        });
-      } else {
-        id.map(value => {
-          data = data.filter(function(item) {
-            return item.id != String(value);
-          });
-        });
-      }
-    }
-    if (Object.keys(listFieldData.timerEvent).length > 0) {
-      let idTimerEvent = listFieldData.timerEvent.map(item => {
-        return item.id;
-      });
-      let id = idTimerEvent.join().split(',');
-      if (id.length < 2) {
-        data = data.filter(function(item) {
-          return item.id != id;
-        });
-      } else {
-        id.map(value => {
-          data = data.filter(function(item) {
-            return item.id != String(value);
-          });
-        });
-      }
-    }
+  }
 
-    if (Object.keys(listFieldData.getway).length > 0) {
-      let idGetway = listFieldData.getway.map(item => {
-        return item.id;
-      });
-      let id = idGetway.join().split(',');
-      if (id.length < 2) {
-        data = data.filter(function(item) {
-          return item.id != id;
-        });
-      } else {
-        id.map(value => {
-          data = data.filter(function(item) {
-            return item.id != String(value);
-          });
-        });
-      }
-    }
-
-    return data;
-  };
-
-  showNodeValidate = () => {
-    let { listFieldData, listDiagram } = this.props;
-    let { data } = this.state;
-    data = this.editor.getDiagramData().nodes;
-    data = data.filter(function(item) {
-      return item.code != 'DES';
-    });
-    localStorage.removeItem('isSave');
-    if (Object.keys(listFieldData).length < 1) {
-      return data.map((item, index) => {
+  validate = () => {
+    const { list_validate } = this.props;
+    let result = (
+      list_validate && list_validate.map((item, index) => {
         return (
           <Row className="row" key={index}>
             <Col span={24}>
-              {this.renderTrayItemWidget(item.params)}
+              {this.renderTrayItemWidget(this.getParam(item.nodeCode))}
               <div>
                 <label>{item.label}</label>
               </div>
-              <label className="not-config">Chưa cấu hình thông tin</label>
+              {item.errors && item.errors.map(event => { return <p className="not-config">{event}</p> })}
             </Col>
           </Row>
-        );
-      });
-    } else {
-      return this.checkNodeConfig().map((item, index) => {
-        return (
-          <Row className="row" key={index}>
-            <Col span={24}>
-              {this.renderTrayItemWidget(item.params)}
-              <div>
-                <label>{item.label}</label>
-              </div>
-              <label className="not-config">Chưa cấu hình thông tin</label>
-            </Col>
-          </Row>
-        );
-      });
-    }
-  };
+        )
+      })
+    )
+    return result
+  }
 
   showComplete = () => {
     localStorage.setItem('isSave', 'true');
@@ -207,12 +80,13 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
   };
 
   render() {
-    const { list_clone_verion } = this.props;
+
     return (
       <Fragment>
         <Collapse className="validate-main" bordered={false} defaultActiveKey={['1']} expandIconPosition="right">
           <Panel header="" key="1">
-            {this.showNodeValidate() && this.showNodeValidate().length > 0 ? this.showNodeValidate() : this.showComplete()}
+            {
+              this.validate().length > 0 ? this.validate() : this.showComplete()}
           </Panel>
         </Collapse>
       </Fragment>
@@ -224,7 +98,8 @@ const mapStateToProps = ({ campaignManagament }: IRootState) => ({
   loading: campaignManagament.loading,
   listDiagram: campaignManagament.listDiagram,
   listFieldData: campaignManagament.listFieldData,
-  list_clone_verion: campaignManagament.cloneInfoVersion
+  list_clone_verion: campaignManagament.cloneInfoVersion,
+  list_validate: campaignManagament.list_validate
 });
 
 const mapDispatchToProps = {

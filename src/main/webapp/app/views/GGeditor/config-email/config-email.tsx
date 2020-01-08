@@ -42,8 +42,9 @@ import { SUBJECT } from 'app/constants/common';
 // export interface I
 
 export interface IConfigEmailProps extends StateProps, DispatchProps {
-  onClick: Function;
-  idNode: any;
+  isOpenModal: boolean;
+  toggleModal: Function;
+  idNode?: any;
 }
 
 export interface IConfigEmailState {
@@ -59,6 +60,7 @@ export interface IConfigEmailState {
   idTemplate: string;
   isOpenDropdown: boolean;
   idEmail: boolean;
+  nameEmail: string;
 }
 
 class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailState> {
@@ -74,7 +76,8 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
     visible: false,
     idTemplate: '',
     isOpenDropdown: false,
-    idEmail: false
+    idEmail: false,
+    nameEmail: ''
   };
   constructor(props) {
     super(props);
@@ -101,7 +104,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
   };
 
   remove(arr, item) {
-    for (var i = arr.length; i--; ) {
+    for (var i = arr.length; i--;) {
       if (arr[i].id === item.id) {
         arr.splice(i, 1);
       }
@@ -177,7 +180,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
       }
     });
 
-    this.setState({ defaultValueContent });
+    this.setState({ defaultValueContent, idEmail, nameEmail: event.subject });
     this.props.getNavigationContentTemplates(event.id, INTRO_MAIL, 'templateId');
     this.props.getNavigationContentTemplates(subjectLanding, INTRO_MAIL, SUBJECT);
     let emailConfig = {
@@ -211,7 +214,6 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
   };
 
   getValueText = async (option, item) => {
-    const { onClick } = this.props;
     let { valueName, valueTitle } = this.state;
     switch (option) {
       case 'name':
@@ -224,15 +226,14 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
         break;
     }
     this.setState({ valueTitle, valueName });
-    onClick(valueName, valueTitle);
   };
   getNameEmail = () => {
-    const { list_diagram, idNode } = this.props;
+    const { listFieldData, idNode } = this.props;
     let data;
-    list_diagram.nodes &&
-      list_diagram.nodes.map(item => {
+    listFieldData.emailConfig &&
+      listFieldData.emailConfig.map(item => {
         if (item.id === idNode.id) {
-          data = item.label;
+          data = item.valueName;
         }
       });
     return data;
@@ -251,9 +252,41 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
     return <label>{result ? result : 'Vui lòng chọn Email'}</label>;
   };
 
+  toggle = () => {
+    let { toggleModal, isOpenModal } = this.props;
+    toggleModal(!isOpenModal);
+  };
+
+  confirmEmail = () => {
+    let { listFieldData } = this.props;
+    let { defaultValueContent, nameEmail, valueName, valueTitle, idEmail } = this.state;
+    let emailConfig = {
+      id: this.props.idNode.id,
+      nameEmail,
+      valueName,
+      valueTitle,
+      contentEmail: defaultValueContent,
+      idEmail
+    };
+
+    let data = {
+      messageConfig: listFieldData.messageConfig ? listFieldData.messageConfig : [],
+      emailConfig: listFieldData.emailConfig ? listFieldData.emailConfig : [],
+      listCampign: listFieldData.listCampign ? listFieldData.listCampign : [],
+      timerEvent: listFieldData.timerEvent ? listFieldData.timerEvent : [],
+      timer: listFieldData.timer ? listFieldData.timer : [],
+      getway: listFieldData.getway ? listFieldData.getway : []
+    };
+    data.emailConfig = this.remove(data.emailConfig, this.props.idNode);
+    data.emailConfig.push(emailConfig);
+    this.props.validateCampaign(data);
+    this.toggle()
+  }
+
+
   render() {
     let { showMailForFriend, defaultValueContent, openModal, idTemplate } = this.state;
-    let { listCampainContentParams, listContentTemplateAsTypeEmailIntro, listFieldData } = this.props;
+    let { listCampainContentParams, listContentTemplateAsTypeEmailIntro, isOpenModal } = this.props;
 
     let listTemplate = listContentTemplateAsTypeEmailIntro.map(item => {
       return {
@@ -268,7 +301,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
 
     return (
       <Fragment>
-        <Modal className="modal-config-preview" isOpen={openModal} toggle={this.toggleModal}>
+        <Modal className="modal-config-preview" isOpen={openModal}>
           <ModalHeader toggle={this.toggleModal}>Landing preview</ModalHeader>
           <ModalBody>
             <PreviewLanding htmlDOM={defaultValueContent} styleForDOM={''} />
@@ -280,82 +313,112 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
           </ModalFooter>
         </Modal>
 
-        <div className="config-email">
-          <div className="add-content">
-            {/* Detail */}
-            <div className="add-content-detail">
-              {/* Title For Detail 1 */}
-              <div className="content-detail">
-                {/* Template Fix */}
-                <Collapse isOpen={!showMailForFriend}>
-                  <Card>
-                    <CardBody>
-                      <Row>
-                        <Col span={17}>
-                          <label className="input-search_label">Tên</label>
-                          <Input
-                            defaultValue={this.getNameEmail()}
-                            style={{ width: '80%' }}
-                            // placeholder={translate('group-attribute-customer.group-modal-config.name-placeholder')}
-                            onChange={e => this.getValueText('name', e)}
-                            maxLength={160}
-                          />
-                        </Col>
-                      </Row>
-                      <br />
-                      <Row>
-                        <Col span={17}>
-                          <label className="input-search_label">Chọn email</label>
-                          <UncontrolledButtonDropdown style={{ width: '81%' }}>
-                            <DropdownToggle caret className="mb-2 mr-2" style={{ width: '80%' }} color="info" outline>
-                              {this.contentEmail()}
-                            </DropdownToggle>
+        <Modal className="modal-config-email" isOpen={isOpenModal}>
+          <ModalHeader
+            toggle={this.toggle}
 
-                            <DropdownMenu className="dropdown-menu-xl">
-                              <div className="grid-menu grid-menu-xl grid-menu-3col">
-                                <RowReact className="no-gutters">
-                                  {listTemplate &&
-                                    listTemplate.map((item, index) => {
-                                      return (
-                                        <ColReact xl="4" sm="6">
-                                          <Button
-                                            key={index}
-                                            href="javascript:void(0)"
-                                            className="btn-icon-vertical btn-square btn-transition"
-                                            outline
-                                            color="link"
-                                          >
-                                            <DropdownItem>
-                                              <img
-                                                onClick={() => this.toggleLanding(item)}
-                                                style={{ width: '100%' }}
-                                                src={item.thumbnail}
-                                                alt={item.subject}
-                                              />
-                                            </DropdownItem>
-                                            {item.subject}
-                                          </Button>
-                                        </ColReact>
-                                      );
-                                    })}
-                                </RowReact>
-                              </div>
-                            </DropdownMenu>
-                          </UncontrolledButtonDropdown>
-                        </Col>
-                        <Col span={7} style={{ marginTop: '-5px' }}>
-                          <ButtonAntd type="primary" onClick={this.openModalPreview} style={{ marginTop: '2%', background: '#3866DD' }}>
-                            Xem trước
+          >
+            {' '}
+            GỬI EMAIL
+          </ModalHeader>
+          <ModalBody>
+
+            <div className="config-email">
+              <div className="add-content">
+                {/* Detail */}
+                <div className="add-content-detail">
+                  {/* Title For Detail 1 */}
+                  <div className="content-detail">
+                    {/* Template Fix */}
+                    <Collapse isOpen={!showMailForFriend}>
+                      <Card>
+                        <CardBody>
+                          <Row>
+                            <Col span={17}>
+                              <label className="input-search_label">Tên</label>
+                              <Input
+                                defaultValue={this.getNameEmail()}
+                                style={{ width: '80%' }}
+                                // placeholder={translate('group-attribute-customer.group-modal-config.name-placeholder')}
+                                onChange={e => this.getValueText('name', e)}
+                                maxLength={160}
+                              />
+                            </Col>
+                          </Row>
+                          <br />
+                          <Row>
+                            <Col span={17}>
+                              <label className="input-search_label">Chọn email</label>
+                              <UncontrolledButtonDropdown style={{ width: '81%' }}>
+                                <DropdownToggle caret className="mb-2 mr-2" style={{ width: '80%' }} color="info" outline>
+                                  {this.contentEmail()}
+                                </DropdownToggle>
+
+                                <DropdownMenu className="dropdown-menu-xl">
+                                  <div className="grid-menu grid-menu-xl grid-menu-3col">
+                                    <RowReact className="no-gutters">
+                                      {listTemplate &&
+                                        listTemplate.map((item, index) => {
+                                          return (
+                                            <ColReact xl="4" sm="6">
+                                              <Button
+                                                key={index}
+                                                href="javascript:void(0)"
+                                                className="btn-icon-vertical btn-square btn-transition"
+                                                outline
+                                                color="link"
+                                              >
+                                                <DropdownItem>
+                                                  <img
+                                                    onClick={() => this.toggleLanding(item)}
+                                                    style={{ width: '100%' }}
+                                                    src={item.thumbnail}
+                                                    alt={item.subject}
+                                                  />
+                                                </DropdownItem>
+                                                {item.subject}
+                                              </Button>
+                                            </ColReact>
+                                          );
+                                        })}
+                                    </RowReact>
+                                  </div>
+                                </DropdownMenu>
+                              </UncontrolledButtonDropdown>
+                            </Col>
+                            <Col span={7} style={{ marginTop: '-5px' }}>
+                              <ButtonAntd type="primary" onClick={this.openModalPreview} style={{ marginTop: '2%', background: '#3866DD' }}>
+                                Xem trước
                           </ButtonAntd>
-                        </Col>
-                      </Row>
-                    </CardBody>
-                  </Card>
-                </Collapse>
+                            </Col>
+                          </Row>
+                        </CardBody>
+                      </Card>
+                    </Collapse>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              color = "none"
+              onClick={this.toggle} >
+              {' '}
+              Hủy
+            </Button>
+            <Button
+              type="primary"
+              style={{ background: '#3866DD' }}
+              onClick={() => {
+                localStorage.removeItem('isSave');
+                this.confirmEmail();
+              }}
+            >
+              Chọn
+            </Button>{' '}
+          </ModalFooter>
+        </Modal>
       </Fragment>
     );
   }

@@ -3,7 +3,8 @@ import {
   getDiagramCampaign,
   resetData,
   getTemplateCampaign,
-  updateInfoCampaign
+  updateInfoCampaign,
+  resetListCloneVersion
 } from 'app/actions/campaign-managament';
 import { img_node, const_shape } from 'app/common/model/campaign-managament.model';
 import React from 'react';
@@ -33,7 +34,7 @@ const code_node = {
   TIMER: 'TIMER',
   TIMER_EVENT: 'TIMER_EVENT'
 };
-interface ICreateCampaignProps extends StateProps, DispatchProps {}
+interface ICreateCampaignProps extends StateProps, DispatchProps { }
 
 interface ICreateCampaignState {
   infoVersion: {
@@ -50,7 +51,7 @@ interface ICreateCampaignState {
 class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampaignState> {
   state: ICreateCampaignState = {
     infoVersion: {
-      type: '',
+      type: 'copy',
       nameVersion: '',
       idVersion: '',
       cjId: '',
@@ -227,10 +228,16 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
               style={{ background: '#3866DD' }}
               type="primary"
               onClick={async () => {
-                await this.props.updateInfoCampaign({});
+                let data = {
+                  name: 'Tạo chiến dịch mới',
+                  tag: [''],
+                  des: ''
+                };
+                await this.props.updateInfoCampaign(data);
                 await this.props.getDiagramCampaign([]);
                 await this.props.saveCampaignAutoVersion(this.state.infoVersion);
                 await this.props.resetData();
+                await this.props.resetListCloneVersion()
                 await window.location.assign('#/flow');
               }}
             >
@@ -304,7 +311,8 @@ const mapDispatchToProps = {
   getDiagramCampaign,
   resetData,
   getTemplateCampaign,
-  updateInfoCampaign
+  updateInfoCampaign,
+  resetListCloneVersion
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

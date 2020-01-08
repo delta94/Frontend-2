@@ -122,7 +122,7 @@ export const cloneVersionByIdService = id => {
 };
 
 //call API validate Graph
-export const validateGraphService = id => {
-  const url = `${urlVersion}/${id}/validate`;
-  return axios.get(url);
+export const validateGraphService = (data) => {
+  const url = `${urlVersion}/validate`;
+  return axios.post(url, data);
 };

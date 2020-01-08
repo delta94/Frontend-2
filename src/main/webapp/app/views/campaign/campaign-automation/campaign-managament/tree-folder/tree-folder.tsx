@@ -397,15 +397,15 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
       <Fragment>
         <Row className="row-sort-tree">
           <Col span={12}>
-            <label style={{ margin: '3px' }}>THƯ MỤC</label>
+            <label style={{ margin: '5px' }}>THƯ MỤC</label>
           </Col>
           <Col style={{ textAlign: 'right' }} span={12}>
             <Icon
-              style={{ marginRight: '5%', fontSize: '27px', color: 'gray' }}
+              style={{ marginRight: '5%', fontSize: '24px', color: '#3866DD' }}
               onClick={() => {
                 this.createFolder('select', 'create');
               }}
-              type="folder-add"
+              type="plus"
             />
           </Col>
         </Row>
