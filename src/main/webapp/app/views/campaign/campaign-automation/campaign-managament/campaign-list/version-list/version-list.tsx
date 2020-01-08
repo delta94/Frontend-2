@@ -123,15 +123,15 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
   };
 
   createVersion = async () => {
-    const { saveCampaignAutoVersion, getDiagramCampaign, cloneVersionById } = this.props;
+    const { saveCampaignAutoVersion, getDiagramCampaign, cloneVersionById, cloneVersion } = this.props;
     const { infoVersion, listVersion } = this.state;
-    infoVersion.type = 'copy'
+    infoVersion.type = 'create'
     let isHaveDraf = false;
     let idDraft: string = '';
     listVersion.map(item => {
       if (item.status === constant_version.DRAFT) {
         isHaveDraf = true;
-        idDraft = item.id;
+        idDraft = item.cjVersionId;
       }
     });
     let idVersionlast: string = '';
@@ -151,7 +151,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
         content: 'Chiến dịch đã có bản nháp, không thể tạo version mới, bạn có muốn tiếp tục chỉnh sửa bản nháp hiện tại ? ',
         onCancel: () => { },
         onOk: async () => {
-          await cloneVersionById(idDraft);
+          await cloneVersion(idDraft);
           await this.cloneVersion('flow');
           await saveCampaignAutoVersion(infoVersion);
           window.location.assign('#/flow');

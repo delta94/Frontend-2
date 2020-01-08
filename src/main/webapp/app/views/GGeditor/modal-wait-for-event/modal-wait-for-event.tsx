@@ -199,6 +199,7 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
 
   render() {
     let { isOpenModal, listFieldData } = this.props;
+    // let valueEmail = listFieldData.emailConfig[listFieldData.emailConfig.length - 1].nameEmail ? listFieldData.emailConfig[listFieldData.emailConfig.length - 1].nameEmail : 'Vui lòng chọn Email' 
     return (
       <Modal className="modal-message-config" isOpen={isOpenModal}>
         <ModalHeader toggle={this.toggle}>Chờ Sự kiện</ModalHeader>
@@ -224,7 +225,7 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
                 <label className="text-event-wait">Email</label>
               </Col>
               <Col span={18}>
-                <Select defaultValue={this.getNameEmail()} style={{ width: '100%' }} onChange={event => this.handleChange(event, 'email')}>
+                <Select value={this.getNameEmail()} style={{ width: '100%' }} onChange={event => this.handleChange(event, 'email')}>
                   {listFieldData.emailConfig &&
                     listFieldData.emailConfig.map((item, index) => {
                       return (

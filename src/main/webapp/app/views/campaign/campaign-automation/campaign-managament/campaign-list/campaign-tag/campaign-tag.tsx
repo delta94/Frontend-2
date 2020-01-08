@@ -39,7 +39,7 @@ class CampaignTag extends React.Component<ICampaignTagProps, ICampaignTagState> 
 
   render() {
     const { comboTag, defaultCate, defaultValue } = this.props;
-    console.log(defaultValue)
+    console.log(defaultValue && defaultValue.length > 0 ? defaultValue[0] === "" ? [] : defaultValue : defaultValue)
     return (
       <Multiselect
         placeholder={'Chọn thẻ'}

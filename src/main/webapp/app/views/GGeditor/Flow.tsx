@@ -680,7 +680,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         name: infoCampaign.name ? infoCampaign.name : list_clone_version.name ? list_clone_version.name : 'Tạo chiến dịch mới',
         description: infoCampaign.des ? infoCampaign.des : list_clone_version.description ? list_clone_version.description : infoCampaign.des
       },
-      cjTags: cjTags,
+      cjTags: cjTags && cjTags.length > 0 ? cjTags[0] === ""  ? [] : cjTags : cjTags,
       flow: {
         customerGroupName: nameGroup ? nameGroup : Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.customerGroupName : '',
         startTime: startTime,
@@ -909,7 +909,6 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                 </Col>
               </Col>
             </Row>
-
             <div
               className="diagram-layer"
               onDragOver={event => {

@@ -134,11 +134,23 @@ export const stopVersion = id => ({
   payload: stopVersionService(id)
 });
 
-//clone info version
-export const cloneVersion = id => async dispatch =>{
+// Clone version id campaign
+export const cloneVersionById = id => async dispatch => {
   const result = await dispatch({
-  type: CAMPAIGN_MANAGAMENT.CLONE_VERSION,
-  payload: cloneVersionService(id)
+    type: CAMPAIGN_MANAGAMENT.CLONE_VERSION_BY_ID,
+    payload: cloneVersionByIdService(id)
+  })
+  await dispatch(resetData())
+  await dispatch(validateCampaign([]))
+  await dispatch(updateInfoCampaign({}))
+  return result
+};
+
+//clone info version
+export const cloneVersion = id => async dispatch => {
+  const result = await dispatch({
+    type: CAMPAIGN_MANAGAMENT.CLONE_VERSION,
+    payload: cloneVersionService(id)
   })
   await dispatch(resetData())
   await dispatch(validateCampaign([]))
@@ -176,11 +188,6 @@ export const getTemplateCampaign = () => ({
   payload: getTemplateCampaignService()
 });
 
-// Clone version id campaign
-export const cloneVersionById = id => ({
-  type: CAMPAIGN_MANAGAMENT.CLONE_VERSION_BY_ID,
-  payload: cloneVersionByIdService(id)
-});
 
 // validate graph
 export const validateGraph = id => ({
