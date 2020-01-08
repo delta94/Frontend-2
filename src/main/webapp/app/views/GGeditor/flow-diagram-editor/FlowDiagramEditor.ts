@@ -1,5 +1,12 @@
 import { DiagramEngine, DiagramModel, LinkModel, NodeModel, PortModel } from 'storm-react-diagrams';
-import { DecisionNodeModel, EndNodeModel, FlowNodeModel, ProcessNodeModel, SmsProcessNodeModel, StartNodeModel } from './FlowNodeModel';
+import {
+  DecisionNodeModel,
+  EndNodeModel,
+  FlowNodeModel,
+  ProcessNodeModel,
+  StartNodeModel,
+  TimeWaitingDecisionNodeModel
+} from './FlowNodeModel';
 import { FlowNodePortModel } from './FlowNodePortModel';
 
 import { FlowNodePortFactory } from './FlowNodePortFactory';
@@ -27,12 +34,9 @@ const PORT_SIZE = {
 };
 
 export class FlowDiagramEditor {
-  protected activeModel: DiagramModel;
   protected diagramEngine: DiagramEngine;
 
   constructor() {
-    this.activeModel = new DiagramModel();
-
     this.diagramEngine = new DiagramEngine();
     this.diagramEngine.installDefaultFactories();
 
@@ -46,22 +50,29 @@ export class FlowDiagramEditor {
     this.diagramEngine.registerNodeFactory(new ConditionDecisionNodeFactory());
     this.diagramEngine.registerNodeFactory(new EndNodeFactory());
 
-    this.diagramEngine.setDiagramModel(this.activeModel);
+    this.diagramEngine.setDiagramModel(FlowDiagramEditor.createDiagramModel());
   }
 
-  private _locked: boolean = false;
-  public lock() {
-    this._locked = true;
-    this.activeModel.setLocked(true);
+  dropZoneVisible: boolean = false;
+
+  public setDropZoneVisible(dropZoneVisible: boolean) {
+    this.dropZoneVisible = dropZoneVisible;
+
+    FlowDiagramEditor.setDropZoneVisible(this.getActiveModel(), dropZoneVisible);
   }
 
-  public unlock() {
-    this._locked = true;
-    this.activeModel.setLocked(false);
+  handlers: FlowDiagramEditorHandlers = null;
+  public setHandlers(handlers: FlowDiagramEditorHandlers) {
+    this.handlers = handlers;
+    FlowDiagramEditor.setHandlers(this.getActiveModel(), handlers);
   }
 
-  get locked(): boolean {
-    return this._locked;
+  public getActiveModel(): DiagramModel {
+    return this.getDiagramEngine().getDiagramModel();
+  }
+
+  public getDiagramEngine(): DiagramEngine {
+    return this.diagramEngine;
   }
 
   public getDiagramData() {
@@ -69,7 +80,8 @@ export class FlowDiagramEditor {
       nodes: [],
       edges: []
     };
-    let nodes = this.activeModel.getNodes();
+    let model = this.diagramEngine.getDiagramModel();
+    let nodes = model.getNodes();
     for (let key in nodes) {
       let node = nodes[key];
       if (node && node instanceof FlowNodeModel) {
@@ -77,7 +89,7 @@ export class FlowDiagramEditor {
       }
     }
 
-    let links = this.activeModel.getLinks();
+    let links = model.getLinks();
     for (let key in links) {
       let link = links[key];
       if (link && link instanceof LinkModel) {
@@ -89,36 +101,110 @@ export class FlowDiagramEditor {
   }
 
   public setDiagramData(data: any) {
-    this.activeModel = new DiagramModel();
-    this.activeModel.setLocked(this.locked);
-    this.diagramEngine.setDiagramModel(this.activeModel);
+    let model = FlowDiagramEditor.createDiagramModel();
+    FlowDiagramEditor.loadDiagramData(model, data, this.dropZoneVisible, this.handlers);
+    FlowDiagramEditor.arrange(model);
+    this.diagramEngine.setDiagramModel(model);
+  }
 
-    for (let node of data.nodes ? data.nodes : DEFAULT_DATA.flow.graph.nodes) {
-      let nodeModel = parseNode(node);
-      if (nodeModel) {
-        if (nodeModel instanceof FlowNodeModel) {
-          nodeModel.onAddClick = this.onAddClickEventHandler;
-          nodeModel.onClick = this.onClickEventHandler;
-          nodeModel.onDrop = this.onDropEventHandler;
+  public addGroupProcess(groupProcess: GroupProcess, position: PortModel) {
+    let model = this.getActiveModel().clone();
+    if (FlowDiagramEditor.addGroupProcess(model, groupProcess, position, this.dropZoneVisible, this.handlers)) {
+      FlowDiagramEditor.arrange(model);
+      this.diagramEngine.setDiagramModel(model);
+    }
+  }
+
+  private static createDiagramModel(): DiagramModel {
+    let model = new DiagramModel();
+    model.setLocked(true);
+
+    return model;
+  }
+
+  private static loadDiagramData(model: DiagramModel, data: any, dropZoneVisible: boolean, handlers: FlowDiagramEditorHandlers) {
+    if (data) {
+      for (let nodeData of data.nodes ? data.nodes : DEFAULT_DATA.flow.graph.nodes) {
+        if (nodeData) {
+          let node = parseNode(nodeData);
+          if (node) {
+            if (node instanceof FlowNodeModel) {
+              node.dropZoneVisible = dropZoneVisible;
+              if (handlers) {
+                node.onClick = handlers.onClickEventHandler;
+                node.onAddClick = handlers.onAddClickEventHandler;
+                node.onDrop = handlers.onDropEventHandler;
+              }
+            }
+            model.addNode(node);
+          }
         }
-        this.activeModel.addNode(nodeModel);
       }
+
+      for (let edgeData of data.edges ? data.edges : DEFAULT_DATA.flow.graph.edges) {
+        let sourceNode = model.getNode(edgeData.source);
+        let targetNode = model.getNode(edgeData.target);
+        if (sourceNode instanceof FlowNodeModel && targetNode instanceof FlowNodeModel) {
+          let sourcePort = sourceNode.getOutPortOrDefault(mapToPortPosition(edgeData.sourceAnchor));
+          let targetPort = targetNode.getInPortOrDefault(mapToPortPosition(edgeData.targetAnchor));
+          if (sourceNode && targetPort && sourcePort.canLinkToPort(targetPort)) {
+            let link = sourcePort.createLinkModel();
+            link.setSourcePort(sourcePort);
+            link.setTargetPort(targetPort);
+            model.addLink(link);
+          }
+        }
+      }
+
+      return true;
+    }
+    return false;
+  }
+
+  private static addGroupProcess(
+    model: DiagramModel,
+    groupProcess: GroupProcess,
+    position: PortModel,
+    dropZoneVisible: boolean,
+    handlers: FlowDiagramEditorHandlers
+  ): boolean {
+    if (groupProcess && groupProcess.isValid() && position) {
+      for (let node of groupProcess.nodes) {
+        if (node) {
+          if (node instanceof FlowNodeModel) {
+            node.dropZoneVisible = dropZoneVisible;
+            if (handlers) {
+              node.onClick = handlers.onClickEventHandler;
+              node.onAddClick = handlers.onAddClickEventHandler;
+              node.onDrop = handlers.onDropEventHandler;
+            }
+          }
+
+          model.addNode(node);
+        }
+      }
+      //add links
+      for (let link of groupProcess.links) {
+        model.addLink(link);
+      }
+
+      //swap port
+      let outLinks = position.getLinks();
+      for (let key in outLinks) {
+        let outLink = outLinks[key];
+        outLink.setSourcePort(groupProcess.outPort);
+      }
+
+      //add new link
+      let inLink = position.createLinkModel();
+      inLink.setSourcePort(position);
+      inLink.setTargetPort(groupProcess.inPort);
+      model.addLink(inLink);
+
+      return true;
     }
 
-    for (let edge of data.edges ? data.edges : DEFAULT_DATA.flow.graph.edges) {
-      let sourceNode = this.activeModel.getNode(edge.source);
-      let targetNode = this.activeModel.getNode(edge.target);
-      if (sourceNode instanceof FlowNodeModel && targetNode instanceof FlowNodeModel) {
-        let sourcePort = sourceNode.getOutPortOrDefault(mapToPortPosition(edge.sourceAnchor));
-        let targetPort = targetNode.getInPortOrDefault(mapToPortPosition(edge.targetAnchor));
-        if (sourceNode && targetPort && sourcePort.canLinkToPort(targetPort)) {
-          let link = sourcePort.createLinkModel();
-          link.setSourcePort(sourcePort);
-          link.setTargetPort(targetPort);
-          this.activeModel.addLink(link);
-        }
-      }
-    }
+    return false;
   }
 
   private static setDropZoneVisible(model: DiagramModel, dropZoneVisible: boolean) {
@@ -131,32 +217,16 @@ export class FlowDiagramEditor {
     }
   }
 
-  private static setOnDropEventHandler(model: DiagramModel, onDropEventHandler: Function) {
-    let nodes = model.getNodes();
-    for (let key in nodes) {
-      let node = nodes[key];
-      if (node && node instanceof FlowNodeModel) {
-        node.onDrop = onDropEventHandler;
-      }
-    }
-  }
-
-  private static setOnClickEventHandler(model: DiagramModel, onClickEventHandler: Function) {
-    let nodes = model.getNodes();
-    for (let key in nodes) {
-      let node = nodes[key];
-      if (node && node instanceof FlowNodeModel) {
-        node.onClick = onClickEventHandler;
-      }
-    }
-  }
-
-  private static setOnAddClickEventHandler(model: DiagramModel, onAddClickEventHandler: Function) {
-    let nodes = model.getNodes();
-    for (let key in nodes) {
-      let node = nodes[key];
-      if (node && node instanceof FlowNodeModel) {
-        node.onAddClick = onAddClickEventHandler;
+  private static setHandlers(model: DiagramModel, handlers: FlowDiagramEditorHandlers) {
+    if (handlers) {
+      let nodes = model.getNodes();
+      for (let key in nodes) {
+        let node = nodes[key];
+        if (node && node instanceof FlowNodeModel) {
+          node.onClick = handlers.onClickEventHandler;
+          node.onAddClick = handlers.onAddClickEventHandler;
+          node.onDrop = handlers.onDropEventHandler;
+        }
       }
     }
   }
@@ -170,10 +240,19 @@ export class FlowDiagramEditor {
     return null;
   }
 
+  private static arrange(model: DiagramModel) {
+    FlowDiagramEditor.arrangeFromNode(FlowDiagramEditor.getStartNode(model), null, 100, 100);
+  }
+
   private static arrangeFromNode(currentNode: NodeModel, currentPort: PortModel, x: number, y: number) {
     if (currentNode) {
       if (currentNode instanceof StartNodeModel)
         currentNode.setPosition(x - PORT_SIZE.width / 2 - StartNodeModel.WIDTH / 2, y - PORT_SIZE.height / 2 - StartNodeModel.HEIGHT / 2);
+      else if (currentNode instanceof TimeWaitingDecisionNodeModel)
+        currentNode.setPosition(
+          x - PORT_SIZE.width / 2 - DecisionNodeModel.WIDTH / 2,
+          y - PORT_SIZE.height / 2 - DecisionNodeModel.HEIGHT / 2
+        );
       else if (currentNode instanceof ProcessNodeModel)
         currentNode.setPosition(
           x - PORT_SIZE.width / 2 - ProcessNodeModel.WIDTH / 2,
@@ -195,10 +274,15 @@ export class FlowDiagramEditor {
           FlowDiagramEditor.arrangeFromPort(port, FlowNodePortModel.LEFT, x, y);
         else if (port && (!currentPort || port.id !== currentPort.id) && key === FlowNodePortModel.RIGHT)
           FlowDiagramEditor.arrangeFromPort(port, FlowNodePortModel.RIGHT, x, y);
-        else if (port && (!currentPort || port.id !== currentPort.id) && key === FlowNodePortModel.TOP)
+        else if (port && (!currentPort || port.id !== currentPort.id) && key === FlowNodePortModel.TOP) {
+          // let leftPort = ports[FlowNodePortModel.LEFT];
+          // if(leftPort) FlowDiagramEditor.shiftFromPort(leftPort, FlowNodePortModel.LEFT, true, true);
           FlowDiagramEditor.arrangeFromPort(port, FlowNodePortModel.TOP, x, y);
-        else if (port && (!currentPort || port.id !== currentPort.id) && key === FlowNodePortModel.BOTTOM)
+        } else if (port && (!currentPort || port.id !== currentPort.id) && key === FlowNodePortModel.BOTTOM) {
+          // let leftPort = ports[FlowNodePortModel.LEFT];
+          // if(leftPort) FlowDiagramEditor.shiftFromPort(leftPort, FlowNodePortModel.LEFT, false, true);
           FlowDiagramEditor.arrangeFromPort(port, FlowNodePortModel.BOTTOM, x, y);
+        }
       }
     }
   }
@@ -228,70 +312,77 @@ export class FlowDiagramEditor {
     }
   }
 
-  public setDropZoneVisible(dropZoneVisible: boolean) {
-    FlowDiagramEditor.setDropZoneVisible(this.activeModel, dropZoneVisible);
+  private static shiftFromNode(currentNode: NodeModel, currentPort: PortModel, up: boolean, topLevel: boolean) {
+    if (currentNode) {
+      if (!topLevel) currentNode.setPosition(currentNode.x, currentNode.y + (up ? -1 : 1) * GRID_SIZE.height);
+      let ports = currentNode.getPorts();
+      for (let key in ports) {
+        let port = ports[key];
+        if (port && (!currentPort || port.id !== currentPort.id) && key === FlowNodePortModel.LEFT)
+          FlowDiagramEditor.shiftFromPort(port, FlowNodePortModel.LEFT, up, topLevel);
+        else if (port && (!currentPort || port.id !== currentPort.id) && key === FlowNodePortModel.RIGHT)
+          FlowDiagramEditor.shiftFromPort(port, FlowNodePortModel.RIGHT, up, topLevel);
+        else if (port && (!currentPort || port.id !== currentPort.id) && key === FlowNodePortModel.TOP && ((topLevel && up) || !topLevel))
+          FlowDiagramEditor.shiftFromPort(port, FlowNodePortModel.TOP, up, false);
+        else if (
+          port &&
+          (!currentPort || port.id !== currentPort.id) &&
+          key === FlowNodePortModel.BOTTOM &&
+          ((topLevel && !up) || !topLevel)
+        )
+          FlowDiagramEditor.shiftFromPort(port, FlowNodePortModel.BOTTOM, up, false);
+      }
+    }
   }
 
-  onDropEventHandler: Function = null;
-  public setOnDropEventHandler(onDropEventHandler: Function) {
-    this.onDropEventHandler = onDropEventHandler;
-    FlowDiagramEditor.setOnDropEventHandler(this.activeModel, onDropEventHandler);
-  }
-
-  onClickEventHandler: Function = null;
-  public setOnClickEventHandler(onClickEventHandler: Function) {
-    this.onClickEventHandler = onClickEventHandler;
-    FlowDiagramEditor.setOnClickEventHandler(this.activeModel, onClickEventHandler);
-  }
-
-  onAddClickEventHandler: Function = null;
-  public setOnAddClickEventHandler(onAddClickEventHandler: Function) {
-    this.onAddClickEventHandler = onAddClickEventHandler;
-    FlowDiagramEditor.setOnAddClickEventHandler(this.activeModel, onAddClickEventHandler);
-  }
-
-  public add(groupProcess: GroupProcess, position: PortModel) {
-    if (groupProcess && groupProcess.isValid() && position) {
-      for (let node of groupProcess.nodes) {
-        if (node) {
-          if (node instanceof FlowNodeModel) {
-            node.onAddClick = this.onAddClickEventHandler;
-            node.onClick = this.onClickEventHandler;
-            node.onDrop = this.onDropEventHandler;
+  private static shiftFromPort(currentPort: PortModel, currentPosition: string, up: boolean, topLevel: boolean) {
+    if (currentPort) {
+      let links = currentPort.getLinks();
+      for (let key in links) {
+        let link = links[key];
+        if (link) {
+          let nextPort = link.getSourcePort().id === currentPort.id ? link.getTargetPort() : link.getSourcePort();
+          let nextNode = nextPort.getNode();
+          if (nextNode) {
+            if (currentPosition === FlowNodePortModel.LEFT) FlowDiagramEditor.shiftFromNode(nextNode, nextPort, up, topLevel);
+            else if (currentPosition === FlowNodePortModel.RIGHT) FlowDiagramEditor.shiftFromNode(nextNode, nextPort, up, topLevel);
+            else if (currentPosition === FlowNodePortModel.TOP && ((topLevel && up) || !topLevel))
+              FlowDiagramEditor.shiftFromNode(nextNode, nextPort, up, topLevel);
+            else if (currentPosition === FlowNodePortModel.BOTTOM && ((topLevel && !up) || !topLevel))
+              FlowDiagramEditor.shiftFromNode(nextNode, nextPort, up, topLevel);
           }
-          this.activeModel.addNode(node);
         }
       }
-
-      for (let link of groupProcess.links) {
-        this.activeModel.addLink(link);
-      }
-
-      let outLinks = position.getLinks();
-      for (let key in outLinks) {
-        let outLink = outLinks[key];
-        outLink.setSourcePort(groupProcess.outPort);
-      }
-
-      let inLink = position.createLinkModel();
-      inLink.setSourcePort(position);
-      inLink.setTargetPort(groupProcess.inPort);
-      this.activeModel.addLink(inLink);
     }
   }
+}
 
-  public getActiveDiagram(): DiagramModel {
-    return this.activeModel;
+export class FlowDiagramEditorHandlers {
+  private _onDropEventHandler: Function = null;
+  private _onClickEventHandler: Function = null;
+  private _onAddClickEventHandler: Function = null;
+
+  get onDropEventHandler(): Function {
+    return this._onDropEventHandler;
   }
 
-  public getDiagramEngine(): DiagramEngine {
-    return this.diagramEngine;
+  set onDropEventHandler(value: Function) {
+    this._onDropEventHandler = value;
   }
 
-  public autoArrange(rebuild: boolean) {
-    if (rebuild) {
-      this.setDiagramData(this.getDiagramData());
-    }
-    FlowDiagramEditor.arrangeFromNode(FlowDiagramEditor.getStartNode(this.activeModel), null, 100, 100);
+  get onClickEventHandler(): Function {
+    return this._onClickEventHandler;
+  }
+
+  set onClickEventHandler(value: Function) {
+    this._onClickEventHandler = value;
+  }
+
+  get onAddClickEventHandler(): Function {
+    return this._onAddClickEventHandler;
+  }
+
+  set onAddClickEventHandler(value: Function) {
+    this._onAddClickEventHandler = value;
   }
 }

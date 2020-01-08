@@ -10,7 +10,7 @@ import { code_node } from 'app/common/model/campaign-managament.model';
 
 const { Panel } = Collapse;
 
-interface IFlowItemValidateProps extends StateProps, DispatchProps { }
+interface IFlowItemValidateProps extends StateProps, DispatchProps {}
 interface IFlowItemValidateState {
   data: any[];
 }
@@ -19,17 +19,16 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
   state: IFlowItemValidateState = {
     data: this.props.listDiagram.nodes
   };
-  editor: FlowDiagramEditor
+  editor: FlowDiagramEditor;
 
   componentWillMount() {
     let { listDiagram } = this.props;
+    //TODO ????
     this.editor = new FlowDiagramEditor();
-    this.editor.lock();
     this.editor.setDiagramData({
       nodes: listDiagram.nodes,
       edges: listDiagram.edges
     });
-    this.editor.autoArrange(false);
   }
 
   renderTrayItemWidget(type: string) {

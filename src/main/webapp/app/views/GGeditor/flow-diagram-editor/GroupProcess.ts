@@ -93,6 +93,14 @@ export class SendSmsGroupProcess extends GroupProcess {
   }
 }
 
+export class TimeWaitingDecisionGroupProcess extends GroupProcess {
+  constructor(type: string) {
+    super(type);
+    let mainNode = createNodeModel(TimeWaitingDecisionNodeModel.TYPE, uuidv4());
+    this.init(mainNode);
+  }
+}
+
 export class DecisionGroupProcess extends GroupProcess {
   constructor(type: string) {
     super(type);
@@ -119,14 +127,6 @@ export class ConditionDecisionGroupProcess extends DecisionGroupProcess {
   constructor(type: string) {
     super(type);
     let mainNode = createNodeModel(ConditionDecisionNodeModel.TYPE, uuidv4());
-    this.init(mainNode);
-  }
-}
-
-export class TimeWaitingDecisionGroupProcess extends DecisionGroupProcess {
-  constructor(type: string) {
-    super(type);
-    let mainNode = createNodeModel(TimeWaitingDecisionNodeModel.TYPE, uuidv4());
     this.init(mainNode);
   }
 }
