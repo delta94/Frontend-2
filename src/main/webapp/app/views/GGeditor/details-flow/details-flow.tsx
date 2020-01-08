@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import CustomNode from '../node/node';
+import { DiagramWidget } from 'storm-react-diagrams';
 import { Translate, translate } from 'react-jhipster';
 import Loader from 'react-loader-advanced';
 import { Card, Table, CardBody } from 'reactstrap';
@@ -22,12 +23,13 @@ import { img_node, const_shape } from 'app/common/model/campaign-managament.mode
 import LoaderAnim from 'react-loaders';
 import ModalInteractive from './modal-interactive/modal-interactive';
 import './details-flow.scss';
+import { FlowDiagramEditor, GroupProcess } from '../flow-diagram-editor';
 
 const { Panel } = Collapse;
 const { Option } = Select;
 const { Header } = Layout;
 const { confirm } = Modal;
-interface IFlowPageProps extends StateProps, DispatchProps {}
+interface IFlowPageProps extends StateProps, DispatchProps { }
 interface IFlowPageState {
   isOpenModal: boolean;
   active_page: number;
@@ -60,6 +62,17 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     idCjersion: '',
     textSearch: ''
   };
+  editor: FlowDiagramEditor;
+
+  componentWillMount() {
+    let { listDiagram } = this.props;
+    console.log('listDiagram', listDiagram)
+    this.editor = new FlowDiagramEditor();
+    this.editor.setDiagramData({
+      nodes: listDiagram.nodes,
+      edges: listDiagram.edges
+    });
+  }
 
   componentDidMount() {
     let { clone_version } = this.props;
@@ -229,6 +242,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   render() {
     const imgSetting = require('app/assets/utils/images/flow/setting.png');
     const img_history = require('app/assets/utils/images/flow/history.png');
+    console.log(this.editor.getDiagramEngine())
     let {
       clone_version,
       listDiagram,
@@ -265,153 +279,143 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     return (
       <Loader message={spinner1} show={loading} priority={1} style={{ overflow: 'auto' }}>
         <ModalInteractive onClick={this.viewInteractive} isOpenModal={isOpenModal} />
-        <GGEditor className="editor-details">
-          <Layout style={{ minHeight: '200vh' }}>
-            <Header className="header-flow">
-              <Row>
-                <Col span={24} className="titleContent">
-                  <Breadcrumb separator=">">
-                    <Breadcrumb.Item>
-                      <a onClick={() => window.location.assign('/#/app/views/customers/user-management')} href="javascript:void(0);">
-                        <FontAwesomeIcon icon={faHome} />
+        <Layout style={{ minHeight: '200vh' }}>
+          <Header className="header-flow">
+            <Row>
+              <Col span={24} className="titleContent">
+                <Breadcrumb separator=">">
+                  <Breadcrumb.Item>
+                    <a onClick={() => window.location.assign('/#/app/views/customers/user-management')} href="javascript:void(0);">
+                      <FontAwesomeIcon icon={faHome} />
+                    </a>
+                  </Breadcrumb.Item>
+                  <Breadcrumb.Item>
+                    <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-auto')} href="javascript:void(0);">
+                      Chiến dịch tự động
                       </a>
-                    </Breadcrumb.Item>
-                    <Breadcrumb.Item>
-                      <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-auto')} href="javascript:void(0);">
-                        Chiến dịch tự động
+                  </Breadcrumb.Item>
+                  <Breadcrumb.Item>
+                    <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-managament')} href="javascript:void(0);">
+                      Danh sách chiến dịch
                       </a>
-                    </Breadcrumb.Item>
-                    <Breadcrumb.Item>
-                      <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-managament')} href="javascript:void(0);">
-                        Danh sách chiến dịch
-                      </a>
-                    </Breadcrumb.Item>
+                  </Breadcrumb.Item>
 
-                    <label className="ant-breadcrumb-link">{clone_version.name}</label>
-                  </Breadcrumb>
-                </Col>
-              </Row>
-            </Header>
-            <Row className="editorHd-details">
-              <Col span={24} style={{ padding: '1%' }}>
-                <Col span={4}>
-                  <label>Phiên bản: </label>{' '}
-                  <Select onChange={this.selectVersion} style={{ width: '25%' }} defaultValue={clone_version.version}>
-                    {list_version &&
-                      list_version.map((item, index) => {
-                        return (
-                          <Option key={index} value={item.cjVersionId}>
-                            {item.version}
-                          </Option>
-                        );
-                      })}
-                  </Select>
-                </Col>
-                <Col span={8}>
-                  <label style={{ lineHeight: '2' }}>Trạng Thái : {eventStatus(clone_version.status)}</label>
-                </Col>
-                <Col span={7} style={{ textAlign: 'right' }}>
-                  <img src={imgSetting} />
-                </Col>
-                <Col span={4} style={{ float: 'right' }}>
-                  <Button
-                    onClick={() => {
-                      this.createNewVersion();
-                    }}
-                    type="primary"
-                  >
-                    Tạo mới version
-                  </Button>
-                  <Button onClick={this.stopVersion} type="primary" style={{ background: '#97A3B4', borderColor: 'unset', float: 'right' }}>
-                    Dừng version
-                  </Button>
-                </Col>
+                  <label className="ant-breadcrumb-link">{clone_version.name}</label>
+                </Breadcrumb>
               </Col>
             </Row>
-            <Row style={{ padding: '0 1% 1% 1%' }}>
-              <Card>
-                <Flow
-                  graph={{
-                    edgeDefaultShape: 'custom-edge',
-                    height: 400
+          </Header>
+          <Row className="editorHd-details">
+            <Col span={24} style={{ padding: '1%' }}>
+              <Col span={4}>
+                <label>Phiên bản: </label>{' '}
+                <Select onChange={this.selectVersion} style={{ width: '25%' }} defaultValue={clone_version.version}>
+                  {list_version &&
+                    list_version.map((item, index) => {
+                      return (
+                        <Option key={index} value={item.cjVersionId}>
+                          {item.version}
+                        </Option>
+                      );
+                    })}
+                </Select>
+              </Col>
+              <Col span={8}>
+                <label style={{ lineHeight: '2' }}>Trạng Thái : {eventStatus(clone_version.status)}</label>
+              </Col>
+              <Col span={7} style={{ textAlign: 'right' }}>
+                <img src={imgSetting} />
+              </Col>
+              <Col span={4} style={{ float: 'right' }}>
+                <Button
+                  onClick={() => {
+                    this.createNewVersion();
                   }}
-                  className="flow"
-                  data={listDiagram}
-                  shortcut={{ delete: false }}
-                />
-              </Card>
-            </Row>
-            <Row style={{ padding: '0% 1% 1% 1%' }}>
-              <Card>
-                <Collapse bordered={false} defaultActiveKey={['1']} expandIconPosition="right">
-                  <Panel header="Lịch sử" key="1">
-                    <CardBody className="card-body-details">
-                      <label>{countCustomerVersionProcess} Bản ghi</label>
-                      <Input
-                        style={{ width: '20%', float: 'right', marginBottom: '1%' }}
-                        type="text"
-                        className="form-control"
-                        onKeyDown={this.search}
-                        placeholder={translate('userManagement.home.search-placer')}
-                      />
-                      <Table responsive striped className="main-table-version">
-                        <thead>
-                          <th />
-                          <th>Tên</th>
-                          <th>Họ</th>
-                          <th>Email</th>
-                          <th>Số điện thoại</th>
-                          <th>Trạng thái</th>
-                          <th />
-                        </thead>
-                        <tbody>
-                          {list_customer_version_process &&
-                            list_customer_version_process.map((item, index) => {
-                              return (
-                                <tr key={index}>
-                                  <td>{index + 1}</td>
-                                  <td>{item.firstName}</td>
-                                  <td>{item.lastName}</td>
-                                  <td>{item.email}</td>
-                                  <td>{item.mobile}</td>
-                                  <td>{item.state}</td>
-                                  <td>
-                                    <img src={img_history} onClick={() => this.viewInteractive(item.processInstanceId)} />
-                                  </td>
-                                </tr>
-                              );
-                            })}
-                        </tbody>
-                      </Table>
-                      <Row className="justify-content-center" style={{ float: 'right', marginTop: '1%' }}>
-                        {countCustomerVersionProcess >= 5 ? (
-                          <ReactPaginate
-                            previousLabel={'<'}
-                            nextLabel={'>'}
-                            breakLabel={'...'}
-                            breakClassName={'break-me'}
-                            pageCount={Math.ceil(countCustomerVersionProcess / 10)}
-                            marginPagesDisplayed={1}
-                            pageRangeDisplayed={3}
-                            onPageChange={this.handlePagination}
-                            containerClassName={'pagination'}
-                            subContainerClassName={'pages pagination'}
-                            activeClassName={'active'}
-                            forcePage={this.state.active_page}
-                          />
-                        ) : (
+                  type="primary"
+                >
+                  Tạo mới version
+                  </Button>
+                <Button onClick={this.stopVersion} type="primary" style={{ background: '#97A3B4', borderColor: 'unset', float: 'right' }}>
+                  Dừng version
+                  </Button>
+              </Col>
+            </Col>
+          </Row>
+          <Row style={{ padding: '0 1% 1% 1%' }}>
+            <Card>
+              <DiagramWidget className="srd-flow-canvas" diagramEngine={this.editor.getDiagramEngine()} smartRouting={true} />
+            </Card>
+          </Row>
+          <Row style={{ padding: '0% 1% 1% 1%' }}>
+            <Card>
+              <Collapse bordered={false} defaultActiveKey={['1']} expandIconPosition="right">
+                <Panel header="Lịch sử" key="1">
+                  <CardBody className="card-body-details">
+                    <label>{countCustomerVersionProcess} Bản ghi</label>
+                    <Input
+                      style={{ width: '20%', float: 'right', marginBottom: '1%' }}
+                      type="text"
+                      className="form-control"
+                      onKeyDown={this.search}
+                      placeholder={translate('userManagement.home.search-placer')}
+                    />
+                    <Table responsive striped className="main-table-version">
+                      <thead>
+                        <th />
+                        <th>Tên</th>
+                        <th>Họ</th>
+                        <th>Email</th>
+                        <th>Số điện thoại</th>
+                        <th>Trạng thái</th>
+                        <th />
+                      </thead>
+                      <tbody>
+                        {list_customer_version_process &&
+                          list_customer_version_process.map((item, index) => {
+                            return (
+                              <tr key={index}>
+                                <td>{index + 1}</td>
+                                <td>{item.firstName}</td>
+                                <td>{item.lastName}</td>
+                                <td>{item.email}</td>
+                                <td>{item.mobile}</td>
+                                <td>{item.state}</td>
+                                <td>
+                                  <img src={img_history} onClick={() => this.viewInteractive(item.processInstanceId)} />
+                                </td>
+                              </tr>
+                            );
+                          })}
+                      </tbody>
+                    </Table>
+                    <Row className="justify-content-center" style={{ float: 'right', marginTop: '1%' }}>
+                      {countCustomerVersionProcess >= 5 ? (
+                        <ReactPaginate
+                          previousLabel={'<'}
+                          nextLabel={'>'}
+                          breakLabel={'...'}
+                          breakClassName={'break-me'}
+                          pageCount={Math.ceil(countCustomerVersionProcess / 10)}
+                          marginPagesDisplayed={1}
+                          pageRangeDisplayed={3}
+                          onPageChange={this.handlePagination}
+                          containerClassName={'pagination'}
+                          subContainerClassName={'pages pagination'}
+                          activeClassName={'active'}
+                          forcePage={this.state.active_page}
+                        />
+                      ) : (
                           ''
                         )}
-                      </Row>
-                    </CardBody>
-                  </Panel>
-                </Collapse>
-              </Card>
-            </Row>
-            <CustomNode />
-            <CustomEdges />
-          </Layout>
-        </GGEditor>
+                    </Row>
+                  </CardBody>
+                </Panel>
+              </Collapse>
+            </Card>
+          </Row>
+          <CustomNode />
+          <CustomEdges />
+        </Layout>
       </Loader>
     );
   }
