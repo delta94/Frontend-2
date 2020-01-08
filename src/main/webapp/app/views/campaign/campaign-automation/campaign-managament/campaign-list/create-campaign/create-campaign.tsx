@@ -20,6 +20,7 @@ import Loader from 'react-loader-advanced';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FlowDiagramEditor, GroupProcess } from 'app/views/GGeditor/flow-diagram-editor';
+import 'app/views/GGeditor/flow-diagram-editor/index.scss';
 import { DiagramWidget, DiagramEngine } from 'storm-react-diagrams';
 import './create-campaign.scss';
 const { Panel } = Collapse;
@@ -62,10 +63,6 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
     contentFlow: ''
   };
   editor: FlowDiagramEditor;
-  componentDidMount() {
-    const { getTemplateCampaign } = this.props;
-    getTemplateCampaign();
-  }
   componentWillMount() {
     let { listDiagram } = this.props;
     this.editor = new FlowDiagramEditor();
@@ -73,6 +70,10 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
       nodes: listDiagram.nodes,
       edges: listDiagram.edges
     });
+  }
+  componentDidMount() {
+    const { getTemplateCampaign } = this.props;
+    getTemplateCampaign();
   }
 
 
@@ -199,7 +200,6 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
         };
       }),
       edges: graph.edges,
-      groups: []
     };
     this.setState({ isViewtemp: !this.state.isViewtemp });
     await getDiagramCampaign(data);
@@ -257,6 +257,7 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
             </Button>
           </Col>
         </Row>
+
         <br />
         <Container fluid>
           <Card>
@@ -267,8 +268,6 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
                   <Col className="gutter-row" span={8} key={index} onClick={async () => {
                     await this.cloneVersion(item.flow)
                     let { listDiagram } = this.props;
-                    console.log('listDiagram', listDiagram);
-                    this.editor = new FlowDiagramEditor();
                     this.editor.setDiagramData({
                       nodes: listDiagram.nodes,
                       edges: listDiagram.edges
@@ -278,7 +277,7 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
                       content={
 
                         <Fragment>
-                          <DiagramWidget className="srd-flow-canvas" diagramEngine={this.editor.getDiagramEngine() } smartRouting={false} />
+                          
                           <label>{item.description}</label>
                           <br />
                           <Button type="primary" onClick={() => window.location.assign(`#/flow`)}>
@@ -305,6 +304,8 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
               })}
           </Card>
         </Container>
+        <DiagramWidget className="srd-flow-canvas" diagramEngine={this.editor.getDiagramEngine() } smartRouting={false} />
+
       </div>
     );
   }
