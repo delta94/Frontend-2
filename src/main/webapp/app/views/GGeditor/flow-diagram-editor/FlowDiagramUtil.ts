@@ -69,7 +69,7 @@ function getEdgeAnchor(position: string) {
   }
 }
 
-export function toNode(nodeModel: FlowNodeModel): any | null {
+export function toNodeData(nodeModel: FlowNodeModel): any | null {
   if (nodeModel) {
     return {
       type: 'node',
@@ -85,7 +85,7 @@ export function toNode(nodeModel: FlowNodeModel): any | null {
   return 0;
 }
 
-export function toEdge(linkModel: LinkModel): any | null {
+export function toEdgeData(linkModel: LinkModel): any | null {
   if (linkModel) {
     let sourcePort = linkModel.getSourcePort();
     let targetPort = linkModel.getTargetPort();

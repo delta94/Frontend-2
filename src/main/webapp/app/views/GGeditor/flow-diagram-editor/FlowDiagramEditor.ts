@@ -22,9 +22,9 @@ import {
 } from './FlowNodeFactory';
 import { GroupProcess } from './GroupProcess';
 import DEFAULT_DATA from './data';
-import { mapToPortPosition, parseNode, toEdge, toNode } from './FlowDiagramUtil';
+import { mapToPortPosition, parseNode, toEdgeData, toNodeData } from './FlowDiagramUtil';
 import { instanceOf } from 'prop-types';
-import { RightAngleLinkFactory } from 'app/views/GGeditor/flow-diagram-editor/RightAngleLinkFactory';
+import { RightAngleLinkFactory } from './RightAngleLinkFactory';
 
 const GRID_SIZE = {
   width: 160,
@@ -91,10 +91,18 @@ export class FlowDiagramEditor {
   }
 
   public addGroupProcess(groupProcess: GroupProcess, position: PortModel) {
-    console.log('addGroupProcess');
-    console.log(groupProcess);
     let model = this.getActiveModel();
     if (FlowDiagramEditor.addGroupProcess(model, groupProcess, position, this.dropZoneVisible, this.handlers)) {
+      FlowDiagramEditor.arrange(model);
+      this.diagramEngine.recalculatePortsVisually();
+    }
+  }
+
+  public deleteNode(nodeId: string) {
+    let model = this.getActiveModel();
+    let node = model.getNode(nodeId);
+    if (node) {
+      FlowDiagramEditor.deleteFromNode(node, false);
       FlowDiagramEditor.arrange(model);
       this.diagramEngine.recalculatePortsVisually();
     }
@@ -117,7 +125,7 @@ export class FlowDiagramEditor {
       for (let key in model.getNodes()) {
         let node = model.getNodes()[key];
         if (node && node instanceof FlowNodeModel) {
-          data.nodes.push(toNode(node));
+          data.nodes.push(toNodeData(node));
         }
       }
     }
@@ -126,7 +134,7 @@ export class FlowDiagramEditor {
       for (let key in model.getLinks()) {
         let link = model.getLinks()[key];
         if (link && link instanceof LinkModel) {
-          data.edges.push(toEdge(link));
+          data.edges.push(toEdgeData(link));
         }
       }
     }
@@ -229,6 +237,72 @@ export class FlowDiagramEditor {
     }
 
     return false;
+  }
+
+  private static deleteFromNode(currentNode: NodeModel, deepDelete: boolean) {
+    if (currentNode) {
+      if (!deepDelete && currentNode instanceof FlowNodeModel) {
+        let inPort = currentNode.getDefaultInPort();
+        let outPort = currentNode.getDefaultOutPort();
+        if (currentNode.getPorts()) {
+          for (let key in currentNode.getPorts()) {
+            let port = currentNode.getPorts()[key];
+            //keep main branch
+            if (port && !(inPort && port.getID() === inPort.getID()) && outPort && port.getID() === outPort.getID()) {
+              FlowDiagramEditor.deleteFromPort(port, true);
+            }
+          }
+        }
+
+        let targetPorts: PortModel[] = [];
+        if (outPort && outPort.getLinks()) {
+          for (let key in outPort.getLinks()) {
+            let link = outPort.getLinks()[key];
+            if (link) {
+              if (link.getTargetPort()) targetPorts.push(link.getTargetPort());
+              link.remove();
+            }
+          }
+        }
+        if (inPort && inPort.getLinks()) {
+          for (let key in inPort.getLinks()) {
+            let link = inPort.getLinks()[key];
+            if (link) {
+              if (outPort) {
+                for (let targetPort of targetPorts) {
+                  link.setTargetPort(targetPort);
+                }
+              } else {
+                link.remove();
+              }
+            }
+          }
+        }
+      } else {
+        if (currentNode.getPorts()) {
+          for (let key in currentNode.getPorts()) {
+            let port = currentNode.getPorts()[key];
+            if (port) {
+              FlowDiagramEditor.deleteFromPort(port, true);
+            }
+          }
+        }
+      }
+      currentNode.remove();
+    }
+  }
+
+  private static deleteFromPort(currentPort: PortModel, deepDelete: boolean) {
+    let links = currentPort.getLinks();
+    for (let key in links) {
+      let link = links[key];
+      if (link) {
+        if (deepDelete && link.getTargetPort()) {
+          FlowDiagramEditor.deleteFromNode(link.getTargetPort().getNode(), true);
+        }
+        link.remove();
+      }
+    }
   }
 
   private static shift(model: DiagramModel, fromOffsetX: number, fromOffsetY: number) {
@@ -382,32 +456,8 @@ export class FlowDiagramEditor {
   }
 }
 
-export class FlowDiagramEditorHandlers {
-  private _onDropEventHandler: Function = null;
-  private _onClickEventHandler: Function = null;
-  private _onAddClickEventHandler: Function = null;
-
-  get onDropEventHandler(): Function {
-    return this._onDropEventHandler;
-  }
-
-  set onDropEventHandler(value: Function) {
-    this._onDropEventHandler = value;
-  }
-
-  get onClickEventHandler(): Function {
-    return this._onClickEventHandler;
-  }
-
-  set onClickEventHandler(value: Function) {
-    this._onClickEventHandler = value;
-  }
-
-  get onAddClickEventHandler(): Function {
-    return this._onAddClickEventHandler;
-  }
-
-  set onAddClickEventHandler(value: Function) {
-    this._onAddClickEventHandler = value;
-  }
+interface FlowDiagramEditorHandlers {
+  onDropEventHandler: Function;
+  onClickEventHandler: Function;
+  onAddClickEventHandler: Function;
 }

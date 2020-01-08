@@ -63,11 +63,9 @@ import {
   EventSourceStartNodeModel,
   EventWaitingDecisionNodeModel,
   FlowDiagramEditor,
-  FlowDiagramEditorHandlers,
   GroupProcess,
   SmsProcessNodeModel,
   TimeWaitingDecisionNodeModel,
-  toNode,
   TrayItemWidget,
   TrayWidget
 } from './flow-diagram-editor';
@@ -128,13 +126,12 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     let { listDiagram } = this.props;
     this.editor = new FlowDiagramEditor();
 
-    let handlers = new FlowDiagramEditorHandlers();
-    handlers.onDropEventHandler = async (node, port, data) => {
+    const onDropEventHandler = async (node, port, nodeData, dataTransfer) => {
       // console.log('setOnDropEventHandler');
       // console.log(node);
       // console.log(port);
       // console.log(data);
-      let groupProcess = GroupProcess.createGroupProcess(data.type);
+      let groupProcess = GroupProcess.createGroupProcess(dataTransfer.type);
       if (groupProcess && port) {
         await this.editor.addGroupProcess(groupProcess, port);
         await localStorage.removeItem('isSave');
@@ -142,19 +139,24 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         await this.forceUpdate();
       }
     };
-    handlers.onClickEventHandler = async nodeModel => {
-      await this.setState({ idNode: toNode(nodeModel) });
+
+    const onClickEventHandler = async (node, nodeData) => {
+      await this.setState({ idNode: nodeData });
       await this.getVisible(true, '', '', true);
     };
-    handlers.onAddClickEventHandler = async (node, port) => {
+
+    const onAddClickEventHandler = async (node, port) => {
       console.log('setOnAddClickEventHandler');
       console.log(node);
       console.log(port);
     };
 
-    this.editor.setHandlers(handlers);
-    console.log(listDiagram.nodes);
-    console.log(listDiagram.edges);
+    this.editor.setHandlers({
+      onDropEventHandler: onDropEventHandler,
+      onClickEventHandler: onClickEventHandler,
+      onAddClickEventHandler: onAddClickEventHandler
+    });
+
     this.editor.setDiagramData({
       nodes: listDiagram.nodes,
       edges: listDiagram.edges
@@ -605,9 +607,9 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     });
   };
 
-  //get Data diagram 
+  //get Data diagram
   getDataDiagram = () => {
-    let node = this.editor.getDiagramData()
+    let node = this.editor.getDiagramData();
     const { idFolder, saveCampaignAuto, infoVersion, infoCampaign, openModal, listFieldData, list_clone_version } = this.props;
     let { timeStartCampaign, advancedSearches, nameGroup } = this.state;
     let nodeMetaData: any[] = [];
@@ -688,13 +690,40 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     };
     let date = new Date();
 
-    let cjTags = infoCampaign.tag && infoCampaign.tag.length > 0 ? infoCampaign.tag : list_clone_version.cjTags && list_clone_version.cjTags.length > 0 ? list_clone_version.cjTags : []
-    let startTime = timeStartCampaign ? timeStartCampaign : Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.startTime : `${date.toISOString().substr(0, 10)} ${date.toLocaleTimeString()}`
+    let cjTags =
+      infoCampaign.tag && infoCampaign.tag.length > 0
+        ? infoCampaign.tag
+        : list_clone_version.cjTags && list_clone_version.cjTags.length > 0
+        ? list_clone_version.cjTags
+        : [];
+    let startTime = timeStartCampaign
+      ? timeStartCampaign
+      : Object.keys(list_clone_version).length > 0
+      ? list_clone_version.flowDetail.startTime
+      : `${date.toISOString().substr(0, 10)} ${date.toLocaleTimeString()}`;
     let data = {
       folderId: idFolder ? idFolder : '-99',
-      cjVersionId: Object.keys(list_clone_version).length > 0 ? list_clone_version.id ? list_clone_version.id : this.props.id_active.cjId ? this.props.id_active.id : null : this.props.id_active.cjId ? this.props.id_active.id : null,
+      cjVersionId:
+        Object.keys(list_clone_version).length > 0
+          ? list_clone_version.id
+            ? list_clone_version.id
+            : this.props.id_active.cjId
+            ? this.props.id_active.id
+            : null
+          : this.props.id_active.cjId
+          ? this.props.id_active.id
+          : null,
       cj: {
-        id: Object.keys(list_clone_version).length > 0 ? list_clone_version.cjId ? list_clone_version.cjId : this.props.id_active.id ? this.props.id_active.cjId : null : this.props.id_active.id ? this.props.id_active.cjId : null,
+        id:
+          Object.keys(list_clone_version).length > 0
+            ? list_clone_version.cjId
+              ? list_clone_version.cjId
+              : this.props.id_active.id
+              ? this.props.id_active.cjId
+              : null
+            : this.props.id_active.id
+            ? this.props.id_active.cjId
+            : null,
         name: infoCampaign.name ? infoCampaign.name : list_clone_version.name ? list_clone_version.name : 'Tạo chiến dịch mới',
         description: infoCampaign.des
           ? infoCampaign.des
@@ -702,7 +731,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           ? list_clone_version.description
           : infoCampaign.des
       },
-      cjTags: cjTags && cjTags.length > 0 ? cjTags[0] === "" ? [] : cjTags : cjTags,
+      cjTags: cjTags && cjTags.length > 0 ? (cjTags[0] === '' ? [] : cjTags) : cjTags,
       flow: {
         customerGroupName: nameGroup
           ? nameGroup
@@ -725,8 +754,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         graph: Object.keys(graph).length > 0 ? graph : Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.graph : []
       }
     };
-    return data
-  }
+    return data;
+  };
 
   activeProcess = async () => {
     const { activeProcessCampaign, list_clone_version, infoVersion, id_active, openModal, cloneVersion } = this.props;
@@ -831,7 +860,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   renderFlowDiagram() {
     let { isOpenModalInfo, idNode, isTest, isOpenModalMessage, isOpenModalWaitForEvent, isOpenModalWait, data, isValidate } = this.state;
     let { infoCampaign, listDiagram, list_validate, id_active, list_clone_version } = this.props;
-    let dataNode = this.editor.getDiagramData()
+    let dataNode = this.editor.getDiagramData();
     const imgSetting = require('app/assets/utils/images/flow/setting.png');
     const imgAward = require('app/assets/utils/images/flow/award.png');
     const imgMove = require('app/assets/utils/images/flow/move.png');
@@ -908,7 +937,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                       onClick={() => {
                         this.setState({ isTest: !isTest, isValidate: false });
                       }}
-                      disabled={JSON.parse(localStorage.getItem('isSave'))  ? false : true}
+                      disabled={JSON.parse(localStorage.getItem('isSave')) ? false : true}
                     >
                       Test
                     </Button>
@@ -916,7 +945,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                       onClick={async () => {
                         this.validateFlow();
                         if (Object.keys(id_active).length > 0 && !this.state.isValidate) {
-                          this.props.validateGraph(this.getDataDiagram())
+                          this.props.validateGraph(this.getDataDiagram());
                         }
                       }}
                       disabled={id_active.id && id_active.id.length > 0 ? false : true}
@@ -929,7 +958,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                 <Col span={2}>
                   <Button
                     onClick={() => this.activeProcess()}
-                    disabled={JSON.parse(localStorage.getItem('isSave'))  ? false : true}
+                    disabled={JSON.parse(localStorage.getItem('isSave')) ? false : true}
                     type="primary"
                     style={{ float: 'right' }}
                   >
@@ -953,7 +982,16 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   }
 
   render() {
-    let { isOpenModalInfo, idNode, isTest, isOpenModalMessage, isOpenModalWaitForEvent, isOpenModalWait, data, isOpenModalEmail } = this.state;
+    let {
+      isOpenModalInfo,
+      idNode,
+      isTest,
+      isOpenModalMessage,
+      isOpenModalWaitForEvent,
+      isOpenModalWait,
+      data,
+      isOpenModalEmail
+    } = this.state;
     let { modalState } = this.props;
     return (
       <Fragment>
@@ -973,10 +1011,15 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         <ConfigEmail toggleModal={this.getVisible} isOpenModal={isOpenModalEmail} idNode={idNode} />
         {this.renderFlowDiagram()}
         <div className="content-group-modal-attribute">
-          <ModalGroupCustomer is_show={this.state.visible} type_modal={'empty'} id_list_customer={''} toggle={this.getVisible} title_modal={'CHỌN NHÓM'} idNode={this.state.idNode}
+          <ModalGroupCustomer
+            is_show={this.state.visible}
+            type_modal={'empty'}
+            id_list_customer={''}
+            toggle={this.getVisible}
+            title_modal={'CHỌN NHÓM'}
+            idNode={this.state.idNode}
           />
         </div>
-
       </Fragment>
     );
   }

@@ -3,6 +3,7 @@ import { NodeModel, PortWidget } from 'storm-react-diagrams';
 import * as _ from 'lodash';
 import { FlowNodeModel } from '../FlowNodeModel';
 import { FlowNodePortModel } from '../FlowNodePortModel';
+import { toNodeData } from '../FlowDiagramUtil';
 
 const DefaultIcon = require('../icons/default.png');
 const AddIcon = require('../icons/add.png');
@@ -98,13 +99,13 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
           <div
             onClick={event => {
               if (this.props.node && this.props.node instanceof FlowNodeModel && this.props.node.onAddClick) {
-                this.props.node.onAddClick(this.props.node, port);
+                this.props.node.onAddClick(this.props.node, port, toNodeData(this.props.node));
               }
             }}
             onDrop={event => {
               if (this.props.node && this.props.node instanceof FlowNodeModel && this.props.node.onDrop) {
-                let data = JSON.parse(event.dataTransfer.getData('flow-diagram-node'));
-                this.props.node.onDrop(this.props.node, port, data);
+                let dataTransfer = JSON.parse(event.dataTransfer.getData('flow-diagram-node'));
+                this.props.node.onDrop(this.props.node, port, toNodeData(this.props.node), dataTransfer);
               }
             }}
             style={{
@@ -136,7 +137,7 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
       <svg
         onClick={event => {
           if (this.props.node && this.props.node instanceof FlowNodeModel && this.props.node.onClick) {
-            this.props.node.onClick(this.props.node);
+            this.props.node.onClick(this.props.node, toNodeData(this.props.node));
           }
         }}
         width={this.props.width}
