@@ -123,7 +123,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
   };
 
   createVersion = async () => {
-    const { saveCampaignAutoVersion, getDiagramCampaign, cloneVersionById, cloneVersion } = this.props;
+    const { saveCampaignAutoVersion, cloneVersionById, cloneVersion } = this.props;
     const { infoVersion, listVersion } = this.state;
     infoVersion.type = 'create'
     let isHaveDraf = false;
