@@ -27,6 +27,14 @@
 }
 .pop-data {
   left: 6% !important;
+  .label-info {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+
+    color: #343a40;
+  }
 }
 .tree-data {
   .ant-tree-node-content-wrapper {
@@ -56,5 +64,5 @@
   }
 }
 .row-sort-tree {
-  height: 5%;
+  height: 4.5%;
 }

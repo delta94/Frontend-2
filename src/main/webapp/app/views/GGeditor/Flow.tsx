@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react';
-import GGEditor, { Flow, Item, ItemPanel } from 'gg-editor';
 import {
   Row,
   Col,
@@ -13,14 +12,12 @@ import {
   Checkbox,
   Select,
   Input,
-  Collapse
+  Collapse,
+  Modal
 } from 'antd';
 const { Sider } = Layout;
 const { Panel } = Collapse;
-import CustomNode from './node/node';
-import CustomEdges from './egdes/egdes';
 import SweetAlert from 'sweetalert-react';
-import FlowToolbar from './FlowToolBar/flow-tool-bar';
 import { openModal, closeModal } from 'app/actions/modal';
 import { connect } from 'react-redux';
 import { Translate, translate } from 'react-jhipster';
@@ -41,7 +38,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faCopy, faTrashAlt, faUserEdit } from '@fortawesome/free-solid-svg-icons';
 import ModalGroupCustomer from './modal-group-customer/modal-group-customer';
 import FlowContextMenu from './EditorContextMenu/flow-context-menu';
-import { Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap';
 import UpdateInfoCampaign from './modal-update-info/modal-update-info';
 const { Header } = Layout;
 import './style.scss';
@@ -72,8 +68,8 @@ import {
 import { DiagramWidget } from 'storm-react-diagrams';
 
 const ButtonGroup = Button.Group;
-
-interface IFlowPageProps extends StateProps, DispatchProps {}
+const { confirm } = Modal;
+interface IFlowPageProps extends StateProps, DispatchProps { }
 interface IFlowPageState {
   visible: boolean;
   isOpen: boolean;
@@ -292,7 +288,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   // remove item in array
   remove(arr, item) {
     if (arr && arr.length > 0) {
-      for (var i = arr.length; i--; ) {
+      for (var i = arr.length; i--;) {
         if (arr[i].id === item.id) {
           arr.splice(i, 1);
         }
@@ -391,7 +387,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   };
 
   replicateCampaign = async () => {
-    let { list_clone_version, cloneVersionById, saveCampaignAutoVersion, infoVersion } = this.props;
+    let { list_clone_version, cloneVersionById, saveCampaignAutoVersion, infoVersion, id_active, openModal } = this.props;
+    let idCj = id_active.cjId && id_active.cjId ? id_active.cjId : list_clone_version && list_clone_version.cjId ? list_clone_version.cjId : infoVersion.idVersion
     let dataInfoVersion = {
       type: 'copy',
       nameVersion: '',
@@ -399,10 +396,27 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       cjId: '',
       status: ''
     };
-    await cloneVersionById(list_clone_version && list_clone_version.id ? list_clone_version.id : infoVersion.idVersion);
-    await this.cloneVersion('create');
-    await saveCampaignAutoVersion(dataInfoVersion);
-    this.hide();
+    confirm({
+      title: `Bạn có muốn nhân bản chiến dịch này ?`,
+      content: '',
+      zIndex : 1000000,
+      onOk: async () => {
+        await cloneVersionById(idCj);
+        await this.cloneVersion('create');
+        await saveCampaignAutoVersion(dataInfoVersion);
+        await openModal({
+          show: true,
+          type: 'success',
+          title: translate('modal-data.title.success'),
+          text: 'Nhân bản chiến dịch thành công'
+        });
+        this.hide();
+      },
+      onCancel() { },
+      okText: 'Đồng ý',
+      cancelText: 'Hủy bỏ'
+    });
+
   };
 
   cloneVersion = async option => {
@@ -513,11 +527,12 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
   //Content Popover Setting
   contentSetting() {
+    let { id_active } = this.props
     return (
       <Row>
         <Row>
           <Button
-            disabled={this.props.list_clone_version.id ? false : this.props.infoVersion.idVersion ? false : true}
+            disabled={id_active.id && id_active.id.length > 0 ? false : true}
             type="link"
             onClick={this.replicateCampaign}
             className="btn-multi"
@@ -734,29 +749,29 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         description: infoCampaign.des
           ? infoCampaign.des
           : list_clone_version.description
-          ? list_clone_version.description
-          : infoCampaign.des
+            ? list_clone_version.description
+            : infoCampaign.des
       },
       cjTags: cjTags && cjTags.length > 0 ? (cjTags[0] === '' ? [] : cjTags) : cjTags,
       flow: {
         customerGroupName: nameGroup
           ? nameGroup
           : Object.keys(list_clone_version).length > 0
-          ? list_clone_version.flowDetail.customerGroupName
-          : '',
+            ? list_clone_version.flowDetail.customerGroupName
+            : '',
         startTime: startTime,
         customerAdvancedSave:
           Object.keys(advancedSearches).length > 0
             ? advancedSearches
             : Object.keys(list_clone_version).length > 0
-            ? list_clone_version.flowDetail.customerAdvancedSave
-            : null,
+              ? list_clone_version.flowDetail.customerAdvancedSave
+              : null,
         nodeMetaData:
           nodeMetaData && nodeMetaData.length > 0
             ? nodeMetaData
             : Object.keys(list_clone_version).length > 0
-            ? list_clone_version.flowDetail.nodeMetaData
-            : [],
+              ? list_clone_version.flowDetail.nodeMetaData
+              : [],
         graph: Object.keys(graph).length > 0 ? graph : Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.graph : []
       }
     };
@@ -797,14 +812,14 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
               }}
             />
           ) : (
-            <Icon
-              type="double-left"
-              onClick={() => {
-                this.setState({ collapsed: !collapsed });
-              }}
-              className="icon-collapse"
-            />
-          )}
+              <Icon
+                type="double-left"
+                onClick={() => {
+                  this.setState({ collapsed: !collapsed });
+                }}
+                className="icon-collapse"
+              />
+            )}
         </div>
         <hr />
         <div className="logo" style={{ display: collapsed ? 'none' : 'block' }}>
@@ -931,7 +946,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                     placement="bottom"
                     onVisibleChange={this.handleVisibleChange}
                     title=""
-                    trigger="click"
+                    trigger="hover"
                   >
                     <img src={imgSetting} /> &nbsp;
                   </Popover>

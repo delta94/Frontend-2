@@ -14,7 +14,8 @@ import {
   getDiagramCampaign,
   getListCustomerVersionProcess,
   viewInteractive,
-  stopVersion
+  stopVersion,
+  cloneVersionById
 } from 'app/actions/campaign-managament';
 import { img_node, const_shape } from 'app/common/model/campaign-managament.model';
 import LoaderAnim from 'react-loaders';
@@ -26,7 +27,7 @@ const { Panel } = Collapse;
 const { Option } = Select;
 const { Header } = Layout;
 const { confirm } = Modal;
-interface IFlowPageProps extends StateProps, DispatchProps {}
+interface IFlowPageProps extends StateProps, DispatchProps { }
 interface IFlowPageState {
   isOpenModal: boolean;
   active_page: number;
@@ -231,10 +232,10 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       });
     }
   };
-  createNewVersion = () => {
-    const { getDiagramCampaign } = this.props;
-    getDiagramCampaign([]);
-    window.location.assign(`#/flow`);
+  createNewVersion = async () => {
+    const { getDiagramCampaign, cloneVersionById, clone_version } = this.props;
+    await cloneVersionById(clone_version.cjId)
+    await window.location.assign(`#/flow`);
   };
   render() {
     const imgSetting = require('app/assets/utils/images/flow/setting.png');
@@ -277,9 +278,9 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       <Loader message={spinner1} show={loading} priority={1} style={{ overflow: 'auto' }}>
         <ModalInteractive onClick={this.viewInteractive} isOpenModal={isOpenModal} />
         <Layout style={{ minHeight: '200vh' }}>
-          <Header className="header-flow">
+          <Header className="header-flow" style={{ background: "#F9FAFB" }}>
             <Row>
-              <Col span={24} className="titleContent">
+              <Col span={24} className="titleContent-detail">
                 <Breadcrumb separator=">">
                   <Breadcrumb.Item>
                     <a onClick={() => window.location.assign('/#/app/views/customers/user-management')} href="javascript:void(0);">
@@ -344,7 +345,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             </Card>
           </Row>
           <Row style={{ padding: '0% 1% 1% 1%' }}>
-            <Card>
+            <Card className="table-process">
               <Collapse bordered={false} defaultActiveKey={['1']} expandIconPosition="right">
                 <Panel header="Lịch sử" key="1">
                   <CardBody className="card-body-details">
@@ -402,8 +403,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                           forcePage={this.state.active_page}
                         />
                       ) : (
-                        ''
-                      )}
+                          ''
+                        )}
                     </Row>
                   </CardBody>
                 </Panel>
@@ -432,7 +433,8 @@ const mapDispatchToProps = {
   getDiagramCampaign,
   getListCustomerVersionProcess,
   viewInteractive,
-  stopVersion
+  stopVersion,
+  cloneVersionById
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

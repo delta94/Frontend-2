@@ -604,6 +604,8 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                 ''
               )}
             </div>
+            <br></br>
+
             {/* Blockout */}
           </div>
         </Loader>

@@ -6,6 +6,7 @@ import { ToastContainer } from 'react-toastify';
 const Admin = lazy(() => import('app/views/customer'));
 const Pages = lazy(() => import('app/views/pages'));
 const Login = lazy(() => import('app/views/login'));
+const Config = lazy(() => import('app/views/config'));
 const CampaginAuto = lazy(() => import('app/views/campaign'));
 const CampaginManagament = lazy(() => import('app/views/campaign/campaign-automation/campaign-managament'));
 const GGeditor = lazy(() => import('app/views/GGeditor'));
@@ -59,6 +60,26 @@ const AppRoutes = () => {
         }
       >
         <Route path="/login" component={Login} />
+      </Suspense>
+
+
+      {/* config email */}
+      <Suspense
+        fallback={
+          <div className="loader-container">
+            <div className="loader-container-inner">
+              <div className="text-center">{/* <Loader type="ball-pulse-rise" /> */}</div>
+              <h6 className="mt-5">
+                Please wait while we load all the Components examples
+                <small>
+                  Because this is a demonstration we load at once all the Components examples. This wouldn't happen in a real live app!
+                </small>
+              </h6>
+            </div>
+          </div>
+        }
+      >
+        <Route path="/app/views/config" component={Config} />
       </Suspense>
 
       {/* campaign */}
