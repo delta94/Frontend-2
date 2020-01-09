@@ -1,4 +1,4 @@
-import { LinkModel } from 'storm-react-diagrams';
+import { LinkModel, NodeModel } from 'storm-react-diagrams';
 import { FlowNodePortModel } from './FlowNodePortModel';
 import {
   ConditionDecisionNodeModel,
@@ -69,20 +69,20 @@ function getEdgeAnchor(position: string) {
   }
 }
 
-export function toNodeData(nodeModel: FlowNodeModel): any | null {
-  if (nodeModel) {
+export function toNodeData(node: NodeModel): any | null {
+  if (node) {
     return {
       type: 'node',
       label: '',
-      code: getNodeCode(nodeModel.getType()),
-      params: nodeModel.getType(),
+      code: getNodeCode(node.getType()),
+      params: node.getType(),
       value: '',
-      id: nodeModel.getID(),
-      x: nodeModel.x,
-      y: nodeModel.y
+      id: node.getID(),
+      x: node.x,
+      y: node.y
     };
   }
-  return 0;
+  return {};
 }
 
 export function toEdgeData(linkModel: LinkModel): any | null {

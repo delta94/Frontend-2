@@ -151,10 +151,16 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       console.log(port);
     };
 
-    this.editor.setHandlers({
+    const onDeleteEventHandler = async (node, nodeData) => {
+      await this.editor.deleteNode(node);
+      await this.forceUpdate();
+    };
+
+    this.editor.setEventHandlers({
       onDropEventHandler: onDropEventHandler,
       onClickEventHandler: onClickEventHandler,
-      onAddClickEventHandler: onAddClickEventHandler
+      onAddClickEventHandler: onAddClickEventHandler,
+      onDeleteEventHandler: onDeleteEventHandler
     });
 
     this.editor.setDiagramData({
