@@ -53,7 +53,7 @@ export class RightAngleLinkSegment extends React.Component<{
       <g>
         <>
           <path
-            className={this.props.selected ? this.props.widget.bem('--path-selected') : ''}
+            // className={this.props.selected ? this.props.widget.bem('--path-selected') : ''}
             ref={ref => {
               this.path = ref;
             }}

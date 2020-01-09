@@ -1,4 +1,20 @@
 .container-create {
+  overflow: auto;
+  .descrition-template {
+    padding: 5%;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 18px;
+
+    color: #343a40;
+  }
+  .btn-template {
+    top: 170px;
+    float: right;
+    background: #3866DD;
+  }
   .count-campaign {
     margin: 1% 2% -1%;
     font-family: Roboto;

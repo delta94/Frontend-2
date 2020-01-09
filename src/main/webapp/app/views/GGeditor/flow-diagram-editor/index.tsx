@@ -1,9 +1,9 @@
-import { FlowDiagramEditor, FlowDiagramEditorHandlers } from './FlowDiagramEditor';
+import { FlowDiagramEditor } from './FlowDiagramEditor';
 import { TrayWidget } from './components/TrayWidget';
 import { TrayItemWidget } from './components/TrayItemWidget';
 import { DiagramWidget } from 'storm-react-diagrams';
 import { GroupProcess } from './GroupProcess';
-import { toNode, toEdge } from './FlowDiagramUtil';
+import { toNodeData, toEdgeData } from './FlowDiagramUtil';
 import {
   ConditionDecisionNodeModel,
   ContactSourceStartNodeModel,
@@ -20,7 +20,6 @@ export {
   TrayItemWidget,
   DiagramWidget,
   FlowDiagramEditor,
-  FlowDiagramEditorHandlers,
   ConditionDecisionNodeModel,
   ContactSourceStartNodeModel,
   EmailProcessNodeModel,
@@ -29,7 +28,5 @@ export {
   EventWaitingDecisionNodeModel,
   SmsProcessNodeModel,
   TimeWaitingDecisionNodeModel,
-  GroupProcess,
-  toNode,
-  toEdge
+  GroupProcess
 };
