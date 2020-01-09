@@ -37,11 +37,11 @@ class CampaginManagament extends React.Component<ICampaginManagamentProps, ICamp
     return (
       <Fragment>
         <div>
-          <Row className="row-main">
-            <Col span={4} className="d-none d-lg-block h-100 bg-white  align-items-center">
+          <Row className="row-main" style ={{height : "900px"}}>
+            <Col span={4} className=" d-lg-block bg-white  align-items-center"  style ={{height : "100%"}}>
               <TreeFolder onClick={this.getId} />
             </Col>
-            <Col span={20} className="h-100 bg-white  align-items-center">
+            <Col span={20} className="bg-white  align-items-center" style ={{height : "100%"}}>
               <Row className="header-row">
                 <Breadcrumb separator=">">
                   <Breadcrumb.Item>

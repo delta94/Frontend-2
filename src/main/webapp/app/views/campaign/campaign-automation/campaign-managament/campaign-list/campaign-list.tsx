@@ -529,9 +529,9 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                           <span> {item.modifiedDate}</span>
                         </td>
                         <td colSpan={15}>
-                          <CJTagPopOver key={item.cjVersionId} dataPopup={item} getCjs={this.getCjs} />
+                          {/* <CJTagPopOver key={item.cjVersionId} dataPopup={item} getCjs={this.getCjs} /> */}
                           {/* <Icon onClick={() => this.openModalCjTag(item.id)} style={{ fontSize: '24px' }} type="tags" />  */}
-                          {/* <PopverAnt
+                          <PopverAnt
                             overlayClassName="pop-tag"
                             content={this.contentTag(item)}
                             title="Chọn tag"
@@ -547,7 +547,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                             }}
                           >
                             <img src={img_tag} />
-                          </PopverAnt> */}
+                          </PopverAnt>
                           &nbsp; &nbsp;
                           <PopverAnt
                             overlayClassName="pop-version"
@@ -604,6 +604,8 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                 ''
               )}
             </div>
+            <br></br>
+
             {/* Blockout */}
           </div>
         </Loader>

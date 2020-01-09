@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Translate, translate } from 'react-jhipster';
-import { Tree } from 'antd';
-import { Row, Col, Button, Input, Table, Popover, Icon, Modal } from 'antd';
+import { Button as ButtonReactstrap } from 'reactstrap';
+import { Row, Col, Button, Input, Table, Popover, Icon, Modal, Tree } from 'antd';
 import { openModal, closeModal } from 'app/actions/modal';
 import { IRootState } from 'app/reducers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -21,7 +21,9 @@ import './tree-folder.scss';
 
 const { TreeNode } = Tree;
 const { confirm } = Modal;
-
+const img_edit = require('app/assets/utils/images/campaign-managament/edit.png')
+const img_create = require('app/assets/utils/images/campaign-managament/plus.png')
+const img_delete = require('app/assets/utils/images/campaign-managament/delete.png')
 export interface ITreeFolderProps extends StateProps, DispatchProps {
   onClick: Function;
 }
@@ -62,36 +64,36 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
         children:
           event.cjFolders && event.cjFolders.length > 0
             ? event.cjFolders.map(value => {
-                return {
-                  title: value.name,
-                  key: value.id + ',2',
-                  id: value.id,
-                  parentId: event.parentId,
-                  children:
-                    value.cjFolders && value.cjFolders.length > 0
-                      ? value.cjFolders.map(item => {
-                          return {
-                            title: item.name,
-                            key: item.id + ',3',
-                            id: item.id,
-                            parentId: value.parentId,
-                            children: item.cjFolders
-                          };
-                        })
-                      : [
-                          {
-                            title: null,
-                            key: null
-                          }
-                        ]
-                };
-              })
+              return {
+                title: value.name,
+                key: value.id + ',2',
+                id: value.id,
+                parentId: event.parentId,
+                children:
+                  value.cjFolders && value.cjFolders.length > 0
+                    ? value.cjFolders.map(item => {
+                      return {
+                        title: item.name,
+                        key: item.id + ',3',
+                        id: item.id,
+                        parentId: value.parentId,
+                        children: item.cjFolders
+                      };
+                    })
+                    : [
+                      {
+                        title: null,
+                        key: null
+                      }
+                    ]
+              };
+            })
             : [
-                {
-                  title: null,
-                  key: null
-                }
-              ]
+              {
+                title: null,
+                key: null
+              }
+            ]
       };
     });
     treeData = data;
@@ -101,36 +103,37 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
 
   contentPop = rowInfo => (
     <Row style={{ textAlign: 'center' }}>
-      <Row>
-        <Button
-          type="ghost"
+      <Row style={{ marginBottom: "5%" }}>
+        <ButtonReactstrap
+          className = "label-info"
+          color="none"
           onClick={() => {
             this.createFolder(rowInfo, 'edit');
           }}
         >
           {' '}
-          <Icon type="edit" /> Đổi tên
-        </Button>
+          <img src={img_edit} style={{ marginRight: "1em" }} /> Đổi tên
+        </ButtonReactstrap>
       </Row>
 
-      <hr />
-      <Row>
-        <Button type="primary" onClick={() => this.createFolder(rowInfo, 'create')}>
+      <Row style={{ marginBottom: "5%" }}>
+        <ButtonReactstrap   className = "label-info"
+         color="none" onClick={() => this.createFolder(rowInfo, 'create')}>
           {' '}
-          <Icon type="folder" /> Tạo mới
-        </Button>
+          <img src={img_create} style={{ marginRight: "1em" }} />Tạo mới
+        </ButtonReactstrap>
       </Row>
-      <hr />
-      <Row>
-        <Button
-          type="danger"
+      <Row style={{ marginBottom: "7%" }}>
+        <ButtonReactstrap
+        className = "label-info"
+          color="none"
           onClick={() => {
             this.createFolder(rowInfo, 'delete');
           }}
         >
           {' '}
-          <Icon type="delete" /> Xóa
-        </Button>
+          <img src={img_delete} style={{ marginRight: "1em" }} /> Xóa
+        </ButtonReactstrap>
       </Row>
     </Row>
   );
@@ -173,14 +176,14 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
               await this.getData();
             },
             okText: 'Thêm mới',
-            onCancel() {},
+            onCancel() { },
             cancelText: 'Hủy bỏ'
           });
         } else {
           Modal.error({
             title: 'Không thể tạo thêm thư mục',
             content: '',
-            onOk() {},
+            onOk() { },
             okText: 'Đồng ý'
           });
         }
@@ -202,7 +205,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
             await this.getData();
           },
           okText: 'Lưu lại',
-          onCancel() {},
+          onCancel() { },
           cancelText: 'Hủy bỏ'
         });
         break;
@@ -218,7 +221,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
             await this.getData();
           },
           okText: 'Xóa',
-          onCancel() {},
+          onCancel() { },
           cancelText: 'Hủy bỏ'
         });
 
@@ -232,7 +235,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
             await onClick(event ? event.id : null);
           },
           okText: 'Đồng ý',
-          onCancel() {},
+          onCancel() { },
           cancelText: 'Hủy bỏ'
         });
 
@@ -318,7 +321,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
           });
         },
         okText: 'Lưu lại',
-        onCancel() {},
+        onCancel() { },
         cancelText: 'Hủy bỏ'
       });
     }
@@ -424,7 +427,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
               blockNode
               onDragEnter={this.onDragEnter}
               onDrop={this.onDrop}
-              // showLine = {true}
+            // showLine = {true}
             >
               <TreeNode title={<div>Tất cả chiến dịch</div>} />
               {this.state.treeData.map(item => {
