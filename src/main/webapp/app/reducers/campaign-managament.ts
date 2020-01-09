@@ -228,7 +228,7 @@ export default (state = initialCampaignManagament, action) => {
     case CAMPAIGN_MANAGAMENT.SAVE_CAMPAIGN_AUTO_VERSION:
       return { ...state, infoVersion: action.payload };
     case CAMPAIGN_MANAGAMENT.RESET_VERSION:
-      return { ...state, cloneInfoVersion: {} };
+      return { ...state, cloneInfoVersion: {}, idActive: { id: null, cjId: null } };
     default:
       return state;
   }

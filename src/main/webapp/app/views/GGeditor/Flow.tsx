@@ -30,7 +30,8 @@ import {
   saveCampaignAutoVersion,
   activeProcessCampaign,
   validateGraph,
-  cloneVersionById
+  cloneVersionById,
+  resetListCloneVersion
 } from 'app/actions/campaign-managament';
 import { IRootState } from 'app/reducers';
 import ConfigEmail from './config-email/config-email';
@@ -387,7 +388,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   };
 
   replicateCampaign = async () => {
-    let { list_clone_version, cloneVersionById, saveCampaignAutoVersion, infoVersion, id_active, openModal } = this.props;
+    let { list_clone_version, cloneVersionById, saveCampaignAutoVersion, infoVersion, id_active, openModal, resetListCloneVersion } = this.props;
     let idCj = id_active.cjId && id_active.cjId ? id_active.cjId : list_clone_version && list_clone_version.cjId ? list_clone_version.cjId : infoVersion.idVersion
     let dataInfoVersion = {
       type: 'copy',
@@ -399,11 +400,16 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     confirm({
       title: `Bạn có muốn nhân bản chiến dịch này ?`,
       content: '',
-      zIndex : 1000000,
+      zIndex: 1000000,
       onOk: async () => {
+        await resetListCloneVersion()
+      
         await cloneVersionById(idCj);
         await this.cloneVersion('create');
         await saveCampaignAutoVersion(dataInfoVersion);
+        this.getDataDiagram().cjVersionId = null
+        this.getDataDiagram().cj.id = null
+        console.log(this.getDataDiagram())
         await openModal({
           show: true,
           type: 'success',
@@ -715,13 +721,13 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       infoCampaign.tag && infoCampaign.tag.length > 0
         ? infoCampaign.tag
         : list_clone_version.cjTags && list_clone_version.cjTags.length > 0
-        ? list_clone_version.cjTags
-        : [];
+          ? list_clone_version.cjTags
+          : [];
     let startTime = timeStartCampaign
       ? timeStartCampaign
       : Object.keys(list_clone_version).length > 0
-      ? list_clone_version.flowDetail.startTime
-      : `${date.toISOString().substr(0, 10)} ${date.toLocaleTimeString()}`;
+        ? list_clone_version.flowDetail.startTime
+        : `${date.toISOString().substr(0, 10)} ${date.toLocaleTimeString()}`;
     let data = {
       folderId: idFolder ? idFolder : '-99',
       cjVersionId:
@@ -729,22 +735,22 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           ? list_clone_version.id
             ? list_clone_version.id
             : this.props.id_active.cjId
-            ? this.props.id_active.id
-            : null
+              ? this.props.id_active.id
+              : null
           : this.props.id_active.cjId
-          ? this.props.id_active.id
-          : null,
+            ? this.props.id_active.id
+            : null,
       cj: {
         id:
           Object.keys(list_clone_version).length > 0
             ? list_clone_version.cjId
               ? list_clone_version.cjId
               : this.props.id_active.id
-              ? this.props.id_active.cjId
-              : null
+                ? this.props.id_active.cjId
+                : null
             : this.props.id_active.id
-            ? this.props.id_active.cjId
-            : null,
+              ? this.props.id_active.cjId
+              : null,
         name: infoCampaign.name ? infoCampaign.name : list_clone_version.name ? list_clone_version.name : 'Tạo chiến dịch mới',
         description: infoCampaign.des
           ? infoCampaign.des
@@ -1070,7 +1076,8 @@ const mapDispatchToProps = {
   openModal,
   closeModal,
   validateGraph,
-  cloneVersionById
+  cloneVersionById,
+  resetListCloneVersion
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
