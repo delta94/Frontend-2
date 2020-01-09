@@ -15,6 +15,9 @@ interface ISiderTestState {
   isCheckPhone: boolean;
   isCheckEmail: boolean;
   isCheckCustomer: boolean;
+  error_phone: string;
+  error_mail: string;
+  error_customer: string;
 }
 const constCheckBox = {
   CHECK_BOX_CUSTOMER: 'customer',
@@ -34,7 +37,10 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
     phone: '',
     isCheckCustomer: false,
     isCheckEmail: false,
-    isCheckPhone: false
+    isCheckPhone: false,
+    error_phone: '',
+    error_customer: '',
+    error_mail: ''
   };
 
   componentDidMount() {
@@ -185,14 +191,7 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
       graph
     };
     localStorage.setItem('isActive', 'true');
-    let vnfont = /((09|03|07|08|05)+([0-9]{8})$)/g;
-    if (!vnfont.test(String(phone))) {
-      Modal.error({
-        title: 'Thông báo',
-        content: 'Vui lòng nhập đúng định dạng số điện thoại',
-        okText: 'Đồng ý'
-      });
-    } else {
+    if (this.checkValidate()) {
       await testCampaign(data);
       notification['success']({
         message: 'thành công',
@@ -200,6 +199,34 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
       });
     }
   };
+  checkValidate(): boolean {
+    let { isCheckCustomer, isCheckEmail, isCheckPhone, customer, email, phone } = this.state;
+    let count: number = 0
+    let result: boolean = true
+    let vnfont = /((09|03|07|08|05)+([0-9]{8})$)/g;
+    if (!vnfont.test(String(phone)) && isCheckPhone) {
+      count++;
+      this.setState({ error_phone: "* Vui lòng nhập đúng dịnh dạng số điện thoại" })
+    } else {
+      this.setState({ error_phone: "" })
+    }
+    if (!email && isCheckEmail) {
+      count++
+      this.setState({ error_mail: "* Vui lòng chọn email" })
+    } else {
+      this.setState({ error_mail: "" })
+    }
+    if (Object.keys(customer).length === 0 && isCheckCustomer) {
+      count++
+      this.setState({ error_customer: "* Vui lòng chọn khách hàng" })
+    } else {
+      this.setState({ error_customer: "" })
+    }
+    if (count > 0) {
+      result = false
+    }
+    return result
+  }
 
   render() {
     let { collapsed } = this.state;
@@ -253,6 +280,7 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
                   })}
               </Select>
             </Col>
+            <p className="error" style={{ color: "red", marginLeft: "4%" }}> {this.state.error_customer}</p>
           </Row>
           <Row style={{ marginBottom: '6%' }}>
             <Col span={24}>
@@ -274,6 +302,7 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
                   })}
               </Select>
             </Col>
+            <p className="error" style={{ color: "red", marginLeft: "4%" }}> {this.state.error_mail}</p>
           </Row>
           <Row style={{ marginBottom: '6%' }}>
             <Col span={24}>
@@ -286,6 +315,7 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
               {' '}
               <Input maxLength={11} style={{ width: '92%' }} onChange={event => this.handleChange(event, constantEvent.PHONE)} />
             </Col>
+            <p className="error" style={{ color: "red", marginLeft: "4%" }}> {this.state.error_phone}</p>
           </Row>
           <Button onClick={this.testProcess} className="btn-test" type="primary">
             Test

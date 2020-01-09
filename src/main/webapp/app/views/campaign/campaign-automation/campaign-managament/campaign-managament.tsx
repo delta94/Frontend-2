@@ -35,9 +35,8 @@ class CampaginManagament extends React.Component<ICampaginManagamentProps, ICamp
   render() {
     let { idTree } = this.state;
     return (
-      <Fragment>
         <div>
-          <Row className="row-main" style ={{height : "900px"}}>
+          <Row className="row-main" style ={{height : "1200px"}}>
             <Col span={4} className=" d-lg-block bg-white  align-items-center"  style ={{height : "100%"}}>
               <TreeFolder onClick={this.getId} />
             </Col>
@@ -62,7 +61,6 @@ class CampaginManagament extends React.Component<ICampaginManagamentProps, ICamp
             </Col>
           </Row>
         </div>
-      </Fragment>
     );
   }
 }
