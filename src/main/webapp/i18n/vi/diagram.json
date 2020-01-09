@@ -1,0 +1,20 @@
+{
+  "diagram": {
+    "action_buttons": {
+      "setting": "Cấu hình",
+      "delete": "Xoá"
+    },
+    "nodes": {
+      "start_contact_source": "Nguồn Khách hàng",
+      "start_event_source": "Nguồn Sự kiện",
+
+      "decision_condition": "Điều kiện",
+      "decision_event_waiting": "Chờ Sự kiện",
+      "decision_time_waiting": "Chờ Thời gian",
+      "process_email": "Gửi Email",
+      "process_sms": "Gửi Sms",
+
+      "end": "Kết thúc"
+    }
+  }
+}
