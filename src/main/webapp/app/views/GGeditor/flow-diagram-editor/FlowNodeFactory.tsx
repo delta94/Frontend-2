@@ -16,14 +16,23 @@ import * as React from 'react';
 import { FlowNodeWidget } from './components/FlowNodeWidget';
 
 const DefaultIcon = require('./icons/default.png');
+
 const ConditionDecisionNodeIcon = require('./icons/decision_condition.png');
+const InactiveConditionDecisionNodeIcon = require('./icons/decision_condition_disable.png');
 const TimeWaitingDecisionNodeIcon = require('./icons/decision_time_waiting.png');
+const InactiveTimeWaitingDecisionNodeIcon = require('./icons/decision_time_waiting_disable.png');
 const EventWaitingDecisionNodeIcon = require('./icons/decision_event_waiting.png');
+const InactiveEventWaitingDecisionNodeIcon = require('./icons/decision_event_waiting_disable.png');
 const ContactSourceStartNodeIcon = require('./icons/start_contact_source.png');
+const InactiveContactSourceStartNodeIcon = require('./icons/start_contact_source_disable.png');
 const EventSourceStartNodeIcon = require('./icons/start_event_source.png');
-const EndNodeIcon = require('./icons/end.png');
+const InactiveEventSourceStartNodeIcon = require('./icons/start_event_source_disable.png');
+
 const EmailProcessNodeIcon = require('./icons/process_email.png');
+const InactiveEmailProcessNodeIcon = require('./icons/process_email_disable.png');
 const SmsProcessNodeIcon = require('./icons/process_sms.png');
+const InactiveSmsProcessNodeIcon = require('./icons/process_sms_disable.png');
+const EndNodeIcon = require('./icons/end.png');
 
 export function createFlowNodeWidget(type: string, node: NodeModel, portVisible: boolean, dropZoneVisible: boolean) {
   if (type && type === ContactSourceStartNodeModel.TYPE)
@@ -32,10 +41,12 @@ export function createFlowNodeWidget(type: string, node: NodeModel, portVisible:
         node={node}
         type={type}
         icon={ContactSourceStartNodeIcon}
+        inactiveIcon={InactiveContactSourceStartNodeIcon}
         title={''}
         width={StartNodeModel.WIDTH}
         height={StartNodeModel.HEIGHT}
         portVisible={portVisible}
+        hasActionButton={false}
         dropZoneVisible={dropZoneVisible}
       />
     );
@@ -45,10 +56,12 @@ export function createFlowNodeWidget(type: string, node: NodeModel, portVisible:
         node={node}
         type={type}
         icon={EventSourceStartNodeIcon}
+        inactiveIcon={InactiveEventSourceStartNodeIcon}
         title={''}
         width={StartNodeModel.WIDTH}
         height={StartNodeModel.HEIGHT}
         portVisible={portVisible}
+        hasActionButton={false}
         dropZoneVisible={dropZoneVisible}
       />
     );
@@ -58,10 +71,12 @@ export function createFlowNodeWidget(type: string, node: NodeModel, portVisible:
         node={node}
         type={type}
         icon={EmailProcessNodeIcon}
+        inactiveIcon={InactiveEmailProcessNodeIcon}
         title={''}
         width={ProcessNodeModel.WIDTH}
         height={ProcessNodeModel.HEIGHT}
         portVisible={portVisible}
+        hasActionButton={true}
         dropZoneVisible={dropZoneVisible}
       />
     );
@@ -71,10 +86,12 @@ export function createFlowNodeWidget(type: string, node: NodeModel, portVisible:
         node={node}
         type={type}
         icon={SmsProcessNodeIcon}
+        inactiveIcon={InactiveSmsProcessNodeIcon}
         title={''}
         width={ProcessNodeModel.WIDTH}
         height={ProcessNodeModel.HEIGHT}
         portVisible={portVisible}
+        hasActionButton={true}
         dropZoneVisible={dropZoneVisible}
       />
     );
@@ -84,10 +101,12 @@ export function createFlowNodeWidget(type: string, node: NodeModel, portVisible:
         node={node}
         type={type}
         icon={TimeWaitingDecisionNodeIcon}
+        inactiveIcon={InactiveTimeWaitingDecisionNodeIcon}
         title={''}
         width={DecisionNodeModel.WIDTH}
         height={DecisionNodeModel.HEIGHT}
         portVisible={portVisible}
+        hasActionButton={true}
         dropZoneVisible={dropZoneVisible}
       />
     );
@@ -97,10 +116,12 @@ export function createFlowNodeWidget(type: string, node: NodeModel, portVisible:
         node={node}
         type={type}
         icon={EventWaitingDecisionNodeIcon}
+        inactiveIcon={InactiveEventWaitingDecisionNodeIcon}
         title={''}
         width={DecisionNodeModel.WIDTH}
         height={DecisionNodeModel.HEIGHT}
         portVisible={portVisible}
+        hasActionButton={true}
         dropZoneVisible={dropZoneVisible}
       />
     );
@@ -110,10 +131,12 @@ export function createFlowNodeWidget(type: string, node: NodeModel, portVisible:
         node={node}
         type={type}
         icon={ConditionDecisionNodeIcon}
+        inactiveIcon={InactiveConditionDecisionNodeIcon}
         title={''}
         width={DecisionNodeModel.WIDTH}
         height={DecisionNodeModel.HEIGHT}
         portVisible={portVisible}
+        hasActionButton={true}
         dropZoneVisible={dropZoneVisible}
       />
     );
@@ -123,10 +146,12 @@ export function createFlowNodeWidget(type: string, node: NodeModel, portVisible:
         node={node}
         type={type}
         icon={EndNodeIcon}
+        inactiveIcon={EndNodeIcon}
         title={''}
         width={EndNodeModel.WIDTH}
         height={EndNodeModel.HEIGHT}
         portVisible={portVisible}
+        hasActionButton={false}
         dropZoneVisible={dropZoneVisible}
       />
     );

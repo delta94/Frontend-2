@@ -52,7 +52,7 @@ export class RightAngleLinkWidget extends React.Component<RightAngleLinkProps, R
   generateLink(path: string, extraProps: any, id: string | number): JSX.Element {
     const ref = React.createRef<SVGPathElement>();
     this.refPaths.push(ref);
-    return <RightAngleLinkSegment model={this.props.link} widget={this.props.widget} selected={this.state.selected} path={path} />;
+    return <RightAngleLinkSegment key={id} model={this.props.link} widget={this.props.widget} selected={this.state.selected} path={path} />;
   }
 
   calculatePositions(points: PointModel[], event: MouseEvent, index: number, coordinate: string) {
@@ -237,7 +237,7 @@ export class RightAngleLinkWidget extends React.Component<RightAngleLinkProps, R
               this.props.link.lastHoverIndexOfPath = j;
             }
           },
-          j
+          this.props.link.getID() + '_' + j
         )
       );
     }

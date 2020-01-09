@@ -1,6 +1,7 @@
 import { NodeModel, PortModel } from 'storm-react-diagrams';
 import { FlowNodePortModel } from './FlowNodePortModel';
 import { FlowNodeConfig } from './FlowNodeConfig';
+import { FlowNodeEventHandlers } from './EventHandlers';
 export class FlowNodeModel extends NodeModel {
   static TYPE: string = 'default';
 
@@ -47,34 +48,14 @@ export class FlowNodeModel extends NodeModel {
     this._dropZoneVisible = value;
   }
 
-  private _onDrop: Function = null;
+  private _eventHandlers: FlowNodeEventHandlers = null;
 
-  get onDrop(): Function {
-    return this._onDrop;
+  get eventHandlers(): FlowNodeEventHandlers {
+    return this._eventHandlers;
   }
 
-  set onDrop(value: Function) {
-    this._onDrop = value;
-  }
-
-  private _onClick: Function = null;
-
-  get onClick(): Function {
-    return this._onClick;
-  }
-
-  set onClick(value: Function) {
-    this._onClick = value;
-  }
-
-  private _onAddClick: Function = null;
-
-  get onAddClick(): Function {
-    return this._onAddClick;
-  }
-
-  set onAddClick(value: Function) {
-    this._onAddClick = value;
+  set eventHandlers(value: FlowNodeEventHandlers) {
+    this._eventHandlers = value;
   }
 
   getDefaultInPort(): PortModel | null {
