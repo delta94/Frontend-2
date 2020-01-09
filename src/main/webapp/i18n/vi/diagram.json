@@ -2,7 +2,12 @@
   "diagram": {
     "action_buttons": {
       "setting": "Cấu hình",
-      "delete": "Xoá"
+      "delete": "Xoá",
+      "add": "Thêm"
+    },
+    "condition_result": {
+      "ok": "Đúng",
+      "nok": "Sai"
     },
     "nodes": {
       "start_contact_source": "Nguồn Khách hàng",

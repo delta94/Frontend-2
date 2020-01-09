@@ -8,22 +8,55 @@ export class FlowNodePortModel extends PortModel {
   static LEFT: string = 'left';
   static RIGHT: string = 'right';
 
-  position: string | 'top' | 'bottom' | 'left' | 'right';
+  static IN: string = 'in';
+  static OUT: string = 'in';
 
-  constructor(pos: string = FlowNodePortModel.LEFT) {
-    super(pos, 'flow');
-    this.position = pos;
+  private _position: string | 'top' | 'bottom' | 'left' | 'right';
+  private _direction: string | 'in' | 'out';
+  private _label: string;
+
+  get position(): string | 'top' | 'bottom' | 'left' | 'right' {
+    return this._position;
+  }
+
+  set position(value: string | 'top' | 'bottom' | 'left' | 'right') {
+    this._position = value;
+  }
+
+  get direction(): string | 'in' | 'out' {
+    return this._direction;
+  }
+
+  set direction(value: string | 'in' | 'out') {
+    this._direction = value;
+  }
+
+  get label(): string {
+    return this._label;
+  }
+
+  set label(value: string) {
+    this._label = value;
+  }
+
+  constructor(position: string | 'top' | 'bottom' | 'left' | 'right', direction: string | 'in' | 'out', label?: string) {
+    super(position, 'flow');
+    this._position = position;
+    this._direction = direction;
+    this._label = label;
   }
 
   serialize() {
     return _.merge(super.serialize(), {
-      position: this.position
+      position: this._position,
+      direction: this._direction
     });
   }
 
   deSerialize(data: any, engine: DiagramEngine) {
     super.deSerialize(data, engine);
-    this.position = data.position;
+    this._position = data._position;
+    this._direction = data._direction;
   }
 
   createLinkModel(): RightAngleLinkModel {

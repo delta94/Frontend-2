@@ -2,6 +2,8 @@ import { NodeModel, PortModel } from 'storm-react-diagrams';
 import { FlowNodePortModel } from './FlowNodePortModel';
 import { FlowNodeConfig } from './FlowNodeConfig';
 import { FlowNodeEventHandlers } from './EventHandlers';
+import { Translate, translate } from 'react-jhipster';
+
 export class FlowNodeModel extends NodeModel {
   static TYPE: string = 'default';
 
@@ -99,12 +101,11 @@ export class DecisionNodeModel extends FlowNodeModel {
   static TYPE: string = 'decision';
   static WIDTH: number = 90;
   static HEIGHT: number = 90;
-
   constructor(nodeType: string = DecisionNodeModel.TYPE, id?: string) {
     super(nodeType, id);
-    this.addPort(new FlowNodePortModel(FlowNodePortModel.LEFT)); //in
-    this.addPort(new FlowNodePortModel(FlowNodePortModel.BOTTOM)); //out
-    this.addPort(new FlowNodePortModel(FlowNodePortModel.RIGHT)); //out
+    this.addPort(new FlowNodePortModel(FlowNodePortModel.LEFT, FlowNodePortModel.IN)); //in
+    this.addPort(new FlowNodePortModel(FlowNodePortModel.BOTTOM, FlowNodePortModel.OUT, translate('diagram.condition_result.nok'))); //out
+    this.addPort(new FlowNodePortModel(FlowNodePortModel.RIGHT, FlowNodePortModel.OUT, translate('diagram.condition_result.ok'))); //out
   }
 
   getDefaultInPort(): PortModel | null {
@@ -146,9 +147,9 @@ export class MergeNodeModel extends FlowNodeModel {
 
   constructor(nodeType: string = MergeNodeModel.TYPE, id?: string) {
     super(nodeType, id);
-    this.addPort(new FlowNodePortModel(FlowNodePortModel.LEFT)); //in
-    this.addPort(new FlowNodePortModel(FlowNodePortModel.BOTTOM)); //in
-    this.addPort(new FlowNodePortModel(FlowNodePortModel.RIGHT)); //out
+    this.addPort(new FlowNodePortModel(FlowNodePortModel.LEFT, FlowNodePortModel.IN)); //in
+    this.addPort(new FlowNodePortModel(FlowNodePortModel.BOTTOM, FlowNodePortModel.IN)); //in
+    this.addPort(new FlowNodePortModel(FlowNodePortModel.RIGHT, FlowNodePortModel.OUT)); //out
   }
 
   getDefaultInPort(): PortModel | null {
@@ -190,9 +191,9 @@ export class ForkNodeModel extends FlowNodeModel {
 
   constructor(nodeType: string = ForkNodeModel.TYPE, id?: string) {
     super(nodeType, id);
-    this.addPort(new FlowNodePortModel(FlowNodePortModel.LEFT)); //in
-    this.addPort(new FlowNodePortModel(FlowNodePortModel.TOP)); //out
-    this.addPort(new FlowNodePortModel(FlowNodePortModel.BOTTOM)); //out
+    this.addPort(new FlowNodePortModel(FlowNodePortModel.LEFT, FlowNodePortModel.IN)); //in
+    this.addPort(new FlowNodePortModel(FlowNodePortModel.TOP, FlowNodePortModel.OUT)); //out
+    this.addPort(new FlowNodePortModel(FlowNodePortModel.BOTTOM, FlowNodePortModel.OUT)); //out
   }
 
   getDefaultInPort(): PortModel | null {
@@ -235,9 +236,9 @@ export class JoinNodeModel extends FlowNodeModel {
 
   constructor(nodeType: string = JoinNodeModel.TYPE, id?: string) {
     super(nodeType, id);
-    this.addPort(new FlowNodePortModel(FlowNodePortModel.TOP)); //in
-    this.addPort(new FlowNodePortModel(FlowNodePortModel.BOTTOM)); //in
-    this.addPort(new FlowNodePortModel(FlowNodePortModel.RIGHT)); //out
+    this.addPort(new FlowNodePortModel(FlowNodePortModel.TOP, FlowNodePortModel.IN)); //in
+    this.addPort(new FlowNodePortModel(FlowNodePortModel.BOTTOM, FlowNodePortModel.IN)); //in
+    this.addPort(new FlowNodePortModel(FlowNodePortModel.RIGHT, FlowNodePortModel.OUT)); //out
   }
 
   getDefaultInPort(): PortModel | null {
@@ -280,8 +281,8 @@ export class ProcessNodeModel extends FlowNodeModel {
 
   constructor(nodeType: string = ProcessNodeModel.TYPE, id?: string) {
     super(nodeType, id);
-    this.addPort(new FlowNodePortModel(FlowNodePortModel.LEFT)); //in
-    this.addPort(new FlowNodePortModel(FlowNodePortModel.RIGHT)); //out
+    this.addPort(new FlowNodePortModel(FlowNodePortModel.LEFT, FlowNodePortModel.IN)); //in
+    this.addPort(new FlowNodePortModel(FlowNodePortModel.RIGHT, FlowNodePortModel.OUT)); //out
   }
 
   getDefaultInPort(): PortModel | null {
@@ -323,7 +324,7 @@ export class StartNodeModel extends FlowNodeModel {
 
   constructor(nodeType: string = StartNodeModel.TYPE, id?: string) {
     super(nodeType, id);
-    this.addPort(new FlowNodePortModel(FlowNodePortModel.RIGHT)); //out
+    this.addPort(new FlowNodePortModel(FlowNodePortModel.RIGHT, FlowNodePortModel.OUT)); //out
   }
 
   getDefaultInPort(): PortModel | null {
@@ -361,7 +362,7 @@ export class EndNodeModel extends FlowNodeModel {
 
   constructor(id?: string) {
     super(EndNodeModel.TYPE, id);
-    this.addPort(new FlowNodePortModel(FlowNodePortModel.LEFT)); //in
+    this.addPort(new FlowNodePortModel(FlowNodePortModel.LEFT, FlowNodePortModel.IN)); //in
   }
 
   getDefaultInPort(): PortModel | null {

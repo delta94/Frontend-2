@@ -6,8 +6,8 @@
       "add": "Thêm"
     },
     "condition_result": {
-      "ok": "OK",
-      "nok": "NOK"
+      "ok": "Đúng",
+      "nok": "Sai"
     },
     "nodes": {
       "start_contact_source": "Nguồn Khách hàng",

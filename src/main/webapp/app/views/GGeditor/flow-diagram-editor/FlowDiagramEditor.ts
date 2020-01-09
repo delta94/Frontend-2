@@ -86,7 +86,6 @@ export class FlowDiagramEditor {
 
   public setDiagramData(data: { nodes: any[]; edges: any[] }) {
     let model = FlowDiagramEditor.createDiagramModel();
-    model.clearSelection();
     FlowDiagramEditor.loadDiagramData(model, data, this.dropZoneVisible, this.eventHandlers);
     FlowDiagramEditor.arrange(model);
     this.diagramEngine.setDiagramModel(model);
@@ -94,7 +93,6 @@ export class FlowDiagramEditor {
 
   public addGroupProcess(groupProcess: GroupProcess, position: PortModel) {
     let model = this.getActiveModel();
-    model.clearSelection();
     if (FlowDiagramEditor.addGroupProcess(model, groupProcess, position, this.dropZoneVisible, this.eventHandlers)) {
       FlowDiagramEditor.arrange(model);
       this.diagramEngine.recalculatePortsVisually();
@@ -104,7 +102,6 @@ export class FlowDiagramEditor {
 
   public deleteNode(node: { id: string } | NodeModel) {
     let model = this.getActiveModel();
-    model.clearSelection();
     if (node) {
       FlowDiagramEditor.deleteFromNode(model, node instanceof NodeModel ? node : model.getNode(node.id), null, false);
       FlowDiagramEditor.arrange(model);
