@@ -126,6 +126,8 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
     await listTemp && listTemp.map(value => {
       if (value.id === id) {
         value.collapse = !collapse
+      } else {
+        value.collapse = false
       }
     })
     if (!collapse) {
