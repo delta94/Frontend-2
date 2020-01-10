@@ -30,7 +30,8 @@ import {
   saveCampaignAutoVersion,
   activeProcessCampaign,
   validateGraph,
-  cloneVersionById
+  cloneVersionById,
+  resetListCloneVersion
 } from 'app/actions/campaign-managament';
 import { IRootState } from 'app/reducers';
 import ConfigEmail from './config-email/config-email';
@@ -201,7 +202,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       case code_node.SOURCE:
         this.setState({ visible: event });
         if (valueName) {
-          diagram.nodes.map(item => {
+          diagram.nodes && diagram.nodes.map(item => {
             if (item.id === idNode.id) {
               item.label = String(valueName).split(',')[0];
               nameGroup = String(valueName).split(',')[0];
@@ -387,13 +388,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   };
 
   replicateCampaign = async () => {
-    let { list_clone_version, cloneVersionById, saveCampaignAutoVersion, infoVersion, id_active, openModal } = this.props;
-    let idCj =
-      id_active.cjId && id_active.cjId
-        ? id_active.cjId
-        : list_clone_version && list_clone_version.cjId
-        ? list_clone_version.cjId
-        : infoVersion.idVersion;
+    let { list_clone_version, cloneVersionById, saveCampaignAutoVersion, infoVersion, id_active, openModal, resetListCloneVersion } = this.props;
+    let idCj = id_active.cjId && id_active.cjId ? id_active.cjId : list_clone_version && list_clone_version.cjId ? list_clone_version.cjId : infoVersion.idVersion
     let dataInfoVersion = {
       type: 'copy',
       nameVersion: '',
@@ -406,9 +402,14 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       content: '',
       zIndex: 1000000,
       onOk: async () => {
+        await resetListCloneVersion()
+
         await cloneVersionById(idCj);
         await this.cloneVersion('create');
         await saveCampaignAutoVersion(dataInfoVersion);
+        this.getDataDiagram().cjVersionId = null
+        this.getDataDiagram().cj.id = null
+        console.log(this.getDataDiagram())
         await openModal({
           show: true,
           type: 'success',
@@ -558,14 +559,21 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     );
   }
 
+  //test flow
+  isCloseSiderTest = (isOpen: boolean) => {
+    this.setState({ isTest: isOpen, isValidate: false })
+  }
+
+
   //validate flow
-  validateFlow = () => {
-    let { isValidate, isSave } = this.state;
-    this.setState({ isTest: false, isValidate: !isValidate });
-    if (isValidate) {
-      let hasValidate = JSON.parse(localStorage.getItem('isSave')) === true ? false : true;
-      this.setState({ isSave: hasValidate });
+  validateFlow = (isOpen: boolean) => {
+    let { id_active } = this.props
+    this.setState({ isTest: false, isValidate: isOpen });
+    let hasValidate = JSON.parse(localStorage.getItem('isSave')) === true ? false : true;
+    if (Object.keys(id_active).length > 0) {
+      this.props.validateGraph(this.getDataDiagram());
     }
+    this.setState({ isSave: hasValidate });
   };
 
   getValueEdges = (sourceAnchor, source) => {
@@ -664,13 +672,14 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           }
         })
       );
+      console.log(listFieldData.timerEvent)
     listFieldData.timerEvent &&
       listFieldData.timerEvent.forEach(value =>
         nodeMetaData.push({
           nodeId: value.id,
           code: code_node.TIMER_EVENT,
           nodeConfig: {
-            eventType: value.email,
+            eventType: value.event,
             emailTemplateId: null
           }
         })
@@ -719,13 +728,13 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       infoCampaign.tag && infoCampaign.tag.length > 0
         ? infoCampaign.tag
         : list_clone_version.cjTags && list_clone_version.cjTags.length > 0
-        ? list_clone_version.cjTags
-        : [];
+          ? list_clone_version.cjTags
+          : [];
     let startTime = timeStartCampaign
       ? timeStartCampaign
       : Object.keys(list_clone_version).length > 0
-      ? list_clone_version.flowDetail.startTime
-      : `${date.toISOString().substr(0, 10)} ${date.toLocaleTimeString()}`;
+        ? list_clone_version.flowDetail.startTime
+        : `${date.toISOString().substr(0, 10)} ${date.toLocaleTimeString()}`;
     let data = {
       folderId: idFolder ? idFolder : '-99',
       cjVersionId:
@@ -733,22 +742,22 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           ? list_clone_version.id
             ? list_clone_version.id
             : this.props.id_active.cjId
-            ? this.props.id_active.id
-            : null
+              ? this.props.id_active.id
+              : null
           : this.props.id_active.cjId
-          ? this.props.id_active.id
-          : null,
+            ? this.props.id_active.id
+            : null,
       cj: {
         id:
           Object.keys(list_clone_version).length > 0
             ? list_clone_version.cjId
               ? list_clone_version.cjId
               : this.props.id_active.id
-              ? this.props.id_active.cjId
-              : null
+                ? this.props.id_active.cjId
+                : null
             : this.props.id_active.id
-            ? this.props.id_active.cjId
-            : null,
+              ? this.props.id_active.cjId
+              : null,
         name: infoCampaign.name ? infoCampaign.name : list_clone_version.name ? list_clone_version.name : 'Tạo chiến dịch mới',
         description: infoCampaign.des
           ? infoCampaign.des
@@ -896,7 +905,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     return (
       <div className="editor">
         <Layout className="layout-flow">
-          {isTest ? <SiderTest /> : isValidate ? <SiderValidate /> : this.renderTrayWidget()}
+          {isTest ? <SiderTest isCloseSider={isValidate} toogle={this.validateFlow} /> : isValidate ? <SiderValidate isCloseSider={isValidate} toogle={this.validateFlow} /> : this.renderTrayWidget()}
           <Layout style={{ maxWidth: '80.8%', height: '100%' }}>
             <Header className="header-flow">
               <Row>
@@ -963,7 +972,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                   <ButtonGroup>
                     <Button
                       onClick={() => {
-                        this.setState({ isTest: !isTest, isValidate: false });
+                        this.isCloseSiderTest(true)
                       }}
                       disabled={JSON.parse(localStorage.getItem('isSave')) ? false : true}
                     >
@@ -971,10 +980,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                     </Button>
                     <Button
                       onClick={async () => {
-                        this.validateFlow();
-                        if (Object.keys(id_active).length > 0 && !this.state.isValidate) {
-                          this.props.validateGraph(this.getDataDiagram());
-                        }
+                        this.validateFlow(true);
                       }}
                       disabled={id_active.id && id_active.id.length > 0 ? false : true}
                     >
@@ -1077,7 +1083,8 @@ const mapDispatchToProps = {
   openModal,
   closeModal,
   validateGraph,
-  cloneVersionById
+  cloneVersionById,
+  resetListCloneVersion
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

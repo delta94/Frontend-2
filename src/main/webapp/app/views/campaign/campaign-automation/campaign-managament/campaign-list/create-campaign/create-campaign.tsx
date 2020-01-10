@@ -9,7 +9,7 @@ import {
 import { img_node, const_shape } from 'app/common/model/campaign-managament.model';
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Button, Table, Row, Badge, Col, Breadcrumb, Card, Tag, Layout, Popover } from 'antd';
+import { Button, Table, Row, Badge, Col, Breadcrumb, Card, Tag, Layout, Popover, Modal } from 'antd';
 import { Container, Collapse } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { IRootState } from 'app/reducers';
@@ -126,6 +126,8 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
     await listTemp && listTemp.map(value => {
       if (value.id === id) {
         value.collapse = !collapse
+      } else {
+        value.collapse = false
       }
     })
     if (!collapse) {
@@ -139,6 +141,14 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
     this.setState({ collapse: !collapse });
 
   };
+  renderDiagramWidget = (data) => {
+    let diagram = new FlowDiagramEditor();
+    diagram.setDiagramData({
+      nodes: data.nodes,
+      edges: data.edges
+    })
+    return <DiagramWidget className="srd-flow-canvas" diagramEngine={diagram.getDiagramEngine()} smartRouting={false} />
+  }
 
   render() {
     const { list_template } = this.props;
@@ -202,8 +212,9 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
               listTemp.map((item, index) => {
                 return (
                   <div>
-                    <Col style = {{zIndex : 10}} className="gutter-row" span={8} key={index} >
+                    <Col style={{ zIndex: 10 }} className="gutter-row" span={8} key={index} >
                       <div className="gutter-box" onClick={async () => {
+
                         await this.cloneVersion(item.flow, item.id)
                       }}>
                         <label className="text-title">{item.name}</label>
@@ -220,14 +231,24 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
                       <Row >
 
                         <Col span={24}>
-                          <Card style = {{background : "#FBFBFB"}} >
-                            <Col span = {18}>
-                            <DiagramWidget className="srd-flow-canvas" diagramEngine={this.editor.getDiagramEngine()} smartRouting={false} />
+                          <Card style={{ background: "#FBFBFB" }} >
+                            <Col span={18}>
+                              {this.renderDiagramWidget(this.editor.getDiagramData())}
                             </Col>
-                            <Col span = {6}>
-                            <label className = "descrition-template">{item.description}</label>
+                            <Col span={6}>
+                              <label className="descrition-template">{item.description}</label>
                             </Col>
-                            <Button type = "primary" className ="btn-template" onClick ={()=> {window.location.assign(`#/flow`)}}>Chọn Template</Button>
+                            <Button type="primary" className="btn-template" onClick={async () => {
+                              let data = {
+                                name: 'Tạo chiến dịch mới',
+                                tag: [''],
+                                des: ''
+                              };
+                              await this.props.updateInfoCampaign(data);
+                              await this.props.saveCampaignAutoVersion(this.state.infoVersion);
+                              await this.props.resetListCloneVersion()
+                              await window.location.assign(`#/flow`)
+                            }}>Chọn Template</Button>
 
                           </Card>
 
@@ -237,8 +258,16 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
                   </div>
                 );
               })}
-
           </Card>
+          {/* <Modal
+            title="Basic Modal"
+            visible={this.state.collapse}
+            onOk={() => this.setState({ collapse: false })}
+            onCancel={() => this.setState({ collapse: false })}
+          >
+            <DiagramWidget className="srd-flow-canvas" diagramEngine={this.editor.getDiagramEngine()} smartRouting={false} />
+
+          </Modal> */}
 
         </Container>
 
