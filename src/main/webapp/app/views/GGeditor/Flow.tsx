@@ -202,7 +202,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       case code_node.SOURCE:
         this.setState({ visible: event });
         if (valueName) {
-          diagram.nodes.map(item => {
+          diagram.nodes && diagram.nodes.map(item => {
             if (item.id === idNode.id) {
               item.label = String(valueName).split(',')[0];
               nameGroup = String(valueName).split(',')[0];
@@ -560,6 +560,12 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     );
   }
 
+  //test flow
+  isCloseSiderTest = (isOpen: boolean) => {
+    this.setState({ isTest: isOpen, isValidate: false })
+  }
+
+
   //validate flow
   validateFlow = (isOpen: boolean) => {
     let { id_active } = this.props
@@ -667,13 +673,14 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           }
         })
       );
+      console.log(listFieldData.timerEvent)
     listFieldData.timerEvent &&
       listFieldData.timerEvent.forEach(value =>
         nodeMetaData.push({
           nodeId: value.id,
           code: code_node.TIMER_EVENT,
           nodeConfig: {
-            eventType: value.email,
+            eventType: value.event,
             emailTemplateId: null
           }
         })
@@ -896,7 +903,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     return (
       <div className="editor">
         <Layout className="layout-flow">
-          {isTest ? <SiderTest /> : isValidate ? <SiderValidate isCloseSider={isValidate} toogle={this.validateFlow} /> : this.renderTrayWidget()}
+          {isTest ? <SiderTest isCloseSider={isValidate} toogle={this.validateFlow} /> : isValidate ? <SiderValidate isCloseSider={isValidate} toogle={this.validateFlow} /> : this.renderTrayWidget()}
           <Layout style={{ maxWidth: '80.8%', height: '100%' }}>
             <Header className="header-flow">
               <Row>
@@ -963,7 +970,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                   <ButtonGroup>
                     <Button
                       onClick={() => {
-                        this.setState({ isTest: !isTest, isValidate: false });
+                        this.isCloseSiderTest(true)
                       }}
                       disabled={JSON.parse(localStorage.getItem('isSave')) ? false : true}
                     >

@@ -6,7 +6,11 @@ import { Row, Col, Checkbox, Input, Button, Layout, Icon, Select, notification, 
 import { code_node, img_node, const_shape } from 'app/common/model/campaign-managament.model';
 const { Sider } = Layout;
 const { Option } = Select;
-interface ISiderTestProps extends StateProps, DispatchProps { }
+const { confirm } = Modal;
+interface ISiderTestProps extends StateProps, DispatchProps {
+  toogle: Function,
+  isCloseSider: boolean
+}
 interface ISiderTestState {
   collapsed: boolean;
   customer: {};
@@ -192,11 +196,22 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
     };
     localStorage.setItem('isActive', 'true');
     if (this.checkValidate()) {
-      await testCampaign(data);
-      notification['success']({
-        message: 'thành công',
-        description: 'Dữ liệu test thành công'
+      confirm({
+        title: 'Xác nhận',
+        content: 'Bạn có chắc chắn muốn thực hiện test chiến dịch ?',
+        onOk: async () => {
+          await testCampaign(data);
+          notification['success']({
+            message: 'thành công',
+            description: 'Hệ thống thực hiện test thành công, vui lòng kiểm tra email hoặc tin nhắn hoặc số điện thoại để xem kết quả'
+          });
+        },
+        onCancel() {
+        },
+        okText :"Xác nhận",
+        cancelText : "Hủy"
       });
+
     }
   };
   checkValidate(): boolean {
@@ -240,16 +255,18 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
           </label>
           {collapsed ? (
             <Icon
-              type="double-right"
+              style={{ fontSize: "20px" }}
+              type="close-circle"
               onClick={() => {
-                this.setState({ collapsed: !collapsed });
+                this.props.toogle(false)
               }}
             />
           ) : (
               <Icon
-                type="double-left"
+                style={{ fontSize: "20px" }}
+                type="close-circle"
                 onClick={() => {
-                  this.setState({ collapsed: !collapsed });
+                  this.props.toogle(false)
                 }}
                 className="icon-collapse"
               />

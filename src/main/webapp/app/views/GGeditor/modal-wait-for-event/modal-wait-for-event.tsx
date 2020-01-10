@@ -32,7 +32,7 @@ interface IModalWaitForEventState {
 
 export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, IModalWaitForEventState> {
   state: IModalWaitForEventState = {
-    event: 'Khách hàng mở mail',
+    event: 'open-mail',
     email: '',
     time: 0,
     timer: '',
@@ -209,7 +209,8 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
                   style={{ width: '100%' }}
                   onChange={event => this.handleChange(event, 'event')}
                 >
-                  <Option value="Khách hàng mở mail">Khách hàng mở mail</Option>
+                  <Option value="open-mail">Khách hàng mở mail</Option>
+                  <Option value="activated-voucher">Khách hàng kick hoạt mã voucher</Option>
                 </Select>
               </Col>
             </Row>
