@@ -141,11 +141,11 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
     this.setState({ collapse: !collapse });
 
   };
-  renderDiagramWidget = (data) =>{
-    let diagram =  new FlowDiagramEditor();
+  renderDiagramWidget = (data) => {
+    let diagram = new FlowDiagramEditor();
     diagram.setDiagramData({
-      nodes : data.nodes,
-      edges : data.edges
+      nodes: data.nodes,
+      edges: data.edges
     })
     return <DiagramWidget className="srd-flow-canvas" diagramEngine={diagram.getDiagramEngine()} smartRouting={false} />
   }
@@ -214,6 +214,13 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
                   <div>
                     <Col style={{ zIndex: 10 }} className="gutter-row" span={8} key={index} >
                       <div className="gutter-box" onClick={async () => {
+                        let data = {
+                          name: 'Tạo chiến dịch mới',
+                          tag: [''],
+                          des: ''
+                        };
+                        await this.props.updateInfoCampaign(data);
+                        await this.props.resetListCloneVersion()
                         await this.cloneVersion(item.flow, item.id)
                       }}>
                         <label className="text-title">{item.name}</label>

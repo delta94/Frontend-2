@@ -6,7 +6,10 @@ import { getDiagramCampaign, validateCampaign } from 'app/actions/campaign-manag
 const { Header, Content, Footer, Sider } = Layout;
 import FlowItemValidate from '../EditorItemPannel/flow-item-pannel-validate';
 
-interface ISiderValidateProps extends StateProps, DispatchProps {}
+interface ISiderValidateProps extends StateProps, DispatchProps {
+  toogle: Function,
+  isCloseSider: boolean
+}
 interface ISiderValidateState {
   collapsed: boolean;
 }
@@ -25,20 +28,22 @@ export class SiderValidate extends React.Component<ISiderValidateProps, ISiderVa
           </label>
           {collapsed ? (
             <Icon
-              type="double-right"
+            style ={{fontSize : "20px"}}
+              type="close-circle"
               onClick={() => {
-                this.setState({ collapsed: !collapsed });
+                this.props.toogle(false)
               }}
             />
           ) : (
-            <Icon
-              type="double-left"
-              onClick={() => {
-                this.setState({ collapsed: !collapsed });
-              }}
-              className="icon-collapse"
-            />
-          )}
+              <Icon
+              style ={{fontSize : "20px"}}
+                type="close-circle"
+                onClick={() => {
+                  this.props.toogle(false)
+                }}
+                className="icon-collapse"
+              />
+            )}
         </div>
         <hr />
         <div className="logo" style={{ display: collapsed ? 'none' : 'block' }}>

@@ -403,7 +403,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       zIndex: 1000000,
       onOk: async () => {
         await resetListCloneVersion()
-      
+
         await cloneVersionById(idCj);
         await this.cloneVersion('create');
         await saveCampaignAutoVersion(dataInfoVersion);
@@ -561,13 +561,14 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   }
 
   //validate flow
-  validateFlow = () => {
-    let { isValidate, isSave } = this.state;
-    this.setState({ isTest: false, isValidate: !isValidate });
-    if (isValidate) {
-      let hasValidate = JSON.parse(localStorage.getItem('isSave')) === true ? false : true;
-      this.setState({ isSave: hasValidate });
+  validateFlow = (isOpen: boolean) => {
+    let { id_active } = this.props
+    this.setState({ isTest: false, isValidate: isOpen });
+    let hasValidate = JSON.parse(localStorage.getItem('isSave')) === true ? false : true;
+    if (Object.keys(id_active).length > 0) {
+      this.props.validateGraph(this.getDataDiagram());
     }
+    this.setState({ isSave: hasValidate });
   };
 
   getValueEdges = (sourceAnchor, source) => {
@@ -895,7 +896,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     return (
       <div className="editor">
         <Layout className="layout-flow">
-          {isTest ? <SiderTest /> : isValidate ? <SiderValidate /> : this.renderTrayWidget()}
+          {isTest ? <SiderTest /> : isValidate ? <SiderValidate isCloseSider={isValidate} toogle={this.validateFlow} /> : this.renderTrayWidget()}
           <Layout style={{ maxWidth: '80.8%', height: '100%' }}>
             <Header className="header-flow">
               <Row>
@@ -970,10 +971,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                     </Button>
                     <Button
                       onClick={async () => {
-                        this.validateFlow();
-                        if (Object.keys(id_active).length > 0 && !this.state.isValidate) {
-                          this.props.validateGraph(this.getDataDiagram());
-                        }
+                        this.validateFlow(true);
                       }}
                       disabled={id_active.id && id_active.id.length > 0 ? false : true}
                     >
