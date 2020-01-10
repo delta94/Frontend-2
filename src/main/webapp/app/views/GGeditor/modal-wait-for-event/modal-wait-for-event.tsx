@@ -210,7 +210,7 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
                   onChange={event => this.handleChange(event, 'event')}
                 >
                   <Option value="open-mail">Khách hàng mở mail</Option>
-                  <Option value="activated-voucher">Khách hàng kick hoạt mã voucher</Option>
+                  {/* <Option value="activated-voucher">Khách hàng kick hoạt mã voucher</Option> */}
                 </Select>
               </Col>
             </Row>
