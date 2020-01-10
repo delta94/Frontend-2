@@ -27,7 +27,6 @@ interface IModalWaitForEventState {
   date: string;
   idEmail: string;
   event_error: string;
-  mail_error: string;
   time_error: string;
 }
 
@@ -40,13 +39,12 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
     date: '',
     idEmail: '',
     event_error: '',
-    mail_error: '',
     time_error: '',
   };
 
   toggle = () => {
     let { toggleModal, isOpenModal } = this.props;
-    this.setState({ event_error: '', mail_error: '', time_error: '' })
+    this.setState({ event_error: '', time_error: '' })
     toggleModal(!isOpenModal);
   };
   save = async () => {
@@ -79,12 +77,7 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
 
   checkValidate = (): boolean => {
     let result: boolean = true
-    let { email, time, date, mail_error, time_error } = this.state;
-    if (!email) {
-      mail_error = "* Vui lòng chọn email"
-    } else {
-      mail_error = ""
-    }
+    let { time, date, time_error } = this.state;
     if (time < 1) {
       time_error = "* Vui lòng chọn thời gian kết thúc"
     } else if (!date) {
@@ -92,10 +85,10 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
     } else {
       time_error = ""
     }
-    if (time_error.length > 0 || mail_error.length > 0) {
+    if (time_error.length > 0) {
       result = false
     }
-    this.setState({ time_error, mail_error })
+    this.setState({ time_error })
     return result
   }
 
@@ -220,24 +213,7 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
                 </Select>
               </Col>
             </Row>
-            <Row>
-              <Col span={6}>
-                <label className="text-event-wait">Email</label>
-              </Col>
-              <Col span={18}>
-                <Select value={this.getNameEmail()} style={{ width: '100%' }} onChange={event => this.handleChange(event, 'email')}>
-                  {listFieldData.emailConfig &&
-                    listFieldData.emailConfig.map((item, index) => {
-                      return (
-                        <Option key={index} value={item.id}>
-                          {item.nameEmail}
-                        </Option>
-                      );
-                    })}
-                </Select>
-              </Col>
-              <p className="error">{this.state.mail_error}</p>
-            </Row>
+
             <Row>
               <Col span={6}>
                 <label className="text-event-wait">Kết thúc chờ sau</label>
