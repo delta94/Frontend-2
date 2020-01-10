@@ -6,6 +6,8 @@ import { FlowNodePortModel } from '../FlowNodePortModel';
 import { toNodeData } from '../FlowDiagramUtil';
 import { SvgIconWidget } from './SvgIconWidget';
 
+import { Translate, translate } from 'react-jhipster';
+
 const DefaultIcon = require('../icons/default.png');
 const AddIcon = require('../icons/add.png');
 const SettingIcon = require('../icons/setting.png');
@@ -69,6 +71,22 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
     return null;
   }
 
+  getPortLabelTop(portName: string): number | null {
+    if (portName === FlowNodePortModel.TOP) return -8;
+    if (portName === FlowNodePortModel.LEFT) return this.props.height / 2 - 8 - 28;
+    if (portName === FlowNodePortModel.RIGHT) return this.props.height / 2 - 8 - 28;
+    if (portName === FlowNodePortModel.BOTTOM) return this.props.height - 8;
+    return null;
+  }
+
+  getPortLabelLeft(portName: string): number | null {
+    if (portName === FlowNodePortModel.TOP) return this.props.height / 2 - 8 + 18;
+    if (portName === FlowNodePortModel.LEFT) return -8;
+    if (portName === FlowNodePortModel.RIGHT) return this.props.width - 8;
+    if (portName === FlowNodePortModel.BOTTOM) return this.props.width / 2 - 8 + 18;
+    return null;
+  }
+
   getDropZoneTop(portName: string): number | null {
     if (portName === FlowNodePortModel.TOP) return -1.1 * this.props.height;
     if (portName === FlowNodePortModel.LEFT) return (this.props.height - this.props.dropZoneHeight) / 2 - 1;
@@ -99,6 +117,26 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
           <PortWidget name={portName} node={this.props.node} />
         </div>
       );
+    }
+  }
+
+  renderPortLabel(portName: string) {
+    if (this.props.portVisible) {
+      let port = this.props.node ? this.props.node.getPort(portName) : null;
+      if (port && port instanceof FlowNodePortModel && port.label) {
+        return (
+          <div
+            style={{
+              position: 'absolute',
+              zIndex: 10,
+              top: this.getPortLabelTop(portName),
+              left: this.getPortLabelLeft(portName)
+            }}
+          >
+            {port.label}
+          </div>
+        );
+      }
     }
   }
 
@@ -181,6 +219,26 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
     );
   }
 
+  renderLabel() {
+    let { node } = this.props;
+    let label = node && node instanceof FlowNodeModel && node.label ? node.label : translate('diagram.node.' + this.props.type);
+    return (
+      <div
+        style={{
+          position: 'absolute',
+          zIndex: 10,
+          verticalAlign: 'middle',
+          textAlign: 'center',
+          width: '160px',
+          top: this.getPortTop(FlowNodePortModel.BOTTOM) + 12,
+          left: this.getPortLeft(FlowNodePortModel.BOTTOM) - 72
+        }}
+      >
+        {label}
+      </div>
+    );
+  }
+
   renderSettingActionButton() {
     if (this.props.hasActionButton && this.props.portVisible && this.state.hover) {
       const size = 32;
@@ -201,8 +259,6 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
           }
         }
       });
-    } else {
-      return '';
     }
   }
 
@@ -227,8 +283,6 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
           }
         }
       });
-    } else {
-      return '';
     }
   }
 
@@ -244,12 +298,17 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
         }}
       >
         {this.renderIcon()}
+        {this.renderLabel()}
         {this.renderSettingActionButton()}
         {this.renderDeleteActionButton()}
         {this.renderPort(FlowNodePortModel.TOP)}
+        {this.renderPortLabel(FlowNodePortModel.TOP)}
         {this.renderPort(FlowNodePortModel.LEFT)}
+        {this.renderPortLabel(FlowNodePortModel.LEFT)}
         {this.renderPort(FlowNodePortModel.RIGHT)}
+        {this.renderPortLabel(FlowNodePortModel.RIGHT)}
         {this.renderPort(FlowNodePortModel.BOTTOM)}
+        {this.renderPortLabel(FlowNodePortModel.BOTTOM)}
         {this.renderDropZone(FlowNodePortModel.TOP)}
         {this.renderDropZone(FlowNodePortModel.LEFT)}
         {this.renderDropZone(FlowNodePortModel.RIGHT)}

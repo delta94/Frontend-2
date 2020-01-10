@@ -70,7 +70,7 @@ import { DiagramWidget } from 'storm-react-diagrams';
 
 const ButtonGroup = Button.Group;
 const { confirm } = Modal;
-interface IFlowPageProps extends StateProps, DispatchProps { }
+interface IFlowPageProps extends StateProps, DispatchProps {}
 interface IFlowPageState {
   visible: boolean;
   isOpen: boolean;
@@ -289,7 +289,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   // remove item in array
   remove(arr, item) {
     if (arr && arr.length > 0) {
-      for (var i = arr.length; i--;) {
+      for (var i = arr.length; i--; ) {
         if (arr[i].id === item.id) {
           arr.splice(i, 1);
         }
@@ -418,11 +418,10 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         });
         this.hide();
       },
-      onCancel() { },
+      onCancel() {},
       okText: 'Đồng ý',
       cancelText: 'Hủy bỏ'
     });
-
   };
 
   cloneVersion = async option => {
@@ -533,7 +532,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
   //Content Popover Setting
   contentSetting() {
-    let { id_active } = this.props
+    let { id_active } = this.props;
     return (
       <Row>
         <Row>
@@ -763,29 +762,29 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         description: infoCampaign.des
           ? infoCampaign.des
           : list_clone_version.description
-            ? list_clone_version.description
-            : infoCampaign.des
+          ? list_clone_version.description
+          : infoCampaign.des
       },
       cjTags: cjTags && cjTags.length > 0 ? (cjTags[0] === '' ? [] : cjTags) : cjTags,
       flow: {
         customerGroupName: nameGroup
           ? nameGroup
           : Object.keys(list_clone_version).length > 0
-            ? list_clone_version.flowDetail.customerGroupName
-            : '',
+          ? list_clone_version.flowDetail.customerGroupName
+          : '',
         startTime: startTime,
         customerAdvancedSave:
           Object.keys(advancedSearches).length > 0
             ? advancedSearches
             : Object.keys(list_clone_version).length > 0
-              ? list_clone_version.flowDetail.customerAdvancedSave
-              : null,
+            ? list_clone_version.flowDetail.customerAdvancedSave
+            : null,
         nodeMetaData:
           nodeMetaData && nodeMetaData.length > 0
             ? nodeMetaData
             : Object.keys(list_clone_version).length > 0
-              ? list_clone_version.flowDetail.nodeMetaData
-              : [],
+            ? list_clone_version.flowDetail.nodeMetaData
+            : [],
         graph: Object.keys(graph).length > 0 ? graph : Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.graph : []
       }
     };
@@ -826,14 +825,14 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
               }}
             />
           ) : (
-              <Icon
-                type="double-left"
-                onClick={() => {
-                  this.setState({ collapsed: !collapsed });
-                }}
-                className="icon-collapse"
-              />
-            )}
+            <Icon
+              type="double-left"
+              onClick={() => {
+                this.setState({ collapsed: !collapsed });
+              }}
+              className="icon-collapse"
+            />
+          )}
         </div>
         <hr />
         <div className="logo" style={{ display: collapsed ? 'none' : 'block' }}>
@@ -843,11 +842,11 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                 <Row className="row">
                   <Col span={8}>
                     {this.renderTrayItemWidget(ContactSourceStartNodeModel.TYPE)}
-                    <label>Khách hàng</label>
+                    <br />
                   </Col>
                   <Col span={8}>
                     {this.renderTrayItemWidget(EventSourceStartNodeModel.TYPE)}
-                    <label>Sự kiện</label>
+                    <br />
                   </Col>
                 </Row>
               </Panel>
@@ -857,11 +856,11 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                 <Row className="row">
                   <Col span={8}>
                     {this.renderTrayItemWidget(SmsProcessNodeModel.TYPE)}
-                    <label>Gửi tin nhắn</label>
+                    <br />
                   </Col>
                   <Col span={8}>
                     {this.renderTrayItemWidget(EmailProcessNodeModel.TYPE)}
-                    <label>Gửi Email</label>
+                    <br />
                   </Col>
                 </Row>
               </Panel>
@@ -871,16 +870,19 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                 <Row className="row">
                   <Col span={8}>
                     {this.renderTrayItemWidget(ConditionDecisionNodeModel.TYPE)}
-                    <label>Rẻ nhánh điều kiện</label>
+                    <br />
+                    <br />
                   </Col>
 
                   <Col span={8}>
                     {this.renderTrayItemWidget(TimeWaitingDecisionNodeModel.TYPE)}
-                    <label>Chờ</label>
+                    <br />
+                    <br />
                   </Col>
                   <Col span={8}>
                     {this.renderTrayItemWidget(EventWaitingDecisionNodeModel.TYPE)}
-                    <label>Chờ sự kiện</label>
+                    <br />
+                    <br />
                   </Col>
                 </Row>
               </Panel>
