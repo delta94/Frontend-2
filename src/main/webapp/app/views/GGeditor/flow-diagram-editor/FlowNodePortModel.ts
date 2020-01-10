@@ -39,8 +39,9 @@ export class FlowNodePortModel extends PortModel {
     this._label = value;
   }
 
-  constructor(position: string | 'top' | 'bottom' | 'left' | 'right', direction: string | 'in' | 'out', label?: string) {
-    super(position, 'flow');
+  static TYPE: string = 'flow';
+  constructor(position?: string | 'top' | 'bottom' | 'left' | 'right', direction?: string | 'in' | 'out', label?: string) {
+    super(position, FlowNodePortModel.TYPE);
     this._position = position;
     this._direction = direction;
     this._label = label;

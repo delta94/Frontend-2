@@ -7,8 +7,9 @@ import { Translate, translate } from 'react-jhipster';
 export class FlowNodeModel extends NodeModel {
   static TYPE: string = 'default';
 
-  constructor(nodeType: string = FlowNodeModel.TYPE, id?: string) {
+  constructor(nodeType: string = FlowNodeModel.TYPE, id?: string, label?: string) {
     super(nodeType, id);
+    this._label = label;
   }
 
   private _offsetX: number = -1;
@@ -60,6 +61,21 @@ export class FlowNodeModel extends NodeModel {
     this._eventHandlers = value;
   }
 
+  private _label: string;
+
+  get label(): string {
+    if (this._label && this._label !== '') return this._label;
+    else return this.getDefaultLabel();
+  }
+
+  set label(value: string) {
+    this._label = value;
+  }
+
+  getDefaultLabel(): string {
+    return '';
+  }
+
   getDefaultInPort(): PortModel | null {
     return null;
   }
@@ -101,11 +117,15 @@ export class DecisionNodeModel extends FlowNodeModel {
   static TYPE: string = 'decision';
   static WIDTH: number = 90;
   static HEIGHT: number = 90;
-  constructor(nodeType: string = DecisionNodeModel.TYPE, id?: string) {
-    super(nodeType, id);
+  constructor(nodeType: string = DecisionNodeModel.TYPE, id?: string, label?: string) {
+    super(nodeType, id, label);
     this.addPort(new FlowNodePortModel(FlowNodePortModel.LEFT, FlowNodePortModel.IN)); //in
     this.addPort(new FlowNodePortModel(FlowNodePortModel.BOTTOM, FlowNodePortModel.OUT, translate('diagram.condition_result.nok'))); //out
     this.addPort(new FlowNodePortModel(FlowNodePortModel.RIGHT, FlowNodePortModel.OUT, translate('diagram.condition_result.ok'))); //out
+  }
+
+  getDefaultLabel(): string {
+    return translate('diagram.node.decision');
   }
 
   getDefaultInPort(): PortModel | null {
@@ -145,11 +165,15 @@ export class MergeNodeModel extends FlowNodeModel {
   static WIDTH: number = 68;
   static HEIGHT: number = 68;
 
-  constructor(nodeType: string = MergeNodeModel.TYPE, id?: string) {
-    super(nodeType, id);
+  constructor(nodeType: string = MergeNodeModel.TYPE, id?: string, label?: string) {
+    super(nodeType, id, label);
     this.addPort(new FlowNodePortModel(FlowNodePortModel.LEFT, FlowNodePortModel.IN)); //in
     this.addPort(new FlowNodePortModel(FlowNodePortModel.BOTTOM, FlowNodePortModel.IN)); //in
     this.addPort(new FlowNodePortModel(FlowNodePortModel.RIGHT, FlowNodePortModel.OUT)); //out
+  }
+
+  getDefaultLabel(): string {
+    return translate('diagram.node.merge');
   }
 
   getDefaultInPort(): PortModel | null {
@@ -189,11 +213,15 @@ export class ForkNodeModel extends FlowNodeModel {
   static WIDTH: number = 68;
   static HEIGHT: number = 68;
 
-  constructor(nodeType: string = ForkNodeModel.TYPE, id?: string) {
-    super(nodeType, id);
+  constructor(nodeType: string = ForkNodeModel.TYPE, id?: string, label?: string) {
+    super(nodeType, id, label);
     this.addPort(new FlowNodePortModel(FlowNodePortModel.LEFT, FlowNodePortModel.IN)); //in
     this.addPort(new FlowNodePortModel(FlowNodePortModel.TOP, FlowNodePortModel.OUT)); //out
     this.addPort(new FlowNodePortModel(FlowNodePortModel.BOTTOM, FlowNodePortModel.OUT)); //out
+  }
+
+  getDefaultLabel(): string {
+    return translate('diagram.node.fork');
   }
 
   getDefaultInPort(): PortModel | null {
@@ -234,11 +262,15 @@ export class JoinNodeModel extends FlowNodeModel {
   static WIDTH: number = 68;
   static HEIGHT: number = 68;
 
-  constructor(nodeType: string = JoinNodeModel.TYPE, id?: string) {
-    super(nodeType, id);
+  constructor(nodeType: string = JoinNodeModel.TYPE, id?: string, label?: string) {
+    super(nodeType, id, label);
     this.addPort(new FlowNodePortModel(FlowNodePortModel.TOP, FlowNodePortModel.IN)); //in
     this.addPort(new FlowNodePortModel(FlowNodePortModel.BOTTOM, FlowNodePortModel.IN)); //in
     this.addPort(new FlowNodePortModel(FlowNodePortModel.RIGHT, FlowNodePortModel.OUT)); //out
+  }
+
+  getDefaultLabel(): string {
+    return translate('diagram.node.join');
   }
 
   getDefaultInPort(): PortModel | null {
@@ -279,10 +311,14 @@ export class ProcessNodeModel extends FlowNodeModel {
   static WIDTH: number = 64;
   static HEIGHT: number = 64;
 
-  constructor(nodeType: string = ProcessNodeModel.TYPE, id?: string) {
-    super(nodeType, id);
+  constructor(nodeType: string = ProcessNodeModel.TYPE, id?: string, label?: string) {
+    super(nodeType, id, label);
     this.addPort(new FlowNodePortModel(FlowNodePortModel.LEFT, FlowNodePortModel.IN)); //in
     this.addPort(new FlowNodePortModel(FlowNodePortModel.RIGHT, FlowNodePortModel.OUT)); //out
+  }
+
+  getDefaultLabel(): string {
+    return translate('diagram.node.process');
   }
 
   getDefaultInPort(): PortModel | null {
@@ -322,9 +358,13 @@ export class StartNodeModel extends FlowNodeModel {
   static WIDTH: number = 68;
   static HEIGHT: number = 68;
 
-  constructor(nodeType: string = StartNodeModel.TYPE, id?: string) {
-    super(nodeType, id);
+  constructor(nodeType: string = StartNodeModel.TYPE, id?: string, label?: string) {
+    super(nodeType, id, label);
     this.addPort(new FlowNodePortModel(FlowNodePortModel.RIGHT, FlowNodePortModel.OUT)); //out
+  }
+
+  getDefaultLabel(): string {
+    return translate('diagram.node.start');
   }
 
   getDefaultInPort(): PortModel | null {
@@ -360,9 +400,13 @@ export class EndNodeModel extends FlowNodeModel {
   static WIDTH: number = 68;
   static HEIGHT: number = 68;
 
-  constructor(id?: string) {
-    super(EndNodeModel.TYPE, id);
+  constructor(id?: string, label?: string) {
+    super(EndNodeModel.TYPE, id, label);
     this.addPort(new FlowNodePortModel(FlowNodePortModel.LEFT, FlowNodePortModel.IN)); //in
+  }
+
+  getDefaultLabel(): string {
+    return translate('diagram.node.end');
   }
 
   getDefaultInPort(): PortModel | null {
@@ -396,55 +440,83 @@ export class EndNodeModel extends FlowNodeModel {
 export class ContactSourceStartNodeModel extends StartNodeModel {
   static TYPE: string = 'start_contact_source';
 
-  constructor(id?: string) {
-    super(ContactSourceStartNodeModel.TYPE, id);
+  constructor(id?: string, label?: string) {
+    super(ContactSourceStartNodeModel.TYPE, id, label);
+  }
+
+  getDefaultLabel(): string {
+    return translate('diagram.node.start_contact_source');
   }
 }
 
 export class EventSourceStartNodeModel extends StartNodeModel {
   static TYPE: string = 'start_event_source';
 
-  constructor(id?: string) {
-    super(EventSourceStartNodeModel.TYPE, id);
+  constructor(id?: string, label?: string) {
+    super(EventSourceStartNodeModel.TYPE, id, label);
+  }
+
+  getDefaultLabel(): string {
+    return translate('diagram.node.start_event_source');
   }
 }
 
 export class EmailProcessNodeModel extends ProcessNodeModel {
   static TYPE: string = 'process_email';
 
-  constructor(id?: string) {
-    super(EmailProcessNodeModel.TYPE, id);
+  constructor(id?: string, label?: string) {
+    super(EmailProcessNodeModel.TYPE, id, label);
+  }
+
+  getDefaultLabel(): string {
+    return translate('diagram.node.process_email');
   }
 }
 
 export class SmsProcessNodeModel extends ProcessNodeModel {
   static TYPE: string = 'process_sms';
 
-  constructor(id?: string) {
-    super(SmsProcessNodeModel.TYPE, id);
+  constructor(id?: string, label?: string) {
+    super(SmsProcessNodeModel.TYPE, id, label);
+  }
+
+  getDefaultLabel(): string {
+    return translate('diagram.node.process_sms');
   }
 }
 
 export class TimeWaitingDecisionNodeModel extends ProcessNodeModel {
-  static TYPE: string = 'process_time_waiting';
+  static TYPE: string = 'decision_time_waiting';
 
-  constructor(id?: string) {
-    super(TimeWaitingDecisionNodeModel.TYPE, id);
+  constructor(id?: string, label?: string) {
+    super(TimeWaitingDecisionNodeModel.TYPE, id, label);
+  }
+
+  getDefaultLabel(): string {
+    return translate('diagram.node.decision_time_waiting');
   }
 }
 
 export class EventWaitingDecisionNodeModel extends DecisionNodeModel {
   static TYPE: string = 'decision_event_waiting';
 
-  constructor(id?: string) {
-    super(EventWaitingDecisionNodeModel.TYPE, id);
+  constructor(id?: string, label?: string) {
+    super(EventWaitingDecisionNodeModel.TYPE, id, label);
+  }
+
+  getDefaultLabel(): string {
+    return translate('diagram.node.decision_event_waiting');
   }
 }
 
 export class ConditionDecisionNodeModel extends DecisionNodeModel {
   static TYPE: string = 'decision_condition';
 
-  constructor(id?: string) {
-    super(ConditionDecisionNodeModel.TYPE, id);
+  constructor(id?: string, label?: string) {
+    super(ConditionDecisionNodeModel.TYPE, id, label);
+  }
+
+  getDefaultLabel(): string {
+    return translate('diagram.node.decision_condition');
   }
 }

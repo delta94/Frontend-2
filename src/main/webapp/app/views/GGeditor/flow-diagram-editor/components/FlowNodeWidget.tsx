@@ -6,6 +6,8 @@ import { FlowNodePortModel } from '../FlowNodePortModel';
 import { toNodeData } from '../FlowDiagramUtil';
 import { SvgIconWidget } from './SvgIconWidget';
 
+import { Translate, translate } from 'react-jhipster';
+
 const DefaultIcon = require('../icons/default.png');
 const AddIcon = require('../icons/add.png');
 const SettingIcon = require('../icons/setting.png');
@@ -217,6 +219,26 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
     );
   }
 
+  renderLabel() {
+    let { node } = this.props;
+    let label = node && node instanceof FlowNodeModel && node.label ? node.label : translate('diagram.node.' + this.props.type);
+    return (
+      <div
+        style={{
+          position: 'absolute',
+          zIndex: 10,
+          verticalAlign: 'middle',
+          textAlign: 'center',
+          width: '160px',
+          top: this.getPortTop(FlowNodePortModel.BOTTOM) + 12,
+          left: this.getPortLeft(FlowNodePortModel.BOTTOM) - 72
+        }}
+      >
+        {label}
+      </div>
+    );
+  }
+
   renderSettingActionButton() {
     if (this.props.hasActionButton && this.props.portVisible && this.state.hover) {
       const size = 32;
@@ -276,6 +298,7 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
         }}
       >
         {this.renderIcon()}
+        {this.renderLabel()}
         {this.renderSettingActionButton()}
         {this.renderDeleteActionButton()}
         {this.renderPort(FlowNodePortModel.TOP)}

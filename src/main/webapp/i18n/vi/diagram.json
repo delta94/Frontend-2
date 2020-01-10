@@ -6,18 +6,27 @@
       "add": "Thêm"
     },
     "condition_result": {
-      "ok": "Đúng",
-      "nok": "Sai"
+      "ok": "Ok",
+      "nok": "Nok"
     },
-    "nodes": {
-      "start_contact_source": "Nguồn Khách hàng",
-      "start_event_source": "Nguồn Sự kiện",
+    "node": {
+      "start": "Bắt đầu",
+      "start_contact_source": "Khách hàng",
+      "start_event_source": "Sự kiện",
 
+      "decision": "Quyết định",
       "decision_condition": "Điều kiện",
       "decision_event_waiting": "Chờ Sự kiện",
       "decision_time_waiting": "Chờ Thời gian",
+
+      "process": "Xử lý",
+
       "process_email": "Gửi Email",
       "process_sms": "Gửi Sms",
+
+      "merge": "Merge",
+      "fork": "Fork",
+      "join": "Join",
 
       "end": "Kết thúc"
     }
