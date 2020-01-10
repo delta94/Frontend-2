@@ -54,22 +54,23 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
     this.setState({ activePage: parseInt(pageIndex) });
   };
 
-  arraysIdentical(a, b) {
-    var i = a.length;
-    if (i != b.length) return false;
-    while (i--) {
-      if (a[i] !== b[i]) return false;
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.emails != prevState.emails) {
+      let listCheckboxItem = nextProps.emails.map(item => ({ ...item, checked: false }))
+      return {
+        emails: nextProps.emails,
+        listCheckboxItem
+      };
     }
-    return true;
-  };
+    else return null;
+  }
 
-  componentWillReceiveProps(nextProps) {
-    if (!this.arraysIdentical(this.props.emails, nextProps.emails)) {
-      this.setState({
-        listCheckboxItem: nextProps.emails.map(item => ({ ...item, checked: false }))
-      });
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.listCheckboxItem != this.state.listCheckboxItem) {
+      this.setState({ ...this.state });
     }
   }
+
 
   onChangeCheckboxItem = (emailId, checked) => {
     let { listCheckboxItem } = this.state;
@@ -89,7 +90,7 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
         content: 'Bạn thực sự muốn xóa ?',
         onOk: async () => {
           await this.props.deleteEmailAction(listItemChecked[0].id);
-          await this.props.getEmailsAction('', 0, itemsPerPage);
+          this.props.getEmailsAction('', 0, itemsPerPage);
         },
         okText: 'Xóa',
         onCancel() { },
@@ -155,7 +156,7 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
                   ) : ('')
                 }
 
-                <label className="total-email">{total} email</label>
+                <label className="total-email">Danh sách email ({total})</label>
                 <Table striped>
                   <thead>
                     <tr className="text-center">
@@ -174,6 +175,7 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
                             <td colSpan={5} style={{ textAlign: "center" }}>
                               <Checkbox
                                 id={item.id}
+                                checked = {item.checked}
                                 onChange={event => this.onChangeCheckboxItem(item.id, event.target.checked)} />
                             </td>
                             <td colSpan={25}>{item.name}</td>
