@@ -664,7 +664,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   //get Data diagram
   getDataDiagram = () => {
     let node = this.editor.getDiagramData();
-    const { idFolder, saveCampaignAuto, infoVersion, infoCampaign, openModal, listFieldData, list_clone_version } = this.props;
+    const { idFolder, infoCampaign, listFieldData, list_clone_version } = this.props;
     let { timeStartCampaign, advancedSearches, nameGroup } = this.state;
     let nodeMetaData: any[] = [];
     listFieldData.emailConfig &&
@@ -923,7 +923,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     const imgSetting = require('app/assets/utils/images/flow/setting.png');
     const imgAward = require('app/assets/utils/images/flow/award.png');
     const imgMove = require('app/assets/utils/images/flow/move.png');
-
+    console.log(list_clone_version)
     return (
       <div className="editor">
         <Layout className="layout-flow">

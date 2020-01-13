@@ -275,18 +275,29 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
       timer: listFieldData.timer ? listFieldData.timer : [],
       getway: listFieldData.getway ? listFieldData.getway : []
     };
-
+    let count: number = 0
     if (valueName) {
       value_name_error = ""
-    } else { 
-      value_name_error = " *Vui lòng nhập emai"
+    } else {
+      count++;
+      value_name_error = " * Vui lòng nhập emai"
     }
 
+    if (defaultValueContent) {
+      content_mail_error = ""
+    } else {
+      count++;
+      content_mail_error = "* Vui lòng chọn email"
+    }
+    this.setState({ value_name_error, content_mail_error })
 
-    data.emailConfig = this.remove(data.emailConfig, this.props.idNode);
-    data.emailConfig.push(emailConfig);
-    this.props.validateCampaign(data);
-    this.toggle()
+
+    if (count < 1) {
+      data.emailConfig = this.remove(data.emailConfig, this.props.idNode);
+      data.emailConfig.push(emailConfig);
+      this.props.validateCampaign(data);
+      this.toggle()
+    }
   }
 
 
@@ -350,7 +361,10 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
                                 maxLength={160}
                               />
                             </Col>
+
                           </Row>
+                          <p style={{ color: "red", marginLeft : "13%" }}>{this.state.value_name_error}</p>
+
                           <br />
                           <Row>
                             <Col span={17}>
@@ -391,6 +405,8 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
                                   </div>
                                 </DropdownMenu>
                               </UncontrolledButtonDropdown>
+                              <p style={{ color: "red", marginLeft : "18%" }}>{this.state.content_mail_error}</p>
+
                             </Col>
                             <Col span={7} style={{ marginTop: '-5px' }}>
                               <ButtonAntd type="primary" onClick={this.openModalPreview} style={{ marginTop: '2%', background: '#3866DD' }}>

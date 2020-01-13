@@ -16,7 +16,8 @@ import {
   stopVersion,
   getDiagramCampaign,
   getListCustomerVersionProcess,
-  cloneVersionById
+  cloneVersionById,
+  copyCJCampaign
 } from 'app/actions/campaign-managament';
 import './version-list.scss';
 import { Container, Card, Table } from 'reactstrap';
@@ -443,7 +444,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
   };
 
   copyVersion = () => {
-    let { cloneVersionById, saveCampaignAutoVersion } = this.props;
+    let { cloneVersionById, saveCampaignAutoVersion, copyCJCampaign } = this.props;
     let { listCjId } = this.state
     let idVersionlast: string = '';
     let { listVersion, infoVersion } = this.state;
@@ -457,7 +458,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
         title: `Bạn có muốn nhân bản chiến dịch này ?`,
         content: '',
         onOk: async () => {
-          await cloneVersionById(idVersionlast);
+          await copyCJCampaign(idVersionlast)
           await this.cloneVersion('copy');
           await saveCampaignAutoVersion(infoVersion);
           window.location.assign(`#/flow`);
@@ -635,7 +636,8 @@ const mapDispatchToProps = {
   cloneVersion,
   getDiagramCampaign,
   getListCustomerVersionProcess,
-  cloneVersionById
+  cloneVersionById,
+  copyCJCampaign
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
