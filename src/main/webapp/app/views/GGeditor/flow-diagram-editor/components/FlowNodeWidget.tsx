@@ -191,13 +191,9 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
   }
 
   renderIcon() {
-    let id = this.props.node ? this.props.node.getType() + '_' + this.props.node.getID() : this.props.type;
+    // let id = this.props.node ? this.props.node.getType() + '_' + this.props.node.getID() : this.props.type;
     return (
-      <SvgIconWidget
-        id={id}
-        width={this.props.width}
-        height={this.props.height}
-        icon={this.state.hover ? this.props.inactiveIcon : this.props.icon}
+      <div
         onMouseEnter={async event => {
           if (this.props.hasActionButton && this.props.portVisible) this.setState({ hover: true });
         }}
@@ -215,13 +211,27 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
             this.props.node.eventHandlers.onClickEventHandler(this.props.node, toNodeData(this.props.node));
           }
         }}
-      />
+        style={{
+          zIndex: 10,
+          width: this.props.width,
+          height: this.props.height,
+          backgroundImage: `url(${this.state.hover ? this.props.inactiveIcon : this.props.icon})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover'
+        }}
+      >
+        {''}
+      </div>
     );
   }
 
   renderLabel() {
     let { node } = this.props;
     let label = node && node instanceof FlowNodeModel && node.label ? node.label : translate('diagram.node.' + this.props.type);
+    let top =
+      node && node instanceof FlowNodeModel && node.getPort(FlowNodePortModel.BOTTOM)
+        ? this.getPortTop(FlowNodePortModel.TOP) - 12
+        : this.getPortTop(FlowNodePortModel.BOTTOM) + 12;
     return (
       <div
         style={{
@@ -230,7 +240,7 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
           verticalAlign: 'middle',
           textAlign: 'center',
           width: '160px',
-          top: this.getPortTop(FlowNodePortModel.BOTTOM) + 12,
+          top: top,
           left: this.getPortLeft(FlowNodePortModel.BOTTOM) - 72
         }}
       >
