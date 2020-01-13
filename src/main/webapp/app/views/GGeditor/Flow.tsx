@@ -9,9 +9,6 @@ import {
   Icon,
   Modal as ModalAntd,
   notification,
-  Checkbox,
-  Select,
-  Input,
   Collapse,
   Modal
 } from 'antd';
@@ -38,12 +35,10 @@ import ConfigEmail from './config-email/config-email';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faCopy, faTrashAlt, faUserEdit } from '@fortawesome/free-solid-svg-icons';
 import ModalGroupCustomer from './modal-group-customer/modal-group-customer';
-import FlowContextMenu from './EditorContextMenu/flow-context-menu';
 import UpdateInfoCampaign from './modal-update-info/modal-update-info';
 const { Header } = Layout;
 import './style.scss';
 import { code_node, img_node, const_shape } from 'app/common/model/campaign-managament.model';
-import SiderComponet from './sider/sider-tool';
 import ConfigMessage from './modal-config-message/modal-config-message';
 import SiderTest from './sider/sider-test';
 import ModalWaitForEvent from './modal-wait-for-event/modal-wait-for-event';
@@ -56,7 +51,6 @@ import {
   ConditionDecisionNodeModel,
   ContactSourceStartNodeModel,
   EmailProcessNodeModel,
-  EndNodeModel,
   EventSourceStartNodeModel,
   EventWaitingDecisionNodeModel,
   FlowDiagramEditor,
@@ -70,7 +64,7 @@ import { DiagramWidget } from 'storm-react-diagrams';
 
 const ButtonGroup = Button.Group;
 const { confirm } = Modal;
-interface IFlowPageProps extends StateProps, DispatchProps {}
+interface IFlowPageProps extends StateProps, DispatchProps { }
 interface IFlowPageState {
   visible: boolean;
   isOpen: boolean;
@@ -195,7 +189,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       isOpenModalMessage,
       isOpenModalWaitForEvent,
       isOpenModalWait,
-      nameGroup
+      nameGroup,
+      isOpenModalEmail
     } = this.state;
     let diagram = listDiagram;
     switch (idNode.code) {
@@ -208,6 +203,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
               nameGroup = String(valueName).split(',')[0];
             }
           });
+
           timeStartCampaign = String(valueName).split(',')[1];
           advancedSearches = searchAdv;
           let fieldListCustomer = {
@@ -230,13 +226,22 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           await validateCampaign(dataList);
           // save node in flow
           await getDiagramCampaign(diagram);
-
+          await this.editor.setNodeLabel(listDiagram.nodes)
           this.setState({ timeStartCampaign, advancedSearches, isUpdateNode: true, data: diagram, nameGroup });
         }
 
         break;
       case code_node.SEND_MAIL:
         this.setState({ isOpenModalEmail: event });
+        if (isOpenModalEmail && valueName) {
+          diagram.nodes.map(item => {
+            if (item.id === idNode.id) {
+              item.label = valueName;
+            }
+          });
+          await getDiagramCampaign(diagram);
+          await this.editor.setNodeLabel(listDiagram.nodes)
+        }
         break;
       case code_node.TIMER_EVENT:
         this.setState({ isOpenModalWaitForEvent: !isOpenModalWaitForEvent });
@@ -253,6 +258,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             }
           });
           await getDiagramCampaign(diagram);
+          await this.editor.setNodeLabel(listDiagram.nodes)
         }
         break;
       case code_node.GATEWAY:
@@ -289,7 +295,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   // remove item in array
   remove(arr, item) {
     if (arr && arr.length > 0) {
-      for (var i = arr.length; i--; ) {
+      for (var i = arr.length; i--;) {
         if (arr[i].id === item.id) {
           arr.splice(i, 1);
         }
@@ -407,8 +413,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         await cloneVersionById(idCj);
         await this.cloneVersion('create');
         await saveCampaignAutoVersion(dataInfoVersion);
-        this.getDataDiagram().cjVersionId = null
-        this.getDataDiagram().cj.id = null
+        this.getDataDiagram().cjVersionId = null,
+          this.getDataDiagram().cj.id = null
         console.log(this.getDataDiagram())
         await openModal({
           show: true,
@@ -418,7 +424,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         });
         this.hide();
       },
-      onCancel() {},
+      onCancel() { },
       okText: 'Đồng ý',
       cancelText: 'Hủy bỏ'
     });
@@ -628,16 +634,31 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     return data;
   };
 
+  getValueNodes = (id): string => {
+    let { listDiagram } = this.props;
+    let result: string = ''
+    listDiagram.nodes &&
+      listDiagram.nodes.map(item => {
+        if (id === item.id) {
+          if (item.code === code_node.TIMER_EVENT || item.code === code_node.TIMER || item.code === code_node.GATEWAY) {
+            result = item.value
+          }
+        }
+      });
+
+    return result
+  }
+
   //event save campaign
   saveCampaign = async () => {
     const { saveCampaignAuto, openModal } = this.props;
-    await saveCampaignAuto(this.getDataDiagram());
-    await openModal({
-      show: true,
-      type: 'success',
-      title: translate('modal-data.title.success'),
-      text: 'Lưu chiến dịch thành công'
-    });
+      await saveCampaignAuto(this.getDataDiagram());
+      await openModal({
+        show: true,
+        type: 'success',
+        title: translate('modal-data.title.success'),
+        text: 'Lưu chiến dịch thành công'
+      });
   };
 
   //get Data diagram
@@ -672,7 +693,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           }
         })
       );
-      console.log(listFieldData.timerEvent)
+    console.log(listFieldData.timerEvent)
     listFieldData.timerEvent &&
       listFieldData.timerEvent.forEach(value =>
         nodeMetaData.push({
@@ -703,7 +724,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             type: event.type,
             label: event.label,
             code: event.code,
-            value: event.value,
+            value: /*event.value*/ this.getValueNodes(event.id),
             id: event.id,
             x: event.x,
             y: event.y
@@ -735,6 +756,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       : Object.keys(list_clone_version).length > 0
         ? list_clone_version.flowDetail.startTime
         : `${date.toISOString().substr(0, 10)} ${date.toLocaleTimeString()}`;
+    //set data
     let data = {
       folderId: idFolder ? idFolder : '-99',
       cjVersionId:
@@ -762,29 +784,29 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         description: infoCampaign.des
           ? infoCampaign.des
           : list_clone_version.description
-          ? list_clone_version.description
-          : infoCampaign.des
+            ? list_clone_version.description
+            : infoCampaign.des
       },
       cjTags: cjTags && cjTags.length > 0 ? (cjTags[0] === '' ? [] : cjTags) : cjTags,
       flow: {
         customerGroupName: nameGroup
           ? nameGroup
           : Object.keys(list_clone_version).length > 0
-          ? list_clone_version.flowDetail.customerGroupName
-          : '',
+            ? list_clone_version.flowDetail.customerGroupName
+            : '',
         startTime: startTime,
         customerAdvancedSave:
           Object.keys(advancedSearches).length > 0
             ? advancedSearches
             : Object.keys(list_clone_version).length > 0
-            ? list_clone_version.flowDetail.customerAdvancedSave
-            : null,
+              ? list_clone_version.flowDetail.customerAdvancedSave
+              : null,
         nodeMetaData:
           nodeMetaData && nodeMetaData.length > 0
             ? nodeMetaData
             : Object.keys(list_clone_version).length > 0
-            ? list_clone_version.flowDetail.nodeMetaData
-            : [],
+              ? list_clone_version.flowDetail.nodeMetaData
+              : [],
         graph: Object.keys(graph).length > 0 ? graph : Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.graph : []
       }
     };
@@ -825,14 +847,14 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
               }}
             />
           ) : (
-            <Icon
-              type="double-left"
-              onClick={() => {
-                this.setState({ collapsed: !collapsed });
-              }}
-              className="icon-collapse"
-            />
-          )}
+              <Icon
+                type="double-left"
+                onClick={() => {
+                  this.setState({ collapsed: !collapsed });
+                }}
+                className="icon-collapse"
+              />
+            )}
         </div>
         <hr />
         <div className="logo" style={{ display: collapsed ? 'none' : 'block' }}>

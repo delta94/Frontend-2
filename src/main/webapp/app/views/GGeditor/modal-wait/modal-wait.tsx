@@ -31,7 +31,7 @@ export class ModalTimeWait extends React.Component<IModalTimeWaitProps, IModalTi
 
   toggle = () => {
     let { toggleModal, isOpenModal } = this.props;
-    this.setState({ waitEvent_error: ''})
+    this.setState({ waitEvent_error: '' })
     toggleModal(!isOpenModal);
   };
 
@@ -70,9 +70,12 @@ export class ModalTimeWait extends React.Component<IModalTimeWaitProps, IModalTi
     }
     if (!date) {
       waitEvent_error = "* Vui lòng chọn thời gian chờ"
+    } else if (date === "Phút" && waitEvent < 3) {
+      waitEvent_error = "* Thời gian phải lớn 3 phút"
     } else {
       waitEvent_error = ""
     }
+
     if (waitEvent_error.length > 0) {
       result = false
     }

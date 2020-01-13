@@ -18,11 +18,7 @@ import {
   Col as ColReact,
   Row as RowReact
 } from 'reactstrap';
-import Dropdown from 'app/layout/DropDown/Dropdown';
-import CKEditor from 'ckeditor4-react';
 import { Row, Col } from 'antd';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { Input, Button as ButtonAntd, Popover } from 'antd';
 import { connect } from 'react-redux';
 import { validateCampaign } from 'app/actions/campaign-managament';
@@ -31,12 +27,10 @@ import { IRootState } from 'app/reducers';
 import { getContentTemplate, getContentTemplateAsType } from 'app/actions/user-campaign';
 import { openModal } from 'app/actions/modal';
 import { getNavigationContentTemplates } from 'app/actions/navigation-info';
-import TemplateEmail from './template-email/template-email';
 import PreviewLanding from './preview/preview';
 import { IParamester } from 'app/common/model/campaign-navigation.model';
 import { Translate, translate } from 'react-jhipster';
-import { FORM_LANDING, TEMPLATE_ID, INTRO_MAIL, EMAIL_ALL, EMAIL_EWARD, EMAIL_INTRO } from 'app/constants/common';
-import CkeditorFixed from 'app/layout/ckeditor/CkeditorFixed';
+import { INTRO_MAIL, EMAIL_ALL } from 'app/constants/common';
 import { SUBJECT } from 'app/constants/common';
 
 // export interface I
@@ -61,6 +55,8 @@ export interface IConfigEmailState {
   isOpenDropdown: boolean;
   idEmail: boolean;
   nameEmail: string;
+  value_name_error: string;
+  content_mail_error: string;
 }
 
 class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailState> {
@@ -77,7 +73,9 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
     idTemplate: '',
     isOpenDropdown: false,
     idEmail: false,
-    nameEmail: ''
+    nameEmail: '',
+    value_name_error: '',
+    content_mail_error: '',
   };
   constructor(props) {
     super(props);
@@ -254,12 +252,12 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
 
   toggle = () => {
     let { toggleModal, isOpenModal } = this.props;
-    toggleModal(!isOpenModal);
+    toggleModal(!isOpenModal, this.state.valueName);
   };
 
   confirmEmail = () => {
     let { listFieldData } = this.props;
-    let { defaultValueContent, nameEmail, valueName, valueTitle, idEmail } = this.state;
+    let { defaultValueContent, nameEmail, valueName, valueTitle, idEmail, content_mail_error, value_name_error } = this.state;
     let emailConfig = {
       id: this.props.idNode.id,
       nameEmail,
@@ -277,6 +275,14 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
       timer: listFieldData.timer ? listFieldData.timer : [],
       getway: listFieldData.getway ? listFieldData.getway : []
     };
+
+    if (valueName) {
+      value_name_error = ""
+    } else { 
+      value_name_error = " *Vui lòng nhập emai"
+    }
+
+
     data.emailConfig = this.remove(data.emailConfig, this.props.idNode);
     data.emailConfig.push(emailConfig);
     this.props.validateCampaign(data);
@@ -402,7 +408,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
           </ModalBody>
           <ModalFooter>
             <Button
-              color = "none"
+              color="none"
               onClick={this.toggle} >
               {' '}
               Hủy
