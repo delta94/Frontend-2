@@ -190,7 +190,7 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
     let data = {
       emailTest: isCheckEmail ? email : '',
       mobileTest: isCheckPhone ? phone : '',
-      customer: isCheckCustomer ? customer[0] : {},
+      customer: customer[0],
       nodeMetaData,
       graph
     };
