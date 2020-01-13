@@ -26,5 +26,6 @@ export const CAMPAIGN_MANAGAMENT = {
   GET_TEMPLATE_CAMPAIGN: 'campaign-managament/GET_TEMPLATE_CAMPAIGN',
   CLONE_VERSION_BY_ID: 'campaign-managament/CLONE_VERSION_BY_ID',
   VALIDATE_GRAPH: 'campaign-managament/VALIDATE_GRAPH',
-  RESET_VERSION : 'campaign-managament/RESET_VERSION'
+  RESET_VERSION : 'campaign-managament/RESET_VERSION',
+  COPY_CJID_CAMPAIGN :'campaign-managament/COPY_CJID_CAMPAIGN'
 };

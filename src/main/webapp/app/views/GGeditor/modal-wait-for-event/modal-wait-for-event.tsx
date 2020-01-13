@@ -80,8 +80,11 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
     let { time, date, time_error } = this.state;
     if (time < 1) {
       time_error = "* Vui lòng chọn thời gian kết thúc"
-    } else if (!date) {
+    }
+    else if (!date) {
       time_error = "* Vui lòng chọn thời gian kết thúc"
+    } else if (date === "Phút" && time < 3) {
+      time_error = "* Thời gian phải lớn 3 phút"
     } else {
       time_error = ""
     }

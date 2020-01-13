@@ -79,6 +79,7 @@ export type HandleCampaignManagament = typeof initialCampaignManagament;
 
 export default (state = initialCampaignManagament, action) => {
   switch (action.type) {
+    case REQUEST(CAMPAIGN_MANAGAMENT.COPY_CJID_CAMPAIGN):
     case REQUEST(CAMPAIGN_MANAGAMENT.VALIDATE_GRAPH):
     case REQUEST(CAMPAIGN_MANAGAMENT.CLONE_VERSION_BY_ID):
     case REQUEST(CAMPAIGN_MANAGAMENT.GET_TEMPLATE_CAMPAIGN):
@@ -94,6 +95,7 @@ export default (state = initialCampaignManagament, action) => {
         ...state,
         loading: true
       };
+    case FAILURE(CAMPAIGN_MANAGAMENT.COPY_CJID_CAMPAIGN):
     case FAILURE(CAMPAIGN_MANAGAMENT.VALIDATE_GRAPH):
     case FAILURE(CAMPAIGN_MANAGAMENT.CLONE_VERSION_BY_ID):
     case FAILURE(CAMPAIGN_MANAGAMENT.GET_TEMPLATE_CAMPAIGN):
@@ -115,7 +117,6 @@ export default (state = initialCampaignManagament, action) => {
         list_validate: action.payload.data
       }
     case SUCCESS(CAMPAIGN_MANAGAMENT.CLONE_VERSION_BY_ID):
-      action.payload.data.cjId = null
       return {
         ...state,
         loading: false,
@@ -229,6 +230,13 @@ export default (state = initialCampaignManagament, action) => {
       return { ...state, infoVersion: action.payload };
     case CAMPAIGN_MANAGAMENT.RESET_VERSION:
       return { ...state, cloneInfoVersion: {}, idActive: { id: null, cjId: null } };
+    case SUCCESS(CAMPAIGN_MANAGAMENT.COPY_CJID_CAMPAIGN):
+      action.payload.data.cjId = null
+      return {
+        ...state,
+        loading: false,
+        cloneInfoVersion: action.payload.data,
+      }
     default:
       return state;
   }

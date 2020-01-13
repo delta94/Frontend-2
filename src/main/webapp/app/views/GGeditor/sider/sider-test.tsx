@@ -190,7 +190,7 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
     let data = {
       emailTest: isCheckEmail ? email : '',
       mobileTest: isCheckPhone ? phone : '',
-      customer: isCheckCustomer ? customer[0] : '',
+      customer: customer[0],
       nodeMetaData,
       graph
     };
@@ -231,7 +231,7 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
     } else {
       this.setState({ error_mail: "" })
     }
-    if (Object.keys(customer).length === 0 && isCheckCustomer) {
+    if (Object.keys(customer).length === 0 ) {
       count++
       this.setState({ error_customer: "* Vui lòng chọn khách hàng" })
     } else {
@@ -278,12 +278,6 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
             <label className="title-sider-test">Dữ liệu test</label>
           </Row>
           <Row style={{ marginBottom: '6%' }}>
-            <Col span={24}>
-              {' '}
-              <Checkbox className="text-sider-text" onChange={event => this.handleChangeCheckBox(event, constCheckBox.CHECK_BOX_CUSTOMER)}>
-                Chọn khách hàng
-              </Checkbox>
-            </Col>
             <Col span={24} style={{ textAlign: 'center' }}>
               {' '}
               <Select style={{ width: '92%' }} onChange={event => this.handleChange(event, constantEvent.CUSTOMER)}>

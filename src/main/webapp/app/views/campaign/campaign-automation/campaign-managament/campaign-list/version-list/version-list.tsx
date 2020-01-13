@@ -16,7 +16,9 @@ import {
   stopVersion,
   getDiagramCampaign,
   getListCustomerVersionProcess,
-  cloneVersionById
+  cloneVersionById,
+  copyCJCampaign,
+  resetListCloneVersion,
 } from 'app/actions/campaign-managament';
 import './version-list.scss';
 import { Container, Card, Table } from 'reactstrap';
@@ -67,7 +69,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
   };
 
   componentDidMount = async () => {
-    const { campaign_list, getListVersion } = this.props;
+    const { campaign_list, getListVersion, resetListCloneVersion } = this.props;
     let data =
       campaign_list &&
       campaign_list
@@ -90,6 +92,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
       await getListVersion(data[0].cjId);
       this.customListVersion();
     }
+    await resetListCloneVersion()
   };
 
   // render component when props change
@@ -443,7 +446,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
   };
 
   copyVersion = () => {
-    let { cloneVersionById, saveCampaignAutoVersion } = this.props;
+    let { cloneVersionById, saveCampaignAutoVersion, copyCJCampaign } = this.props;
     let { listCjId } = this.state
     let idVersionlast: string = '';
     let { listVersion, infoVersion } = this.state;
@@ -457,7 +460,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
         title: `Bạn có muốn nhân bản chiến dịch này ?`,
         content: '',
         onOk: async () => {
-          await cloneVersionById(idVersionlast);
+          await copyCJCampaign(idVersionlast)
           await this.cloneVersion('copy');
           await saveCampaignAutoVersion(infoVersion);
           window.location.assign(`#/flow`);
@@ -635,7 +638,9 @@ const mapDispatchToProps = {
   cloneVersion,
   getDiagramCampaign,
   getListCustomerVersionProcess,
-  cloneVersionById
+  cloneVersionById,
+  copyCJCampaign,
+  resetListCloneVersion
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
