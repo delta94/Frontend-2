@@ -121,7 +121,7 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
 
   testProcess = async () => {
     let { isCheckCustomer, isCheckEmail, isCheckPhone, customer, email, phone } = this.state;
-    let { listDiagram, testCampaign, listFieldData } = this.props;
+    let { listDiagram, testCampaign, listFieldData, list_clone_version } = this.props;
     let nodeMetaData: any[] = [];
     listFieldData.emailConfig &&
       listFieldData.emailConfig.forEach(value =>
@@ -191,7 +191,7 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
       emailTest: isCheckEmail ? email : '',
       mobileTest: isCheckPhone ? phone : '',
       customer: customer[0],
-      nodeMetaData,
+      nodeMetaData: nodeMetaData.length > 0 ? nodeMetaData : Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.nodeMetaData : [],
       graph
     };
     localStorage.setItem('isActive', 'true');
@@ -208,8 +208,8 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
         },
         onCancel() {
         },
-        okText :"Xác nhận",
-        cancelText : "Hủy"
+        okText: "Xác nhận",
+        cancelText: "Hủy"
       });
 
     }
@@ -231,7 +231,7 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
     } else {
       this.setState({ error_mail: "" })
     }
-    if (Object.keys(customer).length === 0 ) {
+    if (Object.keys(customer).length === 0) {
       count++
       this.setState({ error_customer: "* Vui lòng chọn khách hàng" })
     } else {
@@ -341,7 +341,8 @@ const mapStateToProps = ({ campaignManagament, groupCustomerState }: IRootState)
   list_customer_with_condition: groupCustomerState.list_customer_with_condition,
   listEmailTest: campaignManagament.listEmailTest,
   listDiagram: campaignManagament.listDiagram,
-  listFieldData: campaignManagament.listFieldData
+  listFieldData: campaignManagament.listFieldData,
+  list_clone_version: campaignManagament.cloneInfoVersion
 });
 
 const mapDispatchToProps = {
