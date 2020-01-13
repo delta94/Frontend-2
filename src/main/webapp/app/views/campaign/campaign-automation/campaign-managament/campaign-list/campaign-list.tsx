@@ -16,7 +16,8 @@ import {
   cloneVersion,
   getDiagramCampaign,
   saveCampaignAutoVersion,
-  getListCustomerVersionProcess
+  getListCustomerVersionProcess,
+  resetListCloneVersion
 } from 'app/actions/campaign-managament';
 import './campaign-list.scss';
 import { Input, Icon, Row, Col, Tag, Button, Popover as PopverAnt, Progress } from 'antd';
@@ -84,6 +85,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
     let { strTagId, textSearch, activePage, itemsPerPage } = this.state;
     let folderId = this.props.folder_id_choose;
     this.getListCampaignInfolderDataAction(folderId ? folderId : '-99', textSearch, strTagId, activePage, itemsPerPage);
+    this.props.resetListCloneVersion()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -630,7 +632,8 @@ const mapDispatchToProps = {
   getDiagramCampaign,
   saveCampaignAutoVersion,
   getListCustomerVersionProcess,
-  updateCjTagsAction
+  updateCjTagsAction,
+  resetListCloneVersion,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

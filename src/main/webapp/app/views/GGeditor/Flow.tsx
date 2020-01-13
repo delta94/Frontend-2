@@ -652,13 +652,14 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   //event save campaign
   saveCampaign = async () => {
     const { saveCampaignAuto, openModal } = this.props;
-      await saveCampaignAuto(this.getDataDiagram());
-      await openModal({
-        show: true,
-        type: 'success',
-        title: translate('modal-data.title.success'),
-        text: 'Lưu chiến dịch thành công'
-      });
+    console.log(this.getDataDiagram())
+    await saveCampaignAuto(this.getDataDiagram());
+    await openModal({
+      show: true,
+      type: 'success',
+      title: translate('modal-data.title.success'),
+      text: 'Lưu chiến dịch thành công'
+    });
   };
 
   //get Data diagram
@@ -693,7 +694,6 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           }
         })
       );
-    console.log(listFieldData.timerEvent)
     listFieldData.timerEvent &&
       listFieldData.timerEvent.forEach(value =>
         nodeMetaData.push({
@@ -760,25 +760,27 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     let data = {
       folderId: idFolder ? idFolder : '-99',
       cjVersionId:
-        Object.keys(list_clone_version).length > 0
-          ? list_clone_version.id
+        this.props.id_active.cjId
+          ? this.props.id_active.id :
+          Object.keys(list_clone_version).length > 0
             ? list_clone_version.id
-            : this.props.id_active.cjId
-              ? this.props.id_active.id
-              : null
-          : this.props.id_active.cjId
-            ? this.props.id_active.id
+              ? list_clone_version.id
+              : this.props.id_active.cjId
+                ? this.props.id_active.id
+                : null
+
             : null,
       cj: {
         id:
-          Object.keys(list_clone_version).length > 0
-            ? list_clone_version.cjId
+          this.props.id_active.id
+            ? this.props.id_active.cjId :
+            Object.keys(list_clone_version).length > 0
               ? list_clone_version.cjId
-              : this.props.id_active.id
-                ? this.props.id_active.cjId
-                : null
-            : this.props.id_active.id
-              ? this.props.id_active.cjId
+                ? list_clone_version.cjId
+                : this.props.id_active.id
+                  ? this.props.id_active.cjId
+                  : null
+
               : null,
         name: infoCampaign.name ? infoCampaign.name : list_clone_version.name ? list_clone_version.name : 'Tạo chiến dịch mới',
         description: infoCampaign.des

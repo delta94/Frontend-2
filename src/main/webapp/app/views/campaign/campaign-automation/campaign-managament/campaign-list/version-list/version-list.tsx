@@ -17,7 +17,8 @@ import {
   getDiagramCampaign,
   getListCustomerVersionProcess,
   cloneVersionById,
-  copyCJCampaign
+  copyCJCampaign,
+  resetListCloneVersion,
 } from 'app/actions/campaign-managament';
 import './version-list.scss';
 import { Container, Card, Table } from 'reactstrap';
@@ -68,7 +69,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
   };
 
   componentDidMount = async () => {
-    const { campaign_list, getListVersion } = this.props;
+    const { campaign_list, getListVersion, resetListCloneVersion } = this.props;
     let data =
       campaign_list &&
       campaign_list
@@ -91,6 +92,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
       await getListVersion(data[0].cjId);
       this.customListVersion();
     }
+    await resetListCloneVersion()
   };
 
   // render component when props change
@@ -637,7 +639,8 @@ const mapDispatchToProps = {
   getDiagramCampaign,
   getListCustomerVersionProcess,
   cloneVersionById,
-  copyCJCampaign
+  copyCJCampaign,
+  resetListCloneVersion
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
