@@ -28,8 +28,8 @@ import { RightAngleLinkFactory } from './RightAngleLinkFactory';
 import { FlowNodeEventHandlers } from './EventHandlers';
 
 const GRID_SIZE = {
-  width: 160,
-  height: 160
+  width: 180,
+  height: 180
 };
 const PORT_SIZE = {
   width: 8,
@@ -64,6 +64,17 @@ export class FlowDiagramEditor {
     this.dropZoneVisible = dropZoneVisible;
 
     FlowDiagramEditor.setDropZoneVisible(this.getActiveModel(), dropZoneVisible);
+    this.diagramEngine.repaintCanvas();
+  }
+
+  public clearNodeConfig() {
+    FlowDiagramEditor.clearNodeConfig(this.getActiveModel());
+    this.diagramEngine.repaintCanvas();
+  }
+
+  public setNodeConfig(data: { id: string; hasConfig: boolean }[], clear?: boolean) {
+    if (clear) FlowDiagramEditor.clearNodeConfig(this.getActiveModel());
+    FlowDiagramEditor.setNodeConfig(this.getActiveModel(), data);
     this.diagramEngine.repaintCanvas();
   }
 
@@ -346,6 +357,26 @@ export class FlowDiagramEditor {
         if (node && node instanceof FlowNodeModel) {
           node.dropZoneVisible = dropZoneVisible;
         }
+      }
+    }
+  }
+
+  private static clearNodeConfig(model: DiagramModel) {
+    if (model && model.getNodes()) {
+      for (let key in model.getNodes()) {
+        let node = model.getNodes()[key];
+        if (node && node instanceof FlowNodeModel) {
+          node.hasConfig = false;
+        }
+      }
+    }
+  }
+
+  private static setNodeConfig(model: DiagramModel, data: { id: string; hasConfig: boolean }[]) {
+    if (model && data) {
+      for (let item of data) {
+        let node = model.getNode(item.id);
+        if (node && node instanceof FlowNodeModel) node.hasConfig = item.hasConfig;
       }
     }
   }

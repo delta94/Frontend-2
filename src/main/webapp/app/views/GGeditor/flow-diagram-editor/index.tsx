@@ -3,7 +3,7 @@ import { TrayWidget } from './components/TrayWidget';
 import { TrayItemWidget } from './components/TrayItemWidget';
 import { DiagramWidget } from 'storm-react-diagrams';
 import { GroupProcess } from './GroupProcess';
-import { toNodeData, toEdgeData } from './FlowDiagramUtil';
+import { toNodeData, toEdgeData, toConfigData } from './FlowDiagramUtil';
 import {
   ConditionDecisionNodeModel,
   ContactSourceStartNodeModel,
@@ -28,5 +28,6 @@ export {
   EventWaitingDecisionNodeModel,
   SmsProcessNodeModel,
   TimeWaitingDecisionNodeModel,
-  GroupProcess
+  GroupProcess,
+  toConfigData
 };

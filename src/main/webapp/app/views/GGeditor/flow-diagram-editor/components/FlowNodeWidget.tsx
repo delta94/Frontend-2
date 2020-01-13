@@ -23,14 +23,13 @@ export interface FlowNodeWidgetProps {
   node: NodeModel;
   portVisible: boolean;
   hasActionButton: boolean;
+  canDelete: boolean;
   dropZoneWidth: number;
   dropZoneHeight: number;
   dropZoneVisible: boolean;
 }
 
-export interface FlowNodeWidgetState {
-  hover: boolean;
-}
+export interface FlowNodeWidgetState {}
 
 export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNodeWidgetState> {
   public static defaultProps: FlowNodeWidgetProps = {
@@ -43,6 +42,7 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
     node: null,
     portVisible: true,
     hasActionButton: false,
+    canDelete: false,
     dropZoneWidth: 48,
     dropZoneHeight: 48,
     dropZoneVisible: false
@@ -50,9 +50,7 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
 
   constructor(props: FlowNodeWidgetProps) {
     super(props);
-    this.state = {
-      hover: false
-    };
+    this.state = {};
   }
 
   getPortTop(portName: string): number | null {
@@ -88,17 +86,17 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
   }
 
   getDropZoneTop(portName: string): number | null {
-    if (portName === FlowNodePortModel.TOP) return -1.1 * this.props.height;
+    if (portName === FlowNodePortModel.TOP) return -1.1 * (this.props.height + this.props.dropZoneHeight * 0.25);
     if (portName === FlowNodePortModel.LEFT) return (this.props.height - this.props.dropZoneHeight) / 2 - 1;
     if (portName === FlowNodePortModel.RIGHT) return (this.props.height - this.props.dropZoneHeight) / 2 - 1;
-    if (portName === FlowNodePortModel.BOTTOM) return +1.1 * this.props.height;
+    if (portName === FlowNodePortModel.BOTTOM) return +1.1 * (this.props.height + this.props.dropZoneHeight * 0.25);
     return null;
   }
 
   getDropZoneLeft(portName: string): number | null {
     if (portName === FlowNodePortModel.TOP) return (this.props.width - this.props.dropZoneWidth) / 2;
-    if (portName === FlowNodePortModel.LEFT) return -1.1 * this.props.width;
-    if (portName === FlowNodePortModel.RIGHT) return +1.1 * this.props.width;
+    if (portName === FlowNodePortModel.LEFT) return -1.1 * (this.props.width + this.props.dropZoneWidth * 0.25);
+    if (portName === FlowNodePortModel.RIGHT) return +1.1 * (this.props.width + this.props.dropZoneWidth * 0.25);
     if (portName === FlowNodePortModel.BOTTOM) return (this.props.width - this.props.dropZoneWidth) / 2;
     return null;
   }
@@ -146,16 +144,6 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
       if (port) {
         return (
           <div
-            onClick={async event => {
-              if (
-                this.props.node &&
-                this.props.node instanceof FlowNodeModel &&
-                this.props.node.eventHandlers &&
-                this.props.node.eventHandlers.onAddClickEventHandler
-              ) {
-                this.props.node.eventHandlers.onAddClickEventHandler(this.props.node, port, toNodeData(this.props.node));
-              }
-            }}
             onDrop={async event => {
               if (
                 this.props.node &&
@@ -174,16 +162,37 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
               borderRadius: 6,
               borderColor: this.props.node.dropZoneVisible ? '#D1D2DE' : 'transparent',
               borderStyle: 'dashed',
-              top: this.getDropZoneTop(portName),
-              left: this.getDropZoneLeft(portName),
-              width: this.props.dropZoneWidth,
-              height: this.props.dropZoneHeight,
-              backgroundImage: `url(${AddIcon})`,
-              backgroundRepeat: 'no-repeat',
-              backgroundSize: 'cover'
+              top: this.getDropZoneTop(portName) - this.props.dropZoneHeight * 0.25 - 1,
+              left: this.getDropZoneLeft(portName) - this.props.dropZoneWidth * 0.25,
+              width: this.props.dropZoneWidth * 1.5,
+              height: this.props.dropZoneHeight * 1.5
             }}
           >
-            {' '}
+            <div
+              onClick={async event => {
+                if (
+                  this.props.node &&
+                  this.props.node instanceof FlowNodeModel &&
+                  this.props.node.eventHandlers &&
+                  this.props.node.eventHandlers.onAddClickEventHandler
+                ) {
+                  this.props.node.eventHandlers.onAddClickEventHandler(this.props.node, port, toNodeData(this.props.node));
+                }
+              }}
+              style={{
+                position: 'absolute',
+                zIndex: 10,
+                top: this.props.dropZoneHeight / 4 - 2,
+                left: this.props.dropZoneWidth / 4 - 2,
+                width: this.props.dropZoneWidth,
+                height: this.props.dropZoneHeight,
+                backgroundImage: `url(${AddIcon})`,
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 'cover'
+              }}
+            >
+              {' '}
+            </div>
           </div>
         );
       }
@@ -191,81 +200,80 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
   }
 
   renderIcon() {
+    let { hasActionButton, portVisible, node, inactiveIcon, icon } = this.props;
+    let hasConfig = portVisible ? node && node instanceof FlowNodeModel && node.hasConfig : true;
+    let hover = portVisible;
     // let id = this.props.node ? this.props.node.getType() + '_' + this.props.node.getID() : this.props.type;
     return (
-      <div
-        onMouseEnter={async event => {
-          if (this.props.hasActionButton && this.props.portVisible) this.setState({ hover: true });
-        }}
-        onMouseLeave={async event => {
-          if (this.props.hasActionButton && this.props.portVisible) this.setState({ hover: false });
-        }}
-        onClick={async event => {
-          if (
-            this.props.portVisible &&
-            this.props.node &&
-            this.props.node instanceof FlowNodeModel &&
-            this.props.node.eventHandlers &&
-            this.props.node.eventHandlers.onClickEventHandler
-          ) {
-            this.props.node.eventHandlers.onClickEventHandler(this.props.node, toNodeData(this.props.node));
-          }
-        }}
-        style={{
-          zIndex: 10,
-          width: this.props.width,
-          height: this.props.height,
-          backgroundImage: `url(${this.state.hover ? this.props.inactiveIcon : this.props.icon})`,
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'cover'
-        }}
-      >
-        {''}
+      <div className="hover">
+        <div
+          className="hover__no-hover"
+          style={{
+            zIndex: 1,
+            width: this.props.width,
+            height: this.props.height,
+            backgroundImage: `url(${hasConfig ? icon : inactiveIcon})`,
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: 'cover'
+          }}
+        >
+          {''}
+        </div>
+        <div
+          className="hover__hover"
+          style={{
+            zIndex: 1,
+            width: this.props.width,
+            height: this.props.height,
+            backgroundImage: `url(${hover ? inactiveIcon : icon})`,
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: 'cover'
+          }}
+        >
+          {this.renderSettingActionButton()}
+          {this.renderDeleteActionButton()}
+        </div>
       </div>
     );
   }
 
   renderLabel() {
-    let { node } = this.props;
-    let label = node && node instanceof FlowNodeModel && node.label ? node.label : translate('diagram.node.' + this.props.type);
-    let top =
-      node && node instanceof FlowNodeModel && node.getPort(FlowNodePortModel.BOTTOM)
+    let { node, portVisible } = this.props;
+    if (node && node instanceof FlowNodeModel && portVisible) {
+      let top = node.getPort(FlowNodePortModel.BOTTOM)
         ? this.getPortTop(FlowNodePortModel.TOP) - 12
         : this.getPortTop(FlowNodePortModel.BOTTOM) + 12;
-    return (
-      <div
-        style={{
-          position: 'absolute',
-          zIndex: 10,
-          verticalAlign: 'middle',
-          textAlign: 'center',
-          width: '160px',
-          top: top,
-          left: this.getPortLeft(FlowNodePortModel.BOTTOM) - 72
-        }}
-      >
-        {label}
-      </div>
-    );
+      return (
+        <div
+          style={{
+            position: 'absolute',
+            zIndex: 10,
+            verticalAlign: 'middle',
+            textAlign: 'center',
+            width: '160px',
+            top: top,
+            left: this.getPortLeft(FlowNodePortModel.BOTTOM) - 72
+          }}
+        >
+          {node.label}
+        </div>
+      );
+    }
   }
 
   renderSettingActionButton() {
-    if (this.props.hasActionButton && this.props.portVisible && this.state.hover) {
+    let { hasActionButton, canDelete, portVisible, node, height, width } = this.props;
+    if (hasActionButton && portVisible) {
       const size = 32;
       return FlowNodeWidget.renderActionButton({
         width: size,
         height: size,
-        top: this.props.height / 2 - size / 2,
-        left: this.props.width / 2 - size - 1,
+        top: height / 2 - size / 2,
+        left: canDelete ? width / 2 - size - 1 : size / 2 + 3,
         icon: SettingIcon,
         onClick: async event => {
-          if (
-            this.props.node &&
-            this.props.node instanceof FlowNodeModel &&
-            this.props.node.eventHandlers &&
-            this.props.node.eventHandlers.onClickEventHandler
-          ) {
-            this.props.node.eventHandlers.onClickEventHandler(this.props.node, toNodeData(this.props.node));
+          if (node && node instanceof FlowNodeModel && node.eventHandlers && node.eventHandlers.onClickEventHandler) {
+            node.eventHandlers.onClickEventHandler(node, toNodeData(node));
           }
         }
       });
@@ -273,23 +281,19 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
   }
 
   renderDeleteActionButton() {
-    if (this.props.hasActionButton && this.props.portVisible && this.state.hover) {
+    let { hasActionButton, canDelete, portVisible, node, height, width } = this.props;
+    if (hasActionButton && canDelete && portVisible) {
       const size = 32;
 
       return FlowNodeWidget.renderActionButton({
         width: size,
         height: size,
-        top: this.props.height / 2 - size / 2,
-        left: this.props.width / 2 + 1,
+        top: height / 2 - size / 2,
+        left: width / 2 + 1,
         icon: DeleteIcon,
         onClick: async event => {
-          if (
-            this.props.node &&
-            this.props.node instanceof FlowNodeModel &&
-            this.props.node.eventHandlers &&
-            this.props.node.eventHandlers.onDeleteEventHandler
-          ) {
-            this.props.node.eventHandlers.onDeleteEventHandler(this.props.node, toNodeData(this.props.node));
+          if (node && node instanceof FlowNodeModel && node.eventHandlers && node.eventHandlers.onDeleteEventHandler) {
+            node.eventHandlers.onDeleteEventHandler(node, toNodeData(node));
           }
         }
       });
@@ -309,8 +313,6 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
       >
         {this.renderIcon()}
         {this.renderLabel()}
-        {this.renderSettingActionButton()}
-        {this.renderDeleteActionButton()}
         {this.renderPort(FlowNodePortModel.TOP)}
         {this.renderPortLabel(FlowNodePortModel.TOP)}
         {this.renderPort(FlowNodePortModel.LEFT)}
