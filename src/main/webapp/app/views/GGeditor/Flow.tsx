@@ -28,7 +28,8 @@ import {
   activeProcessCampaign,
   validateGraph,
   cloneVersionById,
-  resetListCloneVersion
+  resetListCloneVersion,
+  copyCJCampaign,
 } from 'app/actions/campaign-managament';
 import { IRootState } from 'app/reducers';
 import ConfigEmail from './config-email/config-email';
@@ -409,8 +410,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       zIndex: 1000000,
       onOk: async () => {
         await resetListCloneVersion()
-
-        await cloneVersionById(idCj);
+        await this.props.copyCJCampaign(idCj);
         await this.cloneVersion('create');
         await saveCampaignAutoVersion(dataInfoVersion);
         this.getDataDiagram().cjVersionId = null,
@@ -538,12 +538,12 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
   //Content Popover Setting
   contentSetting() {
-    let { id_active } = this.props;
+    let { id_active, list_clone_version } = this.props;
     return (
       <Row>
         <Row>
           <Button
-            disabled={id_active.id && id_active.id.length > 0 ? false : true}
+            disabled={id_active.id && id_active.id.length > 0 ? false : Object.keys(list_clone_version).length > 0 ? false : true}
             type="link"
             onClick={this.replicateCampaign}
             className="btn-multi"
@@ -1108,7 +1108,8 @@ const mapDispatchToProps = {
   closeModal,
   validateGraph,
   cloneVersionById,
-  resetListCloneVersion
+  resetListCloneVersion,
+  copyCJCampaign
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
