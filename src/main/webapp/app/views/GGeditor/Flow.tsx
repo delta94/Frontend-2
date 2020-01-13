@@ -30,6 +30,7 @@ import {
   cloneVersionById,
   resetListCloneVersion,
   copyCJCampaign,
+  getListVersion
 } from 'app/actions/campaign-managament';
 import { IRootState } from 'app/reducers';
 import ConfigEmail from './config-email/config-email';
@@ -65,6 +66,14 @@ import { DiagramWidget } from 'storm-react-diagrams';
 
 const ButtonGroup = Button.Group;
 const { confirm } = Modal;
+
+const constant_version = {
+  DRAFT: 'Draft',
+  FINISH: 'Finish',
+  RUNNING: 'Running',
+  STOP: 'Stop'
+};
+
 interface IFlowPageProps extends StateProps, DispatchProps { }
 interface IFlowPageState {
   visible: boolean;
@@ -816,17 +825,50 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   };
 
   activeProcess = async () => {
-    const { activeProcessCampaign, list_clone_version, infoVersion, id_active, openModal, cloneVersion } = this.props;
+    const { activeProcessCampaign, list_clone_version, list_version, id_active, getListVersion, cloneVersion } = this.props;
     let data = id_active.id ? id_active.id : list_clone_version.id ? list_clone_version.id : '';
-    if (data) {
-      await activeProcessCampaign(data);
-      await cloneVersion(data);
-      await window.location.assign(`/#/app/views/campaigns/campaign-managament`);
-      notification['success']({
-        message: 'thành công',
-        description: 'Bạn vừa kích hoạt chiến dịch thành công.'
-      });
+    if (Object.keys(list_clone_version).length > 0) {
+      await getListVersion(list_clone_version.cjId)
     }
+    let version: number = 0
+    let isRunning: boolean = false
+    if (list_version && list_version.length > 0) {
+      list_version.map(item => {
+        if (item.status === constant_version.RUNNING) {
+          isRunning = true,
+            version = item.version
+        }
+      })
+    }
+    if (isRunning) {
+      confirm({
+        title: `Hiện có phiên bản ${version} đang thực hiện. Bạn có muốn kích hoạt phiên bản mới không ?`,
+        content: 'Lưu ý: hệ thống sẽ dừng phiên bản cũ trước khi kích hoạt phiên bản mới.',
+        onOk: async () => {
+          await activeProcessCampaign(data);
+          await cloneVersion(data);
+          await window.location.assign(`/#/app/views/campaigns/campaign-managament`);
+          notification['success']({
+            message: 'thành công',
+            description: 'Bạn vừa kích hoạt chiến dịch thành công.'
+          });
+        },
+        onCancel() { },
+        okText: 'Đồng ý',
+        cancelText: 'Hủy bỏ'
+      });
+    } else {
+      if (data) {
+        await activeProcessCampaign(data);
+        await cloneVersion(data);
+        await window.location.assign(`/#/app/views/campaigns/campaign-managament`);
+        notification['success']({
+          message: 'thành công',
+          description: 'Bạn vừa kích hoạt chiến dịch thành công.'
+        });
+      }
+    }
+
   };
 
   renderTrayItemWidget(type: string) {
@@ -1093,7 +1135,8 @@ const mapStateToProps = ({ campaignManagament, handleModal }: IRootState) => ({
   list_clone_version: campaignManagament.cloneInfoVersion,
   id_active: campaignManagament.idActive,
   modalState: handleModal.data,
-  list_validate: campaignManagament.list_validate
+  list_validate: campaignManagament.list_validate,
+  list_version: campaignManagament.listVersion
 });
 
 const mapDispatchToProps = {
@@ -1109,7 +1152,8 @@ const mapDispatchToProps = {
   validateGraph,
   cloneVersionById,
   resetListCloneVersion,
-  copyCJCampaign
+  copyCJCampaign,
+  getListVersion
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
