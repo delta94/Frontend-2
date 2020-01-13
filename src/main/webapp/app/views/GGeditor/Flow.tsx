@@ -827,8 +827,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   activeProcess = async () => {
     const { activeProcessCampaign, list_clone_version, list_version, id_active, getListVersion, cloneVersion } = this.props;
     let data = id_active.id ? id_active.id : list_clone_version.id ? list_clone_version.id : '';
-    if (Object.keys(list_clone_version).length > 0) {
-      await getListVersion(list_clone_version.cjId)
+    if (Object.keys(list_clone_version).length > 0 || Object.keys(id_active).length > 0) {
+      await getListVersion(list_clone_version.cjId ? list_clone_version.cjId : id_active.cjId)
     }
     let version: number = 0
     let isRunning: boolean = false
