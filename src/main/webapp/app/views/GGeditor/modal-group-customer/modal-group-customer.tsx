@@ -359,7 +359,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
     }
 
     if (count == 0) {
-      if (advancedSearches && advancedSearches.length === 0) {
+      if (advancedSearches && advancedSearches.length === 0 && Object.keys(this.props.list_clone_version).length < 1) {
         confirm({
           title: 'Xác nhận',
           content: 'Chiến dịch sẽ gửi tới tất cả khách hàng, bạn có chắc chắn muốn thực hiện ?',

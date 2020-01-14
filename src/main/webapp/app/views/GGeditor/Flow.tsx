@@ -16,7 +16,9 @@ import {
   activeProcessCampaign,
   validateGraph,
   cloneVersionById,
-  resetListCloneVersion
+  resetListCloneVersion,
+  copyCJCampaign,
+  getListVersion
 } from 'app/actions/campaign-managament';
 import { IRootState } from 'app/reducers';
 import ConfigEmail from './config-email/config-email';
@@ -54,7 +56,19 @@ import { FlowNodePortModel } from 'app/views/GGeditor/flow-diagram-editor/FlowNo
 
 const ButtonGroup = Button.Group;
 const { confirm } = Modal;
+<<<<<<< HEAD
+
+const constant_version = {
+  DRAFT: 'Draft',
+  FINISH: 'Finish',
+  RUNNING: 'Running',
+  STOP: 'Stop'
+};
+
+interface IFlowPageProps extends StateProps, DispatchProps { }
+=======
 interface IFlowPageProps extends StateProps, DispatchProps {}
+>>>>>>> origin/dev_thangtq
 interface IFlowPageState {
   visible: boolean;
   isOpen: boolean;
@@ -412,9 +426,14 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       content: '',
       zIndex: 1000000,
       onOk: async () => {
+<<<<<<< HEAD
+        await resetListCloneVersion()
+        await this.props.copyCJCampaign(idCj);
+=======
         await resetListCloneVersion();
 
         await cloneVersionById(idCj);
+>>>>>>> origin/dev_thangtq
         await this.cloneVersion('create');
         await saveCampaignAutoVersion(dataInfoVersion);
         (this.getDataDiagram().cjVersionId = null), (this.getDataDiagram().cj.id = null);
@@ -541,12 +560,12 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
   //Content Popover Setting
   contentSetting() {
-    let { id_active } = this.props;
+    let { id_active, list_clone_version } = this.props;
     return (
       <Row>
         <Row>
           <Button
-            disabled={id_active.id && id_active.id.length > 0 ? false : true}
+            disabled={id_active.id && id_active.id.length > 0 ? false : Object.keys(list_clone_version).length > 0 ? false : true}
             type="link"
             onClick={this.replicateCampaign}
             className="btn-multi"
@@ -814,17 +833,50 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   };
 
   activeProcess = async () => {
-    const { activeProcessCampaign, list_clone_version, infoVersion, id_active, openModal, cloneVersion } = this.props;
+    const { activeProcessCampaign, list_clone_version, list_version, id_active, getListVersion, cloneVersion } = this.props;
     let data = id_active.id ? id_active.id : list_clone_version.id ? list_clone_version.id : '';
-    if (data) {
-      await activeProcessCampaign(data);
-      await cloneVersion(data);
-      await window.location.assign(`/#/app/views/campaigns/campaign-managament`);
-      notification['success']({
-        message: 'thành công',
-        description: 'Bạn vừa kích hoạt chiến dịch thành công.'
-      });
+    if (Object.keys(list_clone_version).length > 0 || Object.keys(id_active).length > 0) {
+      await getListVersion(list_clone_version.cjId ? list_clone_version.cjId : id_active.cjId)
     }
+    let version: number = 0
+    let isRunning: boolean = false
+    if (list_version && list_version.length > 0) {
+      list_version.map(item => {
+        if (item.status === constant_version.RUNNING) {
+          isRunning = true,
+            version = item.version
+        }
+      })
+    }
+    if (isRunning) {
+      confirm({
+        title: `Hiện có phiên bản ${version} đang thực hiện. Bạn có muốn kích hoạt phiên bản mới không ?`,
+        content: 'Lưu ý: hệ thống sẽ dừng phiên bản cũ trước khi kích hoạt phiên bản mới.',
+        onOk: async () => {
+          await activeProcessCampaign(data);
+          await cloneVersion(data);
+          await window.location.assign(`/#/app/views/campaigns/campaign-managament`);
+          notification['success']({
+            message: 'thành công',
+            description: 'Bạn vừa kích hoạt chiến dịch thành công.'
+          });
+        },
+        onCancel() { },
+        okText: 'Đồng ý',
+        cancelText: 'Hủy bỏ'
+      });
+    } else {
+      if (data) {
+        await activeProcessCampaign(data);
+        await cloneVersion(data);
+        await window.location.assign(`/#/app/views/campaigns/campaign-managament`);
+        notification['success']({
+          message: 'thành công',
+          description: 'Bạn vừa kích hoạt chiến dịch thành công.'
+        });
+      }
+    }
+
   };
 
   renderTrayItemWidget(type: string) {
@@ -1109,7 +1161,8 @@ const mapStateToProps = ({ campaignManagament, handleModal }: IRootState) => ({
   list_clone_version: campaignManagament.cloneInfoVersion,
   id_active: campaignManagament.idActive,
   modalState: handleModal.data,
-  list_validate: campaignManagament.list_validate
+  list_validate: campaignManagament.list_validate,
+  list_version: campaignManagament.listVersion
 });
 
 const mapDispatchToProps = {
@@ -1124,7 +1177,9 @@ const mapDispatchToProps = {
   closeModal,
   validateGraph,
   cloneVersionById,
-  resetListCloneVersion
+  resetListCloneVersion,
+  copyCJCampaign,
+  getListVersion
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
