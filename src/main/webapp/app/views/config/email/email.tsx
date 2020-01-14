@@ -1,8 +1,7 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Input, Icon, Row, Checkbox, Button, Modal } from 'antd';
-import { Table, ButtonGroup } from 'reactstrap';
-
+import { Input, Icon, Row, Checkbox, Button, Modal, Popover, Dropdown } from 'antd';
+import { Table, ButtonGroup, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { IRootState } from 'app/reducers';
 import LoaderAnim from 'react-loaders';
@@ -129,13 +128,15 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
                   }}
                   placeholder="Tìm kiếm email"
                 />
-                <Button
-                  type="primary"
-                  onClick={() => {
-                    window.location.assign('#');
-                  }}
-                > Thêm mới
-                </Button>
+                <UncontrolledDropdown>
+                  <DropdownToggle>
+                  Thêm mới email
+                 </DropdownToggle>
+                  <DropdownMenu right className="dropdown-menu-sm">
+                    <DropdownItem>Thêm từ template</DropdownItem>
+                    <DropdownItem>Thêm mới</DropdownItem>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
               </div>
             </Row>
             <Row>
@@ -175,7 +176,7 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
                             <td colSpan={5} style={{ textAlign: "center" }}>
                               <Checkbox
                                 id={item.id}
-                                checked = {item.checked}
+                                checked={item.checked}
                                 onChange={event => this.onChangeCheckboxItem(item.id, event.target.checked)} />
                             </td>
                             <td colSpan={25}>{item.name}</td>
