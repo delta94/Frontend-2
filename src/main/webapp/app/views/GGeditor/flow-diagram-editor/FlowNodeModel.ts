@@ -41,14 +41,14 @@ export class FlowNodeModel extends NodeModel {
     this._config = value;
   }
 
-  private _hasConfig: boolean = false;
+  private _isActive: boolean = false;
 
-  get hasConfig(): boolean {
-    return this._hasConfig;
+  get isActive(): boolean {
+    return this._isActive;
   }
 
-  set hasConfig(value: boolean) {
-    this._hasConfig = value;
+  set isActive(value: boolean) {
+    this._isActive = value;
   }
 
   private _dropZoneVisible: boolean = false;
