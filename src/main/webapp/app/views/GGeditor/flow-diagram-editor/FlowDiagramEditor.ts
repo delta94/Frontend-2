@@ -67,6 +67,15 @@ export class FlowDiagramEditor {
     this.diagramEngine.repaintCanvas();
   }
 
+  readOnly: boolean = false;
+
+  public setReadOnly(readOnly: boolean) {
+    this.readOnly = readOnly;
+
+    FlowDiagramEditor.setReadOnly(this.getActiveModel(), readOnly);
+    this.diagramEngine.repaintCanvas();
+  }
+
   public clearNodeConfig() {
     FlowDiagramEditor.clearNodeConfig(this.getActiveModel());
     this.diagramEngine.repaintCanvas();
@@ -80,6 +89,16 @@ export class FlowDiagramEditor {
 
   public setNodeLabel(data: { id: string; label: string }[]) {
     FlowDiagramEditor.setNodeLabel(this.getActiveModel(), data);
+    this.diagramEngine.repaintCanvas();
+  }
+
+  public setNodeInfo(data: { id: string; label: string; hasConfig: boolean }[]) {
+    FlowDiagramEditor.setNodeInfo(this.getActiveModel(), data);
+    this.diagramEngine.repaintCanvas();
+  }
+
+  public setNodeExtraInfo(data: { id: string; extraLabel: string; extraIcon: string }[]) {
+    FlowDiagramEditor.setNodeExtraInfo(this.getActiveModel(), data);
     this.diagramEngine.repaintCanvas();
   }
 
@@ -103,14 +122,14 @@ export class FlowDiagramEditor {
 
   public setDiagramData(data: { nodes: any[]; edges: any[] }) {
     let model = FlowDiagramEditor.createDiagramModel();
-    FlowDiagramEditor.loadDiagramData(model, data, this.dropZoneVisible, this.eventHandlers);
+    FlowDiagramEditor.loadDiagramData(model, data, this.readOnly, this.dropZoneVisible, this.eventHandlers);
     FlowDiagramEditor.arrange(model);
     this.diagramEngine.setDiagramModel(model);
   }
 
   public addGroupProcess(groupProcess: GroupProcess, position: PortModel) {
     let model = this.getActiveModel();
-    if (FlowDiagramEditor.addGroupProcess(model, groupProcess, position, this.dropZoneVisible, this.eventHandlers)) {
+    if (FlowDiagramEditor.addGroupProcess(model, groupProcess, position, this.readOnly, this.dropZoneVisible, this.eventHandlers)) {
       FlowDiagramEditor.arrange(model);
       this.diagramEngine.recalculatePortsVisually();
       this.diagramEngine.repaintCanvas();
@@ -164,6 +183,7 @@ export class FlowDiagramEditor {
   private static loadDiagramData(
     model: DiagramModel,
     data: { nodes: any[]; edges: any[] },
+    readOnly: boolean,
     dropZoneVisible: boolean,
     eventHandlers: FlowNodeEventHandlers
   ) {
@@ -173,6 +193,7 @@ export class FlowDiagramEditor {
           let node = parseNode(nodeData);
           if (node) {
             if (node instanceof FlowNodeModel) {
+              node.readOnly = readOnly;
               node.dropZoneVisible = dropZoneVisible;
               node.eventHandlers = eventHandlers;
             }
@@ -207,6 +228,7 @@ export class FlowDiagramEditor {
     model: DiagramModel,
     groupProcess: GroupProcess,
     position: PortModel,
+    readOnly: boolean,
     dropZoneVisible: boolean,
     eventHandlers: FlowNodeEventHandlers
   ): boolean {
@@ -214,6 +236,7 @@ export class FlowDiagramEditor {
       for (let node of groupProcess.nodes) {
         if (node) {
           if (node instanceof FlowNodeModel) {
+            node.readOnly = readOnly;
             node.dropZoneVisible = dropZoneVisible;
             node.eventHandlers = eventHandlers;
           }
@@ -361,6 +384,17 @@ export class FlowDiagramEditor {
     }
   }
 
+  private static setReadOnly(model: DiagramModel, readOnly: boolean) {
+    if (model && model.getNodes()) {
+      for (let key in model.getNodes()) {
+        let node = model.getNodes()[key];
+        if (node && node instanceof FlowNodeModel) {
+          node.readOnly = readOnly;
+        }
+      }
+    }
+  }
+
   private static clearNodeConfig(model: DiagramModel) {
     if (model && model.getNodes()) {
       for (let key in model.getNodes()) {
@@ -386,6 +420,30 @@ export class FlowDiagramEditor {
       for (let item of data) {
         let node = model.getNode(item.id);
         if (node && node instanceof FlowNodeModel) node.label = item.label;
+      }
+    }
+  }
+
+  private static setNodeInfo(model: DiagramModel, data: { id: string; label: string; hasConfig: boolean }[]) {
+    if (model && data) {
+      for (let item of data) {
+        let node = model.getNode(item.id);
+        if (node && node instanceof FlowNodeModel) {
+          node.label = item.label;
+          node.hasConfig = item.hasConfig;
+        }
+      }
+    }
+  }
+
+  private static setNodeExtraInfo(model: DiagramModel, data: { id: string; extraLabel: string; extraIcon: string }[]) {
+    if (model && data) {
+      for (let item of data) {
+        let node = model.getNode(item.id);
+        if (node && node instanceof FlowNodeModel) {
+          node.extraLabel = item.extraLabel;
+          node.extraIcon = item.extraIcon;
+        }
       }
     }
   }
