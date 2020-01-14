@@ -38,10 +38,10 @@ export class RightAngleLinkSegment extends React.Component<{
       this.circle.setAttribute('cy', '' + point.y);
 
       if (this.mounted) {
-        requestAnimationFrame(this.callback);
+        // requestAnimationFrame(this.callback);
       }
     };
-    requestAnimationFrame(this.callback);
+    // requestAnimationFrame(this.callback);
   }
 
   componentWillUnmount() {
@@ -53,21 +53,21 @@ export class RightAngleLinkSegment extends React.Component<{
       <g>
         <>
           <path
-            // className={this.props.selected ? this.props.widget.bem('--path-selected') : ''}
-            ref={ref => {
-              this.path = ref;
-            }}
+            className={this.props.selected ? this.props.widget.bem('--path-selected') : ''}
+            // ref={ref => {
+            //   this.path = ref;
+            // }}
             strokeWidth={this.props.model.width}
             stroke={this.props.model.color}
             d={this.props.path}
           />
-          <circle
-            ref={ref => {
-              this.circle = ref;
-            }}
-            r={6}
-            fill="orange"
-          />
+          {/*<circle*/}
+          {/*  ref={ref => {*/}
+          {/*    this.circle = ref;*/}
+          {/*  }}*/}
+          {/*  r={6}*/}
+          {/*  fill="orange"*/}
+          {/*/>*/}
         </>
       </g>
     );
