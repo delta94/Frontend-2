@@ -76,14 +76,14 @@ export class FlowDiagramEditor {
     this.diagramEngine.repaintCanvas();
   }
 
-  public clearNodeConfig() {
-    FlowDiagramEditor.clearNodeConfig(this.getActiveModel());
+  public clearNodeStatus() {
+    FlowDiagramEditor.clearNodeStatus(this.getActiveModel());
     this.diagramEngine.repaintCanvas();
   }
 
-  public setNodeConfig(data: { id: string; hasConfig: boolean }[], clear?: boolean) {
-    if (clear) FlowDiagramEditor.clearNodeConfig(this.getActiveModel());
-    FlowDiagramEditor.setNodeConfig(this.getActiveModel(), data);
+  public setNodeStatus(data: { id: string; isActive: boolean }[], clearStatus?: boolean) {
+    if (clearStatus) FlowDiagramEditor.clearNodeStatus(this.getActiveModel());
+    FlowDiagramEditor.setNodeStatus(this.getActiveModel(), data);
     this.diagramEngine.repaintCanvas();
   }
 
@@ -92,7 +92,7 @@ export class FlowDiagramEditor {
     this.diagramEngine.repaintCanvas();
   }
 
-  public setNodeInfo(data: { id: string; label: string; hasConfig: boolean }[]) {
+  public setNodeInfo(data: { id: string; label: string; isActive: boolean }[]) {
     FlowDiagramEditor.setNodeInfo(this.getActiveModel(), data);
     this.diagramEngine.repaintCanvas();
   }
@@ -395,22 +395,22 @@ export class FlowDiagramEditor {
     }
   }
 
-  private static clearNodeConfig(model: DiagramModel) {
+  private static clearNodeStatus(model: DiagramModel) {
     if (model && model.getNodes()) {
       for (let key in model.getNodes()) {
         let node = model.getNodes()[key];
         if (node && node instanceof FlowNodeModel) {
-          node.hasConfig = false;
+          node.isActive = false;
         }
       }
     }
   }
 
-  private static setNodeConfig(model: DiagramModel, data: { id: string; hasConfig: boolean }[]) {
+  private static setNodeStatus(model: DiagramModel, data: { id: string; isActive: boolean }[]) {
     if (model && data) {
       for (let item of data) {
         let node = model.getNode(item.id);
-        if (node && node instanceof FlowNodeModel) node.hasConfig = item.hasConfig;
+        if (node && node instanceof FlowNodeModel) node.isActive = item.isActive;
       }
     }
   }
@@ -424,13 +424,13 @@ export class FlowDiagramEditor {
     }
   }
 
-  private static setNodeInfo(model: DiagramModel, data: { id: string; label: string; hasConfig: boolean }[]) {
+  private static setNodeInfo(model: DiagramModel, data: { id: string; label: string; isActive: boolean }[]) {
     if (model && data) {
       for (let item of data) {
         let node = model.getNode(item.id);
         if (node && node instanceof FlowNodeModel) {
           node.label = item.label;
-          node.hasConfig = item.hasConfig;
+          node.isActive = item.isActive;
         }
       }
     }

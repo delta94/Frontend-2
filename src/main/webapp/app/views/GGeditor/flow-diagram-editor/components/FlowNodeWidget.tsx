@@ -214,7 +214,7 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
 
   renderIcon() {
     let { hasActionButton, portVisible, node, inactiveIcon, icon } = this.props;
-    let hasConfig = portVisible ? node && node instanceof FlowNodeModel && node.hasConfig : true;
+    let isActive = portVisible ? node && node instanceof FlowNodeModel && node.isActive : true;
     let hover = portVisible;
     // let id = this.props.node ? this.props.node.getType() + '_' + this.props.node.getID() : this.props.type;
     const renderNoHover = () => {
@@ -225,7 +225,7 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
             zIndex: 1,
             width: this.props.width,
             height: this.props.height,
-            backgroundImage: `url(${hasConfig ? icon : inactiveIcon})`,
+            backgroundImage: `url(${isActive ? icon : inactiveIcon})`,
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover'
           }}
