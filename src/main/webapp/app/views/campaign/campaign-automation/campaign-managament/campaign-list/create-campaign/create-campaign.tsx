@@ -209,7 +209,39 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
           <Card>
             <div className="count-campaign">{list_template ? list_template.length : ''} chiến dịch mẫu </div>
             {listTemp &&
-              listTemp.map((item, index) => {
+              listTemp.map((item, index, list) => {
+                let countGrid: number = 0
+                countGrid = countGrid + 2
+                let template = (
+                  <Row
+                    style={{ display: item.collapse ? "block" : "none" }}
+                  >
+
+                    <Col span={24}>
+                      <Card style={{ background: "#FBFBFB" }} >
+                        <Col span={18}>
+                          {this.renderDiagramWidget(this.editor.getDiagramData())}
+                        </Col>
+                        <Col span={6}>
+                          <label className="descrition-template">{item.description}</label>
+                        </Col>
+                        <Button type="primary" className="btn-template" onClick={async () => {
+                          let data = {
+                            name: 'Tạo chiến dịch mới',
+                            tag: [''],
+                            des: ''
+                          };
+                          await this.props.updateInfoCampaign(data);
+                          await this.props.saveCampaignAutoVersion(this.state.infoVersion);
+                          await this.props.resetListCloneVersion()
+                          await window.location.assign(`#/flow`)
+                        }}>Chọn Template</Button>
+
+                      </Card>
+
+                    </Col>
+                  </Row>
+                )
                 return (
                   <div>
                     <Col style={{ zIndex: 10 }} className="gutter-row" span={8} key={index} >
@@ -227,34 +259,7 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
                         </Tag>
                       </div>
                     </Col>
-                    <Collapse isOpen={item.collapse}>
-                      <Row >
-
-                        <Col span={24}>
-                          <Card style={{ background: "#FBFBFB" }} >
-                            <Col span={18}>
-                              {this.renderDiagramWidget(this.editor.getDiagramData())}
-                            </Col>
-                            <Col span={6}>
-                              <label className="descrition-template">{item.description}</label>
-                            </Col>
-                            <Button type="primary" className="btn-template" onClick={async () => {
-                              let data = {
-                                name: 'Tạo chiến dịch mới',
-                                tag: [''],
-                                des: ''
-                              };
-                              await this.props.updateInfoCampaign(data);
-                              await this.props.saveCampaignAutoVersion(this.state.infoVersion);
-                              await this.props.resetListCloneVersion()
-                              await window.location.assign(`#/flow`)
-                            }}>Chọn Template</Button>
-
-                          </Card>
-
-                        </Col>
-                      </Row>
-                    </Collapse>
+                    {template}
                   </div>
                 );
               })}
