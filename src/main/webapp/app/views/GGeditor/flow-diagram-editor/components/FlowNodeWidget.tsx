@@ -1,14 +1,11 @@
 import * as React from 'react';
 import { NodeModel, PortWidget } from 'storm-react-diagrams';
-import * as _ from 'lodash';
 import { FlowNodeModel } from '../FlowNodeModel';
 import { FlowNodePortModel } from '../FlowNodePortModel';
 import { toNodeData } from '../FlowDiagramUtil';
-import { SvgIconWidget } from './SvgIconWidget';
-
-import { Translate, translate } from 'react-jhipster';
 
 const DefaultIcon = require('../icons/default.png');
+const DefaultExtraIcon = require('../icons/default_extra_icon.png');
 const AddIcon = require('../icons/add.png');
 const SettingIcon = require('../icons/setting.png');
 const DeleteIcon = require('../icons/delete.png');
@@ -213,7 +210,7 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
   }
 
   renderIcon() {
-    let { hasActionButton, portVisible, node, inactiveIcon, icon } = this.props;
+    let { portVisible, node, inactiveIcon, icon } = this.props;
     let isActive = portVisible ? node && node instanceof FlowNodeModel && node.isActive : true;
     let hover = portVisible;
     // let id = this.props.node ? this.props.node.getType() + '_' + this.props.node.getID() : this.props.type;
@@ -235,7 +232,6 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
       );
     };
     const renderHover = () => {
-      if (node && node instanceof FlowNodeModel && node.readOnly) return;
       return (
         <div
           className="hover__hover"
@@ -287,7 +283,7 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
 
   renderSettingActionButton() {
     let { hasActionButton, canDelete, portVisible, node, height, width } = this.props;
-    if (hasActionButton && portVisible) {
+    if (hasActionButton && portVisible && node && node instanceof FlowNodeModel && !node.readOnly) {
       const size = 32;
       return FlowNodeWidget.renderActionButton({
         width: size,
@@ -295,8 +291,8 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
         top: height / 2 - size / 2,
         left: canDelete ? width / 2 - size - 1 : size / 2 + 3,
         icon: SettingIcon,
-        onClick: async event => {
-          if (node && node instanceof FlowNodeModel && node.eventHandlers && node.eventHandlers.onClickEventHandler) {
+        onClick: async _ => {
+          if (node instanceof FlowNodeModel && node.eventHandlers && node.eventHandlers.onClickEventHandler) {
             node.eventHandlers.onClickEventHandler(node, toNodeData(node));
           }
         }
@@ -306,7 +302,7 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
 
   renderDeleteActionButton() {
     let { hasActionButton, canDelete, portVisible, node, height, width } = this.props;
-    if (hasActionButton && canDelete && portVisible) {
+    if (hasActionButton && canDelete && portVisible && node && node instanceof FlowNodeModel && !node.readOnly) {
       const size = 32;
 
       return FlowNodeWidget.renderActionButton({
@@ -315,11 +311,28 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
         top: height / 2 - size / 2,
         left: width / 2 + 1,
         icon: DeleteIcon,
-        onClick: async event => {
-          if (node && node instanceof FlowNodeModel && node.eventHandlers && node.eventHandlers.onDeleteEventHandler) {
+        onClick: async _ => {
+          if (node instanceof FlowNodeModel && node.eventHandlers && node.eventHandlers.onDeleteEventHandler) {
             node.eventHandlers.onDeleteEventHandler(node, toNodeData(node));
           }
         }
+      });
+    }
+  }
+
+  renderExtraInfo() {
+    let { portVisible, node, width } = this.props;
+    if (portVisible && node && node instanceof FlowNodeModel && node.extraLabel) {
+      const extraIconSize = 18;
+      const extraHeight = extraIconSize * 2;
+      const extraWidth = extraIconSize * 2.5 + node.extraLabel.length * 8;
+      return FlowNodeWidget.renderExtraInfo({
+        top: -46,
+        left: -extraWidth * 0.5 + width * 0.5,
+        width: extraWidth,
+        height: extraHeight,
+        label: node.extraLabel,
+        icon: node.extraIcon && node.extraIcon !== '' ? node.extraIcon : DefaultExtraIcon
       });
     }
   }
@@ -349,14 +362,18 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
         {this.renderDropZone(FlowNodePortModel.LEFT)}
         {this.renderDropZone(FlowNodePortModel.RIGHT)}
         {this.renderDropZone(FlowNodePortModel.BOTTOM)}
+        {this.renderExtraInfo()}
       </div>
     );
   }
 
-  static renderActionButton(props: { width: number; height: number; top: number; left: number; icon: any; onClick?: any }) {
+  static renderActionButton(props: { width: number; height: number; top: number; left: number; icon: string; onClick?: (event) => void }) {
     return (
       <div
-        onClick={props.onClick}
+        onClick={async event => {
+          event.preventDefault();
+          props.onClick(event);
+        }}
         style={{
           position: 'absolute',
           zIndex: 10,
@@ -370,6 +387,69 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
         }}
       >
         {''}
+      </div>
+    );
+  }
+
+  static renderExtraInfo(props: {
+    width: number;
+    height: number;
+    top: number;
+    left: number;
+    label: string;
+    icon: string;
+    onClick?: (event) => void;
+  }) {
+    let iconSize = props.height * 0.5;
+    return (
+      <div
+        onClick={async event => {
+          event.preventDefault();
+          props.onClick(event);
+        }}
+        style={{
+          position: 'absolute',
+          zIndex: 10,
+          top: props.top,
+          left: props.left,
+          width: props.width,
+          height: props.height,
+          borderWidth: 1,
+          borderRadius: 3,
+          borderColor: '#D4E0ED',
+          borderStyle: 'solid',
+          backgroundColor: '#FFFFFF'
+        }}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            zIndex: 10,
+            top: iconSize * 0.5,
+            left: iconSize * 0.5,
+            width: iconSize,
+            height: iconSize,
+            backgroundImage: `url(${props.icon})`,
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: 'cover'
+          }}
+        >
+          {''}
+        </div>
+        <div
+          style={{
+            position: 'absolute',
+            zIndex: 10,
+            top: iconSize * 0.5,
+            left: iconSize * 2,
+            width: props.width - iconSize * 2.5,
+            height: iconSize,
+            fontSize: '12px',
+            color: '#000000'
+          }}
+        >
+          {props.label}
+        </div>
       </div>
     );
   }

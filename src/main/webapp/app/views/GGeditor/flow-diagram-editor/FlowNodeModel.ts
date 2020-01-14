@@ -506,6 +506,7 @@ export class EmailProcessNodeModel extends ProcessNodeModel {
 
   constructor(id?: string, label?: string) {
     super(EmailProcessNodeModel.TYPE, id, label);
+    this.extraLabel = 'demo';
   }
 
   getDefaultLabel(): string {
