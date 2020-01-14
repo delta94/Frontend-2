@@ -6,8 +6,8 @@
       "add": "Thêm"
     },
     "condition_result": {
-      "ok": "Ok",
-      "nok": "Nok"
+      "ok": "Có",
+      "nok": "Không"
     },
     "node": {
       "start": "Bắt đầu",

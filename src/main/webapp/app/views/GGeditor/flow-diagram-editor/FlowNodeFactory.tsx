@@ -46,7 +46,8 @@ export function createFlowNodeWidget(type: string, node: NodeModel, portVisible:
         width={StartNodeModel.WIDTH}
         height={StartNodeModel.HEIGHT}
         portVisible={portVisible}
-        hasActionButton={false}
+        hasActionButton={true}
+        canDelete={false}
         dropZoneVisible={dropZoneVisible}
       />
     );
@@ -61,7 +62,8 @@ export function createFlowNodeWidget(type: string, node: NodeModel, portVisible:
         width={StartNodeModel.WIDTH}
         height={StartNodeModel.HEIGHT}
         portVisible={portVisible}
-        hasActionButton={false}
+        hasActionButton={true}
+        canDelete={false}
         dropZoneVisible={dropZoneVisible}
       />
     );
@@ -77,6 +79,7 @@ export function createFlowNodeWidget(type: string, node: NodeModel, portVisible:
         height={ProcessNodeModel.HEIGHT}
         portVisible={portVisible}
         hasActionButton={true}
+        canDelete={true}
         dropZoneVisible={dropZoneVisible}
       />
     );
@@ -92,6 +95,7 @@ export function createFlowNodeWidget(type: string, node: NodeModel, portVisible:
         height={ProcessNodeModel.HEIGHT}
         portVisible={portVisible}
         hasActionButton={true}
+        canDelete={true}
         dropZoneVisible={dropZoneVisible}
       />
     );
@@ -107,6 +111,7 @@ export function createFlowNodeWidget(type: string, node: NodeModel, portVisible:
         height={DecisionNodeModel.HEIGHT}
         portVisible={portVisible}
         hasActionButton={true}
+        canDelete={true}
         dropZoneVisible={dropZoneVisible}
       />
     );
@@ -122,6 +127,7 @@ export function createFlowNodeWidget(type: string, node: NodeModel, portVisible:
         height={DecisionNodeModel.HEIGHT}
         portVisible={portVisible}
         hasActionButton={true}
+        canDelete={true}
         dropZoneVisible={dropZoneVisible}
       />
     );
@@ -137,6 +143,7 @@ export function createFlowNodeWidget(type: string, node: NodeModel, portVisible:
         height={DecisionNodeModel.HEIGHT}
         portVisible={portVisible}
         hasActionButton={true}
+        canDelete={true}
         dropZoneVisible={dropZoneVisible}
       />
     );
@@ -152,6 +159,7 @@ export function createFlowNodeWidget(type: string, node: NodeModel, portVisible:
         height={EndNodeModel.HEIGHT}
         portVisible={portVisible}
         hasActionButton={false}
+        canDelete={false}
         dropZoneVisible={dropZoneVisible}
       />
     );

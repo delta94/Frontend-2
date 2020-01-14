@@ -10,6 +10,7 @@ import {
   SmsProcessNodeModel,
   TimeWaitingDecisionNodeModel
 } from './FlowNodeModel';
+
 const uuidv4 = require('uuid/v4');
 export function createNodeModel(code: string, id: string, label?: string): FlowNodeModel | null {
   let uuid = id && id !== '' ? id : uuidv4();
@@ -107,4 +108,31 @@ export function mapToPortPosition(pos: any): string | null {
   if (pos === FlowNodePortModel.LEFT || pos === 2 || pos === '2') return FlowNodePortModel.LEFT;
   if (pos === FlowNodePortModel.RIGHT || pos === 3 || pos === '3') return FlowNodePortModel.RIGHT;
   return null;
+}
+
+export function toConfigData(listFieldData: {
+  listCampign: any[];
+  emailConfig: any[];
+  messageConfig: any[];
+  timerEvent: any[];
+  timer: any[];
+  getway: any[];
+}) {
+  let configData: { id: string; hasConfig: boolean }[] = [];
+  let parse = items => {
+    if (items) {
+      for (let item of items) {
+        configData.push({ id: item.id, hasConfig: true });
+      }
+    }
+  };
+
+  parse(listFieldData.listCampign);
+  parse(listFieldData.emailConfig);
+  parse(listFieldData.messageConfig);
+  parse(listFieldData.timerEvent);
+  parse(listFieldData.timer);
+  parse(listFieldData.getway);
+
+  return configData;
 }

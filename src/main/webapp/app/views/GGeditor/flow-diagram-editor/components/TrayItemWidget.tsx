@@ -5,10 +5,10 @@ export interface TrayItemWidgetProps {
   model: any;
   onDragStart?: any;
   onDragEnd?: any;
-  isDrag?: boolean
+  isDrag?: boolean;
 }
 
-export interface TrayItemWidgetState { }
+export interface TrayItemWidgetState {}
 
 export class TrayItemWidget extends React.Component<TrayItemWidgetProps, TrayItemWidgetState> {
   constructor(props: TrayItemWidgetProps) {
@@ -17,7 +17,7 @@ export class TrayItemWidget extends React.Component<TrayItemWidgetProps, TrayIte
   }
 
   render() {
-    const { isDrag, onDragStart, onDragEnd, model } = this.props
+    const { isDrag, onDragStart, onDragEnd, model } = this.props;
     return (
       <div
         draggable={isDrag}
