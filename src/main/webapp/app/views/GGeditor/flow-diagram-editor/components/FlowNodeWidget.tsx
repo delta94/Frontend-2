@@ -139,37 +139,50 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
   }
 
   renderDropZone(portName: string) {
-    if (this.props.dropZoneVisible && this.props.node && this.props.node instanceof FlowNodeModel) {
-      let port = this.props.node.getOutPort(portName);
+    let { dropZoneVisible, node } = this.props;
+    if (dropZoneVisible && node && node instanceof FlowNodeModel) {
+      let port = node.getOutPort(portName);
       if (port) {
         return (
           <div
             onDrop={async event => {
-              if (
-                this.props.node &&
-                this.props.node instanceof FlowNodeModel &&
-                this.props.node.eventHandlers &&
-                this.props.node.eventHandlers.onDropEventHandler
-              ) {
+              event.preventDefault();
+              if (node instanceof FlowNodeModel && node.readOnly) return;
+
+              if (node instanceof FlowNodeModel && node.eventHandlers && node.eventHandlers.onDropEventHandler) {
                 let dataTransfer = JSON.parse(event.dataTransfer.getData('flow-diagram-node'));
-                this.props.node.eventHandlers.onDropEventHandler(this.props.node, port, toNodeData(this.props.node), dataTransfer);
+                node.eventHandlers.onDropEventHandler(this.props.node, port, toNodeData(this.props.node), dataTransfer);
               }
             }}
-            style={{
-              position: 'absolute',
-              zIndex: 10,
-              borderWidth: 2,
-              borderRadius: 6,
-              borderColor: this.props.node.dropZoneVisible ? '#D1D2DE' : 'transparent',
-              borderStyle: 'dashed',
-              top: this.getDropZoneTop(portName) - this.props.dropZoneHeight * 0.25 - 1,
-              left: this.getDropZoneLeft(portName) - this.props.dropZoneWidth * 0.25,
-              width: this.props.dropZoneWidth * 1.5,
-              height: this.props.dropZoneHeight * 1.5
-            }}
+            style={
+              node instanceof FlowNodeModel && node.readOnly
+                ? {
+                    position: 'absolute',
+                    zIndex: 10,
+                    top: this.getDropZoneTop(portName) - this.props.dropZoneHeight * 0.25 - 1,
+                    left: this.getDropZoneLeft(portName) - this.props.dropZoneWidth * 0.25,
+                    width: this.props.dropZoneWidth * 1.5,
+                    height: this.props.dropZoneHeight * 1.5
+                  }
+                : {
+                    position: 'absolute',
+                    zIndex: 10,
+                    borderWidth: 2,
+                    borderRadius: 6,
+                    borderColor: node.dropZoneVisible ? '#D1D2DE' : 'transparent',
+                    borderStyle: 'dashed',
+                    top: this.getDropZoneTop(portName) - this.props.dropZoneHeight * 0.25 - 1,
+                    left: this.getDropZoneLeft(portName) - this.props.dropZoneWidth * 0.25,
+                    width: this.props.dropZoneWidth * 1.5,
+                    height: this.props.dropZoneHeight * 1.5
+                  }
+            }
           >
             <div
               onClick={async event => {
+                event.preventDefault();
+                if (node instanceof FlowNodeModel && node.readOnly) return;
+
                 if (
                   this.props.node &&
                   this.props.node instanceof FlowNodeModel &&
@@ -204,8 +217,8 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
     let hasConfig = portVisible ? node && node instanceof FlowNodeModel && node.hasConfig : true;
     let hover = portVisible;
     // let id = this.props.node ? this.props.node.getType() + '_' + this.props.node.getID() : this.props.type;
-    return (
-      <div className="hover">
+    const renderNoHover = () => {
+      return (
         <div
           className="hover__no-hover"
           style={{
@@ -219,6 +232,11 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
         >
           {''}
         </div>
+      );
+    };
+    const renderHover = () => {
+      if (node && node instanceof FlowNodeModel && node.readOnly) return;
+      return (
         <div
           className="hover__hover"
           style={{
@@ -233,6 +251,12 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
           {this.renderSettingActionButton()}
           {this.renderDeleteActionButton()}
         </div>
+      );
+    };
+    return (
+      <div className="hover">
+        {renderNoHover()}
+        {renderHover()}
       </div>
     );
   }

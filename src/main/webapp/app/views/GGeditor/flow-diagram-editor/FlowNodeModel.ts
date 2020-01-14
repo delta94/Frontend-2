@@ -61,6 +61,16 @@ export class FlowNodeModel extends NodeModel {
     this._dropZoneVisible = value;
   }
 
+  private _readOnly: boolean = false;
+
+  get readOnly(): boolean {
+    return this._readOnly;
+  }
+
+  set readOnly(value: boolean) {
+    this._readOnly = value;
+  }
+
   private _eventHandlers: FlowNodeEventHandlers = null;
 
   get eventHandlers(): FlowNodeEventHandlers {
@@ -80,6 +90,26 @@ export class FlowNodeModel extends NodeModel {
 
   set label(value: string) {
     this._label = value;
+  }
+
+  private _extraLabel: string;
+
+  get extraLabel(): string {
+    return this._extraLabel;
+  }
+
+  set extraLabel(value: string) {
+    this._extraLabel = value;
+  }
+
+  private _extraIcon: string;
+
+  get extraIcon(): string {
+    return this._extraIcon;
+  }
+
+  set extraIcon(value: string) {
+    this._extraIcon = value;
   }
 
   getDefaultLabel(): string {
