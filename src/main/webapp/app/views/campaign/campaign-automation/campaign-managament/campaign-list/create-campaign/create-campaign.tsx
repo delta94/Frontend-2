@@ -141,11 +141,11 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
     this.setState({ collapse: !collapse });
 
   };
-  renderDiagramWidget = (data) =>{
-    let diagram =  new FlowDiagramEditor();
+  renderDiagramWidget = (data) => {
+    let diagram = new FlowDiagramEditor();
     diagram.setDiagramData({
-      nodes : data.nodes,
-      edges : data.edges
+      nodes: data.nodes,
+      edges: data.edges
     })
     return <DiagramWidget className="srd-flow-canvas" diagramEngine={diagram.getDiagramEngine()} smartRouting={false} />
   }
@@ -214,6 +214,7 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
                   <div>
                     <Col style={{ zIndex: 10 }} className="gutter-row" span={8} key={index} >
                       <div className="gutter-box" onClick={async () => {
+
                         await this.cloneVersion(item.flow, item.id)
                       }}>
                         <label className="text-title">{item.name}</label>
@@ -237,7 +238,17 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
                             <Col span={6}>
                               <label className="descrition-template">{item.description}</label>
                             </Col>
-                            <Button type="primary" className="btn-template" onClick={() => { window.location.assign(`#/flow`) }}>Chọn Template</Button>
+                            <Button type="primary" className="btn-template" onClick={async () => {
+                              let data = {
+                                name: 'Tạo chiến dịch mới',
+                                tag: [''],
+                                des: ''
+                              };
+                              await this.props.updateInfoCampaign(data);
+                              await this.props.saveCampaignAutoVersion(this.state.infoVersion);
+                              await this.props.resetListCloneVersion()
+                              await window.location.assign(`#/flow`)
+                            }}>Chọn Template</Button>
 
                           </Card>
 

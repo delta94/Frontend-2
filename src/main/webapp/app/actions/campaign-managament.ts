@@ -197,3 +197,14 @@ export const validateGraph = (data) => ({
 export const resetListCloneVersion = () => ({
   type: CAMPAIGN_MANAGAMENT.RESET_VERSION
 })
+
+export const copyCJCampaign = id => async dispatch => {
+  const result = await dispatch({
+    type: CAMPAIGN_MANAGAMENT.COPY_CJID_CAMPAIGN,
+    payload: cloneVersionByIdService(id)
+  })
+  await dispatch(resetData())
+  await dispatch(validateCampaign([]))
+  await dispatch(updateInfoCampaign({}))
+  return result
+};

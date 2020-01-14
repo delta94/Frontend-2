@@ -32,7 +32,7 @@ interface IModalWaitForEventState {
 
 export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, IModalWaitForEventState> {
   state: IModalWaitForEventState = {
-    event: 'Khách hàng mở mail',
+    event: 'open-mail',
     email: '',
     time: 0,
     timer: '',
@@ -80,8 +80,11 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
     let { time, date, time_error } = this.state;
     if (time < 1) {
       time_error = "* Vui lòng chọn thời gian kết thúc"
-    } else if (!date) {
+    }
+    else if (!date) {
       time_error = "* Vui lòng chọn thời gian kết thúc"
+    } else if (date === "Phút" && time < 3) {
+      time_error = "* Thời gian phải lớn 3 phút"
     } else {
       time_error = ""
     }
@@ -209,7 +212,8 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
                   style={{ width: '100%' }}
                   onChange={event => this.handleChange(event, 'event')}
                 >
-                  <Option value="Khách hàng mở mail">Khách hàng mở mail</Option>
+                  <Option value="open-mail">Khách hàng mở mail</Option>
+                  {/* <Option value="activated-voucher">Khách hàng kick hoạt mã voucher</Option> */}
                 </Select>
               </Col>
             </Row>

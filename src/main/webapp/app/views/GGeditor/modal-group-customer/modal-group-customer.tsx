@@ -31,6 +31,8 @@ import { OPERATOR } from 'app/constants/field-data';
 import { IOpenModal } from 'app/reducers/modal';
 import { ERROR } from 'app/constants/common';
 
+const { confirm } = Modal
+
 interface IGroupModalConfigProps extends StateProps, DispatchProps {
   is_show: boolean;
   toggle: Function;
@@ -70,6 +72,7 @@ interface IGroupModalConfigState {
   };
   dateTime?: any;
   selectDate: any;
+  error_categoryName: string;
 }
 
 export function makeRandomId(length: number): string {
@@ -100,14 +103,15 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
       customerAdvancedSave: {}
     },
     dateTime: '',
-    selectDate: new Date()
+    selectDate: new Date(),
+    error_categoryName: '',
   };
 
   componentDidMount() {
     let { logicalOperator, advancedSearches, pageIndex, pageSize } = this.state;
     let { list_clone_version } = this.props
     if (Object.keys(list_clone_version).length > 0) {
-      logicalOperator = list_clone_version.flowDetail.customerAdvancedSave === null ?  '' : list_clone_version.flowDetail.customerAdvancedSave.logicalOperator 
+      logicalOperator = list_clone_version.flowDetail.customerAdvancedSave === null ? '' : list_clone_version.flowDetail.customerAdvancedSave.logicalOperator
       advancedSearches = list_clone_version.flowDetail.customerAdvancedSave === null ? [] : list_clone_version.flowDetail.customerAdvancedSave.advancedSearches
     }
     this.props.getListFieldDataAction();
@@ -301,12 +305,6 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
   async execFunctionRequest() {
     let { type_modal, single_group_field } = this.props;
     let { advancedSearches, categoryName, logicalOperator } = this.state;
-    let postRequest: IOpenModal = {
-      show: true,
-      type: ERROR,
-      title: 'Thông báo',
-      text: ''
-    };
 
     categoryName = categoryName.trim();
     switch (type_modal) {
@@ -348,16 +346,39 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
 
     // await this.props.openModal(postRequest);
     // await this.props.getListCustomerGroupDataAction('');
-
+    let count: number = 0
     let customerAdvancedSave = {
       logicalOperator,
       advancedSearches
     };
-    this.props.toggle(false, this.state.categoryName + ',' + this.state.dateTime, customerAdvancedSave, true);
+    if (categoryName) {
+      this.setState({ error_categoryName: "" })
+    } else {
+      count++
+      this.setState({ error_categoryName: "* Vui lòng nhập tên nhóm" })
+    }
+
+    if (count == 0) {
+      if (advancedSearches && advancedSearches.length === 0 && Object.keys(this.props.list_clone_version).length < 1) {
+        confirm({
+          title: 'Xác nhận',
+          content: 'Chiến dịch sẽ gửi tới tất cả khách hàng, bạn có chắc chắn muốn thực hiện ?',
+          onOk: async () => {
+            this.props.toggle(false, this.state.categoryName + ',' + this.state.dateTime, customerAdvancedSave, true);
+          },
+          onCancel() {
+          },
+          okText: "Xác nhận",
+          cancelText: "Hủy"
+        });
+      } else {
+        this.props.toggle(false, this.state.categoryName + ',' + this.state.dateTime, customerAdvancedSave, true);
+      }
+    }
   }
   getNameGroup = () => {
     const { listFieldData } = this.props;
-    let result: string;
+    let result: string = "";
     listFieldData.listCampign &&
       listFieldData.listCampign.map(item => {
         if (item.id === this.props.idNode.id) {
@@ -366,6 +387,19 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
       });
     return result;
   };
+  save = () => {
+    const { totalElements } = this.props
+    if (totalElements > 0) {
+      this.execFunctionRequest();
+    } else {
+      openModal({
+        show: true,
+        type: 'error',
+        title: translate('modal-data.title.error'),
+        text: 'Vui lòng chọn ít nhất 1 khách hàng'
+      });
+    }
+  }
 
   render() {
     let {
@@ -383,21 +417,21 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
     let list_field_render =
       list_field_data_cpn && list_field_data_cpn.length > 0
         ? list_field_data_cpn.map(item => {
-            if (item.id)
-              return (
-                <FieldData
-                  type_modal={type_modal}
-                  key={item.id}
-                  id={item.id}
-                  last_index={item.last_index}
-                  logicalOperator={logicalOperator}
-                  default_data={item.default_data}
-                  updateValueFromState={this.updateValueFromState}
-                  deleteComponentById={this.deleteComponentById}
-                  updateRelationshipFromState={this.updateRelationshipFromState}
-                />
-              );
-          })
+          if (item.id)
+            return (
+              <FieldData
+                type_modal={type_modal}
+                key={item.id}
+                id={item.id}
+                last_index={item.last_index}
+                logicalOperator={logicalOperator}
+                default_data={item.default_data}
+                updateValueFromState={this.updateValueFromState}
+                deleteComponentById={this.deleteComponentById}
+                updateRelationshipFromState={this.updateRelationshipFromState}
+              />
+            );
+        })
         : [];
 
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
@@ -436,18 +470,8 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
           <Button
             key="back"
             color="primary"
-            disabled={advancedSearches && categoryName && categoryName.trim() !== '' ? false : true}
             onClick={() => {
-              if (totalElements > 0) {
-                this.execFunctionRequest();
-              } else {
-                openModal({
-                  show: true,
-                  type: 'error',
-                  title: translate('modal-data.title.error'),
-                  text: 'Vui lòng chọn ít nhất 1 khách hàng'
-                });
-              }
+              this.save()
             }}
           >
             <Translate contentKey="group-attribute-customer.save" />
@@ -462,10 +486,15 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
             <Input
               defaultValue={this.getNameGroup()}
               placeholder={translate('group-attribute-customer.group-modal-config.name-placeholder')}
-              onChange={event => this.setState({ categoryName: event.target.value })}
+              onChange={event => {
+                categoryName = this.getNameGroup() ? this.getNameGroup() : categoryName
+                this.setState({ categoryName: event.target.value })
+              }}
               maxLength={160}
             />
           </div>
+          <p className="error" style={{ color: "red", marginLeft: "8%" }}> {this.state.error_categoryName}</p>
+
           <div className="input-search">
             <label className="input-search_label">Đặt lịch</label>
             <DatePicker
@@ -569,12 +598,12 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
                         );
                       })
                     ) : (
-                      <tr>
-                        <td className="none-data" colSpan={100}>
-                          <Translate contentKey="group-attribute-customer.none-data-list-customer" />
-                        </td>
-                      </tr>
-                    )}
+                        <tr>
+                          <td className="none-data" colSpan={100}>
+                            <Translate contentKey="group-attribute-customer.none-data-list-customer" />
+                          </td>
+                        </tr>
+                      )}
                   </tbody>
                 </Table>
               </div>

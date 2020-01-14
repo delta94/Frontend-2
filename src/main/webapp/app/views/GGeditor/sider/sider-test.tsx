@@ -6,7 +6,11 @@ import { Row, Col, Checkbox, Input, Button, Layout, Icon, Select, notification, 
 import { code_node, img_node, const_shape } from 'app/common/model/campaign-managament.model';
 const { Sider } = Layout;
 const { Option } = Select;
-interface ISiderTestProps extends StateProps, DispatchProps { }
+const { confirm } = Modal;
+interface ISiderTestProps extends StateProps, DispatchProps {
+  toogle: Function,
+  isCloseSider: boolean
+}
 interface ISiderTestState {
   collapsed: boolean;
   customer: {};
@@ -117,7 +121,7 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
 
   testProcess = async () => {
     let { isCheckCustomer, isCheckEmail, isCheckPhone, customer, email, phone } = this.state;
-    let { listDiagram, testCampaign, listFieldData } = this.props;
+    let { listDiagram, testCampaign, listFieldData, list_clone_version } = this.props;
     let nodeMetaData: any[] = [];
     listFieldData.emailConfig &&
       listFieldData.emailConfig.forEach(value =>
@@ -186,17 +190,28 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
     let data = {
       emailTest: isCheckEmail ? email : '',
       mobileTest: isCheckPhone ? phone : '',
-      customer: isCheckCustomer ? customer[0] : '',
-      nodeMetaData,
+      customer: customer[0],
+      nodeMetaData: nodeMetaData.length > 0 ? nodeMetaData : Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.nodeMetaData : [],
       graph
     };
     localStorage.setItem('isActive', 'true');
     if (this.checkValidate()) {
-      await testCampaign(data);
-      notification['success']({
-        message: 'thành công',
-        description: 'Dữ liệu test thành công'
+      confirm({
+        title: 'Xác nhận',
+        content: 'Bạn có chắc chắn muốn thực hiện test chiến dịch ?',
+        onOk: async () => {
+          await testCampaign(data);
+          notification['success']({
+            message: 'thành công',
+            description: 'Hệ thống thực hiện test thành công, vui lòng kiểm tra email hoặc tin nhắn hoặc số điện thoại để xem kết quả'
+          });
+        },
+        onCancel() {
+        },
+        okText: "Xác nhận",
+        cancelText: "Hủy"
       });
+
     }
   };
   checkValidate(): boolean {
@@ -216,7 +231,7 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
     } else {
       this.setState({ error_mail: "" })
     }
-    if (Object.keys(customer).length === 0 && isCheckCustomer) {
+    if (Object.keys(customer).length === 0) {
       count++
       this.setState({ error_customer: "* Vui lòng chọn khách hàng" })
     } else {
@@ -240,16 +255,18 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
           </label>
           {collapsed ? (
             <Icon
-              type="double-right"
+              style={{ fontSize: "20px" }}
+              type="close-circle"
               onClick={() => {
-                this.setState({ collapsed: !collapsed });
+                this.props.toogle(false)
               }}
             />
           ) : (
               <Icon
-                type="double-left"
+                style={{ fontSize: "20px" }}
+                type="close-circle"
                 onClick={() => {
-                  this.setState({ collapsed: !collapsed });
+                  this.props.toogle(false)
                 }}
                 className="icon-collapse"
               />
@@ -261,12 +278,6 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
             <label className="title-sider-test">Dữ liệu test</label>
           </Row>
           <Row style={{ marginBottom: '6%' }}>
-            <Col span={24}>
-              {' '}
-              <Checkbox className="text-sider-text" onChange={event => this.handleChangeCheckBox(event, constCheckBox.CHECK_BOX_CUSTOMER)}>
-                Chọn khách hàng
-              </Checkbox>
-            </Col>
             <Col span={24} style={{ textAlign: 'center' }}>
               {' '}
               <Select style={{ width: '92%' }} onChange={event => this.handleChange(event, constantEvent.CUSTOMER)}>
@@ -330,7 +341,8 @@ const mapStateToProps = ({ campaignManagament, groupCustomerState }: IRootState)
   list_customer_with_condition: groupCustomerState.list_customer_with_condition,
   listEmailTest: campaignManagament.listEmailTest,
   listDiagram: campaignManagament.listDiagram,
-  listFieldData: campaignManagament.listFieldData
+  listFieldData: campaignManagament.listFieldData,
+  list_clone_version: campaignManagament.cloneInfoVersion
 });
 
 const mapDispatchToProps = {

@@ -318,14 +318,15 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                     })}
                 </Select>
               </Col>
-              <Col span={8}>
+              <Col span={8} >
                 <label style={{ lineHeight: '2' }}>Trạng Thái : {eventStatus(clone_version.status)}</label>
               </Col>
-              <Col span={7} style={{ textAlign: 'right' }}>
+              <Col span={8} style = {{lineHeight : "29px", textAlign :"right", paddingRight : "1%"}}>
                 <img src={imgSetting} />
               </Col>
-              <Col span={4} style={{ float: 'right' }}>
+              <Col span={4} style={{ textAlign: 'right' }}>
                 <Button
+                style ={{background : "#3866DD"}}
                   onClick={() => {
                     this.createNewVersion();
                   }}
@@ -333,7 +334,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                 >
                   Tạo mới version
                 </Button>
-                <Button onClick={this.stopVersion} type="primary" style={{ background: '#97A3B4', borderColor: 'unset', float: 'right' }}>
+                <Button onClick={this.stopVersion} type="primary" style={{ background: '#97A3B4', borderColor: 'unset', left :"5%" }}>
                   Dừng version
                 </Button>
               </Col>

@@ -16,7 +16,8 @@ import {
   cloneVersion,
   getDiagramCampaign,
   saveCampaignAutoVersion,
-  getListCustomerVersionProcess
+  getListCustomerVersionProcess,
+  resetListCloneVersion
 } from 'app/actions/campaign-managament';
 import './campaign-list.scss';
 import { Input, Icon, Row, Col, Tag, Button, Popover as PopverAnt, Progress } from 'antd';
@@ -84,6 +85,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
     let { strTagId, textSearch, activePage, itemsPerPage } = this.state;
     let folderId = this.props.folder_id_choose;
     this.getListCampaignInfolderDataAction(folderId ? folderId : '-99', textSearch, strTagId, activePage, itemsPerPage);
+    this.props.resetListCloneVersion()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -439,7 +441,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
             {/* Block out */}
             <Row>
               <Col span={4} />
-              <Col span={11}>
+              <Col span={11} style = {{textAlign : "right"}}>
                 <label className="label-search">Tìm kiếm chiến dịch</label> &nbsp;
                 <Input
                   style={{ float: 'right' }}
@@ -454,15 +456,16 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                 />
               </Col>
               <Col span={8} className="col-search-tag">
-                <Col span={14} style={{ display: 'flex', marginLeft: '16%' }}>
+                <Col span={14} style={{ display: 'flex' }}>
                   <label className="input-search_label-1">
                     <Translate contentKey="userManagement.card-tag" />
                     &nbsp; &nbsp;
                   </label>
                   <CampaignTag handleChange={this.handleChange} />
                 </Col>
-                <Col span={6} style={{ textAlign: 'right' }}>
+                <Col span={6} style={{ float: 'right', marginRight : "5%" }}>
                   <Button
+                  style = {{background : "#3866DD"}}
                     type="primary"
                     onClick={() => {
                       window.location.assign('/#/app/views/campaigns/campaign-managament/new');
@@ -629,7 +632,8 @@ const mapDispatchToProps = {
   getDiagramCampaign,
   saveCampaignAutoVersion,
   getListCustomerVersionProcess,
-  updateCjTagsAction
+  updateCjTagsAction,
+  resetListCloneVersion,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

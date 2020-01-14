@@ -40,6 +40,7 @@ interface IModalGateWayState {
   advancedSearches?: ISearchAdvanced[];
   advancedSearchesData?: IAdvancedSearchesData[];
   logicalOperator?: string;
+  error_advanced: string;
 }
 
 export function makeRandomId(length: number): string {
@@ -58,7 +59,8 @@ class ModalGateWay extends React.Component<IModalGateWayProps, IModalGateWayStat
     categoryName: '',
     advancedSearches: [],
     advancedSearchesData: [],
-    logicalOperator: ''
+    logicalOperator: '',
+    error_advanced: ''
   };
 
   // Update value from state;
@@ -173,7 +175,7 @@ class ModalGateWay extends React.Component<IModalGateWayProps, IModalGateWayStat
   };
 
   remove(arr, item) {
-    for (var i = arr.length; i--; ) {
+    for (var i = arr.length; i--;) {
       if (arr[i].id === item.id) {
         arr.splice(i, 1);
       }
@@ -197,12 +199,32 @@ class ModalGateWay extends React.Component<IModalGateWayProps, IModalGateWayStat
       logicalOperator,
       advancedSearches
     };
-    localStorage.removeItem('isSave');
-    data.messageConfig = this.remove(data.messageConfig, this.props.idNode);
-    data.getway.push(nodeConfig);
-    validateCampaign(data);
-    this.props.toggle();
+    if (this.checkValidate(advancedSearches)) {
+      localStorage.removeItem('isSave');
+      data.messageConfig = this.remove(data.messageConfig, this.props.idNode);
+      data.getway.push(nodeConfig);
+      validateCampaign(data);
+      this.props.toggle();
+    }
   };
+
+  checkValidate(listSearch: any[]): boolean {
+    let result: boolean = true
+    let count: number = 0
+    listSearch && listSearch.map(data => {
+      if (!data.fieldId || !data.value || !data.operator) {
+        count++
+      }
+    })
+
+    if (count > 0) {
+      this.setState({ error_advanced: "* Vui lòng chọn điều kiện" })
+      result = false
+    } else {
+      this.setState({ error_advanced : ""})
+    }
+    return result
+  }
 
   render() {
     let { is_show, type_modal } = this.props;
@@ -210,21 +232,21 @@ class ModalGateWay extends React.Component<IModalGateWayProps, IModalGateWayStat
     let list_field_render =
       list_field_data_cpn && list_field_data_cpn.length > 0
         ? list_field_data_cpn.map(item => {
-            if (item.id)
-              return (
-                <FieldData
-                  type_modal={type_modal}
-                  key={item.id}
-                  id={item.id}
-                  last_index={item.last_index}
-                  logicalOperator={logicalOperator}
-                  default_data={item.default_data}
-                  updateValueFromState={this.updateValueFromState}
-                  deleteComponentById={this.deleteComponentById}
-                  updateRelationshipFromState={this.updateRelationshipFromState}
-                />
-              );
-          })
+          if (item.id)
+            return (
+              <FieldData
+                type_modal={type_modal}
+                key={item.id}
+                id={item.id}
+                last_index={item.last_index}
+                logicalOperator={logicalOperator}
+                default_data={item.default_data}
+                updateValueFromState={this.updateValueFromState}
+                deleteComponentById={this.deleteComponentById}
+                updateRelationshipFromState={this.updateRelationshipFromState}
+              />
+            );
+        })
         : [];
 
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
@@ -263,6 +285,7 @@ class ModalGateWay extends React.Component<IModalGateWayProps, IModalGateWayStat
             <Card>
               <div className="group-addition_content">
                 {list_field_render}
+                <p style={{ color: "red", marginLeft : "5%" }} > {this.state.error_advanced}</p>
                 <div className="group-addition_footer">
                   <Button color="primary" onClick={this.handleAddNewComponent}>
                     <FontAwesomeIcon icon={faPlus} />

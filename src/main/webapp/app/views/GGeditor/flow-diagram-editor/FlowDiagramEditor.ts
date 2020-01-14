@@ -45,7 +45,7 @@ export class FlowDiagramEditor {
 
     this.diagramEngine.registerLinkFactory(new RightAngleLinkFactory());
 
-    this.diagramEngine.registerPortFactory(new FlowNodePortFactory('flow', config => new FlowNodePortModel()));
+    this.diagramEngine.registerPortFactory(new FlowNodePortFactory(FlowNodePortModel.TYPE, config => new FlowNodePortModel()));
     this.diagramEngine.registerNodeFactory(new ContactSourceStartNodeFactory());
     this.diagramEngine.registerNodeFactory(new EventSourceStartNodeFactory());
     this.diagramEngine.registerNodeFactory(new EmailProcessNodeFactory());
@@ -64,6 +64,12 @@ export class FlowDiagramEditor {
     this.dropZoneVisible = dropZoneVisible;
 
     FlowDiagramEditor.setDropZoneVisible(this.getActiveModel(), dropZoneVisible);
+    this.diagramEngine.repaintCanvas();
+  }
+
+  public setNodeLabel(data: { id: string; label: string }[]) {
+    FlowDiagramEditor.setNodeLabel(this.getActiveModel(), data);
+    this.diagramEngine.repaintCanvas();
   }
 
   eventHandlers: FlowNodeEventHandlers = null;
@@ -86,7 +92,6 @@ export class FlowDiagramEditor {
 
   public setDiagramData(data: { nodes: any[]; edges: any[] }) {
     let model = FlowDiagramEditor.createDiagramModel();
-    model.clearSelection();
     FlowDiagramEditor.loadDiagramData(model, data, this.dropZoneVisible, this.eventHandlers);
     FlowDiagramEditor.arrange(model);
     this.diagramEngine.setDiagramModel(model);
@@ -94,7 +99,6 @@ export class FlowDiagramEditor {
 
   public addGroupProcess(groupProcess: GroupProcess, position: PortModel) {
     let model = this.getActiveModel();
-    model.clearSelection();
     if (FlowDiagramEditor.addGroupProcess(model, groupProcess, position, this.dropZoneVisible, this.eventHandlers)) {
       FlowDiagramEditor.arrange(model);
       this.diagramEngine.recalculatePortsVisually();
@@ -104,7 +108,6 @@ export class FlowDiagramEditor {
 
   public deleteNode(node: { id: string } | NodeModel) {
     let model = this.getActiveModel();
-    model.clearSelection();
     if (node) {
       FlowDiagramEditor.deleteFromNode(model, node instanceof NodeModel ? node : model.getNode(node.id), null, false);
       FlowDiagramEditor.arrange(model);
@@ -343,6 +346,15 @@ export class FlowDiagramEditor {
         if (node && node instanceof FlowNodeModel) {
           node.dropZoneVisible = dropZoneVisible;
         }
+      }
+    }
+  }
+
+  private static setNodeLabel(model: DiagramModel, data: { id: string; label: string }[]) {
+    if (model && data) {
+      for (let item of data) {
+        let node = model.getNode(item.id);
+        if (node && node instanceof FlowNodeModel) node.label = item.label;
       }
     }
   }

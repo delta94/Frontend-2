@@ -11,20 +11,20 @@ import {
   TimeWaitingDecisionNodeModel
 } from './FlowNodeModel';
 const uuidv4 = require('uuid/v4');
-export function createNodeModel(code: string, id: string): FlowNodeModel | null {
+export function createNodeModel(code: string, id: string, label?: string): FlowNodeModel | null {
   let uuid = id && id !== '' ? id : uuidv4();
-  if (code === 'SOURCE' || code === ContactSourceStartNodeModel.TYPE) return new ContactSourceStartNodeModel(uuid);
-  if (code === 'SEND_MAIL' || code === EmailProcessNodeModel.TYPE) return new EmailProcessNodeModel(uuid);
-  if (code === 'SEND_SMS' || code === SmsProcessNodeModel.TYPE) return new SmsProcessNodeModel(uuid);
-  if (code === 'TIMER' || code === TimeWaitingDecisionNodeModel.TYPE) return new TimeWaitingDecisionNodeModel(uuid);
-  if (code === 'TIMER_EVENT' || code === EventWaitingDecisionNodeModel.TYPE) return new EventWaitingDecisionNodeModel(uuid);
-  if (code === 'GATEWAY' || code === ConditionDecisionNodeModel.TYPE) return new ConditionDecisionNodeModel(uuid);
-  if (code === 'DES' || code === EndNodeModel.TYPE) return new EndNodeModel(uuid);
+  if (code === 'SOURCE' || code === ContactSourceStartNodeModel.TYPE) return new ContactSourceStartNodeModel(uuid, label);
+  if (code === 'SEND_MAIL' || code === EmailProcessNodeModel.TYPE) return new EmailProcessNodeModel(uuid, label);
+  if (code === 'SEND_SMS' || code === SmsProcessNodeModel.TYPE) return new SmsProcessNodeModel(uuid, label);
+  if (code === 'TIMER' || code === TimeWaitingDecisionNodeModel.TYPE) return new TimeWaitingDecisionNodeModel(uuid, label);
+  if (code === 'TIMER_EVENT' || code === EventWaitingDecisionNodeModel.TYPE) return new EventWaitingDecisionNodeModel(uuid, label);
+  if (code === 'GATEWAY' || code === ConditionDecisionNodeModel.TYPE) return new ConditionDecisionNodeModel(uuid, label);
+  if (code === 'DES' || code === EndNodeModel.TYPE) return new EndNodeModel(uuid, label);
   return null;
 }
 
 export function parseNode(node: any): FlowNodeModel | null {
-  let nodeModel = createNodeModel(node.code, node.id);
+  let nodeModel = createNodeModel(node.code, node.id, node.label);
   if (nodeModel) {
     // nodeModel.x = node.x ? node.x : 0;
     // nodeModel.y = node.y ? node.y : 0;
@@ -73,7 +73,7 @@ export function toNodeData(node: NodeModel): any | null {
   if (node) {
     return {
       type: 'node',
-      label: '',
+      label: node instanceof FlowNodeModel ? node.label : '',
       code: getNodeCode(node.getType()),
       params: node.getType(),
       value: '',
