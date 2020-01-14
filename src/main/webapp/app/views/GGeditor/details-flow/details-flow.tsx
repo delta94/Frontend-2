@@ -73,8 +73,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     this.editor.setNodeExtraInfo(listDiagram.nodes.map(event => {
       return {
         id: event.id,
-        extraLabel: event.label,
-        extraIcon: event.countAct
+        extraLabel: String(event.countAct),
+        extraIcon: ""
       }
     }))
   }
@@ -97,7 +97,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     let { clone_version, getDiagramCampaign } = this.props;
     let x: number = 0;
     let graph = clone_version.flowDetail.graph;
-    
+
     this.editor.setDiagramData({
       nodes: graph.nodes,
       edges: graph.edges
@@ -105,8 +105,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     this.editor.setNodeExtraInfo(graph.nodes.map(event => {
       return {
         id: event.id,
-        extraLabel: event.label,
-        extraIcon: event.countAct
+        extraLabel: event.countAct,
+        extraIcon: null
       }
     }))
     await getDiagramCampaign(graph);
