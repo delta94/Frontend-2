@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export interface IconWidgetProps {
+export interface SvgIconWidgetProps {
   id: string;
   width: number;
   height: number;
@@ -10,10 +10,10 @@ export interface IconWidgetProps {
   onMouseLeave?: (event) => void;
 }
 
-export interface TrayItemWidgetState {}
+export interface SvgIconWidgetState {}
 
-export class SvgIconWidget extends React.Component<IconWidgetProps, TrayItemWidgetState> {
-  constructor(props: IconWidgetProps) {
+export class SvgIconWidget extends React.Component<SvgIconWidgetProps, SvgIconWidgetState> {
+  constructor(props: SvgIconWidgetProps) {
     super(props);
     this.state = {};
   }
