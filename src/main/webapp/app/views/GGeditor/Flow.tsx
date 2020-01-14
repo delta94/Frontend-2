@@ -372,7 +372,6 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     let data = {
       nodes: graph.nodes.map(item => {
         // if user chosse view process version
-        let dataProcess = option === 'view' ? (item.countAct ? `(${item.countAct})` : '') : '';
 
         x = x + 200;
         return {
@@ -381,7 +380,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           shape: this.customNode(item.code, 'shape'),
           value: item.value,
           code: item.code,
-          label: item.label + dataProcess,
+          label: item.label,
           backgroud: '#23C00A',
           emailConfig: item.emailConfig,
           smsConfig: item.smsConfig,

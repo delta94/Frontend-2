@@ -180,7 +180,6 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
     let graph = list_clone_version.flowDetail.graph;
     let data = {
       nodes: graph.nodes.map(item => {
-        let dataProcess = option === 'view' ? (item.countAct ? `(${item.countAct})` : '') : '';
 
         return {
           type: item.type,
@@ -188,7 +187,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
           shape: this.customNode(item.code, 'shape'),
           value: item.value,
           code: item.code,
-          label: item.label + dataProcess,
+          label: item.label ,
           backgroud: '#23C00A',
           emailConfig: item.emailConfig,
           smsConfig: item.smsConfig,

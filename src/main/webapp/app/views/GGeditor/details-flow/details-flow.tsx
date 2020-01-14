@@ -73,10 +73,11 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     this.editor.setNodeExtraInfo(listDiagram.nodes.map(event => {
       return {
         id: event.id,
-        extraLabel: String(event.countAct),
+        extraLabel: event.countAct === null ? "" : String(event.countAct) ,
         extraIcon: ""
       }
     }))
+    this.editor.setReadOnly(true)
   }
 
   componentDidMount() {
@@ -105,8 +106,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     this.editor.setNodeExtraInfo(graph.nodes.map(event => {
       return {
         id: event.id,
-        extraLabel: event.countAct,
-        extraIcon: null
+        extraLabel: event.countAct === null ? "" : String(event.countAct) ,
+        extraIcon: ""
       }
     }))
     await getDiagramCampaign(graph);
