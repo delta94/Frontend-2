@@ -211,7 +211,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             id: idNode.id,
             name: valueName ? String(valueName).split(',')[0] : '',
             timeStartCampaign: timeStartCampaign,
-            advancedSearches: advancedSearches
+            advancedSearches: advancedSearches,
           };
           let dataList = {
             messageConfig: listFieldData.messageConfig ? listFieldData.messageConfig : [],
@@ -219,12 +219,12 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             listCampign: listFieldData.listCampign ? listFieldData.listCampign : [],
             timerEvent: listFieldData.timerEvent ? listFieldData.timerEvent : [],
             timer: listFieldData.timer ? listFieldData.timer : [],
-            getway: listFieldData.getway ? listFieldData.getway : []
+            getway: listFieldData.getway ? listFieldData.getway : [],
           };
           dataList.listCampign.push(fieldListCustomer);
 
           //set value in node
-          this.editor.setNodeConfig(toConfigData(dataList), true)
+          this.editor.setNodeInfo(toConfigData(dataList))
 
           localStorage.removeItem('isSave');
           // get value node list customer
@@ -247,15 +247,15 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           await getDiagramCampaign(diagram);
           await this.editor.setNodeLabel(listDiagram.nodes);
         }
-        this.editor.setNodeConfig(toConfigData(listFieldData), true)
+        this.editor.setNodeInfo(toConfigData(listFieldData))
         break;
       case code_node.TIMER_EVENT:
         this.setState({ isOpenModalWaitForEvent: !isOpenModalWaitForEvent });
-        this.editor.setNodeConfig(toConfigData(listFieldData), true)
+        this.editor.setNodeInfo(toConfigData(listFieldData))
         break;
       case code_node.TIMER:
         this.setState({ isOpenModalWait: !isOpenModalWait });
-        this.editor.setNodeConfig(toConfigData(listFieldData), true)
+        this.editor.setNodeInfo(toConfigData(listFieldData))
         break;
       case code_node.SEND_SMS:
         this.setState({ isOpenModalMessage: !isOpenModalMessage });
@@ -267,12 +267,12 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           });
           await getDiagramCampaign(diagram);
           await this.editor.setNodeLabel(listDiagram.nodes);
-          this.editor.setNodeConfig(toConfigData(listFieldData), true)
+          this.editor.setNodeInfo(toConfigData(listFieldData))
         }
         break;
       case code_node.GATEWAY:
         this.setState({ isOpenGateWay: !this.state.isOpenGateWay });
-        this.editor.setNodeConfig(toConfigData(listFieldData), true)
+        this.editor.setNodeInfo(toConfigData(listFieldData))
         break;
       default:
         break;
