@@ -107,6 +107,7 @@ export default (state = initialCampaignManagament, action) => {
     case FAILURE(CAMPAIGN_MANAGAMENT.COUNT_CAMPAIGN):
     case FAILURE(CAMPAIGN_MANAGAMENT.GET_TREE_FOLDER):
     case FAILURE(CAMPAIGN_MANAGAMENT.GET_EMAIL_TEST):
+      console.log('false')
       return {
         ...state,
         loading: false

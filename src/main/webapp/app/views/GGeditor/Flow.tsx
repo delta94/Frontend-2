@@ -849,7 +849,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
               </Panel>
             </Collapse>
             <Collapse bordered={false} defaultActiveKey={['2']} expandIconPosition="right">
-              <Panel header="Messages" key="2">
+              <Panel header="Hành động" key="2">
                 <Row className="row">
                   <Col span={8}>
                     {this.renderTrayItemWidget(SmsProcessNodeModel.TYPE)}
