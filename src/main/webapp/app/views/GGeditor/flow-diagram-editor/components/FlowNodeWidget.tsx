@@ -327,7 +327,7 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
       const extraHeight = extraIconSize * 2;
       const extraWidth = extraIconSize * 2.5 + node.extraLabel.length * 8;
       return FlowNodeWidget.renderExtraInfo({
-        top: -46,
+        top: node.getPort(FlowNodePortModel.BOTTOM) ? -58 : -46,
         left: -extraWidth * 0.5 + width * 0.5,
         width: extraWidth,
         height: extraHeight,
