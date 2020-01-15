@@ -92,7 +92,7 @@ export class FlowDiagramEditor {
     this.diagramEngine.repaintCanvas();
   }
 
-  public setNodeInfo(data: { id: string; label: string; isActive: boolean }[]) {
+  public setNodeInfo(data: { id: string; label ? : string; isActive: boolean }[]) {
     FlowDiagramEditor.setNodeInfo(this.getActiveModel(), data);
     this.diagramEngine.repaintCanvas();
   }
@@ -424,7 +424,7 @@ export class FlowDiagramEditor {
     }
   }
 
-  private static setNodeInfo(model: DiagramModel, data: { id: string; label: string; isActive: boolean }[]) {
+  private static setNodeInfo(model: DiagramModel, data: { id: string; label ? : string; isActive: boolean }[]) {
     if (model && data) {
       for (let item of data) {
         let node = model.getNode(item.id);

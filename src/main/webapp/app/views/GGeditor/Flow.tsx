@@ -48,7 +48,8 @@ import {
   SmsProcessNodeModel,
   TimeWaitingDecisionNodeModel,
   TrayItemWidget,
-  TrayWidget
+  TrayWidget,
+  toConfigData
 } from './flow-diagram-editor';
 import { DiagramWidget } from 'storm-react-diagrams';
 import { string } from 'prop-types';
@@ -56,7 +57,6 @@ import { FlowNodePortModel } from 'app/views/GGeditor/flow-diagram-editor/FlowNo
 
 const ButtonGroup = Button.Group;
 const { confirm } = Modal;
-<<<<<<< HEAD
 
 const constant_version = {
   DRAFT: 'Draft',
@@ -66,9 +66,6 @@ const constant_version = {
 };
 
 interface IFlowPageProps extends StateProps, DispatchProps { }
-=======
-interface IFlowPageProps extends StateProps, DispatchProps {}
->>>>>>> origin/dev_thangtq
 interface IFlowPageState {
   visible: boolean;
   isOpen: boolean;
@@ -129,7 +126,6 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       let groupProcess = GroupProcess.createGroupProcess(dataTransfer.type);
       if (groupProcess && port) {
         await this.editor.addGroupProcess(groupProcess, port);
-        await localStorage.removeItem('isSave');
         await this.props.getDiagramCampaign(this.editor.getDiagramData());
         await this.forceUpdate();
       }
@@ -215,7 +211,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             id: idNode.id,
             name: valueName ? String(valueName).split(',')[0] : '',
             timeStartCampaign: timeStartCampaign,
-            advancedSearches: advancedSearches
+            advancedSearches: advancedSearches,
           };
           let dataList = {
             messageConfig: listFieldData.messageConfig ? listFieldData.messageConfig : [],
@@ -223,11 +219,15 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             listCampign: listFieldData.listCampign ? listFieldData.listCampign : [],
             timerEvent: listFieldData.timerEvent ? listFieldData.timerEvent : [],
             timer: listFieldData.timer ? listFieldData.timer : [],
-            getway: listFieldData.getway ? listFieldData.getway : []
+            getway: listFieldData.getway ? listFieldData.getway : [],
           };
           dataList.listCampign.push(fieldListCustomer);
-          // get value node list customer
+
+          //set value in node
+          this.editor.setNodeInfo(toConfigData(dataList))
+
           localStorage.removeItem('isSave');
+          // get value node list customer
           await validateCampaign(dataList);
           // save node in flow
           await getDiagramCampaign(diagram);
@@ -247,12 +247,15 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           await getDiagramCampaign(diagram);
           await this.editor.setNodeLabel(listDiagram.nodes);
         }
+        this.editor.setNodeInfo(toConfigData(listFieldData))
         break;
       case code_node.TIMER_EVENT:
         this.setState({ isOpenModalWaitForEvent: !isOpenModalWaitForEvent });
+        this.editor.setNodeInfo(toConfigData(listFieldData))
         break;
       case code_node.TIMER:
         this.setState({ isOpenModalWait: !isOpenModalWait });
+        this.editor.setNodeInfo(toConfigData(listFieldData))
         break;
       case code_node.SEND_SMS:
         this.setState({ isOpenModalMessage: !isOpenModalMessage });
@@ -264,10 +267,12 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           });
           await getDiagramCampaign(diagram);
           await this.editor.setNodeLabel(listDiagram.nodes);
+          this.editor.setNodeInfo(toConfigData(listFieldData))
         }
         break;
       case code_node.GATEWAY:
         this.setState({ isOpenGateWay: !this.state.isOpenGateWay });
+        this.editor.setNodeInfo(toConfigData(listFieldData))
         break;
       default:
         break;
@@ -276,31 +281,14 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   //get title email save in Node
   getInfoEmail = (event, value) => {
     let { titleMail } = this.state;
-    const { validateCampaign, listFieldData } = this.props;
     titleMail = event;
     this.setState({ titleMail });
-  };
-
-  //excute command
-  commandExecute = command => {
-    let name = command.command.name;
-    let model = command.command;
-    switch (name) {
-      case 'delete':
-        this.deleteModel(command.command.itemIds[0]);
-        break;
-      case 'add':
-        this.addModel(model);
-        break;
-      default:
-        break;
-    }
   };
 
   // remove item in array
   remove(arr, item) {
     if (arr && arr.length > 0) {
-      for (var i = arr.length; i--; ) {
+      for (var i = arr.length; i--;) {
         if (arr[i].id === item.id) {
           arr.splice(i, 1);
         }
@@ -309,74 +297,6 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     }
     return [];
   }
-
-  //delete Node
-  deleteModel = async id => {
-    let { listDiagram, getDiagramCampaign, listFieldData, validateCampaign } = this.props;
-    let { idNode, idEdge } = this.state;
-    let data = {
-      nodes: [],
-      edges: []
-    };
-
-    if (listDiagram && Object.keys(listDiagram).length > 0) {
-      data = listDiagram;
-    }
-    switch (idNode.type ? idNode.type : idEdge.type) {
-      case 'node':
-        data.nodes = this.remove(data.nodes, idNode);
-        data.edges = this.remove(data.edges, idNode);
-        if (idNode.code === 'SEND_MAIL') {
-          let data = this.remove(listFieldData.emailConfig, idNode);
-          listFieldData.emailConfig = data;
-          validateCampaign(listFieldData);
-        }
-        break;
-
-      case 'edge':
-        data.edges = this.remove(data.edges, idNode);
-
-        break;
-
-      default:
-        break;
-    }
-    localStorage.removeItem('isSave');
-    getDiagramCampaign(data);
-    this.setState({ data });
-  };
-
-  //add node and save in local store
-  addModel = async command => {
-    let { listDiagram, getDiagramCampaign } = this.props;
-    let type = command.type;
-    let data = {
-      edges: [],
-      nodes: []
-      // groups: []
-    };
-
-    switch (type) {
-      case 'edge':
-        if (listDiagram.edges && Object.keys(listDiagram).length > 0) {
-          data = listDiagram;
-        }
-        data.edges.push(command.addModel);
-        break;
-      case 'node':
-        if (listDiagram.nodes && Object.keys(listDiagram).length > 0) {
-          data = listDiagram;
-        }
-        data.nodes.push(command.addModel);
-        this.setState({ isSave: true });
-        break;
-      default:
-        break;
-    }
-    localStorage.removeItem('isSave');
-    await getDiagramCampaign(data);
-    this.setState({ data });
-  };
 
   //@@
   //modal edit info campaign
@@ -412,8 +332,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       id_active.cjId && id_active.cjId
         ? id_active.cjId
         : list_clone_version && list_clone_version.cjId
-        ? list_clone_version.cjId
-        : infoVersion.idVersion;
+          ? list_clone_version.cjId
+          : infoVersion.idVersion;
     let dataInfoVersion = {
       type: 'copy',
       nameVersion: '',
@@ -426,18 +346,11 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       content: '',
       zIndex: 1000000,
       onOk: async () => {
-<<<<<<< HEAD
         await resetListCloneVersion()
         await this.props.copyCJCampaign(idCj);
-=======
-        await resetListCloneVersion();
-
-        await cloneVersionById(idCj);
->>>>>>> origin/dev_thangtq
         await this.cloneVersion('create');
         await saveCampaignAutoVersion(dataInfoVersion);
         (this.getDataDiagram().cjVersionId = null), (this.getDataDiagram().cj.id = null);
-        console.log(this.getDataDiagram());
         await openModal({
           show: true,
           type: 'success',
@@ -446,7 +359,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         });
         this.hide();
       },
-      onCancel() {},
+      onCancel() { },
       okText: 'Đồng ý',
       cancelText: 'Hủy bỏ'
     });
@@ -459,7 +372,6 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     let data = {
       nodes: graph.nodes.map(item => {
         // if user chosse view process version
-        let dataProcess = option === 'view' ? (item.countAct ? `(${item.countAct})` : '') : '';
 
         x = x + 200;
         return {
@@ -468,7 +380,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           shape: this.customNode(item.code, 'shape'),
           value: item.value,
           code: item.code,
-          label: item.label + dataProcess,
+          label: item.label,
           backgroud: '#23C00A',
           emailConfig: item.emailConfig,
           smsConfig: item.smsConfig,
@@ -673,7 +585,6 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   //event save campaign
   saveCampaign = async () => {
     const { saveCampaignAuto, openModal } = this.props;
-    console.log(this.getDataDiagram());
     await saveCampaignAuto(this.getDataDiagram());
     await openModal({
       show: true,
@@ -770,62 +681,62 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       infoCampaign.tag && infoCampaign.tag.length > 0
         ? infoCampaign.tag
         : list_clone_version.cjTags && list_clone_version.cjTags.length > 0
-        ? list_clone_version.cjTags
-        : [];
+          ? list_clone_version.cjTags
+          : [];
     let startTime = timeStartCampaign
       ? timeStartCampaign
       : Object.keys(list_clone_version).length > 0
-      ? list_clone_version.flowDetail.startTime
-      : `${date.toISOString().substr(0, 10)} ${date.toLocaleTimeString()}`;
+        ? list_clone_version.flowDetail.startTime
+        : `${date.toISOString().substr(0, 10)} ${date.toLocaleTimeString()}`;
     //set data
     let data = {
       folderId: idFolder ? idFolder : '-99',
       cjVersionId: this.props.id_active.cjId
         ? this.props.id_active.id
         : Object.keys(list_clone_version).length > 0
-        ? list_clone_version.id
           ? list_clone_version.id
-          : this.props.id_active.cjId
-          ? this.props.id_active.id
-          : null
-        : null,
+            ? list_clone_version.id
+            : this.props.id_active.cjId
+              ? this.props.id_active.id
+              : null
+          : null,
       cj: {
         id: this.props.id_active.id
           ? this.props.id_active.cjId
           : Object.keys(list_clone_version).length > 0
-          ? list_clone_version.cjId
             ? list_clone_version.cjId
-            : this.props.id_active.id
-            ? this.props.id_active.cjId
-            : null
-          : null,
+              ? list_clone_version.cjId
+              : this.props.id_active.id
+                ? this.props.id_active.cjId
+                : null
+            : null,
         name: infoCampaign.name ? infoCampaign.name : list_clone_version.name ? list_clone_version.name : 'Tạo chiến dịch mới',
         description: infoCampaign.des
           ? infoCampaign.des
           : list_clone_version.description
-          ? list_clone_version.description
-          : infoCampaign.des
+            ? list_clone_version.description
+            : infoCampaign.des
       },
       cjTags: cjTags && cjTags.length > 0 ? (cjTags[0] === '' ? [] : cjTags) : cjTags,
       flow: {
         customerGroupName: nameGroup
           ? nameGroup
           : Object.keys(list_clone_version).length > 0
-          ? list_clone_version.flowDetail.customerGroupName
-          : '',
+            ? list_clone_version.flowDetail.customerGroupName
+            : '',
         startTime: startTime,
         customerAdvancedSave:
           Object.keys(advancedSearches).length > 0
             ? advancedSearches
             : Object.keys(list_clone_version).length > 0
-            ? list_clone_version.flowDetail.customerAdvancedSave
-            : null,
+              ? list_clone_version.flowDetail.customerAdvancedSave
+              : null,
         nodeMetaData:
           nodeMetaData && nodeMetaData.length > 0
             ? nodeMetaData
             : Object.keys(list_clone_version).length > 0
-            ? list_clone_version.flowDetail.nodeMetaData
-            : [],
+              ? list_clone_version.flowDetail.nodeMetaData
+              : [],
         graph: Object.keys(graph).length > 0 ? graph : Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.graph : []
       }
     };
@@ -911,14 +822,14 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
               }}
             />
           ) : (
-            <Icon
-              type="double-left"
-              onClick={() => {
-                this.setState({ collapsed: !collapsed });
-              }}
-              className="icon-collapse"
-            />
-          )}
+              <Icon
+                type="double-left"
+                onClick={() => {
+                  this.setState({ collapsed: !collapsed });
+                }}
+                className="icon-collapse"
+              />
+            )}
         </div>
         <hr />
         <div className="logo" style={{ display: collapsed ? 'none' : 'block' }}>
@@ -938,7 +849,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
               </Panel>
             </Collapse>
             <Collapse bordered={false} defaultActiveKey={['2']} expandIconPosition="right">
-              <Panel header="Messages" key="2">
+              <Panel header="Hành động" key="2">
                 <Row className="row">
                   <Col span={8}>
                     {this.renderTrayItemWidget(SmsProcessNodeModel.TYPE)}
@@ -987,7 +898,6 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     const imgSetting = require('app/assets/utils/images/flow/setting.png');
     const imgAward = require('app/assets/utils/images/flow/award.png');
     const imgMove = require('app/assets/utils/images/flow/move.png');
-    console.log(list_clone_version);
     return (
       <div className="editor">
         <Layout className="layout-flow">
@@ -996,8 +906,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           ) : isValidate ? (
             <SiderValidate isCloseSider={isValidate} toogle={this.validateFlow} />
           ) : (
-            this.renderTrayWidget()
-          )}
+                this.renderTrayWidget()
+              )}
           <Layout style={{ maxWidth: '80.8%', height: '100%' }}>
             <Header className="header-flow">
               <Row>
