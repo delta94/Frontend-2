@@ -174,7 +174,8 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
   }
   renderTemplate(item, index) {
     return (
-      <Row style={{ display: item.collapse ? 'block' : 'none' }}>
+      <Collapse isOpen = {item.collapse}>
+      <Row >
         <Col span={24}>
           <Card style={{ background: '#FBFBFB' }}>
             <Col span={18}>{this.renderDiagramWidget(this.editor.getDiagramData())}</Col>
@@ -201,6 +202,7 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
           </Card>
         </Col>
       </Row>
+      </Collapse>
     );
   }
 
