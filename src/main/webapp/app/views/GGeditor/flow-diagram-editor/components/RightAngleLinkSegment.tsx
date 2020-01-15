@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { RightAngleLinkModel } from './RightAngleLinkModel';
+import { RightAngleLinkModel } from '../RightAngleLinkModel';
 import { DefaultLinkWidget } from 'storm-react-diagrams';
 
 export class RightAngleLinkSegment extends React.Component<{

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { DefaultLinkWidget, DiagramEngine, LinkWidget, PointModel } from 'storm-react-diagrams';
-import { RightAngleLinkFactory } from './RightAngleLinkFactory';
+import { RightAngleLinkFactory } from '../RightAngleLinkFactory';
 import { MouseEvent } from 'react';
-import { RightAngleLinkModel } from './RightAngleLinkModel';
+import { RightAngleLinkModel } from '../RightAngleLinkModel';
 import { RightAngleLinkSegment } from './RightAngleLinkSegment';
 
 export interface RightAngleLinkProps {
