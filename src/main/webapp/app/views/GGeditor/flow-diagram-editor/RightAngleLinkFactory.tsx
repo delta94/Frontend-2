@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { DefaultLinkFactory, DefaultLinkModel, DefaultLinkWidget } from 'storm-react-diagrams';
 import { RightAngleLinkModel } from './RightAngleLinkModel';
-import { RightAngleLinkSegment } from './RightAngleLinkSegment';
-import { RightAngleLinkWidget } from './RightAngleLinkWidget';
+import { RightAngleLinkSegment } from './components/RightAngleLinkSegment';
+import { RightAngleLinkWidget } from './components/RightAngleLinkWidget';
 
 export class RightAngleLinkFactory extends DefaultLinkFactory {
   constructor() {
