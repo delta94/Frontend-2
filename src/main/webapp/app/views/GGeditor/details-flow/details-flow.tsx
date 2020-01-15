@@ -73,11 +73,18 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     this.editor.setNodeExtraInfo(listDiagram.nodes.map(event => {
       return {
         id: event.id,
-        extraLabel: event.countAct === null ? "" : String(event.countAct) ,
+        extraLabel: event.countAct === null ? "" : String(event.countAct),
         extraIcon: ""
       }
     }))
+    this.editor.setNodeInfo(listDiagram.nodes.map(event => {
+      return {
+        id: event.id,
+        isActive: true
+      }
+    }))
     this.editor.setReadOnly(true)
+
   }
 
   componentDidMount() {
@@ -106,10 +113,18 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     this.editor.setNodeExtraInfo(graph.nodes.map(event => {
       return {
         id: event.id,
-        extraLabel: event.countAct === null ? "" : String(event.countAct) ,
+        extraLabel: event.countAct === null ? "" : String(event.countAct),
         extraIcon: ""
       }
     }))
+    this.editor.setNodeInfo(graph.nodes.map(event => {
+      return {
+        id: event.id,
+        isActive: true
+      }
+    }))
+    this.editor.setReadOnly(true)
+
     await getDiagramCampaign(graph);
   };
 
