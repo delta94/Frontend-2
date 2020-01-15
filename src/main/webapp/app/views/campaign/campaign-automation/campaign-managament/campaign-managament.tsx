@@ -50,11 +50,11 @@ class CampaginManagament extends React.Component<ICampaginManagamentProps, ICamp
                   </Breadcrumb.Item>
                   <Breadcrumb.Item>
                     <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-auto')} href="javascript:void(0);">
-                      Chiến dịch tự động
+                      <Translate contentKey = "campaign-auto.title" />
                     </a>
                   </Breadcrumb.Item>
 
-                  <label className="ant-breadcrumb-link">Danh sách chiến dịch</label>
+                  <label className="ant-breadcrumb-link"><Translate contentKey = "campaign-auto.managament.list-campaign" /></label>
                 </Breadcrumb>
               </Row>
               <Campaign folder_id_choose={idTree} />

@@ -248,7 +248,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
           shape: this.customNode(item.code, 'shape'),
           value: item.value,
           code: item.code,
-          label: item.label ,
+          label: item.label,
           backgroud: '#23C00A',
           emailConfig: item.emailConfig,
           smsConfig: item.smsConfig,
@@ -337,20 +337,20 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
         <div className="link">
           <Button type="link" onClick={() => this.toogleModalCjTagInsert(item.id)}>
             <img src={img_tag} />
-            <span>Thêm mới tag</span>
+            <span><Translate contentKey="campaign-auto.list.add-tag" /></span>
           </Button>
           <Button type="link" onClick={() => this.toogleModalCjTagList(item.id)} style={{ float: 'right', textDecoration: 'underline' }}>
             <Icon type="menu" />
-            <span>Danh sách tag</span>
+            <span><Translate contentKey="campaign-auto.list.tag" /></span>
           </Button>
         </div>
         <br />
         <div className="cj-tag-popup-footer" style={{ textAlign: 'right' }}>
           <Button onClick={() => this.handleVisibleChange(false, item.id)} className="btn-cancel">
-            Hủy
+            <Translate contentKey="campaign-auto.btn-cancel" />
           </Button>
           <Button onClick={() => this.handleSubmitTag(item.id)} type="primary">
-            Chọn
+            <Translate contentKey="campaign-auto.btn-chosse" />
           </Button>
         </div>
       </div>
@@ -386,7 +386,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
           result = (
             <Fragment>
               <img style={{ margin: '0px 6px 2px' }} src={img_draf} />
-              <label className="count-campaign">Bản nháp</label>
+              <label className="count-campaign"><Translate contentKey="status.draft" /></label>
             </Fragment>
           );
           break;
@@ -394,7 +394,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
           result = (
             <Fragment>
               <img style={{ margin: '0px 6px 2px' }} src={img_running} />
-              <label className="count-campaign">Đang thực hiện</label>
+              <label className="count-campaign"><Translate contentKey="status.running" /></label>
             </Fragment>
           );
           break;
@@ -402,15 +402,15 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
           result = (
             <Fragment>
               <img style={{ margin: '0px 6px 2px' }} src={img_finish} />
-              <label className="count-campaign">Kết thúc</label>
+              <label className="count-campaign"><Translate contentKey="status.finish" /></label>
             </Fragment>
           );
           break;
-        case 'Stop':
+        case STATUS_CJ.STOP:
           result = (
             <Fragment>
               <img style={{ margin: '0px 6px 2px' }} src={img_stop} />
-              <label className="count-campaign">Dừng</label>
+              <label className="count-campaign"><Translate contentKey="status.stop" /></label>
             </Fragment>
           );
           break;
@@ -440,14 +440,14 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
             {/* Block out */}
             <Row>
               <Col span={4} />
-              <Col span={11} style = {{textAlign : "right"}}>
-                <label className="label-search">Tìm kiếm chiến dịch</label> &nbsp;
+              <Col span={11} style={{ textAlign: "right" }}>
+                <label className="label-search"><Translate contentKey ="campaign-auto.list.search-campaign" /></label> &nbsp;
                 <Input
                   style={{ float: 'right' }}
                   id="searchText"
                   prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
                   value={textSearch}
-                  placeholder="Nhập từ khóa"
+                  placeholder= {translate('campaign-auto.list.input-key')}
                   onChange={this.onchangeTextSearch}
                   onPressEnter={() => {
                     this.getListCampaignInfolderDataAction(folderId ? folderId : '-99', textSearch, strTagId, activePage, itemsPerPage);
@@ -462,38 +462,38 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                   </label>
                   <CampaignTag handleChange={this.handleChange} />
                 </Col>
-                <Col span={6} style={{ float: 'right', marginRight : "5%" }}>
+                <Col span={6} style={{ float: 'right', marginRight: "5%" }}>
                   <Button
-                  style = {{background : "#3866DD"}}
+                    style={{ background: "#3866DD" }}
                     type="primary"
                     onClick={() => {
                       window.location.assign('/#/app/views/campaigns/campaign-managament/new');
                     }}
                   >
-                    Tạo mới chiến dịch
+                    <Translate contentKey = "campaign-auto.list.create-campaign" />
                   </Button>
                 </Col>
               </Col>
             </Row>
-            <label>{total} Chiến dịch</label>
+            <label><Translate contentKey ="campaign-auto.count-campaign" interpolate = {{element : total}}/></label>
             {/* Table? */}
             <Table striped>
               <thead>
                 <tr className="text-center">
                   <th className="checkbox-td" colSpan={5}>
-                    STT
+                    <Translate contentKey = "campaign-auto.table.index" />
                   </th>
-                  <th colSpan={25}>Chiến dịch</th>
+                  <th colSpan={25}>  <Translate contentKey = "campaign-auto.table.campaign" /></th>
                   <th colSpan={20} id="status">
-                    Trạng thái
+                  <Translate contentKey = "campaign-auto.table.status" />
                   </th>
                   <th colSpan={15} style={{ width: '25%' }}>
-                    Kết quả
+                  <Translate contentKey = "campaign-auto.table.result" />
                   </th>
                   <th colSpan={20} id="contact-number">
-                    Chỉnh sửa gần nhất
+                  <Translate contentKey = "campaign-auto.table.last-edit" />
                   </th>
-                  <th colSpan={15}> Thao tác</th>
+                  <th colSpan={15}>  <Translate contentKey = "campaign-auto.table.manipulation" /></th>
                 </tr>
               </thead>
               <tbody>
@@ -505,16 +505,16 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                         <td colSpan={25} id="name">
                           {' '}
                           <a onClick={() => this.viewVersion(item.cjVersionId)}>{item.name}</a> <br />
-                          <span>Version {item.version}</span>
+                          <span> <Translate contentKey = "campaign-auto.table.version" /> {item.version}</span>
                           <br />
                           {item.tags
                             ? item.tags.split(',').map((value, index) => {
-                                return (
-                                  <Tag color="blue" key={index}>
-                                    {value}
-                                  </Tag>
-                                );
-                              })
+                              return (
+                                <Tag color="blue" key={index}>
+                                  {value}
+                                </Tag>
+                              );
+                            })
                             : null}
                         </td>
                         <td colSpan={20} id="status">
@@ -562,7 +562,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                                   }}
                                   type="link"
                                 >
-                                  Xem danh sách version
+                                 <Translate contentKey ="campaign-auto.list.view-list-campaign" />
                                 </Button>
                               </div>
                             }
@@ -577,12 +577,12 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                     );
                   })
                 ) : (
-                  <tr>
-                    <td className="none-data" colSpan={100}>
-                      Không có dữ liệu khách hàng
+                    <tr>
+                      <td className="none-data" colSpan={100}>
+                      <Translate contentKey ="campaign-auto.list.none-customer" />
                     </td>
-                  </tr>
-                )}
+                    </tr>
+                  )}
               </tbody>
             </Table>
             <div className="navigation1">
@@ -603,8 +603,8 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                   />
                 </Row>
               ) : (
-                ''
-              )}
+                  ''
+                )}
             </div>
             <br></br>
 

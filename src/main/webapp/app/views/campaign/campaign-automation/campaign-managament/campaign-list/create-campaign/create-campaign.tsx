@@ -165,17 +165,17 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
               </Breadcrumb.Item>
               <Breadcrumb.Item>
                 <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-auto')} href="javascript:void(0);">
-                  Chiến dịch tự động
+                 <Translate contentKey = "campaign-auto.title" />
                 </a>
               </Breadcrumb.Item>
               <Breadcrumb.Item>
                 <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-managament')} href="javascript:void(0);">
-                  Danh sách chiến dịch
+                <Translate contentKey = "campaign-auto.managament.list-campaign" />
                 </a>
               </Breadcrumb.Item>
               <Breadcrumb.Item>
                 <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-managament/new')} href="javascript:void(0);">
-                  Tạo chiến dịch
+                  <Translate contentKey ="campaign-auto.create-campaign" />
                 </a>
               </Breadcrumb.Item>
             </Breadcrumb>
@@ -199,7 +199,7 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
               }}
             >
               <FontAwesomeIcon icon={faPlus} />
-              &nbsp; Tạo chiến dịch mới{' '}
+              &nbsp; <Translate contentKey = "campaign-auto.list.create-campaign" />{' '}
             </Button>
           </Col>
         </Row>
@@ -235,7 +235,7 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
                           await this.props.saveCampaignAutoVersion(this.state.infoVersion);
                           await this.props.resetListCloneVersion()
                           await window.location.assign(`#/flow`)
-                        }}>Chọn Template</Button>
+                        }}><Translate contentKey = "campaign-auto.chosse-template"/></Button>
 
                       </Card>
 

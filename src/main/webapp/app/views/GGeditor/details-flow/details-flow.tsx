@@ -158,15 +158,15 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
   stopVersion = async () => {
     const { clone_version, stopVersion, cloneVersion } = this.props;
-    if (clone_version.status === 'Running') {
+    if (clone_version.status === constant_version.RUNNING) {
       await stopVersion(clone_version.id);
       await cloneVersion(clone_version.id);
       await this.cloneVersion();
     } else {
       Modal.warning({
-        title: 'Thông báo',
-        content: 'Chỉ dừng version có trạng thái : Đang thực hiện',
-        okText: 'Đồng ý'
+        title: translate("detail-flow.notification"),
+        content: translate("detail-flow.modal.content-version-stop"),
+        okText: translate("detail-flow.modal.accept")
       });
     }
   };
@@ -196,16 +196,16 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
       switch (option) {
         case constant_version.DRAFT:
-          data = 'Bản nháp';
+          data = translate('status.draft');
           break;
         case constant_version.FINISH:
-          data = 'Kết thúc';
+          data = translate("status.finish");
           break;
         case constant_version.RUNNING:
-          data = 'Đang thực hiện';
+          data = translate("status.running");
           break;
         case constant_version.STOP:
-          data = 'Dừng';
+          data = translate("status.stop");
         default:
           break;
       }
@@ -227,12 +227,12 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                   </Breadcrumb.Item>
                   <Breadcrumb.Item>
                     <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-auto')} href="javascript:void(0);">
-                      Chiến dịch tự động
+                      <Translate contentKey="campaign-auto.title" />
                     </a>
                   </Breadcrumb.Item>
                   <Breadcrumb.Item>
                     <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-managament')} href="javascript:void(0);">
-                      Danh sách chiến dịch
+                      <Translate contentKey="campaign-auto.managament.list-campaign" />
                     </a>
                   </Breadcrumb.Item>
 
@@ -244,7 +244,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           <Row className="editorHd-details">
             <Col span={24} style={{ padding: '1%' }}>
               <Col span={4}>
-                <label>Phiên bản: </label>{' '}
+                <label><Translate contentKey="campaign-auto.detai-flow.version" /> : </label>{' '}
                 <Select onChange={this.selectVersion} style={{ width: '25%' }} defaultValue={clone_version.version}>
                   {list_version &&
                     list_version.map((item, index) => {
@@ -257,7 +257,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                 </Select>
               </Col>
               <Col span={8} >
-                <label style={{ lineHeight: '2' }}>Trạng Thái : {eventStatus(clone_version.status)}</label>
+                <label style={{ lineHeight: '2' }}><Translate contentKey="campaign-auto.detai-flow.status" />  : {eventStatus(clone_version.status)}</label>
               </Col>
               <Col span={8} style={{ lineHeight: "29px", textAlign: "right", paddingRight: "1%" }}>
                 <img src={imgSetting} />
@@ -270,10 +270,10 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                   }}
                   type="primary"
                 >
-                  Tạo mới version
+                  <Translate contentKey="campaign-auto.detail-flow.create-version" />
                 </Button>
                 <Button onClick={this.stopVersion} type="primary" style={{ background: '#97A3B4', borderColor: 'unset', left: "5%" }}>
-                  Dừng version
+                  <Translate contentKey="detail-flow.stop-version" />
                 </Button>
               </Col>
             </Col>
@@ -288,7 +288,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
               <Collapse bordered={false} defaultActiveKey={['1']} expandIconPosition="right">
                 <Panel header="Lịch sử" key="1">
                   <CardBody className="card-body-details">
-                    <label>{countCustomerVersionProcess} Bản ghi</label>
+                    <label>{countCustomerVersionProcess} <Translate contentKey = "detail-flow.record" /></label>
                     <Input
                       style={{ width: '20%', float: 'right', marginBottom: '1%' }}
                       type="text"
@@ -299,11 +299,11 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                     <Table responsive striped className="main-table-version">
                       <thead>
                         <th />
-                        <th>Tên</th>
-                        <th>Họ</th>
-                        <th>Email</th>
-                        <th>Số điện thoại</th>
-                        <th>Trạng thái</th>
+                        <th><Translate contentKey = "detail-flow.table.name" /></th>
+                        <th><Translate contentKey = "detail-flow.table.last-name" /></th>
+                        <th><Translate contentKey = "detail-flow.table.email" /></th>
+                        <th><Translate contentKey = "detail-flow.table.phone" /></th>
+                        <th><Translate contentKey = "detail-flow.table.status" /></th>
                         <th />
                       </thead>
                       <tbody>

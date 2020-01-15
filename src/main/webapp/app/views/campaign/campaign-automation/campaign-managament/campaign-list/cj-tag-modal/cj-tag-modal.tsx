@@ -36,7 +36,7 @@ class CJTagModal extends React.Component<ICjTagModalProps, TCjTagModalState> {
     isOpenModalCjTagList: false
   };
 
-  componentDidMount() {}
+  componentDidMount() { }
 
   handleChange = cjTags => {
     this.setState({
@@ -128,21 +128,21 @@ class CJTagModal extends React.Component<ICjTagModalProps, TCjTagModalState> {
         />
 
         <Modal id="modal-cj-tag" isOpen={openModalCjTag}>
-          <ModalHeader toggle={toogleModalCjTag}>Chọn tag</ModalHeader>
+          <ModalHeader toggle={toogleModalCjTag}><Translate contentKey="campaign-auto.list.chosse-tag" /></ModalHeader>
           <ModalBody>
             <div className="combobox-cj-tag">
               <CampaignTag handleChange={this.handleChange} defaultValue={dataModalTag.cjTags} />
             </div>
             <br />
             <div className="link">
-              <a onClick={() => this.openModalCjTag()}>Thêm mới tag</a>
+              <a onClick={() => this.openModalCjTag()}><Translate contentKey="campaign-auto.list.add-tag" /></a>
               <br />
-              <a onClick={() => this.openModalListCjTag()}>Danh sách tag</a>
+              <a onClick={() => this.openModalListCjTag()}><Translate contentKey="campaign-auto.list.tag" /></a>
             </div>
           </ModalBody>
           <ModalFooter>
             <Button color="link" onClick={closeModalCjTag}>
-              Hủy bỏ
+              <Translate contentKey="campaign-auto.modal.cancel" />
             </Button>
             <Button
               onClick={() => {
@@ -150,7 +150,7 @@ class CJTagModal extends React.Component<ICjTagModalProps, TCjTagModalState> {
               }}
               color="primary"
             >
-              Chọn
+              <Translate contentKey="campaign-auto.btn-chosse" />
             </Button>
           </ModalFooter>
         </Modal>

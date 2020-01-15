@@ -30,17 +30,17 @@ class CJTagListModal extends React.Component<ICjTagListModalProps, ICjTagListMod
     let { deleteCjTagAction, closeModalCjTag, getCjTagsAction, refreshListCjTag } = this.props;
     confirm({
       zIndex: 1000000,
-      title: 'Xóa',
-      content: 'Bạn thực sự muốn xóa ?',
+      title: translate("campaign-auto.managament.delete"),
+      content: translate("campaign-auto.modal.content-delete"),
       onOk: async () => {
         await deleteCjTagAction(cjTag.id);
         //await getCjTagsAction();
         await refreshListCjTag();
         closeModalCjTag();
       },
-      okText: 'Xóa',
+      okText: translate("campaign-auto.managament.delete"),
       onCancel() {},
-      cancelText: 'Hủy bỏ'
+      cancelText: translate("campaign-auto.modal.cancel")
     });
   };
 
@@ -48,7 +48,7 @@ class CJTagListModal extends React.Component<ICjTagListModalProps, ICjTagListMod
     let { isOpenModalCjTag, closeModalCjTag, toogleModalCjTagList, cjTags } = this.props;
     return (
       <Modal id="modal-cj-tag-list" isOpen={isOpenModalCjTag}>
-        <ModalHeader toggle={toogleModalCjTagList}>DANH SÁCH TAG</ModalHeader>
+        <ModalHeader toggle={toogleModalCjTagList}><Translate contentKey = "campaign-auto.list.tag" /></ModalHeader>
         <ModalBody>
           <List
             style={{ color: '#3866DD' }}
@@ -66,7 +66,7 @@ class CJTagListModal extends React.Component<ICjTagListModalProps, ICjTagListMod
                   >
                     <FontAwesomeIcon icon="trash" />
                     <a key="list-loadmore-edit" style={{ paddingLeft: '5px' }}>
-                      Xóa
+                      <Translate contentKey = "campaign-auto.managament.delete" />
                     </a>
                   </span>
                 ]}
@@ -78,7 +78,7 @@ class CJTagListModal extends React.Component<ICjTagListModalProps, ICjTagListMod
         </ModalBody>
         <ModalFooter>
           <Button color="black" onClick={closeModalCjTag}>
-            Hủy
+           <Translate contentKey = "campaign-auto.btn-cancel" />
           </Button>
         </ModalFooter>
       </Modal>

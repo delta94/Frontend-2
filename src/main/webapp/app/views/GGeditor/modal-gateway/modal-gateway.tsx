@@ -218,7 +218,7 @@ class ModalGateWay extends React.Component<IModalGateWayProps, IModalGateWayStat
     })
 
     if (count > 0) {
-      this.setState({ error_advanced: "* Vui lòng chọn điều kiện" })
+      this.setState({ error_advanced: translate("getway.error-advanced") })
       result = false
     } else {
       this.setState({ error_advanced : ""})
@@ -250,7 +250,7 @@ class ModalGateWay extends React.Component<IModalGateWayProps, IModalGateWayStat
         : [];
 
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
-    let title_modal = 'ĐIỀU KIỆN RẼ NHÁNH';
+    let title_modal = translate("getway.title");
 
     return (
       <Modal
