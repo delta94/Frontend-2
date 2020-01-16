@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Input, Icon, Row, Checkbox, Button, Modal, Popover, Dropdown } from 'antd';
+import { Input, Icon, Row, Checkbox, Button, Modal, Popover } from 'antd';
 import { Table, ButtonGroup, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { IRootState } from 'app/reducers';
@@ -98,6 +98,10 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
     }
   }
 
+  createEmail = () => {
+    location.assign('#/app/views/config/emails/add');
+  }
+
   render() {
     let { total, totalPages, loading } = this.props;
     let { textSearch, activePage, itemsPerPage, listCheckboxItem } = this.state;
@@ -134,7 +138,7 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
                  </DropdownToggle>
                   <DropdownMenu right className="dropdown-menu-sm">
                     <DropdownItem>Thêm từ template</DropdownItem>
-                    <DropdownItem>Thêm mới</DropdownItem>
+                    <DropdownItem onClick={this.createEmail}>Thêm mới</DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>
               </div>

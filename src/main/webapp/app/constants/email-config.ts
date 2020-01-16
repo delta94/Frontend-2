@@ -1,4 +1,11 @@
 export const EMAIL_CONFIG = {
   GET_EMAIL: 'emails/GET_LIST_EMAIL',
-  DELETE_EMAIL: 'emails/DELETE_EMAIL'
+  DELETE_EMAIL: 'emails/DELETE_EMAIL',
+  GET_CONTENT_PARAM: 'content-param/GET_CONTENT_PARAM'
 };
+
+export const GROUP_PARAM = {
+  E_VOUCHER: 'E_VOUCHER',
+  CAMPAIGN: 'CAMPAIGN',
+  CUSTOMER: 'CUSTOMER'
+}
