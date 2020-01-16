@@ -5,6 +5,7 @@ import { Button as ButtonReactstrap } from 'reactstrap';
 import { Row, Col, Button, Input, Table, Popover, Icon, Modal, Tree } from 'antd';
 import { openModal, closeModal } from 'app/actions/modal';
 import { IRootState } from 'app/reducers';
+import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faArrowDown, faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import {
@@ -33,6 +34,7 @@ export interface ITreeFolderState {
   hover: boolean;
   level: string;
   expandedKeys: any;
+  error_name: string;
 }
 
 class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
@@ -40,7 +42,8 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
     treeData: [],
     hover: false,
     expandedKeys: [],
-    level: ''
+    level: '',
+    error_name: ''
   };
 
   componentDidMount = async () => {
@@ -125,6 +128,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
       </Row>
       <Row style={{ marginBottom: "7%" }}>
         <ButtonReactstrap
+          style={{ float: "left", marginRight: "20px" }}
           className="label-info"
           color="none"
           onClick={() => {
@@ -132,7 +136,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
           }}
         >
           {' '}
-          <img src={img_delete} style={{ marginRight: "1em" }} /><Translate contentKey="campaign-auto.managament.delete" />
+          <img src={img_delete} style={{ marginRight: "20px" }} /><Translate contentKey="campaign-auto.managament.delete" />
         </ButtonReactstrap>
       </Row>
     </Row>
@@ -148,6 +152,8 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
           {' '}
           <Input maxLength={160} id="nameTree" />{' '}
         </Col>
+        <p style={{ color: "red" }}>{this.state.error_name}</p>
+
       </Row>
     );
     return content;
@@ -167,25 +173,27 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
             title: translate('campaign-auto.modal.title-create'),
             content: this.contentCreateFolder(),
             onOk: async () => {
-              let data = {
-                name: $(`#nameTree`).val(),
-                parentId: event ? event.id : null
-              };
-              await insertTreeFolder(data);
-              await getTreeFolder();
-              await this.getData();
+              let name_folder = $(`#nameTree`).val()
+              if (name_folder) {
+                let data = {
+                  name: name_folder,
+                  parentId: event ? event.id : null
+                };
+                await insertTreeFolder(data);
+                await getTreeFolder();
+                await this.getData();
+              } else {
+                toast.error(translate('campaign-auto.message-error.name-folder-empty'), { autoClose: false })
+                return Promise.reject(translate('campaign-auto.message-error.name-folder-empty'))
+              }
+
             },
             okText: translate('campaign-auto.modal.ok-create-text'),
             onCancel() { },
             cancelText: translate('campaign-auto.modal.cancel')
           });
         } else {
-          Modal.error({
-            title: translate('campaign-auto.modal.error-title'),
-            content: '',
-            onOk() { },
-            okText: translate('campaign-auto.modal.ok-submit-text')
-          });
+          toast.error(translate('campaign-auto.modal.error-title'), { autoClose: false })
         }
 
         break;
@@ -195,15 +203,22 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
           title: translate('campaign-auto.modal.title-edit') + ' ' + event.title,
           content: this.contentCreateFolder(),
           onOk: async () => {
-            let data = {
-              name: {
-                name: $(`#nameTree`).val()
-              },
-              id: event ? event.id : null
-            };
-            await editTreeFolder(data);
-            await getTreeFolder();
-            await this.getData();
+            let name_folder = $(`#nameTree`).val()
+            if (name_folder) {
+              let data = {
+                name: {
+                  name: $(`#nameTree`).val()
+                },
+                id: event ? event.id : null
+              };
+              await editTreeFolder(data);
+              await getTreeFolder();
+              await this.getData();
+            } else {
+              toast.error(translate('campaign-auto.message-error.change-name-folder'), { autoClose: false })
+              return Promise.reject(translate('campaign-auto.message-error.change-name-folder'))
+            }
+
           },
           okText: translate('campaign-auto.modal.ok-save-text'),
           onCancel() { },
@@ -221,7 +236,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
             await getTreeFolder();
             await this.getData();
           },
-          okText: translate('campaign-auto.modal.ok-btn-deletee'),
+          okText: translate('campaign-auto.modal.ok-btn-delete'),
           onCancel() { },
           cancelText: translate('campaign-auto.modal.cancel')
         });
@@ -230,7 +245,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
       case 'getlist':
         confirm({
           title: translate('campaign-auto.modal.view-details'),
-          content: translate('campaign-auto.modal.view-details')+ ' ' + event.title,
+          content: translate('campaign-auto.modal.view-details') + ' ' + event.title,
           onOk: async () => {
             await getListCampaignInfolderDataAction(event ? event.id : null, '', '', 0, 4);
             await onClick(event ? event.id : null);
@@ -360,11 +375,11 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
                 <Popover
                   overlayClassName="pop-data"
                   content={this.contentPop(item)}
-                  title = {translate("campaign-auto.managament.infomation")}
+                  title=""
                   trigger="hover"
                   placement="bottomRight"
                 >
-                  <FontAwesomeIcon icon={faEllipsisH} />
+                  <FontAwesomeIcon className="icon-ball" icon={faEllipsisH} />
                 </Popover>
               }
             >
@@ -385,11 +400,11 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
                 <Popover
                   overlayClassName="pop-data"
                   content={this.contentPop(item)}
-                  title={translate("campaign-auto.managament.infomation")}
+                  title=""
                   trigger="hover"
                   placement="bottomRight"
                 >
-                  <FontAwesomeIcon icon={faEllipsisH} />
+                  <FontAwesomeIcon className="icon-ball" icon={faEllipsisH} />
                 </Popover>
               }
             />
@@ -429,7 +444,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
               onDrop={this.onDrop}
             // showLine = {true}
             >
-              <TreeNode title={<div><Translate contentKey = "campaign-auto.all-campaign" /></div>} />
+              <TreeNode title={<div><Translate contentKey="campaign-auto.all-campaign" /></div>} />
               {this.state.treeData.map(item => {
                 if (item.children && item.children.length) {
                   return (
@@ -445,11 +460,11 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
                         <Popover
                           overlayClassName="pop-data"
                           content={this.contentPop(item)}
-                          title={translate("campaign-auto.managament.infomation")}
+                          title=""
                           trigger="hover"
                           placement="bottomRight"
                         >
-                          <FontAwesomeIcon icon={faEllipsisH} />
+                          <FontAwesomeIcon className="icon-ball" icon={faEllipsisH} />
                         </Popover>
                       }
                     >

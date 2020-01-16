@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
-import { Row, Col, Breadcrumb, Button, Progress, Modal, Checkbox } from 'antd';
+import { Progress } from 'reactstrap';
+import { Row, Col, Breadcrumb, Button, Modal, Checkbox } from 'antd';
 // import Checkbox from '@material-ui/core/Checkbox';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
@@ -151,8 +152,8 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
 
     if (isHaveDraf) {
       Modal.confirm({
-        title: translate("campaign-auto.modal.title.notification"),
-        content: translate("campaign-auto.modal.title.content-have-draft"),
+        title: translate("campaign-auto.modal.title-notification"),
+        content: translate("campaign-auto.modal.content-have-draft"),
         onCancel: () => { },
         onOk: async () => {
           await cloneVersion(idDraft);
@@ -160,8 +161,8 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
           await saveCampaignAutoVersion(infoVersion);
           window.location.assign('#/flow');
         },
-        okText: translate("campaign-auto.modal.title.ok-submit-text"),
-        cancelText: translate("campaign-auto.modal.title.cancel")
+        okText: translate("campaign-auto.modal.ok-submit-text"),
+        cancelText: translate("campaign-auto.modal.cancel")
       });
     } else {
       await cloneVersionById(idVersionlast);
@@ -284,7 +285,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
     if (listCjId && listCjId.length === 1) {
       if (isRunning) {
         confirm({
-          title:  translate ("campaign-auto.modal.title-stop-version")+ ` ${nameVersion} ?`,
+          title: translate("campaign-auto.modal.title-stop-version") + ` ${nameVersion} ?`,
           content: '',
           onOk: async () => {
             await stopVersion(idVersion);
@@ -304,7 +305,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
     } else {
       Modal.warning({
         title: translate("campaign-auto.modal.title-notification"),
-        content:translate("campaign-auto.modal.stop-one-version"),
+        content: translate("campaign-auto.modal.stop-one-version"),
         okText: translate("campaign-auto.modal.ok-submit-text")
       });
     }
@@ -536,12 +537,12 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
               </Breadcrumb.Item>
               <Breadcrumb.Item>
                 <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-auto')} href="javascript:void(0);">
-                  <Translate contentKey = "campaign-auto.title"/>
+                  <Translate contentKey="campaign-auto.title" />
                 </a>
               </Breadcrumb.Item>
               <Breadcrumb.Item>
                 <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-managament')} href="javascript:void(0);">
-                 <Translate contentKey = "campaign-auto.managament.list-campaign"/>
+                  <Translate contentKey="campaign-auto.managament.list-campaign" />
                 </a>
               </Breadcrumb.Item>
               <Breadcrumb.Item>
@@ -566,25 +567,25 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
                 &nbsp; &nbsp;
                 <img src={imgLine} />
                 <Button onClick={this.createVersion} type="primary" style={{ background: '#3866DD', marginLeft: '2%' }}>
-                  <Translate contentKey ="campaign-auto.version.create" />
+                  <Translate contentKey="campaign-auto.version.create" />
                 </Button>
                 <Button
                   onClick={this.handleStopVersion}
                   type="primary"
                   style={{ background: '#97A3B4', marginLeft: '1%', borderColor: 'unset' }}
                 >
-                 <Translate contentKey = "campaign-auto.version.stop" />
+                  <Translate contentKey="campaign-auto.version.stop" />
                 </Button>
               </Row>
               <br />
-              <label className="count-version">{listVersion.length} <Translate contentKey = "campaign-auto.table.version"/></label>
+              <label className="count-version">{listVersion.length} <Translate contentKey="campaign-auto.table.version" /></label>
               <Table responsive striped className="main-table-version">
                 <thead>
                   <th style={{ width: '4%' }} />
-                  <th style={{ width: '25%' }}> <Translate contentKey = "campaign-auto.table.version"/></th>
-                  <th> <Translate contentKey = "campaign-auto.table.status"/></th>
-                  <th style={{ width: '25%' }}> <Translate contentKey = "campaign-auto.table.result"/></th>
-                  <th> <Translate contentKey = "campaign-auto.table.last-edit"/></th>
+                  <th style={{ width: '25%' }}> <Translate contentKey="campaign-auto.table.version" /></th>
+                  <th> <Translate contentKey="campaign-auto.table.status" /></th>
+                  <th style={{ width: '25%' }}> <Translate contentKey="campaign-auto.table.result" /></th>
+                  <th> <Translate contentKey="campaign-auto.table.last-edit" /></th>
                 </thead>
                 <tbody>
                   {listVersion
@@ -595,7 +596,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
                             <Checkbox checked={item.checked} onChange={e => this.changeCheckBox(e, item.cjVersionId)} />
                           </td>
                           <td className="table-content" onClick={() => this.viewVersion(item.cjVersionId)}>
-                            <span style={{ marginLeft: '5%' }}><Translate contentKey = "campaign-auto.table.version"/> {item.version}</span>
+                            <span style={{ marginLeft: '5%' }}><Translate contentKey="campaign-auto.table.version" /> {item.version}</span>
                           </td>
                           <td className="row-status">
                             <img className="img-status" src={this.iconStatus(item.status)} />
@@ -603,10 +604,10 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
                           </td>
                           <td>
                             <Progress
-                              status="active"
-                              percent={this.countContact(item.contactCompleted, item.contactNumbers)}
-                              format={percent => `${item.contactCompleted}/${item.contactNumbers} contact`}
-                            />
+                              animated
+                              color={this.countContact(item.contactCompleted, item.contactNumbers) < 100 ? "warning" : "success"}
+                              value={this.countContact(item.contactCompleted, item.contactNumbers)}
+                            ><label className ="text-process" style ={{color :" #6C757D", marginTop : "9px"}}>{item.contactCompleted}/{item.contactNumbers} contact</label></Progress>
                           </td>
                           <td>{item.modifiedDate}</td>
                         </tr>

@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Table, Badge, Popover, PopoverHeader, PopoverBody } from 'reactstrap';
+import { Table, Progress, Popover, PopoverHeader, PopoverBody } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
@@ -20,7 +20,7 @@ import {
   resetListCloneVersion
 } from 'app/actions/campaign-managament';
 import './campaign-list.scss';
-import { Input, Icon, Row, Col, Tag, Button, Popover as PopverAnt, Progress } from 'antd';
+import { Input, Icon, Row, Col, Tag, Button, Popover as PopverAnt } from 'antd';
 import CampaignTag from './campaign-tag/campaign-tag';
 import CjTagModal from './cj-tag-modal/cj-tag-modal';
 import { STATUS_CJ } from 'app/constants/cj';
@@ -521,11 +521,11 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                           {getStatusName(item.status)}
                         </td>
                         <td colSpan={15}>
-                          <Progress
-                            status="active"
-                            percent={this.countContact(item.contactCompleted, item.contactNumbers)}
-                            format={percent => `${item.contactCompleted}/${item.contactNumbers} contact`}
-                          />
+                        <Progress
+                              animated
+                              color={this.countContact(item.contactCompleted, item.contactNumbers) < 100 ? "warning" : "success"}
+                              value={this.countContact(item.contactCompleted, item.contactNumbers)}
+                            ><label className = "text-process" style ={{color :" #6C757D", marginTop : "9px"}}>{item.contactCompleted}/{item.contactNumbers} contact</label></Progress>
                         </td>
                         <td colSpan={15} id="modifier-date">
                           <span> {item.modifiedDate}</span>

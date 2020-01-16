@@ -2,7 +2,8 @@ import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Translate, translate } from 'react-jhipster';
 import { Table } from 'reactstrap';
-import { Row, Col, Button, Input, Popover, Icon, Modal, Checkbox, Progress } from 'antd';
+import { Row, Col, Button, Input, Popover, Icon, Modal, Checkbox } from 'antd';
+import { Progress } from 'reactstrap';
 import $ from 'jquery';
 import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
@@ -273,11 +274,11 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
           <div id="campaing-auto">
             <Row id="title-campaign-auto">
               <Col span={11} style={{ paddingTop: '14px', margin: '0px 12px' }}>
-              <Translate contentKey="campaign-auto.title" />
+                <Translate contentKey="campaign-auto.title" />
               </Col>
               <Col span={12} style={{ textAlign: 'right', margin: '10px' }}>
                 <Button type="primary" onClick={this.movePage}>
-                <Translate contentKey="campaign-auto.btn-campaign" />
+                  <Translate contentKey="campaign-auto.btn-campaign" />
                 </Button>
               </Col>
             </Row>
@@ -295,7 +296,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
               </Col>
               <Col className="gutter-row" span={6}>
                 <div className="gutter-box top">
-                  <label className="text"><Translate contentKey = "campaign-auto.campaign-running" /></label>
+                  <label className="text"><Translate contentKey="campaign-auto.campaign-running" /></label>
                 </div>
                 <div className="gutter-box below">
                   <img style={{ margin: '0px 32px 17px', width: '11%' }} src={img_campaign_running} />
@@ -304,7 +305,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
               </Col>
               <Col className="gutter-row" span={6}>
                 <div className="gutter-box top">
-                  <label className="text"><Translate contentKey = "campaign-auto.campaign-finish" /></label>
+                  <label className="text"><Translate contentKey="campaign-auto.campaign-finish" /></label>
                 </div>
                 <div className="gutter-box below">
                   <img style={{ margin: '0px 32px 17px', width: '11%' }} src={img_finish} />
@@ -313,7 +314,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
               </Col>
               <Col className="gutter-row" span={6}>
                 <div className="gutter-box top">
-                  <label className="text"><Translate contentKey = "campaign-auto.campaign-new" /></label>
+                  <label className="text"><Translate contentKey="campaign-auto.campaign-new" /></label>
                 </div>
                 <div className="gutter-box below">
                   <img style={{ margin: '0px 32px 17px', width: '11%' }} src={img_new} />
@@ -323,14 +324,14 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
             </Row>
             <br />
             <Row className="table-campaign-auto">
-              <label className="total-campaign-table"> <Translate contentKey = "campaign-auto.count-campaign" interpolate = {{element : getStatusCampaign.total}}/></label>
+              <label className="total-campaign-table"> <Translate contentKey="campaign-auto.count-campaign" interpolate={{ element: getStatusCampaign.total }} /></label>
               <Table responsive striped className="main-table">
                 <thead>
-                  <th style={{ width: '4%' }}><Translate contentKey ="campaign-auto.table.index"/></th>
-                  <th style={{ width: '25%' }}><Translate contentKey ="campaign-auto.table.campaign"/></th>
-                  <th><Translate contentKey ="campaign-auto.table.status"/></th>
-                  <th style={{ width: '25%' }}><Translate contentKey ="campaign-auto.table.result"/></th>
-                  <th><Translate contentKey ="campaign-auto.table.last-edit"/></th>
+                  <th style={{ width: '4%' }}><Translate contentKey="campaign-auto.table.index" /></th>
+                  <th style={{ width: '25%' }}><Translate contentKey="campaign-auto.table.campaign" /></th>
+                  <th><Translate contentKey="campaign-auto.table.status" /></th>
+                  <th style={{ width: '25%' }}><Translate contentKey="campaign-auto.table.result" /></th>
+                  <th><Translate contentKey="campaign-auto.table.last-edit" /></th>
                 </thead>
                 <tbody>
                   {list_campaign_auto && list_campaign_auto.length > 0
@@ -347,7 +348,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
                               {event.name}
                             </a>
                             <br />
-                            <label style={{ marginLeft: '5%' }}><Translate contentKey ="campaign-auto.table.version" /> {event.version}</label>
+                            <label style={{ marginLeft: '5%' }}><Translate contentKey="campaign-auto.table.version" /> {event.version}</label>
                           </td>
                           <td className="row-status">
                             <img style={{ margin: '1% 2% 2% 40%' }} src={this.iconStatus(event.status)} />
@@ -355,10 +356,10 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
                           </td>
                           <td>
                             <Progress
-                              status="active"
-                              percent={this.countContact(event.contactCompleted, event.contactNumbers)}
-                              format={percent => `${event.contactCompleted}/${event.contactNumbers} contact`}
-                            />
+                              animated
+                              color={this.countContact(event.contactCompleted, event.contactNumbers) < 100 ? "warning" : "success"}
+                              value={this.countContact(event.contactCompleted, event.contactNumbers)}
+                            ><label className = "text-process" style ={{color :" #6C757D", marginTop : "9px"}}> {event.contactCompleted}/{event.contactNumbers} contact </label></Progress>
                           </td>
                           <td>{event.modifiedDate}</td>
                         </tr>

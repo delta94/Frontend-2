@@ -6,6 +6,10 @@
         "stop": "Dừng"
     },
     "campaign-auto": {
+        "message-error" : {
+            "name-folder-empty" : "* Vui lòng nhập tên thư mục",
+            "change-name-folder" : "* Vui lòng nhập tên thư mục cần đổi"
+        },
         "all-campaign": "Tất cả chiến dịch",
         "title": " Chiến dịch tự động",
         "btn-campaign": "Quản lý chiến dịch",
