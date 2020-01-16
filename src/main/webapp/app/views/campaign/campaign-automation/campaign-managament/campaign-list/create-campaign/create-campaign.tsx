@@ -36,7 +36,7 @@ const code_node = {
   TIMER: 'TIMER',
   TIMER_EVENT: 'TIMER_EVENT'
 };
-interface ICreateCampaignProps extends StateProps, DispatchProps {}
+interface ICreateCampaignProps extends StateProps, DispatchProps { }
 
 interface ICreateCampaignState {
   infoVersion: {
@@ -74,6 +74,13 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
       nodes: listDiagram.nodes,
       edges: listDiagram.edges
     });
+    this.editor.setNodeInfo(listDiagram.nodes && listDiagram.nodes.map(event => {
+      return {
+        id: event.id,
+        isActive: true
+      }
+    }))
+    this.editor.setReadOnly(true)
   }
   componentDidMount = async () => {
     const { getTemplateCampaign, list_template } = this.props;
@@ -137,6 +144,7 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
         nodes: graph.nodes,
         edges: graph.edges
       });
+
       await getDiagramCampaign(this.editor.getDiagramData());
     }
 
@@ -148,6 +156,14 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
       nodes: data.nodes,
       edges: data.edges
     });
+    diagram.setNodeInfo(data.nodes && data.nodes.map(event => {
+      return {
+        id: event.id,
+        isActive: true
+      }
+    }))
+    diagram.setReadOnly(true)
+
     return <DiagramWidget className="srd-flow-canvas" diagramEngine={diagram.getDiagramEngine()} smartRouting={false} />;
   };
 
@@ -174,33 +190,35 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
   }
   renderTemplate(item, index) {
     return (
-      <Row style={{ display: item.collapse ? 'block' : 'none' }}>
-        <Col span={24}>
-          <Card style={{ background: '#FBFBFB' }}>
-            <Col span={18}>{this.renderDiagramWidget(this.editor.getDiagramData())}</Col>
-            <Col span={6}>
-              <label className="descrition-template">{item.description}</label>
-            </Col>
-            <Button
-              type="primary"
-              className="btn-template"
-              onClick={async () => {
-                let data = {
-                  name: 'Tạo chiến dịch mới',
-                  tag: [''],
-                  des: ''
-                };
-                await this.props.updateInfoCampaign(data);
-                await this.props.saveCampaignAutoVersion(this.state.infoVersion);
-                await this.props.resetListCloneVersion();
-                await window.location.assign(`#/flow`);
-              }}
-            >
-              Chọn Template
+      <Collapse isOpen={item.collapse}>
+        <Row >
+          <Col span={24}>
+            <Card style={{ background: '#FBFBFB' }}>
+              <Col span={18}>{this.renderDiagramWidget(this.editor.getDiagramData())}</Col>
+              <Col span={6}>
+                <label className="descrition-template">{item.description}</label>
+              </Col>
+              <Button
+                type="primary"
+                className="btn-template"
+                onClick={async () => {
+                  let data = {
+                    name: 'Tạo chiến dịch mới',
+                    tag: [''],
+                    des: ''
+                  };
+                  await this.props.updateInfoCampaign(data);
+                  await this.props.saveCampaignAutoVersion(this.state.infoVersion);
+                  await this.props.resetListCloneVersion();
+                  await window.location.assign(`#/flow`);
+                }}
+              >
+                Chọn Template
             </Button>
-          </Card>
-        </Col>
-      </Row>
+            </Card>
+          </Col>
+        </Row>
+      </Collapse>
     );
   }
 
@@ -223,17 +241,17 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
               </Breadcrumb.Item>
               <Breadcrumb.Item>
                 <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-auto')} href="javascript:void(0);">
-                  Chiến dịch tự động
+                  <Translate contentKey="campaign-auto.title" />
                 </a>
               </Breadcrumb.Item>
               <Breadcrumb.Item>
                 <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-managament')} href="javascript:void(0);">
-                  Danh sách chiến dịch
+                  <Translate contentKey="campaign-auto.managament.list-campaign" />
                 </a>
               </Breadcrumb.Item>
               <Breadcrumb.Item>
                 <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-managament/new')} href="javascript:void(0);">
-                  Tạo chiến dịch
+                  <Translate contentKey="campaign-auto.create-campaign" />
                 </a>
               </Breadcrumb.Item>
             </Breadcrumb>
@@ -257,7 +275,7 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
               }}
             >
               <FontAwesomeIcon icon={faPlus} />
-              &nbsp; Tạo chiến dịch mới{' '}
+              &nbsp; <Translate contentKey="campaign-auto.list.create-campaign" />{' '}
             </Button>
           </Col>
         </Row>
@@ -286,15 +304,6 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
               })}
             <div>{itemIndex !== 3 && items.map((gItem, gIndex, list) => renderDiagram(gItem, gIndex))}</div>
           </Card>
-          {/* <Modal
-            title="Basic Modal"
-            visible={this.state.collapse}
-            onOk={() => this.setState({ collapse: false })}
-            onCancel={() => this.setState({ collapse: false })}
-          >
-            <DiagramWidget className="srd-flow-canvas" diagramEngine={this.editor.getDiagramEngine()} smartRouting={false} />
-
-          </Modal> */}
         </Container>
       </div>
     );

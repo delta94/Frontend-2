@@ -2,7 +2,8 @@ import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Translate, translate } from 'react-jhipster';
 import { Table } from 'reactstrap';
-import { Row, Col, Button, Input, Popover, Icon, Modal, Checkbox, Progress } from 'antd';
+import { Row, Col, Button, Input, Popover, Icon, Modal, Checkbox } from 'antd';
+import { Progress } from 'reactstrap';
 import $ from 'jquery';
 import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
@@ -41,7 +42,7 @@ const code_node = {
   TIMER_EVENT: 'TIMER_EVENT'
 };
 
-export interface ICampaginAutoProps extends StateProps, DispatchProps {}
+export interface ICampaginAutoProps extends StateProps, DispatchProps { }
 
 export interface ICampaginAutoState {
   infoVersion: {
@@ -87,16 +88,16 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
     const img_finish = require('app/assets/utils/images/campaign-managament/finish.png');
     const img_draf = require('app/assets/utils/images/campaign-managament/draf.png');
     switch (option) {
-      case 'Draft':
+      case constant_version.DRAFT:
         img = img_draf;
         break;
-      case 'Finish':
+      case constant_version.FINISH:
         img = img_finish;
         break;
-      case 'Running':
+      case constant_version.RUNNING:
         img = img_running;
         break;
-      case 'Stop':
+      case constant_version.STOP:
         img = img_stop;
       default:
         break;
@@ -187,7 +188,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
           shape: this.customNode(item.code, 'shape'),
           value: item.value,
           code: item.code,
-          label: item.label ,
+          label: item.label,
           backgroud: '#23C00A',
           emailConfig: item.emailConfig,
           smsConfig: item.smsConfig,
@@ -217,7 +218,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
     infoVersion.idVersion = id;
     infoVersion.type = 'copy'
     await cloneVersion(id);
-    await validateCampaign ([])
+    await validateCampaign([])
     await this.cloneVersion('view');
     await saveCampaignAutoVersion(infoVersion);
     await getListCustomerVersionProcess('', id, 0);
@@ -251,16 +252,16 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
 
       switch (option) {
         case constant_version.DRAFT:
-          data = 'Bản nháp';
+          data = translate('status.draft');
           break;
         case constant_version.FINISH:
-          data = 'Kết thúc';
+          data = translate("status.finish");
           break;
         case constant_version.RUNNING:
-          data = 'Đang thực hiện';
+          data = translate("status.running");
           break;
         case constant_version.STOP:
-          data = 'Dừng';
+          data = translate("status.stop");
         default:
           break;
       }
@@ -273,11 +274,11 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
           <div id="campaing-auto">
             <Row id="title-campaign-auto">
               <Col span={11} style={{ paddingTop: '14px', margin: '0px 12px' }}>
-                Chiến dịch tự động
+                <Translate contentKey="campaign-auto.title" />
               </Col>
               <Col span={12} style={{ textAlign: 'right', margin: '10px' }}>
                 <Button type="primary" onClick={this.movePage}>
-                  Quản lý chiến dịch
+                  <Translate contentKey="campaign-auto.btn-campaign" />
                 </Button>
               </Col>
             </Row>
@@ -286,7 +287,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
             <Row gutter={16}>
               <Col className="gutter-row" span={6}>
                 <div className="gutter-box top">
-                  <label className="text">Tổng số chiến dịch</label>
+                  <label className="text"><Translate contentKey="campaign-auto.total-campaign" /></label>
                 </div>
                 <div className="gutter-box below">
                   <img style={{ margin: '0px 32px 17px' }} src={img} />
@@ -295,7 +296,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
               </Col>
               <Col className="gutter-row" span={6}>
                 <div className="gutter-box top">
-                  <label className="text">Chiến dịch đang thực hiện</label>
+                  <label className="text"><Translate contentKey="campaign-auto.campaign-running" /></label>
                 </div>
                 <div className="gutter-box below">
                   <img style={{ margin: '0px 32px 17px', width: '11%' }} src={img_campaign_running} />
@@ -304,7 +305,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
               </Col>
               <Col className="gutter-row" span={6}>
                 <div className="gutter-box top">
-                  <label className="text">Chiến dịch kết thúc</label>
+                  <label className="text"><Translate contentKey="campaign-auto.campaign-finish" /></label>
                 </div>
                 <div className="gutter-box below">
                   <img style={{ margin: '0px 32px 17px', width: '11%' }} src={img_finish} />
@@ -313,7 +314,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
               </Col>
               <Col className="gutter-row" span={6}>
                 <div className="gutter-box top">
-                  <label className="text">Chiến dịch mới</label>
+                  <label className="text"><Translate contentKey="campaign-auto.campaign-new" /></label>
                 </div>
                 <div className="gutter-box below">
                   <img style={{ margin: '0px 32px 17px', width: '11%' }} src={img_new} />
@@ -323,47 +324,47 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
             </Row>
             <br />
             <Row className="table-campaign-auto">
-              <label className="total-campaign-table">{getStatusCampaign.total} chiến dịch</label>
+              <label className="total-campaign-table"> <Translate contentKey="campaign-auto.count-campaign" interpolate={{ element: getStatusCampaign.total }} /></label>
               <Table responsive striped className="main-table">
                 <thead>
-                  <th style={{ width: '4%' }}>STT</th>
-                  <th style={{ width: '25%' }}>Chiến dịch</th>
-                  <th>Trạng thái</th>
-                  <th style={{ width: '25%' }}>Kết quả</th>
-                  <th>Chỉnh sửa gần nhất</th>
+                  <th style={{ width: '4%' }}><Translate contentKey="campaign-auto.table.index" /></th>
+                  <th style={{ width: '25%' }}><Translate contentKey="campaign-auto.table.campaign" /></th>
+                  <th><Translate contentKey="campaign-auto.table.status" /></th>
+                  <th style={{ width: '25%' }}><Translate contentKey="campaign-auto.table.result" /></th>
+                  <th><Translate contentKey="campaign-auto.table.last-edit" /></th>
                 </thead>
                 <tbody>
                   {list_campaign_auto && list_campaign_auto.length > 0
                     ? list_campaign_auto.map((event, index) => {
-                        return (
-                          <tr key={index}>
-                            <td>{this.state.activePage * 5 + index + 1}</td>
-                            <td className="table-content">
-                              <a
-                                style={{ marginLeft: '5%' }}
-                                href="javascript:void(0);"
-                                onClick={() => this.viewVersion(event.cjVersionId)}
-                              >
-                                {event.name}
-                              </a>
-                              <br />
-                              <label style={{ marginLeft: '5%' }}>Version {event.version}</label>
-                            </td>
-                            <td className="row-status">
-                              <img style={{ margin: '1% 2% 2% 40%' }} src={this.iconStatus(event.status)} />
-                              {eventStatus(event.status)}
-                            </td>
-                            <td>
-                              <Progress
-                                status="active"
-                                percent={this.countContact(event.contactCompleted, event.contactNumbers)}
-                                format={percent => `${event.contactCompleted}/${event.contactNumbers} contact`}
-                              />
-                            </td>
-                            <td>{event.modifiedDate}</td>
-                          </tr>
-                        );
-                      })
+                      return (
+                        <tr key={index}>
+                          <td>{this.state.activePage * 5 + index + 1}</td>
+                          <td className="table-content">
+                            <a
+                              style={{ marginLeft: '5%' }}
+                              href="javascript:void(0);"
+                              onClick={() => this.viewVersion(event.cjVersionId)}
+                            >
+                              {event.name}
+                            </a>
+                            <br />
+                            <label style={{ marginLeft: '5%' }}><Translate contentKey="campaign-auto.table.version" /> {event.version}</label>
+                          </td>
+                          <td className="row-status">
+                            <img style={{ margin: '1% 2% 2% 40%' }} src={this.iconStatus(event.status)} />
+                            {eventStatus(event.status)}
+                          </td>
+                          <td>
+                            <Progress
+                              animated
+                              color={this.countContact(event.contactCompleted, event.contactNumbers) < 100 ? "warning" : "success"}
+                              value={this.countContact(event.contactCompleted, event.contactNumbers)}
+                            ><label className = "text-process" style ={{color :" #6C757D", marginTop : "9px"}}> {event.contactCompleted}/{event.contactNumbers} contact </label></Progress>
+                          </td>
+                          <td>{event.modifiedDate}</td>
+                        </tr>
+                      );
+                    })
                     : ''}
                 </tbody>
               </Table>
@@ -386,8 +387,8 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
                     />
                   </Row>
                 ) : (
-                  ''
-                )}
+                    ''
+                  )}
               </div>
               <br />
             </Row>

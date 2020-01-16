@@ -496,7 +496,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
           <p className="error" style={{ color: "red", marginLeft: "8%" }}> {this.state.error_categoryName}</p>
 
           <div className="input-search">
-            <label className="input-search_label">Đặt lịch</label>
+            <label className="input-search_label"><Translate contentKey = "config-customer.setting-calender" /></label>
             <DatePicker
               className="ant-input"
               selected={this.state.selectDate}
@@ -553,7 +553,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
                 }}
               >
                 {' '}
-                Danh sách khách hàng dự kiến
+              <Translate contentKey = "config-customer.expected-list-customer" />
               </label>
             </div>
             <Loader message={spinner1} show={loading} priority={1}>

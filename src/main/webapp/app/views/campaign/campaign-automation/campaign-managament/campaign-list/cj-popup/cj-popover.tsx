@@ -151,7 +151,7 @@ class CJTagPopOver extends React.Component<ICjTagPopOverProps, TCjTagPopOverStat
           toggle={this.togglePopup}
           trigger="click"
         >
-          <PopoverHeader>Chọn Tag</PopoverHeader>
+          <PopoverHeader><Translate contentKey = "campaign-auto.list.chosse-tag" /></PopoverHeader>
           <PopoverBody>
             <div id="cj-tag-popover-body">
               <div className="combobox-cj-tag">
@@ -160,16 +160,16 @@ class CJTagPopOver extends React.Component<ICjTagPopOverProps, TCjTagPopOverStat
               <div className="link">
                 <label onClick={() => this.openModalCjTag()} style={{ textDecoration: 'underline' }}>
                   <Icon type="tag" />
-                  <span>Thêm mới tag</span>
+                  <span><Translate contentKey = "campaign-auto.list.add-tag" /></span>
                 </label>
                 <label onClick={() => this.openModalListCjTag()} style={{ float: 'right', textDecoration: 'underline' }}>
                   <Icon type="menu" />
-                  <span>Danh sách tag</span>
+                  <span><Translate contentKey = "campaign-auto.list.tag" /></span>
                 </label>
               </div>
               <div className="cj-tag-popup-footer">
                 <Button color="black" onClick={this.closePopup}>
-                  Hủy
+                 <Translate contentKey = "campaign-auto.btn-cancel" />
                 </Button>
                 <Button
                   onClick={() => {
@@ -177,7 +177,7 @@ class CJTagPopOver extends React.Component<ICjTagPopOverProps, TCjTagPopOverStat
                   }}
                   color="primary"
                 >
-                  Chọn
+                  <Translate contentKey = "campaign-auto.btn-chosse" />
                 </Button>
               </div>
             </div>

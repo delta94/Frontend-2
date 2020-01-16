@@ -1,0 +1,85 @@
+{
+    "status": {
+        "draft": "Bản nháp",
+        "finish": "Kết thúc",
+        "running": "Đang thực hiện",
+        "stop": "Dừng"
+    },
+    "campaign-auto": {
+        "message-error" : {
+            "name-folder-empty" : "* Vui lòng nhập tên thư mục",
+            "change-name-folder" : "* Vui lòng nhập tên thư mục cần đổi"
+        },
+        "all-campaign": "Tất cả chiến dịch",
+        "title": " Chiến dịch tự động",
+        "btn-campaign": "Quản lý chiến dịch",
+        "total-campaign": "Tổng số chiến dịch",
+        "campaign-running": "Chiến dịch đang thực hiện",
+        "campaign-finish": "Chiến dịch kết thúc",
+        "campaign-new": "Chiến dịch mới",
+        "btn-cancel": "Hủy",
+        "btn-chosse": "Chọn",
+        "count-campaign": "<strong>{{element}}</strong> Chiến dịch",
+        "create-campaign" : "Tạo chiến dịch",
+        "chosse-template" : "Chọn template",
+        "table": {
+            "index": "STT",
+            "status": "Trạng thái",
+            "campaign": "Chiến dịch",
+            "result": "Kết quả",
+            "last-edit": "Chỉnh sửa gần nhất",
+            "version": "Version",
+            "manipulation": "Thao tác"
+        },
+        "managament": {
+            "list-campaign": "Danh sách chiến dịch",
+            "change-name": "Đổi tên",
+            "create": "Tạo mới",
+            "delete": "Xóa",
+            "folder-name": "Tên thư mục",
+            "infomation": "Thông tin"
+        },
+        "modal": {
+            "title-create": "Tạo thư mục",
+            "ok-create-text": "Thêm mới",
+            "cancel": "Hủy bỏ",
+            "error-title": "Không thẻ tạo thêm thư mục",
+            "ok-submit-text": "Đồng ý",
+            "title-edit": "Đổi tên thư mục",
+            "ok-save-text": "Lưu lại",
+            "title-delete": "Xóa",
+            "content-delete": "Bạn thực sự muốn xóa ?",
+            "ok-btn-delete": "Xóa",
+            "view-details": "Xem chi tiết ",
+            "move-folder": "Di chuyển thư mục",
+            "confirm-move-folder": "Bạn có muốn di chuyển vào thư mục ",
+            "title-notification": "THÔNG BÁO",
+            "content-have-draft": "Chiến dịch đã có bản nháp, không thể tạo version mới, bạn có muốn tiếp tục chỉnh sửa bản nháp hiện tại ? ",
+            "title-error": "Lỗi",
+            "content-error-running": "đang thực hiện không thể xóa",
+            "title-delete-version": "Bạn có thực sự muốn xóa version này ?",
+            "content-delete-version-warning": "Vui lòng chọn ô cần xóa",
+            "title-stop-version": "Bạn có thực sự muốn dừng version",
+            "content-version-running": "Vui lòng chọn version có trạng thái đang thực hiện",
+            "stop-one-version": "Chỉ được phép dừng 1 version",
+            "click-version": "Vui lòng chọn version bạn muốn dừng",
+            "title-copy": "Bạn có muốn nhân bản chiến dịch này ?",
+            "cannot-copy": "Không thể nhân bản trạng thái : Bản nháp "
+        },
+        "list": {
+            "add-tag": "Thêm mới tag",
+            "tag": "Danh sách tag",
+            "search-campaign": "Tìm kiếm chiến dịch",
+            "input-key": "Nhập từ khóa",
+            "create-campaign": "Tạo chiến dịch mới",
+            "view-list-campaign": "Xem danh sách version",
+            "none-customer": "Không có dữ liệu khách hàng",
+            "chosse-tag" : "Chọn tag ",
+            "name-tag-empty" : "Tên thẻ không được để trống"
+        },
+        "version": {
+            "create": " Tạo version mới",
+            "stop" : " Dừng version"
+        }
+    }
+}

@@ -72,7 +72,8 @@ const initialCampaignManagament = {
   listCustomerInteractive: [] as IListCustomerInteractive[],
   listTemplateCampaign: [] as IListTemplateCampaign[],
   idActive: {} as ISaveCampaign,
-  list_validate: [] as IListValidate[]
+  list_validate: [] as IListValidate[],
+  isCheckValidate: true
 };
 
 export type HandleCampaignManagament = typeof initialCampaignManagament;
@@ -107,14 +108,15 @@ export default (state = initialCampaignManagament, action) => {
     case FAILURE(CAMPAIGN_MANAGAMENT.COUNT_CAMPAIGN):
     case FAILURE(CAMPAIGN_MANAGAMENT.GET_TREE_FOLDER):
     case FAILURE(CAMPAIGN_MANAGAMENT.GET_EMAIL_TEST):
-      console.log('false')
       return {
         ...state,
-        loading: false
+        loading: false,
+        isCheckValidate: true
       };
     case SUCCESS(CAMPAIGN_MANAGAMENT.VALIDATE_GRAPH):
       return {
         ...state,
+        isCheckValidate: false,
         list_validate: action.payload.data
       }
     case SUCCESS(CAMPAIGN_MANAGAMENT.CLONE_VERSION_BY_ID):

@@ -6,5 +6,6 @@ export const CJ = {
 export const STATUS_CJ = {
   DRAFT: 'Draft',
   RUNNING: 'Running',
-  FINISH: 'Finish'
+  FINISH: 'Finish',
+  STOP : 'Stop'
 };

@@ -30,6 +30,12 @@
   height: auto;
   position: relative;
 
+  .text-process {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+  }
   .ant-progress-inner {
     background: #e2e5e7;
   }
@@ -125,6 +131,7 @@
     .row {
       margin-right: -15px;
     }
+    
   }
 
   .total-list {

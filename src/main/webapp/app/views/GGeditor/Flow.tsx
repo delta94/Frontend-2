@@ -921,6 +921,10 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     const imgSetting = require('app/assets/utils/images/flow/setting.png');
     const imgAward = require('app/assets/utils/images/flow/award.png');
     const imgMove = require('app/assets/utils/images/flow/move.png');
+    if (list_validate.length > 0) {
+      localStorage.removeItem('isSave');
+    }
+      let isDisable = this.props.is_validate ? true : JSON.parse(localStorage.getItem('isSave')) ? false : true
     return (
       <div className="editor">
         <Layout className="layout-flow">
@@ -999,7 +1003,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                       onClick={() => {
                         this.isCloseSiderTest(true);
                       }}
-                      disabled={JSON.parse(localStorage.getItem('isSave')) ? false : true}
+                      disabled={isDisable}
                     >
                       Test
                     </Button>
@@ -1017,7 +1021,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                 <Col span={2}>
                   <Button
                     onClick={() => this.activeProcess()}
-                    disabled={JSON.parse(localStorage.getItem('isSave')) ? false : true}
+                    disabled={isDisable}
                     type="primary"
                     style={{ float: 'right' }}
                   >
@@ -1097,7 +1101,8 @@ const mapStateToProps = ({ campaignManagament, handleModal }: IRootState) => ({
   id_active: campaignManagament.idActive,
   modalState: handleModal.data,
   list_validate: campaignManagament.list_validate,
-  list_version: campaignManagament.listVersion
+  list_version: campaignManagament.listVersion,
+  is_validate: campaignManagament.isCheckValidate
 });
 
 const mapDispatchToProps = {

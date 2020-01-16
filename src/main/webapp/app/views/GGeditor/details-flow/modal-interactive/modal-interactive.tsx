@@ -4,12 +4,13 @@ import { Table } from 'reactstrap';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import './modal-interactive.scss';
+import { Translate } from 'react-jhipster';
 
 interface IModalIteractiveProps extends StateProps, DispatchProps {
   isOpenModal: boolean;
   onClick: Function;
 }
-interface IModalIteractiveState {}
+interface IModalIteractiveState { }
 class ModalIteractive extends React.Component<IModalIteractiveProps, IModalIteractiveState> {
   state: IModalIteractiveState = {};
   hideModal = () => {
@@ -29,15 +30,15 @@ class ModalIteractive extends React.Component<IModalIteractiveProps, IModalItera
         onOk={this.hideModal}
         footer={[
           <Button key="submit" color="none" onClick={this.hideModal}>
-            Đóng
+            <Translate contentKey=" detail-flow.modal.close" />
           </Button>
         ]}
       >
         <Table responsive striped className="main-table-interactive">
           <thead>
-            <th>Hành động</th>
-            <th>Trạng thái</th>
-            <th>Thời gian</th>
+            <th> <Translate contentKey=" detail-flow.modal.action" /></th>
+            <th><Translate contentKey=" detail-flow.modal.status" /></th>
+            <th><Translate contentKey=" detail-flow.modal.time" /></th>
           </thead>
           <tbody>
             {list_customer_interactive &&
@@ -45,7 +46,7 @@ class ModalIteractive extends React.Component<IModalIteractiveProps, IModalItera
                 return (
                   <tr key={index}>
                     <td>{item.activityName}</td>
-                    <td>Hoàn thành</td>
+                    <td><Translate contentKey=" detail-flow.modal.complete" /></td>
                     <td>{item.endTime}</td>
                   </tr>
                 );

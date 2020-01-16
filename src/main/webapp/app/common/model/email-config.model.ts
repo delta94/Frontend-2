@@ -16,3 +16,11 @@ export interface IEmail {
   modifiedDate: string;
 }
 
+export interface IContentParams {
+  id?: number;
+  paramCode?: string;
+  paramName?: string;
+  sampleValue?: string;
+  groupParam?: string;
+}
+

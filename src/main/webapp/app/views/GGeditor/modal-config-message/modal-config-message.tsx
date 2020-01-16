@@ -7,6 +7,7 @@ import { validateCampaign } from 'app/actions/campaign-managament';
 import { Button, Row, Col, Input, Select } from 'antd';
 import { updateInfoCampaign } from 'app/actions/campaign-managament';
 import './modal-config-message.scss';
+import { translate, Translate } from 'react-jhipster';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -65,13 +66,13 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
     let content: string = String($(`#text-content`).val())
     if (!message) {
       count++;
-      message_error = "* Vui lòng nhập tên"
+      message_error = translate("config-message.message-error")
     } else {
       message_error = ""
     }
     if (!content) {
       count++;
-      content_error = "* Vui lòng nhập nội dung"
+      content_error = translate("config-message.content-error")
     } else {
       content_error = ""
     }
@@ -131,25 +132,25 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
     let nameSMS = this.getNameSms();
     return (
       <Modal className="modal-message-config" isOpen={isOpenModal}>
-        <ModalHeader toggle={this.toggle}>Gửi SMS</ModalHeader>
+        <ModalHeader toggle={this.toggle}><Translate contentKey = "config-message.send-sms" /></ModalHeader>
         <ModalBody>
           <Row>
             <Row>
               <Col span={1}>
-                <label className="label-message">Tên</label>
+                <label className="label-message"><Translate contentKey = "config-message.name" /></label>
               </Col>
               <Col span={14}>
                 <Input defaultValue={nameSMS} id="name-message" maxLength={160} style={{ float: 'right', width: '92%' }} />
               </Col>
               <Col span={3} style={{ textAlign: 'right', paddingRight: '2%' }}>
-                <label className="label-message">Tham số</label>
+                <label className="label-message"><Translate contentKey = "config-message.param" /></label>
               </Col>
 
               <Col span={6}>
                 <Select defaultValue="Tên" style={{ width: '100%' }} onChange={this.insertAtCursor}>
-                  <Option value="{{Tên}}">Tên</Option>
-                  <Option value="{{Email}}">Email</Option>
-                  <Option value="{{Số Điện Thoại}}">Số điện thoại</Option>
+                  <Option value="{{Tên}}"><Translate contentKey = "config-message.name" /></Option>
+                  <Option value="{{Email}}"><Translate contentKey = "config-message.email" /></Option>
+                  <Option value="{{Số Điện Thoại}}"><Translate contentKey = "config-message.phone" /></Option>
                 </Select>
               </Col>
             </Row>
@@ -157,7 +158,7 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
             <br />
             <Row>
               <Col span={2}>
-                <label className="label-message">Nội dung</label>
+                <label className="label-message"><Translate contentKey = "config-message.content" /></label>
               </Col>
               <Col span={22}>
                 <TextArea defaultValue={this.getNameContent()} onKeyUp={() => this.count()} id="text-content" maxLength={240} rows={10} />
@@ -169,10 +170,10 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
         </ModalBody>
         <ModalFooter>
           <Button type="link" style={{ color: "black" }} onClick={this.toggle}>
-            Hủy
+          <Translate contentKey = "config-email.cancel" />
           </Button>
           <Button type="primary" style={{ background: "#3866DD" }} onClick={this.save}>
-            Chọn
+          <Translate contentKey = "config-email.chosse" />
           </Button>{' '}
         </ModalFooter>
       </Modal>

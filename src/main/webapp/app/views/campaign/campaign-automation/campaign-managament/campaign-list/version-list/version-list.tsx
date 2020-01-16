@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
-import { Row, Col, Breadcrumb, Button, Progress, Modal, Checkbox } from 'antd';
+import { Progress } from 'reactstrap';
+import { Row, Col, Breadcrumb, Button, Modal, Checkbox } from 'antd';
 // import Checkbox from '@material-ui/core/Checkbox';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
@@ -23,6 +24,7 @@ import {
 import './version-list.scss';
 import { Container, Card, Table } from 'reactstrap';
 import { RouteComponentProps } from 'react-router-dom';
+import { translate, Translate } from 'react-jhipster';
 
 const { confirm } = Modal;
 const constant_version = {
@@ -150,8 +152,8 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
 
     if (isHaveDraf) {
       Modal.confirm({
-        title: 'THÔNG BÁO',
-        content: 'Chiến dịch đã có bản nháp, không thể tạo version mới, bạn có muốn tiếp tục chỉnh sửa bản nháp hiện tại ? ',
+        title: translate("campaign-auto.modal.title-notification"),
+        content: translate("campaign-auto.modal.content-have-draft"),
         onCancel: () => { },
         onOk: async () => {
           await cloneVersion(idDraft);
@@ -159,8 +161,8 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
           await saveCampaignAutoVersion(infoVersion);
           window.location.assign('#/flow');
         },
-        okText: 'Đồng ý',
-        cancelText: 'Hủy bỏ'
+        okText: translate("campaign-auto.modal.ok-submit-text"),
+        cancelText: translate("campaign-auto.modal.cancel")
       });
     } else {
       await cloneVersionById(idVersionlast);
@@ -224,21 +226,21 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
     const { deleteVersion } = this.props;
     if (isRunning) {
       Modal.error({
-        title: 'Lỗi',
-        content: `Version${nameVersion} đang thực hiện không thể xóa`,
-        okText: 'Đồng ý'
+        title: translate("campaign-auto.modal.title-error"),
+        content: `Version ${nameVersion}` + translate('campaign-auto.modal.content-error-running'),
+        okText: translate('campaign-auto.modal.ok-submit-text')
       });
     } else {
       confirm({
-        title: 'Bạn có thực sự muốn xóa version này ?',
+        title: translate('campaign-auto.modal.title-delete-version'),
         content: '',
         onOk: async () => {
           await deleteVersion(listCjId);
           this.refresh();
         },
         onCancel() { },
-        okText: 'Đồng ý',
-        cancelText: 'Hủy bỏ'
+        okText: translate('campaign-auto.modal.ok-submit-text'),
+        cancelText: translate('campaign-auto.modal.cancel')
       });
     }
   };
@@ -252,7 +254,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
       listCjId.map(event => {
         listVersion.map(item => {
           if (item.cjVersionId === event) {
-            if (item.status === 'Running') {
+            if (item.status === constant_version.RUNNING) {
               isRunning = true;
               nameVersion = item.version;
             }
@@ -262,9 +264,9 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
       this.handleDelete(isRunning, nameVersion, listCjId);
     } else {
       Modal.warning({
-        title: 'Thông báo',
-        content: 'Vui lòng chọn ô cần xóa',
-        okText: 'Đồng ý'
+        title: translate("campaign-auto.modal.title-notification"),
+        content: translate("campaign-auto.modal.content-delete-version-warning"),
+        okText: translate("campaign-auto.modal.ok-submit-text")
       });
     }
   };
@@ -283,28 +285,28 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
     if (listCjId && listCjId.length === 1) {
       if (isRunning) {
         confirm({
-          title: `Bạn có thực sự muốn dừng version ${nameVersion} này ?`,
+          title: translate("campaign-auto.modal.title-stop-version") + ` ${nameVersion} ?`,
           content: '',
           onOk: async () => {
             await stopVersion(idVersion);
             this.refresh();
           },
           onCancel() { },
-          okText: 'Đồng ý',
-          cancelText: 'Hủy bỏ'
+          okText: translate("campaign-auto.modal.ok-submit-text"),
+          cancelText: 'translate("campaign-auto.modal.cancel")'
         });
       } else {
         Modal.warning({
-          title: 'Thông báo',
-          content: 'Vui lòng chọn version có trạng thái đang thực hiện',
-          okText: 'Đồng ý'
+          title: translate("campaign-auto.modal.title-notification"),
+          content: translate("campaign-auto.modal.content-version-running"),
+          okText: translate("campaign-auto.modal.ok-submit-text")
         });
       }
     } else {
       Modal.warning({
-        title: 'Thông báo',
-        content: 'Chỉ được phép dừng 1 version',
-        okText: 'Đồng ý'
+        title: translate("campaign-auto.modal.title-notification"),
+        content: translate("campaign-auto.modal.stop-one-version"),
+        okText: translate("campaign-auto.modal.ok-submit-text")
       });
     }
   };
@@ -319,7 +321,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
       listCjId.map(event => {
         listVersion.map(item => {
           if (item.cjVersionId === event) {
-            if (item.status === 'Running') {
+            if (item.status === constant_version.RUNNING) {
               isRunning = true;
               idVersion = item.cjVersionId;
               nameVersion = item.version;
@@ -330,9 +332,9 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
       this.validateStopVersion(isRunning, nameVersion, idVersion);
     } else {
       Modal.warning({
-        title: 'Thông báo',
-        content: 'Vui lòng chọn version bạn muốn dừng',
-        okText: 'Đồng ý'
+        title: translate("campaign-auto.modal.title-notification"),
+        content: translate("campaign-auto.modal.click-version"),
+        okText: translate("campaign-auto.modal.ok-submit-text")
       });
     }
   };
@@ -420,7 +422,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
           shape: this.customNode(item.code, 'shape'),
           value: item.value,
           code: item.code,
-          label: item.label ,
+          label: item.label,
           backgroud: '#23C00A',
           emailConfig: item.emailConfig,
           smsConfig: item.smsConfig,
@@ -456,7 +458,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
     });
     if (idVersionlast) {
       confirm({
-        title: `Bạn có muốn nhân bản chiến dịch này ?`,
+        title: translate("campaign-auto.modal.title-copy"),
         content: '',
         onOk: async () => {
           await copyCJCampaign(idVersionlast)
@@ -465,14 +467,14 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
           window.location.assign(`#/flow`);
         },
         onCancel() { },
-        okText: 'Đồng ý',
-        cancelText: 'Hủy bỏ'
+        okText: translate("campaign-auto.modal.ok-submit-text"),
+        cancelText: translate("campaign-auto.modal.cancel")
       });
     } else {
       Modal.warning({
-        title: 'Thông báo',
-        content: 'Không thể nhân bản trạng thái : "Bản nháp" ',
-        okText: 'Đồng ý'
+        title: translate("campaign-auto.modal.title-notification"),
+        content: translate("campaign-auto.modal.cannot-copy"),
+        okText: translate("campaign-auto.modal.ok-submit-text")
       });
     }
   };
@@ -508,16 +510,16 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
 
       switch (option) {
         case constant_version.DRAFT:
-          data = 'Bản nháp';
+          data = translate("status.draft");
           break;
         case constant_version.FINISH:
-          data = 'Kết thúc';
+          data = translate("status.finish");
           break;
         case constant_version.RUNNING:
-          data = 'Đang thực hiện';
+          data = translate("status.running");
           break;
         case constant_version.STOP:
-          data = 'Dừng';
+          data = translate("status.stop");
         default:
           break;
       }
@@ -535,12 +537,12 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
               </Breadcrumb.Item>
               <Breadcrumb.Item>
                 <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-auto')} href="javascript:void(0);">
-                  Chiến dịch tự động
+                  <Translate contentKey="campaign-auto.title" />
                 </a>
               </Breadcrumb.Item>
               <Breadcrumb.Item>
                 <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-managament')} href="javascript:void(0);">
-                  Danh sách chiến dịch
+                  <Translate contentKey="campaign-auto.managament.list-campaign" />
                 </a>
               </Breadcrumb.Item>
               <Breadcrumb.Item>
@@ -565,25 +567,25 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
                 &nbsp; &nbsp;
                 <img src={imgLine} />
                 <Button onClick={this.createVersion} type="primary" style={{ background: '#3866DD', marginLeft: '2%' }}>
-                  Tạo version mới
+                  <Translate contentKey="campaign-auto.version.create" />
                 </Button>
                 <Button
                   onClick={this.handleStopVersion}
                   type="primary"
                   style={{ background: '#97A3B4', marginLeft: '1%', borderColor: 'unset' }}
                 >
-                  Dừng version
+                  <Translate contentKey="campaign-auto.version.stop" />
                 </Button>
               </Row>
               <br />
-              <label className="count-version">{listVersion.length} version</label>
+              <label className="count-version">{listVersion.length} <Translate contentKey="campaign-auto.table.version" /></label>
               <Table responsive striped className="main-table-version">
                 <thead>
                   <th style={{ width: '4%' }} />
-                  <th style={{ width: '25%' }}>Version</th>
-                  <th>Trạng thái</th>
-                  <th style={{ width: '25%' }}>Kết quả</th>
-                  <th>Chỉnh sửa gần nhất</th>
+                  <th style={{ width: '25%' }}> <Translate contentKey="campaign-auto.table.version" /></th>
+                  <th> <Translate contentKey="campaign-auto.table.status" /></th>
+                  <th style={{ width: '25%' }}> <Translate contentKey="campaign-auto.table.result" /></th>
+                  <th> <Translate contentKey="campaign-auto.table.last-edit" /></th>
                 </thead>
                 <tbody>
                   {listVersion
@@ -594,7 +596,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
                             <Checkbox checked={item.checked} onChange={e => this.changeCheckBox(e, item.cjVersionId)} />
                           </td>
                           <td className="table-content" onClick={() => this.viewVersion(item.cjVersionId)}>
-                            <span style={{ marginLeft: '5%' }}>Version {item.version}</span>
+                            <span style={{ marginLeft: '5%' }}><Translate contentKey="campaign-auto.table.version" /> {item.version}</span>
                           </td>
                           <td className="row-status">
                             <img className="img-status" src={this.iconStatus(item.status)} />
@@ -602,10 +604,10 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
                           </td>
                           <td>
                             <Progress
-                              status="active"
-                              percent={this.countContact(item.contactCompleted, item.contactNumbers)}
-                              format={percent => `${item.contactCompleted}/${item.contactNumbers} contact`}
-                            />
+                              animated
+                              color={this.countContact(item.contactCompleted, item.contactNumbers) < 100 ? "warning" : "success"}
+                              value={this.countContact(item.contactCompleted, item.contactNumbers)}
+                            ><label className ="text-process" style ={{color :" #6C757D", marginTop : "9px"}}>{item.contactCompleted}/{item.contactNumbers} contact</label></Progress>
                           </td>
                           <td>{item.modifiedDate}</td>
                         </tr>
