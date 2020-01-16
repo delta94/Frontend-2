@@ -288,15 +288,6 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
               })}
             <div>{itemIndex !== 3 && items.map((gItem, gIndex, list) => renderDiagram(gItem, gIndex))}</div>
           </Card>
-          {/* <Modal
-            title="Basic Modal"
-            visible={this.state.collapse}
-            onOk={() => this.setState({ collapse: false })}
-            onCancel={() => this.setState({ collapse: false })}
-          >
-            <DiagramWidget className="srd-flow-canvas" diagramEngine={this.editor.getDiagramEngine()} smartRouting={false} />
-
-          </Modal> */}
         </Container>
       </div>
     );

@@ -244,7 +244,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           <Row className="editorHd-details">
             <Col span={24} style={{ padding: '1%' }}>
               <Col span={4}>
-                <label><Translate contentKey="campaign-auto.detai-flow.version" /> : </label>{' '}
+                <label><Translate contentKey="detail-flow.version" /> : </label>{' '}
                 <Select onChange={this.selectVersion} style={{ width: '25%' }} defaultValue={clone_version.version}>
                   {list_version &&
                     list_version.map((item, index) => {
@@ -257,7 +257,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                 </Select>
               </Col>
               <Col span={8} >
-                <label style={{ lineHeight: '2' }}><Translate contentKey="campaign-auto.detai-flow.status" />  : {eventStatus(clone_version.status)}</label>
+                <label style={{ lineHeight: '2' }}><Translate contentKey="detail-flow.status" />  : {eventStatus(clone_version.status)}</label>
               </Col>
               <Col span={8} style={{ lineHeight: "29px", textAlign: "right", paddingRight: "1%" }}>
                 <img src={imgSetting} />
@@ -270,7 +270,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                   }}
                   type="primary"
                 >
-                  <Translate contentKey="campaign-auto.detail-flow.create-version" />
+                  <Translate contentKey="detail-flow.create-version" />
                 </Button>
                 <Button onClick={this.stopVersion} type="primary" style={{ background: '#97A3B4', borderColor: 'unset', left: "5%" }}>
                   <Translate contentKey="detail-flow.stop-version" />
