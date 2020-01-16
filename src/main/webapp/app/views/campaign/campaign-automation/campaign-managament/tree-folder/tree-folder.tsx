@@ -105,34 +105,34 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
     <Row style={{ textAlign: 'center' }}>
       <Row style={{ marginBottom: "5%" }}>
         <ButtonReactstrap
-          className = "label-info"
+          className="label-info"
           color="none"
           onClick={() => {
             this.createFolder(rowInfo, 'edit');
           }}
         >
           {' '}
-          <img src={img_edit} style={{ marginRight: "1em" }} /> Đổi tên
+          <img src={img_edit} style={{ marginRight: "1em" }} /> <Translate contentKey="campaign-auto.managament.change-name" />
         </ButtonReactstrap>
       </Row>
 
       <Row style={{ marginBottom: "5%" }}>
-        <ButtonReactstrap   className = "label-info"
-         color="none" onClick={() => this.createFolder(rowInfo, 'create')}>
+        <ButtonReactstrap className="label-info"
+          color="none" onClick={() => this.createFolder(rowInfo, 'create')}>
           {' '}
-          <img src={img_create} style={{ marginRight: "1em" }} />Tạo mới
+          <img src={img_create} style={{ marginRight: "1em" }} /><Translate contentKey="campaign-auto.managament.create" />
         </ButtonReactstrap>
       </Row>
       <Row style={{ marginBottom: "7%" }}>
         <ButtonReactstrap
-        className = "label-info"
+          className="label-info"
           color="none"
           onClick={() => {
             this.createFolder(rowInfo, 'delete');
           }}
         >
           {' '}
-          <img src={img_delete} style={{ marginRight: "1em" }} /> Xóa
+          <img src={img_delete} style={{ marginRight: "1em" }} /><Translate contentKey="campaign-auto.managament.delete" />
         </ButtonReactstrap>
       </Row>
     </Row>
@@ -142,7 +142,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
     let content = (
       <Row>
         <Col span={6}>
-          <label style={{ lineHeight: '2' }}> Tên thư mục </label>
+          <label style={{ lineHeight: '2' }}><Translate contentKey="campaign-auto.managament.folder-name" /> </label>
         </Col>
         <Col span={18}>
           {' '}
@@ -164,7 +164,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
         //debugger;
         if (Number(level) < 3) {
           confirm({
-            title: 'Tạo thư mục',
+            title: translate('campaign-auto.modal.title-create'),
             content: this.contentCreateFolder(),
             onOk: async () => {
               let data = {
@@ -175,23 +175,24 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
               await getTreeFolder();
               await this.getData();
             },
-            okText: 'Thêm mới',
+            okText: translate('campaign-auto.modal.ok-create-text'),
             onCancel() { },
-            cancelText: 'Hủy bỏ'
+            cancelText: translate('campaign-auto.modal.cancel')
           });
         } else {
           Modal.error({
-            title: 'Không thể tạo thêm thư mục',
+            title: translate('campaign-auto.modal.error-title'),
             content: '',
             onOk() { },
-            okText: 'Đồng ý'
+            okText: translate('campaign-auto.modal.ok-submit-text')
           });
         }
 
         break;
       case 'edit':
+        debugger
         confirm({
-          title: `Đổi tên thư mục ${event.title}`,
+          title: translate('campaign-auto.modal.title-edit') + ' ' + event.title,
           content: this.contentCreateFolder(),
           onOk: async () => {
             let data = {
@@ -204,39 +205,39 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
             await getTreeFolder();
             await this.getData();
           },
-          okText: 'Lưu lại',
+          okText: translate('campaign-auto.modal.ok-save-text'),
           onCancel() { },
-          cancelText: 'Hủy bỏ'
+          cancelText: translate('campaign-auto.modal.cancel')
         });
         break;
 
       case 'delete':
         confirm({
-          title: 'Xóa',
-          content: 'Bạn thực sự muốn xóa ?',
+          title: translate('campaign-auto.modal.title-delete'),
+          content: translate('campaign-auto.modal.content-delete'),
           onOk: async () => {
             let data = event ? event.id : null;
             await deleteTreefolder(data);
             await getTreeFolder();
             await this.getData();
           },
-          okText: 'Xóa',
+          okText: translate('campaign-auto.modal.ok-btn-deletee'),
           onCancel() { },
-          cancelText: 'Hủy bỏ'
+          cancelText: translate('campaign-auto.modal.cancel')
         });
 
         break;
       case 'getlist':
         confirm({
-          title: 'Xem chi tiết',
-          content: `Xem chi tiết ${event.title}`,
+          title: translate('campaign-auto.modal.view-details'),
+          content: translate('campaign-auto.modal.view-details')+ ' ' + event.title,
           onOk: async () => {
             await getListCampaignInfolderDataAction(event ? event.id : null, '', '', 0, 4);
             await onClick(event ? event.id : null);
           },
-          okText: 'Đồng ý',
+          okText: translate('campaign-auto.modal.ok-submit-text'),
           onCancel() { },
-          cancelText: 'Hủy bỏ'
+          cancelText: translate('campaign-auto.modal.cancel')
         });
 
         break;
@@ -247,7 +248,6 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
   };
 
   onDragEnter = info => {
-    console.log(info);
   };
 
   onDrop = async info => {
@@ -312,17 +312,17 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
 
     if (dropPosition >= 0) {
       confirm({
-        title: 'Di chuyển thư mục',
-        content: `bạn muốn di chuyên vào thư mục ${info.node.props.title ? info.node.props.title.props.children[2] : ''}`,
+        title: translate("campaign-auto.modal.move-folder"),
+        content: translate("campaign-auto.modal.confirm-move-folder") + ' ' + info.node.props.title ? info.node.props.title.props.children[2] : '',
         onOk: async () => {
           await moveTreeFolder(idData);
           this.setState({
             treeData: data
           });
         },
-        okText: 'Lưu lại',
+        okText: translate('campaign-auto.modal.ok-save-text'),
         onCancel() { },
-        cancelText: 'Hủy bỏ'
+        cancelText: translate('campaign-auto.modal.cancel')
       });
     }
   };
@@ -360,7 +360,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
                 <Popover
                   overlayClassName="pop-data"
                   content={this.contentPop(item)}
-                  title="Thông tin"
+                  title = {translate("campaign-auto.managament.infomation")}
                   trigger="hover"
                   placement="bottomRight"
                 >
@@ -385,7 +385,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
                 <Popover
                   overlayClassName="pop-data"
                   content={this.contentPop(item)}
-                  title="Thông tin"
+                  title={translate("campaign-auto.managament.infomation")}
                   trigger="hover"
                   placement="bottomRight"
                 >
@@ -429,7 +429,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
               onDrop={this.onDrop}
             // showLine = {true}
             >
-              <TreeNode title={<div>Tất cả chiến dịch</div>} />
+              <TreeNode title={<div><Translate contentKey = "campaign-auto.all-campaign" /></div>} />
               {this.state.treeData.map(item => {
                 if (item.children && item.children.length) {
                   return (
@@ -445,7 +445,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
                         <Popover
                           overlayClassName="pop-data"
                           content={this.contentPop(item)}
-                          title="Thông tin"
+                          title={translate("campaign-auto.managament.infomation")}
                           trigger="hover"
                           placement="bottomRight"
                         >

@@ -36,7 +36,7 @@ const code_node = {
   TIMER: 'TIMER',
   TIMER_EVENT: 'TIMER_EVENT'
 };
-interface ICreateCampaignProps extends StateProps, DispatchProps { }
+interface ICreateCampaignProps extends StateProps, DispatchProps {}
 
 interface ICreateCampaignState {
   infoVersion: {
@@ -78,17 +78,19 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
   componentDidMount = async () => {
     const { getTemplateCampaign, list_template } = this.props;
     await getTemplateCampaign();
-    await this.getList()
-  }
+    await this.getList();
+  };
   getList() {
     const { getTemplateCampaign, list_template } = this.props;
-    let data = list_template && list_template.map(item => {
-      return {
-        ...item,
-        collapse: false,
-      }
-    })
-    this.setState({ listTemp: data })
+    let data =
+      list_template &&
+      list_template.map(item => {
+        return {
+          ...item,
+          collapse: false
+        };
+      });
+    this.setState({ listTemp: data });
   }
 
   difficulty = option => {
@@ -115,21 +117,21 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
     return result;
   };
 
-
   cloneVersion = async (item, id) => {
     let { getDiagramCampaign, listDiagram } = this.props;
     let x: number = 0;
     let clone_version = JSON.parse(item);
     let graph = clone_version.graph;
 
-    let { listTemp, collapse } = this.state
-    await listTemp && listTemp.map(value => {
-      if (value.id === id) {
-        value.collapse = !collapse
-      } else {
-        value.collapse = false
-      }
-    })
+    let { listTemp, collapse } = this.state;
+    (await listTemp) &&
+      listTemp.map(value => {
+        if (value.id === id) {
+          value.collapse = !collapse;
+        } else {
+          value.collapse = false;
+        }
+      });
     if (!collapse) {
       await this.editor.setDiagramData({
         nodes: graph.nodes,
@@ -139,20 +141,78 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
     }
 
     this.setState({ collapse: !collapse });
-
   };
-  renderDiagramWidget = (data) => {
+  renderDiagramWidget = data => {
     let diagram = new FlowDiagramEditor();
     diagram.setDiagramData({
       nodes: data.nodes,
       edges: data.edges
-    })
-    return <DiagramWidget className="srd-flow-canvas" diagramEngine={diagram.getDiagramEngine()} smartRouting={false} />
+    });
+    return <DiagramWidget className="srd-flow-canvas" diagramEngine={diagram.getDiagramEngine()} smartRouting={false} />;
+  };
+
+  renderContent(item, index) {
+    return (
+      <Col style={{ zIndex: 10 }} className="gutter-row" span={8} key={index}>
+        <div
+          className="gutter-box"
+          onClick={async () => {
+            await this.cloneVersion(item.flow, item.id);
+          }}
+        >
+          <label className="text-title">{item.name}</label>
+          <Tag className="tag-group-content" style={{ margin: '1% 5%' }} color="#E6E8E9">
+            <label>#NHÓM 1</label>
+          </Tag>
+          <p>{item.description}</p>
+          <Tag color={this.difficulty(item.difficulty).color} style={{ margin: '7% 3%' }}>
+            <label style={{ lineHeight: '0' }}>{this.difficulty(item.difficulty).difficulty}</label>
+          </Tag>
+        </div>
+      </Col>
+    );
+  }
+  renderTemplate(item, index) {
+    return (
+      <Collapse isOpen = {item.collapse}>
+      <Row >
+        <Col span={24}>
+          <Card style={{ background: '#FBFBFB' }}>
+            <Col span={18}>{this.renderDiagramWidget(this.editor.getDiagramData())}</Col>
+            <Col span={6}>
+              <label className="descrition-template">{item.description}</label>
+            </Col>
+            <Button
+              type="primary"
+              className="btn-template"
+              onClick={async () => {
+                let data = {
+                  name: 'Tạo chiến dịch mới',
+                  tag: [''],
+                  des: ''
+                };
+                await this.props.updateInfoCampaign(data);
+                await this.props.saveCampaignAutoVersion(this.state.infoVersion);
+                await this.props.resetListCloneVersion();
+                await window.location.assign(`#/flow`);
+              }}
+            >
+              Chọn Template
+            </Button>
+          </Card>
+        </Col>
+      </Row>
+      </Collapse>
+    );
   }
 
   render() {
     const { list_template } = this.props;
-    let { listTemp } = this.state
+    let { listTemp } = this.state;
+    let items = [];
+    let itemIndex = 0;
+    let renderDiagram = (item, index) => this.renderTemplate(item, index);
+    let renderContent = (item, index) => this.renderContent(item, index);
     return (
       <div className="container-create">
         <Row className="row-title">
@@ -165,17 +225,17 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
               </Breadcrumb.Item>
               <Breadcrumb.Item>
                 <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-auto')} href="javascript:void(0);">
-                  Chiến dịch tự động
+                 <Translate contentKey = "campaign-auto.title" />
                 </a>
               </Breadcrumb.Item>
               <Breadcrumb.Item>
                 <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-managament')} href="javascript:void(0);">
-                  Danh sách chiến dịch
+                <Translate contentKey = "campaign-auto.managament.list-campaign" />
                 </a>
               </Breadcrumb.Item>
               <Breadcrumb.Item>
                 <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-managament/new')} href="javascript:void(0);">
-                  Tạo chiến dịch
+                  <Translate contentKey ="campaign-auto.create-campaign" />
                 </a>
               </Breadcrumb.Item>
             </Breadcrumb>
@@ -194,12 +254,12 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
                 await this.props.getDiagramCampaign([]);
                 await this.props.saveCampaignAutoVersion(this.state.infoVersion);
                 await this.props.resetData();
-                await this.props.resetListCloneVersion()
+                await this.props.resetListCloneVersion();
                 await window.location.assign('#/flow');
               }}
             >
               <FontAwesomeIcon icon={faPlus} />
-              &nbsp; Tạo chiến dịch mới{' '}
+              &nbsp; <Translate contentKey = "campaign-auto.list.create-campaign" />{' '}
             </Button>
           </Col>
         </Row>
@@ -210,59 +270,23 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
             <div className="count-campaign">{list_template ? list_template.length : ''} chiến dịch mẫu </div>
             {listTemp &&
               listTemp.map((item, index, list) => {
-                let countGrid: number = 0
-                countGrid = countGrid + 2
-                let template = (
-                  <Row
-                    style={{ display: item.collapse ? "block" : "none" }}
-                  >
+                let countGrid: number = 0;
+                countGrid = countGrid + 2;
 
-                    <Col span={24}>
-                      <Card style={{ background: "#FBFBFB" }} >
-                        <Col span={18}>
-                          {this.renderDiagramWidget(this.editor.getDiagramData())}
-                        </Col>
-                        <Col span={6}>
-                          <label className="descrition-template">{item.description}</label>
-                        </Col>
-                        <Button type="primary" className="btn-template" onClick={async () => {
-                          let data = {
-                            name: 'Tạo chiến dịch mới',
-                            tag: [''],
-                            des: ''
-                          };
-                          await this.props.updateInfoCampaign(data);
-                          await this.props.saveCampaignAutoVersion(this.state.infoVersion);
-                          await this.props.resetListCloneVersion()
-                          await window.location.assign(`#/flow`)
-                        }}>Chọn Template</Button>
-
-                      </Card>
-
-                    </Col>
-                  </Row>
-                )
+                if (itemIndex === 3) {
+                  itemIndex = 0;
+                  items = [];
+                }
+                itemIndex = itemIndex + 1;
+                items.push(item);
                 return (
                   <div>
-                    <Col style={{ zIndex: 10 }} className="gutter-row" span={8} key={index} >
-                      <div className="gutter-box" onClick={async () => {
-
-                        await this.cloneVersion(item.flow, item.id)
-                      }}>
-                        <label className="text-title">{item.name}</label>
-                        <Tag className="tag-group-content" style={{ margin: '1% 5%' }} color="#E6E8E9">
-                          <label>#NHÓM 1</label>
-                        </Tag>
-                        <p>{item.description}</p>
-                        <Tag color={this.difficulty(item.difficulty).color} style={{ margin: '7% 3%' }}>
-                          <label style={{ lineHeight: '0' }}>{this.difficulty(item.difficulty).difficulty}</label>
-                        </Tag>
-                      </div>
-                    </Col>
-                    {template}
+                    {renderContent(item, index)}
+                    {itemIndex === 3 && items.map((gItem, gIndex, list) => renderDiagram(gItem, gIndex))}
                   </div>
                 );
               })}
+            <div>{itemIndex !== 3 && items.map((gItem, gIndex, list) => renderDiagram(gItem, gIndex))}</div>
           </Card>
           {/* <Modal
             title="Basic Modal"
@@ -273,9 +297,7 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
             <DiagramWidget className="srd-flow-canvas" diagramEngine={this.editor.getDiagramEngine()} smartRouting={false} />
 
           </Modal> */}
-
         </Container>
-
       </div>
     );
   }

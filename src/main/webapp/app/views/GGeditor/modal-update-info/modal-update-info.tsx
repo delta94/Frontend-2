@@ -7,6 +7,7 @@ import { updateInfoCampaign } from 'app/actions/campaign-managament';
 import CampaignTag from 'app/views/campaign/campaign-automation/campaign-managament/campaign-list/campaign-tag/campaign-tag';
 import './modal-update-info.scss';
 import { isThisSecond } from 'date-fns';
+import { Translate } from 'react-jhipster';
 
 const { TextArea } = Input;
 
@@ -69,12 +70,12 @@ export class UpdateInfoCampaign extends React.Component<IUpdateInfoCampaignProps
     let { defaulftTag } = this.state;
     return (
       <Modal className="modal-info-title" isOpen={isOpenModal}>
-        <ModalHeader toggle={this.toggle}>Chiến dịch mới</ModalHeader>
+        <ModalHeader toggle={this.toggle}><Translate contentKey="config-info.new-campaign" /></ModalHeader>
         <ModalBody>
           <Row>
             <Row>
               <Col span={5}>
-                <label className="label-message">Tên chiến dịch</label>
+                <label className="label-message"><Translate contentKey="config-info.name-campaign" /></label>
               </Col>
               <Col span={18}>
                 <Input
@@ -97,7 +98,7 @@ export class UpdateInfoCampaign extends React.Component<IUpdateInfoCampaignProps
             <br />
             <Row>
               <Col span={6}>
-                <label className="label-message">Mô tả</label>
+                <label className="label-message"><Translate contentKey="config-info.descrition" /></label>
               </Col>
               <Col span={18}>
                 <TextArea defaultValue={listInfoCampaing.des ? listInfoCampaing.des : list_clone_version.description ? list_clone_version.description : ''} onChange={this.getDes} style={{ width: '95%' }} id="text-content" rows={4} />
@@ -107,10 +108,10 @@ export class UpdateInfoCampaign extends React.Component<IUpdateInfoCampaignProps
         </ModalBody>
         <ModalFooter>
           <Button type="link" onClick={this.toggle}>
-            Hủy
+            <Translate contentKey="config-info.cancel" />
           </Button>
           <Button type="primary" onClick={this.save}>
-            Lưu
+            <Translate contentKey="config-info.save" />
           </Button>{' '}
         </ModalFooter>
       </Modal>

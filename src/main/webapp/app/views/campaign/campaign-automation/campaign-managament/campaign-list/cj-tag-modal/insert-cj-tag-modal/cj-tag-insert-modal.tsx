@@ -65,7 +65,7 @@ class CJTagInsertModal extends React.Component<ICjTagInsertModalProps, ICjTagIns
       });
     } else {
       this.setState({
-        messageErrorCjTagName: <label className="message-error">Tên thẻ không được để trống</label>
+        messageErrorCjTagName: <label className="message-error"><Translate contentKey ="campaign-auto.list.name-tag-empty" /></label>
       });
     }
   };
@@ -80,7 +80,7 @@ class CJTagInsertModal extends React.Component<ICjTagInsertModalProps, ICjTagIns
 
     return (
       <Modal id="modal-cj-tag-insert" isOpen={isOpenModalCjTagInsert}>
-        <ModalHeader toggle={toogleModalCjTagInsert}>THÊM TAG MỚI</ModalHeader>
+        <ModalHeader toggle={toogleModalCjTagInsert}><Translate contentKey = "campaign-auto.list.add-tag" /></ModalHeader>
         <ModalBody>
           <div className="cj-tag-insert-content">
             <div className="cj-tag-insert-input">
@@ -106,10 +106,10 @@ class CJTagInsertModal extends React.Component<ICjTagInsertModalProps, ICjTagIns
               this.resetField();
             }}
           >
-            Hủy
+           <Translate contentKey = "campaign-auto.btn-cancel" />
           </Button>
           <Button color="primary" onClick={() => this.submit()}>
-            Chọn
+          <Translate contentKey = "campaign-auto.btn-chosse" />
           </Button>
         </ModalFooter>
       </Modal>

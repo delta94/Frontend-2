@@ -247,7 +247,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
           this.state.defaultValueContent = item.contentEmail;
         }
       });
-    return <label>{result ? result : 'Vui lòng chọn Email'}</label>;
+  return <label>{result ? result : <Translate contentKey = "config-email.please-chosse-email" />} </label>;
   };
 
   toggle = () => {
@@ -280,14 +280,14 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
       value_name_error = ""
     } else {
       count++;
-      value_name_error = " * Vui lòng nhập emai"
+      value_name_error = translate("config-email.please-input")
     }
 
     if (defaultValueContent) {
       content_mail_error = ""
     } else {
       count++;
-      content_mail_error = "* Vui lòng chọn email"
+      content_mail_error = translate("config-email.please-chosse-email")
     }
     this.setState({ value_name_error, content_mail_error })
 
@@ -336,7 +336,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
 
           >
             {' '}
-            GỬI EMAIL
+            <Translate contentKey = "config-email.send-email" />
           </ModalHeader>
           <ModalBody>
 
@@ -352,7 +352,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
                         <CardBody>
                           <Row>
                             <Col span={17}>
-                              <label className="input-search_label">Tên</label>
+                              <label className="input-search_label"><Translate contentKey ="config-email.name" /></label>
                               <Input
                                 defaultValue={this.getNameEmail()}
                                 style={{ width: '80%' }}
@@ -368,7 +368,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
                           <br />
                           <Row>
                             <Col span={17}>
-                              <label className="input-search_label">Chọn email</label>
+                              <label className="input-search_label"><Translate contentKey ="config-email.chosse-email" /></label>
                               <UncontrolledButtonDropdown style={{ width: '81%' }}>
                                 <DropdownToggle caret className="mb-2 mr-2" style={{ width: '80%' }} color="info" outline>
                                   {this.contentEmail()}
@@ -410,7 +410,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
                             </Col>
                             <Col span={7} style={{ marginTop: '-5px' }}>
                               <ButtonAntd type="primary" onClick={this.openModalPreview} style={{ marginTop: '2%', background: '#3866DD' }}>
-                                Xem trước
+                               <Translate contentKey = "config-email.preview" />
                           </ButtonAntd>
                             </Col>
                           </Row>
@@ -427,7 +427,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
               color="none"
               onClick={this.toggle} >
               {' '}
-              Hủy
+              <Translate contentKey = "config-email.cancel" />
             </Button>
             <Button
               type="primary"
@@ -437,7 +437,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
                 this.confirmEmail();
               }}
             >
-              Chọn
+                <Translate contentKey = "config-email.chosse" />
             </Button>{' '}
           </ModalFooter>
         </Modal>
