@@ -15,9 +15,13 @@ const Routes = ({ match }) => (
         <div className="app-main__inner">
         <ErrorBoundaryRoute path={`${match.url}/emails`} exact={true} component={EmailManagement} />
         <ErrorBoundaryRoute path={`${match.url}/emails/add`} exact={true} component={EmailForm} />
+        <ErrorBoundaryRoute path={`${match.url}/emails/:id/edit`} exact={true} component={EmailForm} />
+        <ErrorBoundaryRoute path={`${match.url}/emails/:id/copy`} exact={true} component={EmailForm} />
 
         <PrivateRoute path={`${match.url}/emails`} exact={true} component={EmailManagement} />
         <PrivateRoute path={`${match.url}/emails/add`} exact={true} component={EmailForm} />
+        <PrivateRoute path={`${match.url}/emails/:id/edit`} exact={true} component={EmailForm} />
+        <PrivateRoute path={`${match.url}/emails/:id/copy`} exact={true} component={EmailForm} />
         </div>
       </div>
     </div>

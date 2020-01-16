@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import CKEditor from 'ckeditor4-react';
-import Dropdown from 'app/layout/DropDown/Dropdown';
 import { Input, Icon, Row, Checkbox, Button, Modal, Popover, Tabs } from 'antd';
 import { Table, ButtonGroup, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Button as Btn } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
@@ -9,23 +8,27 @@ import { IRootState } from 'app/reducers';
 import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import SweetAlert from 'sweetalert-react';
-import ReactPaginate from 'react-paginate';
-import { IContentParams } from 'app/common/model/email-config.model';
+import { IContentParams, IEmailSave } from 'app/common/model/email-config.model';
 import { GROUP_PARAM } from 'app/constants/email-config';
-import classnames from 'classnames';
 import {
-  getContentParamAction
+  getContentParamAction, createEmailAction, getEmailDetailAction, editEmailAction
 } from 'app/actions/email-config';
 import './email-form.scss';
-import { divideDurationByDuration } from 'fullcalendar';
+import { RouteComponentProps } from 'react-router-dom';
+import CkeditorFixed from 'app/layout/ckeditor/CkeditorFixed';
+import EditorPreview from './editor-preview'
 
-interface IEmailFormManagementProps extends StateProps, DispatchProps { }
+interface IEmailFormManagementProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> { }
 interface IEmailFormManagementState {
   visiblePopOver: boolean;
   activeKey: string;
   contentParams: IContentParams[];
-  contentEmail: string;
+  emailsave: IEmailSave;
+  messageErrorEmailName: any;
+  messageErrorEmailSubject: any;
 }
+
+
 const { TabPane } = Tabs;
 const groupParams = [
   {
@@ -47,10 +50,24 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
     visiblePopOver: false,
     activeKey: groupParams[0].code,
     contentParams: [],
-    contentEmail: ''
+    emailsave: {},
+    messageErrorEmailName: '',
+    messageErrorEmailSubject: ''
   };
 
   componentDidMount = async () => {
+    let emailId = this.props.match.params.id;
+    if (emailId) {
+      await this.props.getEmailDetailAction(emailId);
+      this.setState({
+        emailsave: {
+          id: this.props.emailDetail.id,
+          name: this.props.emailDetail.name,
+          subject: this.props.emailDetail.subject,
+          content: this.props.emailDetail.content
+        }
+      });
+    }
     await this.props.getContentParamAction();
     this.getContentParam(this.state.activeKey);
   }
@@ -59,9 +76,76 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
     location.assign('#/app/views/config/emails');
   }
 
+  onChangeInput = (value, field) => {
+    let emailSave = this.state.emailsave;
+    emailSave[field] = value;
+    this.setState({
+      emailsave: emailSave
+    });
+    switch (field) {
+      case 'name':
+        this.validateEmailName(emailSave); break;
+      case 'subject':
+        this.validateEmailSubject(emailSave); break;
+      default: break;
+    }
+  }
+
+
+  validateEmailName(emailSave: IEmailSave) {
+    if (emailSave && emailSave.name && emailSave.name.trim() !== '') {
+      this.setState({
+        messageErrorEmailName: ''
+      });
+    } else {
+      this.setState({
+        messageErrorEmailName: (<div><label className="message-error" style={{ color: 'red', marginLeft: '90px' }}>Tên email không được để trống</label></div>)
+      });
+    }
+  }
+
+  validateEmailSubject(emailSave: IEmailSave) {
+    if (emailSave && emailSave.subject && emailSave.subject.trim() !== '') {
+      this.setState({
+        messageErrorEmailSubject: ''
+      });
+    } else {
+      this.setState({
+        messageErrorEmailSubject: (<div><label className="message-error" style={{ color: 'red', marginLeft: '90px' }}>Tiêu đề email không được để trống</label></div>)
+      });
+    }
+  }
+
+  validateForm = (emailSave: IEmailSave) => {
+    this.validateEmailName(emailSave);
+    this.validateEmailSubject(emailSave);
+    if (emailSave.name && emailSave.name.trim() !== ''
+      && emailSave.subject && emailSave.subject.trim() !== '') {
+      return true;
+    }
+    return false;
+  };
 
   saveEmail = () => {
-    console.log(this.state.contentEmail);
+    let emailId = this.props.match.params.id;
+    let url = this.props.match.url;
+    let { emailsave } = this.state;
+    if (this.validateForm(emailsave)) {
+      let emailSaveValidate = {
+        ...emailsave,
+        name: emailsave.name.trim(),
+        subject: emailsave.subject.trim(),
+      }
+
+      // update
+      if (emailId && url && url.includes('edit')) {
+        this.props.editEmailAction(emailId, emailSaveValidate);
+      } else {
+        // create, copy
+        this.props.createEmailAction(emailSaveValidate);
+      }
+
+    }
   }
 
   title = (<div className="title-content-param">
@@ -99,12 +183,15 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
     return content;
   }
 
-  handleModelChange = event => {
-    console.log(event);
+  onEditorChange = event => {
+    let emailSave = this.state.emailsave;
+    emailSave.content = event.editor.getData();
+    this.setState({
+      emailsave: emailSave
+    });
   };
 
   selectParam = paramCode => {
-    debugger
     let sel, range;
     let newWindow = document.getElementsByTagName('iframe')[0].contentWindow;
 
@@ -118,11 +205,18 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
     }
 
     let newValue = document.getElementsByTagName('iframe')[0].contentWindow.document;
-    this.setState({ contentEmail: newValue.documentElement.outerHTML });
+    this.setState({
+      emailsave: {
+        ...this.state.emailsave,
+        content: newValue.documentElement.outerHTML
+      }
+    });
   };
 
   render() {
+    let { emailsave, messageErrorEmailName, messageErrorEmailSubject } = this.state;
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
+    console.log('aaaaaaaaaaaaaaaaaaaaa', emailsave)
     return (
       <Loader message={spinner1} show={false} priority={1}>
         <Fragment>
@@ -130,7 +224,7 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
             <div className="email-form-title-header">
               <Button onClick={this.back}>Back</Button>
               <div className="button-group">
-                <Button color="primary" onClick = {()=>{this.saveEmail}}>
+                <Button color="primary" onClick={this.saveEmail}>
                   Save
                       </Button>
                 <Button color="primary" style={{ marginLeft: "5px" }}>
@@ -142,13 +236,29 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
               <div className="email-input-group">
                 <label>Email Name</label>
                 <Input
+                  className="tab-info"
+                  id="email-name"
+                  type="text"
+                  placeholder=""
+                  value={emailsave.name}
+                  onChange={event => this.onChangeInput(event.target.value, 'name')}
+                  maxLength={160}
                 />
               </div>
+              {messageErrorEmailName}
               <div className="email-input-group">
                 <label>Email Subject</label>
                 <Input
+                  className="tab-info"
+                  id="email-subject"
+                  type="text"
+                  placeholder=""
+                  value={emailsave.subject}
+                  onChange={event => this.onChangeInput(event.target.value, 'subject')}
+                  maxLength={160}
                 />
               </div>
+              {messageErrorEmailSubject}
               <div className="email-content">
                 <div style={{ float: 'right' }}>
                   <Popover placement="leftTop"
@@ -163,19 +273,13 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
                 <div style={{ clear: 'both' }}></div>
                 <div style={{ marginTop: '10px' }}>
                   <CKEditor
-                    id={''}
-                    editorName="editor2"
-                    data={this.state.contentEmail}
+                    id={'ckeditor'}
+                    data={emailsave.content}
                     config={{
                       extraPlugins: 'stylesheetparser'
                     }}
                     onBeforeLoad={CKEDITOR => (CKEDITOR.disableAutoInline = true)}
-                    onInit={event => {
-                      console.log(event);
-                    }}
-                    onChange={event => {
-                      this.handleModelChange(event.editor.getData());
-                    }}
+                    onChange={this.onEditorChange}
                   />
                 </div>
               </div>
@@ -188,11 +292,15 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
 }
 
 const mapStateToProps = ({ emailConfigState }: IRootState) => ({
-  contentParams: emailConfigState.contentParams
+  contentParams: emailConfigState.contentParams,
+  emailDetail: emailConfigState.emailDetail
 });
 
 const mapDispatchToProps = {
-  getContentParamAction
+  getContentParamAction,
+  createEmailAction,
+  editEmailAction,
+  getEmailDetailAction
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

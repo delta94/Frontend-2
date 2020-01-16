@@ -102,6 +102,23 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
     location.assign('#/app/views/config/emails/add');
   }
 
+  editEmail = () => {
+    let { listCheckboxItem } = this.state;
+    let listItemChecked = listCheckboxItem.filter(item => item.checked == true);
+    if (listItemChecked && listItemChecked.length == 1) {
+      location.assign('#/app/views/config/emails/' + listItemChecked[0].id + '/edit');
+    }
+  }
+
+  copyEmail = () => {
+    let { listCheckboxItem } = this.state;
+    let listItemChecked = listCheckboxItem.filter(item => item.checked == true);
+    if (listItemChecked && listItemChecked.length == 1) {
+      location.assign('#/app/views/config/emails/' + listItemChecked[0].id + '/copy');
+    }
+  }
+
+
   render() {
     let { total, totalPages, loading } = this.props;
     let { textSearch, activePage, itemsPerPage, listCheckboxItem } = this.state;
@@ -134,7 +151,7 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
                 />
                 <UncontrolledDropdown>
                   <DropdownToggle>
-                  Thêm mới email
+                    Thêm mới email
                  </DropdownToggle>
                   <DropdownMenu right className="dropdown-menu-sm">
                     <DropdownItem>Thêm từ template</DropdownItem>
@@ -148,10 +165,10 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
                 {
                   isVisable ? (
                     <div className="button-group">
-                      <Button color="primary">
+                      <Button color="primary" onClick={() => this.editEmail()}>
                         Sửa
                       </Button>
-                      <Button color="primary" style={{ marginLeft: "5px" }}>
+                      <Button color="primary" style={{ marginLeft: "5px" }} onClick={() => this.copyEmail()}>
                         Sao chép
                       </Button>
                       <Button color="danger" style={{ marginLeft: "5px" }} onClick={() => this.deleteEmail()}>

@@ -24,3 +24,10 @@ export interface IContentParams {
   groupParam?: string;
 }
 
+export interface IEmailSave {
+  id?: string;
+  name?: string;
+  subject?: string;
+  content?: string;
+}
+
