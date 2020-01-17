@@ -105,7 +105,8 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
   }
 
   getNameSms = () => {
-    const { listFieldData, idNode } = this.props;
+    
+    const { listFieldData, idNode, list_clone_version } = this.props;
     let result: string;
     listFieldData.messageConfig &&
       listFieldData.messageConfig.map(item => {
@@ -113,6 +114,14 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
           result = item.name;
         }
       });
+      debugger
+    if (Object.keys(list_clone_version).length > 0 && list_clone_version.cjId && !result) {
+      list_clone_version.flowDetail.nodeMetaData.map(item => {
+        if (item.nodeId = idNode.id) {
+          result = item.nodeConfig.name
+        }
+      })
+    }
     return result;
   };
 
@@ -132,25 +141,25 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
     let nameSMS = this.getNameSms();
     return (
       <Modal className="modal-message-config" isOpen={isOpenModal}>
-        <ModalHeader toggle={this.toggle}><Translate contentKey = "config-message.send-sms" /></ModalHeader>
+        <ModalHeader toggle={this.toggle}><Translate contentKey="config-message.send-sms" /></ModalHeader>
         <ModalBody>
           <Row>
             <Row>
               <Col span={1}>
-                <label className="label-message"><Translate contentKey = "config-message.name" /></label>
+                <label className="label-message"><Translate contentKey="config-message.name" /></label>
               </Col>
               <Col span={14}>
                 <Input defaultValue={nameSMS} id="name-message" maxLength={160} style={{ float: 'right', width: '92%' }} />
               </Col>
               <Col span={3} style={{ textAlign: 'right', paddingRight: '2%' }}>
-                <label className="label-message"><Translate contentKey = "config-message.param" /></label>
+                <label className="label-message"><Translate contentKey="config-message.param" /></label>
               </Col>
 
               <Col span={6}>
                 <Select defaultValue="Tên" style={{ width: '100%' }} onChange={this.insertAtCursor}>
-                  <Option value="{{Tên}}"><Translate contentKey = "config-message.name" /></Option>
-                  <Option value="{{Email}}"><Translate contentKey = "config-message.email" /></Option>
-                  <Option value="{{Số Điện Thoại}}"><Translate contentKey = "config-message.phone" /></Option>
+                  <Option value="{{Tên}}"><Translate contentKey="config-message.name" /></Option>
+                  <Option value="{{Email}}"><Translate contentKey="config-message.email" /></Option>
+                  <Option value="{{Số Điện Thoại}}"><Translate contentKey="config-message.phone" /></Option>
                 </Select>
               </Col>
             </Row>
@@ -158,7 +167,7 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
             <br />
             <Row>
               <Col span={2}>
-                <label className="label-message"><Translate contentKey = "config-message.content" /></label>
+                <label className="label-message"><Translate contentKey="config-message.content" /></label>
               </Col>
               <Col span={22}>
                 <TextArea defaultValue={this.getNameContent()} onKeyUp={() => this.count()} id="text-content" maxLength={240} rows={10} />
@@ -170,10 +179,10 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
         </ModalBody>
         <ModalFooter>
           <Button type="link" style={{ color: "black" }} onClick={this.toggle}>
-          <Translate contentKey = "config-email.cancel" />
+            <Translate contentKey="config-email.cancel" />
           </Button>
           <Button type="primary" style={{ background: "#3866DD" }} onClick={this.save}>
-          <Translate contentKey = "config-email.chosse" />
+            <Translate contentKey="config-email.chosse" />
           </Button>{' '}
         </ModalFooter>
       </Modal>
@@ -182,7 +191,8 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
 }
 const mapStateToProps = ({ campaignManagament }: IRootState) => ({
   loading: campaignManagament.loading,
-  listFieldData: campaignManagament.listFieldData
+  listFieldData: campaignManagament.listFieldData,
+  list_clone_version: campaignManagament.cloneInfoVersion
 });
 
 const mapDispatchToProps = {

@@ -43,7 +43,7 @@ interface IAdvancedSearchesData {
 interface IComponentData {
   id: string;
   name?: string;
-  last_index: boolean;
+   last_index: boolean;
   default_data?: ISearchAdvanced;
 }
 
@@ -344,6 +344,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
       list_field_data_cpn && list_field_data_cpn.length > 0
         ? list_field_data_cpn.map(item => {
             if (item.id)
+            console.log(item)
               return (
                 <FieldData
                   type_modal={type_modal}

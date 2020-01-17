@@ -30,15 +30,15 @@ class ModalIteractive extends React.Component<IModalIteractiveProps, IModalItera
         onOk={this.hideModal}
         footer={[
           <Button key="submit" color="none" onClick={this.hideModal}>
-            <Translate contentKey=" detail-flow.modal.close" />
+            <Translate contentKey="detail-flow.modal.close" />
           </Button>
         ]}
       >
         <Table responsive striped className="main-table-interactive">
           <thead>
-            <th> <Translate contentKey=" detail-flow.modal.action" /></th>
-            <th><Translate contentKey=" detail-flow.modal.status" /></th>
-            <th><Translate contentKey=" detail-flow.modal.time" /></th>
+            <th> <Translate contentKey="detail-flow.modal.action" /></th>
+            <th><Translate contentKey="detail-flow.modal.status" /></th>
+            <th><Translate contentKey="detail-flow.modal.time" /></th>
           </thead>
           <tbody>
             {list_customer_interactive &&
@@ -46,7 +46,7 @@ class ModalIteractive extends React.Component<IModalIteractiveProps, IModalItera
                 return (
                   <tr key={index}>
                     <td>{item.activityName}</td>
-                    <td><Translate contentKey=" detail-flow.modal.complete" /></td>
+                    <td><Translate contentKey="detail-flow.modal.complete" /></td>
                     <td>{item.endTime}</td>
                   </tr>
                 );

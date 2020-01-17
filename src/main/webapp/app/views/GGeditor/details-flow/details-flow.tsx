@@ -15,7 +15,8 @@ import {
   getListCustomerVersionProcess,
   viewInteractive,
   stopVersion,
-  cloneVersionById
+  cloneVersionById,
+  saveCampaignAutoVersion
 } from 'app/actions/campaign-managament';
 import { img_node, const_shape } from 'app/common/model/campaign-managament.model';
 import LoaderAnim from 'react-loaders';
@@ -171,8 +172,16 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     }
   };
   createNewVersion = async () => {
-    const { getDiagramCampaign, cloneVersionById, clone_version } = this.props;
+    const { getDiagramCampaign, cloneVersionById, clone_version, saveCampaignAutoVersion } = this.props;
+    let infoVersion = {
+      type: 'view',
+      nameVersion: '',
+      idVersion: '',
+      cjId: '',
+      status: ''
+    }
     await cloneVersionById(clone_version.cjId)
+    await saveCampaignAutoVersion(infoVersion);
     await window.location.assign(`#/flow`);
   };
   render() {
@@ -288,7 +297,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
               <Collapse bordered={false} defaultActiveKey={['1']} expandIconPosition="right">
                 <Panel header="Lịch sử" key="1">
                   <CardBody className="card-body-details">
-                    <label>{countCustomerVersionProcess} <Translate contentKey = "detail-flow.record" /></label>
+                    <label>{countCustomerVersionProcess} <Translate contentKey="detail-flow.record" /></label>
                     <Input
                       style={{ width: '20%', float: 'right', marginBottom: '1%' }}
                       type="text"
@@ -299,11 +308,11 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                     <Table responsive striped className="main-table-version">
                       <thead>
                         <th />
-                        <th><Translate contentKey = "detail-flow.table.name" /></th>
-                        <th><Translate contentKey = "detail-flow.table.last-name" /></th>
-                        <th><Translate contentKey = "detail-flow.table.email" /></th>
-                        <th><Translate contentKey = "detail-flow.table.phone" /></th>
-                        <th><Translate contentKey = "detail-flow.table.status" /></th>
+                        <th><Translate contentKey="detail-flow.table.name" /></th>
+                        <th><Translate contentKey="detail-flow.table.last-name" /></th>
+                        <th><Translate contentKey="detail-flow.table.email" /></th>
+                        <th><Translate contentKey="detail-flow.table.phone" /></th>
+                        <th><Translate contentKey="detail-flow.table.status" /></th>
                         <th />
                       </thead>
                       <tbody>
@@ -373,7 +382,8 @@ const mapDispatchToProps = {
   getListCustomerVersionProcess,
   viewInteractive,
   stopVersion,
-  cloneVersionById
+  cloneVersionById,
+  saveCampaignAutoVersion
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

@@ -293,7 +293,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
           },
           onCancel() { },
           okText: translate("campaign-auto.modal.ok-submit-text"),
-          cancelText: 'translate("campaign-auto.modal.cancel")'
+          cancelText: translate("campaign-auto.modal.cancel")
         });
       } else {
         Modal.warning({
@@ -584,7 +584,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
                   <th style={{ width: '4%' }} />
                   <th style={{ width: '25%' }}> <Translate contentKey="campaign-auto.table.version" /></th>
                   <th> <Translate contentKey="campaign-auto.table.status" /></th>
-                  <th style={{ width: '25%' }}> <Translate contentKey="campaign-auto.table.result" /></th>
+                  <th style={{ width: '20%' }}> <Translate contentKey="campaign-auto.table.result" /></th>
                   <th> <Translate contentKey="campaign-auto.table.last-edit" /></th>
                 </thead>
                 <tbody>
