@@ -26,6 +26,13 @@ import CjTagModal from './cj-tag-modal/cj-tag-modal';
 import { STATUS_CJ } from 'app/constants/cj';
 import { img_node, const_shape } from 'app/common/model/campaign-managament.model';
 import CJTagPopOver from './cj-popup/cj-popover';
+//TODO: step 0
+import ReactTable from 'react-table-6';
+import withDraggableColumns from 'react-table-hoc-draggable-columns';
+import 'react-table-hoc-draggable-columns/dist/styles.css';
+
+//TODO: step 1
+const ReactTableDraggableColumns = withDraggableColumns(ReactTable);
 
 interface ICampaignListProps extends StateProps, DispatchProps {
   folder_id_choose?: string;
@@ -48,6 +55,9 @@ interface ICampaignListState {
   list_tag: any[];
   isOpenModalList: boolean;
   list_tag_default: any[];
+  //TODO: step 2
+  data: any[];
+  columns: any[];
 }
 
 const code_node = {
@@ -78,14 +88,214 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
     id: '',
     list_tag: [],
     isOpenModalList: false,
-    list_tag_default: []
+    list_tag_default: [],
+    //TODO: step 3
+    data: [],
+    columns: [
+      {
+        accessor: 'index',
+        Header: this.renderHeader('index'),
+        width: 50,
+        Cell: row => this.renderCell('index', row.original, row.index)
+      },
+      {
+        accessor: 'campaign',
+        Header: this.renderHeader('campaign'),
+        Cell: row => this.renderCell('campaign', row.original, row.index)
+      },
+      {
+        accessor: 'status',
+        Header: this.renderHeader('status'),
+        Cell: row => this.renderCell('status', row.original, row.index)
+      },
+      {
+        accessor: 'result',
+        Header: this.renderHeader('result'),
+        Cell: row => this.renderCell('result', row.original, row.index),
+        width: 300
+      },
+      {
+        accessor: 'last_edit',
+        Header: this.renderHeader('last_edit'),
+        Cell: row => this.renderCell('last_edit', row.original, row.index)
+      },
+      {
+        accessor: 'manipulation',
+        Header: this.renderHeader('manipulation'),
+        Cell: row => this.renderCell('manipulation', row.original, row.index)
+      }
+    ]
   };
+
+  //TODO: step 4
+  renderHeader(id) {
+    switch (id) {
+      case 'index':
+        return <Translate contentKey="campaign-auto.table.index" />;
+      case 'campaign':
+        return <Translate contentKey="campaign-auto.table.campaign" />;
+      case 'status':
+        return <Translate contentKey="campaign-auto.table.status" />;
+      case 'result':
+        return <Translate contentKey="campaign-auto.table.result" />;
+      case 'last_edit':
+        return <Translate contentKey="campaign-auto.table.last-edit" />;
+      case 'manipulation':
+        return <Translate contentKey="campaign-auto.table.manipulation" />;
+    }
+  }
+
+  //TODO: step 5
+  renderCell(id, item, index) {
+    switch (id) {
+      case 'index':
+        return <span>{this.state.activePage * this.state.itemsPerPage + index + 1}</span>;
+      case 'campaign':
+        return (
+          <div>
+            {' '}
+            <a onClick={() => this.viewVersion(item.cjVersionId)}>{item.name ? item.name : ''}</a> <br />
+            <span>
+              DEMO: <Translate contentKey="campaign-auto.table.version" /> {item.version}
+            </span>
+            <br />
+            {item.tags
+              ? item.tags.split(',').map((v, i) => {
+                  return (
+                    <Tag color="blue" key={i}>
+                      {v}
+                    </Tag>
+                  );
+                })
+              : null}
+          </div>
+        );
+      case 'status':
+        return <div>{this.renderStatusName(item.status)}</div>;
+      case 'result':
+        return (
+          <div>
+            <Progress
+              animated
+              color={this.countContact(item.contactCompleted, item.contactNumbers) < 100 ? 'warning' : 'success'}
+              value={this.countContact(item.contactCompleted, item.contactNumbers)}
+            >
+              <label className="text-process" style={{ color: ' #6C757D', marginTop: '9px' }}>
+                {item.contactCompleted}/{item.contactNumbers} contact
+              </label>
+            </Progress>
+          </div>
+        );
+      case 'last_edit':
+        return <span> {item.modifiedDate}</span>;
+      case 'manipulation':
+        return (
+          <div>
+            <CJTagPopOver key={item.cjVersionId} dataPopup={item} getCjs={this.getCjs} />
+            {/* <Icon onClick={() => this.openModalCjTag(item.id)} style={{ fontSize: '24px' }} type="tags" />  */}
+            {/* <PopverAnt
+                            overlayClassName="pop-tag"
+                            content={this.contentTag(item)}
+                            title="Chọn tag"
+                            trigger="click"
+                            placement="bottomRight"
+                            visible={item.check}
+                            onVisibleChange={async visible => {
+                              if (visible) {
+                                await this.props.getCjTagsByCjIdAction(item.id);
+                                this.setState({ list_tag_default: this.props.valueComboTag });
+                              }
+                              this.handleVisibleChange(visible, item.id);
+                            }}
+                          >
+                            <img src={img_tag} />
+                          </PopverAnt> */}
+            &nbsp; &nbsp;
+            <PopverAnt
+              overlayClassName="pop-version"
+              content={
+                <div>
+                  <Icon type="snippets" />
+                  <Button
+                    onClick={() => {
+                      window.location.assign(`/#/app/views/campaigns/campaign-managament/version/${item.cjVersionId}`);
+                    }}
+                    type="link"
+                  >
+                    <Translate contentKey="campaign-auto.list.view-list-campaign" />
+                  </Button>
+                </div>
+              }
+              title=""
+              trigger="click"
+            >
+              {/* <Icon style={{ fontSize: '24px' }} type="unordered-list" /> */}
+              <FontAwesomeIcon style={{ fontSize: '24px', verticalAlign: 'inherit', color: '#3866DD' }} icon={faEllipsisH} />
+            </PopverAnt>
+          </div>
+        );
+    }
+  }
+
+  //TODO: step 6
+  renderStatusName(status: string) {
+    const img_stop = require('app/assets/utils/images/campaign-managament/stop.png');
+    const img_running = require('app/assets/utils/images/campaign-managament/running.png');
+    const img_finish = require('app/assets/utils/images/campaign-managament/finish.png');
+    const img_draf = require('app/assets/utils/images/campaign-managament/draf.png');
+    let result;
+    switch (status) {
+      case STATUS_CJ.DRAFT:
+        result = (
+          <Fragment>
+            <img style={{ margin: '0px 6px 2px' }} src={img_draf} />
+            <label className="count-campaign">
+              <Translate contentKey="status.draft" />
+            </label>
+          </Fragment>
+        );
+        break;
+      case STATUS_CJ.RUNNING:
+        result = (
+          <Fragment>
+            <img style={{ margin: '0px 6px 2px' }} src={img_running} />
+            <label className="count-campaign">
+              <Translate contentKey="status.running" />
+            </label>
+          </Fragment>
+        );
+        break;
+      case STATUS_CJ.FINISH:
+        result = (
+          <Fragment>
+            <img style={{ margin: '0px 6px 2px' }} src={img_finish} />
+            <label className="count-campaign">
+              <Translate contentKey="status.finish" />
+            </label>
+          </Fragment>
+        );
+        break;
+      case STATUS_CJ.STOP:
+        result = (
+          <Fragment>
+            <img style={{ margin: '0px 6px 2px' }} src={img_stop} />
+            <label className="count-campaign">
+              <Translate contentKey="status.stop" />
+            </label>
+          </Fragment>
+        );
+        break;
+      default:
+        break;
+    }
+    return result;
+  }
 
   componentDidMount() {
     let { strTagId, textSearch, activePage, itemsPerPage } = this.state;
     let folderId = this.props.folder_id_choose;
     this.getListCampaignInfolderDataAction(folderId ? folderId : '-99', textSearch, strTagId, activePage, itemsPerPage);
-    this.props.resetListCloneVersion()
+    this.props.resetListCloneVersion();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -102,7 +312,8 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
       }
     }
 
-    this.setState({ list_camp });
+    //TODO: step 7
+    this.setState({ list_camp, data: list_camp });
   }
 
   hide = () => {
@@ -123,7 +334,8 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
           event.check = visible;
         }
       });
-    this.setState({ visible, list_camp });
+    //TODO: step 8
+    this.setState({ visible, list_camp, data: list_camp });
   }
 
   getListCampaignInfolderDataAction = (folderId, textSearch, strTagId, pageIndex, pageSize) => {
@@ -241,7 +453,6 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
     let graph = list_clone_version.flowDetail.graph;
     let data = {
       nodes: graph.nodes.map(item => {
-
         return {
           type: item.type,
           size: '95*95',
@@ -337,11 +548,15 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
         <div className="link">
           <Button type="link" onClick={() => this.toogleModalCjTagInsert(item.id)}>
             <img src={img_tag} />
-            <span><Translate contentKey="campaign-auto.list.add-tag" /></span>
+            <span>
+              <Translate contentKey="campaign-auto.list.add-tag" />
+            </span>
           </Button>
           <Button type="link" onClick={() => this.toogleModalCjTagList(item.id)} style={{ float: 'right', textDecoration: 'underline' }}>
             <Icon type="menu" />
-            <span><Translate contentKey="campaign-auto.list.tag" /></span>
+            <span>
+              <Translate contentKey="campaign-auto.list.tag" />
+            </span>
           </Button>
         </div>
         <br />
@@ -386,7 +601,9 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
           result = (
             <Fragment>
               <img style={{ margin: '0px 6px 2px' }} src={img_draf} />
-              <label className="count-campaign"><Translate contentKey="status.draft" /></label>
+              <label className="count-campaign">
+                <Translate contentKey="status.draft" />
+              </label>
             </Fragment>
           );
           break;
@@ -394,7 +611,9 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
           result = (
             <Fragment>
               <img style={{ margin: '0px 6px 2px' }} src={img_running} />
-              <label className="count-campaign"><Translate contentKey="status.running" /></label>
+              <label className="count-campaign">
+                <Translate contentKey="status.running" />
+              </label>
             </Fragment>
           );
           break;
@@ -402,7 +621,9 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
           result = (
             <Fragment>
               <img style={{ margin: '0px 6px 2px' }} src={img_finish} />
-              <label className="count-campaign"><Translate contentKey="status.finish" /></label>
+              <label className="count-campaign">
+                <Translate contentKey="status.finish" />
+              </label>
             </Fragment>
           );
           break;
@@ -410,7 +631,9 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
           result = (
             <Fragment>
               <img style={{ margin: '0px 6px 2px' }} src={img_stop} />
-              <label className="count-campaign"><Translate contentKey="status.stop" /></label>
+              <label className="count-campaign">
+                <Translate contentKey="status.stop" />
+              </label>
             </Fragment>
           );
           break;
@@ -420,6 +643,8 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
       return result;
     };
 
+    //TODO: step 10
+    let { data, columns } = this.state;
     return (
       <div className="campaign-list">
         <CjTagInsertModal
@@ -440,14 +665,17 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
             {/* Block out */}
             <Row>
               <Col span={4} />
-              <Col span={11} style={{ textAlign: "right" }}>
-                <label className="label-search"><Translate contentKey ="campaign-auto.list.search-campaign" /></label> &nbsp;
+              <Col span={11} style={{ textAlign: 'right' }}>
+                <label className="label-search">
+                  <Translate contentKey="campaign-auto.list.search-campaign" />
+                </label>{' '}
+                &nbsp;
                 <Input
                   style={{ float: 'right' }}
                   id="searchText"
                   prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
                   value={textSearch}
-                  placeholder= {translate('campaign-auto.list.input-key')}
+                  placeholder={translate('campaign-auto.list.input-key')}
                   onChange={this.onchangeTextSearch}
                   onPressEnter={() => {
                     this.getListCampaignInfolderDataAction(folderId ? folderId : '-99', textSearch, strTagId, activePage, itemsPerPage);
@@ -462,38 +690,58 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                   </label>
                   <CampaignTag handleChange={this.handleChange} />
                 </Col>
-                <Col span={6} style={{ float: 'right', marginRight: "5%" }}>
+                <Col span={6} style={{ float: 'right', marginRight: '5%' }}>
                   <Button
-                    style={{ background: "#3866DD" }}
+                    style={{ background: '#3866DD' }}
                     type="primary"
                     onClick={() => {
                       window.location.assign('/#/app/views/campaigns/campaign-managament/new');
                     }}
                   >
-                    <Translate contentKey = "campaign-auto.list.create-campaign" />
+                    <Translate contentKey="campaign-auto.list.create-campaign" />
                   </Button>
                 </Col>
               </Col>
             </Row>
-            <label><Translate contentKey ="campaign-auto.count-campaign" interpolate = {{element : total}}/></label>
+            <label>
+              <Translate contentKey="campaign-auto.count-campaign" interpolate={{ element: total }} />
+            </label>
+
             {/* Table? */}
+            {/*TODO: step 11*/}
+            {/*<ReactTableDraggableColumns*/}
+            {/*  draggableColumns= {{*/}
+            {/*    mode: 'reorder',*/}
+            {/*    draggable: ['status', 'campaign', 'result', 'last_edit']*/}
+            {/*  }}*/}
+            {/*  data={data}*/}
+            {/*  columns={columns}*/}
+            {/*  className="-striped -highlight"*/}
+            {/*/>*/}
+
             <Table striped>
               <thead>
                 <tr className="text-center">
                   <th className="checkbox-td" colSpan={5}>
-                    <Translate contentKey = "campaign-auto.table.index" />
+                    <Translate contentKey="campaign-auto.table.index" />
                   </th>
-                  <th colSpan={25}>  <Translate contentKey = "campaign-auto.table.campaign" /></th>
+                  <th colSpan={25}>
+                    {' '}
+                    <Translate contentKey="campaign-auto.table.campaign" />
+                  </th>
                   <th colSpan={20} id="status">
-                  <Translate contentKey = "campaign-auto.table.status" />
+                    <Translate contentKey="campaign-auto.table.status" />
                   </th>
                   <th colSpan={15} style={{ width: '25%' }}>
-                  <Translate contentKey = "campaign-auto.table.result" />
+                    <Translate contentKey="campaign-auto.table.result" />
                   </th>
                   <th colSpan={20} id="contact-number">
-                  <Translate contentKey = "campaign-auto.table.last-edit" />
+                    <Translate contentKey="campaign-auto.table.last-edit" />
                   </th>
-                  <th colSpan={15}>  <Translate contentKey = "campaign-auto.table.manipulation" /></th>
+                  <th colSpan={15}>
+                    {' '}
+                    <Translate contentKey="campaign-auto.table.manipulation" />
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -505,27 +753,34 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                         <td colSpan={25} id="name">
                           {' '}
                           <a onClick={() => this.viewVersion(item.cjVersionId)}>{item.name}</a> <br />
-                          <span> <Translate contentKey = "campaign-auto.table.version" /> {item.version}</span>
+                          <span>
+                            {' '}
+                            <Translate contentKey="campaign-auto.table.version" /> {item.version}
+                          </span>
                           <br />
                           {item.tags
                             ? item.tags.split(',').map((value, index) => {
-                              return (
-                                <Tag color="blue" key={index}>
-                                  {value}
-                                </Tag>
-                              );
-                            })
+                                return (
+                                  <Tag color="blue" key={index}>
+                                    {value}
+                                  </Tag>
+                                );
+                              })
                             : null}
                         </td>
                         <td colSpan={20} id="status">
                           {getStatusName(item.status)}
                         </td>
                         <td colSpan={15}>
-                        <Progress
-                              animated
-                              color={this.countContact(item.contactCompleted, item.contactNumbers) < 100 ? "warning" : "success"}
-                              value={this.countContact(item.contactCompleted, item.contactNumbers)}
-                            ><label className = "text-process" style ={{color :" #6C757D", marginTop : "9px"}}>{item.contactCompleted}/{item.contactNumbers} contact</label></Progress>
+                          <Progress
+                            animated
+                            color={this.countContact(item.contactCompleted, item.contactNumbers) < 100 ? 'warning' : 'success'}
+                            value={this.countContact(item.contactCompleted, item.contactNumbers)}
+                          >
+                            <label className="text-process" style={{ color: ' #6C757D', marginTop: '9px' }}>
+                              {item.contactCompleted}/{item.contactNumbers} contact
+                            </label>
+                          </Progress>
                         </td>
                         <td colSpan={15} id="modifier-date">
                           <span> {item.modifiedDate}</span>
@@ -562,7 +817,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                                   }}
                                   type="link"
                                 >
-                                 <Translate contentKey ="campaign-auto.list.view-list-campaign" />
+                                  <Translate contentKey="campaign-auto.list.view-list-campaign" />
                                 </Button>
                               </div>
                             }
@@ -577,12 +832,12 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                     );
                   })
                 ) : (
-                    <tr>
-                      <td className="none-data" colSpan={100}>
-                      <Translate contentKey ="campaign-auto.list.none-customer" />
+                  <tr>
+                    <td className="none-data" colSpan={100}>
+                      <Translate contentKey="campaign-auto.list.none-customer" />
                     </td>
-                    </tr>
-                  )}
+                  </tr>
+                )}
               </tbody>
             </Table>
             <div className="navigation1">
@@ -603,8 +858,8 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                   />
                 </Row>
               ) : (
-                  ''
-                )}
+                ''
+              )}
             </div>
             <br></br>
 
@@ -632,7 +887,7 @@ const mapDispatchToProps = {
   saveCampaignAutoVersion,
   getListCustomerVersionProcess,
   updateCjTagsAction,
-  resetListCloneVersion,
+  resetListCloneVersion
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
