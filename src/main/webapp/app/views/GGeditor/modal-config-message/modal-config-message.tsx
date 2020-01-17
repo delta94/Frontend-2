@@ -105,6 +105,7 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
   }
 
   getNameSms = () => {
+    
     const { listFieldData, idNode, list_clone_version } = this.props;
     let result: string;
     listFieldData.messageConfig &&
@@ -113,6 +114,7 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
           result = item.name;
         }
       });
+      debugger
     if (Object.keys(list_clone_version).length > 0 && list_clone_version.cjId && !result) {
       list_clone_version.flowDetail.nodeMetaData.map(item => {
         if (item.nodeId = idNode.id) {

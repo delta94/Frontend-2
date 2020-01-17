@@ -16,7 +16,7 @@ export interface IListCloneVersion {
       advancedSearches: [{}];
       logicalOperator: string;
     };
-    nodeMetaData: any [{}];
+    nodeMetaData: any [];
     graph: {
       nodes: [
         {
