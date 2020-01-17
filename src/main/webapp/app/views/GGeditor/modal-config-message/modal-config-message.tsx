@@ -114,7 +114,6 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
           result = item.name;
         }
       });
-      debugger
     if (Object.keys(list_clone_version).length > 0 && list_clone_version.cjId && !result) {
       list_clone_version.flowDetail.nodeMetaData.map(item => {
         if (item.nodeId = idNode.id) {
@@ -126,7 +125,7 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
   };
 
   getNameContent = () => {
-    const { listFieldData, idNode } = this.props;
+    const { listFieldData, idNode, list_clone_version } = this.props;
     let result: string;
     listFieldData.messageConfig &&
       listFieldData.messageConfig.map(item => {
@@ -134,6 +133,13 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
           result = item.content;
         }
       });
+      if (Object.keys(list_clone_version).length > 0 && list_clone_version.cjId && !result) {
+        list_clone_version.flowDetail.nodeMetaData.map(item => {
+          if (item.nodeId = idNode.id) {
+            result = item.nodeConfig.content
+          }
+        })
+      }
     return result;
   };
   render() {
