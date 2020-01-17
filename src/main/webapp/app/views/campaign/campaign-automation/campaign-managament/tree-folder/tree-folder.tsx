@@ -29,6 +29,13 @@ export interface ITreeFolderProps extends StateProps, DispatchProps {
   onClick: Function;
 }
 
+const const_action = {
+  CREATE_FOLDER : 'create',
+  EDIT_FOLDER : 'edit',
+  DELETE_FOLDER : 'delete',
+  GET_FOLDER : 'getlist'
+}
+
 export interface ITreeFolderState {
   treeData: any[];
   hover: boolean;
@@ -166,12 +173,13 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
       level = '1';
     }
     switch (option) {
-      case 'create':
+      case const_action.CREATE_FOLDER:
         //debugger;
         if (Number(level) < 3) {
           confirm({
             title: translate('campaign-auto.modal.title-create'),
             content: this.contentCreateFolder(),
+            zIndex : 1000000,
             onOk: async () => {
               let name_folder = $(`#nameTree`).val()
               if (name_folder) {
@@ -197,11 +205,12 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
         }
 
         break;
-      case 'edit':
+      case const_action.EDIT_FOLDER:
         debugger
         confirm({
           title: translate('campaign-auto.modal.title-edit') + ' ' + event.title,
           content: this.contentCreateFolder(),
+          zIndex : 1000000,
           onOk: async () => {
             let name_folder = $(`#nameTree`).val()
             if (name_folder) {
@@ -226,7 +235,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
         });
         break;
 
-      case 'delete':
+      case const_action.DELETE_FOLDER:
         confirm({
           title: translate('campaign-auto.modal.title-delete'),
           content: translate('campaign-auto.modal.content-delete'),
@@ -236,13 +245,14 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
             await getTreeFolder();
             await this.getData();
           },
+          zIndex : 1000000,
           okText: translate('campaign-auto.modal.ok-btn-delete'),
           onCancel() { },
           cancelText: translate('campaign-auto.modal.cancel')
         });
 
         break;
-      case 'getlist':
+      case const_action.DELETE_FOLDER:
         confirm({
           title: translate('campaign-auto.modal.view-details'),
           content: translate('campaign-auto.modal.view-details') + ' ' + event.title,
@@ -250,6 +260,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
             await getListCampaignInfolderDataAction(event ? event.id : null, '', '', 0, 4);
             await onClick(event ? event.id : null);
           },
+          zIndex : 1000000,
           okText: translate('campaign-auto.modal.ok-submit-text'),
           onCancel() { },
           cancelText: translate('campaign-auto.modal.cancel')
@@ -348,7 +359,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
     let id = String(key).split(',')[0] === '0-0' ? '-99' : String(key).split(',')[0];
     level = String(key).split(',')[1];
     if (node) {
-      await getListCampaignInfolderDataAction(id, '', '', 0, 4);
+      await getListCampaignInfolderDataAction(id, '', '', 0, 7);
       await onClick(id);
       await getNode(id);
     }

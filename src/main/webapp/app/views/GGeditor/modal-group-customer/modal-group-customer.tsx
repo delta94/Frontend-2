@@ -108,11 +108,12 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
   };
 
   componentDidMount() {
-    let { logicalOperator, advancedSearches, pageIndex, pageSize } = this.state;
+    let { logicalOperator, advancedSearches, pageIndex, pageSize, selectDate } = this.state;
     let { list_clone_version } = this.props
-    if (Object.keys(list_clone_version).length > 0) {
+    if (Object.keys(list_clone_version).length > 0 && list_clone_version.cjId) {
       logicalOperator = list_clone_version.flowDetail.customerAdvancedSave === null ? '' : list_clone_version.flowDetail.customerAdvancedSave.logicalOperator
       advancedSearches = list_clone_version.flowDetail.customerAdvancedSave === null ? [] : list_clone_version.flowDetail.customerAdvancedSave.advancedSearches
+      this.getValueAdv()
     }
     this.props.getListFieldDataAction();
     this.props.getFindCustomerWithConditionAction({
@@ -171,7 +172,31 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
     }
     return null;
   }
-
+  //clone customer
+  getValueAdv = () => {
+    const { list_clone_version } = this.props
+    let { list_field_data_cpn, logicalOperator } = this.state
+    let data: { logicalOperator: string, advancedSearches: any[] } = list_clone_version.flowDetail.customerAdvancedSave
+    data.advancedSearches.map((item, index) => {
+      let dataSeacrh = {
+        id: Math.random().toString(36).substr(2, 9),
+        name: "new",
+        last_index: index + 1 === data.advancedSearches.length ? true : false,
+        default_data: {
+          fieldCode: item.fieldCode,
+          fieldId: item.fieldId,
+          fieldType: item.fieldType,
+          fieldValue: item.fieldValue,
+          fieldTitle: item.fieldTitle,
+          operator: item.operator,
+          value: item.value
+        }
+      }
+      list_field_data_cpn.push(dataSeacrh)
+    })
+    logicalOperator = data.logicalOperator
+    this.setState({logicalOperator, list_field_data_cpn, advancedSearches : data.advancedSearches})
+  }
   // Update value from state;
   updateValueFromState = (id: string, advancedSearch: ISearchAdvanced) => {
     let { advancedSearchesData, logicalOperator } = this.state;
@@ -377,7 +402,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
     }
   }
   getNameGroup = () => {
-    const { listFieldData } = this.props;
+    const { listFieldData, list_clone_version } = this.props;
     let result: string = "";
     listFieldData.listCampign &&
       listFieldData.listCampign.map(item => {
@@ -385,6 +410,9 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
           result = item.name;
         }
       });
+    if (Object.keys(list_clone_version).length > 0 && list_clone_version.cjId) {
+      result = list_clone_version.flowDetail.customerGroupName
+    }
     return result;
   };
   save = () => {
@@ -496,10 +524,11 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
           <p className="error" style={{ color: "red", marginLeft: "8%" }}> {this.state.error_categoryName}</p>
 
           <div className="input-search">
-            <label className="input-search_label"><Translate contentKey = "config-customer.setting-calender" /></label>
+            <label className="input-search_label"><Translate contentKey="config-customer.setting-calender" /></label>
             <DatePicker
               className="ant-input"
               selected={this.state.selectDate}
+
               timeIntervals={10}
               timeFormat="HH:mm"
               onChange={date => {
@@ -553,7 +582,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
                 }}
               >
                 {' '}
-              <Translate contentKey = "config-customer.expected-list-customer" />
+                <Translate contentKey="config-customer.expected-list-customer" />
               </label>
             </div>
             <Loader message={spinner1} show={loading} priority={1}>

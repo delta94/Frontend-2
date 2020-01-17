@@ -441,13 +441,13 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
             <Row>
               <Col span={4} />
               <Col span={11} style={{ textAlign: "right" }}>
-                <label className="label-search"><Translate contentKey ="campaign-auto.list.search-campaign" /></label> &nbsp;
+                <label className="label-search"><Translate contentKey="campaign-auto.list.search-campaign" /></label> &nbsp;
                 <Input
                   style={{ float: 'right' }}
                   id="searchText"
                   prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
                   value={textSearch}
-                  placeholder= {translate('campaign-auto.list.input-key')}
+                  placeholder={translate('campaign-auto.list.input-key')}
                   onChange={this.onchangeTextSearch}
                   onPressEnter={() => {
                     this.getListCampaignInfolderDataAction(folderId ? folderId : '-99', textSearch, strTagId, activePage, itemsPerPage);
@@ -470,30 +470,30 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                       window.location.assign('/#/app/views/campaigns/campaign-managament/new');
                     }}
                   >
-                    <Translate contentKey = "campaign-auto.list.create-campaign" />
+                    <Translate contentKey="campaign-auto.list.create-campaign" />
                   </Button>
                 </Col>
               </Col>
             </Row>
-            <label><Translate contentKey ="campaign-auto.count-campaign" interpolate = {{element : total}}/></label>
+            <label><Translate contentKey="campaign-auto.count-campaign" interpolate={{ element: total }} /></label>
             {/* Table? */}
             <Table striped>
               <thead>
                 <tr className="text-center">
                   <th className="checkbox-td" colSpan={5}>
-                    <Translate contentKey = "campaign-auto.table.index" />
+                    <Translate contentKey="campaign-auto.table.index" />
                   </th>
-                  <th colSpan={25}>  <Translate contentKey = "campaign-auto.table.campaign" /></th>
-                  <th colSpan={20} id="status">
-                  <Translate contentKey = "campaign-auto.table.status" />
+                  <th colSpan={25}>  <Translate contentKey="campaign-auto.table.campaign" /></th>
+                  <th colSpan={20} style ={{width : "20%"}} id="status">
+                    <Translate contentKey="campaign-auto.table.status" />
                   </th>
-                  <th colSpan={15} style={{ width: '25%' }}>
-                  <Translate contentKey = "campaign-auto.table.result" />
+                  <th colSpan={15} style={{ width: '20%', textAlign: "left" }}>
+                    <Translate contentKey="campaign-auto.table.result" />
                   </th>
                   <th colSpan={20} id="contact-number">
-                  <Translate contentKey = "campaign-auto.table.last-edit" />
+                    <Translate contentKey="campaign-auto.table.last-edit" />
                   </th>
-                  <th colSpan={15}>  <Translate contentKey = "campaign-auto.table.manipulation" /></th>
+                  <th colSpan={15}>  <Translate contentKey="campaign-auto.table.manipulation" /></th>
                 </tr>
               </thead>
               <tbody>
@@ -505,7 +505,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                         <td colSpan={25} id="name">
                           {' '}
                           <a onClick={() => this.viewVersion(item.cjVersionId)}>{item.name}</a> <br />
-                          <span> <Translate contentKey = "campaign-auto.table.version" /> {item.version}</span>
+                          <span> <Translate contentKey="campaign-auto.table.version" /> {item.version}</span>
                           <br />
                           {item.tags
                             ? item.tags.split(',').map((value, index) => {
@@ -517,15 +517,17 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                             })
                             : null}
                         </td>
-                        <td colSpan={20} id="status">
+                        <td
+                          style={{ textAlign: "left", paddingLeft: "4%" }}
+                          colSpan={20} id="status">
                           {getStatusName(item.status)}
                         </td>
                         <td colSpan={15}>
-                        <Progress
-                              animated
-                              color={this.countContact(item.contactCompleted, item.contactNumbers) < 100 ? "warning" : "success"}
-                              value={this.countContact(item.contactCompleted, item.contactNumbers)}
-                            ><label className = "text-process" style ={{color :" #6C757D", marginTop : "9px"}}>{item.contactCompleted}/{item.contactNumbers} contact</label></Progress>
+                          <Progress
+                            animated
+                            color={this.countContact(item.contactCompleted, item.contactNumbers) < 100 ? "warning" : "success"}
+                            value={this.countContact(item.contactCompleted, item.contactNumbers)}
+                          ><label className="text-process" style={{ color: " #6C757D", marginTop: "9px" }}>{item.contactCompleted}/{item.contactNumbers} contact</label></Progress>
                         </td>
                         <td colSpan={15} id="modifier-date">
                           <span> {item.modifiedDate}</span>
@@ -562,7 +564,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                                   }}
                                   type="link"
                                 >
-                                 <Translate contentKey ="campaign-auto.list.view-list-campaign" />
+                                  <Translate contentKey="campaign-auto.list.view-list-campaign" />
                                 </Button>
                               </div>
                             }
@@ -579,8 +581,8 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                 ) : (
                     <tr>
                       <td className="none-data" colSpan={100}>
-                      <Translate contentKey ="campaign-auto.list.none-customer" />
-                    </td>
+                        <Translate contentKey="campaign-auto.list.none-customer" />
+                      </td>
                     </tr>
                   )}
               </tbody>

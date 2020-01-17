@@ -48,12 +48,9 @@ import {
   SmsProcessNodeModel,
   TimeWaitingDecisionNodeModel,
   TrayItemWidget,
-  TrayWidget,
   toConfigData
 } from './flow-diagram-editor';
 import { DiagramWidget } from 'storm-react-diagrams';
-import { string } from 'prop-types';
-import { FlowNodePortModel } from 'app/views/GGeditor/flow-diagram-editor/FlowNodePortModel';
 import { FlowNodeModal } from 'app/views/GGeditor/FlowNodeModal';
 
 const ButtonGroup = Button.Group;
@@ -915,7 +912,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   }
 
   renderFlowDiagram() {
-    let { isOpenModalInfo, idNode, isTest, isOpenModalMessage, isOpenModalWaitForEvent, isOpenModalWait, data, isValidate } = this.state;
+    let { isTest, isValidate } = this.state;
     let { infoCampaign, listDiagram, list_validate, id_active, list_clone_version } = this.props;
     let dataNode = this.editor.getDiagramData();
     const imgSetting = require('app/assets/utils/images/flow/setting.png');
