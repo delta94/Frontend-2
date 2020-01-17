@@ -113,7 +113,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
     if (Object.keys(list_clone_version).length > 0 && list_clone_version.cjId) {
       logicalOperator = list_clone_version.flowDetail.customerAdvancedSave === null ? '' : list_clone_version.flowDetail.customerAdvancedSave.logicalOperator
       advancedSearches = list_clone_version.flowDetail.customerAdvancedSave === null ? [] : list_clone_version.flowDetail.customerAdvancedSave.advancedSearches
-      this.getValueAdv()
+      // this.getValueAdv()
     }
     this.props.getListFieldDataAction();
     this.props.getFindCustomerWithConditionAction({
@@ -410,9 +410,9 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
           result = item.name;
         }
       });
-    if (Object.keys(list_clone_version).length > 0 && list_clone_version.cjId) {
-      result = list_clone_version.flowDetail.customerGroupName
-    }
+    // if (Object.keys(list_clone_version).length > 0 && list_clone_version.cjId) {
+    //   result = list_clone_version.flowDetail.customerGroupName
+    // }
     return result;
   };
   save = () => {
