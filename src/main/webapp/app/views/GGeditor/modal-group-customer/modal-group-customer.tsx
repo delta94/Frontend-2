@@ -108,12 +108,13 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
   };
 
   componentDidMount() {
-    let { logicalOperator, advancedSearches, pageIndex, pageSize, selectDate } = this.state;
+    let { logicalOperator, advancedSearches, pageIndex, pageSize, categoryName } = this.state;
     let { list_clone_version } = this.props
     if (Object.keys(list_clone_version).length > 0 && list_clone_version.cjId) {
       logicalOperator = list_clone_version.flowDetail.customerAdvancedSave === null ? '' : list_clone_version.flowDetail.customerAdvancedSave.logicalOperator
-      advancedSearches = list_clone_version.flowDetail.customerAdvancedSave === null ? [] : list_clone_version.flowDetail.customerAdvancedSave.advancedSearches
-      // this.getValueAdv()
+      advancedSearches = list_clone_version.flowDetail.customerAdvancedSave === null ? [] : list_clone_version.flowDetail.customerAdvancedSave.advancedSearches,
+        categoryName = list_clone_version.flowDetail.customerGroupName
+      this.getValueAdv()
     }
     this.props.getListFieldDataAction();
     this.props.getFindCustomerWithConditionAction({
@@ -122,6 +123,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
       page: pageIndex,
       pageSize
     });
+    this.setState({ categoryName, logicalOperator })
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -175,7 +177,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
   //clone customer
   getValueAdv = () => {
     const { list_clone_version } = this.props
-    let { list_field_data_cpn, logicalOperator } = this.state
+    let { list_field_data_cpn, logicalOperator, advancedSearches } = this.state
     let data: { logicalOperator: string, advancedSearches: any[] } = list_clone_version.flowDetail.customerAdvancedSave
     data.advancedSearches.map((item, index) => {
       let dataSeacrh = {
@@ -195,7 +197,8 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
       list_field_data_cpn.push(dataSeacrh)
     })
     logicalOperator = data.logicalOperator
-    this.setState({logicalOperator, list_field_data_cpn, advancedSearches : data.advancedSearches})
+    advancedSearches = data.advancedSearches
+    this.setState({ list_field_data_cpn, advancedSearches: data.advancedSearches })
   }
   // Update value from state;
   updateValueFromState = (id: string, advancedSearch: ISearchAdvanced) => {
@@ -300,7 +303,8 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
 
   // GetData customer by condition
   getDataListCustomer = (event: any) => {
-    let { advancedSearches, logicalOperator, pageIndex, pageSize } = this.state;
+    let { advancedSearches, logicalOperator, pageIndex, pageSize, list_field_data_cpn } = this.state;
+    advancedSearches = list_field_data_cpn && list_field_data_cpn.map(item => { return { ...item.default_data } })
     if (advancedSearches.length <= 1) {
       logicalOperator = '';
     }
@@ -329,7 +333,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
   // Exec function request
   async execFunctionRequest() {
     let { type_modal, single_group_field } = this.props;
-    let { advancedSearches, categoryName, logicalOperator } = this.state;
+    let { advancedSearches, categoryName, logicalOperator, list_field_data_cpn } = this.state;
 
     categoryName = categoryName.trim();
     switch (type_modal) {
@@ -374,11 +378,14 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
     let count: number = 0
     let customerAdvancedSave = {
       logicalOperator,
-      advancedSearches
+      advancedSearches: list_field_data_cpn && list_field_data_cpn.map(item => { return { ...item.default_data } })
     };
     if (categoryName) {
       this.setState({ error_categoryName: "" })
     } else {
+      if (Object.keys(this.props.list_clone_version).length > 0 && this.props.list_clone_version.cjId) {
+        categoryName = this.props.list_clone_version.flowDetail.customerGroupName
+      }
       count++
       this.setState({ error_categoryName: "* Vui lòng nhập tên nhóm" })
     }
@@ -410,9 +417,9 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
           result = item.name;
         }
       });
-    // if (Object.keys(list_clone_version).length > 0 && list_clone_version.cjId) {
-    //   result = list_clone_version.flowDetail.customerGroupName
-    // }
+    if (Object.keys(list_clone_version).length > 0 && list_clone_version.cjId && !result) {
+      result = list_clone_version.flowDetail.customerGroupName
+    }
     return result;
   };
   save = () => {
