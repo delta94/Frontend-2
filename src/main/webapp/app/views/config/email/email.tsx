@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Input, Icon, Row, Checkbox, Button, Modal, Popover } from 'antd';
-import { Table, ButtonGroup, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { Input, Icon, Row, Checkbox, Modal, Popover } from 'antd';
+import { Table, Button, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { IRootState } from 'app/reducers';
 import LoaderAnim from 'react-loaders';
@@ -118,6 +118,10 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
     }
   }
 
+  createEmailTemplate = () => {
+    location.assign('#/app/views/config/email-template');
+  }
+
 
   render() {
     let { total, totalPages, loading } = this.props;
@@ -150,11 +154,11 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
                   placeholder="Tìm kiếm email"
                 />
                 <UncontrolledDropdown>
-                  <DropdownToggle>
+                  <DropdownToggle color="primary">
                     Thêm mới email
                  </DropdownToggle>
                   <DropdownMenu right className="dropdown-menu-sm">
-                    <DropdownItem>Thêm từ template</DropdownItem>
+                    <DropdownItem onClick={this.createEmailTemplate}>Thêm từ template</DropdownItem>
                     <DropdownItem onClick={this.createEmail}>Thêm mới</DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>

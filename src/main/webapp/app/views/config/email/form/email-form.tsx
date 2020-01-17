@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import CKEditor from 'ckeditor4-react';
-import { Input, Icon, Row, Checkbox, Button, Modal, Popover, Tabs } from 'antd';
-import { Table, ButtonGroup, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Button as Btn } from 'reactstrap';
+import { Input, Button as Btn, Row, Checkbox, Modal, Popover, Tabs } from 'antd';
+import { Table, Button, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { IRootState } from 'app/reducers';
 import LoaderAnim from 'react-loaders';
@@ -16,7 +16,7 @@ import {
 import './email-form.scss';
 import { RouteComponentProps } from 'react-router-dom';
 import CkeditorFixed from 'app/layout/ckeditor/CkeditorFixed';
-import EditorPreview from './editor-preview'
+import EditorPreview from './editor-preview';
 
 interface IEmailFormManagementProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> { }
 interface IEmailFormManagementState {
@@ -55,7 +55,7 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
     messageErrorEmailSubject: ''
   };
 
-  componentDidMount = async () => {
+  async componentDidMount() {
     let emailId = this.props.match.params.id;
     if (emailId) {
       await this.props.getEmailDetailAction(emailId);
@@ -150,11 +150,11 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
 
   title = (<div className="title-content-param">
     <label>Add a Persionaliztion</label>
-    <Button
+    <Btn
       onClick={() => { this.handleVisibleChange(false) }}
     >
       <i className="pe-7s-close-circle" />
-    </Button>
+    </Btn>
   </div>);
 
   getContentParam = activeKey => {
@@ -222,7 +222,7 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
         <Fragment>
           <div className="email-form-management">
             <div className="email-form-title-header">
-              <Button onClick={this.back}>Back</Button>
+              <Button color="primary" onClick={this.back}>Back</Button>
               <div className="button-group">
                 <Button color="primary" onClick={this.saveEmail}>
                   Save
@@ -267,7 +267,7 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
                     visible={this.state.visiblePopOver}
                     onVisibleChange={this.handleVisibleChange}
                     trigger="click">
-                    <Button>Variables</Button>
+                    <Button color="primary">Variables</Button>
                   </Popover>
                 </div>
                 <div style={{ clear: 'both' }}></div>

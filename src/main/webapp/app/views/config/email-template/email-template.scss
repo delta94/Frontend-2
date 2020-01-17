@@ -1,0 +1,41 @@
+.email-template-management {
+    background-color: #fff;
+    .email-template-title-header {
+        font-size: 18px;
+        background: #f9fafb;
+        margin: 0px -10px 10px;
+        padding: 15px 10px;
+        line-height: 10px;
+    }
+    .email-template-search {
+        display: flex;
+        float: right;
+        input {
+            width: 300px;
+        }
+    }
+    .email-template-list {
+        .gutter {
+            margin: 10px;
+            font-size: 18px;
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: normal;
+            height: 150px;
+            border-radius: 3px;
+            border: 1px solid #dbe1e7;
+            .gutter-content {
+                height:80%;
+                background-color: cornsilk;
+                button {
+                    top: 42%;
+                    left: 40%;
+                }
+            }
+            .gutter-title {
+                height: 20%;
+                background-color: burlywood;
+            }
+        }
+    }
+}
