@@ -9,7 +9,8 @@ import {
 } from 'reactstrap';
 import PageTitle from '../../../../layout/AppMain/PageTitle';
 
-import ReactTable from "react-table";
+import ReactTable from "react-table-6";
+
 
 import {makeData} from "./utils";
 

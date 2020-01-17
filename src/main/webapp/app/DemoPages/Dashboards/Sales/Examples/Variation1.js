@@ -3,7 +3,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import {Progress} from 'react-sweet-progress';
 import classnames from 'classnames';
 import Ionicon from 'react-ionicons';
-import ReactTable from "react-table";
+import ReactTable from "react-table-6";
 
 import {
     Row, Col,

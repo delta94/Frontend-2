@@ -6,7 +6,7 @@ import {
     Card, CardBody,
 } from 'reactstrap';
 
-import ReactTable from "react-table";
+import ReactTable from "react-table-6";
 import PageTitle from '../../../../layout/AppMain/PageTitle';
 
 import {makeData} from "./utils";
