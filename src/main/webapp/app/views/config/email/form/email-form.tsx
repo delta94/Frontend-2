@@ -13,12 +13,13 @@ import { GROUP_PARAM } from 'app/constants/email-config';
 import {
   getContentParamAction, createEmailAction, getEmailDetailAction, editEmailAction
 } from 'app/actions/email-config';
+import { getContentTemplate } from 'app/actions/user-campaign'
 import './email-form.scss';
 import { RouteComponentProps } from 'react-router-dom';
 import CkeditorFixed from 'app/layout/ckeditor/CkeditorFixed';
 import EditorPreview from './editor-preview';
 
-interface IEmailFormManagementProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> { }
+interface IEmailFormManagementProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any, idTemplate: any }> { }
 interface IEmailFormManagementState {
   visiblePopOver: boolean;
   activeKey: string;
@@ -57,6 +58,8 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
 
   async componentDidMount() {
     let emailId = this.props.match.params.id;
+    let idTemplate = this.props.match.params.idTemplate;
+    // edit, copy email
     if (emailId) {
       await this.props.getEmailDetailAction(emailId);
       this.setState({
@@ -65,6 +68,19 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
           name: this.props.emailDetail.name,
           subject: this.props.emailDetail.subject,
           content: this.props.emailDetail.content
+        }
+      });
+    }
+    // copy email-template
+    if (idTemplate) {
+      let emailTemplate: any
+      emailTemplate = this.props.listContentTemplate
+      await this.props.getContentTemplate(idTemplate);
+      this.setState({
+        emailsave: {
+          name: emailTemplate.name,
+          subject: emailTemplate.subject,
+          content: emailTemplate.content
         }
       });
     }
@@ -171,13 +187,13 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
   content = () => {
     let content = (<div className="content-param">
       <Tabs tabPosition={'left'} onChange={this.getContentParam} defaultActiveKey={this.state.activeKey}>
-        {groupParams ? groupParams.map((item, index) =>
+        {groupParams.map((item, index) =>
           (<TabPane tab={item.name} key={item.code}>
             {this.state.contentParams ? this.state.contentParams.map((item, index) => (
               <div className="tabs-param" key={index}><label onClick={() => { this.selectParam(item.paramCode) }}>{item.paramName}</label></div>
             )) : ''}
           </TabPane>)
-        ) : ''}
+        )}
       </Tabs>
     </div>);
     return content;
@@ -227,7 +243,7 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
                 <Button color="primary" onClick={this.saveEmail}>
                   Save
                       </Button>
-                <Button color="primary" style={{ marginLeft: "5px" }}>
+                <Button color="primary" style={{ marginLeft: '10px', marginRight: '10px' }}>
                   Save as Template
                       </Button>
               </div>
@@ -269,6 +285,7 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
                     trigger="click">
                     <Button color="primary">Variables</Button>
                   </Popover>
+                  <Button color="primary" style={{ marginLeft: '10px' }}>Preview</Button>
                 </div>
                 <div style={{ clear: 'both' }}></div>
                 <div style={{ marginTop: '10px' }}>
@@ -291,16 +308,18 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
   }
 }
 
-const mapStateToProps = ({ emailConfigState }: IRootState) => ({
+const mapStateToProps = ({ emailConfigState, userCampaign }: IRootState) => ({
   contentParams: emailConfigState.contentParams,
-  emailDetail: emailConfigState.emailDetail
+  emailDetail: emailConfigState.emailDetail,
+  listContentTemplate: userCampaign.listContentTemplate
 });
 
 const mapDispatchToProps = {
   getContentParamAction,
   createEmailAction,
   editEmailAction,
-  getEmailDetailAction
+  getEmailDetailAction,
+  getContentTemplate
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

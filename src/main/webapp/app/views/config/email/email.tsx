@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Input, Icon, Row, Checkbox, Modal, Popover } from 'antd';
-import { Table, Button, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { Table, Button, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Dropdown } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { IRootState } from 'app/reducers';
 import LoaderAnim from 'react-loaders';
@@ -137,9 +137,24 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
       <Loader message={spinner1} show={loading} priority={1}>
         <Fragment>
           <div className="email-management">
-            <div className="email-title-header">
-              <label>Quản lý email</label>
-            </div>
+            <Row>
+              <div className="email-title-header">
+                <label>Quản lý email</label>
+                <div className="dropdown-email">
+                  <Dropdown>
+                    <UncontrolledDropdown>
+                      <DropdownToggle color="primary">
+                        Thêm mới email
+                 </DropdownToggle>
+                      <DropdownMenu right className="dropdown-menu-sm">
+                        <DropdownItem onClick={this.createEmailTemplate}>Thêm từ template</DropdownItem>
+                        <DropdownItem onClick={this.createEmail}>Thêm mới</DropdownItem>
+                      </DropdownMenu>
+                    </UncontrolledDropdown>
+                  </Dropdown>
+                </div>
+              </div>
+            </Row>
             <Row>
               <div className="email-search-group">
                 <Input
@@ -149,19 +164,10 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
                   value={textSearch}
                   onChange={this.onchangeTextSearch}
                   onPressEnter={() => {
-                    this.props.getEmailsAction(textSearch, activePage, itemsPerPage);
+                    this.props.getEmailsAction(textSearch, 0, itemsPerPage);
                   }}
                   placeholder="Tìm kiếm email"
                 />
-                <UncontrolledDropdown>
-                  <DropdownToggle color="primary">
-                    Thêm mới email
-                 </DropdownToggle>
-                  <DropdownMenu right className="dropdown-menu-sm">
-                    <DropdownItem onClick={this.createEmailTemplate}>Thêm từ template</DropdownItem>
-                    <DropdownItem onClick={this.createEmail}>Thêm mới</DropdownItem>
-                  </DropdownMenu>
-                </UncontrolledDropdown>
               </div>
             </Row>
             <Row>
