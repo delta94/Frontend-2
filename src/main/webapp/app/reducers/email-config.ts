@@ -1,6 +1,6 @@
 import { EMAIL_CONFIG } from '../constants/email-config';
 import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
-import { IEmailData, IEmail } from 'app/common/model/email-config.model';
+import { IEmailData, IEmail, IEmailTemplateData } from 'app/common/model/email-config.model';
 import { any } from 'prop-types';
 
 export interface IContentParams {
@@ -11,11 +11,19 @@ export interface IContentParams {
   groupParam?: string;
 }
 
+export interface IEmailTemplateCategory {
+  id?: string;
+  name?: string;
+  code?: string;
+}
+
 const initialState = {
   loading: false,
+  emailTemplateData: {} as IEmailTemplateData,
   emailData: {} as IEmailData,
   contentParams: [] as IContentParams[],
-  emailDetail: {} as IEmail
+  emailDetail: {} as IEmail,
+  emailTemplateCategories: [] as IEmailTemplateCategory[]
 };
 
 export type EmailConfigState = Readonly<typeof initialState>;
@@ -26,6 +34,8 @@ export default (state: EmailConfigState = initialState, action): EmailConfigStat
     case REQUEST(EMAIL_CONFIG.DELETE_EMAIL):
     case REQUEST(EMAIL_CONFIG.GET_CONTENT_PARAM):
     case REQUEST(EMAIL_CONFIG.GET_EMAIL_DETAIL):
+    case REQUEST(EMAIL_CONFIG.GET_EMAIL_TEMP_CATEGORY):
+    case REQUEST(EMAIL_CONFIG.GET_EMAIL_TEMPLATE):
       return {
         ...state,
         loading: true
@@ -50,6 +60,18 @@ export default (state: EmailConfigState = initialState, action): EmailConfigStat
       };
 
     case FAILURE(EMAIL_CONFIG.GET_EMAIL_DETAIL):
+      return {
+        ...state,
+        loading: false
+      };
+
+    case FAILURE(EMAIL_CONFIG.GET_EMAIL_TEMP_CATEGORY):
+      return {
+        ...state,
+        loading: false
+      };
+
+    case FAILURE(EMAIL_CONFIG.GET_EMAIL_TEMPLATE):
       return {
         ...state,
         loading: false
@@ -80,6 +102,20 @@ export default (state: EmailConfigState = initialState, action): EmailConfigStat
         ...state,
         loading: false,
         emailDetail: action.payload.data
+      };
+
+    case SUCCESS(EMAIL_CONFIG.GET_EMAIL_TEMP_CATEGORY):
+      return {
+        ...state,
+        loading: false,
+        emailTemplateCategories: action.payload.data
+      };
+
+    case SUCCESS(EMAIL_CONFIG.GET_EMAIL_TEMPLATE):
+      return {
+        ...state,
+        loading: false,
+        emailTemplateData: action.payload.data
       };
 
     default:

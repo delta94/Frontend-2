@@ -4,6 +4,8 @@ import { IEmailSave } from 'app/common/model/email-config.model'
 const customEmailUrl = 'v1/custom-emails';
 const contentParamUrl = 'v1/content-param';
 const contentUrl = 'v1/contents';
+const emailTempCategoryUrl = 'v1/email-categories'
+const emailTemplateUrl = 'v1/email-templates'
 
 export const getEmails = (textSearch?: string, page?: number, pageSize?: number) => {
   return axios.get(customEmailUrl, { params: { textSearch, page, pageSize }, headers: authHeaders });
@@ -27,5 +29,13 @@ export const createEmail = (emailSave: IEmailSave) => {
 
 export const editEmail = (id: string, emailSave: IEmailSave) => {
   return axios.post(customEmailUrl + '/' + id + '/update', emailSave, { headers: authHeaders });
+};
+
+export const getEmailCategories = () => {
+  return axios.get(emailTempCategoryUrl, { params: {}, headers: authHeaders });
+};
+
+export const getEmailTemplates = (emailCategoryId?: string, textSearch?: string, page?: number, pageSize?: number) => {
+  return axios.get(emailTemplateUrl, { params: { emailCategoryId, textSearch, page, pageSize }, headers: authHeaders });
 };
 
