@@ -8,6 +8,7 @@ import { Button, Row, Col, Input, Select } from 'antd';
 import { updateInfoCampaign } from 'app/actions/campaign-managament';
 import './modal-config-message.scss';
 import { translate, Translate } from 'react-jhipster';
+import { code_node } from 'app/common/model/campaign-managament.model';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -44,12 +45,15 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
       timer: listFieldData.timer ? listFieldData.timer : [],
       getway: listFieldData.getway ? listFieldData.getway : []
     };
+    let message: string = String($(`#name-message`).val())
+    let content: string = String($(`#text-content`).val())
     let fieldMessageConfig = {
       id: this.props.idNode.id,
-      name: $(`#name-message`).val(),
-      content: $(`#text-content`).val()
+      name: message ? message : this.getCloneDetailVersion(this.getNameSms(), 'name'),
+      content: content ? content : this.getCloneDetailVersion(this.getNameSms(), 'content')
     };
-    if (this.checkValidate()) {
+
+    if (this.checkValidate(message, content)) {
       localStorage.removeItem('isSave');
       data.messageConfig = this.remove(data.messageConfig, this.props.idNode);
       data.messageConfig.push(fieldMessageConfig);
@@ -58,12 +62,10 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
     }
   };
 
-  checkValidate = (): boolean => {
+  checkValidate = (message, content): boolean => {
     let { content_error, message_error } = this.state
     let count: number = 0
     let result: boolean = true
-    let message: string = String($(`#name-message`).val())
-    let content: string = String($(`#text-content`).val())
     if (!message) {
       count++;
       message_error = translate("config-message.message-error")
@@ -105,7 +107,7 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
   }
 
   getNameSms = () => {
-    
+
     const { listFieldData, idNode, list_clone_version } = this.props;
     let result: string;
     listFieldData.messageConfig &&
@@ -114,13 +116,6 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
           result = item.name;
         }
       });
-    if (Object.keys(list_clone_version).length > 0 && list_clone_version.cjId && !result) {
-      list_clone_version.flowDetail.nodeMetaData.map(item => {
-        if (item.nodeId = idNode.id) {
-          result = item.nodeConfig.name
-        }
-      })
-    }
     return result;
   };
 
@@ -133,18 +128,25 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
           result = item.content;
         }
       });
-      if (Object.keys(list_clone_version).length > 0 && list_clone_version.cjId && !result) {
-        list_clone_version.flowDetail.nodeMetaData.map(item => {
-          if (item.nodeId = idNode.id) {
-            result = item.nodeConfig.content
-          }
-        })
-      }
     return result;
   };
+  getCloneDetailVersion = (name, info) => {
+    let { list_clone_version, idNode } = this.props;
+    if (!name && Object.keys(list_clone_version).length > 0 && list_clone_version.cjId) {
+      list_clone_version.flowDetail.nodeMetaData.map(item => {
+        if (item.nodeId === idNode.id) {
+          name = item.nodeConfig[info]
+        }
+      })
+    }
+    return name
+  }
   render() {
-    let { isOpenModal } = this.props;
-    let nameSMS = this.getNameSms();
+    let { isOpenModal, list_clone_version, idNode } = this.props;
+    let nameSMS = this.getNameSms() ? this.getNameSms() : this.getCloneDetailVersion(this.getNameSms(), 'name')
+    let contentSMS = this.getNameContent() ? this.getNameContent() : this.getCloneDetailVersion(this.getNameContent(), 'content')
+
+
     return (
       <Modal className="modal-message-config" isOpen={isOpenModal}>
         <ModalHeader toggle={this.toggle}><Translate contentKey="config-message.send-sms" /></ModalHeader>
@@ -176,7 +178,7 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
                 <label className="label-message"><Translate contentKey="config-message.content" /></label>
               </Col>
               <Col span={22}>
-                <TextArea defaultValue={this.getNameContent()} onKeyUp={() => this.count()} id="text-content" maxLength={240} rows={10} />
+                <TextArea defaultValue={contentSMS} onKeyUp={() => this.count()} id="text-content" maxLength={240} rows={10} />
                 <p id="total">0/240</p>
               </Col>
             </Row>

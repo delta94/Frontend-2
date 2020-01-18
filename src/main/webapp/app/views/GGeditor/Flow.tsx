@@ -278,7 +278,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         this.setState({ isOpenModalMessage: !isOpenModalMessage });
         if (isOpenModalMessage && valueName) {
           diagram.nodes.map(item => {
-            if (item.id === idNode.id) {
+            if (item.id === idNode.id && valueName.name) {
               item.label = valueName.name;
             }
           });
@@ -622,6 +622,9 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     const { idFolder, infoCampaign, listFieldData, list_clone_version } = this.props;
     let { timeStartCampaign, advancedSearches, nameGroup } = this.state;
     let nodeMetaData: any[] = [];
+    if (Object.keys(list_clone_version).length > 0 && list_clone_version.cjId) {
+      nodeMetaData = list_clone_version.flowDetail.nodeMetaData
+    }
     listFieldData.emailConfig &&
       listFieldData.emailConfig.forEach(value =>
         nodeMetaData.push({
@@ -630,7 +633,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           nodeConfig: {
             id: value.idEmail,
             name: value.valueName,
-            titlle: value.valueTitle,
+            titlle: value.nameEmail,
             content: null
           }
         })

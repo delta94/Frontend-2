@@ -86,10 +86,7 @@ class ModalGateWay extends React.Component<IModalGateWayProps, IModalGateWayStat
     this.setState({ advancedSearchesData, advancedSearches, logicalOperator });
   };
 
-  componentDidMount() {
-    this.handleAddNewComponent();
-  }
-
+ 
   // Add new component to list_field_data_cpn
   handleAddNewComponent = () => {
     let { list_field_data_cpn, advancedSearchesData } = this.state;
@@ -221,14 +218,57 @@ class ModalGateWay extends React.Component<IModalGateWayProps, IModalGateWayStat
       this.setState({ error_advanced: translate("getway.error-advanced") })
       result = false
     } else {
-      this.setState({ error_advanced : ""})
+      this.setState({ error_advanced: "" })
     }
     return result
   }
 
+  getValueAdv = () => {
+    const { list_clone_version } = this.props
+    let { list_field_data_cpn, logicalOperator, advancedSearches } = this.state
+    let data: { logicalOperator: string, advancedSearches: any[] } = this.getCloneDetailVersion(list_field_data_cpn, 'advancedSearches')
+    data.advancedSearches && data.advancedSearches.map((item, index) => {
+      let dataSeacrh = {
+        id: Math.random().toString(36).substr(2, 9),
+        name: "new",
+        last_index: index + 1 === data.advancedSearches.length ? true : false,
+        default_data: {
+          fieldCode: item.fieldCode,
+          fieldId: item.fieldId,
+          fieldType: item.fieldType,
+          fieldValue: item.fieldValue,
+          fieldTitle: item.fieldTitle,
+          operator: item.operator,
+          value: item.value
+        }
+      }
+      list_field_data_cpn.push(dataSeacrh)
+    })
+    // logicalOperator = data.logicalOperator
+    // advancedSearches = data.advancedSearches
+    // this.setState({ list_field_data_cpn, advancedSearches: data.advancedSearches })
+    return list_field_data_cpn
+  }
+
+  getCloneDetailVersion = (name, info ) => {
+    let { list_clone_version, idNode } = this.props;
+    if (name.length === 0 && Object.keys(list_clone_version).length > 0 && list_clone_version.cjId) {
+      list_clone_version.flowDetail.nodeMetaData.map(item => {
+        if (item.nodeId === idNode.id) {
+          name = {
+            id : Math.random().toString(36).substr(2,9),
+            ...item.nodeConfig.advancedSearches
+          }
+        }
+      })
+    }
+    return name ? name : this.state.list_field_data_cpn
+  }
+
   render() {
-    let { is_show, type_modal } = this.props;
+    let { is_show, type_modal, list_clone_version } = this.props;
     let { list_field_data_cpn, logicalOperator, advancedSearches, categoryName } = this.state;
+    this.getValueAdv()
     let list_field_render =
       list_field_data_cpn && list_field_data_cpn.length > 0
         ? list_field_data_cpn.map(item => {
@@ -285,7 +325,7 @@ class ModalGateWay extends React.Component<IModalGateWayProps, IModalGateWayStat
             <Card>
               <div className="group-addition_content">
                 {list_field_render}
-                <p style={{ color: "red", marginLeft : "5%" }} > {this.state.error_advanced}</p>
+                <p style={{ color: "red", marginLeft: "5%" }} > {this.state.error_advanced}</p>
                 <div className="group-addition_footer">
                   <Button color="primary" onClick={this.handleAddNewComponent}>
                     <FontAwesomeIcon icon={faPlus} />
@@ -312,7 +352,8 @@ class ModalGateWay extends React.Component<IModalGateWayProps, IModalGateWayStat
 const mapStateToProps = ({ tagDataState, groupCustomerState, campaignManagament }: IRootState) => ({
   loading: groupCustomerState.list_customer_with_condition_index.loading,
   info_version: campaignManagament.infoVersion,
-  listFieldData: campaignManagament.listFieldData
+  listFieldData: campaignManagament.listFieldData,
+  list_clone_version: campaignManagament.cloneInfoVersion
 });
 
 const mapDispatchToProps = {
