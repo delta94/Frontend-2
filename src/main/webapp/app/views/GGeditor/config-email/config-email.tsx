@@ -300,11 +300,21 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
     }
   }
 
+  getCloneDetailVersion = (name, info) => {
+    let { list_clone_version, idNode } = this.props;
+    if (!name && Object.keys(list_clone_version).length > 0 && list_clone_version.cjId) {
+      list_clone_version.flowDetail.nodeMetaData.map(item => {
+        if (item.nodeId === idNode.id) {
+          name = item.nodeConfig[info]
+        }
+      })
+    }
+    return name
+  }
 
   render() {
     let { showMailForFriend, defaultValueContent, openModal, idTemplate } = this.state;
-    let { listCampainContentParams, listContentTemplateAsTypeEmailIntro, isOpenModal } = this.props;
-
+    let { listContentTemplateAsTypeEmailIntro, isOpenModal, list_clone_version } = this.props;
     let listTemplate = listContentTemplateAsTypeEmailIntro.map(item => {
       return {
         id: item.id,
@@ -315,6 +325,10 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
         subject: item.subject
       };
     });
+
+    let default_name_email : string = this.getNameEmail() ? this.getNameEmail : this.getCloneDetailVersion(this.getNameEmail(), 'name')
+    let default_title_email : string = this.getNameEmail() ? this.getNameEmail : this.getCloneDetailVersion(this.getNameEmail(), 'titlle')
+
 
     return (
       <Fragment>
@@ -354,7 +368,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
                             <Col span={17}>
                               <label className="input-search_label"><Translate contentKey ="config-email.name" /></label>
                               <Input
-                                defaultValue={this.getNameEmail()}
+                                defaultValue={default_name_email}
                                 style={{ width: '80%' }}
                                 // placeholder={translate('group-attribute-customer.group-modal-config.name-placeholder')}
                                 onChange={e => this.getValueText('name', e)}
@@ -371,7 +385,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
                               <label className="input-search_label"><Translate contentKey ="config-email.chosse-email" /></label>
                               <UncontrolledButtonDropdown style={{ width: '81%' }}>
                                 <DropdownToggle caret className="mb-2 mr-2" style={{ width: '80%' }} color="info" outline>
-                                  {this.contentEmail()}
+                                  {default_title_email}
                                 </DropdownToggle>
 
                                 <DropdownMenu className="dropdown-menu-xl">
@@ -456,7 +470,8 @@ const mapStateToProps = ({ userCampaign, navigationInfo, campaignManagament }: I
     listContentTemplateAsTypeEmailIntro: userCampaign.listContentTemplateAsTypeEmailIntro,
     navigationInfo,
     listFieldData: campaignManagament.listFieldData,
-    list_diagram: campaignManagament.listDiagram
+    list_diagram: campaignManagament.listDiagram,
+    list_clone_version : campaignManagament.cloneInfoVersion
   };
 };
 
