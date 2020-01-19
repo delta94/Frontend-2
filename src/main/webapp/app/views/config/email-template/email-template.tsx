@@ -7,9 +7,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ReactPaginate from 'react-paginate';
 import { IRootState } from 'app/reducers';
 import { Input, Icon, Row, Col, Tag, Tabs, Button } from 'antd';
-import { Button as Btn } from 'reactstrap';
+import { Button as Btn, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import PreviewEmailLanding from './preview/preview';
 import {
-  getEmailCategoriesAction, getEmailTemplatesAction
+  getEmailCategoriesAction, getEmailTemplatesAction, previewEmailTemplateAction
 } from 'app/actions/email-config';
 import './email-template.scss'
 
@@ -21,18 +22,20 @@ interface IEmailTemplateManagementState {
   itemsPerPage: number;
   textSearch: string;
   activeKey: string;
+  openModal: boolean;
 }
 
 const { TabPane } = Tabs;
 const pageDefault: number = 0;
-const pageSizeDefault: number = 3;
+const pageSizeDefault: number = 9;
 
 class EmailTemplateManagement extends React.Component<IEmailTemplateManagementProps, IEmailTemplateManagementState> {
   state: IEmailTemplateManagementState = {
     activePage: 0,
     itemsPerPage: pageSizeDefault,
     textSearch: '',
-    activeKey: ''
+    activeKey: '',
+    openModal: false
   };
 
   async componentDidMount() {
@@ -55,6 +58,7 @@ class EmailTemplateManagement extends React.Component<IEmailTemplateManagementPr
     let { textSearch } = this.state;
     this.props.getEmailTemplatesAction(activeKey, textSearch, pageDefault, pageSizeDefault);
     this.setState({
+      ...this.state,
       activeKey: activeKey
     });
   }
@@ -69,12 +73,34 @@ class EmailTemplateManagement extends React.Component<IEmailTemplateManagementPr
     location.assign('#/app/views/config/emails/' + emailTemplateId + '/copyTemplate');
   }
 
+  previewTemplate = async emailTemplateId => {
+    await this.props.previewEmailTemplateAction(emailTemplateId);
+    this.setState({ openModal: true });
+  }
+
+  toggleModal = () => {
+    this.setState({
+      openModal: !this.state.openModal
+    });
+  }
+
   render() {
-    let { textSearch, activeKey, activePage, itemsPerPage } = this.state;
-    let { totalPages, loading, emailCategories, emailTemplates } = this.props;
+    let { textSearch, activeKey, activePage, itemsPerPage, openModal } = this.state;
+    let { totalPages, loading, emailCategories, emailTemplates, contentTemplate } = this.props;
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
     return (
       <Fragment>
+        <Modal className="modal-config-preview" isOpen={openModal}>
+          <ModalHeader toggle={this.toggleModal}>Landing preview</ModalHeader>
+          <ModalBody>
+            <PreviewEmailLanding htmlDOM={contentTemplate} styleForDOM={''} />
+          </ModalBody>
+          <ModalFooter>
+            <Btn color="primary" onClick={this.toggleModal}>
+              Thoát
+            </Btn>
+          </ModalFooter>
+        </Modal>
         <div className="email-template-management">
           <div className="email-template-title-header">
             <label>Choose Templates</label>
@@ -107,11 +133,17 @@ class EmailTemplateManagement extends React.Component<IEmailTemplateManagementPr
                             {
                               emailTemplates && emailCategories.length > 0 ? (
                                 emailTemplates.map((emailTemplate, index) => (
-                                  <Col span={8} >
+                                  <Col span={8} key={index}>
                                     <div className="gutter">
                                       <div className="gutter-content">
-                                        <Button>Preview</Button>
-                                        <Button onClick={() => this.chooseTemplate(emailTemplate.id)} style={{ marginLeft: '5px' }}>Choose</Button>
+                                        <img
+                                          style={{ width: '100%' }}
+                                          src={emailTemplate.thumbnail}
+                                        />
+                                        <div className="middle">
+                                          <Button onClick={() => this.previewTemplate(emailTemplate.id)}>Preview</Button>
+                                          <Button onClick={() => this.chooseTemplate(emailTemplate.id)} style={{ marginLeft: '5px' }}>Choose</Button>
+                                        </div>
                                       </div>
                                       <div className="gutter-title">{emailTemplate.subject}</div>
                                     </div>
@@ -123,7 +155,7 @@ class EmailTemplateManagement extends React.Component<IEmailTemplateManagementPr
                         ))
                       }
                     </Tabs>
-                  ) : ""
+                  ) : ''
                 }
               </div>
 
@@ -162,11 +194,12 @@ const mapStateToProps = ({ emailConfigState }: IRootState) => ({
   emailTemplates: emailConfigState.emailTemplateData.content,
   total: emailConfigState.emailTemplateData.totalElements,
   totalPages: emailConfigState.emailTemplateData.totalPages,
-  emailCategories: emailConfigState.emailTemplateCategories
+  emailCategories: emailConfigState.emailTemplateCategories,
+  contentTemplate: emailConfigState.contentTemplate
 });
 
 const mapDispatchToProps = {
-  getEmailCategoriesAction, getEmailTemplatesAction
+  getEmailCategoriesAction, getEmailTemplatesAction, previewEmailTemplateAction
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

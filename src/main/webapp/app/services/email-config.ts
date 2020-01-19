@@ -4,6 +4,7 @@ import { IEmailSave } from 'app/common/model/email-config.model'
 const customEmailUrl = 'v1/custom-emails';
 const contentParamUrl = 'v1/content-param';
 const contentUrl = 'v1/contents';
+const contentTemplateUrl = 'v1/content-template';
 const emailTempCategoryUrl = 'v1/email-categories'
 const emailTemplateUrl = 'v1/email-templates'
 
@@ -37,5 +38,9 @@ export const getEmailCategories = () => {
 
 export const getEmailTemplates = (emailCategoryId?: string, textSearch?: string, page?: number, pageSize?: number) => {
   return axios.get(emailTemplateUrl, { params: { emailCategoryId, textSearch, page, pageSize }, headers: authHeaders });
+};
+
+export const previewEmailTemplate = (emailTemplateId: string) => {
+  return axios.get(contentTemplateUrl + '/' + emailTemplateId + "/preview", { params: {}, headers: authHeaders });
 };
 

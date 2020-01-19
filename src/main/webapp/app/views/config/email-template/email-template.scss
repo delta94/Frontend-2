@@ -26,16 +26,42 @@
             font-family: Roboto;
             font-style: normal;
             font-weight: normal;
-            height: 150px;
             border-radius: 3px;
             border: 1px solid #dbe1e7;
+
+            .gutter-content:hover .image {
+                opacity: 0.3;
+              }
+              
+            .gutter-content:hover .middle {
+                opacity: 1;
+              }
+
             .gutter-content {
                 height:80%;
-                background-color: cornsilk;
-                button {
-                    top: 42%;
-                    left: 32%;
-                }
+                position: relative;
+                .image {
+                    max-width: 100%;
+                    max-height: 100%;
+                    opacity: 1;
+                    display: block;
+                    width: 100%;
+                    height: auto;
+                    transition: .5s ease;
+                    backface-visibility: hidden;
+                  }
+
+                .middle {
+                    transition: .5s ease;
+                    opacity: 0;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    -ms-transform: translate(-50%, -50%);
+                    text-align: center;
+                  }
+
             }
             .gutter-title {
                 height: 20%;
@@ -48,3 +74,11 @@
         margin-right: 10px;
     }
 }
+
+.modal-config-preview {
+    .modal-content {
+      height: 680px;
+      width: 200%;
+      margin-left: -200px;
+    }
+  }

@@ -23,7 +23,8 @@ const initialState = {
   emailData: {} as IEmailData,
   contentParams: [] as IContentParams[],
   emailDetail: {} as IEmail,
-  emailTemplateCategories: [] as IEmailTemplateCategory[]
+  emailTemplateCategories: [] as IEmailTemplateCategory[],
+  contentTemplate: '' as string
 };
 
 export type EmailConfigState = Readonly<typeof initialState>;
@@ -36,6 +37,7 @@ export default (state: EmailConfigState = initialState, action): EmailConfigStat
     case REQUEST(EMAIL_CONFIG.GET_EMAIL_DETAIL):
     case REQUEST(EMAIL_CONFIG.GET_EMAIL_TEMP_CATEGORY):
     case REQUEST(EMAIL_CONFIG.GET_EMAIL_TEMPLATE):
+    case REQUEST(EMAIL_CONFIG.PREVIEW_EMAIL_TEMPLATE):
       return {
         ...state,
         loading: true
@@ -76,6 +78,13 @@ export default (state: EmailConfigState = initialState, action): EmailConfigStat
         ...state,
         loading: false
       };
+    case FAILURE(EMAIL_CONFIG.PREVIEW_EMAIL_TEMPLATE):
+      return {
+        ...state,
+        loading: false
+      };
+
+
 
     case SUCCESS(EMAIL_CONFIG.DELETE_EMAIL):
       return {
@@ -116,6 +125,13 @@ export default (state: EmailConfigState = initialState, action): EmailConfigStat
         ...state,
         loading: false,
         emailTemplateData: action.payload.data
+      };
+
+    case SUCCESS(EMAIL_CONFIG.PREVIEW_EMAIL_TEMPLATE):
+      return {
+        ...state,
+        loading: false,
+        contentTemplate: action.payload.data
       };
 
     default:

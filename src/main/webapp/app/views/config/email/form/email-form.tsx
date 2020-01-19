@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import CKEditor from 'ckeditor4-react';
-import { Input, Button as Btn, Row, Checkbox, Modal, Popover, Tabs } from 'antd';
-import { Table, Button, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { Input, Button as Btn, Row, Popover, Tabs } from 'antd';
+import { Table, Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { IRootState } from 'app/reducers';
 import LoaderAnim from 'react-loaders';
@@ -13,11 +13,13 @@ import { GROUP_PARAM } from 'app/constants/email-config';
 import {
   getContentParamAction, createEmailAction, getEmailDetailAction, editEmailAction
 } from 'app/actions/email-config';
+import { getContentPageParams } from 'app/actions/user-campaign';
 import { getContentTemplate } from 'app/actions/user-campaign'
 import './email-form.scss';
 import { RouteComponentProps } from 'react-router-dom';
 import CkeditorFixed from 'app/layout/ckeditor/CkeditorFixed';
-import EditorPreview from './editor-preview';
+import PreviewLanding from 'app/views/GGeditor/config-email/preview/preview';
+import email from '../email';
 
 interface IEmailFormManagementProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any, idTemplate: any }> { }
 interface IEmailFormManagementState {
@@ -27,6 +29,7 @@ interface IEmailFormManagementState {
   emailsave: IEmailSave;
   messageErrorEmailName: any;
   messageErrorEmailSubject: any;
+  openModal: boolean;
 }
 
 
@@ -53,7 +56,8 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
     contentParams: [],
     emailsave: {},
     messageErrorEmailName: '',
-    messageErrorEmailSubject: ''
+    messageErrorEmailSubject: '',
+    openModal: false
   };
 
   async componentDidMount() {
@@ -86,6 +90,7 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
     }
     await this.props.getContentParamAction();
     this.getContentParam(this.state.activeKey);
+    this.props.getContentPageParams();
   }
 
   back = () => {
@@ -107,6 +112,16 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
     }
   }
 
+  toggleModal = () => {
+    this.setState({ openModal: !this.state.openModal });
+  }
+
+  preview = (emailSave) => {
+    this.setState({
+      emailsave: emailSave,
+      openModal: true
+    })
+  }
 
   validateEmailName(emailSave: IEmailSave) {
     if (emailSave && emailSave.name && emailSave.name.trim() !== '') {
@@ -230,12 +245,23 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
   };
 
   render() {
-    let { emailsave, messageErrorEmailName, messageErrorEmailSubject } = this.state;
+    let { emailsave, messageErrorEmailName, messageErrorEmailSubject, openModal } = this.state;
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
     console.log('aaaaaaaaaaaaaaaaaaaaa', emailsave)
     return (
       <Loader message={spinner1} show={false} priority={1}>
         <Fragment>
+          <Modal className="modal-config-preview" isOpen={openModal}>
+            <ModalHeader toggle={this.toggleModal}>Landing preview</ModalHeader>
+            <ModalBody>
+              <PreviewLanding htmlDOM={emailsave.content} styleForDOM={''} />
+            </ModalBody>
+            <ModalFooter>
+              <Btn color="primary" onClick={this.toggleModal}>
+                Thoát
+            </Btn>
+            </ModalFooter>
+          </Modal>
           <div className="email-form-management">
             <div className="email-form-title-header">
               <Button color="primary" onClick={this.back}>Back</Button>
@@ -285,7 +311,7 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
                     trigger="click">
                     <Button color="primary">Variables</Button>
                   </Popover>
-                  <Button color="primary" style={{ marginLeft: '10px' }}>Preview</Button>
+                  <Button onClick={() => this.preview(emailsave)} color="primary" style={{ marginLeft: '10px' }}>Preview</Button>
                 </div>
                 <div style={{ clear: 'both' }}></div>
                 <div style={{ marginTop: '10px' }}>
@@ -319,7 +345,8 @@ const mapDispatchToProps = {
   createEmailAction,
   editEmailAction,
   getEmailDetailAction,
-  getContentTemplate
+  getContentTemplate,
+  getContentPageParams
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
