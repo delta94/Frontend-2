@@ -4,7 +4,7 @@ import './preview.scss';
 import { connect } from 'react-redux';
 import { Col, Row, Button, Container } from 'reactstrap';
 import { IRootState } from 'app/reducers';
-import { isThisSecond } from 'date-fns';
+import { IContentParams } from 'app/common/model/email-config.model';
 
 export interface IPreviewLandingProps extends StateProps, DispatchProps { }
 
@@ -12,6 +12,7 @@ export interface IPreviewLandingProps {
   htmlDOM?: string;
   scriptDOM?: string;
   styleForDOM?: string;
+  contentParams?: IContentParams[];
 }
 
 interface IPreviewLandingState {
@@ -32,9 +33,29 @@ class PreviewEmailLanding extends React.PureComponent<IPreviewLandingProps, IPre
   };
 
 
+  escapeRegExp = string => {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  };
+
+  replaceAll = (str, term, replacement) => {
+    return str.replace(new RegExp(this.escapeRegExp(term), 'g'), replacement);
+  };
+
   componentDidMount() {
     // @ts-ignore:2339
-    document.getElementById('fred').contentWindow.document.write(this.props.htmlDOM);
+    let { contentParams, htmlDOM } = this.props;
+
+    if (contentParams && contentParams.length > 0) {
+      for (let i = 0; i < contentParams.length; i++) {
+        let item = contentParams[i];
+        let paramCode = item.paramCode;
+        let sampleValue = item.sampleValue;
+
+        htmlDOM = this.replaceAll(htmlDOM, paramCode, sampleValue);
+      }
+    }
+    // @ts-ignore:2339
+    document.getElementById('fred').contentWindow.document.write(htmlDOM);
   }
 
   render() {

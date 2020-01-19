@@ -28,6 +28,10 @@ export const createEmail = (emailSave: IEmailSave) => {
   return axios.post(customEmailUrl + '/create', emailSave, { headers: authHeaders });
 };
 
+export const createEmailTemplate = (emailSave: IEmailSave) => {
+  return axios.post(emailTemplateUrl + '/create', emailSave, { headers: authHeaders });
+};
+
 export const editEmail = (id: string, emailSave: IEmailSave) => {
   return axios.post(customEmailUrl + '/' + id + '/update', emailSave, { headers: authHeaders });
 };

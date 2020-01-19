@@ -2,7 +2,7 @@ import { EMAIL_CONFIG } from '../constants/email-config';
 import {
   getEmails, deleteEmail, getContentParam, createEmail
   , getEmailDetail, editEmail, getEmailCategories, getEmailTemplates
-  , previewEmailTemplate
+  , previewEmailTemplate, createEmailTemplate
 }
   from 'app/services/email-config';
 import { IEmailSave } from 'app/common/model/email-config.model'
@@ -25,6 +25,11 @@ export const getContentParamAction = (groupParam?: string) => ({
 export const createEmailAction = (emailSave: IEmailSave) => ({
   type: EMAIL_CONFIG.CREATE_EMAIL,
   payload: createEmail(emailSave)
+});
+
+export const createEmailTemplateAction = (emailSave: IEmailSave) => ({
+  type: EMAIL_CONFIG.CREATE_EMAIL_TEMPLATE,
+  payload: createEmailTemplate(emailSave)
 });
 
 export const editEmailAction = (id: string, emailSave: IEmailSave) => ({

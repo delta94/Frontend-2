@@ -38,6 +38,8 @@ export default (state: EmailConfigState = initialState, action): EmailConfigStat
     case REQUEST(EMAIL_CONFIG.GET_EMAIL_TEMP_CATEGORY):
     case REQUEST(EMAIL_CONFIG.GET_EMAIL_TEMPLATE):
     case REQUEST(EMAIL_CONFIG.PREVIEW_EMAIL_TEMPLATE):
+    case REQUEST(EMAIL_CONFIG.CREATE_EMAIL):
+    case REQUEST(EMAIL_CONFIG.CREATE_EMAIL_TEMPLATE):
       return {
         ...state,
         loading: true
@@ -84,7 +86,29 @@ export default (state: EmailConfigState = initialState, action): EmailConfigStat
         loading: false
       };
 
+    case FAILURE(EMAIL_CONFIG.CREATE_EMAIL):
+      return {
+        ...state,
+        loading: false
+      };
+    case FAILURE(EMAIL_CONFIG.CREATE_EMAIL_TEMPLATE):
+      return {
+        ...state,
+        loading: false
+      };
 
+
+    case SUCCESS(EMAIL_CONFIG.CREATE_EMAIL):
+      return {
+        ...state,
+        loading: false
+      };
+
+    case SUCCESS(EMAIL_CONFIG.CREATE_EMAIL_TEMPLATE):
+      return {
+        ...state,
+        loading: false
+      };
 
     case SUCCESS(EMAIL_CONFIG.DELETE_EMAIL):
       return {

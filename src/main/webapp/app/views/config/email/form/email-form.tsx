@@ -11,15 +11,12 @@ import SweetAlert from 'sweetalert-react';
 import { IContentParams, IEmailSave } from 'app/common/model/email-config.model';
 import { GROUP_PARAM } from 'app/constants/email-config';
 import {
-  getContentParamAction, createEmailAction, getEmailDetailAction, editEmailAction
+  getContentParamAction, createEmailAction, getEmailDetailAction, editEmailAction, createEmailTemplateAction
 } from 'app/actions/email-config';
-import { getContentPageParams } from 'app/actions/user-campaign';
 import { getContentTemplate } from 'app/actions/user-campaign'
 import './email-form.scss';
 import { RouteComponentProps } from 'react-router-dom';
-import CkeditorFixed from 'app/layout/ckeditor/CkeditorFixed';
-import PreviewLanding from 'app/views/GGeditor/config-email/preview/preview';
-import email from '../email';
+import PreviewEmailLanding from '../../email-template/preview/preview';
 
 interface IEmailFormManagementProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any, idTemplate: any }> { }
 interface IEmailFormManagementState {
@@ -90,7 +87,6 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
     }
     await this.props.getContentParamAction();
     this.getContentParam(this.state.activeKey);
-    this.props.getContentPageParams();
   }
 
   back = () => {
@@ -156,6 +152,18 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
     }
     return false;
   };
+
+  createEmailTemplate = () => {
+    let { emailsave } = this.state;
+    if (this.validateForm(emailsave)) {
+      let emailSaveValidate = {
+        ...emailsave,
+        name: emailsave.name.trim(),
+        subject: emailsave.subject.trim(),
+      }
+      this.props.createEmailTemplateAction(emailSaveValidate);
+    }
+  }
 
   saveEmail = () => {
     let emailId = this.props.match.params.id;
@@ -254,7 +262,7 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
           <Modal className="modal-config-preview" isOpen={openModal}>
             <ModalHeader toggle={this.toggleModal}>Landing preview</ModalHeader>
             <ModalBody>
-              <PreviewLanding htmlDOM={emailsave.content} styleForDOM={''} />
+              <PreviewEmailLanding contentParams={this.props.contentParams} htmlDOM={emailsave.content} styleForDOM={''} />
             </ModalBody>
             <ModalFooter>
               <Btn color="primary" onClick={this.toggleModal}>
@@ -269,7 +277,7 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
                 <Button color="primary" onClick={this.saveEmail}>
                   Save
                       </Button>
-                <Button color="primary" style={{ marginLeft: '10px', marginRight: '10px' }}>
+                <Button color="primary" onClick={this.createEmailTemplate} style={{ marginLeft: '10px', marginRight: '10px' }}>
                   Save as Template
                       </Button>
               </div>
@@ -346,7 +354,7 @@ const mapDispatchToProps = {
   editEmailAction,
   getEmailDetailAction,
   getContentTemplate,
-  getContentPageParams
+  createEmailTemplateAction
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
