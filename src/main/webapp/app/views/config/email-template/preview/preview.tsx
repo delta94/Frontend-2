@@ -44,7 +44,7 @@ class PreviewEmailLanding extends React.PureComponent<IPreviewLandingProps, IPre
   componentDidMount() {
     // @ts-ignore:2339
     let { contentParams, htmlDOM } = this.props;
-
+    htmlDOM = htmlDOM ? htmlDOM : '';
     if (contentParams && contentParams.length > 0) {
       for (let i = 0; i < contentParams.length; i++) {
         let item = contentParams[i];

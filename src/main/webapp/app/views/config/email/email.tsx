@@ -28,10 +28,13 @@ interface ICheckboxItem extends IEmail {
 }
 
 const { confirm } = Modal;
+const pageDefault: number = 0;
+const pageSizeDefault: number = 2;
+
 class EmailManagement extends React.Component<IEmailManagementProps, IEmailManagementState> {
   state: IEmailManagementState = {
     activePage: 0,
-    itemsPerPage: 2,
+    itemsPerPage: pageSizeDefault,
     textSearch: '',
     listCheckboxItem: []
   };
@@ -89,7 +92,7 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
         content: 'Bạn thực sự muốn xóa ?',
         onOk: async () => {
           await this.props.deleteEmailAction(listItemChecked[0].id);
-          this.props.getEmailsAction('', 0, itemsPerPage);
+          this.props.getEmailsAction('', pageDefault, itemsPerPage);
         },
         okText: 'Xóa',
         onCancel() { },
@@ -134,43 +137,43 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
     });
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
     return (
-      <Loader message={spinner1} show={loading} priority={1}>
-        <Fragment>
-          <div className="email-management">
-            <Row>
-              <div className="email-title-header">
-                <label>Quản lý email</label>
-                <div className="dropdown-email">
-                  <Dropdown>
-                    <UncontrolledDropdown>
-                      <DropdownToggle color="primary">
-                        Thêm mới email
-                 </DropdownToggle>
-                      <DropdownMenu right className="dropdown-menu-sm">
-                        <DropdownItem onClick={this.createEmailTemplate}>Thêm từ template</DropdownItem>
-                        <DropdownItem onClick={this.createEmail}>Thêm mới</DropdownItem>
-                      </DropdownMenu>
-                    </UncontrolledDropdown>
-                  </Dropdown>
-                </div>
+      <Fragment>
+        <div className="email-management">
+          <Row>
+            <div className="email-title-header">
+              <label>Quản lý email</label>
+              <div className="dropdown-email">
+                <Dropdown>
+                  <UncontrolledDropdown>
+                    <DropdownToggle color="primary">
+                      Thêm mới email
+                     </DropdownToggle>
+                    <DropdownMenu right className="dropdown-menu-sm">
+                      <DropdownItem onClick={this.createEmailTemplate}>Thêm từ template</DropdownItem>
+                      <DropdownItem onClick={this.createEmail}>Thêm mới</DropdownItem>
+                    </DropdownMenu>
+                  </UncontrolledDropdown>
+                </Dropdown>
               </div>
-            </Row>
-            <Row>
-              <div className="email-search-group">
-                <Input
-                  style={{ float: 'right' }}
-                  id="searchText"
-                  prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  value={textSearch}
-                  onChange={this.onchangeTextSearch}
-                  onPressEnter={() => {
-                    this.props.getEmailsAction(textSearch, 0, itemsPerPage);
-                  }}
-                  placeholder="Tìm kiếm email"
-                />
-              </div>
-            </Row>
-            <Row>
+            </div>
+          </Row>
+          <Row>
+            <div className="email-search-group">
+              <Input
+                style={{ float: 'right' }}
+                id="searchText"
+                prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                value={textSearch}
+                onChange={this.onchangeTextSearch}
+                onPressEnter={() => {
+                  this.props.getEmailsAction(textSearch, pageDefault, itemsPerPage);
+                }}
+                placeholder="Tìm kiếm email"
+              />
+            </div>
+          </Row>
+          <Row>
+            <Loader message={spinner1} show={loading} priority={1}>
               <div className="email-body">
                 {
                   isVisable ? (
@@ -244,10 +247,11 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
                     )}
                 </div>
               </div>
-            </Row>
-          </div>
-        </Fragment>
-      </Loader>
+            </Loader>
+          </Row>
+        </div>
+      </Fragment>
+
     );
   }
 }
