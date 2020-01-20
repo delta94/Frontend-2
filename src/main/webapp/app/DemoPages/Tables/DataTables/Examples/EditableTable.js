@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from 'react'
 
-import ReactTable from "react-table";
+import ReactTable from "react-table-6";
 
 import {
     Row, Col,

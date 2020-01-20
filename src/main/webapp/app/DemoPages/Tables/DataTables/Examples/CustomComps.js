@@ -7,7 +7,7 @@ import {
     UncontrolledButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle
 } from 'reactstrap';
 
-import ReactTable from "react-table";
+import ReactTable from "react-table-6";
 import PageTitle from '../../../../layout/AppMain/PageTitle';
 
 import avatar2 from '../../../../assets/utils/images/avatars/2.jpg';

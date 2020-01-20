@@ -18,7 +18,7 @@ import {VerticalTimeline, VerticalTimelineElement} from 'react-vertical-timeline
 
 import CountUp from 'react-countup';
 
-import ReactTable from "react-table";
+import ReactTable from "react-table-6";
 
 import avatar1 from '../../../../assets/utils/images/avatars/1.jpg';
 import avatar2 from '../../../../assets/utils/images/avatars/2.jpg';
