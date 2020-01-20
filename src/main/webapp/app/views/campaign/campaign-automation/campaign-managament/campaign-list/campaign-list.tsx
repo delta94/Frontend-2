@@ -55,9 +55,6 @@ interface ICampaignListState {
   list_tag: any[];
   isOpenModalList: boolean;
   list_tag_default: any[];
-  //TODO: step 2
-  data: any[];
-  columns: any[];
 }
 
 const code_node = {
@@ -88,46 +85,48 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
     id: '',
     list_tag: [],
     isOpenModalList: false,
-    list_tag_default: [],
-    //TODO: step 3
-    data: [],
-    columns: [
-      {
-        accessor: 'index',
-        Header: this.renderHeader('index'),
-        width: 50,
-        Cell: row => this.renderCell('index', row.original, row.index)
-      },
-      {
-        accessor: 'campaign',
-        Header: this.renderHeader('campaign'),
-        Cell: row => this.renderCell('campaign', row.original, row.index)
-      },
-      {
-        accessor: 'status',
-        Header: this.renderHeader('status'),
-        Cell: row => this.renderCell('status', row.original, row.index)
-      },
-      {
-        accessor: 'result',
-        Header: this.renderHeader('result'),
-        Cell: row => this.renderCell('result', row.original, row.index),
-        width: 300
-      },
-      {
-        accessor: 'last_edit',
-        Header: this.renderHeader('last_edit'),
-        Cell: row => this.renderCell('last_edit', row.original, row.index)
-      },
-      {
-        accessor: 'manipulation',
-        Header: this.renderHeader('manipulation'),
-        Cell: row => this.renderCell('manipulation', row.original, row.index)
-      }
-    ]
+    list_tag_default: []
   };
 
-  //TODO: step 4
+  //TODO: step 2
+  columns = [
+    {
+      accessor: 'index',
+      Header: this.renderHeader('index'),
+      width: 50,
+      Cell: row => this.renderCell('index', row.original, row.index)
+    },
+    {
+      accessor: 'campaign',
+      Header: this.renderHeader('campaign'),
+      Cell: row => this.renderCell('campaign', row.original, row.index)
+    },
+    {
+      accessor: 'status',
+      Header: this.renderHeader('status'),
+      Cell: row => this.renderCell('status', row.original, row.index),
+      width: 150
+    },
+    {
+      accessor: 'result',
+      Header: this.renderHeader('result'),
+      Cell: row => this.renderCell('result', row.original, row.index),
+      width: 250
+    },
+    {
+      accessor: 'last_edit',
+      Header: this.renderHeader('last_edit'),
+      Cell: row => this.renderCell('last_edit', row.original, row.index),
+      width: 200
+    },
+    {
+      accessor: 'manipulation',
+      Header: this.renderHeader('manipulation'),
+      Cell: row => this.renderCell('manipulation', row.original, row.index),
+      width: 150
+    }
+  ];
+  //TODO: step 3
   renderHeader(id) {
     switch (id) {
       case 'index':
@@ -145,14 +144,22 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
     }
   }
 
-  //TODO: step 5
+  //TODO: step 4
   renderCell(id, item, index) {
     switch (id) {
       case 'index':
-        return <span>{this.state.activePage * this.state.itemsPerPage + index + 1}</span>;
+        return (
+          <div
+            style={{
+              margin: 'auto'
+            }}
+          >
+            {this.state.activePage * this.state.itemsPerPage + index + 1}
+          </div>
+        );
       case 'campaign':
         return (
-          <div>
+          <div id={'name'}>
             {' '}
             <a onClick={() => this.viewVersion(item.cjVersionId)}>{item.name ? item.name : ''}</a> <br />
             <span>
@@ -171,10 +178,10 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
           </div>
         );
       case 'status':
-        return <div>{this.renderStatusName(item.status)}</div>;
+        return <div id={'status'}>{this.renderStatusName(item.status)}</div>;
       case 'result':
         return (
-          <div>
+          <div style={{ width: '100%' }}>
             <Progress
               animated
               color={this.countContact(item.contactCompleted, item.contactNumbers) < 100 ? 'warning' : 'success'}
@@ -237,7 +244,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
     }
   }
 
-  //TODO: step 6
+  //TODO: step 5
   renderStatusName(status: string) {
     const img_stop = require('app/assets/utils/images/campaign-managament/stop.png');
     const img_running = require('app/assets/utils/images/campaign-managament/running.png');
@@ -312,8 +319,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
       }
     }
 
-    //TODO: step 7
-    this.setState({ list_camp, data: list_camp });
+    this.setState({ list_camp });
   }
 
   hide = () => {
@@ -334,8 +340,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
           event.check = visible;
         }
       });
-    //TODO: step 8
-    this.setState({ visible, list_camp, data: list_camp });
+    this.setState({ visible, list_camp });
   }
 
   getListCampaignInfolderDataAction = (folderId, textSearch, strTagId, pageIndex, pageSize) => {
@@ -643,8 +648,6 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
       return result;
     };
 
-    //TODO: step 10
-    let { data, columns } = this.state;
     return (
       <div className="campaign-list">
         <CjTagInsertModal
@@ -707,17 +710,18 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
               <Translate contentKey="campaign-auto.count-campaign" interpolate={{ element: total }} />
             </label>
 
-            {/* Table? */}
-            {/*TODO: step 11*/}
-            {/*<ReactTableDraggableColumns*/}
-            {/*  draggableColumns= {{*/}
-            {/*    mode: 'reorder',*/}
-            {/*    draggable: ['status', 'campaign', 'result', 'last_edit']*/}
-            {/*  }}*/}
-            {/*  data={data}*/}
-            {/*  columns={columns}*/}
-            {/*  className="-striped -highlight"*/}
-            {/*/>*/}
+            <ReactTableDraggableColumns
+              draggableColumns={{
+                mode: 'reorder',
+                draggable: ['status', 'campaign', 'result', 'last_edit']
+              }}
+              noDataText={translate('campaign-auto.list.none-customer')}
+              data={list_camp}
+              columns={this.columns}
+              className="-striped -highlight"
+              showPagination={false}
+              pageSize={list_camp && list_camp.length > 1 ? list_camp.length : 1}
+            />
 
             <Table striped>
               <thead>
