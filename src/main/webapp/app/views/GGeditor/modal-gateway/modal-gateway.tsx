@@ -63,6 +63,10 @@ class ModalGateWay extends React.Component<IModalGateWayProps, IModalGateWayStat
     error_advanced: ''
   };
 
+  componentDidMount(){
+    this.handleAddNewComponent()
+  }
+
   // Update value from state;
   updateValueFromState = (id: string, advancedSearch: ISearchAdvanced) => {
     let { advancedSearchesData, logicalOperator } = this.state;
