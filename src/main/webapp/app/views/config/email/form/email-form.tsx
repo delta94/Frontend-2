@@ -11,9 +11,8 @@ import SweetAlert from 'sweetalert-react';
 import { IContentParams, IEmailSave } from 'app/common/model/email-config.model';
 import { GROUP_PARAM } from 'app/constants/email-config';
 import {
-  getContentParamAction, createEmailAction, getEmailDetailAction, editEmailAction, createEmailTemplateAction
+  getContentParamAction, createEmailAction, editEmailAction, createEmailTemplateAction
 } from 'app/actions/email-config';
-import { getContentTemplate } from 'app/actions/user-campaign'
 import './email-form.scss';
 import { RouteComponentProps } from 'react-router-dom';
 import PreviewEmailLanding from '../../email-template/preview/preview';
@@ -62,7 +61,6 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
     let idTemplate = this.props.match.params.idTemplate;
     // edit, copy email
     if (emailId) {
-      await this.props.getEmailDetailAction(emailId);
       this.setState({
         emailsave: {
           id: this.props.emailDetail.id,
@@ -76,7 +74,6 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
     if (idTemplate) {
       let emailTemplate: any
       emailTemplate = this.props.listContentTemplate
-      await this.props.getContentTemplate(idTemplate);
       this.setState({
         emailsave: {
           name: emailTemplate.name,
@@ -352,8 +349,6 @@ const mapDispatchToProps = {
   getContentParamAction,
   createEmailAction,
   editEmailAction,
-  getEmailDetailAction,
-  getContentTemplate,
   createEmailTemplateAction
 };
 

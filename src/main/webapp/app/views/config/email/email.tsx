@@ -10,7 +10,7 @@ import SweetAlert from 'sweetalert-react';
 import ReactPaginate from 'react-paginate';
 import { IEmail } from 'app/common/model/email-config.model';
 import {
-  getEmailsAction, deleteEmailAction
+  getEmailsAction, deleteEmailAction, getEmailDetailAction
 } from 'app/actions/email-config';
 import './email.scss';
 
@@ -105,18 +105,20 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
     location.assign('#/app/views/config/emails/add');
   }
 
-  editEmail = () => {
+  editEmail = async () => {
     let { listCheckboxItem } = this.state;
     let listItemChecked = listCheckboxItem.filter(item => item.checked == true);
     if (listItemChecked && listItemChecked.length == 1) {
+      await this.props.getEmailDetailAction(listItemChecked[0].id);
       location.assign('#/app/views/config/emails/' + listItemChecked[0].id + '/edit');
     }
   }
 
-  copyEmail = () => {
+  copyEmail = async () => {
     let { listCheckboxItem } = this.state;
     let listItemChecked = listCheckboxItem.filter(item => item.checked == true);
     if (listItemChecked && listItemChecked.length == 1) {
+      await this.props.getEmailDetailAction(listItemChecked[0].id);
       location.assign('#/app/views/config/emails/' + listItemChecked[0].id + '/copy');
     }
   }
@@ -264,7 +266,7 @@ const mapStateToProps = ({ emailConfigState }: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  getEmailsAction, deleteEmailAction
+  getEmailsAction, deleteEmailAction, getEmailDetailAction
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

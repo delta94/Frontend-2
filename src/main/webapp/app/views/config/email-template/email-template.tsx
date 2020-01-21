@@ -12,6 +12,7 @@ import PreviewEmailLanding from './preview/preview';
 import {
   getEmailCategoriesAction, getEmailTemplatesAction, previewEmailTemplateAction
 } from 'app/actions/email-config';
+import { getContentTemplate } from 'app/actions/user-campaign'
 import './email-template.scss'
 
 interface IEmailTemplateManagementProps extends StateProps, DispatchProps {
@@ -69,7 +70,8 @@ class EmailTemplateManagement extends React.Component<IEmailTemplateManagementPr
     this.setState({ activePage: parseInt(pageIndex) });
   }
 
-  chooseTemplate = emailTemplateId => {
+  chooseTemplate = async emailTemplateId => {
+    await this.props.getContentTemplate(emailTemplateId);
     location.assign('#/app/views/config/emails/' + emailTemplateId + '/copyTemplate');
   }
 
@@ -199,7 +201,7 @@ const mapStateToProps = ({ emailConfigState }: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  getEmailCategoriesAction, getEmailTemplatesAction, previewEmailTemplateAction
+  getEmailCategoriesAction, getEmailTemplatesAction, previewEmailTemplateAction, getContentTemplate
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
