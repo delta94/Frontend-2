@@ -29,12 +29,21 @@ export interface ITreeFolderProps extends StateProps, DispatchProps {
   onClick: Function;
 }
 
+const const_action = {
+  CREATE_FOLDER: 'create',
+  EDIT_FOLDER: 'edit',
+  DELETE_FOLDER: 'delete',
+  GET_FOLDER: 'getlist'
+}
+
 export interface ITreeFolderState {
   treeData: any[];
+  list_folder : any[]
   hover: boolean;
   level: string;
   expandedKeys: any;
   error_name: string;
+  visible: boolean
 }
 
 class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
@@ -42,8 +51,10 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
     treeData: [],
     hover: false,
     expandedKeys: [],
+    list_folder : [],
     level: '',
-    error_name: ''
+    error_name: '',
+    visible: false
   };
 
   componentDidMount = async () => {
@@ -64,6 +75,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
         key: event.id + ',1',
         id: event.id,
         parentId: event.parentId,
+        check: false,
         children:
           event.cjFolders && event.cjFolders.length > 0
             ? event.cjFolders.map(value => {
@@ -72,6 +84,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
                 key: value.id + ',2',
                 id: value.id,
                 parentId: event.parentId,
+                check: false,
                 children:
                   value.cjFolders && value.cjFolders.length > 0
                     ? value.cjFolders.map(item => {
@@ -80,6 +93,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
                         key: item.id + ',3',
                         id: item.id,
                         parentId: value.parentId,
+                        check: false,
                         children: item.cjFolders
                       };
                     })
@@ -103,6 +117,16 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
     expandedKeys = expandData;
     this.setState({ treeData: data, expandedKeys: expandData });
   }
+
+  hide = () => {
+    let { list_folder } = this.state
+    list_folder && list_folder.map(item => {
+      return item.check = false
+    })
+    this.setState({
+      visible: false,
+    });
+  };
 
   contentPop = rowInfo => (
     <Row style={{ textAlign: 'center' }}>
@@ -165,13 +189,14 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
     if (event === 'select') {
       level = '1';
     }
+    this.hide()
     switch (option) {
-      case 'create':
-        //debugger;
+      case const_action.CREATE_FOLDER:
         if (Number(level) < 3) {
           confirm({
             title: translate('campaign-auto.modal.title-create'),
             content: this.contentCreateFolder(),
+            zIndex: 1000000,
             onOk: async () => {
               let name_folder = $(`#nameTree`).val()
               if (name_folder) {
@@ -197,11 +222,11 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
         }
 
         break;
-      case 'edit':
-        debugger
+      case const_action.EDIT_FOLDER:
         confirm({
           title: translate('campaign-auto.modal.title-edit') + ' ' + event.title,
           content: this.contentCreateFolder(),
+          zIndex: 1000000,
           onOk: async () => {
             let name_folder = $(`#nameTree`).val()
             if (name_folder) {
@@ -226,7 +251,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
         });
         break;
 
-      case 'delete':
+      case const_action.DELETE_FOLDER:
         confirm({
           title: translate('campaign-auto.modal.title-delete'),
           content: translate('campaign-auto.modal.content-delete'),
@@ -236,13 +261,14 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
             await getTreeFolder();
             await this.getData();
           },
+          zIndex: 1000000,
           okText: translate('campaign-auto.modal.ok-btn-delete'),
           onCancel() { },
           cancelText: translate('campaign-auto.modal.cancel')
         });
 
         break;
-      case 'getlist':
+      case const_action.DELETE_FOLDER:
         confirm({
           title: translate('campaign-auto.modal.view-details'),
           content: translate('campaign-auto.modal.view-details') + ' ' + event.title,
@@ -250,6 +276,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
             await getListCampaignInfolderDataAction(event ? event.id : null, '', '', 0, 4);
             await onClick(event ? event.id : null);
           },
+          zIndex: 1000000,
           okText: translate('campaign-auto.modal.ok-submit-text'),
           onCancel() { },
           cancelText: translate('campaign-auto.modal.cancel')
@@ -260,6 +287,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
       default:
         break;
     }
+
   };
 
   onDragEnter = info => {
@@ -320,6 +348,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
       }
     }
 
+
     let idData = {
       idChil: String(dragKey).split(',')[0],
       idParent: String(dropKey).split(',')[0]
@@ -342,25 +371,37 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
     }
   };
 
+  handleVisibleChange = (visible, id, arr) => {
+    arr && arr.map(item => {
+      if (item.id === id) {
+        return item.check = visible
+      }
+    })
+    this.setState({ visible, list_folder : arr });
+  };
+
   getList = async (key, node) => {
     const { getListCampaignInfolderDataAction, onClick, getNode } = this.props;
     let { level } = this.state;
     let id = String(key).split(',')[0] === '0-0' ? '-99' : String(key).split(',')[0];
-    level = String(key).split(',')[1];
+    let levelNode = String(key).split(',')[1];
     if (node) {
-      await getListCampaignInfolderDataAction(id, '', '', 0, 4);
+      await getListCampaignInfolderDataAction(id, '', '', 0, 7);
       await onClick(id);
       await getNode(id);
     }
-    this.setState({ level: level ? level : '' });
+    if (levelNode)
+      this.setState({ level: levelNode });
   };
+
+
 
   render() {
     const img_folder = require('app/assets/utils/images/campaign-managament/folder.png');
     const img_files = require('app/assets/utils/images/campaign-managament/files.png');
     let { level } = this.state;
     const loop = data =>
-      data.map(item => {
+      data.map((item, index, arr) => {
         if (item.children && item.children.length) {
           return (
             <TreeNode
@@ -376,8 +417,10 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
                   overlayClassName="pop-data"
                   content={this.contentPop(item)}
                   title=""
-                  trigger="hover"
+                  trigger="click"
                   placement="bottomRight"
+                  visible={item.check}
+                  onVisibleChange={(visible) => this.handleVisibleChange(visible, item.id, arr)}
                 >
                   <FontAwesomeIcon className="icon-ball" icon={faEllipsisH} />
                 </Popover>
@@ -401,8 +444,10 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
                   overlayClassName="pop-data"
                   content={this.contentPop(item)}
                   title=""
-                  trigger="hover"
+                  trigger="click"
                   placement="bottomRight"
+                  visible={item.check}
+                  onVisibleChange={(visible) => this.handleVisibleChange(visible, item.id, arr)}
                 >
                   <FontAwesomeIcon className="icon-ball" icon={faEllipsisH} />
                 </Popover>
@@ -432,9 +477,11 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
           <div style={{ height: 700 }} className="tree-data">
             <Tree
               onSelect={(info, { selected }) => {
+                console.log(info)
                 this.getList(info, selected);
               }}
               showIcon
+              // selectable = {false}
               className="draggable-tree"
               defaultExpandAll
               defaultExpandedKeys={this.state.expandedKeys}
@@ -445,7 +492,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
             // showLine = {true}
             >
               <TreeNode title={<div><Translate contentKey="campaign-auto.all-campaign" /></div>} />
-              {this.state.treeData.map(item => {
+              {this.state.treeData.map((item, index, arr) => {
                 if (item.children && item.children.length) {
                   return (
                     <TreeNode
@@ -461,8 +508,10 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
                           overlayClassName="pop-data"
                           content={this.contentPop(item)}
                           title=""
-                          trigger="hover"
+                          trigger="click"
                           placement="bottomRight"
+                          visible={item.check}
+                          onVisibleChange={(visible) => this.handleVisibleChange(visible, item.id, arr)}
                         >
                           <FontAwesomeIcon className="icon-ball" icon={faEllipsisH} />
                         </Popover>

@@ -330,7 +330,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
                   <th style={{ width: '4%' }}><Translate contentKey="campaign-auto.table.index" /></th>
                   <th style={{ width: '25%' }}><Translate contentKey="campaign-auto.table.campaign" /></th>
                   <th><Translate contentKey="campaign-auto.table.status" /></th>
-                  <th style={{ width: '25%' }}><Translate contentKey="campaign-auto.table.result" /></th>
+                  <th style={{ width: '20%' }}><Translate contentKey="campaign-auto.table.result" /></th>
                   <th><Translate contentKey="campaign-auto.table.last-edit" /></th>
                 </thead>
                 <tbody>

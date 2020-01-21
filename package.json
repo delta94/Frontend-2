@@ -155,7 +155,7 @@
     "react-switch": "^4.1.0",
     "react-syntax-highlighter": "^10.2.1",
     "react-table-6": "^6.11.0",
-    "react-table-hoc-draggable-columns": "^1.2.1",
+    "react-table-hoc-draggable-columns": "^1.2.2",
     "react-textarea-autosize": "^7.1.0",
     "react-toastify": "^5.0.1",
     "react-transition-group": "^3.0.0",

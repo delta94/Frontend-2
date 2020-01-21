@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Input, Icon, Row, Checkbox, Button, Modal, Popover } from 'antd';
-import { Table, ButtonGroup, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { Input, Icon, Row, Checkbox, Modal, Popover } from 'antd';
+import { Table, Button, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Dropdown } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { IRootState } from 'app/reducers';
 import LoaderAnim from 'react-loaders';
@@ -10,7 +10,7 @@ import SweetAlert from 'sweetalert-react';
 import ReactPaginate from 'react-paginate';
 import { IEmail } from 'app/common/model/email-config.model';
 import {
-  getEmailsAction, deleteEmailAction
+  getEmailsAction, deleteEmailAction, getEmailDetailAction
 } from 'app/actions/email-config';
 import './email.scss';
 
@@ -28,10 +28,13 @@ interface ICheckboxItem extends IEmail {
 }
 
 const { confirm } = Modal;
+const pageDefault: number = 0;
+const pageSizeDefault: number = 2;
+
 class EmailManagement extends React.Component<IEmailManagementProps, IEmailManagementState> {
   state: IEmailManagementState = {
     activePage: 0,
-    itemsPerPage: 2,
+    itemsPerPage: pageSizeDefault,
     textSearch: '',
     listCheckboxItem: []
   };
@@ -89,7 +92,7 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
         content: 'Bạn thực sự muốn xóa ?',
         onOk: async () => {
           await this.props.deleteEmailAction(listItemChecked[0].id);
-          this.props.getEmailsAction('', 0, itemsPerPage);
+          this.props.getEmailsAction('', pageDefault, itemsPerPage);
         },
         okText: 'Xóa',
         onCancel() { },
@@ -102,6 +105,29 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
     location.assign('#/app/views/config/emails/add');
   }
 
+  editEmail = async () => {
+    let { listCheckboxItem } = this.state;
+    let listItemChecked = listCheckboxItem.filter(item => item.checked == true);
+    if (listItemChecked && listItemChecked.length == 1) {
+      await this.props.getEmailDetailAction(listItemChecked[0].id);
+      location.assign('#/app/views/config/emails/' + listItemChecked[0].id + '/edit');
+    }
+  }
+
+  copyEmail = async () => {
+    let { listCheckboxItem } = this.state;
+    let listItemChecked = listCheckboxItem.filter(item => item.checked == true);
+    if (listItemChecked && listItemChecked.length == 1) {
+      await this.props.getEmailDetailAction(listItemChecked[0].id);
+      location.assign('#/app/views/config/emails/' + listItemChecked[0].id + '/copy');
+    }
+  }
+
+  createEmailTemplate = () => {
+    location.assign('#/app/views/config/email-template');
+  }
+
+
   render() {
     let { total, totalPages, loading } = this.props;
     let { textSearch, activePage, itemsPerPage, listCheckboxItem } = this.state;
@@ -113,45 +139,51 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
     });
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
     return (
-      <Loader message={spinner1} show={loading} priority={1}>
-        <Fragment>
-          <div className="email-management">
+      <Fragment>
+        <div className="email-management">
+          <Row>
             <div className="email-title-header">
               <label>Quản lý email</label>
-            </div>
-            <Row>
-              <div className="email-search-group">
-                <Input
-                  style={{ float: 'right' }}
-                  id="searchText"
-                  prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  value={textSearch}
-                  onChange={this.onchangeTextSearch}
-                  onPressEnter={() => {
-                    this.props.getEmailsAction(textSearch, activePage, itemsPerPage);
-                  }}
-                  placeholder="Tìm kiếm email"
-                />
-                <UncontrolledDropdown>
-                  <DropdownToggle>
-                  Thêm mới email
-                 </DropdownToggle>
-                  <DropdownMenu right className="dropdown-menu-sm">
-                    <DropdownItem>Thêm từ template</DropdownItem>
-                    <DropdownItem onClick={this.createEmail}>Thêm mới</DropdownItem>
-                  </DropdownMenu>
-                </UncontrolledDropdown>
+              <div className="dropdown-email">
+                <Dropdown>
+                  <UncontrolledDropdown>
+                    <DropdownToggle color="primary">
+                      Thêm mới email
+                     </DropdownToggle>
+                    <DropdownMenu right className="dropdown-menu-sm">
+                      <DropdownItem onClick={this.createEmailTemplate}>Thêm từ template</DropdownItem>
+                      <DropdownItem onClick={this.createEmail}>Thêm mới</DropdownItem>
+                    </DropdownMenu>
+                  </UncontrolledDropdown>
+                </Dropdown>
               </div>
-            </Row>
-            <Row>
+            </div>
+          </Row>
+          <Row>
+            <div className="email-search-group">
+              <Input
+                style={{ float: 'right' }}
+                id="searchText"
+                prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                value={textSearch}
+                onChange={this.onchangeTextSearch}
+                onPressEnter={() => {
+                  this.props.getEmailsAction(textSearch, pageDefault, itemsPerPage);
+                }}
+                placeholder="Tìm kiếm email"
+              />
+            </div>
+          </Row>
+          <Row>
+            <Loader message={spinner1} show={loading} priority={1}>
               <div className="email-body">
                 {
                   isVisable ? (
                     <div className="button-group">
-                      <Button color="primary">
+                      <Button color="primary" onClick={() => this.editEmail()}>
                         Sửa
                       </Button>
-                      <Button color="primary" style={{ marginLeft: "5px" }}>
+                      <Button color="primary" style={{ marginLeft: "5px" }} onClick={() => this.copyEmail()}>
                         Sao chép
                       </Button>
                       <Button color="danger" style={{ marginLeft: "5px" }} onClick={() => this.deleteEmail()}>
@@ -217,10 +249,11 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
                     )}
                 </div>
               </div>
-            </Row>
-          </div>
-        </Fragment>
-      </Loader>
+            </Loader>
+          </Row>
+        </div>
+      </Fragment>
+
     );
   }
 }
@@ -233,7 +266,7 @@ const mapStateToProps = ({ emailConfigState }: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  getEmailsAction, deleteEmailAction
+  getEmailsAction, deleteEmailAction, getEmailDetailAction
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
