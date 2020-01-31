@@ -232,7 +232,6 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
   selectParam = paramCode => {
     let sel, range;
     let newWindow = document.getElementsByTagName('iframe')[0].contentWindow;
-
     if (newWindow.getSelection()) {
       sel = newWindow.getSelection();
       if (sel.rangeCount) {
@@ -246,7 +245,7 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
     this.setState({
       emailsave: {
         ...this.state.emailsave,
-        content: newValue.documentElement.outerHTML
+        content: newValue.body.innerHTML
       }
     });
   };
