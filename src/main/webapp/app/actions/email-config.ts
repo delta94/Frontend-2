@@ -12,9 +12,9 @@ export const getEmailsAction = (textSearch?: string, page?: number, pageSize?: n
   payload: getEmails(textSearch, page, pageSize)
 });
 
-export const deleteEmailAction = (id: string) => ({
+export const deleteEmailAction = (ids: string[]) => ({
   type: EMAIL_CONFIG.DELETE_EMAIL,
-  payload: deleteEmail(id)
+  payload: deleteEmail(ids)
 });
 
 export const getContentParamAction = (groupParam?: string) => ({

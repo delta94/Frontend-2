@@ -10,6 +10,7 @@ import { IRootState } from 'app/reducers';
 import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import SweetAlert from 'sweetalert-react';
+import {closeModal } from 'app/actions/modal';
 import { IContentParams, IEmailSave } from 'app/common/model/email-config.model';
 import { GROUP_PARAM } from 'app/constants/email-config';
 import {
@@ -164,7 +165,7 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
     }
   }
 
-  saveEmail = () => {
+  saveEmail = async () => {
     let emailId = this.props.match.params.id;
     let url = this.props.match.url;
     let { emailsave } = this.state;
@@ -251,11 +252,20 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
   };
 
   render() {
+    let { modalState } = this.props;
     let { emailsave, messageErrorEmailName, messageErrorEmailSubject, openModal } = this.state;
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
     return (
       <Loader message={spinner1} show={false} priority={1}>
         <Fragment>
+          <SweetAlert
+            title={modalState.title ? modalState.title : 'No title'}
+            confirmButtonColor=""
+            show={modalState.show ? modalState.show : false}
+            text={modalState.text ? modalState.text : 'No'}
+            type={modalState.type ? modalState.type : 'error'}
+            onConfirm={() => this.props.closeModal()}
+          />
           <Modal className="modal-config-preview" isOpen={openModal}>
             <ModalHeader toggle={this.toggleModal}>Landing preview</ModalHeader>
             <ModalBody>
@@ -316,7 +326,7 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
                     trigger="click">
                     <Button color="primary">Variables</Button>
                   </Popover>
-                  <label onClick={() => this.preview(emailsave)} style={{marginLeft: '10px', textDecoration: 'underline', color: '#3866DD' }}>
+                  <label onClick={() => this.preview(emailsave)} style={{ marginLeft: '10px', textDecoration: 'underline', color: '#3866DD' }}>
                     <FontAwesomeIcon icon={faEye} />
                     <span style={{ paddingLeft: '10px' }}>Preview</span>
                   </label>
@@ -346,14 +356,16 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
 const mapStateToProps = ({ emailConfigState, userCampaign }: IRootState) => ({
   contentParams: emailConfigState.contentParams,
   emailDetail: emailConfigState.emailDetail,
-  listContentTemplate: userCampaign.listContentTemplate
+  listContentTemplate: userCampaign.listContentTemplate,
+  modalState: emailConfigState.modalResponse
 });
 
 const mapDispatchToProps = {
   getContentParamAction,
   createEmailAction,
   editEmailAction,
-  createEmailTemplateAction
+  createEmailTemplateAction,
+  closeModal
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

@@ -1,12 +1,12 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Input, Icon, Row, Checkbox, Modal, Popover } from 'antd';
+import { Input, Icon, Row, Checkbox, Modal, Menu, Dropdown as DropdownAnt } from 'antd';
 import { Table, Button, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Dropdown } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { IRootState } from 'app/reducers';
 import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
-import SweetAlert from 'sweetalert-react';
+import 'react-toastify/dist/ReactToastify.css';
 import ReactPaginate from 'react-paginate';
 import { IEmail } from 'app/common/model/email-config.model';
 import {
@@ -20,7 +20,7 @@ interface IEmailManagementState {
   itemsPerPage: number;
   textSearch?: string;
   listCheckboxItem: ICheckboxItem[];
-
+  isCheckAll: boolean;
 }
 
 interface ICheckboxItem extends IEmail {
@@ -36,7 +36,8 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
     activePage: 0,
     itemsPerPage: pageSizeDefault,
     textSearch: '',
-    listCheckboxItem: []
+    listCheckboxItem: [],
+    isCheckAll: false
   };
 
   componentDidMount() {
@@ -53,7 +54,7 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
   setPageIndex = pageIndex => {
     let { itemsPerPage } = this.state;
     this.props.getEmailsAction('', parseInt(pageIndex), itemsPerPage);
-    this.setState({ activePage: parseInt(pageIndex) });
+    this.setState({ activePage: parseInt(pageIndex), isCheckAll: false });
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -61,7 +62,8 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
       let listCheckboxItem = nextProps.emails.map(item => ({ ...item, checked: false }))
       return {
         emails: nextProps.emails,
-        listCheckboxItem
+        listCheckboxItem,
+        checkAll: false
       };
     }
     else return null;
@@ -74,53 +76,64 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
   }
 
 
-  onChangeCheckboxItem = (emailId, checked) => {
+  onChangeCheckboxItem = (id, checked) => {
     let { listCheckboxItem } = this.state;
-    listCheckboxItem && listCheckboxItem.forEach(item => (emailId === item.id ? (item.checked = checked) : item));
+    id === 'check-all'
+      ? (listCheckboxItem && listCheckboxItem.forEach(item => (item.checked = checked)), this.setState({ isCheckAll: checked }))
+      : listCheckboxItem && listCheckboxItem.forEach(item => (id === item.id ? (item.checked = checked) : item));
+
     this.setState({
       listCheckboxItem: listCheckboxItem
     });
   }
 
-  deleteEmail = async () => {
-    let { listCheckboxItem, itemsPerPage } = this.state;
-    let listItemChecked = listCheckboxItem.filter(item => item.checked == true);
-    if (listItemChecked && listItemChecked.length == 1) {
-      confirm({
-        zIndex: 1000000,
-        title: 'Xóa',
-        content: 'Bạn thực sự muốn xóa ?',
-        onOk: async () => {
-          await this.props.deleteEmailAction(listItemChecked[0].id);
-          this.props.getEmailsAction('', pageDefault, itemsPerPage);
-        },
-        okText: 'Xóa',
-        onCancel() { },
-        cancelText: 'Hủy bỏ'
-      });
-    }
+  menu = item => {
+    return (
+      <Menu>
+        <Menu.Item key="1" onClick={() => this.deleteEmail([item.id])}>
+          <Icon type="delete" /> Xóa
+        </Menu.Item>
+        <Menu.Item key="2" onClick={() => this.copyEmail(item.id)}>
+          <Icon type="copy" /> Sao chép
+        </Menu.Item>
+      </Menu>
+    );
+  };
+
+  deleteMultiEmail = async () => {
+    let { listCheckboxItem } = this.state;
+    let emailIds = listCheckboxItem.filter(item => item.checked == true).map(item => item.id);
+    this.deleteEmail(emailIds);
+  }
+
+  deleteEmail = async (emailIds) => {
+    let { itemsPerPage } = this.state;
+    confirm({
+      zIndex: 1000000,
+      title: 'Xóa',
+      content: 'Bạn thực sự muốn xóa ?',
+      onOk: async () => {
+        await this.props.deleteEmailAction(emailIds);
+        this.props.getEmailsAction('', pageDefault, itemsPerPage);
+      },
+      okText: 'Xóa',
+      onCancel() { },
+      cancelText: 'Hủy bỏ'
+    });
   }
 
   createEmail = () => {
     location.assign('#/app/views/config/emails/add');
   }
 
-  editEmail = async () => {
-    let { listCheckboxItem } = this.state;
-    let listItemChecked = listCheckboxItem.filter(item => item.checked == true);
-    if (listItemChecked && listItemChecked.length == 1) {
-      await this.props.getEmailDetailAction(listItemChecked[0].id);
-      location.assign('#/app/views/config/emails/' + listItemChecked[0].id + '/edit');
-    }
+  editEmail = async (emailId) => {
+    await this.props.getEmailDetailAction(emailId);
+    location.assign('#/app/views/config/emails/' + emailId + '/edit');
   }
 
-  copyEmail = async () => {
-    let { listCheckboxItem } = this.state;
-    let listItemChecked = listCheckboxItem.filter(item => item.checked == true);
-    if (listItemChecked && listItemChecked.length == 1) {
-      await this.props.getEmailDetailAction(listItemChecked[0].id);
-      location.assign('#/app/views/config/emails/' + listItemChecked[0].id + '/copy');
-    }
+  copyEmail = async (emailId) => {
+    await this.props.getEmailDetailAction(emailId);
+    location.assign('#/app/views/config/emails/' + emailId + '/copy');
   }
 
   createEmailTemplate = () => {
@@ -130,7 +143,7 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
 
   render() {
     let { total, totalPages, loading } = this.props;
-    let { textSearch, activePage, itemsPerPage, listCheckboxItem } = this.state;
+    let { textSearch, activePage, itemsPerPage, listCheckboxItem, isCheckAll } = this.state;
     let isVisable = false;
     listCheckboxItem && listCheckboxItem.forEach(item => {
       if (item.checked) {
@@ -180,13 +193,7 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
                 {
                   isVisable ? (
                     <div className="button-group">
-                      <Button color="primary" onClick={() => this.editEmail()}>
-                        Sửa
-                      </Button>
-                      <Button color="primary" style={{ marginLeft: "5px" }} onClick={() => this.copyEmail()}>
-                        Sao chép
-                      </Button>
-                      <Button color="danger" style={{ marginLeft: "5px" }} onClick={() => this.deleteEmail()}>
+                      <Button color="danger" style={{ marginLeft: "5px" }} onClick={() => this.deleteMultiEmail()}>
                         Xóa
                         </Button>
                     </div>
@@ -197,11 +204,17 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
                 <Table striped>
                   <thead>
                     <tr className="text-center">
-                      <th className="checkbox-td" colSpan={5}> <Checkbox /></th>
-                      <th colSpan={25}>Tên email</th>
-                      <th colSpan={25}> Tiêu đề email</th>
-                      <th colSpan={25}> Người tạo</th>
+                      <th className="checkbox-td" colSpan={5}>
+                        <Checkbox
+                          id='check-all'
+                          checked={isCheckAll}
+                          onChange={event => this.onChangeCheckboxItem('check-all', event.target.checked)} />
+                      </th>
+                      <th colSpan={20}>Tên email</th>
+                      <th colSpan={20}> Tiêu đề email</th>
+                      <th colSpan={20}> Người tạo</th>
                       <th colSpan={20}> Chỉnh sửa gần nhất</th>
+                      <th colSpan={15}> Thao tác</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -215,10 +228,22 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
                                 checked={item.checked}
                                 onChange={event => this.onChangeCheckboxItem(item.id, event.target.checked)} />
                             </td>
-                            <td colSpan={25}>{item.name}</td>
-                            <td colSpan={25}>{item.subject}</td>
-                            <td colSpan={25}>{item.createdUser}</td>
+                            <td colSpan={20}>{item.name}</td>
+                            <td colSpan={20}>{item.subject}</td>
+                            <td colSpan={20}>{item.createdUser}</td>
                             <td colSpan={20} style={{ textAlign: "center" }}>{item.modifiedDate}</td>
+                            <td colSpan={15}>
+                              <DropdownAnt.Button
+                                overlay={() => this.menu(item)}
+                                icon={<Icon type="caret-down" />}
+                                onClick={() => this.editEmail(item.id)}
+                              >
+                                <span>
+                                  <Icon type="edit" />
+                                  <Translate contentKey="tag-management.edit" />
+                                </span>
+                              </DropdownAnt.Button>
+                            </td>
                           </tr>
                         )
                       })
