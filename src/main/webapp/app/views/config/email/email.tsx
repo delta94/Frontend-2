@@ -29,7 +29,7 @@ interface ICheckboxItem extends IEmail {
 
 const { confirm } = Modal;
 const pageDefault: number = 0;
-const pageSizeDefault: number = 2;
+const pageSizeDefault: number = 10;
 
 class EmailManagement extends React.Component<IEmailManagementProps, IEmailManagementState> {
   state: IEmailManagementState = {

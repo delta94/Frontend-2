@@ -98,7 +98,7 @@ class EmailTemplateManagement extends React.Component<IEmailTemplateManagementPr
             <PreviewEmailLanding htmlDOM={contentTemplate} styleForDOM={''} />
           </ModalBody>
           <ModalFooter>
-            <Btn color="primary" onClick={this.toggleModal}>
+            <Btn color="danger" onClick={this.toggleModal}>
               Thoát
             </Btn>
           </ModalFooter>
@@ -138,13 +138,13 @@ class EmailTemplateManagement extends React.Component<IEmailTemplateManagementPr
                                   <Col span={8} key={index}>
                                     <div className="gutter">
                                       <div className="gutter-content">
-                                        <img
+                                        <img className="image"
                                           style={{ width: '100%' }}
                                           src={emailTemplate.thumbnail}
                                         />
                                         <div className="middle">
-                                          <Button onClick={() => this.previewTemplate(emailTemplate.id)}>Preview</Button>
-                                          <Button onClick={() => this.chooseTemplate(emailTemplate.id)} style={{ marginLeft: '5px' }}>Choose</Button>
+                                          <Button type="primary"  onClick={() => this.previewTemplate(emailTemplate.id)}>Preview</Button>
+                                          <Button type="primary" onClick={() => this.chooseTemplate(emailTemplate.id)} style={{ marginLeft: '5px' }}>Choose</Button>
                                         </div>
                                       </div>
                                       <div className="gutter-title">{emailTemplate.subject}</div>

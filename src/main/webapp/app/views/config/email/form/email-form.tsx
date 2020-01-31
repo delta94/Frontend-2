@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import CKEditor from 'ckeditor4-react';
 import { Input, Button as Btn, Row, Popover, Tabs } from 'antd';
 import { Table, Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { Translate, translate } from 'react-jhipster';
 import { IRootState } from 'app/reducers';
 import LoaderAnim from 'react-loaders';
@@ -230,7 +232,6 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
   selectParam = paramCode => {
     let sel, range;
     let newWindow = document.getElementsByTagName('iframe')[0].contentWindow;
-
     if (newWindow.getSelection()) {
       sel = newWindow.getSelection();
       if (sel.rangeCount) {
@@ -244,7 +245,7 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
     this.setState({
       emailsave: {
         ...this.state.emailsave,
-        content: newValue.documentElement.outerHTML
+        content: newValue.body.innerHTML
       }
     });
   };
@@ -252,7 +253,6 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
   render() {
     let { emailsave, messageErrorEmailName, messageErrorEmailSubject, openModal } = this.state;
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
-    console.log('aaaaaaaaaaaaaaaaaaaaa', emailsave)
     return (
       <Loader message={spinner1} show={false} priority={1}>
         <Fragment>
@@ -262,7 +262,7 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
               <PreviewEmailLanding contentParams={this.props.contentParams} htmlDOM={emailsave.content} styleForDOM={''} />
             </ModalBody>
             <ModalFooter>
-              <Btn color="primary" onClick={this.toggleModal}>
+              <Btn type="danger" onClick={this.toggleModal}>
                 Thoát
             </Btn>
             </ModalFooter>
@@ -316,7 +316,10 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
                     trigger="click">
                     <Button color="primary">Variables</Button>
                   </Popover>
-                  <Button onClick={() => this.preview(emailsave)} color="primary" style={{ marginLeft: '10px' }}>Preview</Button>
+                  <label onClick={() => this.preview(emailsave)} style={{marginLeft: '10px', textDecoration: 'underline', color: '#3866DD' }}>
+                    <FontAwesomeIcon icon={faEye} />
+                    <span style={{ paddingLeft: '10px' }}>Preview</span>
+                  </label>
                 </div>
                 <div style={{ clear: 'both' }}></div>
                 <div style={{ marginTop: '10px' }}>
@@ -324,7 +327,8 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
                     id={'ckeditor'}
                     data={emailsave.content}
                     config={{
-                      extraPlugins: 'stylesheetparser'
+                      extraPlugins: 'stylesheetparser',
+                      height: 450
                     }}
                     onBeforeLoad={CKEDITOR => (CKEDITOR.disableAutoInline = true)}
                     onChange={this.onEditorChange}
