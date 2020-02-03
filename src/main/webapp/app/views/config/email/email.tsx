@@ -174,32 +174,33 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
           </Row>
           <Row>
             <div className="email-search-group">
-              <Input
-                style={{ float: 'right' }}
-                id="searchText"
-                prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                value={textSearch}
-                onChange={this.onchangeTextSearch}
-                onPressEnter={() => {
-                  this.props.getEmailsAction(textSearch, pageDefault, itemsPerPage);
-                }}
-                placeholder="Tìm kiếm email"
-              />
+              <div className="button-group">
+                {
+                  isVisable ? (
+                    <Button color="danger" style={{ marginLeft: "10px" }} onClick={() => this.deleteMultiEmail()}>
+                      Xóa
+                    </Button>
+                  ) : ('')
+                }
+              </div>
+              <div className="searchInput">
+                <Input
+                  style={{ float: 'right' }}
+                  id="searchText"
+                  prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                  value={textSearch}
+                  onChange={this.onchangeTextSearch}
+                  onPressEnter={() => {
+                    this.props.getEmailsAction(textSearch, pageDefault, itemsPerPage);
+                  }}
+                  placeholder="Tìm kiếm email"
+                />
+              </div>
             </div>
           </Row>
           <Row>
             <Loader message={spinner1} show={loading} priority={1}>
               <div className="email-body">
-                {
-                  isVisable ? (
-                    <div className="button-group">
-                      <Button color="danger" style={{ marginLeft: "5px" }} onClick={() => this.deleteMultiEmail()}>
-                        Xóa
-                        </Button>
-                    </div>
-                  ) : ('')
-                }
-
                 <label className="total-email">Danh sách email ({total})</label>
                 <Table striped>
                   <thead>
@@ -232,7 +233,7 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
                             <td colSpan={20}>{item.subject}</td>
                             <td colSpan={20}>{item.createdUser}</td>
                             <td colSpan={20} style={{ textAlign: "center" }}>{item.modifiedDate}</td>
-                            <td colSpan={15}>
+                            <td colSpan={15} style={{ textAlign: "center" }}>
                               <DropdownAnt.Button
                                 overlay={() => this.menu(item)}
                                 icon={<Icon type="caret-down" />}
