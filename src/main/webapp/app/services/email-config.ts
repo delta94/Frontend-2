@@ -16,8 +16,8 @@ export const getEmailDetail = (id: string) => {
   return axios.get(contentUrl + '/' + id, { params: {}, headers: authHeaders });
 };
 
-export const deleteEmail = (id: string) => {
-  return axios.post(customEmailUrl + '/' + id + '/delete', null, { headers: authHeaders });
+export const deleteEmail = (ids: string[]) => {
+  return axios.post(customEmailUrl + '/delete', ids, { headers: authHeaders });
 };
 
 export const getContentParam = (groupParam?: string) => {

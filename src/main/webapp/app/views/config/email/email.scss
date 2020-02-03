@@ -25,8 +25,25 @@
     
     .email-search-group {
         margin-right: 10px;
-        width: 300px;
-        float: right;
+        display: flex;
+        position: relative;
+        height: 33px;
+
+        .button-group {
+            width: 30%;
+            button {
+              margin-right: 5px;
+            }
+          }
+
+        .searchInput {
+            width: 70%;
+            .ant-input-affix-wrapper {
+              position: absolute;
+              right: 0px;
+              width: 200px;
+            }
+        }
     }
     .email-body {
         margin: 5px 10px 10px 10px;

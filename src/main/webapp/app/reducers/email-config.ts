@@ -1,7 +1,9 @@
 import { EMAIL_CONFIG } from '../constants/email-config';
 import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
 import { IEmailData, IEmail, IEmailTemplateData } from 'app/common/model/email-config.model';
-import { any } from 'prop-types';
+import { IOpenModal } from './modal';
+import { ERROR } from '../constants/common';
+import { MODAL_ACTION } from '../constants/modal';
 
 export interface IContentParams {
   id?: number;
@@ -24,7 +26,14 @@ const initialState = {
   contentParams: [] as IContentParams[],
   emailDetail: {} as IEmail,
   emailTemplateCategories: [] as IEmailTemplateCategory[],
-  contentTemplate: '' as string
+  contentTemplate: '' as string,
+  modalResponse: {
+    type: 'warning',
+    text: 'Thiếu trường thông tin',
+    title: 'Thông báo',
+    show: false,
+    payload: {}
+  } as IOpenModal
 };
 
 export type EmailConfigState = Readonly<typeof initialState>;
@@ -40,6 +49,7 @@ export default (state: EmailConfigState = initialState, action): EmailConfigStat
     case REQUEST(EMAIL_CONFIG.PREVIEW_EMAIL_TEMPLATE):
     case REQUEST(EMAIL_CONFIG.CREATE_EMAIL):
     case REQUEST(EMAIL_CONFIG.CREATE_EMAIL_TEMPLATE):
+    case REQUEST(EMAIL_CONFIG.EDIT_EMAIL):
       return {
         ...state,
         loading: true
@@ -86,28 +96,76 @@ export default (state: EmailConfigState = initialState, action): EmailConfigStat
         loading: false
       };
 
+    case FAILURE(EMAIL_CONFIG.EDIT_EMAIL):
+      return {
+        ...state,
+        loading: false
+        , modalResponse: {
+          type: ERROR,
+          text: 'Sửa email thất bại',
+          title: 'Thông báo',
+          show: true
+        }
+      };
+
     case FAILURE(EMAIL_CONFIG.CREATE_EMAIL):
       return {
         ...state,
         loading: false
+        , modalResponse: {
+          type: ERROR,
+          text: 'Thêm mới email thất bại',
+          title: 'Thông báo',
+          show: true
+        }
       };
     case FAILURE(EMAIL_CONFIG.CREATE_EMAIL_TEMPLATE):
       return {
         ...state,
         loading: false
+        , modalResponse: {
+          type: ERROR,
+          text: 'Thêm mới email template thất bại',
+          title: 'Thông báo',
+          show: true
+        }
       };
 
+
+    case SUCCESS(EMAIL_CONFIG.EDIT_EMAIL):
+      return {
+        ...state,
+        loading: false,
+        modalResponse: {
+          type: 'success',
+          text: 'Sửa email thành công',
+          title: 'Thông báo',
+          show: true
+        }
+      };
 
     case SUCCESS(EMAIL_CONFIG.CREATE_EMAIL):
       return {
         ...state,
-        loading: false
+        loading: false,
+        modalResponse: {
+          type: 'success',
+          text: 'Thêm mới email thành công',
+          title: 'Thông báo',
+          show: true
+        }
       };
 
     case SUCCESS(EMAIL_CONFIG.CREATE_EMAIL_TEMPLATE):
       return {
         ...state,
-        loading: false
+        loading: false,
+        modalResponse: {
+          type: 'success',
+          text: 'Thêm mới email template thành công',
+          title: 'Thông báo',
+          show: true
+        }
       };
 
     case SUCCESS(EMAIL_CONFIG.DELETE_EMAIL):
@@ -156,6 +214,15 @@ export default (state: EmailConfigState = initialState, action): EmailConfigStat
         ...state,
         loading: false,
         contentTemplate: action.payload.data
+      };
+
+    case MODAL_ACTION.CLOSE_MODAL:
+      return {
+        ...state,
+        loading: false,
+        modalResponse: {
+          show: false
+        }
       };
 
     default:

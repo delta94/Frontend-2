@@ -3,11 +3,14 @@ import { connect } from 'react-redux';
 import CKEditor from 'ckeditor4-react';
 import { Input, Button as Btn, Row, Popover, Tabs } from 'antd';
 import { Table, Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { Translate, translate } from 'react-jhipster';
 import { IRootState } from 'app/reducers';
 import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import SweetAlert from 'sweetalert-react';
+import {closeModal } from 'app/actions/modal';
 import { IContentParams, IEmailSave } from 'app/common/model/email-config.model';
 import { GROUP_PARAM } from 'app/constants/email-config';
 import {
@@ -162,7 +165,7 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
     }
   }
 
-  saveEmail = () => {
+  saveEmail = async () => {
     let emailId = this.props.match.params.id;
     let url = this.props.match.url;
     let { emailsave } = this.state;
@@ -230,7 +233,6 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
   selectParam = paramCode => {
     let sel, range;
     let newWindow = document.getElementsByTagName('iframe')[0].contentWindow;
-
     if (newWindow.getSelection()) {
       sel = newWindow.getSelection();
       if (sel.rangeCount) {
@@ -244,25 +246,33 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
     this.setState({
       emailsave: {
         ...this.state.emailsave,
-        content: newValue.documentElement.outerHTML
+        content: newValue.body.innerHTML
       }
     });
   };
 
   render() {
+    let { modalState } = this.props;
     let { emailsave, messageErrorEmailName, messageErrorEmailSubject, openModal } = this.state;
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
-    console.log('aaaaaaaaaaaaaaaaaaaaa', emailsave)
     return (
       <Loader message={spinner1} show={false} priority={1}>
         <Fragment>
+          <SweetAlert
+            title={modalState.title ? modalState.title : 'No title'}
+            confirmButtonColor=""
+            show={modalState.show ? modalState.show : false}
+            text={modalState.text ? modalState.text : 'No'}
+            type={modalState.type ? modalState.type : 'error'}
+            onConfirm={() => this.props.closeModal()}
+          />
           <Modal className="modal-config-preview" isOpen={openModal}>
             <ModalHeader toggle={this.toggleModal}>Landing preview</ModalHeader>
             <ModalBody>
               <PreviewEmailLanding contentParams={this.props.contentParams} htmlDOM={emailsave.content} styleForDOM={''} />
             </ModalBody>
             <ModalFooter>
-              <Btn color="primary" onClick={this.toggleModal}>
+              <Btn type="danger" onClick={this.toggleModal}>
                 Thoát
             </Btn>
             </ModalFooter>
@@ -316,7 +326,10 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
                     trigger="click">
                     <Button color="primary">Variables</Button>
                   </Popover>
-                  <Button onClick={() => this.preview(emailsave)} color="primary" style={{ marginLeft: '10px' }}>Preview</Button>
+                  <label onClick={() => this.preview(emailsave)} style={{ marginLeft: '10px', textDecoration: 'underline', color: '#3866DD' }}>
+                    <FontAwesomeIcon icon={faEye} />
+                    <span style={{ paddingLeft: '10px' }}>Preview</span>
+                  </label>
                 </div>
                 <div style={{ clear: 'both' }}></div>
                 <div style={{ marginTop: '10px' }}>
@@ -324,7 +337,8 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
                     id={'ckeditor'}
                     data={emailsave.content}
                     config={{
-                      extraPlugins: 'stylesheetparser'
+                      extraPlugins: 'stylesheetparser',
+                      height: 450
                     }}
                     onBeforeLoad={CKEDITOR => (CKEDITOR.disableAutoInline = true)}
                     onChange={this.onEditorChange}
@@ -342,14 +356,16 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
 const mapStateToProps = ({ emailConfigState, userCampaign }: IRootState) => ({
   contentParams: emailConfigState.contentParams,
   emailDetail: emailConfigState.emailDetail,
-  listContentTemplate: userCampaign.listContentTemplate
+  listContentTemplate: userCampaign.listContentTemplate,
+  modalState: emailConfigState.modalResponse
 });
 
 const mapDispatchToProps = {
   getContentParamAction,
   createEmailAction,
   editEmailAction,
-  createEmailTemplateAction
+  createEmailTemplateAction,
+  closeModal
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

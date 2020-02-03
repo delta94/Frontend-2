@@ -47,6 +47,7 @@ export default (state: PropertiesDataState = initialDataState, action): Properti
     case REQUEST(PROPS_MANAGEMENT.GET_LIST_PROPS):
     case REQUEST(PROPS_MANAGEMENT.POST_DELETE_PROPS):
     case REQUEST(PROPS_MANAGEMENT.POST_INSERT_PROPS):
+    case REQUEST(PROPS_MANAGEMENT.POST_INSERT_ONE_PROP):
     case REQUEST(PROPS_MANAGEMENT.POST_MERGE_PROPS):
     case REQUEST(PROPS_MANAGEMENT.POST_UPDATE_PROPS):
     case REQUEST(PROPS_MANAGEMENT.GET_LIST_TEMP):
@@ -70,6 +71,13 @@ export default (state: PropertiesDataState = initialDataState, action): Properti
       };
 
     case FAILURE(PROPS_MANAGEMENT.POST_INSERT_PROPS):
+      return {
+        ...state,
+        loading: false,
+        isCompelete: false
+      };
+
+    case FAILURE(PROPS_MANAGEMENT.POST_INSERT_ONE_PROP):
       return {
         ...state,
         loading: false,
@@ -137,6 +145,15 @@ export default (state: PropertiesDataState = initialDataState, action): Properti
       };
     // success on post mail Test action
     case SUCCESS(PROPS_MANAGEMENT.POST_INSERT_PROPS):
+      return {
+        ...state,
+        loading: false,
+        openModalDelete: false,
+        openModalEdit: false,
+        isCompelete: true
+      };
+
+    case SUCCESS(PROPS_MANAGEMENT.POST_INSERT_ONE_PROP):
       return {
         ...state,
         loading: false,
