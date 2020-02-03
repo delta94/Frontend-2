@@ -85,37 +85,37 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
   onDesignLoad = data => {
     console.log('onDesignLoad', data);
     console.log(this.editor);
-    // if(this.editor){
-    //   this.editor.registerCallback('image', function(file, done) {
-    //     console.log("upload");
-    //     console.log(file);
-    //
-    //     // var data = new FormData();
-    //     // data.append('file', file.attachments[0]);
-    //     //
-    //     // fetch('/uploads', {
-    //     //   method: 'POST',
-    //     //   headers: {
-    //     //     'Accept': 'application/json'
-    //     //   },
-    //     //   body: data
-    //     // }).then(response => {
-    //     //   // Make sure the response was valid
-    //     //   if (response.status >= 200 && response.status < 300) {
-    //     //     return response
-    //     //   } else {
-    //     //     var error = new Error(response.statusText)
-    //     //     error.response = response
-    //     //     throw error
-    //     //   }
-    //     // }).then(response => {
-    //     //   return response.json()
-    //     // }).then(data => {
-    //     //   // Pass the URL back to Unlayer to mark this upload as completed
-    //     //   done({ progress: 100, url: data.filelink })
-    //     // });
-    //   })
-    // }
+    if (this.editor) {
+      this.editor.registerCallback('image', function(file, done) {
+        console.log('upload');
+        console.log(file);
+
+        // var data = new FormData();
+        // data.append('file', file.attachments[0]);
+        //
+        // fetch('/uploads', {
+        //   method: 'POST',
+        //   headers: {
+        //     'Accept': 'application/json'
+        //   },
+        //   body: data
+        // }).then(response => {
+        //   // Make sure the response was valid
+        //   if (response.status >= 200 && response.status < 300) {
+        //     return response
+        //   } else {
+        //     var error = new Error(response.statusText)
+        //     error.response = response
+        //     throw error
+        //   }
+        // }).then(response => {
+        //   return response.json()
+        // }).then(data => {
+        //   // Pass the URL back to Unlayer to mark this upload as completed
+        //   done({ progress: 100, url: data.filelink })
+        // });
+      });
+    }
   };
 
   async componentDidMount() {
@@ -688,6 +688,37 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
                         `
           body {
             background-color: yellow;
+          }
+          .blockbuilder-layer.blockbuilder-layer-selected > .blockbuilder-layer-selector .blockbuilder-layer-drag,
+          .blockbuilder-layer-drag {
+              background-color: yellow;
+          }
+          .blockbuilder-layer.blockbuilder-layer-selected > .blockbuilder-layer-selector .blockbuilder-layer-type,
+          .blockbuilder-layer-type {
+              background-color: blue;
+          }
+          .blockbuilder-layer.blockbuilder-layer-selected > .blockbuilder-layer-selector .blockbuilder-layer-add-row,
+          .blockbuilder-layer-add-row {
+              background-color: green;
+          }
+          .blockbuilder-layer.blockbuilder-layer-selected > .blockbuilder-layer-selector:after,
+          .blockbuilder-layer-selectable .blockbuilder-layer-selector:after {
+              outline: red solid 2px;
+          }
+          .blockbuilder-placeholder .blockbuilder-placeholder-empty {
+              outline: red dashed 1px;
+              color: red;
+          }
+          .blockbuilder-layer-controls .blockbuilder-layer-control:hover,
+          .blockbuilder-layer-controls .blockbuilder-layer-control {
+            background-color: green;
+          }
+          .afDAm:hover,
+          .afDAm {
+              background-color: green;
+          }
+          .blockbuilder-placeholder {
+              background-color: purple;
           }
         `
                       ]
