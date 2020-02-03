@@ -179,26 +179,28 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
     const { list_clone_version } = this.props
     let { list_field_data_cpn, logicalOperator, advancedSearches } = this.state
     let data: { logicalOperator: string, advancedSearches: any[] } = list_clone_version.flowDetail.customerAdvancedSave
-    data.advancedSearches.map((item, index) => {
-      let dataSeacrh = {
-        id: Math.random().toString(36).substr(2, 9),
-        name: "new",
-        last_index: index + 1 === data.advancedSearches.length ? true : false,
-        default_data: {
-          fieldCode: item.fieldCode,
-          fieldId: item.fieldId,
-          fieldType: item.fieldType,
-          fieldValue: item.fieldValue,
-          fieldTitle: item.fieldTitle,
-          operator: item.operator,
-          value: item.value
+    if (data != undefined) {
+      data.advancedSearches.map((item, index) => {
+        let dataSeacrh = {
+          id: Math.random().toString(36).substr(2, 9),
+          name: "new",
+          last_index: index + 1 === data.advancedSearches.length ? true : false,
+          default_data: {
+            fieldCode: item.fieldCode,
+            fieldId: item.fieldId,
+            fieldType: item.fieldType,
+            fieldValue: item.fieldValue,
+            fieldTitle: item.fieldTitle,
+            operator: item.operator,
+            value: item.value
+          }
         }
-      }
-      list_field_data_cpn.push(dataSeacrh)
-    })
-    logicalOperator = data.logicalOperator
-    advancedSearches = data.advancedSearches
-    this.setState({ list_field_data_cpn, advancedSearches: data.advancedSearches })
+        list_field_data_cpn.push(dataSeacrh)
+      })
+      logicalOperator = data.logicalOperator
+      advancedSearches = data.advancedSearches
+      this.setState({ list_field_data_cpn, advancedSearches: data.advancedSearches })
+    }
   }
   // Update value from state;
   updateValueFromState = (id: string, advancedSearch: ISearchAdvanced) => {
