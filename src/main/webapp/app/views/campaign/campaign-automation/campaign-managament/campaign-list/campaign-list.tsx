@@ -105,7 +105,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
       accessor: 'status',
       Header: this.renderHeader('status'),
       Cell: row => this.renderCell('status', row.original, row.index),
-      width: 150
+      width: 250
     },
     {
       accessor: 'result',

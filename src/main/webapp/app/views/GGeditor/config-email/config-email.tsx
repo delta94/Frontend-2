@@ -32,6 +32,7 @@ import { IParamester } from 'app/common/model/campaign-navigation.model';
 import { Translate, translate } from 'react-jhipster';
 import { INTRO_MAIL, EMAIL_ALL } from 'app/constants/common';
 import { SUBJECT } from 'app/constants/common';
+import { code_node } from 'app/common/model/campaign-managament.model';
 
 // export interface I
 
@@ -256,7 +257,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
   };
 
   confirmEmail = () => {
-    let { listFieldData } = this.props;
+    let { listFieldData, list_clone_version, idNode } = this.props;
     let { defaultValueContent, nameEmail, valueName, valueTitle, idEmail, content_mail_error, value_name_error } = this.state;
     let emailConfig = {
       id: this.props.idNode.id,
@@ -276,6 +277,14 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
       getway: listFieldData.getway ? listFieldData.getway : []
     };
     let count: number = 0
+    if (Object.keys(list_clone_version).length > 0 && list_clone_version.cjId) {
+      list_clone_version.flowDetail.nodeMetaData.map(item => {
+        if (item.code === code_node.SEND_MAIL && item.nodeId === idNode.id) {
+            valueName = item.nodeConfig.name,
+            defaultValueContent = item.nodeConfig.titlle
+        }
+      })
+    }
     if (valueName) {
       value_name_error = ""
     } else {
@@ -312,18 +321,6 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
     return name
   }
 
-  getCloneDetailVersion1 = (name, info) => {
-    let { list_clone_version, idNode } = this.props;
-    if (!name && Object.keys(list_clone_version).length > 0 && list_clone_version.cjId) {
-      list_clone_version.flowDetail.nodeMetaData.map(item => {
-        if (item.nodeId === idNode.id) {
-          name = item.nodeConfig[info]
-        }
-      })
-    }
-    return name
-  }
-
   render() {
     let { showMailForFriend, defaultValueContent, openModal, idTemplate } = this.state;
     let { listContentTemplateAsTypeEmailIntro, isOpenModal, list_clone_version } = this.props;
@@ -339,7 +336,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
     });
 
     let default_name_email = this.getNameEmail() ? this.getNameEmail() : this.getCloneDetailVersion(this.getNameEmail(), 'name')
-    let default_title_email = this.contentEmail() ? this.contentEmail() : this.getCloneDetailVersion1(this.contentEmail(), 'titlle')
+    let default_title_email = this.contentEmail() ? this.contentEmail() : this.getCloneDetailVersion(this.contentEmail(), 'titlle')
 
 
     return (
