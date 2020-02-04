@@ -10,7 +10,7 @@ import { IRootState } from 'app/reducers';
 import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import SweetAlert from 'sweetalert-react';
-import {closeModal } from 'app/actions/modal';
+import { closeModal } from 'app/actions/modal';
 import { IContentParams, IEmailSave } from 'app/common/model/email-config.model';
 import { GROUP_PARAM } from 'app/constants/email-config';
 import {
@@ -279,13 +279,13 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
           </Modal>
           <div className="email-form-management">
             <div className="email-form-title-header">
-              <Button color="primary" onClick={this.back}>Back</Button>
+              <Button color="back" onClick={this.back} style={{ color: 'blue', textDecoration: 'underline' }}>Quay lại</Button>
               <div className="button-group">
                 <Button color="primary" onClick={this.saveEmail}>
-                  Save
+                  Lưu
                       </Button>
                 <Button color="primary" onClick={this.createEmailTemplate} style={{ marginLeft: '10px', marginRight: '10px' }}>
-                  Save as Template
+                  Lưu thành Template
                       </Button>
               </div>
             </div>
@@ -324,7 +324,7 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
                     visible={this.state.visiblePopOver}
                     onVisibleChange={this.handleVisibleChange}
                     trigger="click">
-                    <Button color="primary">Variables</Button>
+                    <Button color="primary">Tham số</Button>
                   </Popover>
                   <label onClick={() => this.preview(emailsave)} style={{ marginLeft: '10px', textDecoration: 'underline', color: '#3866DD' }}>
                     <FontAwesomeIcon icon={faEye} />

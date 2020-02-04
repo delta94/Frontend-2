@@ -1,7 +1,8 @@
 .email-template-management {
     background-color: #fff;
     .email-template-title-header {
-        font-size: 18px;
+        font-size: 20px;
+        color: #2d3843;
         background: #f9fafb;
         margin: 0px -10px 10px;
         padding: 15px 10px;
@@ -9,6 +10,8 @@
         button {
             float: right;
             margin-right: 10px;
+            text-decoration: underline;
+            color: blue;
         }
     }
     .email-template-search {

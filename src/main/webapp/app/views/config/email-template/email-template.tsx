@@ -105,8 +105,8 @@ class EmailTemplateManagement extends React.Component<IEmailTemplateManagementPr
         </Modal>
         <div className="email-template-management">
           <div className="email-template-title-header">
-            <label>Choose Templates</label>
-            <Btn color="primary" onClick={this.back}>Back</Btn>
+            <Btn color="black" onClick={this.back}>Quay lại</Btn>
+            <label>Chọn template</label>
           </div>
           <Row>
             <div className="email-template-search">
@@ -143,8 +143,8 @@ class EmailTemplateManagement extends React.Component<IEmailTemplateManagementPr
                                           src={emailTemplate.thumbnail}
                                         />
                                         <div className="middle">
-                                          <Button type="primary"  onClick={() => this.previewTemplate(emailTemplate.id)}>Preview</Button>
-                                          <Button type="primary" onClick={() => this.chooseTemplate(emailTemplate.id)} style={{ marginLeft: '5px' }}>Choose</Button>
+                                          <Button type="primary" onClick={() => this.previewTemplate(emailTemplate.id)}>Xem trước</Button>
+                                          <Button type="primary" onClick={() => this.chooseTemplate(emailTemplate.id)} style={{ marginLeft: '5px' }}>Chọn</Button>
                                         </div>
                                       </div>
                                       <div className="gutter-title">{emailTemplate.subject}</div>
