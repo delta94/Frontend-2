@@ -557,7 +557,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
           <Container fluid className="container-version">
             <Card style={{ height: '650px' }}>
               <Row className="body-version">
-                <Button disabled={listCjId.length === 1 ? false : true} onClick={this.copyVersion} type="link">
+                <Button disabled={listCjId.length === 1 ? false : true}  onClick={this.copyVersion} type="link">
                   {' '}
                   <img src={imgCopy} />{' '}
                 </Button>
