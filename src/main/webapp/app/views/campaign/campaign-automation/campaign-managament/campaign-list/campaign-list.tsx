@@ -168,12 +168,12 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
             <br />
             {item.tags
               ? item.tags.split(',').map((v, i) => {
-                  return (
-                    <Tag color="blue" key={i}>
-                      {v}
-                    </Tag>
-                  );
-                })
+                return (
+                  <Tag color="#108ee9" style={{ borderRadius: '25px', margin: '5px' }} key={i}>
+                    {v}
+                  </Tag>
+                );
+              })
               : null}
           </div>
         );
@@ -723,7 +723,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
               pageSize={list_camp && list_camp.length > 1 ? list_camp.length : 1}
             />
 
-            <div className="navigation1">
+            <div className="campaign-navigation" style={{ marginTop: '20px' }}>
               {totalPages && totalPages >= 2 ? (
                 <Row className="justify-content-center" style={{ float: 'right' }}>
                   <ReactPaginate
@@ -741,8 +741,8 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                   />
                 </Row>
               ) : (
-                ''
-              )}
+                  ''
+                )}
             </div>
             <br></br>
 

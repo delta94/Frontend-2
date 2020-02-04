@@ -38,12 +38,14 @@ const const_action = {
 
 export interface ITreeFolderState {
   treeData: any[];
-  list_folder : any[]
+  list_folder: any[]
   hover: boolean;
   level: string;
   expandedKeys: any;
   error_name: string;
-  visible: boolean
+  visible: boolean;
+
+  treeData?: any[];
 }
 
 class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
@@ -51,7 +53,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
     treeData: [],
     hover: false,
     expandedKeys: [],
-    list_folder : [],
+    list_folder: [],
     level: '',
     error_name: '',
     visible: false
@@ -166,7 +168,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
     </Row>
   );
 
-  contentCreateFolder() {
+  contentCreateFolder(folderTitle: string) {
     let content = (
       <Row>
         <Col span={6}>
@@ -174,7 +176,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
         </Col>
         <Col span={18}>
           {' '}
-          <Input maxLength={160} id="nameTree" />{' '}
+          <Input maxLength={160} id="nameTree" defaultValue={folderTitle} />{' '}
         </Col>
         <p style={{ color: "red" }}>{this.state.error_name}</p>
 
@@ -195,7 +197,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
         if (Number(level) < 3) {
           confirm({
             title: translate('campaign-auto.modal.title-create'),
-            content: this.contentCreateFolder(),
+            content: this.contentCreateFolder(''),
             zIndex: 1000000,
             onOk: async () => {
               let name_folder = $(`#nameTree`).val()
@@ -225,7 +227,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
       case const_action.EDIT_FOLDER:
         confirm({
           title: translate('campaign-auto.modal.title-edit') + ' ' + event.title,
-          content: this.contentCreateFolder(),
+          content: this.contentCreateFolder(event.title),
           zIndex: 1000000,
           onOk: async () => {
             let name_folder = $(`#nameTree`).val()
@@ -377,7 +379,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
         return item.check = visible
       }
     })
-    this.setState({ visible, list_folder : arr });
+    this.setState({ visible, list_folder: arr });
   };
 
   getList = async (key, node) => {
@@ -459,12 +461,12 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
     return (
       <Fragment>
         <Row className="row-sort-tree">
-          <Col span={12}>
-            <label style={{ margin: '5px' }}>THƯ MỤC</label>
+          <Col span={18}>
+            <label style={{ margin: '5px', color: '#2d3843' }}>THƯ MỤC</label>
           </Col>
-          <Col style={{ textAlign: 'right' }} span={12}>
+          <Col style={{ textAlign: 'right' }} span={6}>
             <Icon
-              style={{ marginRight: '5%', fontSize: '24px', color: '#3866DD' }}
+              style={{ marginRight: '10px', fontSize: '24px', color: '#3866DD' }}
               onClick={() => {
                 this.createFolder('select', 'create');
               }}
