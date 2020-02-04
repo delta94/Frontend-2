@@ -44,8 +44,6 @@ export interface ITreeFolderState {
   expandedKeys: any;
   error_name: string;
   visible: boolean;
-
-  treeData?: any[];
 }
 
 class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
