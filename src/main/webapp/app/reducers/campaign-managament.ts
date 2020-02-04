@@ -17,6 +17,7 @@ interface IStatusCampagin {
   total: string;
   totalDraft: string;
   totalRunning: string;
+  totalStop: string;
   totalFinish: string;
 }
 

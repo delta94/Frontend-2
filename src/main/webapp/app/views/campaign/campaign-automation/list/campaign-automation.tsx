@@ -244,6 +244,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
     let { getStatusCampaign, list_campaign_auto, loading } = this.props;
     const img = require('app/assets/utils/images/campaign-managament/count_campaign.png');
     const img_campaign_running = require('app/assets/utils/images/campaign-managament/campaign_running.png');
+    const img_campaign_stop = require('app/assets/utils/images/campaign-managament/campaign_stop.png');
     const img_finish = require('app/assets/utils/images/campaign-managament/campaign_finish.png');
     const img_new = require('app/assets/utils/images/campaign-managament/campaign_new.png');
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
@@ -285,7 +286,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
           </div>
           <div className="body-campaign-auto">
             <Row gutter={16}>
-              <Col className="gutter-row" span={6}>
+              <Col className="gutter-row" span={4} style={{width:'20%'}}>
                 <div className="gutter-box top">
                   <label className="text"><Translate contentKey="campaign-auto.total-campaign" /></label>
                 </div>
@@ -294,7 +295,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
                   <label className="count-campaign">{getStatusCampaign.total}</label>
                 </div>
               </Col>
-              <Col className="gutter-row" span={6}>
+              <Col className="gutter-row" span={4} style={{width:'20%'}}>
                 <div className="gutter-box top">
                   <label className="text"><Translate contentKey="campaign-auto.campaign-running" /></label>
                 </div>
@@ -303,7 +304,16 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
                   <label className="count-campaign">{getStatusCampaign.totalRunning}</label>
                 </div>
               </Col>
-              <Col className="gutter-row" span={6}>
+              <Col className="gutter-row" span={4} style={{width:'20%'}}>
+                <div className="gutter-box top">
+                  <label className="text"><Translate contentKey="campaign-auto.campaign-stop" /></label>
+                </div>
+                <div className="gutter-box below">
+                  <img style={{ margin: '0px 32px 17px', width: '11%' }} src={img_campaign_stop} />
+                  <label className="count-campaign">{getStatusCampaign.totalStop}</label>
+                </div>
+              </Col>
+              <Col className="gutter-row" span={4} style={{width:'20%'}}>
                 <div className="gutter-box top">
                   <label className="text"><Translate contentKey="campaign-auto.campaign-finish" /></label>
                 </div>
@@ -312,7 +322,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
                   <label className="count-campaign">{getStatusCampaign.totalFinish}</label>
                 </div>
               </Col>
-              <Col className="gutter-row" span={6}>
+              <Col className="gutter-row" span={4} style={{width:'20%'}}>
                 <div className="gutter-box top">
                   <label className="text"><Translate contentKey="campaign-auto.campaign-new" /></label>
                 </div>
