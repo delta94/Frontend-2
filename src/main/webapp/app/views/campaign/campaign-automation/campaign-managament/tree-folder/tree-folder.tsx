@@ -475,6 +475,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
         <hr />
         <Row>
           <div style={{ height: 700 }} className="tree-data">
+            <label onClick={() => { this.props.getListCampaignInfolderDataAction(-99, '', '', 0, 7) }}><Translate contentKey="campaign-auto.all-campaign" /></label>
             <Tree
               onSelect={(info, { selected }) => {
                 console.log(info)
@@ -491,7 +492,6 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
               onDrop={this.onDrop}
             // showLine = {true}
             >
-              <TreeNode title={<div><Translate contentKey="campaign-auto.all-campaign" /></div>} />
               {this.state.treeData.map((item, index, arr) => {
                 if (item.children && item.children.length) {
                   return (

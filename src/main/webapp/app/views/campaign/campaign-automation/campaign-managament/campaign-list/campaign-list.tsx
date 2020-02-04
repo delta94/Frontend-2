@@ -197,7 +197,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
         return <span> {item.modifiedDate}</span>;
       case 'manipulation':
         return (
-          <div>
+          <div style={{ marginLeft: '15px' }}>
             <CJTagPopOver key={item.cjVersionId} dataPopup={item} getCjs={this.getCjs} />
             {/* <Icon onClick={() => this.openModalCjTag(item.id)} style={{ fontSize: '24px' }} type="tags" />  */}
             {/* <PopverAnt
@@ -217,7 +217,6 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                           >
                             <img src={img_tag} />
                           </PopverAnt> */}
-            &nbsp; &nbsp;
             <PopverAnt
               overlayClassName="pop-version"
               content={
@@ -237,7 +236,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
               trigger="click"
             >
               {/* <Icon style={{ fontSize: '24px' }} type="unordered-list" /> */}
-              <FontAwesomeIcon style={{ fontSize: '24px', verticalAlign: 'inherit', color: '#3866DD' }} icon={faEllipsisH} />
+              <FontAwesomeIcon style={{ margin: '0px 0px -12px 5px', fontSize: '24px', verticalAlign: 'inherit', color: '#3866DD' }} icon={faEllipsisH} />
             </PopverAnt>
           </div>
         );

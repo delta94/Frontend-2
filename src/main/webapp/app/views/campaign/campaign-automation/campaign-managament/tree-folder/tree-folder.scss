@@ -46,6 +46,21 @@
   }
 }
 .tree-data {
+
+  label {
+    margin: 5px;
+    color: #2d3843;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    cursor: pointer;
+  }
+
+  .ant-tree li span.ant-tree-switcher:empty, .ant-tree li span.ant-tree-iconEle:empty {
+    display: inline-block;
+  }
+
   .ant-tree-node-content-wrapper {
     height: 100% !important;
   }
