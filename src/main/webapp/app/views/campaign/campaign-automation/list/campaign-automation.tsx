@@ -55,6 +55,7 @@ export interface ICampaginAutoState {
   hover: boolean;
   idTree: string;
   activePage: number;
+  statusCampaign: string;
 }
 
 class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoState> {
@@ -68,7 +69,8 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
       cjId: '',
       status: ''
     },
-    activePage: 0
+    activePage: 0,
+    statusCampaign: ''
   };
 
   componentDidMount = async () => {
@@ -237,11 +239,11 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
   setPageIndex = pageIndex => {
     const { getListCampaginAuto } = this.props;
     this.setState({ activePage: parseInt(pageIndex) });
-    getListCampaginAuto('', parseInt(pageIndex), 5);
+    getListCampaginAuto(this.state.statusCampaign, parseInt(pageIndex), 5);
   };
 
   render() {
-    let { getStatusCampaign, list_campaign_auto, loading } = this.props;
+    let { getStatusCampaign, list_campaign_auto, loading, totalCampaign } = this.props;
     const img = require('app/assets/utils/images/campaign-managament/count_campaign.png');
     const img_campaign_running = require('app/assets/utils/images/campaign-managament/campaign_running.png');
     const img_campaign_stop = require('app/assets/utils/images/campaign-managament/campaign_stop.png');
@@ -286,7 +288,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
           </div>
           <div className="body-campaign-auto">
             <Row gutter={16}>
-              <Col className="gutter-row" span={4} style={{width:'20%'}}>
+              <Col className="gutter-row" span={4} style={{ width: '20%' }} onClick={() => { this.props.getListCampaginAuto('', 0, 5), this.setState({ statusCampaign: '' }) }}>
                 <div className="gutter-box top">
                   <label className="text"><Translate contentKey="campaign-auto.total-campaign" /></label>
                 </div>
@@ -295,7 +297,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
                   <label className="count-campaign">{getStatusCampaign.total}</label>
                 </div>
               </Col>
-              <Col className="gutter-row" span={4} style={{width:'20%'}}>
+              <Col className="gutter-row" span={4} style={{ width: '20%' }} onClick={() => { this.props.getListCampaginAuto(constant_version.RUNNING, 0, 5), this.setState({ statusCampaign: constant_version.RUNNING }) }}>
                 <div className="gutter-box top">
                   <label className="text"><Translate contentKey="campaign-auto.campaign-running" /></label>
                 </div>
@@ -304,7 +306,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
                   <label className="count-campaign">{getStatusCampaign.totalRunning}</label>
                 </div>
               </Col>
-              <Col className="gutter-row" span={4} style={{width:'20%'}}>
+              <Col className="gutter-row" span={4} style={{ width: '20%' }} onClick={() => { this.props.getListCampaginAuto(constant_version.STOP, 0, 5), this.setState({ statusCampaign: constant_version.STOP }) }}>
                 <div className="gutter-box top">
                   <label className="text"><Translate contentKey="campaign-auto.campaign-stop" /></label>
                 </div>
@@ -313,7 +315,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
                   <label className="count-campaign">{getStatusCampaign.totalStop}</label>
                 </div>
               </Col>
-              <Col className="gutter-row" span={4} style={{width:'20%'}}>
+              <Col className="gutter-row" span={4} style={{ width: '20%' }} onClick={() => { this.props.getListCampaginAuto(constant_version.FINISH, 0, 5), this.setState({ statusCampaign: constant_version.FINISH }) }}>
                 <div className="gutter-box top">
                   <label className="text"><Translate contentKey="campaign-auto.campaign-finish" /></label>
                 </div>
@@ -322,7 +324,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
                   <label className="count-campaign">{getStatusCampaign.totalFinish}</label>
                 </div>
               </Col>
-              <Col className="gutter-row" span={4} style={{width:'20%'}}>
+              <Col className="gutter-row" span={4} style={{ width: '20%' }} onClick={() => { this.props.getListCampaginAuto(constant_version.DRAFT, 0, 5), this.setState({ statusCampaign: constant_version.DRAFT }) }}>
                 <div className="gutter-box top">
                   <label className="text"><Translate contentKey="campaign-auto.campaign-new" /></label>
                 </div>
@@ -334,7 +336,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
             </Row>
             <br />
             <Row className="table-campaign-auto">
-              <label className="total-campaign-table"> <Translate contentKey="campaign-auto.count-campaign" interpolate={{ element: getStatusCampaign.total }} /></label>
+              <label className="total-campaign-table"> <Translate contentKey="campaign-auto.count-campaign" interpolate={{ element: totalCampaign }} /></label>
               <Table responsive striped className="main-table">
                 <thead>
                   <th style={{ width: '4%' }}><Translate contentKey="campaign-auto.table.index" /></th>
@@ -369,7 +371,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
                               animated
                               color={this.countContact(event.contactCompleted, event.contactNumbers) < 100 ? "warning" : "success"}
                               value={this.countContact(event.contactCompleted, event.contactNumbers)}
-                            ><label className = "text-process" style ={{color :" #6C757D", marginTop : "9px"}}> {event.contactCompleted}/{event.contactNumbers} contact </label></Progress>
+                            ><label className="text-process" style={{ color: " #6C757D", marginTop: "9px" }}> {event.contactCompleted}/{event.contactNumbers} contact </label></Progress>
                           </td>
                           <td>{event.modifiedDate}</td>
                         </tr>
@@ -380,14 +382,14 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
               </Table>
               <br />
               <div className="navigation1">
-                {getStatusCampaign.total && parseInt(getStatusCampaign.total) >= 4 ? (
+                {totalCampaign && totalCampaign >= 4 ? (
                   <Row className="justify-content-center" style={{ float: 'right', marginRight: '1%' }}>
                     <ReactPaginate
                       previousLabel={'<'}
                       nextLabel={'>'}
                       breakLabel={'...'}
                       breakClassName={'break-me'}
-                      pageCount={Math.ceil(parseInt(getStatusCampaign.total) / 5)}
+                      pageCount={Math.ceil(totalCampaign / 5)}
                       marginPagesDisplayed={2}
                       pageRangeDisplayed={5}
                       onPageChange={event => this.setPageIndex(event.selected)}
@@ -413,6 +415,7 @@ const mapStateToProps = ({ campaignManagament }: IRootState) => ({
   loading: campaignManagament.loading,
   getStatusCampaign: campaignManagament.statusCampaign,
   list_campaign_auto: campaignManagament.listCampaignAuto,
+  totalCampaign: campaignManagament.totalCampaign,
   list_clone_version: campaignManagament.cloneInfoVersion
 });
 

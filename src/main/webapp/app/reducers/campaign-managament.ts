@@ -60,6 +60,7 @@ const initialCampaignManagament = {
   loading: false,
   statusCampaign: {} as IStatusCampagin,
   listCampaignAuto: [] as IListCampaignAuto[],
+  totalCampaign: 0,
   listNode: '',
   listInfoCampaing: {} as IInfoCampaign,
   listDiagram: {} as IListDiagram,
@@ -176,7 +177,8 @@ export default (state = initialCampaignManagament, action) => {
       return {
         ...state,
         loading: false,
-        listCampaignAuto: action.payload.data.data
+        listCampaignAuto: action.payload.data.data,
+        totalCampaign: action.payload.data.total
       };
 
     case SUCCESS(CAMPAIGN_MANAGAMENT.COUNT_CAMPAIGN):
