@@ -47,7 +47,7 @@ export class Edit extends React.Component<IEditProps, IEditState> {
     let data = {
       id: id,
       title: $(`input#field-name`).val(),
-      personalizationTag: tag
+      personalizationTag: '{{' + tag + '}}'
     };
     if (tag) {
       await this.props.updateProp(id, data);
@@ -62,6 +62,15 @@ export class Edit extends React.Component<IEditProps, IEditState> {
       this.setState({ validField: translate('properties-management.error.param-none') });
     }
   };
+
+  formatPersonalizationTag(personalizationTag) {
+    let personalizationTagFormat = null;
+    personalizationTagFormat =
+      personalizationTag && personalizationTag.includes('{{') && personalizationTag.includes('}}')
+        ? personalizationTag.replace('{{', '').replace('}}', '')
+        : '';
+    return personalizationTagFormat;
+  }
 
   render() {
     const { getList, id, loading } = this.props;
@@ -89,7 +98,13 @@ export class Edit extends React.Component<IEditProps, IEditState> {
                             <Label>
                               <Translate contentKey="properties-management.form.persionalization" />
                             </Label>
-                            <Input maxLength={160} addonBefore="%" addonAfter="%" defaultValue={event.personalizationTag} id="tag" />
+                            <Input
+                              maxLength={160}
+                              addonBefore="{{"
+                              addonAfter="}}"
+                              defaultValue={this.formatPersonalizationTag(event.personalizationTag)}
+                              id="tag"
+                            />
                             <p style={{ textAlign: 'center' }} className="error">
                               {this.state.validField}
                             </p>
@@ -153,7 +168,4 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Edit);
+export default connect(mapStateToProps, mapDispatchToProps)(Edit);

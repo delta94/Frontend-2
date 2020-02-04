@@ -31,7 +31,7 @@ import { OPERATOR } from 'app/constants/field-data';
 import { IOpenModal } from 'app/reducers/modal';
 import { ERROR } from 'app/constants/common';
 
-const { confirm } = Modal
+const { confirm } = Modal;
 
 interface IGroupModalConfigProps extends StateProps, DispatchProps {
   is_show: boolean;
@@ -104,17 +104,23 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
     },
     dateTime: '',
     selectDate: new Date(),
-    error_categoryName: '',
+    error_categoryName: ''
   };
 
   componentDidMount() {
     let { logicalOperator, advancedSearches, pageIndex, pageSize, categoryName } = this.state;
-    let { list_clone_version } = this.props
+    let { list_clone_version } = this.props;
     if (Object.keys(list_clone_version).length > 0 && list_clone_version.cjId) {
-      logicalOperator = list_clone_version.flowDetail.customerAdvancedSave === null ? '' : list_clone_version.flowDetail.customerAdvancedSave.logicalOperator
-      advancedSearches = list_clone_version.flowDetail.customerAdvancedSave === null ? [] : list_clone_version.flowDetail.customerAdvancedSave.advancedSearches,
-        categoryName = list_clone_version.flowDetail.customerGroupName
-      this.getValueAdv()
+      logicalOperator =
+        list_clone_version.flowDetail.customerAdvancedSave === null
+          ? ''
+          : list_clone_version.flowDetail.customerAdvancedSave.logicalOperator;
+      (advancedSearches =
+        list_clone_version.flowDetail.customerAdvancedSave === null
+          ? []
+          : list_clone_version.flowDetail.customerAdvancedSave.advancedSearches),
+        (categoryName = list_clone_version.flowDetail.customerGroupName);
+      this.getValueAdv();
     }
     this.props.getListFieldDataAction();
     this.props.getFindCustomerWithConditionAction({
@@ -123,7 +129,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
       page: pageIndex,
       pageSize
     });
-    this.setState({ categoryName, logicalOperator })
+    this.setState({ categoryName, logicalOperator });
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -176,30 +182,34 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
   }
   //clone customer
   getValueAdv = () => {
-    const { list_clone_version } = this.props
-    let { list_field_data_cpn, logicalOperator, advancedSearches } = this.state
-    let data: { logicalOperator: string, advancedSearches: any[] } = list_clone_version.flowDetail.customerAdvancedSave
-    data.advancedSearches.map((item, index) => {
-      let dataSeacrh = {
-        id: Math.random().toString(36).substr(2, 9),
-        name: "new",
-        last_index: index + 1 === data.advancedSearches.length ? true : false,
-        default_data: {
-          fieldCode: item.fieldCode,
-          fieldId: item.fieldId,
-          fieldType: item.fieldType,
-          fieldValue: item.fieldValue,
-          fieldTitle: item.fieldTitle,
-          operator: item.operator,
-          value: item.value
-        }
-      }
-      list_field_data_cpn.push(dataSeacrh)
-    })
-    logicalOperator = data.logicalOperator
-    advancedSearches = data.advancedSearches
-    this.setState({ list_field_data_cpn, advancedSearches: data.advancedSearches })
-  }
+    const { list_clone_version } = this.props;
+    let { list_field_data_cpn, logicalOperator, advancedSearches } = this.state;
+    let data: { logicalOperator: string; advancedSearches: any[] } = list_clone_version.flowDetail.customerAdvancedSave;
+    if (data != undefined) {
+      data.advancedSearches.map((item, index) => {
+        let dataSeacrh = {
+          id: Math.random()
+            .toString(36)
+            .substr(2, 9),
+          name: 'new',
+          last_index: index + 1 === data.advancedSearches.length ? true : false,
+          default_data: {
+            fieldCode: item.fieldCode,
+            fieldId: item.fieldId,
+            fieldType: item.fieldType,
+            fieldValue: item.fieldValue,
+            fieldTitle: item.fieldTitle,
+            operator: item.operator,
+            value: item.value
+          }
+        };
+        list_field_data_cpn.push(dataSeacrh);
+      });
+      logicalOperator = data.logicalOperator;
+      advancedSearches = data.advancedSearches;
+      this.setState({ list_field_data_cpn, advancedSearches: data.advancedSearches });
+    }
+  };
   // Update value from state;
   updateValueFromState = (id: string, advancedSearch: ISearchAdvanced) => {
     let { advancedSearchesData, logicalOperator } = this.state;
@@ -304,7 +314,11 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
   // GetData customer by condition
   getDataListCustomer = (event: any) => {
     let { advancedSearches, logicalOperator, pageIndex, pageSize, list_field_data_cpn } = this.state;
-    advancedSearches = list_field_data_cpn && list_field_data_cpn.map(item => { return { ...item.default_data } })
+    advancedSearches =
+      list_field_data_cpn &&
+      list_field_data_cpn.map(item => {
+        return { ...item.default_data };
+      });
     if (advancedSearches.length <= 1) {
       logicalOperator = '';
     }
@@ -375,19 +389,23 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
 
     // await this.props.openModal(postRequest);
     // await this.props.getListCustomerGroupDataAction('');
-    let count: number = 0
+    let count: number = 0;
     let customerAdvancedSave = {
       logicalOperator,
-      advancedSearches: list_field_data_cpn && list_field_data_cpn.map(item => { return { ...item.default_data } })
+      advancedSearches:
+        list_field_data_cpn &&
+        list_field_data_cpn.map(item => {
+          return { ...item.default_data };
+        })
     };
     if (categoryName) {
-      this.setState({ error_categoryName: "" })
+      this.setState({ error_categoryName: '' });
     } else {
       if (Object.keys(this.props.list_clone_version).length > 0 && this.props.list_clone_version.cjId) {
-        categoryName = this.props.list_clone_version.flowDetail.customerGroupName
+        categoryName = this.props.list_clone_version.flowDetail.customerGroupName;
       }
-      count++
-      this.setState({ error_categoryName: "* Vui lòng nhập tên nhóm" })
+      count++;
+      this.setState({ error_categoryName: '* Vui lòng nhập tên nhóm' });
     }
 
     if (count == 0) {
@@ -398,10 +416,9 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
           onOk: async () => {
             this.props.toggle(false, this.state.categoryName + ',' + this.state.dateTime, customerAdvancedSave, true);
           },
-          onCancel() {
-          },
-          okText: "Xác nhận",
-          cancelText: "Hủy"
+          onCancel() {},
+          okText: 'Xác nhận',
+          cancelText: 'Hủy'
         });
       } else {
         this.props.toggle(false, this.state.categoryName + ',' + this.state.dateTime, customerAdvancedSave, true);
@@ -410,7 +427,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
   }
   getNameGroup = () => {
     const { listFieldData, list_clone_version } = this.props;
-    let result: string = "";
+    let result: string = '';
     listFieldData.listCampign &&
       listFieldData.listCampign.map(item => {
         if (item.id === this.props.idNode.id) {
@@ -418,12 +435,12 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
         }
       });
     if (Object.keys(list_clone_version).length > 0 && list_clone_version.cjId && !result) {
-      result = list_clone_version.flowDetail.customerGroupName
+      result = list_clone_version.flowDetail.customerGroupName;
     }
     return result;
   };
   save = () => {
-    const { totalElements } = this.props
+    const { totalElements } = this.props;
     if (totalElements > 0) {
       this.execFunctionRequest();
     } else {
@@ -434,7 +451,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
         text: 'Vui lòng chọn ít nhất 1 khách hàng'
       });
     }
-  }
+  };
 
   render() {
     let {
@@ -452,21 +469,21 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
     let list_field_render =
       list_field_data_cpn && list_field_data_cpn.length > 0
         ? list_field_data_cpn.map(item => {
-          if (item.id)
-            return (
-              <FieldData
-                type_modal={type_modal}
-                key={item.id}
-                id={item.id}
-                last_index={item.last_index}
-                logicalOperator={logicalOperator}
-                default_data={item.default_data}
-                updateValueFromState={this.updateValueFromState}
-                deleteComponentById={this.deleteComponentById}
-                updateRelationshipFromState={this.updateRelationshipFromState}
-              />
-            );
-        })
+            if (item.id)
+              return (
+                <FieldData
+                  type_modal={type_modal}
+                  key={item.id}
+                  id={item.id}
+                  last_index={item.last_index}
+                  logicalOperator={logicalOperator}
+                  default_data={item.default_data}
+                  updateValueFromState={this.updateValueFromState}
+                  deleteComponentById={this.deleteComponentById}
+                  updateRelationshipFromState={this.updateRelationshipFromState}
+                />
+              );
+          })
         : [];
 
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
@@ -506,7 +523,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
             key="back"
             color="primary"
             onClick={() => {
-              this.save()
+              this.save();
             }}
           >
             <Translate contentKey="group-attribute-customer.save" />
@@ -522,20 +539,24 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
               defaultValue={this.getNameGroup()}
               placeholder={translate('group-attribute-customer.group-modal-config.name-placeholder')}
               onChange={event => {
-                categoryName = this.getNameGroup() ? this.getNameGroup() : categoryName
-                this.setState({ categoryName: event.target.value })
+                categoryName = this.getNameGroup() ? this.getNameGroup() : categoryName;
+                this.setState({ categoryName: event.target.value });
               }}
               maxLength={160}
             />
           </div>
-          <p className="error" style={{ color: "red", marginLeft: "8%" }}> {this.state.error_categoryName}</p>
+          <p className="error" style={{ color: 'red', marginLeft: '8%' }}>
+            {' '}
+            {this.state.error_categoryName}
+          </p>
 
           <div className="input-search">
-            <label className="input-search_label"><Translate contentKey="config-customer.setting-calender" /></label>
+            <label className="input-search_label">
+              <Translate contentKey="config-customer.setting-calender" />
+            </label>
             <DatePicker
               className="ant-input"
               selected={this.state.selectDate}
-
               timeIntervals={10}
               timeFormat="HH:mm"
               onChange={date => {
@@ -634,12 +655,12 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
                         );
                       })
                     ) : (
-                        <tr>
-                          <td className="none-data" colSpan={100}>
-                            <Translate contentKey="group-attribute-customer.none-data-list-customer" />
-                          </td>
-                        </tr>
-                      )}
+                      <tr>
+                        <td className="none-data" colSpan={100}>
+                          <Translate contentKey="group-attribute-customer.none-data-list-customer" />
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </Table>
               </div>

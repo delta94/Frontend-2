@@ -32,6 +32,7 @@ import { IParamester } from 'app/common/model/campaign-navigation.model';
 import { Translate, translate } from 'react-jhipster';
 import { INTRO_MAIL, EMAIL_ALL } from 'app/constants/common';
 import { SUBJECT } from 'app/constants/common';
+import { code_node } from 'app/common/model/campaign-managament.model';
 
 // export interface I
 
@@ -75,7 +76,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
     idEmail: false,
     nameEmail: '',
     value_name_error: '',
-    content_mail_error: '',
+    content_mail_error: ''
   };
   constructor(props) {
     super(props);
@@ -102,7 +103,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
   };
 
   remove(arr, item) {
-    for (var i = arr.length; i--;) {
+    for (var i = arr.length; i--; ) {
       if (arr[i].id === item.id) {
         arr.splice(i, 1);
       }
@@ -227,7 +228,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
   };
   getNameEmail = () => {
     const { listFieldData, idNode } = this.props;
-    let data;
+    let data: string;
     listFieldData.emailConfig &&
       listFieldData.emailConfig.map(item => {
         if (item.id === idNode.id) {
@@ -238,7 +239,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
   };
 
   contentEmail = () => {
-    let result;
+    let result: string;
     const { listFieldData, idNode } = this.props;
     listFieldData.emailConfig &&
       listFieldData.emailConfig.map(item => {
@@ -247,7 +248,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
           this.state.defaultValueContent = item.contentEmail;
         }
       });
-  return <label>{result ? result : <Translate contentKey = "config-email.please-chosse-email" />} </label>;
+    return result;
   };
 
   toggle = () => {
@@ -256,7 +257,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
   };
 
   confirmEmail = () => {
-    let { listFieldData } = this.props;
+    let { listFieldData, list_clone_version, idNode } = this.props;
     let { defaultValueContent, nameEmail, valueName, valueTitle, idEmail, content_mail_error, value_name_error } = this.state;
     let emailConfig = {
       id: this.props.idNode.id,
@@ -275,42 +276,48 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
       timer: listFieldData.timer ? listFieldData.timer : [],
       getway: listFieldData.getway ? listFieldData.getway : []
     };
-    let count: number = 0
+    let count: number = 0;
+    if (Object.keys(list_clone_version).length > 0 && list_clone_version.cjId) {
+      list_clone_version.flowDetail.nodeMetaData.map(item => {
+        if (item.code === code_node.SEND_MAIL && item.nodeId === idNode.id) {
+          (valueName = item.nodeConfig.name), (defaultValueContent = item.nodeConfig.titlle);
+        }
+      });
+    }
     if (valueName) {
-      value_name_error = ""
+      value_name_error = '';
     } else {
       count++;
-      value_name_error = translate("config-email.please-input")
+      value_name_error = translate('config-email.please-input');
     }
 
     if (defaultValueContent) {
-      content_mail_error = ""
+      content_mail_error = '';
     } else {
       count++;
-      content_mail_error = translate("config-email.please-chosse-email")
+      content_mail_error = translate('config-email.please-chosse-email');
     }
-    this.setState({ value_name_error, content_mail_error })
-
+    this.setState({ value_name_error, content_mail_error });
 
     if (count < 1) {
       data.emailConfig = this.remove(data.emailConfig, this.props.idNode);
       data.emailConfig.push(emailConfig);
       this.props.validateCampaign(data);
-      this.toggle()
+      this.toggle();
     }
-  }
+  };
 
   getCloneDetailVersion = (name, info) => {
     let { list_clone_version, idNode } = this.props;
     if (!name && Object.keys(list_clone_version).length > 0 && list_clone_version.cjId) {
       list_clone_version.flowDetail.nodeMetaData.map(item => {
         if (item.nodeId === idNode.id) {
-          name = item.nodeConfig[info]
+          name = item.nodeConfig[info];
         }
-      })
+      });
     }
-    return name
-  }
+    return name;
+  };
 
   render() {
     let { showMailForFriend, defaultValueContent, openModal, idTemplate } = this.state;
@@ -326,9 +333,8 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
       };
     });
 
-    let default_name_email : string = this.getNameEmail() ? this.getNameEmail : this.getCloneDetailVersion(this.getNameEmail(), 'name')
-    let default_title_email : string = this.getNameEmail() ? this.getNameEmail : this.getCloneDetailVersion(this.getNameEmail(), 'titlle')
-
+    let default_name_email = this.getNameEmail() ? this.getNameEmail() : this.getCloneDetailVersion(this.getNameEmail(), 'name');
+    let default_title_email = this.contentEmail() ? this.contentEmail() : this.getCloneDetailVersion(this.contentEmail(), 'titlle');
 
     return (
       <Fragment>
@@ -345,15 +351,11 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
         </Modal>
 
         <Modal className="modal-config-email" isOpen={isOpenModal}>
-          <ModalHeader
-            toggle={this.toggle}
-
-          >
+          <ModalHeader toggle={this.toggle}>
             {' '}
-            <Translate contentKey = "config-email.send-email" />
+            <Translate contentKey="config-email.send-email" />
           </ModalHeader>
           <ModalBody>
-
             <div className="config-email">
               <div className="add-content">
                 {/* Detail */}
@@ -366,7 +368,9 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
                         <CardBody>
                           <Row>
                             <Col span={17}>
-                              <label className="input-search_label"><Translate contentKey ="config-email.name" /></label>
+                              <label className="input-search_label">
+                                <Translate contentKey="config-email.name" />
+                              </label>
                               <Input
                                 defaultValue={default_name_email}
                                 style={{ width: '80%' }}
@@ -375,17 +379,18 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
                                 maxLength={160}
                               />
                             </Col>
-
                           </Row>
-                          <p style={{ color: "red", marginLeft : "13%" }}>{this.state.value_name_error}</p>
+                          <p style={{ color: 'red', marginLeft: '13%' }}>{this.state.value_name_error}</p>
 
                           <br />
                           <Row>
                             <Col span={17}>
-                              <label className="input-search_label"><Translate contentKey ="config-email.chosse-email" /></label>
+                              <label className="input-search_label">
+                                <Translate contentKey="config-email.chosse-email" />
+                              </label>
                               <UncontrolledButtonDropdown style={{ width: '81%' }}>
                                 <DropdownToggle caret className="mb-2 mr-2" style={{ width: '80%' }} color="info" outline>
-                                  {default_title_email}
+                                  {default_title_email ? default_title_email : <Translate contentKey="config-email.please-chosse-email" />}
                                 </DropdownToggle>
 
                                 <DropdownMenu className="dropdown-menu-xl">
@@ -419,13 +424,12 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
                                   </div>
                                 </DropdownMenu>
                               </UncontrolledButtonDropdown>
-                              <p style={{ color: "red", marginLeft : "18%" }}>{this.state.content_mail_error}</p>
-
+                              <p style={{ color: 'red', marginLeft: '18%' }}>{this.state.content_mail_error}</p>
                             </Col>
                             <Col span={7} style={{ marginTop: '-5px' }}>
                               <ButtonAntd type="primary" onClick={this.openModalPreview} style={{ marginTop: '2%', background: '#3866DD' }}>
-                               <Translate contentKey = "config-email.preview" />
-                          </ButtonAntd>
+                                <Translate contentKey="config-email.preview" />
+                              </ButtonAntd>
                             </Col>
                           </Row>
                         </CardBody>
@@ -437,11 +441,9 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button
-              color="none"
-              onClick={this.toggle} >
+            <Button color="none" onClick={this.toggle}>
               {' '}
-              <Translate contentKey = "config-email.cancel" />
+              <Translate contentKey="config-email.cancel" />
             </Button>
             <Button
               type="primary"
@@ -451,7 +453,7 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
                 this.confirmEmail();
               }}
             >
-                <Translate contentKey = "config-email.chosse" />
+              <Translate contentKey="config-email.chosse" />
             </Button>{' '}
           </ModalFooter>
         </Modal>
@@ -471,7 +473,7 @@ const mapStateToProps = ({ userCampaign, navigationInfo, campaignManagament }: I
     navigationInfo,
     listFieldData: campaignManagament.listFieldData,
     list_diagram: campaignManagament.listDiagram,
-    list_clone_version : campaignManagament.cloneInfoVersion
+    list_clone_version: campaignManagament.cloneInfoVersion
   };
 };
 

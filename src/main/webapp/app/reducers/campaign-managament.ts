@@ -17,6 +17,7 @@ interface IStatusCampagin {
   total: string;
   totalDraft: string;
   totalRunning: string;
+  totalStop: string;
   totalFinish: string;
 }
 
@@ -59,6 +60,7 @@ const initialCampaignManagament = {
   loading: false,
   statusCampaign: {} as IStatusCampagin,
   listCampaignAuto: [] as IListCampaignAuto[],
+  totalCampaign: 0,
   listNode: '',
   listInfoCampaing: {} as IInfoCampaign,
   listDiagram: {} as IListDiagram,
@@ -73,7 +75,7 @@ const initialCampaignManagament = {
   listTemplateCampaign: [] as IListTemplateCampaign[],
   idActive: {} as ISaveCampaign,
   list_validate: [] as IListValidate[],
-  isCheckValidate: true
+  isCheckValidate: false
 };
 
 export type HandleCampaignManagament = typeof initialCampaignManagament;
@@ -111,19 +113,19 @@ export default (state = initialCampaignManagament, action) => {
       return {
         ...state,
         loading: false,
-        isCheckValidate: true
+        isCheckValidate: false
       };
     case SUCCESS(CAMPAIGN_MANAGAMENT.VALIDATE_GRAPH):
       return {
         ...state,
-        isCheckValidate: false,
+        isCheckValidate: true,
         list_validate: action.payload.data
-      }
+      };
     case SUCCESS(CAMPAIGN_MANAGAMENT.CLONE_VERSION_BY_ID):
       return {
         ...state,
         loading: false,
-        cloneInfoVersion: action.payload.data,
+        cloneInfoVersion: action.payload.data
         // idActive : {}
       };
 
@@ -175,7 +177,8 @@ export default (state = initialCampaignManagament, action) => {
       return {
         ...state,
         loading: false,
-        listCampaignAuto: action.payload.data.data
+        listCampaignAuto: action.payload.data.data,
+        totalCampaign: action.payload.data.total
       };
 
     case SUCCESS(CAMPAIGN_MANAGAMENT.COUNT_CAMPAIGN):
@@ -234,12 +237,12 @@ export default (state = initialCampaignManagament, action) => {
     case CAMPAIGN_MANAGAMENT.RESET_VERSION:
       return { ...state, cloneInfoVersion: {}, idActive: { id: null, cjId: null } };
     case SUCCESS(CAMPAIGN_MANAGAMENT.COPY_CJID_CAMPAIGN):
-      action.payload.data.cjId = null
+      action.payload.data.cjId = null;
       return {
         ...state,
         loading: false,
-        cloneInfoVersion: action.payload.data,
-      }
+        cloneInfoVersion: action.payload.data
+      };
     default:
       return state;
   }

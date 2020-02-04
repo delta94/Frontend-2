@@ -10,6 +10,7 @@ import { IRootState } from 'app/reducers';
 import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import SweetAlert from 'sweetalert-react';
+import { closeModal } from 'app/actions/modal';
 import { IContentParams, IEmailSave } from 'app/common/model/email-config.model';
 import { GROUP_PARAM } from 'app/constants/email-config';
 import { getContentParamAction, createEmailAction, editEmailAction, createEmailTemplateAction } from 'app/actions/email-config';
@@ -238,7 +239,7 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
     }
   };
 
-  saveEmail = () => {
+  saveEmail = async () => {
     let emailId = this.props.match.params.id;
     let url = this.props.match.url;
     let { emailsave } = this.state;
@@ -340,11 +341,20 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
   };
 
   render() {
+    let { modalState } = this.props;
     let { emailsave, messageErrorEmailName, messageErrorEmailSubject, openModal } = this.state;
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
     return (
       <Loader message={spinner1} show={false} priority={1}>
         <Fragment>
+          <SweetAlert
+            title={modalState.title ? modalState.title : 'No title'}
+            confirmButtonColor=""
+            show={modalState.show ? modalState.show : false}
+            text={modalState.text ? modalState.text : 'No'}
+            type={modalState.type ? modalState.type : 'error'}
+            onConfirm={() => this.props.closeModal()}
+          />
           <Modal className="modal-config-preview" isOpen={openModal}>
             <ModalHeader toggle={this.toggleModal}>Landing preview</ModalHeader>
             <ModalBody>
@@ -358,15 +368,15 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
           </Modal>
           <div className="email-form-management">
             <div className="email-form-title-header">
-              <Button color="primary" onClick={this.back}>
-                Back
+              <Button color="back" onClick={this.back} style={{ color: 'blue', textDecoration: 'underline' }}>
+                Quay lại
               </Button>
               <div className="button-group">
                 <Button color="primary" onClick={this.saveEmail}>
-                  Save
+                  Lưu
                 </Button>
                 <Button color="primary" onClick={this.createEmailTemplate} style={{ marginLeft: '10px', marginRight: '10px' }}>
-                  Save as Template
+                  Lưu thành Template
                 </Button>
               </div>
             </div>
@@ -407,7 +417,7 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
                     onVisibleChange={this.handleVisibleChange}
                     trigger="click"
                   >
-                    <Button color="primary">Variables</Button>
+                    <Button color="primary">Tham số</Button>
                   </Popover>
                   <label
                     onClick={() => this.preview(emailsave)}
@@ -748,14 +758,16 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
 const mapStateToProps = ({ emailConfigState, userCampaign }: IRootState) => ({
   contentParams: emailConfigState.contentParams,
   emailDetail: emailConfigState.emailDetail,
-  listContentTemplate: userCampaign.listContentTemplate
+  listContentTemplate: userCampaign.listContentTemplate,
+  modalState: emailConfigState.modalResponse
 });
 
 const mapDispatchToProps = {
   getContentParamAction,
   createEmailAction,
   editEmailAction,
-  createEmailTemplateAction
+  createEmailTemplateAction,
+  closeModal
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

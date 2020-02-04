@@ -1,49 +1,66 @@
 .email-management {
-    background-color: #fff;
-    .email-title-header {
-        font-size: 18px;
-        background: #f9fafb;
-        margin: 0px -10px 10px;
-        padding: 15px 10px;
-        line-height: 25px;
-        .dropdown-email {
-            float: right;
-            display: flex;
-            .dropdown {
-                margin-left: 10px;
-                button {
-                    margin-right: 15px;
-                }
-                .dropdown-menu .dropdown-item {
-                    width: 100%;
-                    padding: 4%;
-                }
-            }
+  background-color: #fff;
+  .email-title-header {
+    font-size: 20px;
+    color: #2d3843;
+    background: #f9fafb;
+    margin: 0px -10px 10px;
+    padding: 15px 10px;
+    line-height: 25px;
+    .dropdown-email {
+      float: right;
+      display: flex;
+      .dropdown {
+        margin-left: 10px;
+        button {
+          margin-right: 15px;
         }
-      
+        .dropdown-menu .dropdown-item {
+          width: 100%;
+          padding: 4%;
+        }
+      }
     }
-    
-    .email-search-group {
-        margin-right: 10px;
-        width: 300px;
-        float: right;
-    }
-    .email-body {
-        margin: 5px 10px 10px 10px;
-        table {
-            max-width: 100%;
-            position: relative;
-            td , th {
-            border: 1px solid #dddddd;
-            }
-            th {
-                color: #545cd8;
-            }
-          }
-          .none-data {
-            text-align: center;
-            background-color: #fff;
-          }
+  }
+
+  .email-search-group {
+    margin-right: 10px;
+    display: flex;
+    position: relative;
+    height: 33px;
+
+    .button-group {
+      width: 30%;
+      button {
+        margin-right: 5px;
+      }
     }
 
+    .searchInput {
+      width: 70%;
+      .ant-input-affix-wrapper {
+        position: absolute;
+        right: 0px;
+        width: 200px;
+      }
+    }
+  }
+  .email-body {
+    margin: 5px 10px 10px 10px;
+    table {
+      max-width: 100%;
+      position: relative;
+      td,
+      th {
+        border: 1px solid #dddddd;
+      }
+      th {
+        color: #545cd8;
+      }
+    }
+    .none-data {
+      text-align: center;
+      background-color: #fff;
+    }
+  }
 }

@@ -10,7 +10,7 @@ interface IModalIteractiveProps extends StateProps, DispatchProps {
   isOpenModal: boolean;
   onClick: Function;
 }
-interface IModalIteractiveState { }
+interface IModalIteractiveState {}
 class ModalIteractive extends React.Component<IModalIteractiveProps, IModalIteractiveState> {
   state: IModalIteractiveState = {};
   hideModal = () => {
@@ -21,6 +21,7 @@ class ModalIteractive extends React.Component<IModalIteractiveProps, IModalItera
     let { isOpenModal, list_customer_interactive } = this.props;
     return (
       <Modal
+        width={820}
         className="modal-inactive"
         destroyOnClose
         closable={false}
@@ -36,17 +37,28 @@ class ModalIteractive extends React.Component<IModalIteractiveProps, IModalItera
       >
         <Table responsive striped className="main-table-interactive">
           <thead>
-            <th> <Translate contentKey="detail-flow.modal.action" /></th>
-            <th><Translate contentKey="detail-flow.modal.status" /></th>
-            <th><Translate contentKey="detail-flow.modal.time" /></th>
+            <th />
+            <th style={{ width: '30%' }}>
+              {' '}
+              <Translate contentKey="detail-flow.modal.action" />
+            </th>
+            <th style={{ width: '30%' }}>
+              <Translate contentKey="detail-flow.modal.status" />
+            </th>
+            <th>
+              <Translate contentKey="detail-flow.modal.time" />
+            </th>
           </thead>
           <tbody>
             {list_customer_interactive &&
               list_customer_interactive.map((item, index) => {
                 return (
                   <tr key={index}>
+                    <td>{index + 1}</td>
                     <td>{item.activityName}</td>
-                    <td><Translate contentKey="detail-flow.modal.complete" /></td>
+                    <td>
+                      <Translate contentKey="detail-flow.modal.complete" />
+                    </td>
                     <td>{item.endTime}</td>
                   </tr>
                 );

@@ -6,7 +6,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './create.scss';
-import { getListProp, insertProp } from 'app/actions/properties-customer';
+import { getListProp, insertOneProp } from 'app/actions/properties-customer';
 import { IRootState } from 'app/reducers';
 import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
@@ -127,13 +127,9 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
         return arrayCategories.toString();
       });
       let addText = {
-        fields: [
-          {
-            title: valueName,
-            type: selectedOptionType.value,
-            fieldValue: selectedOptionType.value === 'Date' || selectedOptionType.value === 'Text Input' ? '' : valueTextbox.join('||')
-          }
-        ]
+        title: valueName,
+        type: selectedOptionType.value,
+        fieldValue: selectedOptionType.value === 'Date' || selectedOptionType.value === 'Text Input' ? '' : valueTextbox.join('||')
       };
       this.handleSubmit(valueTextbox, addText);
     }
@@ -141,12 +137,12 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
 
   handleSubmit = async (valueTextbox, addText) => {
     let { selectedOptionType, addComplete } = this.state;
-    const { insertProp, getListProp } = this.props;
+    const { insertOneProp, getListProp } = this.props;
     if (!(selectedOptionType.value === 'Text Input' || selectedOptionType.value === 'Date' || selectedOptionType.value === '')) {
       if (!String(valueTextbox)) {
         this.setState({ textError: translate('properties-management.error.empty-option') });
       } else {
-        await insertProp(addText);
+        await insertOneProp(addText);
         await getListProp();
         this.props.onClick(addComplete);
         this.setState({ modal: !this.state.modal, valueName: '' });
@@ -154,7 +150,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
     } else if (!selectedOptionType.value) {
       this.setState({ textError: translate('properties-management.error.empty-type') });
     } else {
-      await insertProp(addText);
+      await insertOneProp(addText);
       await getListProp();
       this.props.onClick(addComplete);
       this.setState({
@@ -345,7 +341,7 @@ const mapStateToProps = (storeState: IRootState) => ({
 
 const mapDispatchToProps = {
   getListProp,
-  insertProp,
+  insertOneProp,
   openModal,
   closeModal
 };
@@ -353,7 +349,4 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Create);
+export default connect(mapStateToProps, mapDispatchToProps)(Create);

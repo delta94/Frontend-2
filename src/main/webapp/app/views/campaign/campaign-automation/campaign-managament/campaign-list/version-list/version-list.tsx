@@ -19,7 +19,7 @@ import {
   getListCustomerVersionProcess,
   cloneVersionById,
   copyCJCampaign,
-  resetListCloneVersion,
+  resetListCloneVersion
 } from 'app/actions/campaign-managament';
 import './version-list.scss';
 import { Container, Card, Table } from 'reactstrap';
@@ -45,7 +45,7 @@ const code_node = {
   TIMER_EVENT: 'TIMER_EVENT'
 };
 
-interface IVersionListProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> { }
+interface IVersionListProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
 interface IVersionListState {
   infoVersion: {
     type: string;
@@ -94,7 +94,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
       await getListVersion(data[0].cjId);
       this.customListVersion();
     }
-    await resetListCloneVersion()
+    await resetListCloneVersion();
   };
 
   // render component when props change
@@ -130,7 +130,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
   createVersion = async () => {
     const { saveCampaignAutoVersion, cloneVersionById, cloneVersion } = this.props;
     const { infoVersion, listVersion } = this.state;
-    infoVersion.type = 'create'
+    infoVersion.type = 'create';
     let isHaveDraf = false;
     let idDraft: string = '';
     listVersion.map(item => {
@@ -152,17 +152,17 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
 
     if (isHaveDraf) {
       Modal.confirm({
-        title: translate("campaign-auto.modal.title-notification"),
-        content: translate("campaign-auto.modal.content-have-draft"),
-        onCancel: () => { },
+        title: translate('campaign-auto.modal.title-notification'),
+        content: translate('campaign-auto.modal.content-have-draft'),
+        onCancel: () => {},
         onOk: async () => {
           await cloneVersion(idDraft);
           await this.cloneVersion('flow');
           await saveCampaignAutoVersion(infoVersion);
           window.location.assign('#/flow');
         },
-        okText: translate("campaign-auto.modal.ok-submit-text"),
-        cancelText: translate("campaign-auto.modal.cancel")
+        okText: translate('campaign-auto.modal.ok-submit-text'),
+        cancelText: translate('campaign-auto.modal.cancel')
       });
     } else {
       await cloneVersionById(idVersionlast);
@@ -201,7 +201,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
     if (isCheck) {
       listCjId.push(value);
     } else {
-      listCjId = listCjId.filter(function (item) {
+      listCjId = listCjId.filter(function(item) {
         return item != value;
       });
     }
@@ -226,7 +226,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
     const { deleteVersion } = this.props;
     if (isRunning) {
       Modal.error({
-        title: translate("campaign-auto.modal.title-error"),
+        title: translate('campaign-auto.modal.title-error'),
         content: `Version ${nameVersion}` + translate('campaign-auto.modal.content-error-running'),
         okText: translate('campaign-auto.modal.ok-submit-text')
       });
@@ -238,7 +238,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
           await deleteVersion(listCjId);
           this.refresh();
         },
-        onCancel() { },
+        onCancel() {},
         okText: translate('campaign-auto.modal.ok-submit-text'),
         cancelText: translate('campaign-auto.modal.cancel')
       });
@@ -264,9 +264,9 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
       this.handleDelete(isRunning, nameVersion, listCjId);
     } else {
       Modal.warning({
-        title: translate("campaign-auto.modal.title-notification"),
-        content: translate("campaign-auto.modal.content-delete-version-warning"),
-        okText: translate("campaign-auto.modal.ok-submit-text")
+        title: translate('campaign-auto.modal.title-notification'),
+        content: translate('campaign-auto.modal.content-delete-version-warning'),
+        okText: translate('campaign-auto.modal.ok-submit-text')
       });
     }
   };
@@ -285,28 +285,28 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
     if (listCjId && listCjId.length === 1) {
       if (isRunning) {
         confirm({
-          title: translate("campaign-auto.modal.title-stop-version") + ` ${nameVersion} ?`,
+          title: translate('campaign-auto.modal.title-stop-version') + ` ${nameVersion} ?`,
           content: '',
           onOk: async () => {
             await stopVersion(idVersion);
             this.refresh();
           },
-          onCancel() { },
-          okText: translate("campaign-auto.modal.ok-submit-text"),
-          cancelText: translate("campaign-auto.modal.cancel")
+          onCancel() {},
+          okText: translate('campaign-auto.modal.ok-submit-text'),
+          cancelText: translate('campaign-auto.modal.cancel')
         });
       } else {
         Modal.warning({
-          title: translate("campaign-auto.modal.title-notification"),
-          content: translate("campaign-auto.modal.content-version-running"),
-          okText: translate("campaign-auto.modal.ok-submit-text")
+          title: translate('campaign-auto.modal.title-notification'),
+          content: translate('campaign-auto.modal.content-version-running'),
+          okText: translate('campaign-auto.modal.ok-submit-text')
         });
       }
     } else {
       Modal.warning({
-        title: translate("campaign-auto.modal.title-notification"),
-        content: translate("campaign-auto.modal.stop-one-version"),
-        okText: translate("campaign-auto.modal.ok-submit-text")
+        title: translate('campaign-auto.modal.title-notification'),
+        content: translate('campaign-auto.modal.stop-one-version'),
+        okText: translate('campaign-auto.modal.ok-submit-text')
       });
     }
   };
@@ -332,9 +332,9 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
       this.validateStopVersion(isRunning, nameVersion, idVersion);
     } else {
       Modal.warning({
-        title: translate("campaign-auto.modal.title-notification"),
-        content: translate("campaign-auto.modal.click-version"),
-        okText: translate("campaign-auto.modal.ok-submit-text")
+        title: translate('campaign-auto.modal.title-notification'),
+        content: translate('campaign-auto.modal.click-version'),
+        okText: translate('campaign-auto.modal.ok-submit-text')
       });
     }
   };
@@ -415,7 +415,6 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
     let graph = list_clone_version.flowDetail.graph;
     let data = {
       nodes: graph.nodes.map(item => {
-
         return {
           type: item.type,
           size: '95*95',
@@ -448,7 +447,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
 
   copyVersion = () => {
     let { cloneVersionById, saveCampaignAutoVersion, copyCJCampaign } = this.props;
-    let { listCjId } = this.state
+    let { listCjId } = this.state;
     let idVersionlast: string = '';
     let { listVersion, infoVersion } = this.state;
     listVersion.map(item => {
@@ -458,23 +457,23 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
     });
     if (idVersionlast) {
       confirm({
-        title: translate("campaign-auto.modal.title-copy"),
+        title: translate('campaign-auto.modal.title-copy'),
         content: '',
         onOk: async () => {
-          await copyCJCampaign(idVersionlast)
+          await copyCJCampaign(idVersionlast);
           await this.cloneVersion('copy');
           await saveCampaignAutoVersion(infoVersion);
           window.location.assign(`#/flow`);
         },
-        onCancel() { },
-        okText: translate("campaign-auto.modal.ok-submit-text"),
-        cancelText: translate("campaign-auto.modal.cancel")
+        onCancel() {},
+        okText: translate('campaign-auto.modal.ok-submit-text'),
+        cancelText: translate('campaign-auto.modal.cancel')
       });
     } else {
       Modal.warning({
-        title: translate("campaign-auto.modal.title-notification"),
-        content: translate("campaign-auto.modal.cannot-copy"),
-        okText: translate("campaign-auto.modal.ok-submit-text")
+        title: translate('campaign-auto.modal.title-notification'),
+        content: translate('campaign-auto.modal.cannot-copy'),
+        okText: translate('campaign-auto.modal.ok-submit-text')
       });
     }
   };
@@ -510,16 +509,16 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
 
       switch (option) {
         case constant_version.DRAFT:
-          data = translate("status.draft");
+          data = translate('status.draft');
           break;
         case constant_version.FINISH:
-          data = translate("status.finish");
+          data = translate('status.finish');
           break;
         case constant_version.RUNNING:
-          data = translate("status.running");
+          data = translate('status.running');
           break;
         case constant_version.STOP:
-          data = translate("status.stop");
+          data = translate('status.stop');
         default:
           break;
       }
@@ -578,41 +577,61 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
                 </Button>
               </Row>
               <br />
-              <label className="count-version">{listVersion.length} <Translate contentKey="campaign-auto.table.version" /></label>
+              <label className="count-version">
+                {listVersion.length} <Translate contentKey="campaign-auto.table.version" />
+              </label>
               <Table responsive striped className="main-table-version">
                 <thead>
                   <th style={{ width: '4%' }} />
-                  <th style={{ width: '25%' }}> <Translate contentKey="campaign-auto.table.version" /></th>
-                  <th> <Translate contentKey="campaign-auto.table.status" /></th>
-                  <th style={{ width: '20%' }}> <Translate contentKey="campaign-auto.table.result" /></th>
-                  <th> <Translate contentKey="campaign-auto.table.last-edit" /></th>
+                  <th style={{ width: '25%' }}>
+                    {' '}
+                    <Translate contentKey="campaign-auto.table.version" />
+                  </th>
+                  <th>
+                    {' '}
+                    <Translate contentKey="campaign-auto.table.status" />
+                  </th>
+                  <th style={{ width: '20%' }}>
+                    {' '}
+                    <Translate contentKey="campaign-auto.table.result" />
+                  </th>
+                  <th>
+                    {' '}
+                    <Translate contentKey="campaign-auto.table.last-edit" />
+                  </th>
                 </thead>
                 <tbody>
                   {listVersion
                     ? listVersion.map((item, index) => {
-                      return (
-                        <tr key={index}>
-                          <td>
-                            <Checkbox checked={item.checked} onChange={e => this.changeCheckBox(e, item.cjVersionId)} />
-                          </td>
-                          <td className="table-content" onClick={() => this.viewVersion(item.cjVersionId)}>
-                            <span style={{ marginLeft: '5%' }}><Translate contentKey="campaign-auto.table.version" /> {item.version}</span>
-                          </td>
-                          <td className="row-status">
-                            <img className="img-status" src={this.iconStatus(item.status)} />
-                            {eventStatus(item.status)}
-                          </td>
-                          <td>
-                            <Progress
-                              animated
-                              color={this.countContact(item.contactCompleted, item.contactNumbers) < 100 ? "warning" : "success"}
-                              value={this.countContact(item.contactCompleted, item.contactNumbers)}
-                            ><label className ="text-process" style ={{color :" #6C757D", marginTop : "9px"}}>{item.contactCompleted}/{item.contactNumbers} contact</label></Progress>
-                          </td>
-                          <td>{item.modifiedDate}</td>
-                        </tr>
-                      );
-                    })
+                        return (
+                          <tr key={index}>
+                            <td>
+                              <Checkbox checked={item.checked} onChange={e => this.changeCheckBox(e, item.cjVersionId)} />
+                            </td>
+                            <td className="table-content" onClick={() => this.viewVersion(item.cjVersionId)}>
+                              <span style={{ marginLeft: '5%' }}>
+                                <Translate contentKey="campaign-auto.table.version" /> {item.version}
+                              </span>
+                            </td>
+                            <td className="row-status">
+                              <img className="img-status" src={this.iconStatus(item.status)} />
+                              {eventStatus(item.status)}
+                            </td>
+                            <td>
+                              <Progress
+                                animated
+                                color={this.countContact(item.contactCompleted, item.contactNumbers) < 100 ? 'warning' : 'success'}
+                                value={this.countContact(item.contactCompleted, item.contactNumbers)}
+                              >
+                                <label className="text-process" style={{ color: ' #6C757D', marginTop: '9px' }}>
+                                  {item.contactCompleted}/{item.contactNumbers} contact
+                                </label>
+                              </Progress>
+                            </td>
+                            <td>{item.modifiedDate}</td>
+                          </tr>
+                        );
+                      })
                     : ''}
                 </tbody>
               </Table>
