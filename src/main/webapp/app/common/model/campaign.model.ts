@@ -1,4 +1,3 @@
-import { ICampaign } from './campaign.model';
 export interface ICampaign {
   id: string;
   type: any;

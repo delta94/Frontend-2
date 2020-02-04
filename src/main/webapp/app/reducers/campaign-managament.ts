@@ -73,7 +73,7 @@ const initialCampaignManagament = {
   listTemplateCampaign: [] as IListTemplateCampaign[],
   idActive: {} as ISaveCampaign,
   list_validate: [] as IListValidate[],
-  isCheckValidate: true
+  isCheckValidate: false
 };
 
 export type HandleCampaignManagament = typeof initialCampaignManagament;
@@ -111,12 +111,12 @@ export default (state = initialCampaignManagament, action) => {
       return {
         ...state,
         loading: false,
-        isCheckValidate: true
+        isCheckValidate: false
       };
     case SUCCESS(CAMPAIGN_MANAGAMENT.VALIDATE_GRAPH):
       return {
         ...state,
-        isCheckValidate: false,
+        isCheckValidate: true,
         list_validate: action.payload.data
       }
     case SUCCESS(CAMPAIGN_MANAGAMENT.CLONE_VERSION_BY_ID):

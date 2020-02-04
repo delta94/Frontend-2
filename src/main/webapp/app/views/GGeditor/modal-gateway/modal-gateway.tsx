@@ -68,8 +68,6 @@ class ModalGateWay extends React.Component<IModalGateWayProps, IModalGateWayStat
     isUpdate: false
   };
 
-
-
   async componentWillReceiveProps(nextProps) {
     let { node, list_field_data_cpn } = this.state
     let { list_clone_version } = this.props

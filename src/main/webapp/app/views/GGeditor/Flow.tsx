@@ -1001,7 +1001,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                   <ButtonGroup>
                     <Button
                       onClick={() => {
-                        this.isCloseSiderTest(true);
+                        this.isCloseSiderTest(true)
                       }}
                       disabled={isDisable}
                     >
@@ -1009,7 +1009,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                     </Button>
                     <Button
                       onClick={async () => {
-                        this.validateFlow(true);
+                        this.validateFlow(this.props.is_validate);
+                        console.log(this.props.is_validate)
                       }}
                       disabled={id_active.id && id_active.id.length > 0 ? false : true}
                     >
