@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Translate, translate } from 'react-jhipster';
 import { Button as ButtonReactstrap } from 'reactstrap';
-import { Row, Col, Button, Input, Table, Popover, Icon, Modal, Tree } from 'antd';
+import { Row, Col, Button as Btn, Input, Table, Popover, Icon, Modal, Tree } from 'antd';
 import { openModal, closeModal } from 'app/actions/modal';
 import { IRootState } from 'app/reducers';
 import { toast } from 'react-toastify';
@@ -131,6 +131,13 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
   contentPop = rowInfo => (
     <Row style={{ textAlign: 'center' }}>
       <Row style={{ marginBottom: "5%" }}>
+        <ButtonReactstrap className="label-info"
+          color="none" onClick={() => this.createFolder(rowInfo, 'create')}>
+          {' '}
+          <img src={img_create} style={{ marginRight: "1em" }} /><Translate contentKey="campaign-auto.managament.create" />
+        </ButtonReactstrap>
+      </Row>
+      <Row style={{ marginBottom: "5%" }}>
         <ButtonReactstrap
           className="label-info"
           color="none"
@@ -143,13 +150,6 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
         </ButtonReactstrap>
       </Row>
 
-      <Row style={{ marginBottom: "5%" }}>
-        <ButtonReactstrap className="label-info"
-          color="none" onClick={() => this.createFolder(rowInfo, 'create')}>
-          {' '}
-          <img src={img_create} style={{ marginRight: "1em" }} /><Translate contentKey="campaign-auto.managament.create" />
-        </ButtonReactstrap>
-      </Row>
       <Row style={{ marginBottom: "7%" }}>
         <ButtonReactstrap
           style={{ float: "left", marginRight: "20px" }}
@@ -194,6 +194,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
       case const_action.CREATE_FOLDER:
         if (Number(level) < 3) {
           confirm({
+            cancelButtonProps: { type: 'danger', ghost: true },
             title: translate('campaign-auto.modal.title-create'),
             content: this.contentCreateFolder(''),
             zIndex: 1000000,
@@ -224,6 +225,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
         break;
       case const_action.EDIT_FOLDER:
         confirm({
+          cancelButtonProps: { type: 'danger', ghost: true },
           title: translate('campaign-auto.modal.title-edit') + ' ' + event.title,
           content: this.contentCreateFolder(event.title),
           zIndex: 1000000,
@@ -253,6 +255,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
 
       case const_action.DELETE_FOLDER:
         confirm({
+          cancelButtonProps: { type: 'danger', ghost: true },
           title: translate('campaign-auto.modal.title-delete'),
           content: translate('campaign-auto.modal.content-delete'),
           onOk: async () => {
@@ -270,6 +273,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
         break;
       case const_action.DELETE_FOLDER:
         confirm({
+          cancelButtonProps: { type: 'danger', ghost: true },
           title: translate('campaign-auto.modal.view-details'),
           content: translate('campaign-auto.modal.view-details') + ' ' + event.title,
           onOk: async () => {
@@ -356,6 +360,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
 
     if (dropPosition >= 0) {
       confirm({
+        cancelButtonProps: { type: 'danger', ghost: true },
         title: translate("campaign-auto.modal.move-folder"),
         content: translate("campaign-auto.modal.confirm-move-folder") + ' ' + info.node.props.title ? info.node.props.title.props.children[2] : '',
         onOk: async () => {
@@ -417,7 +422,6 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
                   overlayClassName="pop-data"
                   content={this.contentPop(item)}
                   title=""
-                  trigger="click"
                   placement="bottomRight"
                   visible={item.check}
                   onVisibleChange={(visible) => this.handleVisibleChange(visible, item.id, arr)}
@@ -444,7 +448,6 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
                   overlayClassName="pop-data"
                   content={this.contentPop(item)}
                   title=""
-                  trigger="click"
                   placement="bottomRight"
                   visible={item.check}
                   onVisibleChange={(visible) => this.handleVisibleChange(visible, item.id, arr)}
@@ -508,7 +511,6 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
                           overlayClassName="pop-data"
                           content={this.contentPop(item)}
                           title=""
-                          trigger="click"
                           placement="bottomRight"
                           visible={item.check}
                           onVisibleChange={(visible) => this.handleVisibleChange(visible, item.id, arr)}

@@ -144,6 +144,8 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
     }
   }
 
+
+
   //TODO: step 4
   renderCell(id, item, index) {
     switch (id) {
@@ -169,7 +171,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
             {item.tags
               ? item.tags.split(',').map((v, i) => {
                 return (
-                  <Tag color="#108ee9" style={{ borderRadius: '25px', margin: '5px' }} key={i}>
+                  <Tag color="rgb(52, 157, 233)" style={{ borderRadius: '25px', margin: '5px' }} key={i}>
                     {v}
                   </Tag>
                 );
@@ -182,14 +184,15 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
       case 'result':
         return (
           <div style={{ width: '100%' }}>
-            <Progress
-              animated
-              color={this.countContact(item.contactCompleted, item.contactNumbers) < 100 ? 'warning' : 'success'}
-              value={this.countContact(item.contactCompleted, item.contactNumbers)}
-            >
-              <label className="text-process" style={{ color: ' #6C757D', marginTop: '9px' }}>
+            <div className="text-center">
+              <label className="text-process" style={{ marginBottom:'0px',color: '#6C757D' }}>
                 {item.contactCompleted}/{item.contactNumbers} contact
               </label>
+            </div>
+            <Progress
+              color='info'
+              value={this.countContact(item.contactCompleted, item.contactNumbers)}
+            >
             </Progress>
           </div>
         );

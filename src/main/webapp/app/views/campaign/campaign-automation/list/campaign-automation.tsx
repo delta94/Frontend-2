@@ -367,11 +367,16 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
                             {eventStatus(event.status)}
                           </td>
                           <td>
+                            <div className="text-center">
+                              <label className="text-process" style={{ marginBottom: '0px', color: '#6C757D' }}>
+                                {event.contactCompleted}/{event.contactNumbers} contact
+                              </label>
+                            </div>
                             <Progress
-                              animated
-                              color={this.countContact(event.contactCompleted, event.contactNumbers) < 100 ? "warning" : "success"}
+                              color='info'
                               value={this.countContact(event.contactCompleted, event.contactNumbers)}
-                            ><label className="text-process" style={{ color: " #6C757D", marginTop: "9px" }}> {event.contactCompleted}/{event.contactNumbers} contact </label></Progress>
+                            >
+                            </Progress>
                           </td>
                           <td>{event.modifiedDate}</td>
                         </tr>
