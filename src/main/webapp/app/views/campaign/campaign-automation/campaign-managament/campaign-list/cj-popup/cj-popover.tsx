@@ -168,7 +168,7 @@ class CJTagPopOver extends React.Component<ICjTagPopOverProps, TCjTagPopOverStat
                 </label>
               </div>
               <div className="cj-tag-popup-footer">
-                <Button color="black" onClick={this.closePopup}>
+                <Button color="danger" onClick={this.closePopup} outline style={{ marginRight: '5px' }}>
                   <Translate contentKey="campaign-auto.btn-cancel" />
                 </Button>
                 <Button

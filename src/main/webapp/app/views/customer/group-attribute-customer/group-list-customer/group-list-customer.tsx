@@ -119,37 +119,37 @@ class GroupListCustomer extends React.Component<IGroupListCustomerProps, IGroupL
                     );
                   })
                 ) : (
-                  <tr>
-                    <td className="none-data" colSpan={100}>
-                      <Translate contentKey="group-attribute-customer.none-data-customer" />
-                    </td>
-                  </tr>
-                )}
+                    <tr>
+                      <td className="none-data" colSpan={100}>
+                        <Translate contentKey="group-attribute-customer.none-data-customer" />
+                      </td>
+                    </tr>
+                  )}
               </tbody>
             </Table>
+            <div className="group-list-customer-navigation" style={{ marginRight: '15px' }}>
+              {list_customer_group_with_id && Math.ceil(totalElements / 10) > 1 ? (
+                <Row className="justify-content-center" style={{ float: 'right' }}>
+                  <ReactPaginate
+                    previousLabel={'<'}
+                    nextLabel={'>'}
+                    breakLabel={'...'}
+                    breakClassName={'break-me'}
+                    pageCount={Math.ceil(totalElements / 10)}
+                    marginPagesDisplayed={3}
+                    pageRangeDisplayed={3}
+                    onPageChange={event => this.handlePagination(event.selected)}
+                    containerClassName={'pagination'}
+                    subContainerClassName={'pages pagination'}
+                    activeClassName={'active'}
+                    forcePage={0}
+                  />
+                </Row>
+              ) : null}
+            </div>
             {/* Blockout */}
           </div>
         </Loader>
-        <div className="navigation">
-          {list_customer_group_with_id && Math.ceil(totalElements / 10) > 1 ? (
-            <Row className="justify-content-center">
-              <ReactPaginate
-                previousLabel={'<'}
-                nextLabel={'>'}
-                breakLabel={'...'}
-                breakClassName={'break-me'}
-                pageCount={Math.ceil(totalElements / 10)}
-                marginPagesDisplayed={3}
-                pageRangeDisplayed={3}
-                onPageChange={event => this.handlePagination(event.selected)}
-                containerClassName={'pagination'}
-                subContainerClassName={'pages pagination'}
-                activeClassName={'active'}
-                forcePage={0}
-              />
-            </Row>
-          ) : null}
-        </div>
       </div>
     );
   }

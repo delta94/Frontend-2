@@ -1,9 +1,4 @@
 #modal-cj-tag-insert {
-  .modal-header,
-  .modal-footer {
-    background: #ffffff;
-  }
-
   .cj-tag-insert-content {
     .cj-tag-insert-input {
       display: flex;
@@ -16,4 +11,18 @@
       margin: 5px 0px 0px 30px;
     }
   }
+}
+
+.modal-title {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  margin-top: 6px;
+  text-transform: uppercase;
+  color: #595c82;
+}
+
+.modal-header, .modal-footer {
+    background: #ffffff;
 }
