@@ -41,12 +41,12 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
     date: '',
     idEmail: '',
     event_error: '',
-    time_error: '',
+    time_error: ''
   };
 
   toggle = () => {
     let { toggleModal, isOpenModal } = this.props;
-    this.setState({ event_error: '', time_error: '' })
+    this.setState({ event_error: '', time_error: '' });
     toggleModal(!isOpenModal);
   };
   save = async () => {
@@ -78,24 +78,23 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
   };
 
   checkValidate = (): boolean => {
-    let result: boolean = true
+    let result: boolean = true;
     let { time, date, time_error } = this.state;
     if (time < 1) {
-      time_error = "* Vui lòng chọn thời gian kết thúc"
-    }
-    else if (!date) {
-      time_error = "* Vui lòng chọn thời gian kết thúc"
-    } else if (date === "Phút" && time < 3) {
-      time_error = "* Thời gian phải lớn 3 phút"
+      time_error = '* Vui lòng chọn thời gian kết thúc';
+    } else if (!date) {
+      time_error = '* Vui lòng chọn thời gian kết thúc';
+    } else if (date === 'Phút' && time < 3) {
+      time_error = '* Thời gian phải lớn 3 phút';
     } else {
-      time_error = ""
+      time_error = '';
     }
     if (time_error.length > 0) {
-      result = false
+      result = false;
     }
-    this.setState({ time_error })
-    return result
-  }
+    this.setState({ time_error });
+    return result;
+  };
 
   // add condition time wait
   handlerTimeWait = async value => {
@@ -183,34 +182,41 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
     return result;
   };
 
-
-  getDefaultValueClone = (option) => {
-    const { list_clone_version, idNode } = this.props
-    let result
+  getDefaultValueClone = option => {
+    const { list_clone_version, idNode } = this.props;
+    let result;
     if (Object.keys(list_clone_version).length > 0 && list_clone_version.cjId) {
       list_clone_version.flowDetail.graph.nodes.map(item => {
         if (code_node.TIMER_EVENT === item.code && item.id === idNode.id) {
           switch (option) {
             case CHARACTER_NUMBER.NUMBER:
-              if (item.value.charAt(0) === CHARACTER_TIME.YEAR || item.value.charAt(0) === CHARACTER_TIME.MONTH || item.value.charAt(0) === CHARACTER_TIME.DAY) {
-                result = Number(item.value.substring(1, item.value.length - 1))
-                return result
+              if (
+                item.value.charAt(0) === CHARACTER_TIME.YEAR ||
+                item.value.charAt(0) === CHARACTER_TIME.MONTH ||
+                item.value.charAt(0) === CHARACTER_TIME.DAY
+              ) {
+                result = Number(item.value.substring(1, item.value.length - 1));
+                return result;
               } else {
-                result = Number(item.value.substring(2, item.value.length - 1))
-                return result
+                result = Number(item.value.substring(2, item.value.length - 1));
+                return result;
               }
             case CHARACTER_NUMBER.TIME:
-              let get_time
-              get_time = item.value.substring(item.value.length - 1, item.value.length)
+              let get_time;
+              get_time = item.value.substring(item.value.length - 1, item.value.length);
               switch (get_time) {
                 case CHARACTER_TIME.YEAR:
                   result = 'Năm';
                   break;
                 case CHARACTER_TIME.MONTH:
-                  if (item.value.charAt(0) === CHARACTER_TIME.YEAR || item.value.charAt(0) === CHARACTER_TIME.MONTH || item.value.charAt(0) === CHARACTER_TIME.DAY) {
+                  if (
+                    item.value.charAt(0) === CHARACTER_TIME.YEAR ||
+                    item.value.charAt(0) === CHARACTER_TIME.MONTH ||
+                    item.value.charAt(0) === CHARACTER_TIME.DAY
+                  ) {
                     result = 'Tháng';
                   } else {
-                    result = 'Phút'
+                    result = 'Phút';
                   }
                   break;
                 case CHARACTER_TIME.DAY:
@@ -219,24 +225,23 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
                 case CHARACTER_TIME.HOUR:
                   result = 'Giờ';
                   break;
-                
               }
-              return result
+              return result;
             default:
               break;
           }
         }
-      })
+      });
     }
-    return result
-  }
+    return result;
+  };
 
   render() {
     let { isOpenModal, listFieldData } = this.props;
-    let default_number = this.getNumber() ? this.getNumber() : this.getDefaultValueClone(CHARACTER_NUMBER.NUMBER)
-    let default_time = this.getDate() ? this.getDate() : this.getDefaultValueClone(CHARACTER_NUMBER.TIME)
-    console.log(default_time)
-    // let valueEmail = listFieldData.emailConfig[listFieldData.emailConfig.length - 1].nameEmail ? listFieldData.emailConfig[listFieldData.emailConfig.length - 1].nameEmail : 'Vui lòng chọn Email' 
+    let default_number = this.getNumber() ? this.getNumber() : this.getDefaultValueClone(CHARACTER_NUMBER.NUMBER);
+    let default_time = this.getDate() ? this.getDate() : this.getDefaultValueClone(CHARACTER_NUMBER.TIME);
+    console.log(default_time);
+    // let valueEmail = listFieldData.emailConfig[listFieldData.emailConfig.length - 1].nameEmail ? listFieldData.emailConfig[listFieldData.emailConfig.length - 1].nameEmail : 'Vui lòng chọn Email'
     return (
       <Modal className="modal-message-config" isOpen={isOpenModal}>
         <ModalHeader toggle={this.toggle}>Chờ Sự kiện</ModalHeader>

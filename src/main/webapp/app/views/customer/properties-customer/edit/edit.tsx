@@ -65,8 +65,10 @@ export class Edit extends React.Component<IEditProps, IEditState> {
 
   formatPersonalizationTag(personalizationTag) {
     let personalizationTagFormat = null;
-    personalizationTagFormat = personalizationTag && personalizationTag.includes('{{') && personalizationTag.includes('}}')
-      ? personalizationTag.replace('{{', '').replace('}}', '') : '';
+    personalizationTagFormat =
+      personalizationTag && personalizationTag.includes('{{') && personalizationTag.includes('}}')
+        ? personalizationTag.replace('{{', '').replace('}}', '')
+        : '';
     return personalizationTagFormat;
   }
 
@@ -96,9 +98,13 @@ export class Edit extends React.Component<IEditProps, IEditState> {
                             <Label>
                               <Translate contentKey="properties-management.form.persionalization" />
                             </Label>
-                            <Input maxLength={160} addonBefore="{{" addonAfter="}}"
+                            <Input
+                              maxLength={160}
+                              addonBefore="{{"
+                              addonAfter="}}"
                               defaultValue={this.formatPersonalizationTag(event.personalizationTag)}
-                              id="tag" />
+                              id="tag"
+                            />
                             <p style={{ textAlign: 'center' }} className="error">
                               {this.state.validField}
                             </p>
@@ -162,7 +168,4 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Edit);
+export default connect(mapStateToProps, mapDispatchToProps)(Edit);

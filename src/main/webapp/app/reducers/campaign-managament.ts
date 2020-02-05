@@ -120,12 +120,12 @@ export default (state = initialCampaignManagament, action) => {
         ...state,
         isCheckValidate: true,
         list_validate: action.payload.data
-      }
+      };
     case SUCCESS(CAMPAIGN_MANAGAMENT.CLONE_VERSION_BY_ID):
       return {
         ...state,
         loading: false,
-        cloneInfoVersion: action.payload.data,
+        cloneInfoVersion: action.payload.data
         // idActive : {}
       };
 
@@ -237,12 +237,12 @@ export default (state = initialCampaignManagament, action) => {
     case CAMPAIGN_MANAGAMENT.RESET_VERSION:
       return { ...state, cloneInfoVersion: {}, idActive: { id: null, cjId: null } };
     case SUCCESS(CAMPAIGN_MANAGAMENT.COPY_CJID_CAMPAIGN):
-      action.payload.data.cjId = null
+      action.payload.data.cjId = null;
       return {
         ...state,
         loading: false,
-        cloneInfoVersion: action.payload.data,
-      }
+        cloneInfoVersion: action.payload.data
+      };
     default:
       return state;
   }

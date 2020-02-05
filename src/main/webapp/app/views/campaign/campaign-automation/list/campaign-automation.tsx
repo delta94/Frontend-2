@@ -42,7 +42,7 @@ const code_node = {
   TIMER_EVENT: 'TIMER_EVENT'
 };
 
-export interface ICampaginAutoProps extends StateProps, DispatchProps { }
+export interface ICampaginAutoProps extends StateProps, DispatchProps {}
 
 export interface ICampaginAutoState {
   infoVersion: {
@@ -183,7 +183,6 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
     let graph = list_clone_version.flowDetail.graph;
     let data = {
       nodes: graph.nodes.map(item => {
-
         return {
           type: item.type,
           size: '95*95',
@@ -218,9 +217,9 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
     let { infoVersion } = this.state;
     const { cloneVersion, saveCampaignAutoVersion, getListCustomerVersionProcess } = this.props;
     infoVersion.idVersion = id;
-    infoVersion.type = 'copy'
+    infoVersion.type = 'copy';
     await cloneVersion(id);
-    await validateCampaign([])
+    await validateCampaign([]);
     await this.cloneVersion('view');
     await saveCampaignAutoVersion(infoVersion);
     await getListCustomerVersionProcess('', id, 0);
@@ -258,13 +257,13 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
           data = translate('status.draft');
           break;
         case constant_version.FINISH:
-          data = translate("status.finish");
+          data = translate('status.finish');
           break;
         case constant_version.RUNNING:
-          data = translate("status.running");
+          data = translate('status.running');
           break;
         case constant_version.STOP:
-          data = translate("status.stop");
+          data = translate('status.stop');
         default:
           break;
       }
@@ -288,45 +287,91 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
           </div>
           <div className="body-campaign-auto">
             <Row gutter={16}>
-              <Col className="gutter-row" span={4} style={{ width: '20%' }} onClick={() => { this.props.getListCampaginAuto('', 0, 5), this.setState({ statusCampaign: '' }) }}>
+              <Col
+                className="gutter-row"
+                span={4}
+                style={{ width: '20%' }}
+                onClick={() => {
+                  this.props.getListCampaginAuto('', 0, 5), this.setState({ statusCampaign: '' });
+                }}
+              >
                 <div className="gutter-box top">
-                  <label className="text"><Translate contentKey="campaign-auto.total-campaign" /></label>
+                  <label className="text">
+                    <Translate contentKey="campaign-auto.total-campaign" />
+                  </label>
                 </div>
                 <div className="gutter-box below">
                   <img style={{ margin: '0px 32px 17px' }} src={img} />
                   <label className="count-campaign">{getStatusCampaign.total}</label>
                 </div>
               </Col>
-              <Col className="gutter-row" span={4} style={{ width: '20%' }} onClick={() => { this.props.getListCampaginAuto(constant_version.RUNNING, 0, 5), this.setState({ statusCampaign: constant_version.RUNNING }) }}>
+              <Col
+                className="gutter-row"
+                span={4}
+                style={{ width: '20%' }}
+                onClick={() => {
+                  this.props.getListCampaginAuto(constant_version.RUNNING, 0, 5),
+                    this.setState({ statusCampaign: constant_version.RUNNING });
+                }}
+              >
                 <div className="gutter-box top">
-                  <label className="text"><Translate contentKey="campaign-auto.campaign-running" /></label>
+                  <label className="text">
+                    <Translate contentKey="campaign-auto.campaign-running" />
+                  </label>
                 </div>
                 <div className="gutter-box below">
                   <img style={{ margin: '0px 32px 17px', width: '11%' }} src={img_campaign_running} />
                   <label className="count-campaign">{getStatusCampaign.totalRunning}</label>
                 </div>
               </Col>
-              <Col className="gutter-row" span={4} style={{ width: '20%' }} onClick={() => { this.props.getListCampaginAuto(constant_version.STOP, 0, 5), this.setState({ statusCampaign: constant_version.STOP }) }}>
+              <Col
+                className="gutter-row"
+                span={4}
+                style={{ width: '20%' }}
+                onClick={() => {
+                  this.props.getListCampaginAuto(constant_version.STOP, 0, 5), this.setState({ statusCampaign: constant_version.STOP });
+                }}
+              >
                 <div className="gutter-box top">
-                  <label className="text"><Translate contentKey="campaign-auto.campaign-stop" /></label>
+                  <label className="text">
+                    <Translate contentKey="campaign-auto.campaign-stop" />
+                  </label>
                 </div>
                 <div className="gutter-box below">
                   <img style={{ margin: '0px 32px 17px', width: '11%' }} src={img_campaign_stop} />
                   <label className="count-campaign">{getStatusCampaign.totalStop}</label>
                 </div>
               </Col>
-              <Col className="gutter-row" span={4} style={{ width: '20%' }} onClick={() => { this.props.getListCampaginAuto(constant_version.FINISH, 0, 5), this.setState({ statusCampaign: constant_version.FINISH }) }}>
+              <Col
+                className="gutter-row"
+                span={4}
+                style={{ width: '20%' }}
+                onClick={() => {
+                  this.props.getListCampaginAuto(constant_version.FINISH, 0, 5), this.setState({ statusCampaign: constant_version.FINISH });
+                }}
+              >
                 <div className="gutter-box top">
-                  <label className="text"><Translate contentKey="campaign-auto.campaign-finish" /></label>
+                  <label className="text">
+                    <Translate contentKey="campaign-auto.campaign-finish" />
+                  </label>
                 </div>
                 <div className="gutter-box below">
                   <img style={{ margin: '0px 32px 17px', width: '11%' }} src={img_finish} />
                   <label className="count-campaign">{getStatusCampaign.totalFinish}</label>
                 </div>
               </Col>
-              <Col className="gutter-row" span={4} style={{ width: '20%' }} onClick={() => { this.props.getListCampaginAuto(constant_version.DRAFT, 0, 5), this.setState({ statusCampaign: constant_version.DRAFT }) }}>
+              <Col
+                className="gutter-row"
+                span={4}
+                style={{ width: '20%' }}
+                onClick={() => {
+                  this.props.getListCampaginAuto(constant_version.DRAFT, 0, 5), this.setState({ statusCampaign: constant_version.DRAFT });
+                }}
+              >
                 <div className="gutter-box top">
-                  <label className="text"><Translate contentKey="campaign-auto.campaign-new" /></label>
+                  <label className="text">
+                    <Translate contentKey="campaign-auto.campaign-new" />
+                  </label>
                 </div>
                 <div className="gutter-box below">
                   <img style={{ margin: '0px 32px 17px', width: '11%' }} src={img_new} />
@@ -336,18 +381,32 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
             </Row>
             <br />
             <Row className="table-campaign-auto">
-              <label className="total-campaign-table"> <Translate contentKey="campaign-auto.count-campaign" interpolate={{ element: totalCampaign }} /></label>
+              <label className="total-campaign-table">
+                {' '}
+                <Translate contentKey="campaign-auto.count-campaign" interpolate={{ element: totalCampaign }} />
+              </label>
               <Table responsive striped className="main-table">
                 <thead>
-                  <th style={{ width: '4%' }}><Translate contentKey="campaign-auto.table.index" /></th>
-                  <th style={{ width: '25%' }}><Translate contentKey="campaign-auto.table.campaign" /></th>
-                  <th><Translate contentKey="campaign-auto.table.status" /></th>
-                  <th style={{ width: '20%' }}><Translate contentKey="campaign-auto.table.result" /></th>
-                  <th><Translate contentKey="campaign-auto.table.last-edit" /></th>
+                  <th style={{ width: '4%' }}>
+                    <Translate contentKey="campaign-auto.table.index" />
+                  </th>
+                  <th style={{ width: '25%' }}>
+                    <Translate contentKey="campaign-auto.table.campaign" />
+                  </th>
+                  <th>
+                    <Translate contentKey="campaign-auto.table.status" />
+                  </th>
+                  <th style={{ width: '20%' }}>
+                    <Translate contentKey="campaign-auto.table.result" />
+                  </th>
+                  <th>
+                    <Translate contentKey="campaign-auto.table.last-edit" />
+                  </th>
                 </thead>
                 <tbody>
                   {list_campaign_auto && list_campaign_auto.length > 0
                     ? list_campaign_auto.map((event, index) => {
+<<<<<<< HEAD
                       return (
                         <tr key={index}>
                           <td>{this.state.activePage * 5 + index + 1}</td>
@@ -382,6 +441,44 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
                         </tr>
                       );
                     })
+=======
+                        return (
+                          <tr key={index}>
+                            <td>{this.state.activePage * 5 + index + 1}</td>
+                            <td className="table-content">
+                              <a
+                                style={{ marginLeft: '5%' }}
+                                href="javascript:void(0);"
+                                onClick={() => this.viewVersion(event.cjVersionId)}
+                              >
+                                {event.name}
+                              </a>
+                              <br />
+                              <label style={{ marginLeft: '5%' }}>
+                                <Translate contentKey="campaign-auto.table.version" /> {event.version}
+                              </label>
+                            </td>
+                            <td className="row-status">
+                              <img style={{ margin: '1% 2% 2% 40%' }} src={this.iconStatus(event.status)} />
+                              {eventStatus(event.status)}
+                            </td>
+                            <td>
+                              <Progress
+                                animated
+                                color={this.countContact(event.contactCompleted, event.contactNumbers) < 100 ? 'warning' : 'success'}
+                                value={this.countContact(event.contactCompleted, event.contactNumbers)}
+                              >
+                                <label className="text-process" style={{ color: ' #6C757D', marginTop: '9px' }}>
+                                  {' '}
+                                  {event.contactCompleted}/{event.contactNumbers} contact{' '}
+                                </label>
+                              </Progress>
+                            </td>
+                            <td>{event.modifiedDate}</td>
+                          </tr>
+                        );
+                      })
+>>>>>>> origin/dev_thangtq
                     : ''}
                 </tbody>
               </Table>
@@ -404,8 +501,8 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
                     />
                   </Row>
                 ) : (
-                    ''
-                  )}
+                  ''
+                )}
               </div>
               <br />
             </Row>

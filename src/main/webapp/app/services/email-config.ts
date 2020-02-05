@@ -1,12 +1,12 @@
 import axios from 'axios';
 import { authHeaders } from './header';
-import { IEmailSave } from 'app/common/model/email-config.model'
+import { IEmailSave } from 'app/common/model/email-config.model';
 const customEmailUrl = 'v1/custom-emails';
 const contentParamUrl = 'v1/content-param';
 const contentUrl = 'v1/contents';
 const contentTemplateUrl = 'v1/content-template';
-const emailTempCategoryUrl = 'v1/email-categories'
-const emailTemplateUrl = 'v1/email-templates'
+const emailTempCategoryUrl = 'v1/email-categories';
+const emailTemplateUrl = 'v1/email-templates';
 
 export const getEmails = (textSearch?: string, page?: number, pageSize?: number) => {
   return axios.get(customEmailUrl, { params: { textSearch, page, pageSize }, headers: authHeaders });
@@ -45,6 +45,5 @@ export const getEmailTemplates = (emailCategoryId?: string, textSearch?: string,
 };
 
 export const previewEmailTemplate = (emailTemplateId: string) => {
-  return axios.get(contentTemplateUrl + '/' + emailTemplateId + "/preview", { params: {}, headers: authHeaders });
+  return axios.get(contentTemplateUrl + '/' + emailTemplateId + '/preview', { params: {}, headers: authHeaders });
 };
-
