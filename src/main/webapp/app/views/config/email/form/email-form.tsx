@@ -368,7 +368,6 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
           </Modal>
           <div className="email-form-management">
             <div className="email-form-title-header">
-<<<<<<< HEAD
               <Button color="back" onClick={this.back} style={{ color: 'blue', textDecoration: 'underline' }}>Quay lại</Button>
               <div className="button-group">
                 <Button color="primary" onClick={this.saveEmail}>
@@ -377,18 +376,6 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
                 <Button color="primary" onClick={this.createEmailTemplate} style={{ marginLeft: '10px', marginRight: '10px' }}>
                   Lưu thành Template
                       </Button>
-=======
-              <Button color="primary" onClick={this.back}>
-                Back
-              </Button>
-              <div className="button-group">
-                <Button color="primary" onClick={this.saveEmail}>
-                  Save
-                </Button>
-                <Button color="primary" onClick={this.createEmailTemplate} style={{ marginLeft: '10px', marginRight: '10px' }}>
-                  Save as Template
-                </Button>
->>>>>>> origin/dev_thangtq
               </div>
             </div>
             <div className="email-form-body">
@@ -426,21 +413,10 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
                     content={this.content()}
                     visible={this.state.visiblePopOver}
                     onVisibleChange={this.handleVisibleChange}
-<<<<<<< HEAD
                     trigger="click">
                     <Button color="primary">Tham số</Button>
                   </Popover>
                   <label onClick={() => this.preview(emailsave)} style={{ marginLeft: '10px', textDecoration: 'underline', color: '#3866DD' }}>
-=======
-                    trigger="click"
-                  >
-                    <Button color="primary">Variables</Button>
-                  </Popover>
-                  <label
-                    onClick={() => this.preview(emailsave)}
-                    style={{ marginLeft: '10px', textDecoration: 'underline', color: '#3866DD' }}
-                  >
->>>>>>> origin/dev_thangtq
                     <FontAwesomeIcon icon={faEye} />
                     <span style={{ paddingLeft: '10px' }}>Preview</span>
                   </label>
