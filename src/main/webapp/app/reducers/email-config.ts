@@ -99,8 +99,8 @@ export default (state: EmailConfigState = initialState, action): EmailConfigStat
     case FAILURE(EMAIL_CONFIG.EDIT_EMAIL):
       return {
         ...state,
-        loading: false
-        , modalResponse: {
+        loading: false,
+        modalResponse: {
           type: ERROR,
           text: 'Sửa email thất bại',
           title: 'Thông báo',
@@ -111,8 +111,8 @@ export default (state: EmailConfigState = initialState, action): EmailConfigStat
     case FAILURE(EMAIL_CONFIG.CREATE_EMAIL):
       return {
         ...state,
-        loading: false
-        , modalResponse: {
+        loading: false,
+        modalResponse: {
           type: ERROR,
           text: 'Thêm mới email thất bại',
           title: 'Thông báo',
@@ -122,15 +122,14 @@ export default (state: EmailConfigState = initialState, action): EmailConfigStat
     case FAILURE(EMAIL_CONFIG.CREATE_EMAIL_TEMPLATE):
       return {
         ...state,
-        loading: false
-        , modalResponse: {
+        loading: false,
+        modalResponse: {
           type: ERROR,
           text: 'Thêm mới email template thất bại',
           title: 'Thông báo',
           show: true
         }
       };
-
 
     case SUCCESS(EMAIL_CONFIG.EDIT_EMAIL):
       return {

@@ -188,7 +188,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
           return event.id;
         }
       })
-      .filter(function (obj) {
+      .filter(function(obj) {
         return obj;
       });
     let removeDuplicate = String(Array.from(new Set(valueOption)));
@@ -252,65 +252,65 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
                   {selectedOptionType.value === 'Text Input' || selectedOptionType.value === 'Date' || selectedOptionType.value === '' ? (
                     ''
                   ) : (
-                      <List
-                        values={options}
-                        onChange={({ oldIndex, newIndex }) => {
-                          let tempArray = options[oldIndex];
-                          options[oldIndex] = options[newIndex];
-                          options[newIndex] = tempArray;
-                          this.setState({ options });
-                        }}
-                        renderList={({ children, props, isDragged }) => (
-                          <Table responsive striped style={{ cursor: isDragged ? 'grabbing' : undefined }}>
-                            <tbody key={Math.random()} {...props}>
-                              {children}
-                            </tbody>
-                          </Table>
-                        )}
-                        renderItem={({ value, props, isDragged }) => {
-                          const row = (
-                            <tr {...props} style={{ ...props.style, cursor: isDragged ? 'grabbing' : 'grab' }}>
-                              <td>
-                                <Input
-                                  maxLength={160}
-                                  name={value.name}
-                                  id={value.id}
-                                  defaultValue={$(`input#${value.id}`).val()}
-                                  placeholder={'Option'}
-                                />
-                              </td>
-                              <td className="text-center" id="function">
-                                <div className="btn-group flex-btn-group-container">
-                                  <i className="pe-7s-menu icon-gradient bg-ripe-malin" id="icon">
-                                    {' '}
-                                  </i>
-                                  &nbsp;
+                    <List
+                      values={options}
+                      onChange={({ oldIndex, newIndex }) => {
+                        let tempArray = options[oldIndex];
+                        options[oldIndex] = options[newIndex];
+                        options[newIndex] = tempArray;
+                        this.setState({ options });
+                      }}
+                      renderList={({ children, props, isDragged }) => (
+                        <Table responsive striped style={{ cursor: isDragged ? 'grabbing' : undefined }}>
+                          <tbody key={Math.random()} {...props}>
+                            {children}
+                          </tbody>
+                        </Table>
+                      )}
+                      renderItem={({ value, props, isDragged }) => {
+                        const row = (
+                          <tr {...props} style={{ ...props.style, cursor: isDragged ? 'grabbing' : 'grab' }}>
+                            <td>
+                              <Input
+                                maxLength={160}
+                                name={value.name}
+                                id={value.id}
+                                defaultValue={$(`input#${value.id}`).val()}
+                                placeholder={'Option'}
+                              />
+                            </td>
+                            <td className="text-center" id="function">
+                              <div className="btn-group flex-btn-group-container">
+                                <i className="pe-7s-menu icon-gradient bg-ripe-malin" id="icon">
+                                  {' '}
+                                </i>
+                                &nbsp;
                                 <Button onClick={() => this.deleteField(value.id)} color="danger" size="sm">
-                                    <FontAwesomeIcon icon="trash" />{' '}
-                                    <span className="d-none d-md-inline">
-                                      <Translate contentKey="entity.action.delete" />
-                                    </span>
-                                  </Button>
-                                </div>
-                              </td>
-                            </tr>
-                          );
-                          return isDragged ? <div className="input-drag">{row}</div> : row;
-                        }}
-                      />
-                    )}
+                                  <FontAwesomeIcon icon="trash" />{' '}
+                                  <span className="d-none d-md-inline">
+                                    <Translate contentKey="entity.action.delete" />
+                                  </span>
+                                </Button>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                        return isDragged ? <div className="input-drag">{row}</div> : row;
+                      }}
+                    />
+                  )}
                 </PerfectScrollbar>
               </div>
               <p className="error-text">{this.state.validateOption}</p>
               {selectedOptionType.value === 'Text Input' || selectedOptionType.value === 'Date' || selectedOptionType.value === '' ? (
                 ''
               ) : (
-                  <div>
-                    <Button onClick={this.addOption} className="btn btn-primary jh-create-entity" id="button-add">
-                      <FontAwesomeIcon icon="plus" /> <Translate contentKey="properties-management.button-add" />
-                    </Button>
-                  </div>
-                )}
+                <div>
+                  <Button onClick={this.addOption} className="btn btn-primary jh-create-entity" id="button-add">
+                    <FontAwesomeIcon icon="plus" /> <Translate contentKey="properties-management.button-add" />
+                  </Button>
+                </div>
+              )}
             </AvForm>
           </ModalBody>
           <ModalFooter>
@@ -349,7 +349,4 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Create);
+export default connect(mapStateToProps, mapDispatchToProps)(Create);

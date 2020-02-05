@@ -42,8 +42,8 @@ interface IModalGateWayState {
   advancedSearchesData?: IAdvancedSearchesData[];
   logicalOperator?: string;
   error_advanced: string;
-  node: any,
-  isUpdate: boolean
+  node: any;
+  isUpdate: boolean;
 }
 
 export function makeRandomId(length: number): string {
@@ -69,20 +69,20 @@ class ModalGateWay extends React.Component<IModalGateWayProps, IModalGateWayStat
   };
 
   async componentWillReceiveProps(nextProps) {
-    let { node, list_field_data_cpn } = this.state
-    let { list_clone_version } = this.props
-    if(Object.keys(list_clone_version).length > 0 && list_clone_version.cjId){
-      if (this.getConditionGetWay(nextProps.idNode.id) !== undefined ) {
+    let { node, list_field_data_cpn } = this.state;
+    let { list_clone_version } = this.props;
+    if (Object.keys(list_clone_version).length > 0 && list_clone_version.cjId) {
+      if (this.getConditionGetWay(nextProps.idNode.id) !== undefined) {
         if (node.id !== nextProps.idNode.id) {
-          node = nextProps.idNode
-          list_field_data_cpn = (await this.getValueAdv(nextProps.idNode.id, nextProps.is_show))
+          node = nextProps.idNode;
+          list_field_data_cpn = await this.getValueAdv(nextProps.idNode.id, nextProps.is_show);
         }
       } else {
-        list_field_data_cpn = []
-        node = nextProps.idNode
+        list_field_data_cpn = [];
+        node = nextProps.idNode;
       }
     }
-    this.setState({ node, list_field_data_cpn })
+    this.setState({ node, list_field_data_cpn });
   }
 
   // Update value from state;
@@ -107,7 +107,6 @@ class ModalGateWay extends React.Component<IModalGateWayProps, IModalGateWayStat
     if (advancedSearchesData.length === 1) logicalOperator = '';
     this.setState({ advancedSearchesData, advancedSearches, logicalOperator });
   };
-
 
   // Add new component to list_field_data_cpn
   handleAddNewComponent = () => {
@@ -194,7 +193,7 @@ class ModalGateWay extends React.Component<IModalGateWayProps, IModalGateWayStat
   };
 
   remove(arr, item) {
-    for (var i = arr.length; i--;) {
+    for (var i = arr.length; i--; ) {
       if (arr[i].id === item.id) {
         arr.splice(i, 1);
       }
@@ -221,8 +220,8 @@ class ModalGateWay extends React.Component<IModalGateWayProps, IModalGateWayStat
     if (this.checkValidate(advancedSearches)) {
       localStorage.removeItem('isSave');
       data.getway = data.getway.filter((item, index) => {
-        return data.getway.indexOf(item) === index
-      })
+        return data.getway.indexOf(item) === index;
+      });
       data.getway.push(nodeConfig);
       validateCampaign(data);
       this.props.toggle();
@@ -230,74 +229,75 @@ class ModalGateWay extends React.Component<IModalGateWayProps, IModalGateWayStat
   };
 
   checkValidate(listSearch: any[]): boolean {
-    let result: boolean = true
-    let count: number = 0
-    listSearch && listSearch.map(data => {
-      if (!data.fieldId || !data.value || !data.operator) {
-        count++
-      }
-    })
+    let result: boolean = true;
+    let count: number = 0;
+    listSearch &&
+      listSearch.map(data => {
+        if (!data.fieldId || !data.value || !data.operator) {
+          count++;
+        }
+      });
 
     if (count > 0) {
-      this.setState({ error_advanced: translate("getway.error-advanced") })
-      result = false
+      this.setState({ error_advanced: translate('getway.error-advanced') });
+      result = false;
     } else {
-      this.setState({ error_advanced: "" })
+      this.setState({ error_advanced: '' });
     }
-    return result
+    return result;
   }
 
-  getConditionGetWay = (node) => {
-    const { list_clone_version, idNode } = this.props
+  getConditionGetWay = node => {
+    const { list_clone_version, idNode } = this.props;
 
-    let data: { logicalOperator: string, advancedSearches: any[] }
-    list_clone_version.flowDetail && list_clone_version.flowDetail.nodeMetaData.map(event => {
-      if (event.nodeId === node && event.code === code_node.GATEWAY) {
-        data = event.nodeConfig
-      }
-    })
-    return data
-  }
+    let data: { logicalOperator: string; advancedSearches: any[] };
+    list_clone_version.flowDetail &&
+      list_clone_version.flowDetail.nodeMetaData.map(event => {
+        if (event.nodeId === node && event.code === code_node.GATEWAY) {
+          data = event.nodeConfig;
+        }
+      });
+    return data;
+  };
 
   getValueAdv = async (node, is_show) => {
-    let { list_field_data_cpn, logicalOperator, advancedSearches, advancedSearchesData } = this.state
-    list_field_data_cpn = [],
-      advancedSearches = [],
-      advancedSearchesData = []
-    let data: { logicalOperator: string, advancedSearches: any[] }
-    data = this.getConditionGetWay(node)
+    let { list_field_data_cpn, logicalOperator, advancedSearches, advancedSearchesData } = this.state;
+    (list_field_data_cpn = []), (advancedSearches = []), (advancedSearchesData = []);
+    let data: { logicalOperator: string; advancedSearches: any[] };
+    data = this.getConditionGetWay(node);
     let id = makeRandomId(16);
     if (data != undefined && is_show) {
-      await data.advancedSearches.length > 0 && data.advancedSearches.map((item, index) => {
-        let dataSeacrh = {
-          id: Math.random().toString(36).substr(2, 9),
-          name: "new",
-          last_index: index + 1 === data.advancedSearches.length ? true : false,
-          default_data: {
-            fieldCode: item.fieldCode,
-            fieldId: item.fieldId,
-            fieldType: item.fieldType,
-            fieldValue: item.fieldValue,
-            fieldTitle: item.fieldTitle,
-            operator: item.operator,
-            value: item.value
-          }
-        }
-        list_field_data_cpn.push(dataSeacrh)
-        advancedSearchesData.push({
-          id,
-          advancedSearch: dataSeacrh.default_data
+      (await data.advancedSearches.length) > 0 &&
+        data.advancedSearches.map((item, index) => {
+          let dataSeacrh = {
+            id: Math.random()
+              .toString(36)
+              .substr(2, 9),
+            name: 'new',
+            last_index: index + 1 === data.advancedSearches.length ? true : false,
+            default_data: {
+              fieldCode: item.fieldCode,
+              fieldId: item.fieldId,
+              fieldType: item.fieldType,
+              fieldValue: item.fieldValue,
+              fieldTitle: item.fieldTitle,
+              operator: item.operator,
+              value: item.value
+            }
+          };
+          list_field_data_cpn.push(dataSeacrh);
+          advancedSearchesData.push({
+            id,
+            advancedSearch: dataSeacrh.default_data
+          });
+          logicalOperator = data.logicalOperator;
+          advancedSearches = data.advancedSearches;
         });
-        logicalOperator = data.logicalOperator
-        advancedSearches = data.advancedSearches
-      })
     }
-    this.setState({ list_field_data_cpn, advancedSearches, advancedSearchesData })
-    console.log('a',advancedSearches)
-    return list_field_data_cpn
-  }
-
-
+    this.setState({ list_field_data_cpn, advancedSearches, advancedSearchesData });
+    console.log('a', advancedSearches);
+    return list_field_data_cpn;
+  };
 
   render() {
     let { is_show, type_modal, list_clone_version } = this.props;
@@ -305,28 +305,28 @@ class ModalGateWay extends React.Component<IModalGateWayProps, IModalGateWayStat
     let list_field_render =
       list_field_data_cpn && list_field_data_cpn.length > 0
         ? list_field_data_cpn.map(item => {
-          if (item.id)
-            return (
-              <FieldData
-                type_modal={type_modal}
-                key={item.id}
-                id={item.id}
-                last_index={item.last_index}
-                logicalOperator={logicalOperator}
-                default_data={item.default_data}
-                updateValueFromState={this.updateValueFromState}
-                deleteComponentById={this.deleteComponentById}
-                updateRelationshipFromState={this.updateRelationshipFromState}
-              />
-            );
-        })
+            if (item.id)
+              return (
+                <FieldData
+                  type_modal={type_modal}
+                  key={item.id}
+                  id={item.id}
+                  last_index={item.last_index}
+                  logicalOperator={logicalOperator}
+                  default_data={item.default_data}
+                  updateValueFromState={this.updateValueFromState}
+                  deleteComponentById={this.deleteComponentById}
+                  updateRelationshipFromState={this.updateRelationshipFromState}
+                />
+              );
+          })
         : [];
 
     // if (Object.keys(list_clone_version).length > 0 && list_clone_version.cjId) {
     //   this.getValueAdv()
     // }
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
-    let title_modal = translate("getway.title");
+    let title_modal = translate('getway.title');
 
     return (
       <Modal
@@ -361,7 +361,7 @@ class ModalGateWay extends React.Component<IModalGateWayProps, IModalGateWayStat
             <Card>
               <div className="group-addition_content">
                 {list_field_render}
-                <p style={{ color: "red", marginLeft: "5%" }} > {this.state.error_advanced}</p>
+                <p style={{ color: 'red', marginLeft: '5%' }}> {this.state.error_advanced}</p>
                 <div className="group-addition_footer">
                   <Button color="primary" onClick={this.handleAddNewComponent}>
                     <FontAwesomeIcon icon={faPlus} />

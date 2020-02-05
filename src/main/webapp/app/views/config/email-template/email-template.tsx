@@ -9,14 +9,11 @@ import { IRootState } from 'app/reducers';
 import { Input, Icon, Row, Col, Tag, Tabs, Button } from 'antd';
 import { Button as Btn, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import PreviewEmailLanding from './preview/preview';
-import {
-  getEmailCategoriesAction, getEmailTemplatesAction, previewEmailTemplateAction
-} from 'app/actions/email-config';
-import { getContentTemplate } from 'app/actions/user-campaign'
-import './email-template.scss'
+import { getEmailCategoriesAction, getEmailTemplatesAction, previewEmailTemplateAction } from 'app/actions/email-config';
+import { getContentTemplate } from 'app/actions/user-campaign';
+import './email-template.scss';
 
-interface IEmailTemplateManagementProps extends StateProps, DispatchProps {
-}
+interface IEmailTemplateManagementProps extends StateProps, DispatchProps {}
 
 interface IEmailTemplateManagementState {
   activePage: number;
@@ -49,11 +46,11 @@ class EmailTemplateManagement extends React.Component<IEmailTemplateManagementPr
 
   back = () => {
     location.assign('#/app/views/config/emails');
-  }
+  };
 
-  onchangeTextSearch = (event) => {
+  onchangeTextSearch = event => {
     this.setState({ textSearch: event.target.value });
-  }
+  };
 
   onchangeTabEmailCategory = activeKey => {
     let { textSearch } = this.state;
@@ -62,29 +59,29 @@ class EmailTemplateManagement extends React.Component<IEmailTemplateManagementPr
       ...this.state,
       activeKey: activeKey
     });
-  }
+  };
 
-  setPageIndex = (pageIndex) => {
+  setPageIndex = pageIndex => {
     let { activeKey, textSearch, itemsPerPage } = this.state;
     this.props.getEmailTemplatesAction(activeKey, textSearch, parseInt(pageIndex), itemsPerPage);
     this.setState({ activePage: parseInt(pageIndex) });
-  }
+  };
 
   chooseTemplate = async emailTemplateId => {
     await this.props.getContentTemplate(emailTemplateId);
     location.assign('#/app/views/config/emails/' + emailTemplateId + '/copyTemplate');
-  }
+  };
 
   previewTemplate = async emailTemplateId => {
     await this.props.previewEmailTemplateAction(emailTemplateId);
     this.setState({ openModal: true });
-  }
+  };
 
   toggleModal = () => {
     this.setState({
       openModal: !this.state.openModal
     });
-  }
+  };
 
   render() {
     let { textSearch, activeKey, activePage, itemsPerPage, openModal } = this.state;
@@ -105,7 +102,9 @@ class EmailTemplateManagement extends React.Component<IEmailTemplateManagementPr
         </Modal>
         <div className="email-template-management">
           <div className="email-template-title-header">
-            <Btn color="black" onClick={this.back}>Quay lại</Btn>
+            <Btn color="black" onClick={this.back}>
+              Quay lại
+            </Btn>
             <label>Chọn template</label>
           </div>
           <Row>
@@ -126,39 +125,40 @@ class EmailTemplateManagement extends React.Component<IEmailTemplateManagementPr
           <Row>
             <Loader message={spinner1} show={loading} priority={1}>
               <div className="email-template-list">
-                {
-                  emailCategories && emailCategories.length > 0 ? (
-                    <Tabs onChange={this.onchangeTabEmailCategory} defaultActiveKey={activeKey} type="card">
-                      {
-                        emailCategories.map((category, index) => (
-                          <TabPane tab={category.name} key={category.id}>
-                            {
-                              emailTemplates && emailCategories.length > 0 ? (
-                                emailTemplates.map((emailTemplate, index) => (
-                                  <Col span={8} key={index}>
-                                    <div className="gutter">
-                                      <div className="gutter-content">
-                                        <img className="image"
-                                          style={{ width: '100%' }}
-                                          src={emailTemplate.thumbnail}
-                                        />
-                                        <div className="middle">
-                                          <Button type="primary" onClick={() => this.previewTemplate(emailTemplate.id)}>Xem trước</Button>
-                                          <Button type="primary" onClick={() => this.chooseTemplate(emailTemplate.id)} style={{ marginLeft: '5px' }}>Chọn</Button>
-                                        </div>
-                                      </div>
-                                      <div className="gutter-title">{emailTemplate.subject}</div>
+                {emailCategories && emailCategories.length > 0 ? (
+                  <Tabs onChange={this.onchangeTabEmailCategory} defaultActiveKey={activeKey} type="card">
+                    {emailCategories.map((category, index) => (
+                      <TabPane tab={category.name} key={category.id}>
+                        {emailTemplates && emailCategories.length > 0
+                          ? emailTemplates.map((emailTemplate, index) => (
+                              <Col span={8} key={index}>
+                                <div className="gutter">
+                                  <div className="gutter-content">
+                                    <img className="image" style={{ width: '100%' }} src={emailTemplate.thumbnail} />
+                                    <div className="middle">
+                                      <Button type="primary" onClick={() => this.previewTemplate(emailTemplate.id)}>
+                                        Xem trước
+                                      </Button>
+                                      <Button
+                                        type="primary"
+                                        onClick={() => this.chooseTemplate(emailTemplate.id)}
+                                        style={{ marginLeft: '5px' }}
+                                      >
+                                        Chọn
+                                      </Button>
                                     </div>
-                                  </Col>
-                                ))
-                              ) : ''
-                            }
-                          </TabPane>
-                        ))
-                      }
-                    </Tabs>
-                  ) : ''
-                }
+                                  </div>
+                                  <div className="gutter-title">{emailTemplate.subject}</div>
+                                </div>
+                              </Col>
+                            ))
+                          : ''}
+                      </TabPane>
+                    ))}
+                  </Tabs>
+                ) : (
+                  ''
+                )}
               </div>
 
               <div className="email-template-navigation">
@@ -179,8 +179,8 @@ class EmailTemplateManagement extends React.Component<IEmailTemplateManagementPr
                     />
                   </Row>
                 ) : (
-                    ''
-                  )}
+                  ''
+                )}
               </div>
             </Loader>
           </Row>
@@ -188,7 +188,6 @@ class EmailTemplateManagement extends React.Component<IEmailTemplateManagementPr
       </Fragment>
     );
   }
-
 }
 
 const mapStateToProps = ({ emailConfigState }: IRootState) => ({
@@ -201,13 +200,13 @@ const mapStateToProps = ({ emailConfigState }: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  getEmailCategoriesAction, getEmailTemplatesAction, previewEmailTemplateAction, getContentTemplate
+  getEmailCategoriesAction,
+  getEmailTemplatesAction,
+  previewEmailTemplateAction,
+  getContentTemplate
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EmailTemplateManagement);
+export default connect(mapStateToProps, mapDispatchToProps)(EmailTemplateManagement);

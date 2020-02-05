@@ -9,12 +9,10 @@ import Loader from 'react-loader-advanced';
 import 'react-toastify/dist/ReactToastify.css';
 import ReactPaginate from 'react-paginate';
 import { IEmail } from 'app/common/model/email-config.model';
-import {
-  getEmailsAction, deleteEmailAction, getEmailDetailAction
-} from 'app/actions/email-config';
+import { getEmailsAction, deleteEmailAction, getEmailDetailAction } from 'app/actions/email-config';
 import './email.scss';
 
-interface IEmailManagementProps extends StateProps, DispatchProps { }
+interface IEmailManagementProps extends StateProps, DispatchProps {}
 interface IEmailManagementState {
   activePage: number;
   itemsPerPage: number;
@@ -45,11 +43,11 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
     this.props.getEmailsAction('', activePage, itemsPerPage);
   }
 
-  onchangeTextSearch = (event) => {
+  onchangeTextSearch = event => {
     this.setState({
       textSearch: event.target.value
     });
-  }
+  };
 
   setPageIndex = pageIndex => {
     let { itemsPerPage } = this.state;
@@ -59,14 +57,13 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.emails != prevState.emails) {
-      let listCheckboxItem = nextProps.emails.map(item => ({ ...item, checked: false }))
+      let listCheckboxItem = nextProps.emails.map(item => ({ ...item, checked: false }));
       return {
         emails: nextProps.emails,
         listCheckboxItem,
         checkAll: false
       };
-    }
-    else return null;
+    } else return null;
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -74,7 +71,6 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
       this.setState({ ...this.state });
     }
   }
-
 
   onChangeCheckboxItem = (id, checked) => {
     let { listCheckboxItem } = this.state;
@@ -85,7 +81,7 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
     this.setState({
       listCheckboxItem: listCheckboxItem
     });
-  }
+  };
 
   menu = item => {
     return (
@@ -104,9 +100,9 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
     let { listCheckboxItem } = this.state;
     let emailIds = listCheckboxItem.filter(item => item.checked == true).map(item => item.id);
     this.deleteEmail(emailIds);
-  }
+  };
 
-  deleteEmail = async (emailIds) => {
+  deleteEmail = async emailIds => {
     let { itemsPerPage } = this.state;
     confirm({
       cancelButtonProps: { type: 'danger', ghost: true },
@@ -118,39 +114,39 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
         this.props.getEmailsAction('', pageDefault, itemsPerPage);
       },
       okText: 'Xóa',
-      onCancel() { },
+      onCancel() {},
       cancelText: 'Hủy bỏ'
     });
-  }
+  };
 
   createEmail = () => {
     location.assign('#/app/views/config/emails/add');
-  }
+  };
 
-  editEmail = async (emailId) => {
+  editEmail = async emailId => {
     await this.props.getEmailDetailAction(emailId);
     location.assign('#/app/views/config/emails/' + emailId + '/edit');
-  }
+  };
 
-  copyEmail = async (emailId) => {
+  copyEmail = async emailId => {
     await this.props.getEmailDetailAction(emailId);
     location.assign('#/app/views/config/emails/' + emailId + '/copy');
-  }
+  };
 
   createEmailTemplate = () => {
     location.assign('#/app/views/config/email-template');
-  }
-
+  };
 
   render() {
     let { total, totalPages, loading } = this.props;
     let { textSearch, activePage, itemsPerPage, listCheckboxItem, isCheckAll } = this.state;
     let isVisable = false;
-    listCheckboxItem && listCheckboxItem.forEach(item => {
-      if (item.checked) {
-        isVisable = true;
-      }
-    });
+    listCheckboxItem &&
+      listCheckboxItem.forEach(item => {
+        if (item.checked) {
+          isVisable = true;
+        }
+      });
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
     return (
       <Fragment>
@@ -161,9 +157,7 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
               <div className="dropdown-email">
                 <Dropdown>
                   <UncontrolledDropdown>
-                    <DropdownToggle color="primary">
-                      Thêm mới email
-                     </DropdownToggle>
+                    <DropdownToggle color="primary">Thêm mới email</DropdownToggle>
                     <DropdownMenu right className="dropdown-menu-sm">
                       <DropdownItem onClick={this.createEmailTemplate}>Thêm từ template</DropdownItem>
                       <DropdownItem onClick={this.createEmail}>Thêm mới</DropdownItem>
@@ -176,13 +170,13 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
           <Row>
             <div className="email-search-group">
               <div className="button-group">
-                {
-                  isVisable ? (
-                    <Button color="danger" style={{ marginLeft: "10px" }} onClick={() => this.deleteMultiEmail()}>
-                      Xóa
-                    </Button>
-                  ) : ('')
-                }
+                {isVisable ? (
+                  <Button color="danger" style={{ marginLeft: '10px' }} onClick={() => this.deleteMultiEmail()}>
+                    Xóa
+                  </Button>
+                ) : (
+                  ''
+                )}
               </div>
               <div className="searchInput">
                 <Input
@@ -208,9 +202,10 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
                     <tr className="text-center">
                       <th className="checkbox-td" colSpan={5}>
                         <Checkbox
-                          id='check-all'
+                          id="check-all"
                           checked={isCheckAll}
-                          onChange={event => this.onChangeCheckboxItem('check-all', event.target.checked)} />
+                          onChange={event => this.onChangeCheckboxItem('check-all', event.target.checked)}
+                        />
                       </th>
                       <th colSpan={20}>Tên email</th>
                       <th colSpan={20}> Tiêu đề email</th>
@@ -224,17 +219,20 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
                       listCheckboxItem.map((item, index) => {
                         return (
                           <tr key={index}>
-                            <td colSpan={5} style={{ textAlign: "center" }}>
+                            <td colSpan={5} style={{ textAlign: 'center' }}>
                               <Checkbox
                                 id={item.id}
                                 checked={item.checked}
-                                onChange={event => this.onChangeCheckboxItem(item.id, event.target.checked)} />
+                                onChange={event => this.onChangeCheckboxItem(item.id, event.target.checked)}
+                              />
                             </td>
                             <td colSpan={20}>{item.name}</td>
                             <td colSpan={20}>{item.subject}</td>
                             <td colSpan={20}>{item.createdUser}</td>
-                            <td colSpan={20} style={{ textAlign: "center" }}>{item.modifiedDate}</td>
-                            <td colSpan={15} style={{ textAlign: "center" }}>
+                            <td colSpan={20} style={{ textAlign: 'center' }}>
+                              {item.modifiedDate}
+                            </td>
+                            <td colSpan={15} style={{ textAlign: 'center' }}>
                               <DropdownAnt.Button
                                 overlay={() => this.menu(item)}
                                 icon={<Icon type="caret-down" />}
@@ -247,11 +245,16 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
                               </DropdownAnt.Button>
                             </td>
                           </tr>
-                        )
+                        );
                       })
                     ) : (
-                        <tr><td className="none-data" colSpan={100}> Không có dữ liệu khách hàng</td></tr>
-                      )}
+                      <tr>
+                        <td className="none-data" colSpan={100}>
+                          {' '}
+                          Không có dữ liệu khách hàng
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </Table>
                 <div className="email-navigation">
@@ -272,15 +275,14 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
                       />
                     </Row>
                   ) : (
-                      ''
-                    )}
+                    ''
+                  )}
                 </div>
               </div>
             </Loader>
           </Row>
         </div>
       </Fragment>
-
     );
   }
 }
@@ -293,13 +295,12 @@ const mapStateToProps = ({ emailConfigState }: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  getEmailsAction, deleteEmailAction, getEmailDetailAction
+  getEmailsAction,
+  deleteEmailAction,
+  getEmailDetailAction
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EmailManagement);
+export default connect(mapStateToProps, mapDispatchToProps)(EmailManagement);
