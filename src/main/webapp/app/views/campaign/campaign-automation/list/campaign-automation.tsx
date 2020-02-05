@@ -406,6 +406,42 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
                 <tbody>
                   {list_campaign_auto && list_campaign_auto.length > 0
                     ? list_campaign_auto.map((event, index) => {
+<<<<<<< HEAD
+                      return (
+                        <tr key={index}>
+                          <td>{this.state.activePage * 5 + index + 1}</td>
+                          <td className="table-content">
+                            <a
+                              style={{ marginLeft: '5%' }}
+                              href="javascript:void(0);"
+                              onClick={() => this.viewVersion(event.cjVersionId)}
+                            >
+                              {event.name}
+                            </a>
+                            <br />
+                            <label style={{ marginLeft: '5%' }}><Translate contentKey="campaign-auto.table.version" /> {event.version}</label>
+                          </td>
+                          <td className="row-status">
+                            <img style={{ margin: '1% 2% 2% 40%' }} src={this.iconStatus(event.status)} />
+                            {eventStatus(event.status)}
+                          </td>
+                          <td>
+                            <div className="text-center">
+                              <label className="text-process" style={{ marginBottom: '0px', color: '#6C757D' }}>
+                                {event.contactCompleted}/{event.contactNumbers} contact
+                              </label>
+                            </div>
+                            <Progress
+                              color='info'
+                              value={this.countContact(event.contactCompleted, event.contactNumbers)}
+                            >
+                            </Progress>
+                          </td>
+                          <td>{event.modifiedDate}</td>
+                        </tr>
+                      );
+                    })
+=======
                         return (
                           <tr key={index}>
                             <td>{this.state.activePage * 5 + index + 1}</td>
@@ -442,6 +478,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
                           </tr>
                         );
                       })
+>>>>>>> origin/dev_thangtq
                     : ''}
                 </tbody>
               </Table>

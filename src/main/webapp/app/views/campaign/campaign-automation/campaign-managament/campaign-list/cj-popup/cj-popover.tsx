@@ -151,25 +151,25 @@ class CJTagPopOver extends React.Component<ICjTagPopOverProps, TCjTagPopOverStat
           toggle={this.togglePopup}
           trigger="click"
         >
-          <PopoverHeader><Translate contentKey = "campaign-auto.list.chosse-tag" /></PopoverHeader>
+          <PopoverHeader><Translate contentKey="campaign-auto.list.chosse-tag" /></PopoverHeader>
           <PopoverBody>
             <div id="cj-tag-popover-body">
               <div className="combobox-cj-tag">
                 <CampaignTag handleChange={this.handleChange} defaultValue={cjTagsDefault} />
               </div>
               <div className="link">
-                <label onClick={() => this.openModalCjTag()} style={{ textDecoration: 'underline' }}>
+                <label onClick={() => this.openModalCjTag()} style={{ textDecoration: 'underline', cursor: 'pointer' }}>
                   <Icon type="tag" />
-                  <span><Translate contentKey = "campaign-auto.list.add-tag" /></span>
+                  <span><Translate contentKey="campaign-auto.list.add-tag" /></span>
                 </label>
-                <label onClick={() => this.openModalListCjTag()} style={{ float: 'right', textDecoration: 'underline' }}>
+                <label onClick={() => this.openModalListCjTag()} style={{ float: 'right', textDecoration: 'underline', cursor: 'pointer' }}>
                   <Icon type="menu" />
-                  <span><Translate contentKey = "campaign-auto.list.tag" /></span>
+                  <span><Translate contentKey="campaign-auto.list.tag" /></span>
                 </label>
               </div>
               <div className="cj-tag-popup-footer">
-                <Button color="black" onClick={this.closePopup}>
-                 <Translate contentKey = "campaign-auto.btn-cancel" />
+                <Button color="danger" onClick={this.closePopup} outline style={{ marginRight: '5px' }}>
+                  <Translate contentKey="campaign-auto.btn-cancel" />
                 </Button>
                 <Button
                   onClick={() => {
@@ -177,7 +177,7 @@ class CJTagPopOver extends React.Component<ICjTagPopOverProps, TCjTagPopOverStat
                   }}
                   color="primary"
                 >
-                  <Translate contentKey = "campaign-auto.btn-chosse" />
+                  <Translate contentKey="campaign-auto.btn-chosse" />
                 </Button>
               </div>
             </div>

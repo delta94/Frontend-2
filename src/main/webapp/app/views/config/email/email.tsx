@@ -105,6 +105,7 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
   deleteEmail = async emailIds => {
     let { itemsPerPage } = this.state;
     confirm({
+      cancelButtonProps: { type: 'danger', ghost: true },
       zIndex: 1000000,
       title: 'Xóa',
       content: 'Bạn thực sự muốn xóa ?',
