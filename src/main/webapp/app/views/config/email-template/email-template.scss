@@ -31,6 +31,7 @@
       font-weight: normal;
       border-radius: 3px;
       border: 1px solid #dbe1e7;
+      height: 250px;
 
       .gutter-content:hover .image {
         opacity: 0.4;
@@ -41,7 +42,7 @@
       }
 
       .gutter-content {
-        height: 80%;
+        height: 90%;
         position: relative;
         .image {
           max-width: 100%;
@@ -66,7 +67,7 @@
         }
       }
       .gutter-title {
-        height: 20%;
+        height: 10%;
         background-color: burlywood;
       }
     }

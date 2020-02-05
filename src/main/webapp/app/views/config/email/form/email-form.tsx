@@ -21,7 +21,7 @@ import PreviewEmailLanding from '../../email-template/preview/preview';
 //TODO: step 1
 import EmailEditor from 'react-email-editor';
 
-interface IEmailFormManagementProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any; idTemplate: any }> {}
+interface IEmailFormManagementProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any; idTemplate: any }> { }
 interface IEmailFormManagementState {
   visiblePopOver: boolean;
   activeKey: string;
@@ -87,7 +87,7 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
     console.log('onDesignLoad', data);
     console.log(this.editor);
     if (this.editor) {
-      this.editor.registerCallback('image', function(file, done) {
+      this.editor.registerCallback('image', function (file, done) {
         console.log('upload');
         console.log(file);
 
@@ -292,16 +292,16 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
             <TabPane tab={item.name} key={item.code}>
               {this.state.contentParams
                 ? this.state.contentParams.map((item, index) => (
-                    <div className="tabs-param" key={index}>
-                      <label
-                        onClick={() => {
-                          this.selectParam(item.paramCode);
-                        }}
-                      >
-                        {item.paramName}
-                      </label>
-                    </div>
-                  ))
+                  <div className="tabs-param" key={index}>
+                    <label
+                      onClick={() => {
+                        this.selectParam(item.paramCode);
+                      }}
+                    >
+                      {item.paramName}
+                    </label>
+                  </div>
+                ))
                 : ''}
             </TabPane>
           ))}
@@ -424,7 +424,7 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
                 <div style={{ clear: 'both' }}></div>
                 <div style={{ marginTop: '10px' }}>
                   {/*TODO: step 3*/}
-                  <EmailEditor
+                  {/* <EmailEditor
                     ref={editor => (this.editor = editor)}
                     onLoad={this.onLoad}
                     onDesignLoad={this.onDesignLoad}
@@ -727,7 +727,7 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
         `
                       ]
                     }}
-                  />
+                  /> */}
 
                   <CKEditor
                     id={'ckeditor'}
