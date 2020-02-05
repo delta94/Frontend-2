@@ -29,6 +29,7 @@ class CJTagListModal extends React.Component<ICjTagListModalProps, ICjTagListMod
   deleteCjTag = async cjTag => {
     let { deleteCjTagAction, closeModalCjTag, getCjTagsAction, refreshListCjTag } = this.props;
     confirm({
+      cancelButtonProps: { type: 'danger', ghost: true },
       zIndex: 1000000,
       title: translate("campaign-auto.managament.delete"),
       content: translate("campaign-auto.modal.content-delete"),

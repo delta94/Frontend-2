@@ -144,6 +144,8 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
     }
   }
 
+
+
   //TODO: step 4
   renderCell(id, item, index) {
     switch (id) {
@@ -168,12 +170,12 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
             <br />
             {item.tags
               ? item.tags.split(',').map((v, i) => {
-                  return (
-                    <Tag color="blue" key={i}>
-                      {v}
-                    </Tag>
-                  );
-                })
+                return (
+                  <Tag color="rgb(52, 157, 233)" style={{ borderRadius: '25px', margin: '5px' }} key={i}>
+                    {v}
+                  </Tag>
+                );
+              })
               : null}
           </div>
         );
@@ -182,14 +184,15 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
       case 'result':
         return (
           <div style={{ width: '100%' }}>
-            <Progress
-              animated
-              color={this.countContact(item.contactCompleted, item.contactNumbers) < 100 ? 'warning' : 'success'}
-              value={this.countContact(item.contactCompleted, item.contactNumbers)}
-            >
-              <label className="text-process" style={{ color: ' #6C757D', marginTop: '9px' }}>
+            <div className="text-center">
+              <label className="text-process" style={{ marginBottom:'0px',color: '#6C757D' }}>
                 {item.contactCompleted}/{item.contactNumbers} contact
               </label>
+            </div>
+            <Progress
+              color='info'
+              value={this.countContact(item.contactCompleted, item.contactNumbers)}
+            >
             </Progress>
           </div>
         );
@@ -197,7 +200,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
         return <span> {item.modifiedDate}</span>;
       case 'manipulation':
         return (
-          <div>
+          <div style={{ marginLeft: '15px' }}>
             <CJTagPopOver key={item.cjVersionId} dataPopup={item} getCjs={this.getCjs} />
             {/* <Icon onClick={() => this.openModalCjTag(item.id)} style={{ fontSize: '24px' }} type="tags" />  */}
             {/* <PopverAnt
@@ -217,7 +220,6 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                           >
                             <img src={img_tag} />
                           </PopverAnt> */}
-            &nbsp; &nbsp;
             <PopverAnt
               overlayClassName="pop-version"
               content={
@@ -237,7 +239,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
               trigger="click"
             >
               {/* <Icon style={{ fontSize: '24px' }} type="unordered-list" /> */}
-              <FontAwesomeIcon style={{ fontSize: '24px', verticalAlign: 'inherit', color: '#3866DD' }} icon={faEllipsisH} />
+              <FontAwesomeIcon style={{ margin: '0px 0px -12px 5px', fontSize: '24px', verticalAlign: 'inherit', color: '#3866DD' }} icon={faEllipsisH} />
             </PopverAnt>
           </div>
         );
@@ -723,7 +725,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
               pageSize={list_camp && list_camp.length > 1 ? list_camp.length : 1}
             />
 
-            <div className="navigation1">
+            <div className="campaign-navigation" style={{ marginTop: '20px' }}>
               {totalPages && totalPages >= 2 ? (
                 <Row className="justify-content-center" style={{ float: 'right' }}>
                   <ReactPaginate
@@ -741,8 +743,8 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                   />
                 </Row>
               ) : (
-                ''
-              )}
+                  ''
+                )}
             </div>
             <br></br>
 
