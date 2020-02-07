@@ -24,6 +24,8 @@ import './topol-react-email-editor/index.scss';
 import DemoTemplate from './topol-react-email-editor/demo.json';
 //TODO 1: END
 
+const cheerio = require('cheerio');
+
 interface IEmailFormManagementProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any; idTemplate: any }> {}
 interface IEmailFormManagementState {
   visiblePopOver: boolean;
@@ -200,6 +202,7 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
 
   createEmailTemplate = () => {
     let { emailsave } = this.state;
+    emailsave.content = this.validateHtmlContent(emailsave.content);
     if (this.validateForm(emailsave)) {
       let emailSaveValidate = {
         ...emailsave,
@@ -214,6 +217,8 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
     let emailId = this.props.match.params.id;
     let url = this.props.match.url;
     let { emailsave } = this.state;
+    emailsave.content = this.validateHtmlContent(emailsave.content);
+
     if (this.validateForm(emailsave)) {
       let emailSaveValidate = {
         ...emailsave,
@@ -229,6 +234,16 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
         this.props.createEmailAction(emailSaveValidate);
       }
     }
+  };
+
+  validateHtmlContent = content => {
+    const $ = cheerio.load(content);
+    let _head = $('head');
+    if (_head) {
+      _head.html('');
+      _head.append('<style type="text/css">html { display: block; }</style>');
+    }
+    return $.html();
   };
 
   title = (
@@ -285,6 +300,7 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
   onEditorChange = event => {
     let emailSave = this.state.emailsave;
     emailSave.content = event.editor.getData();
+    console.log(emailSave.content);
     this.setState({
       emailsave: emailSave
     });
@@ -339,16 +355,14 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
           </Modal>
           <div className="email-form-management">
             <div className="email-form-title-header">
-              <Button color="back" onClick={this.back} style={{ color: 'blue', textDecoration: 'underline' }}>
-                Quay lại
-              </Button>
+              <Button color="back" onClick={this.back} style={{ color: 'blue', textDecoration: 'underline' }}>Quay lại</Button>
               <div className="button-group">
                 <Button color="primary" onClick={this.saveEmail}>
                   Lưu
                 </Button>
                 <Button color="primary" onClick={this.createEmailTemplate} style={{ marginLeft: '10px', marginRight: '10px' }}>
                   Lưu thành Template
-                </Button>
+                      </Button>
               </div>
             </div>
             <div className="email-form-body">
@@ -386,72 +400,70 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
                     content={this.content()}
                     visible={this.state.visiblePopOver}
                     onVisibleChange={this.handleVisibleChange}
-                    trigger="click"
-                  >
+                    trigger="click">
                     <Button color="primary">Tham số</Button>
                   </Popover>
-                  <label
-                    onClick={() => this.preview(emailsave)}
-                    style={{ marginLeft: '10px', textDecoration: 'underline', color: '#3866DD' }}
-                  >
+                  <label onClick={() => this.preview(emailsave)} style={{ marginLeft: '10px', textDecoration: 'underline', color: '#3866DD' }}>
                     <FontAwesomeIcon icon={faEye} />
                     <span style={{ paddingLeft: '10px' }}>Preview</span>
                   </label>
                 </div>
                 <div style={{ marginTop: '10px' }}>
                   {/*TODO 3: START*/}
-                  <button onClick={this.onLoadTemplate}>Load Demo Template</button>
-                  <TopolEmailEditor
-                    ref={editor => (this.editor = editor)}
-                    onLoad={this.onLoad}
-                    saveDesign={this.saveDesign}
-                    onSave={this.onSave}
-                    language={'vi'}
-                    light={true}
-                    templateId={1}
-                    authorize={{
-                      apiKey: '4QjRQJMtShNpVfZaOPvz6tAeVnpDrWyFGvT25iccj2OHjjikK9n1rYBfkhYQ',
-                      userId: 'thangtq'
-                    }}
-                    googleFonts={['Roboto', 'K2D', 'Mali']}
-                    mergeTags={[
-                      {
-                        name: 'Nhóm 1', // Group name
-                        items: [
-                          {
-                            value: '{{CUSTOMER_NAME}}', // Text to be inserted
-                            text: 'Tên khách hàng', // Shown text in the menu
-                            label: 'Họ tên đầy đủ của khách hàng' // Shown description title in the menu
-                          },
-                          {
-                            value: '{{CUSTOMER_NAME}}', // Text to be inserted
-                            text: 'Tên khách hàng', // Shown text in the menu
-                            label: 'Họ tên đầy đủ của khách hàng' // Shown description title in the menu
-                          }
-                        ]
-                      },
-                      {
-                        name: 'Nhóm 2', // Group name
-                        items: [
-                          {
-                            value: '{{CUSTOMER_NAME}}', // Text to be inserted
-                            text: 'Tên khách hàng', // Shown text in the menu
-                            label: 'Họ tên đầy đủ của khách hàng' // Shown description title in the menu
-                          },
-                          {
-                            value: '{{CUSTOMER_NAME}}', // Text to be inserted
-                            text: 'Tên khách hàng', // Shown text in the menu
-                            label: 'Họ tên đầy đủ của khách hàng' // Shown description title in the menu
-                          }
-                        ]
-                      }
-                    ]}
-                  />
+                  {/*<button onClick={this.onLoadTemplate}>Load Demo Template</button>*/}
+                  {/*<TopolEmailEditor*/}
+                  {/*  ref={editor => (this.editor = editor)}*/}
+                  {/*  onLoad={this.onLoad}*/}
+                  {/*  saveDesign={this.saveDesign}*/}
+                  {/*  onSave={this.onSave}*/}
+                  {/*  language={'vi'}*/}
+                  {/*  light={true}*/}
+                  {/*  templateId={1}*/}
+                  {/*  authorize={{*/}
+                  {/*    apiKey: '4QjRQJMtShNpVfZaOPvz6tAeVnpDrWyFGvT25iccj2OHjjikK9n1rYBfkhYQ',*/}
+                  {/*    userId: 'thangtq'*/}
+                  {/*  }}*/}
+                  {/*  googleFonts={['Roboto', 'K2D', 'Mali']}*/}
+                  {/*  mergeTags={[*/}
+                  {/*    {*/}
+                  {/*      name: 'Nhóm 1', // Group name*/}
+                  {/*      items: [*/}
+                  {/*        {*/}
+                  {/*          value: '{{CUSTOMER_NAME}}', // Text to be inserted*/}
+                  {/*          text: 'Tên khách hàng', // Shown text in the menu*/}
+                  {/*          label: 'Họ tên đầy đủ của khách hàng' // Shown description title in the menu*/}
+                  {/*        },*/}
+                  {/*        {*/}
+                  {/*          value: '{{CUSTOMER_NAME}}', // Text to be inserted*/}
+                  {/*          text: 'Tên khách hàng', // Shown text in the menu*/}
+                  {/*          label: 'Họ tên đầy đủ của khách hàng' // Shown description title in the menu*/}
+                  {/*        }*/}
+                  {/*      ]*/}
+                  {/*    },*/}
+                  {/*    {*/}
+                  {/*      name: 'Nhóm 2', // Group name*/}
+                  {/*      items: [*/}
+                  {/*        {*/}
+                  {/*          value: '{{CUSTOMER_NAME}}', // Text to be inserted*/}
+                  {/*          text: 'Tên khách hàng', // Shown text in the menu*/}
+                  {/*          label: 'Họ tên đầy đủ của khách hàng' // Shown description title in the menu*/}
+                  {/*        },*/}
+                  {/*        {*/}
+                  {/*          value: '{{CUSTOMER_NAME}}', // Text to be inserted*/}
+                  {/*          text: 'Tên khách hàng', // Shown text in the menu*/}
+                  {/*          label: 'Họ tên đầy đủ của khách hàng' // Shown description title in the menu*/}
+                  {/*        }*/}
+                  {/*      ]*/}
+                  {/*    }*/}
+                  {/*  ]}*/}
+                  {/*/>*/}
                   {/*TODO 3: END*/}
                   <CKEditor
                     id={'ckeditor'}
                     data={emailsave.content}
                     config={{
+                      fullPage: true,
+                      allowedContent: true,
                       extraPlugins: 'stylesheetparser',
                       height: 450
                     }}
