@@ -24,6 +24,8 @@ import './topol-react-email-editor/index.scss';
 import DemoTemplate from './topol-react-email-editor/demo.json';
 //TODO 1: END
 
+const cheerio = require('cheerio');
+
 interface IEmailFormManagementProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any; idTemplate: any }> {}
 interface IEmailFormManagementState {
   visiblePopOver: boolean;
@@ -200,6 +202,7 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
 
   createEmailTemplate = () => {
     let { emailsave } = this.state;
+    emailsave.content = this.validateHtmlContent(emailsave.content);
     if (this.validateForm(emailsave)) {
       let emailSaveValidate = {
         ...emailsave,
@@ -214,6 +217,8 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
     let emailId = this.props.match.params.id;
     let url = this.props.match.url;
     let { emailsave } = this.state;
+    emailsave.content = this.validateHtmlContent(emailsave.content);
+
     if (this.validateForm(emailsave)) {
       let emailSaveValidate = {
         ...emailsave,
@@ -229,6 +234,16 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
         this.props.createEmailAction(emailSaveValidate);
       }
     }
+  };
+
+  validateHtmlContent = content => {
+    const $ = cheerio.load(content);
+    let _head = $('head');
+    if (_head) {
+      _head.html('');
+      _head.append('<style type="text/css">html { display: block; }</style>');
+    }
+    return $.html();
   };
 
   title = (
@@ -285,6 +300,7 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
   onEditorChange = event => {
     let emailSave = this.state.emailsave;
     emailSave.content = event.editor.getData();
+    console.log(emailSave.content);
     this.setState({
       emailsave: emailSave
     });
@@ -448,10 +464,13 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
                     ]}
                   />
                   {/*TODO 3: END*/}
+                  DEMO
                   <CKEditor
                     id={'ckeditor'}
                     data={emailsave.content}
                     config={{
+                      fullPage: true,
+                      allowedContent: true,
                       extraPlugins: 'stylesheetparser',
                       height: 450
                     }}
