@@ -16,7 +16,7 @@ interface ICjTagListModalProps extends StateProps, DispatchProps {
   refreshListCjTag?: Function;
 }
 
-interface ICjTagListModalState {}
+interface ICjTagListModalState { }
 const { confirm } = ModalAntd;
 
 class CJTagListModal extends React.Component<ICjTagListModalProps, ICjTagListModalState> {
@@ -32,7 +32,7 @@ class CJTagListModal extends React.Component<ICjTagListModalProps, ICjTagListMod
       cancelButtonProps: { type: 'danger', ghost: true },
       zIndex: 1000000,
       title: translate("campaign-auto.managament.delete"),
-      content: translate("campaign-auto.modal.content-delete"),
+      content: translate("campaign-auto.modal.content-delete") + ' ' + cjTag.name + ' ?',
       onOk: async () => {
         await deleteCjTagAction(cjTag.id);
         //await getCjTagsAction();
@@ -40,7 +40,7 @@ class CJTagListModal extends React.Component<ICjTagListModalProps, ICjTagListMod
         closeModalCjTag();
       },
       okText: translate("campaign-auto.managament.delete"),
-      onCancel() {},
+      onCancel() { },
       cancelText: translate("campaign-auto.modal.cancel")
     });
   };
@@ -49,7 +49,7 @@ class CJTagListModal extends React.Component<ICjTagListModalProps, ICjTagListMod
     let { isOpenModalCjTag, closeModalCjTag, toogleModalCjTagList, cjTags } = this.props;
     return (
       <Modal id="modal-cj-tag-list" isOpen={isOpenModalCjTag}>
-        <ModalHeader toggle={toogleModalCjTagList}><Translate contentKey = "campaign-auto.list.tag" /></ModalHeader>
+        <ModalHeader toggle={toogleModalCjTagList}><Translate contentKey="campaign-auto.list.tag" /></ModalHeader>
         <ModalBody>
           <List
             style={{ color: '#3866DD' }}
@@ -67,7 +67,7 @@ class CJTagListModal extends React.Component<ICjTagListModalProps, ICjTagListMod
                   >
                     <FontAwesomeIcon icon="trash" />
                     <a key="list-loadmore-edit" style={{ paddingLeft: '5px' }}>
-                      <Translate contentKey = "campaign-auto.managament.delete" />
+                      <Translate contentKey="campaign-auto.managament.delete" />
                     </a>
                   </span>
                 ]}
@@ -78,8 +78,8 @@ class CJTagListModal extends React.Component<ICjTagListModalProps, ICjTagListMod
           />
         </ModalBody>
         <ModalFooter>
-          <Button color="black" onClick={closeModalCjTag}>
-           <Translate contentKey = "campaign-auto.btn-cancel" />
+          <Button color="danger" onClick={closeModalCjTag}>
+            <Translate contentKey="campaign-auto.btn-cancel" />
           </Button>
         </ModalFooter>
       </Modal>

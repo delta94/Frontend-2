@@ -890,18 +890,15 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                 <Row className="row">
                   <Col span={8}>
                     {this.renderTrayItemWidget(ConditionDecisionNodeModel.TYPE)}
-                    <br />
                     {this.renderTrayItemLabelWidget(ConditionDecisionNodeModel.TYPE)}
                   </Col>
 
                   <Col span={8}>
                     {this.renderTrayItemWidget(TimeWaitingDecisionNodeModel.TYPE)}
-                    <br />
                     {this.renderTrayItemLabelWidget(TimeWaitingDecisionNodeModel.TYPE)}
                   </Col>
                   <Col span={8}>
                     {this.renderTrayItemWidget(EventWaitingDecisionNodeModel.TYPE)}
-                    <br />
                     {this.renderTrayItemLabelWidget(EventWaitingDecisionNodeModel.TYPE)}
                   </Col>
                 </Row>

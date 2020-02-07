@@ -65,7 +65,7 @@ class CJTagInsertModal extends React.Component<ICjTagInsertModalProps, ICjTagIns
       });
     } else {
       this.setState({
-        messageErrorCjTagName: <label className="message-error"><Translate contentKey ="campaign-auto.list.name-tag-empty" /></label>
+        messageErrorCjTagName: <label className="message-error"><Translate contentKey="campaign-auto.list.name-tag-empty" /></label>
       });
     }
   };
@@ -80,7 +80,7 @@ class CJTagInsertModal extends React.Component<ICjTagInsertModalProps, ICjTagIns
 
     return (
       <Modal id="modal-cj-tag-insert" isOpen={isOpenModalCjTagInsert}>
-        <ModalHeader toggle={toogleModalCjTagInsert}><Translate contentKey = "campaign-auto.list.add-tag" /></ModalHeader>
+        <ModalHeader toggle={toogleModalCjTagInsert}><Translate contentKey="campaign-auto.list.add-tag" /></ModalHeader>
         <ModalBody>
           <div className="cj-tag-insert-content">
             <div className="cj-tag-insert-input">
@@ -99,17 +99,17 @@ class CJTagInsertModal extends React.Component<ICjTagInsertModalProps, ICjTagIns
           </div>
         </ModalBody>
         <ModalFooter>
-          <Button
-            color="black"
+          <Button outline
+            color="danger"
             onClick={() => {
               this.props.closeModalCjTagInsert();
               this.resetField();
             }}
           >
-           <Translate contentKey = "campaign-auto.btn-cancel" />
+            <Translate contentKey="campaign-auto.btn-cancel" />
           </Button>
           <Button color="primary" onClick={() => this.submit()}>
-          <Translate contentKey = "campaign-auto.btn-chosse" />
+            <Translate contentKey="campaign-auto.btn-chosse" />
           </Button>
         </ModalFooter>
       </Modal>
