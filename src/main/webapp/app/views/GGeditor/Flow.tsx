@@ -531,9 +531,10 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     let { id_active } = this.props;
     this.setState({ isTest: false, isValidate: isOpen });
     let hasValidate = JSON.parse(localStorage.getItem('isSave')) === true ? false : true;
-    if (Object.keys(id_active).length > 0) {
+    // if (Object.keys(id_active).length > 0) {
+      console.log('oooooooooo >>>>',this.getDataDiagram());
       this.props.validateGraph(this.getDataDiagram());
-    }
+    // }
     this.setState({ isSave: hasValidate });
   };
 
@@ -1006,10 +1007,10 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                     </Button>
                     <Button
                       onClick={async () => {
-                        this.validateFlow(this.props.is_validate);
+                        this.validateFlow(true);
                         console.log(this.props.is_validate);
                       }}
-                      disabled={id_active.id && id_active.id.length > 0 ? false : true}
+                      // disabled={id_active.id && id_active.id.length > 0 ? false : true}
                     >
                       Validate
                     </Button>

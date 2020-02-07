@@ -65,7 +65,7 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
               <div>
                 <label>{item.label}</label>
               </div>
-              {item.errors && item.errors.map(event => { return <p className="not-config">{event}</p> })}
+              {item.errors && item.errors.map(event => { return <div className="not-config">{event}<br/></div> })}
             </Col>
           </Row>
         )

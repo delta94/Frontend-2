@@ -30,6 +30,7 @@ interface IModalWaitForEventState {
   idEmail: string;
   event_error: string;
   time_error: string;
+  idNode?: any;
 }
 
 export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, IModalWaitForEventState> {
@@ -41,7 +42,8 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
     date: '',
     idEmail: '',
     event_error: '',
-    time_error: ''
+    time_error: '',
+    idNode: {}
   };
 
   toggle = () => {
@@ -80,6 +82,7 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
   checkValidate = (): boolean => {
     let result: boolean = true;
     let { time, date, time_error } = this.state;
+
     if (time < 1) {
       time_error = '* Vui lòng chọn thời gian kết thúc';
     } else if (!date) {
@@ -240,7 +243,7 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
     let { isOpenModal, listFieldData } = this.props;
     let default_number = this.getNumber() ? this.getNumber() : this.getDefaultValueClone(CHARACTER_NUMBER.NUMBER);
     let default_time = this.getDate() ? this.getDate() : this.getDefaultValueClone(CHARACTER_NUMBER.TIME);
-    console.log(default_time);
+    console.log('vvvvvvvvvv    ', default_number);
     // let valueEmail = listFieldData.emailConfig[listFieldData.emailConfig.length - 1].nameEmail ? listFieldData.emailConfig[listFieldData.emailConfig.length - 1].nameEmail : 'Vui lòng chọn Email'
     return (
       <Modal className="modal-message-config" isOpen={isOpenModal}>
@@ -270,7 +273,7 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
               </Col>
               <Col span={18}>
                 <Col span={17}>
-                  <InputNumber
+                  <InputNumber id='input-number'
                     defaultValue={default_number}
                     style={{ width: '100%' }}
                     min={1}
@@ -283,7 +286,7 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
                   />
                 </Col>
                 <Col span={6} style={{ float: 'right' }}>
-                  <Select defaultValue={default_time} style={{ width: '100%' }} onChange={this.handlerTimeWait}>
+                  <Select defaultValue={default_time} style={{ width: '100%' }} onChange={this.handlerTimeWait} id='select-time'>
                     <Option value="Y">Năm</Option>
                     <Option value="M">Tháng</Option>
                     <Option value="D">Ngày</Option>
