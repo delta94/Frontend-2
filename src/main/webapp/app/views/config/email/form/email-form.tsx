@@ -348,9 +348,9 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
               <PreviewEmailLanding contentParams={this.props.contentParams} htmlDOM={emailsave.content} styleForDOM={''} />
             </ModalBody>
             <ModalFooter>
-              <Btn type="danger" onClick={this.toggleModal}>
+              <Button color="primary" onClick={this.toggleModal}>
                 Thoát
-              </Btn>
+              </Button>
             </ModalFooter>
           </Modal>
           <div className="email-form-management">

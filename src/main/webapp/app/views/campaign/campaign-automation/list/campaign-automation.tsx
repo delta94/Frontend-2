@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Translate, translate } from 'react-jhipster';
 import { Table } from 'reactstrap';
 import { Row, Col, Button, Input, Popover, Icon, Modal, Checkbox } from 'antd';
+import { Button as Btn } from 'reactstrap';
 import { Progress } from 'reactstrap';
 import $ from 'jquery';
 import LoaderAnim from 'react-loaders';
@@ -279,9 +280,9 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
                 <Translate contentKey="campaign-auto.title" />
               </Col>
               <Col span={12} style={{ textAlign: 'right', margin: '10px' }}>
-                <Button type="primary" onClick={this.movePage}>
+                <Btn color="primary" onClick={this.movePage}>
                   <Translate contentKey="campaign-auto.btn-campaign" />
-                </Button>
+                </Btn>
               </Col>
             </Row>
           </div>

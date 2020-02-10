@@ -95,7 +95,7 @@ class EmailTemplateManagement extends React.Component<IEmailTemplateManagementPr
             <PreviewEmailLanding htmlDOM={contentTemplate} styleForDOM={''} />
           </ModalBody>
           <ModalFooter>
-            <Btn color="danger" onClick={this.toggleModal}>
+            <Btn color="primary" onClick={this.toggleModal}>
               Thoát
             </Btn>
           </ModalFooter>
