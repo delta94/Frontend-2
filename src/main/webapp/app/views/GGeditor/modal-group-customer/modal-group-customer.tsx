@@ -40,6 +40,7 @@ interface IGroupModalConfigProps extends StateProps, DispatchProps {
   type_modal?: string;
   id_list_customer?: string;
   idNode: any;
+  enableSource?: boolean;
 }
 
 interface IAdvancedSearchesData {
@@ -585,7 +586,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
                   color="primary"
                   style={{ float: 'right', margin: '3px' }}
                   onClick={this.getDataListCustomer}
-                  disabled={info_version.type === 'copy' ? false : true}
+                  disabled={(info_version.type === 'copy' ? false : true) || !this.props.enableSource}
                 >
                   <Translate contentKey="group-attribute-customer.apply" />
                 </Button>
