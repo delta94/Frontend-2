@@ -114,7 +114,8 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
         // }
       }),
       new OptimizeCSSAssetsPlugin({})
-    ]
+    ],
+    concatenateModules: true,
   },
   plugins: [
     new MiniCssExtractPlugin({

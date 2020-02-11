@@ -10,16 +10,16 @@ const Config = lazy(() => import('app/views/config'));
 const CampaginAuto = lazy(() => import('app/views/campaign'));
 const CampaginManagament = lazy(() => import('app/views/campaign/campaign-automation/campaign-managament'));
 const GGeditor = lazy(() => import('app/views/GGeditor'));
-const UserPages = lazy(() => import('app/DemoPages/UserPages'));
-const Applications = lazy(() => import('app/DemoPages/Applications'));
-const Dashboards = lazy(() => import('app/DemoPages/Dashboards'));
+// const UserPages = lazy(() => import('app/DemoPages/UserPages'));
+// const Applications = lazy(() => import('app/DemoPages/Applications'));
+// const Dashboards = lazy(() => import('app/DemoPages/Dashboards'));
 
-const Widgets = lazy(() => import('app/DemoPages/Widgets'));
-const Elements = lazy(() => import('app/DemoPages/Elements'));
-const Components = lazy(() => import('app/DemoPages/Components'));
-const Charts = lazy(() => import('app/DemoPages/Charts'));
+// const Widgets = lazy(() => import('app/DemoPages/Widgets'));
+// const Elements = lazy(() => import('app/DemoPages/Elements'));
+// const Components = lazy(() => import('app/DemoPages/Components'));
+// const Charts = lazy(() => import('app/DemoPages/Charts'));
 const Usercampaign = lazy(() => import('app/views/campaign/user-campaign'));
-const Tables = lazy(() => import('app/DemoPages/Tables'));
+// const Tables = lazy(() => import('app/DemoPages/Tables'));
 
 const AppRoutes = () => {
   return (
@@ -61,7 +61,6 @@ const AppRoutes = () => {
       >
         <Route path="/login" component={Login} />
       </Suspense>
-
 
       {/* config email */}
       <Suspense
@@ -195,7 +194,7 @@ const AppRoutes = () => {
           </div>
         }
       >
-        <Route path="/charts" component={Charts} />
+        {/*<Route path="/charts" component={Charts} />*/}
       </Suspense>
 
       {/* Tables */}
@@ -215,7 +214,7 @@ const AppRoutes = () => {
           </div>
         }
       >
-        <Route path="/tables" component={Tables} />
+        {/*<Route path="/tables" component={Tables} />*/}
       </Suspense>
 
       {/* Elements */}
@@ -235,7 +234,7 @@ const AppRoutes = () => {
           </div>
         }
       >
-        <Route path="/elements" component={Elements} />
+        {/*<Route path="/elements" component={Elements} />*/}
       </Suspense>
 
       {/* Dashboard Widgets */}
@@ -256,7 +255,7 @@ const AppRoutes = () => {
           </div>
         }
       >
-        <Route path="/widgets" component={Widgets} />
+        {/*<Route path="/widgets" component={Widgets} />*/}
       </Suspense>
 
       {/* Applications */}
@@ -276,7 +275,7 @@ const AppRoutes = () => {
           </div>
         }
       >
-        <Route path="/apps" component={Applications} />
+        {/*<Route path="/apps" component={Applications} />*/}
       </Suspense>
 
       {/* Dashboards */}
@@ -296,7 +295,7 @@ const AppRoutes = () => {
           </div>
         }
       >
-        <Route path="/dashboards" component={Dashboards} />
+        {/*<Route path="/dashboards" component={Dashboards} />*/}
       </Suspense>
 
       <Route exact path="/" render={() => <Redirect to="/login" />} />
