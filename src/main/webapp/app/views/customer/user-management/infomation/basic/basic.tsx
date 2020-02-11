@@ -397,125 +397,125 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
               </div>
               {listField
                 ? listField.map((value, index) => {
-                    let fieldValue = String(value.fieldValue);
-                    return (
-                      <div className="line-info" key={index}>
-                        <Label className="content-text" style={{ width: '50%' }}>
-                          {value.title}
-                        </Label>
-                        <div className="phone-customer_span">
-                          <Popover
-                            content={
-                              <div>
-                                {value.type === 'Checkbox' ? (
+                  let fieldValue = String(value.fieldValue);
+                  return (
+                    <div className="line-info" key={index}>
+                      <Label className="content-text" style={{ width: '50%' }}>
+                        {value.title}
+                      </Label>
+                      <div className="phone-customer_span">
+                        <Popover
+                          content={
+                            <div>
+                              {value.type === 'Checkbox' ? (
+                                <Row>
+                                  <Col span={8} key={index}>
+                                    <Checkbox.Group
+                                      className="checkbox-update"
+                                      options={this.optionsCheckbox(fieldValue.split('||'))}
+                                      defaultValue={String(value.value).split('||')}
+                                      onChange={event => this.onChangeCheckbox(value.id, event)}
+                                    />
+                                  </Col>
+                                </Row>
+                              ) : (
+                                  ''
+                                )}
+                              {value.type === 'Radio' ? (
+                                <Radio.Group
+                                  onChange={event => this.onChangeRadio(event, value.id)}
+                                  className="radio-group"
+                                  name="radiogroup"
+                                  defaultValue={value.value}
+                                >
                                   <Row>
-                                    <Col span={8} key={index}>
-                                      <Checkbox.Group
-                                        className="checkbox-update"
-                                        options={this.optionsCheckbox(fieldValue.split('||'))}
-                                        defaultValue={String(value.value).split('||')}
-                                        onChange={event => this.onChangeCheckbox(value.id, event)}
-                                      />
-                                    </Col>
-                                  </Row>
-                                ) : (
-                                  ''
-                                )}
-                                {value.type === 'Radio' ? (
-                                  <Radio.Group
-                                    onChange={event => this.onChangeRadio(event, value.id)}
-                                    className="radio-group"
-                                    name="radiogroup"
-                                    defaultValue={value.value}
-                                  >
-                                    <Row>
-                                      {fieldValue.split('||').map((event, index) => {
-                                        return (
-                                          <Col span={8} key={index}>
-                                            <Radio value={event}>{event}</Radio>
-                                          </Col>
-                                        );
-                                      })}
-                                    </Row>
-                                  </Radio.Group>
-                                ) : (
-                                  ''
-                                )}
-                                {value.type === 'Text Input' ? (
-                                  <Input
-                                    defaultValue={value.value}
-                                    className="box"
-                                    onChange={event => this.onChangeText(value.id, event)}
-                                  />
-                                ) : (
-                                  ''
-                                )}
-                                {value.type === 'Date' ? (
-                                  <DatePicker
-                                    defaultValue={value.value ? moment(value.value) : null}
-                                    className="date-update box"
-                                    onChange={(event, dateString) => this.onChangeDate(value.id, dateString)}
-                                  />
-                                ) : (
-                                  ''
-                                )}
-                                {value.type === 'Dropdown List' ? (
-                                  <Select
-                                    className="checkbox-group"
-                                    defaultValue={value.value}
-                                    id="box"
-                                    onChange={event => this.handleChangeDrop(value.id, event)}
-                                  >
                                     {fieldValue.split('||').map((event, index) => {
                                       return (
-                                        <Option key={index} value={String(event)}>
-                                          {event}
-                                        </Option>
+                                        <Col span={8} key={index}>
+                                          <Radio value={event}>{event}</Radio>
+                                        </Col>
                                       );
                                     })}
-                                  </Select>
-                                ) : (
+                                  </Row>
+                                </Radio.Group>
+                              ) : (
                                   ''
                                 )}
-                                <div style={{ marginTop: '5%' }}>
+                              {value.type === 'Text Input' ? (
+                                <Input
+                                  defaultValue={value.value}
+                                  className="box"
+                                  onChange={event => this.onChangeText(value.id, event)}
+                                />
+                              ) : (
+                                  ''
+                                )}
+                              {value.type === 'Date' ? (
+                                <DatePicker
+                                  defaultValue={value.value ? moment(value.value) : null}
+                                  className="date-update box"
+                                  onChange={(event, dateString) => this.onChangeDate(value.id, dateString)}
+                                />
+                              ) : (
+                                  ''
+                                )}
+                              {value.type === 'Dropdown List' ? (
+                                <Select
+                                  className="checkbox-group"
+                                  defaultValue={value.value}
+                                  id="box"
+                                  onChange={event => this.handleChangeDrop(value.id, event)}
+                                >
+                                  {fieldValue.split('||').map((event, index) => {
+                                    return (
+                                      <Option key={index} value={String(event)}>
+                                        {event}
+                                      </Option>
+                                    );
+                                  })}
+                                </Select>
+                              ) : (
+                                  ''
+                                )}
+                              <div style={{ marginTop: '5%' }}>
+                                <Button
+                                  onClick={() => {
+                                    this.editUser(value.id);
+                                  }}
+                                  disabled={this.props.loading}
+                                  type="primary"
+                                >
+                                  {' '}
+                                  <Translate contentKey="userManagement.home.edit" />{' '}
+                                </Button>{' '}
+                                &nbsp;
                                   <Button
-                                    onClick={() => {
-                                      this.editUser(value.id);
-                                    }}
-                                    disabled={this.props.loading}
-                                    type="primary"
-                                  >
-                                    {' '}
-                                    <Translate contentKey="userManagement.home.edit" />{' '}
-                                  </Button>{' '}
-                                  &nbsp;
-                                  <Button
-                                    onClick={() => {
-                                      this.closePopover(value.id);
-                                    }}
-                                  >
-                                    <Translate contentKey="userManagement.home.cancel" />
-                                  </Button>
-                                </div>
+                                  onClick={() => {
+                                    this.closePopover(value.id);
+                                  }}
+                                >
+                                  <Translate contentKey="userManagement.home.cancel" />
+                                </Button>
                               </div>
-                            }
-                            visible={value.check}
-                            onVisibleChange={event => this.handleVisibleChange(event, value.id, value)}
-                            title={value.title}
-                            trigger="click"
-                          >
-                            {value.value && value.value.trim().length > 0 ? (
-                              value.value
-                            ) : (
+                            </div>
+                          }
+                          visible={value.check}
+                          onVisibleChange={event => this.handleVisibleChange(event, value.id, value)}
+                          title={value.title}
+                          trigger="click"
+                        >
+                          {value.value && value.value.trim().length > 0 ? (
+                            value.value
+                          ) : (
                               <span className="empty">
                                 <Translate contentKey="userManagement.click-here" />
                               </span>
                             )}
-                          </Popover>
-                        </div>
+                        </Popover>
                       </div>
-                    );
-                  })
+                    </div>
+                  );
+                })
                 : ''}
               <Row className="line-info">
                 <Col span={10}>
@@ -554,17 +554,17 @@ export class Basic extends React.Component<IBasicProps, IBasicState> {
                     {user.tags && user.tags.length > 0 ? (
                       user.tags.map((event, index) => {
                         return (
-                          <Tag style={{ fontSize: '16px' }} key={index}>
+                          <Tag style={{ fontSize: '16px', margin: '3px' }} key={index}>
                             {event.name}
                           </Tag>
                         );
                       })
                     ) : (
-                      <span className="empty">
-                        {' '}
-                        <Translate contentKey="userManagement.click-here" />
-                      </span>
-                    )}
+                        <span className="empty">
+                          {' '}
+                          <Translate contentKey="userManagement.click-here" />
+                        </span>
+                      )}
                   </Popover>
                 </Col>
               </Row>
