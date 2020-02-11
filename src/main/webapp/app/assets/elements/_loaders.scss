@@ -4,7 +4,6 @@ $margin: 2px !default;
 $line-height: 35px !default;
 $line-width: 4px !default;
 
-
 @mixin global-bg() {
   background-color: $primary-color;
 }
@@ -31,6 +30,12 @@ $line-width: 4px !default;
   margin: $margin;
 }
 
+.Loader__background {
+}
+
+.Loader__foreground {
+  background-color: white;
+}
 
 /**
  * Dots
