@@ -5,6 +5,11 @@ const WorkboxPlugin = require('workbox-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
+const ImageminPlugin = require('imagemin-webpack-plugin').default;
+const BrotliPlugin = require('brotli-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 // const path = require('path');
 const sass = require('sass');
 // const nodeExternals = require('webpack-node-externals');
@@ -55,36 +60,58 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
     ]
   },
   optimization: {
-    runtimeChunk: false,
+    runtimeChunk: true,
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          chunks: "initial",
+        },
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          chunks: "initial",
+          name: "vendor"
+        }
+      }
+      // cacheGroups: {
+      //
+      //   commons: {
+      //     test: /[\\/]node_modules[\\/]/,
+      //     name: "vendors",
+      //     chunks: "all"
+      //   }
+      // }
+    },
+    minimize: true,
     minimizer: [
+
       new TerserPlugin({
         cache: true,
         parallel: true,
         // sourceMap: true, // Enable source maps. Please note that this will slow down the build
-        terserOptions: {
-          ecma: 6,
-          toplevel: true,
-          module: true,
-          beautify: false,
-          comments: false,
-          compress: {
-            warnings: false,
-            ecma: 6,
-            module: true,
-            toplevel: true
-          },
-          output: {
-            comments: false,
-            beautify: false,
-            indent_level: 2,
-            ecma: 6
-          },
-          mangle: {
-            keep_fnames: true,
-            module: true,
-            toplevel: true
-          }
-        }
+        // terserOptions: {
+        //   ecma: 6,
+        //   toplevel: true,
+        //   module: true,
+        //   beautify: false,
+        //   comments: false,
+        //   compress: {
+        //     warnings: false,
+        //     ecma: 6,
+        //     module: true,
+        //     toplevel: true
+        //   },
+        //   output: {
+        //     comments: false,
+        //     beautify: false,
+        //     indent_level: 2,
+        //     ecma: 6
+        //   },
+        //   mangle: {
+        //     keep_fnames: true,
+        //     module: true,
+        //     toplevel: true
+        //   }
+        // }
       }),
       new OptimizeCSSAssetsPlugin({})
     ]
@@ -110,6 +137,17 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
     new WorkboxPlugin.GenerateSW({
       clientsClaim: true,
       skipWaiting: true,
-    })
+    }),
+    new ImageminPlugin({ test: /\.(jpe?g|png|gif|svg)$/i }),
+    new BrotliPlugin({
+      asset: '[path].br[query]',
+      test: /\.(js|css|html|svg)$/,
+      threshold: 10240,
+      minRatio: 0.8
+    }),
+    new CompressionPlugin(),
+    // new BundleAnalyzerPlugin(),
+    // new webpack.optimize.AggressiveSplittingPlugin(),
+    // new webpack.optimize.AggressiveMergingPlugin()
   ]
 });
