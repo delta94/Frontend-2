@@ -26,7 +26,7 @@ import DemoTemplate from './topol-react-email-editor/demo.json';
 
 const cheerio = require('cheerio');
 
-interface IEmailFormManagementProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any; idTemplate: any }> {}
+interface IEmailFormManagementProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any; idTemplate: any }> { }
 interface IEmailFormManagementState {
   visiblePopOver: boolean;
   activeKey: string;
@@ -278,16 +278,16 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
             <TabPane tab={item.name} key={item.code}>
               {this.state.contentParams
                 ? this.state.contentParams.map((item, index) => (
-                    <div className="tabs-param" key={index}>
-                      <label
-                        onClick={() => {
-                          this.selectParam(item.paramCode);
-                        }}
-                      >
-                        {item.paramName}
-                      </label>
-                    </div>
-                  ))
+                  <div className="tabs-param" key={index}>
+                    <label
+                      onClick={() => {
+                        this.selectParam(item.paramCode);
+                      }}
+                    >
+                      {item.paramName}
+                    </label>
+                  </div>
+                ))
                 : ''}
             </TabPane>
           ))}
@@ -408,6 +408,7 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
                     <span style={{ paddingLeft: '10px' }}>Preview</span>
                   </label>
                 </div>
+                <div style={{ clear: 'both' }}></div>
                 <div style={{ marginTop: '10px' }}>
                   {/*TODO 3: START*/}
                   {/*<button onClick={this.onLoadTemplate}>Load Demo Template</button>*/}

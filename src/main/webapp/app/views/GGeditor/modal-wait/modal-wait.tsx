@@ -211,15 +211,15 @@ export class ModalTimeWait extends React.Component<IModalTimeWaitProps, IModalTi
     let default_number = this.getNumber() ? this.getNumber() : this.getDefaultValueClone(CHARACTER_NUMBER.NUMBER);
     let default_time = this.getDate() ? this.getDate() : this.getDefaultValueClone(CHARACTER_NUMBER.TIME);
     return (
-      <Modal className="modal-message-config" isOpen={isOpenModal}>
+      <Modal className="modal-wait-config" isOpen={isOpenModal}>
         <ModalHeader toggle={this.toggle}>Thời gian chờ</ModalHeader>
         <ModalBody>
           <Row>
             <Row>
-              <Col span={6}>
+              <Col span={3}>
                 <label className="text-event-wait">#</label>
               </Col>
-              <Col span={18}>
+              <Col span={21}>
                 <Col span={17}>
                   <InputNumber
                     defaultValue={default_number}

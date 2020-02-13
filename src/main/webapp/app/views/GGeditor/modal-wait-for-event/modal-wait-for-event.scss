@@ -1,5 +1,30 @@
-.modal-message-config {
+.modal-wait-event-config {
     .error {
         color: red;
     }
-}
+    max-width: 600px;
+    #total {
+      text-align: right;
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 12px;
+      line-height: 14px;
+      color: #97a3b4;
+    }
+  
+    .modal-title {
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 14px;
+      line-height: 16px;
+      text-transform: uppercase;
+  
+      color: #595c82;
+    }
+    .modal-header,
+    .modal-footer {
+      background: #fff;
+    }
+  }
