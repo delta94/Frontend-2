@@ -918,11 +918,13 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     const imgSetting = require('app/assets/utils/images/flow/setting.png');
     const imgAward = require('app/assets/utils/images/flow/award.png');
     const imgMove = require('app/assets/utils/images/flow/move.png');
-    if (list_validate.length > 0) {
-      localStorage.removeItem('isSave');
-    }
+    // if (list_validate.length > 0) {
+    //   localStorage.removeItem('isSave');
+    // }
     //let isDisable = this.props.is_validate ? true : JSON.parse(localStorage.getItem('isSave')) ? false : true;
-    let isDisable = JSON.parse(localStorage.getItem('isSave')) == null ? true : !JSON.parse(localStorage.getItem('isSave'));
+    let isDisable = this.props.is_validate
+      ? list_validate.length > 0 ? true : false
+      : true;
     return (
       <div className="editor">
         <Layout className="layout-flow">
@@ -1051,6 +1053,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       isOpenModalEmail
     } = this.state;
     let { modalState } = this.props;
+    let enableSource = this.props.list_clone_version.version == '1' ? true : false;
     return (
       <Fragment>
         <SweetAlert
@@ -1077,6 +1080,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             toggle={this.getVisible}
             title_modal={'CHỌN NHÓM'}
             idNode={this.state.idNode}
+            enableSource={enableSource}
           />
         </div>
       </Fragment>
