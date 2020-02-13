@@ -63,7 +63,7 @@ const constant_version = {
   STOP: 'Stop'
 };
 
-interface IFlowPageProps extends StateProps, DispatchProps { }
+interface IFlowPageProps extends StateProps, DispatchProps {}
 interface IFlowPageState {
   visible: boolean;
   isOpen: boolean;
@@ -305,7 +305,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   // remove item in array
   remove(arr, item) {
     if (arr && arr.length > 0) {
-      for (var i = arr.length; i--;) {
+      for (var i = arr.length; i--; ) {
         if (arr[i].id === item.id) {
           arr.splice(i, 1);
         }
@@ -354,8 +354,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       id_active.cjId && id_active.cjId
         ? id_active.cjId
         : list_clone_version && list_clone_version.cjId
-          ? list_clone_version.cjId
-          : infoVersion.idVersion;
+        ? list_clone_version.cjId
+        : infoVersion.idVersion;
     let dataInfoVersion = {
       type: 'copy',
       nameVersion: '',
@@ -381,7 +381,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         });
         this.hide();
       },
-      onCancel() { },
+      onCancel() {},
       okText: 'Đồng ý',
       cancelText: 'Hủy bỏ'
     });
@@ -706,62 +706,62 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       infoCampaign.tag && infoCampaign.tag.length > 0
         ? infoCampaign.tag
         : list_clone_version.cjTags && list_clone_version.cjTags.length > 0
-          ? list_clone_version.cjTags
-          : [];
+        ? list_clone_version.cjTags
+        : [];
     let startTime = timeStartCampaign
       ? timeStartCampaign
       : Object.keys(list_clone_version).length > 0
-        ? list_clone_version.flowDetail.startTime
-        : `${date.toISOString().substr(0, 10)} ${date.toLocaleTimeString()}`;
+      ? list_clone_version.flowDetail.startTime
+      : `${date.toISOString().substr(0, 10)} ${date.toLocaleTimeString()}`;
     //set data
     let data = {
       folderId: idFolder ? idFolder : '-99',
       cjVersionId: this.props.id_active.cjId
         ? this.props.id_active.id
         : Object.keys(list_clone_version).length > 0
+        ? list_clone_version.id
           ? list_clone_version.id
-            ? list_clone_version.id
-            : this.props.id_active.cjId
-              ? this.props.id_active.id
-              : null
-          : null,
+          : this.props.id_active.cjId
+          ? this.props.id_active.id
+          : null
+        : null,
       cj: {
         id: this.props.id_active.id
           ? this.props.id_active.cjId
           : Object.keys(list_clone_version).length > 0
+          ? list_clone_version.cjId
             ? list_clone_version.cjId
-              ? list_clone_version.cjId
-              : this.props.id_active.id
-                ? this.props.id_active.cjId
-                : null
-            : null,
+            : this.props.id_active.id
+            ? this.props.id_active.cjId
+            : null
+          : null,
         name: infoCampaign.name ? infoCampaign.name : list_clone_version.name ? list_clone_version.name : 'Tạo chiến dịch mới',
         description: infoCampaign.des
           ? infoCampaign.des
           : list_clone_version.description
-            ? list_clone_version.description
-            : infoCampaign.des
+          ? list_clone_version.description
+          : infoCampaign.des
       },
       cjTags: cjTags && cjTags.length > 0 ? (cjTags[0] === '' ? [] : cjTags) : cjTags,
       flow: {
         customerGroupName: nameGroup
           ? nameGroup
           : Object.keys(list_clone_version).length > 0
-            ? list_clone_version.flowDetail.customerGroupName
-            : '',
+          ? list_clone_version.flowDetail.customerGroupName
+          : '',
         startTime: startTime,
         customerAdvancedSave:
           Object.keys(advancedSearches).length > 0
             ? advancedSearches
             : Object.keys(list_clone_version).length > 0
-              ? list_clone_version.flowDetail.customerAdvancedSave
-              : null,
+            ? list_clone_version.flowDetail.customerAdvancedSave
+            : null,
         nodeMetaData:
           nodeMetaData && nodeMetaData.length > 0
             ? nodeMetaData
             : Object.keys(list_clone_version).length > 0
-              ? list_clone_version.flowDetail.nodeMetaData
-              : [],
+            ? list_clone_version.flowDetail.nodeMetaData
+            : [],
         graph: Object.keys(graph).length > 0 ? graph : Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.graph : []
       }
     };
@@ -796,7 +796,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             description: 'Bạn vừa kích hoạt chiến dịch thành công.'
           });
         },
-        onCancel() { },
+        onCancel() {},
         okText: 'Đồng ý',
         cancelText: 'Hủy bỏ'
       });
@@ -814,7 +814,19 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   };
 
   renderTrayItemWidget(type: string) {
-    return <TrayItemWidget model={{ type: type }} onDragStart={this.handleOnDragStart} onDragEnd={this.handleOnDragEnd} isDrag={true} />;
+    let className =
+      type === ConditionDecisionNodeModel.TYPE || type === TimeWaitingDecisionNodeModel.TYPE || type === EventWaitingDecisionNodeModel.TYPE
+        ? 'tray-item-large'
+        : null;
+    return (
+      <TrayItemWidget
+        model={{ type: type }}
+        className={className}
+        onDragStart={this.handleOnDragStart}
+        onDragEnd={this.handleOnDragEnd}
+        isDrag={true}
+      />
+    );
   }
 
   renderTrayItemLabelWidget(type: string) {
@@ -845,14 +857,14 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
               }}
             />
           ) : (
-              <Icon
-                type="double-left"
-                onClick={() => {
-                  this.setState({ collapsed: !collapsed });
-                }}
-                className="icon-collapse"
-              />
-            )}
+            <Icon
+              type="double-left"
+              onClick={() => {
+                this.setState({ collapsed: !collapsed });
+              }}
+              className="icon-collapse"
+            />
+          )}
         </div>
         <hr />
         <div className="logo" style={{ display: collapsed ? 'none' : 'block' }}>
@@ -922,9 +934,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     //   localStorage.removeItem('isSave');
     // }
     //let isDisable = this.props.is_validate ? true : JSON.parse(localStorage.getItem('isSave')) ? false : true;
-    let isDisable = this.props.is_validate
-      ? list_validate.length > 0 ? true : false
-      : true;
+    let isDisable = this.props.is_validate ? (list_validate.length > 0 ? true : false) : true;
     return (
       <div className="editor">
         <Layout className="layout-flow">
@@ -933,8 +943,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           ) : isValidate ? (
             <SiderValidate isCloseSider={isValidate} toogle={this.validateFlow} />
           ) : (
-                this.renderTrayWidget()
-              )}
+            this.renderTrayWidget()
+          )}
           <Layout style={{ maxWidth: '80.8%', height: '100%' }}>
             <Header className="header-flow">
               <Row>
@@ -1012,7 +1022,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                         this.validateFlow(true);
                         console.log(this.props.is_validate);
                       }}
-                    // disabled={id_active.id && id_active.id.length > 0 ? false : true}
+                      // disabled={id_active.id && id_active.id.length > 0 ? false : true}
                     >
                       Validate
                     </Button>
