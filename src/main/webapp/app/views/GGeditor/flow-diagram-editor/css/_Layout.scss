@@ -87,10 +87,26 @@ body,
   padding: 16pt;
 }
 
-.tray-item {
+.tray-item,
+.tray-item-medium,
+.tray-item-default {
   cursor: pointer;
-  //width: 64px;
-  //height: 64px;
+  width: 64px;
+  height: 64px;
+  background-color: transparent;
+}
+
+.tray-item-small {
+  cursor: pointer;
+  width: 48px;
+  height: 48px;
+  background-color: transparent;
+}
+
+.tray-item-large {
+  cursor: pointer;
+  width: 80px;
+  height: 80px;
   background-color: transparent;
 }
 //

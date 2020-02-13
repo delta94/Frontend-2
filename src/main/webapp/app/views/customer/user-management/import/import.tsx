@@ -294,7 +294,7 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
               <Radio value="SKIP">
                 <Translate contentKey="userManagement.home.skip-import" />
               </Radio>
-              <Radio value="OVERIDE">
+              <Radio value="OVERRIDE">
                 <Translate contentKey="userManagement.home.overide-import" />
               </Radio>
               <Radio value="DUPLICATE">
@@ -456,7 +456,4 @@ const mapDispatchToProps = { importFileAction, uploadFileExcel, getFields, close
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Import);
+export default connect(mapStateToProps, mapDispatchToProps)(Import);
