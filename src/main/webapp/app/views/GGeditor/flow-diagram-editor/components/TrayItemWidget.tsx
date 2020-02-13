@@ -7,6 +7,7 @@ export interface TrayItemWidgetProps {
   onDragEnd?: (event, data?: string) => void;
   onClick?: (event, data?: string) => void;
   isDrag?: boolean;
+  className?: string;
 }
 
 export interface TrayItemWidgetState {}
@@ -18,7 +19,7 @@ export class TrayItemWidget extends React.Component<TrayItemWidgetProps, TrayIte
   }
 
   render() {
-    const { isDrag, onDragStart, onDragEnd, onClick, model } = this.props;
+    const { isDrag, onDragStart, onDragEnd, onClick, model, className } = this.props;
     return (
       <div
         draggable={isDrag}
@@ -35,7 +36,7 @@ export class TrayItemWidget extends React.Component<TrayItemWidgetProps, TrayIte
           let data = JSON.stringify(model);
           if (onDragEnd) onDragEnd(event, data);
         }}
-        className="tray-item"
+        className={className ? className : 'tray-item'}
       >
         {createFlowNodeWidget(model.type, null, false, false)}
       </div>
