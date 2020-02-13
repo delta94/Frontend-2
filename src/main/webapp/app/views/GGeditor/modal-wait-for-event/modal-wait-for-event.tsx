@@ -243,10 +243,9 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
     let { isOpenModal, listFieldData } = this.props;
     let default_number = this.getNumber() ? this.getNumber() : this.getDefaultValueClone(CHARACTER_NUMBER.NUMBER);
     let default_time = this.getDate() ? this.getDate() : this.getDefaultValueClone(CHARACTER_NUMBER.TIME);
-    console.log('vvvvvvvvvv    ', default_number);
     // let valueEmail = listFieldData.emailConfig[listFieldData.emailConfig.length - 1].nameEmail ? listFieldData.emailConfig[listFieldData.emailConfig.length - 1].nameEmail : 'Vui lòng chọn Email'
     return (
-      <Modal className="modal-message-config" isOpen={isOpenModal}>
+      <Modal className="modal-wait-event-config" isOpen={isOpenModal}>
         <ModalHeader toggle={this.toggle}>Chờ Sự kiện</ModalHeader>
         <ModalBody>
           <Row>

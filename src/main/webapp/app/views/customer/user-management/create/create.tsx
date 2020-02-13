@@ -113,7 +113,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
 
   IsValidateForm = () => {
     let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    var vnfont = /((09|03|07|08|05)+([0-9]{8})$)/g;
+    var vnfont = /(([0-9]{2,20})$)/g;
     let valueEmail = $(`input#email`).val();
     let valuePhone = $(`input#phone`).val();
     let countError = 0;
@@ -240,7 +240,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
                     <Label>
                       <Translate contentKey="userManagement.mobile" />
                     </Label>
-                    <Input maxLength={160} id="phone" name="name" label="Field Name" />
+                    <Input maxLength={20} id="phone" name="name" label="Field Name" />
                   </div>
                   <p className="error">{this.state.validPhone}</p>
                   <Collapse isOpen={this.state.collapse}>
