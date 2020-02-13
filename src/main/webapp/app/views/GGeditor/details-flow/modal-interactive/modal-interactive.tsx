@@ -10,7 +10,7 @@ interface IModalIteractiveProps extends StateProps, DispatchProps {
   isOpenModal: boolean;
   onClick: Function;
 }
-interface IModalIteractiveState {}
+interface IModalIteractiveState { }
 class ModalIteractive extends React.Component<IModalIteractiveProps, IModalIteractiveState> {
   state: IModalIteractiveState = {};
   hideModal = () => {
@@ -26,7 +26,7 @@ class ModalIteractive extends React.Component<IModalIteractiveProps, IModalItera
         destroyOnClose
         closable={false}
         maskClosable={false}
-        title="Danh sách tag"
+        title="Danh sách hành động"
         visible={isOpenModal}
         onOk={this.hideModal}
         footer={[
@@ -35,9 +35,10 @@ class ModalIteractive extends React.Component<IModalIteractiveProps, IModalItera
           </Button>
         ]}
       >
+        <div><label>{list_customer_interactive ? list_customer_interactive.length : 0} bản ghi</label></div>
         <Table responsive striped className="main-table-interactive">
           <thead>
-            <th />
+            <th>STT</th>
             <th style={{ width: '30%' }}>
               {' '}
               <Translate contentKey="detail-flow.modal.action" />

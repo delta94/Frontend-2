@@ -6,9 +6,9 @@ import { Translate, translate } from 'react-jhipster';
 import Loader from 'react-loader-advanced';
 import { Card, Table, CardBody } from 'reactstrap';
 import ReactPaginate from 'react-paginate';
-import { Row, Col, Input, Select, Button, Layout, Breadcrumb, Collapse, Modal } from 'antd';
+import { Row, Col, Input, Select, Button, Layout, Breadcrumb, Collapse, Modal, Popover, Icon } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faCopy, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import {
   cloneVersion,
   getDiagramCampaign,
@@ -35,6 +35,7 @@ interface IFlowPageState {
   itemsPerPage: number;
   idCjersion: string;
   textSearch: string;
+  isOpen: boolean;
 }
 
 const constant_version = {
@@ -59,7 +60,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     active_page: 0,
     itemsPerPage: 0,
     idCjersion: '',
-    textSearch: ''
+    textSearch: '',
+    isOpen: true
   };
   editor: FlowDiagramEditor;
 
@@ -184,6 +186,37 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     await saveCampaignAutoVersion(infoVersion);
     await window.location.assign(`#/flow`);
   };
+
+  //Content Popover Setting
+  contentSetting() {
+    return (
+      <Row>
+        <Row>
+          <Button
+            type="link"
+            className="btn-multi"
+          >
+            <FontAwesomeIcon icon={faCopy} /> &nbsp; <label>Nhân bản chiến dịch</label>
+          </Button>
+        </Row>
+        <Row>
+          <Button type="link" className="btn-multi">
+            <FontAwesomeIcon icon={faTrashAlt} color="red" /> &nbsp; <label style={{ color: 'red' }}>Xóa version này</label>
+          </Button>
+        </Row>
+        <Row>
+          <Button type="link" className="btn-multi">
+            <Icon type="notification" style={{ color: 'red' }} /> &nbsp; <label style={{ color: 'red' }}>Xóa chiến dịch này</label>
+          </Button>
+        </Row>
+      </Row>
+    );
+  }
+
+  handleVisibleChange = visible => {
+    this.setState({ isOpen: visible });
+  };
+
   render() {
     const imgSetting = require('app/assets/utils/images/flow/setting.png');
     const img_history = require('app/assets/utils/images/flow/history.png');
@@ -269,7 +302,16 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                 <label style={{ lineHeight: '2' }}><Translate contentKey="detail-flow.status" />  : {eventStatus(clone_version.status)}</label>
               </Col>
               <Col span={8} style={{ lineHeight: "29px", textAlign: "right", paddingRight: "1%" }}>
-                <img src={imgSetting} />
+                <Popover
+                  content={this.contentSetting()}
+                  visible={this.state.isOpen}
+                  onVisibleChange={this.handleVisibleChange}
+                  placement="bottom"
+                  title=""
+                  trigger="hover"
+                >
+                  <img src={imgSetting} /> &nbsp;
+                  </Popover>
               </Col>
               <Col span={4} style={{ textAlign: 'right' }}>
                 <Button
