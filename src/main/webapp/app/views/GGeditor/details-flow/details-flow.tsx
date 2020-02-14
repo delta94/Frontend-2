@@ -187,12 +187,33 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     await window.location.assign(`#/flow`);
   };
 
+  hide = () => {
+    this.setState({
+      isOpen: false
+    });
+  };
+
+  replicateCampaign = async () => {
+    confirm({
+      title: `Bạn có muốn nhân bản chiến dịch này ?`,
+      content: '',
+      zIndex: 1000000,
+      onOk: async () => {
+        this.hide();
+      },
+      onCancel() { },
+      okText: 'Đồng ý',
+      cancelText: 'Hủy bỏ'
+    });
+  }
+
   //Content Popover Setting
   contentSetting() {
     return (
       <Row>
         <Row>
           <Button
+            onClick={this.replicateCampaign}
             type="link"
             className="btn-multi"
           >
@@ -200,12 +221,12 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           </Button>
         </Row>
         <Row>
-          <Button type="link" className="btn-multi">
+          <Button type="link" className="btn-multi" onClick={this.hide}>
             <FontAwesomeIcon icon={faTrashAlt} color="red" /> &nbsp; <label style={{ color: 'red' }}>Xóa version này</label>
           </Button>
         </Row>
         <Row>
-          <Button type="link" className="btn-multi">
+          <Button type="link" className="btn-multi" onClick={this.hide}>
             <Icon type="notification" style={{ color: 'red' }} /> &nbsp; <label style={{ color: 'red' }}>Xóa chiến dịch này</label>
           </Button>
         </Row>
