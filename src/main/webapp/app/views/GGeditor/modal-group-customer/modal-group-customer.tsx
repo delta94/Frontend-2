@@ -14,6 +14,7 @@ import { Input, Card, Modal } from 'antd';
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
 import FieldData from './field-data/field-data';
 import moment from 'moment';
+import SweetAlert from 'sweetalert-react';
 import {
   getListFieldDataAction,
   postInsertCustomerGroupAction,
@@ -25,7 +26,7 @@ import {
 import { ISearchAdvanced } from 'app/common/model/group-attribute-customer';
 import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
-import { openModal } from 'app/actions/modal';
+import { openModal, closeModal } from 'app/actions/modal';
 import { UPDATE_CUSTOMER_GROUP, COPY_CUSTOMER_GROUP, INSERT_CUSTOMER_GROUP } from 'app/constants/group-atrribute-customer';
 import { OPERATOR } from 'app/constants/field-data';
 import { IOpenModal } from 'app/reducers/modal';
@@ -450,7 +451,8 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
     return result;
   };
   save = () => {
-    const { totalElements } = this.props;
+    debugger
+    const { totalElements,openModal } = this.props;
     if (totalElements > 0) {
       this.execFunctionRequest();
     } else {
@@ -473,8 +475,12 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
       type_modal,
       info_version,
       listFieldData,
-      openModal
+      openModal,
+      modalState
     } = this.props;
+
+    console.log('ddddddddddssbgnfhdhdh',modalState)
+
     let { list_field_data_cpn, logicalOperator, advancedSearches, categoryName, pageIndex } = this.state;
     let list_field_render =
       list_field_data_cpn && list_field_data_cpn.length > 0
@@ -541,6 +547,16 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
         ]}
       >
         <div className="group-modal-config">
+
+          <SweetAlert
+            title={modalState.title ? modalState.title : 'No title'}
+            confirmButtonColor=""
+            show={modalState.show ? modalState.show : false}
+            text={modalState.text ? modalState.text : 'No'}
+            type={modalState.type ? modalState.type : 'error'}
+            onConfirm={() => this.props.closeModal()}
+          />
+
           <div className="input-search">
             <label className="input-search_label">
               <Translate contentKey="group-attribute-customer.group-name" />
@@ -702,7 +718,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
   }
 }
 
-const mapStateToProps = ({ tagDataState, groupCustomerState, campaignManagament }: IRootState) => ({
+const mapStateToProps = ({ handleModal, groupCustomerState, campaignManagament }: IRootState) => ({
   loading: groupCustomerState.list_customer_with_condition_index.loading,
   totalElements: groupCustomerState.list_customer_with_condition_index.totalElements,
   list_field_data: groupCustomerState.list_field_data,
@@ -712,7 +728,8 @@ const mapStateToProps = ({ tagDataState, groupCustomerState, campaignManagament 
   list_group_customer: groupCustomerState.list_group_customer,
   info_version: campaignManagament.infoVersion,
   listFieldData: campaignManagament.listFieldData,
-  list_clone_version: campaignManagament.cloneInfoVersion
+  list_clone_version: campaignManagament.cloneInfoVersion,
+  modalState: handleModal.data
 });
 
 const mapDispatchToProps = {
@@ -723,7 +740,8 @@ const mapDispatchToProps = {
   getListCustomerGroupDataAction,
   postUpdateCustomerGroupAction,
   getListCustomerWithGroupIdDataAction,
-  openModal
+  openModal,
+  closeModal
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
