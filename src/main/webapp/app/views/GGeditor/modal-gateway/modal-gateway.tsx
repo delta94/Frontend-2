@@ -5,7 +5,7 @@ import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './modal-gateway.scss';
 import { IRootState } from 'app/reducers';
-import { Input, Card, Modal } from 'antd';
+import { Input, Card, Modal, Col, InputNumber, Select } from 'antd';
 // import TagModal from "../tag-modal/tag-modal";
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
 import FieldData from '../modal-group-customer/field-data/field-data';
@@ -44,6 +44,8 @@ interface IModalGateWayState {
   error_advanced: string;
   node: any;
   isUpdate: boolean;
+  valueName: string;
+  value_name_error: string;
 }
 
 export function makeRandomId(length: number): string {
@@ -65,7 +67,9 @@ class ModalGateWay extends React.Component<IModalGateWayProps, IModalGateWayStat
     logicalOperator: '',
     error_advanced: '',
     node: {},
-    isUpdate: false
+    isUpdate: false,
+    valueName: '',
+    value_name_error: ''
   };
 
   async componentWillReceiveProps(nextProps) {
@@ -203,7 +207,7 @@ class ModalGateWay extends React.Component<IModalGateWayProps, IModalGateWayStat
 
   save = () => {
     const { listFieldData, validateCampaign } = this.props;
-    let { logicalOperator, advancedSearches } = this.state;
+    let { logicalOperator, advancedSearches, valueName } = this.state;
     let data = {
       messageConfig: listFieldData.messageConfig ? listFieldData.messageConfig : [],
       emailConfig: listFieldData.emailConfig ? listFieldData.emailConfig : [],
@@ -215,7 +219,9 @@ class ModalGateWay extends React.Component<IModalGateWayProps, IModalGateWayStat
     let nodeConfig = {
       id: this.props.idNode.id,
       logicalOperator,
-      advancedSearches
+      advancedSearches,
+      name: valueName,
+      label: valueName
     };
     if (this.checkValidate(advancedSearches)) {
       localStorage.removeItem('isSave');
@@ -224,11 +230,20 @@ class ModalGateWay extends React.Component<IModalGateWayProps, IModalGateWayStat
       });
       data.getway.push(nodeConfig);
       validateCampaign(data);
+      this.setState({});
+
       this.props.toggle();
     }
   };
 
+  getValueText = async event => {
+    let { valueName } = this.state;
+    valueName = event.target.value;
+    this.setState({ valueName });
+  };
+
   checkValidate(listSearch: any[]): boolean {
+    let { valueName, value_name_error, error_advanced } = this.state;
     let result: boolean = true;
     let count: number = 0;
     listSearch &&
@@ -239,11 +254,22 @@ class ModalGateWay extends React.Component<IModalGateWayProps, IModalGateWayStat
       });
 
     if (count > 0) {
-      this.setState({ error_advanced: translate('getway.error-advanced') });
+      error_advanced = translate('gateway.error-advanced');
       result = false;
     } else {
-      this.setState({ error_advanced: '' });
+      error_advanced = '';
     }
+
+    if (valueName) {
+      value_name_error = '';
+    } else {
+      count++;
+      value_name_error = translate('gateway.please-input');
+      result = false;
+    }
+
+    this.setState({ error_advanced: error_advanced, value_name_error: value_name_error });
+
     return result;
   }
 
@@ -299,9 +325,22 @@ class ModalGateWay extends React.Component<IModalGateWayProps, IModalGateWayStat
     return list_field_data_cpn;
   };
 
+  getNameValue = () => {
+    const { listFieldData, idNode } = this.props;
+    let data: string;
+    listFieldData.getway &&
+      listFieldData.getway.map(item => {
+        if (item.id === idNode.id) {
+          data = item.name;
+        }
+      });
+    return data;
+  };
+
   render() {
     let { is_show, type_modal, list_clone_version } = this.props;
     let { list_field_data_cpn, logicalOperator, advancedSearches, categoryName } = this.state;
+    let nameValue = this.getNameValue();
     let list_field_render =
       list_field_data_cpn && list_field_data_cpn.length > 0
         ? list_field_data_cpn.map(item => {
@@ -326,7 +365,7 @@ class ModalGateWay extends React.Component<IModalGateWayProps, IModalGateWayStat
     //   this.getValueAdv()
     // }
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
-    let title_modal = translate('getway.title');
+    let title_modal = translate('gateway.title');
 
     return (
       <Modal
@@ -353,6 +392,23 @@ class ModalGateWay extends React.Component<IModalGateWayProps, IModalGateWayStat
         <div className="group-modal-config">
           {/* Chose condition */}
           <div className="group-addition">
+            <Row>
+              <Col span={3}>
+                <label className="input-search_label">{translate('gateway.name')}</label>
+              </Col>
+              <Col span={17}>
+                <Input
+                  defaultValue={nameValue}
+                  style={{ width: '80%' }}
+                  // placeholder={translate('group-attribute-customer.group-modal-config.name-placeholder')}
+                  onChange={event => this.getValueText(event)}
+                  maxLength={160}
+                />
+              </Col>
+            </Row>
+            <p style={{ color: 'red', marginLeft: '13%' }}>{this.state.value_name_error}</p>
+
+            <br />
             <Card style={{ padding: '0px' }}>
               <div className="group-addition_block-out">
                 <span style={{ textTransform: 'uppercase', fontWeight: 500 }}>CHỌN ĐIỀU KIỆN</span>

@@ -8,6 +8,7 @@ import { updateInfoCampaign } from 'app/actions/campaign-managament';
 import './modal-wait-for-event.scss';
 import { code_node } from 'app/common/model/campaign-managament.model';
 import { CHARACTER_TIME, CHARACTER_NUMBER } from './constant-modal-wait';
+import { Translate, translate } from 'react-jhipster';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -62,6 +63,7 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
       timer: listFieldData.timer ? listFieldData.timer : [],
       getway: listFieldData.getway ? listFieldData.getway : []
     };
+
     let timerEvent = {
       id: this.props.idNode.id,
       event,
@@ -69,8 +71,11 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
       timer,
       date,
       time,
-      idEmail
+      idEmail,
+      label: translate('flow-node-label.wait') + ' ' + translate('config-wait.' + event)
     };
+    console.log(timerEvent);
+
     if (this.checkValidate()) {
       localStorage.removeItem('isSave');
       data.timerEvent.push(timerEvent);
@@ -254,13 +259,8 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
                 <label className="text-event-wait">Sự kiện</label>
               </Col>
               <Col span={18}>
-                <Select
-                  defaultValue="Khách hàng mở mail "
-                  id="event"
-                  style={{ width: '100%' }}
-                  onChange={event => this.handleChange(event, 'event')}
-                >
-                  <Option value="open-mail">Khách hàng mở mail</Option>
+                <Select defaultValue="open-mail" id="event" style={{ width: '100%' }} onChange={event => this.handleChange(event, 'event')}>
+                  <Option value="open-mail">{translate('config-wait.open-mail')}</Option>
                   {/* <Option value="activated-voucher">Khách hàng kick hoạt mã voucher</Option> */}
                 </Select>
               </Col>
@@ -272,7 +272,8 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
               </Col>
               <Col span={18}>
                 <Col span={17}>
-                  <InputNumber id='input-number'
+                  <InputNumber
+                    id="input-number"
                     defaultValue={default_number}
                     style={{ width: '100%' }}
                     min={1}
@@ -285,7 +286,7 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
                   />
                 </Col>
                 <Col span={6} style={{ float: 'right' }}>
-                  <Select defaultValue={default_time} style={{ width: '100%' }} onChange={this.handlerTimeWait} id='select-time'>
+                  <Select defaultValue={default_time} style={{ width: '100%' }} onChange={this.handlerTimeWait} id="select-time">
                     <Option value="Y">Năm</Option>
                     <Option value="M">Tháng</Option>
                     <Option value="D">Ngày</Option>

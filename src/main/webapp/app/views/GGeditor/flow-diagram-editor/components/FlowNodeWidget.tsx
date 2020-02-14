@@ -270,9 +270,9 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
             zIndex: 10,
             verticalAlign: 'middle',
             textAlign: 'center',
-            width: '160px',
+            width: '200px',
             top: top,
-            left: this.getPortLeft(FlowNodePortModel.BOTTOM) - 72
+            left: this.getPortLeft(FlowNodePortModel.BOTTOM) - 92
           }}
         >
           {node.label}

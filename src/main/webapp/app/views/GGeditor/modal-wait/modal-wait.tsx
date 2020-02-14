@@ -7,6 +7,7 @@ import { getDiagramCampaign, validateCampaign } from 'app/actions/campaign-manag
 import './modal-wait.scss';
 import { code_node } from 'app/common/model/campaign-managament.model';
 import { CHARACTER_NUMBER, CHARACTER_TIME } from '../modal-wait-for-event/constant-modal-wait';
+import { Translate, translate } from 'react-jhipster';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -52,8 +53,10 @@ export class ModalTimeWait extends React.Component<IModalTimeWaitProps, IModalTi
       id: this.props.idNode.id,
       timeWaitEvent,
       waitEvent,
-      date
+      date,
+      label: translate('flow-node-label.wait') + ' ' + waitEvent + ' ' + date + ''
     };
+
     if (this.checkValidate()) {
       data.timer.push(timer);
       validateCampaign(data);
