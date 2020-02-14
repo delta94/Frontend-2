@@ -118,11 +118,11 @@ export function toConfigData(listFieldData: {
   timer: any[];
   getway: any[];
 }) {
-  let configData: { id: string; isActive: boolean }[] = [];
+  let configData: { id: string; isActive: boolean; label?: string }[] = [];
   let parse = items => {
     if (items) {
       for (let item of items) {
-        configData.push({ id: item.id, isActive: true });
+        configData.push({ id: item.id, isActive: true, label: item.label });
       }
     }
   };

@@ -26,12 +26,12 @@ interface IConfigMessageState {
 export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigMessageState> {
   state: IConfigMessageState = {
     message_error: '',
-    content_error: '',
+    content_error: ''
   };
 
   toggle = value => {
     let { toggleModal, isOpenModal } = this.props;
-    this.setState({ content_error: '', message_error: '' })
+    this.setState({ content_error: '', message_error: '' });
     toggleModal(!isOpenModal, value);
   };
 
@@ -45,12 +45,14 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
       timer: listFieldData.timer ? listFieldData.timer : [],
       getway: listFieldData.getway ? listFieldData.getway : []
     };
-    let message: string = String($(`#name-message`).val())
-    let content: string = String($(`#text-content`).val())
+    let message: string = String($(`#name-message`).val());
+    let content: string = String($(`#text-content`).val());
+    let messageName = message ? message : this.getCloneDetailVersion(this.getNameSms(), 'name');
     let fieldMessageConfig = {
       id: this.props.idNode.id,
-      name: message ? message : this.getCloneDetailVersion(this.getNameSms(), 'name'),
-      content: content ? content : this.getCloneDetailVersion(this.getNameSms(), 'content')
+      name: messageName,
+      content: content ? content : this.getCloneDetailVersion(this.getNameSms(), 'content'),
+      label: messageName
     };
 
     if (this.checkValidate(message, content)) {
@@ -63,30 +65,30 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
   };
 
   checkValidate = (message, content): boolean => {
-    let { content_error, message_error } = this.state
-    let count: number = 0
-    let result: boolean = true
+    let { content_error, message_error } = this.state;
+    let count: number = 0;
+    let result: boolean = true;
     if (!message) {
       count++;
-      message_error = translate("config-message.message-error")
+      message_error = translate('config-message.message-error');
     } else {
-      message_error = ""
+      message_error = '';
     }
     if (!content) {
       count++;
-      content_error = translate("config-message.content-error")
+      content_error = translate('config-message.content-error');
     } else {
-      content_error = ""
+      content_error = '';
     }
     if (count > 0) {
-      result = false
+      result = false;
     }
-    this.setState({ content_error, message_error })
-    return result
-  }
+    this.setState({ content_error, message_error });
+    return result;
+  };
 
   remove(arr, item) {
-    for (var i = arr.length; i--;) {
+    for (var i = arr.length; i--; ) {
       if (arr[i].id === item.id) {
         arr.splice(i, 1);
       }
@@ -107,7 +109,6 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
   }
 
   getNameSms = () => {
-
     const { listFieldData, idNode, list_clone_version } = this.props;
     let result: string;
     listFieldData.messageConfig &&
@@ -135,61 +136,78 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
     if (!name && Object.keys(list_clone_version).length > 0 && list_clone_version.cjId) {
       list_clone_version.flowDetail.nodeMetaData.map(item => {
         if (item.nodeId === idNode.id) {
-          name = item.nodeConfig[info]
+          name = item.nodeConfig[info];
         }
-      })
+      });
     }
-    return name
-  }
+    return name;
+  };
   render() {
     let { isOpenModal, list_clone_version, idNode } = this.props;
-    let nameSMS = this.getNameSms() ? this.getNameSms() : this.getCloneDetailVersion(this.getNameSms(), 'name')
-    let contentSMS = this.getNameContent() ? this.getNameContent() : this.getCloneDetailVersion(this.getNameContent(), 'content')
-
+    let nameSMS = this.getNameSms() ? this.getNameSms() : this.getCloneDetailVersion(this.getNameSms(), 'name');
+    let contentSMS = this.getNameContent() ? this.getNameContent() : this.getCloneDetailVersion(this.getNameContent(), 'content');
 
     return (
       <Modal className="modal-message-config" isOpen={isOpenModal}>
-        <ModalHeader toggle={this.toggle}><Translate contentKey="config-message.send-sms" /></ModalHeader>
+        <ModalHeader toggle={this.toggle}>
+          <Translate contentKey="config-message.send-sms" />
+        </ModalHeader>
         <ModalBody>
           <Row>
             <Row>
               <Col span={1}>
-                <label className="label-message"><Translate contentKey="config-message.name" /></label>
+                <label className="label-message">
+                  <Translate contentKey="config-message.name" />
+                </label>
               </Col>
               <Col span={14}>
                 <Input defaultValue={nameSMS} id="name-message" maxLength={160} style={{ float: 'right', width: '92%' }} />
               </Col>
               <Col span={3} style={{ textAlign: 'right', paddingRight: '2%' }}>
-                <label className="label-message"><Translate contentKey="config-message.param" /></label>
+                <label className="label-message">
+                  <Translate contentKey="config-message.param" />
+                </label>
               </Col>
 
               <Col span={6}>
                 <Select defaultValue="Tên" style={{ width: '100%' }} onChange={this.insertAtCursor}>
-                  <Option value="{{Tên}}"><Translate contentKey="config-message.name" /></Option>
-                  <Option value="{{Email}}"><Translate contentKey="config-message.email" /></Option>
-                  <Option value="{{Số Điện Thoại}}"><Translate contentKey="config-message.phone" /></Option>
+                  <Option value="{{Tên}}">
+                    <Translate contentKey="config-message.name" />
+                  </Option>
+                  <Option value="{{Email}}">
+                    <Translate contentKey="config-message.email" />
+                  </Option>
+                  <Option value="{{Số Điện Thoại}}">
+                    <Translate contentKey="config-message.phone" />
+                  </Option>
                 </Select>
               </Col>
             </Row>
-            <p className="error" style={{ color: "red", marginLeft: "9%" }}>{this.state.message_error}</p>
+            <p className="error" style={{ color: 'red', marginLeft: '9%' }}>
+              {this.state.message_error}
+            </p>
             <br />
             <Row>
               <Col span={2}>
-                <label className="label-message"><Translate contentKey="config-message.content" /></label>
+                <label className="label-message">
+                  <Translate contentKey="config-message.content" />
+                </label>
               </Col>
               <Col span={22}>
                 <TextArea defaultValue={contentSMS} onKeyUp={() => this.count()} id="text-content" maxLength={240} rows={10} />
                 <p id="total">0/240</p>
               </Col>
             </Row>
-            <p className="error" style={{ color: "red", marginLeft: "9%" }}>{this.state.content_error}</p>
+            <p className="error" style={{ color: 'red', marginLeft: '9%' }}>
+              {this.state.content_error}
+            </p>
           </Row>
         </ModalBody>
         <ModalFooter>
-          <Button type="link" style={{ color: "black" }} onClick={this.toggle}>
+          <Button type="link" style={{ color: 'black' }} onClick={this.toggle}>
             <Translate contentKey="config-email.cancel" />
           </Button>
-          <Button type="primary" style={{ background: "#3866DD" }} onClick={this.save}>
+          <Button type="primary" style={{ background: '#3866DD' }} onClick={this.save}>
             <Translate contentKey="config-email.chosse" />
           </Button>{' '}
         </ModalFooter>
