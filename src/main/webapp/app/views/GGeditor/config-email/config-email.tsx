@@ -188,7 +188,8 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
       valueName,
       valueTitle,
       contentEmail: defaultValueContent,
-      idEmail
+      idEmail,
+      label: valueName
     };
 
     let data = {
@@ -265,7 +266,8 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
       valueName,
       valueTitle,
       contentEmail: defaultValueContent,
-      idEmail
+      idEmail,
+      label: valueName
     };
 
     let data = {

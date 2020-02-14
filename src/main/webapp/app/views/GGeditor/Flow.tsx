@@ -254,42 +254,25 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
         break;
       case code_node.SEND_MAIL:
-        this.setState({ isOpenModalEmail: event });
-        if (isOpenModalEmail && valueName) {
-          diagram.nodes.map(item => {
-            if (item.id === idNode.id) {
-              item.label = valueName;
-            }
-          });
-          await getDiagramCampaign(diagram);
-          this.editor.setNodeInfo(toConfigData(listFieldData));
-          await this.editor.setNodeLabel(listDiagram.nodes);
-        }
+        await this.setState({ isOpenModalEmail: event });
+        await this.editor.setNodeInfo(toConfigData(listFieldData));
         break;
       case code_node.TIMER_EVENT:
-        this.setState({ isOpenModalWaitForEvent: !isOpenModalWaitForEvent });
-        this.editor.setNodeInfo(toConfigData(listFieldData));
+        await this.setState({ isOpenModalWaitForEvent: !isOpenModalWaitForEvent });
+        await this.editor.setNodeInfo(toConfigData(listFieldData));
         break;
       case code_node.TIMER:
-        this.setState({ isOpenModalWait: !isOpenModalWait });
-        this.editor.setNodeInfo(toConfigData(listFieldData));
+        await this.setState({ isOpenModalWait: !isOpenModalWait });
+        await this.editor.setNodeInfo(toConfigData(listFieldData));
         break;
       case code_node.SEND_SMS:
-        this.setState({ isOpenModalMessage: !isOpenModalMessage });
-        if (isOpenModalMessage && valueName) {
-          diagram.nodes.map(item => {
-            if (item.id === idNode.id && valueName.name) {
-              item.label = valueName.name;
-            }
-          });
-          await getDiagramCampaign(diagram);
-          this.editor.setNodeInfo(toConfigData(listFieldData));
-          await this.editor.setNodeLabel(listDiagram.nodes);
-        }
+        await this.setState({ isOpenModalMessage: !isOpenModalMessage });
+        await this.editor.setNodeInfo(toConfigData(listFieldData));
         break;
       case code_node.GATEWAY:
-        this.setState({ isOpenGateWay: !this.state.isOpenGateWay });
-        this.editor.setNodeInfo(toConfigData(listFieldData));
+        await this.setState({ isOpenGateWay: !this.state.isOpenGateWay });
+        await this.editor.setNodeInfo(toConfigData(listFieldData));
+
         break;
       default:
         break;
@@ -668,6 +651,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           nodeId: value.id,
           code: code_node.GATEWAY,
           nodeConfig: {
+            name: value.name,
             logicalOperator: value.logicalOperator,
             advancedSearches: value.advancedSearches
           }

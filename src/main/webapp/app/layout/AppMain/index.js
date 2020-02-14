@@ -5,6 +5,7 @@ import Loader from 'react-loaders'
 import {
     ToastContainer,
 } from 'react-toastify';
+import LoaderAnim from "react-loaders";
 
 const UserPages = lazy(() => import('../../DemoPages/UserPages'));
 const Applications = lazy(() => import('../../DemoPages/Applications'));
@@ -31,8 +32,7 @@ const AppMain = () => {
                             <Loader type="ball-pulse-rise"/>
                         </div>
                         <h6 className="mt-5">
-                            Please wait while we load all the Components examples
-                            <small>Because this is a demonstration we load at once all the Components examples. This wouldn't happen in a real live app!</small>
+                          <LoaderAnim type="ball-pulse" active={true} />
                         </h6>
                     </div>
                 </div>
@@ -49,8 +49,7 @@ const AppMain = () => {
                             <Loader type="ball-pulse-rise"/>
                         </div>
                         <h6 className="mt-5">
-                            Please wait while we load all the Forms examples
-                            <small>Because this is a demonstration we load at once all the Forms examples. This wouldn't happen in a real live app!</small>
+                          <LoaderAnim type="ball-pulse" active={true} />
                         </h6>
                     </div>
                 </div>
@@ -67,8 +66,7 @@ const AppMain = () => {
                             <Loader type="ball-rotate"/>
                         </div>
                         <h6 className="mt-3">
-                            Please wait while we load all the Charts examples
-                            <small>Because this is a demonstration we load at once all the Charts examples. This wouldn't happen in a real live app!</small>
+                          <LoaderAnim type="ball-pulse" active={true} />
                         </h6>
                     </div>
                 </div>
@@ -85,8 +83,7 @@ const AppMain = () => {
                             <Loader type="ball-pulse-rise"/>
                         </div>
                         <h6 className="mt-5">
-                            Please wait while we load all the Tables examples
-                            <small>Because this is a demonstration we load at once all the Tables examples. This wouldn't happen in a real live app!</small>
+                          <LoaderAnim type="ball-pulse" active={true} />
                         </h6>
                     </div>
                 </div>
@@ -103,8 +100,7 @@ const AppMain = () => {
                             <Loader type="line-scale"/>
                         </div>
                         <h6 className="mt-3">
-                            Please wait while we load all the Elements examples
-                            <small>Because this is a demonstration we load at once all the Elements examples. This wouldn't happen in a real live app!</small>
+                          <LoaderAnim type="ball-pulse" active={true} />
                         </h6>
                     </div>
                 </div>
@@ -121,8 +117,7 @@ const AppMain = () => {
                             <Loader type="ball-pulse-sync"/>
                         </div>
                         <h6 className="mt-3">
-                            Please wait while we load all the Dashboard Widgets examples
-                            <small>Because this is a demonstration we load at once all the Dashboard Widgets examples. This wouldn't happen in a real live app!</small>
+                          <LoaderAnim type="ball-pulse" active={true} />
                         </h6>
                     </div>
                 </div>
@@ -139,8 +134,7 @@ const AppMain = () => {
                             <Loader type="line-scale-party"/>
                         </div>
                         <h6 className="mt-3">
-                            Please wait while we load all the Pages examples
-                            <small>Because this is a demonstration we load at once all the Pages examples. This wouldn't happen in a real live app!</small>
+                          <LoaderAnim type="ball-pulse" active={true} />
                         </h6>
                     </div>
                 </div>
@@ -157,8 +151,7 @@ const AppMain = () => {
                             <Loader type="ball-pulse"/>
                         </div>
                         <h6 className="mt-3">
-                            Please wait while we load all the Applications examples
-                            <small>Because this is a demonstration we load at once all the Applications examples. This wouldn't happen in a real live app!</small>
+                          <LoaderAnim type="ball-pulse" active={true} />
                         </h6>
                     </div>
                 </div>
@@ -175,8 +168,7 @@ const AppMain = () => {
                             <Loader type="ball-grid-beat"/>
                         </div>
                         <h6 className="mt-3">
-                            Please wait while we load all the Dashboards examples
-                            <small>Because this is a demonstration, we load at once all the Dashboards examples. This wouldn't happen in a real live app!</small>
+                          <LoaderAnim type="ball-pulse" active={true} />
                         </h6>
                     </div>
                 </div>
