@@ -113,7 +113,7 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
 
   IsValidateForm = () => {
     let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    var vnfont = /(([0-9]{2,20})$)/g;
+    var vnfont = /(^([0-9]{8,20})$)/g;
     let valueEmail = $(`input#email`).val();
     let valuePhone = $(`input#phone`).val();
     let countError = 0;

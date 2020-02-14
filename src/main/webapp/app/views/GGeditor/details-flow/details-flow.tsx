@@ -61,7 +61,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     itemsPerPage: 0,
     idCjersion: '',
     textSearch: '',
-    isOpen: true
+    isOpen: false
   };
   editor: FlowDiagramEditor;
 
