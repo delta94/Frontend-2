@@ -220,10 +220,10 @@ export class ModalTimeWait extends React.Component<IModalTimeWaitProps, IModalTi
           <Row>
             <Row>
               <Col span={3}>
-                <label className="text-event-wait">#</label>
+                <label className="text-event-wait" style={{ marginLeft: '10px' }}>#</label>
               </Col>
               <Col span={21}>
-                <Col span={17}>
+                <Col span={12}>
                   <InputNumber
                     defaultValue={default_number}
                     style={{ width: '100%' }}
@@ -236,7 +236,7 @@ export class ModalTimeWait extends React.Component<IModalTimeWaitProps, IModalTi
                     }}
                   />
                 </Col>
-                <Col span={6} style={{ float: 'right' }}>
+                <Col span={10} style={{ float: 'right' }}>
                   <Select
                     defaultValue={default_time}
                     style={{ width: '100%' }}
@@ -263,7 +263,7 @@ export class ModalTimeWait extends React.Component<IModalTimeWaitProps, IModalTi
             Hủy
           </Button>
           <Button type="primary" style={{ background: '#3866DD' }} onClick={this.save}>
-            Chọn
+            Tạo
           </Button>{' '}
         </ModalFooter>
       </Modal>

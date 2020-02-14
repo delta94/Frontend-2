@@ -1018,7 +1018,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                               <td>{item.firstName}</td>
                               <td>{item.lastName}</td>
                               <td>{item.email}</td>
-                              <td>0{item.mobile}</td>
+                              <td>{item.mobile}</td>
                               {item.fields
                                 .sort(function(a, b) {
                                   if (a.title.toLowerCase() < b.title.toLowerCase()) {

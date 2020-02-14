@@ -208,7 +208,8 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
                     des: ''
                   };
                   await this.props.updateInfoCampaign(data);
-                  await this.props.saveCampaignAutoVersion(this.state.infoVersion);
+                  let inforVersion = { ...this.state.infoVersion, type: 'template' }
+                  await this.props.saveCampaignAutoVersion(inforVersion);
                   await this.props.resetListCloneVersion();
                   await window.location.assign(`#/flow`);
                 }}
@@ -268,7 +269,8 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
                 };
                 await this.props.updateInfoCampaign(data);
                 await this.props.getDiagramCampaign([]);
-                await this.props.saveCampaignAutoVersion(this.state.infoVersion);
+                let inforVersion = { ...this.state.infoVersion, type: 'create' }
+                await this.props.saveCampaignAutoVersion(inforVersion);
                 await this.props.resetData();
                 await this.props.resetListCloneVersion();
                 await window.location.assign('#/flow');
