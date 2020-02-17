@@ -970,7 +970,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
               </Row>
             </Header>
             <Row type="flex" className="editorHd">
-              <Col span={24} style={{ borderBottom: '0.25px solid', padding: '1%' }}>
+              <Col span={24} style={{ padding: '5px' }}>
                 <Col span={4}>
                   <label>Phiên bản: {this.props.list_clone_version.version ? this.props.list_clone_version.version : 1}</label>
                 </Col>

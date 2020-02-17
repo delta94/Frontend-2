@@ -15,7 +15,7 @@ import TagModal from '../tag-modal/tag-modal';
 import { DELETE_TAG, MERGE_TAG, EDIT_TAG } from '../../../../constants/tag-management';
 import $ from 'jquery';
 
-interface ITagListProps extends StateProps, DispatchProps {}
+interface ITagListProps extends StateProps, DispatchProps { }
 
 interface ITagListState {
   activePage?: number;
@@ -284,36 +284,36 @@ class TagList extends React.Component<ITagListProps, ITagListState> {
                     );
                   })
                 ) : (
-                  <tr>
-                    <td className="none-data" colSpan={100}>
-                      Không có dữ liệu khách hàng
+                    <tr>
+                      <td className="none-data" colSpan={100}>
+                        Không có dữ liệu khách hàng
                     </td>
-                  </tr>
-                )}
+                    </tr>
+                  )}
               </tbody>
             </Table>
-            {/* Blockout */}
+            <div className="tag-navigation">
+              {totalPages && totalPages >= 2 ? (
+                <Row className="justify-content-center" style={{ float: 'right', marginRight: '0px' }}>
+                  <ReactPaginate
+                    previousLabel={'<'}
+                    nextLabel={'>'}
+                    breakLabel={'...'}
+                    breakClassName={'break-me'}
+                    pageCount={totalPages}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={5}
+                    onPageChange={event => this.setPageIndex(event.selected)}
+                    containerClassName={'pagination'}
+                    subContainerClassName={'pages pagination'}
+                    activeClassName={'active'}
+                  />
+                </Row>
+              ) : null}
+            </div>
           </div>
+          {/* Blockout */}
         </Loader>
-        <div className="navigation ">
-          {totalPages && totalPages >= 2 ? (
-            <Row className="justify-content-center">
-              <ReactPaginate
-                previousLabel={'<'}
-                nextLabel={'>'}
-                breakLabel={'...'}
-                breakClassName={'break-me'}
-                pageCount={totalPages}
-                marginPagesDisplayed={2}
-                pageRangeDisplayed={5}
-                onPageChange={event => this.setPageIndex(event.selected)}
-                containerClassName={'pagination'}
-                subContainerClassName={'pages pagination'}
-                activeClassName={'active'}
-              />
-            </Row>
-          ) : null}
-        </div>
       </div>
     );
   }
