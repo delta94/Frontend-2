@@ -8,7 +8,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import cx from 'classnames';
 import './create.scss';
 import { Translate, translate } from 'react-jhipster';
-import { ULTILS_TYPES } from '../../../../constants/ultils';
+import { UTIL_TYPES } from '../../../../constants/util';
 import { openModal, closeModal } from 'app/actions/modal';
 import SweetAlert from 'sweetalert-react';
 import { refreshNavigationInfo } from '../../../../actions/navigation-info';
@@ -34,8 +34,8 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
   state: ICreateState = {
     collapse: true,
     isDisplayTable: false,
-    changeIcon: ULTILS_TYPES.ICON_DOWN,
-    campaignTypeId: ULTILS_TYPES.EMPTY
+    changeIcon: UTIL_TYPES.ICON_DOWN,
+    campaignTypeId: UTIL_TYPES.EMPTY
   };
 
   //function handler click collapse
@@ -46,12 +46,12 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
     if (this.state.collapse) {
       this.setState({
         collapse: false,
-        changeIcon: ULTILS_TYPES.ICON_UP
+        changeIcon: UTIL_TYPES.ICON_UP
       });
     } else {
       this.setState({
         collapse: true,
-        changeIcon: ULTILS_TYPES.ICON_DOWN
+        changeIcon: UTIL_TYPES.ICON_DOWN
       });
     }
   };
@@ -68,12 +68,12 @@ export class Create extends React.Component<ICreateProps, ICreateState> {
     if (event > 1) {
       this.setState({
         collapse: false,
-        changeIcon: ULTILS_TYPES.ICON_UP
+        changeIcon: UTIL_TYPES.ICON_UP
       });
     } else {
       this.setState({
         collapse: true,
-        changeIcon: ULTILS_TYPES.ICON_DOWN
+        changeIcon: UTIL_TYPES.ICON_DOWN
       });
     }
   };
@@ -150,7 +150,4 @@ const mapDispatchToProps = { openModal, closeModal, refreshNavigationInfo };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Create);
+export default connect(mapStateToProps, mapDispatchToProps)(Create);

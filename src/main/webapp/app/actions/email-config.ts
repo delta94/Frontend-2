@@ -11,7 +11,7 @@ import {
   previewEmailTemplate,
   createEmailTemplate
 } from 'app/services/email-config';
-import { IEmailSave } from 'app/common/model/email-config.model';
+import { IEmailSave } from 'app/common/models/email-config.model';
 
 export const getEmailsAction = (textSearch?: string, page?: number, pageSize?: number) => ({
   type: EMAIL_CONFIG.GET_EMAIL,

@@ -1,5 +1,5 @@
 import React from 'react';
-import ErrorBoundaryRoute from 'app/common/error/error-boundary-route';
+import ErrorBoundaryRoute from 'app/common/components/ErrorBoundaryRoute';
 import Landing from './landing/landing';
 import { Switch } from 'react-router-dom';
 const Routes = ({ match }) => (

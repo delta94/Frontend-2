@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { IUser } from 'app/common/model/user.model';
-import { ICategory } from 'app/common/model/category.model';
-import { IListNewCustomer } from 'app/common/model/campaign-new-customer.model';
+import { IUser } from 'app/common/models/user.model';
+import { ICategory } from 'app/common/models/category.model';
+import { IListNewCustomer } from 'app/common/models/campaign-new-customer.model';
 
 const apiUrl = 'v1/campaigns';
 

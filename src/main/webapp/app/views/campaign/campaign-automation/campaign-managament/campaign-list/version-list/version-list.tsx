@@ -6,7 +6,7 @@ import { Row, Col, Breadcrumb, Button, Modal, Checkbox } from 'antd';
 // import Checkbox from '@material-ui/core/Checkbox';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
-import { img_node, const_shape } from 'app/common/model/campaign-managament.model';
+import { img_node, const_shape } from 'app/common/models/campaign-managament.model';
 import Loader from 'react-loader-advanced';
 import LoaderAnim from 'react-loaders';
 import {

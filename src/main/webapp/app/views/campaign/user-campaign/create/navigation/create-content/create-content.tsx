@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import './create-content.scss';
-import Dropdown from '../../../../../../layout/DropDown/Dropdown';
+import Dropdown from '../../../../../../layout/DropDown';
 
 import { Card, Collapse, Button, Input, CardTitle, CardBody, Form } from 'reactstrap';
 import { connect } from 'react-redux';
@@ -13,7 +13,7 @@ import { IRootState } from '../../../../../../reducers/index';
 import { Translate, translate } from 'react-jhipster';
 import { postTestMailLandingService } from 'app/services/user-campaign';
 import { INTRO_MAIL, REWARD_MAIL, EMAIL_EWARD, EMAIL_INTRO } from 'app/constants/common';
-import CkeditorFixed from 'app/layout/ckeditor/CkeditorFixed';
+import CKEditorFixed from 'app/layout/CKEditorFixed';
 
 export interface ICreateTestMailEntity {
   emailTo?: string;
@@ -337,7 +337,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                           toggleDropdown={event => this.toggleDropdownParams(event, EMAIL_INTRO)}
                         />
                       </div>
-                      <CkeditorFixed id={'email mail intro'} data={defaultValueContentEmailIntro} type={INTRO_MAIL} />
+                      <CKEditorFixed id={'email mail intro'} data={defaultValueContentEmailIntro} type={INTRO_MAIL} />
                     </CardBody>
                   </Card>
                 </Collapse>
@@ -403,7 +403,7 @@ class CreateContent extends React.PureComponent<ICreateContentProps, ICreateCont
                         />
                       </div>
                       {/* Editor */}
-                      <CkeditorFixed id={'email mail intro'} data={defaultValueContentEmailEward} type={REWARD_MAIL} />
+                      <CKEditorFixed id={'email mail intro'} data={defaultValueContentEmailEward} type={REWARD_MAIL} />
                     </CardBody>
                   </Card>
                 </Collapse>
@@ -435,7 +435,4 @@ const mapDispatchToProps = {
   openModal,
   closeModal
 };
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CreateContent);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateContent);

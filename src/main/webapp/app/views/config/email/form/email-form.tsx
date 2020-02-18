@@ -11,7 +11,7 @@ import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import SweetAlert from 'sweetalert-react';
 import { closeModal } from 'app/actions/modal';
-import { IContentParams, IEmailSave } from 'app/common/model/email-config.model';
+import { IContentParams, IEmailSave } from 'app/common/models/email-config.model';
 import { GROUP_PARAM } from 'app/constants/email-config';
 import { getContentParamAction, createEmailAction, editEmailAction, createEmailTemplateAction } from 'app/actions/email-config';
 import './email-form.scss';
@@ -26,7 +26,7 @@ import DemoTemplate from './topol-react-email-editor/demo.json';
 
 const cheerio = require('cheerio');
 
-interface IEmailFormManagementProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any; idTemplate: any }> { }
+interface IEmailFormManagementProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any; idTemplate: any }> {}
 interface IEmailFormManagementState {
   visiblePopOver: boolean;
   activeKey: string;
@@ -278,16 +278,16 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
             <TabPane tab={item.name} key={item.code}>
               {this.state.contentParams
                 ? this.state.contentParams.map((item, index) => (
-                  <div className="tabs-param" key={index}>
-                    <label
-                      onClick={() => {
-                        this.selectParam(item.paramCode);
-                      }}
-                    >
-                      {item.paramName}
-                    </label>
-                  </div>
-                ))
+                    <div className="tabs-param" key={index}>
+                      <label
+                        onClick={() => {
+                          this.selectParam(item.paramCode);
+                        }}
+                      >
+                        {item.paramName}
+                      </label>
+                    </div>
+                  ))
                 : ''}
             </TabPane>
           ))}
@@ -355,14 +355,16 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
           </Modal>
           <div className="email-form-management">
             <div className="email-form-title-header">
-              <Button color="back" onClick={this.back} style={{ color: 'blue', textDecoration: 'underline' }}>Quay lại</Button>
+              <Button color="back" onClick={this.back} style={{ color: 'blue', textDecoration: 'underline' }}>
+                Quay lại
+              </Button>
               <div className="button-group">
                 <Button color="primary" onClick={this.saveEmail}>
                   Lưu
                 </Button>
                 <Button color="primary" onClick={this.createEmailTemplate} style={{ marginLeft: '10px', marginRight: '10px' }}>
                   Lưu thành Template
-                      </Button>
+                </Button>
               </div>
             </div>
             <div className="email-form-body">
@@ -400,10 +402,14 @@ class EmailFormManagement extends React.Component<IEmailFormManagementProps, IEm
                     content={this.content()}
                     visible={this.state.visiblePopOver}
                     onVisibleChange={this.handleVisibleChange}
-                    trigger="click">
+                    trigger="click"
+                  >
                     <Button color="primary">Tham số</Button>
                   </Popover>
-                  <label onClick={() => this.preview(emailsave)} style={{ marginLeft: '10px', textDecoration: 'underline', color: '#3866DD' }}>
+                  <label
+                    onClick={() => this.preview(emailsave)}
+                    style={{ marginLeft: '10px', textDecoration: 'underline', color: '#3866DD' }}
+                  >
                     <FontAwesomeIcon icon={faEye} />
                     <span style={{ paddingLeft: '10px' }}>Preview</span>
                   </label>

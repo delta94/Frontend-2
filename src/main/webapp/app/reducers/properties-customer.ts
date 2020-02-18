@@ -1,5 +1,5 @@
 import { IOpenModal } from './modal';
-import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
+import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-types';
 import { PROPS_MANAGEMENT } from '../constants/props-management';
 import { faSleigh } from '@fortawesome/free-solid-svg-icons';
 

@@ -1,5 +1,5 @@
 import { CJ_TAG } from '../constants/cj-tag';
-import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
+import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-types';
 export interface ICjTag {
   id?: string;
   name?: string;

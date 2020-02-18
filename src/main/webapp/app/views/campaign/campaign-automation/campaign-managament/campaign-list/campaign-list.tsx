@@ -24,7 +24,7 @@ import { Input, Icon, Row, Col, Tag, Button, Popover as PopverAnt } from 'antd';
 import CampaignTag from './campaign-tag/campaign-tag';
 import CjTagModal from './cj-tag-modal/cj-tag-modal';
 import { STATUS_CJ } from 'app/constants/cj';
-import { img_node, const_shape } from 'app/common/model/campaign-managament.model';
+import { img_node, const_shape } from 'app/common/models/campaign-managament.model';
 import CJTagPopOver from './cj-popup/cj-popover';
 //TODO: step 0
 import ReactTable from 'react-table-6';
@@ -144,8 +144,6 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
     }
   }
 
-
-
   //TODO: step 4
   renderCell(id, item, index) {
     switch (id) {
@@ -170,12 +168,12 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
             <br />
             {item.tags
               ? item.tags.split(',').map((v, i) => {
-                return (
-                  <Tag color="rgb(52, 157, 233)" style={{ borderRadius: '25px', margin: '5px' }} key={i}>
-                    {v}
-                  </Tag>
-                );
-              })
+                  return (
+                    <Tag color="rgb(52, 157, 233)" style={{ borderRadius: '25px', margin: '5px' }} key={i}>
+                      {v}
+                    </Tag>
+                  );
+                })
               : null}
           </div>
         );
@@ -185,15 +183,11 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
         return (
           <div style={{ width: '100%' }}>
             <div className="text-center">
-              <label className="text-process" style={{ marginBottom:'0px',color: '#6C757D' }}>
+              <label className="text-process" style={{ marginBottom: '0px', color: '#6C757D' }}>
                 {item.contactCompleted}/{item.contactNumbers} contact
               </label>
             </div>
-            <Progress
-              color='info'
-              value={this.countContact(item.contactCompleted, item.contactNumbers)}
-            >
-            </Progress>
+            <Progress color="info" value={this.countContact(item.contactCompleted, item.contactNumbers)}></Progress>
           </div>
         );
       case 'last_edit':
@@ -239,7 +233,10 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
               trigger="click"
             >
               {/* <Icon style={{ fontSize: '24px' }} type="unordered-list" /> */}
-              <FontAwesomeIcon style={{ margin: '0px 0px -12px 5px', fontSize: '24px', verticalAlign: 'inherit', color: '#3866DD' }} icon={faEllipsisH} />
+              <FontAwesomeIcon
+                style={{ margin: '0px 0px -12px 5px', fontSize: '24px', verticalAlign: 'inherit', color: '#3866DD' }}
+                icon={faEllipsisH}
+              />
             </PopverAnt>
           </div>
         );
@@ -743,8 +740,8 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                   />
                 </Row>
               ) : (
-                  ''
-                )}
+                ''
+              )}
             </div>
             <br></br>
 

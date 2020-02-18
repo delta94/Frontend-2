@@ -11,7 +11,7 @@ import {
     setEnableMobileMenuSmall,
 } from 'app/actions/theme-options';
 
-class HeaderLogo extends React.Component {
+class AppLogo extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -79,4 +79,4 @@ const mapDispatchToProps = dispatch => ({
 
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(HeaderLogo);
+export default connect(mapStateToProps, mapDispatchToProps)(AppLogo);

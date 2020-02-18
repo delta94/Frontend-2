@@ -3,7 +3,7 @@ import './review.scss';
 
 import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
 import React, { Fragment, Component, useState } from 'react';
-import { ISaveDataCampain } from 'app/common/model/campaign-navigation.model';
+import { ISaveDataCampain } from 'app/common/models/campaign-navigation.model';
 import Loader from 'react-loader-advanced';
 import LoaderAnim from 'react-loaders';
 import { connect } from 'react-redux';
@@ -140,7 +140,4 @@ const mapDispatchToProps = {};
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Review);
+export default connect(mapStateToProps, mapDispatchToProps)(Review);

@@ -11,7 +11,7 @@ import { getCustomer, getStatistic, getSumAllContact } from '../../../../../../a
 import { getNavigationCustomerCampaign } from 'app/actions/navigation-info';
 import { openModal, closeModal } from 'app/actions/modal';
 import CustomerDialog from './customer-dialog/customer-dialog';
-import { ITEMS_PER_PAGE, ULTILS_TYPES, ACTIVE_PAGE } from '../../../../../../constants/ultils';
+import { ITEMS_PER_PAGE, UTIL_TYPES, ACTIVE_PAGE } from '../../../../../../constants/util';
 
 const spinner = <LoaderAnim type="ball-pulse" active={true} />;
 
@@ -38,11 +38,11 @@ class SelectCustomer extends React.Component<SelectCustomerProps, SelectCustomer
 
     modal: false,
 
-    activeTab: ULTILS_TYPES.ACTIVE_TAB,
+    activeTab: UTIL_TYPES.ACTIVE_TAB,
     activePage: ACTIVE_PAGE,
     pageSize: ITEMS_PER_PAGE,
-    category: ULTILS_TYPES.EMPTY,
-    textSearch: ULTILS_TYPES.EMPTY,
+    category: UTIL_TYPES.EMPTY,
+    textSearch: UTIL_TYPES.EMPTY,
     sumContact: 0
   };
 
@@ -302,7 +302,4 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SelectCustomer);
+export default connect(mapStateToProps, mapDispatchToProps)(SelectCustomer);

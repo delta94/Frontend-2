@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import cx from 'classnames';
 import { Redirect } from 'react-router-dom';
 
-import Nav from '../AppNav/VerticalNavWrapper';
+import AppNav from '../AppNav';
 import SweetAlert from 'sweetalert-react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import HeaderLogo from '../AppLogo';
+import AppLogo from '../AppLogo';
 
 import {
     setEnableMobileMenu
@@ -50,10 +50,10 @@ class AppSidebar extends Component {
                     transitionAppearTimeout={1500}
                     transitionEnter={false}
                     transitionLeave={false}>
-                    <HeaderLogo />
+                    <AppLogo />
                     <PerfectScrollbar>
                         <div className="app-sidebar__inner">
-                            <Nav menu={menu} />
+                            <AppNav menu={menu} />
                         </div>
                     </PerfectScrollbar>
                     <div

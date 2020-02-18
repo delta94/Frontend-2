@@ -9,7 +9,7 @@ import { Translate, translate } from 'react-jhipster';
 import { getCampaignInfoByStatus, getCampaignInfoById, getCampaignDetailById, updateCampStatus } from 'app/actions/user-campaign';
 import './all-camp.scss';
 import ModalDisplay from './modal/modal';
-import { ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination.constants';
+import { ACTIVE_PAGE, MAX_BUTTON_COUNT } from 'app/constants/pagination';
 import { ITEMS_PER_MODAL_TABLE } from 'app/constants/common';
 import SweetAlert from 'sweetalert-react';
 
@@ -190,7 +190,4 @@ const mapDispatchToProps = { getCampaignInfoByStatus, getCampaignInfoById, getCa
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AllCamp);
+export default connect(mapStateToProps, mapDispatchToProps)(AllCamp);

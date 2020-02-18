@@ -8,12 +8,12 @@ import { hot } from 'react-hot-loader';
 import { Redirect } from 'react-router-dom';
 import { IRootState } from 'app/reducers';
 import { setLocale } from 'app/actions/locale';
-import { getSession } from 'app/actions/authentication';
+import { getSession } from 'app/actions/auth';
 
-import ErrorBoundary from 'app/common/error/error-boundary';
-import { hasAnyAuthority } from 'app/common/auth/private-route';
+import ErrorBoundary from 'app/common/components/ErrorBoundary';
+import { hasAnyAuthority } from 'app/common/components/PrivateRoute';
 import { AUTHORITIES } from 'app/config/constants';
-import AppRoutes from 'app/routes/routes';
+import AppRoutes from 'app/routes';
 const baseHref = document
   .querySelector('base')
   .getAttribute('href')
@@ -126,7 +126,4 @@ const mapDispatchToProps = { setLocale, getSession };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(hot(module)(App));
+export default connect(mapStateToProps, mapDispatchToProps)(hot(module)(App));

@@ -2,12 +2,12 @@ import { MODAL_ACTION } from './../constants/modal';
 import axios from 'axios';
 import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } from 'react-jhipster';
 
-import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
-import { IUser } from 'app/common/model/user.model';
+import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-types';
+import { IUser } from 'app/common/models/user.model';
 import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
-import { IFileList } from 'app/common/model/sucess-file';
-import { ICategory } from 'app/common/model/category.model';
-import { ISearchAdvanced } from 'app/common/model/group-attribute-customer';
+import { IFileList } from 'app/common/models/file-list.model';
+import { ICategory } from 'app/common/models/category.model';
+import { ISearchAdvanced } from 'app/common/models/group-attribute-customer';
 
 export interface IUserDetails {
   email?: string;

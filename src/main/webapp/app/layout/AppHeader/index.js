@@ -5,8 +5,8 @@ import {connect} from 'react-redux';
 
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-import HeaderLogo from '../AppLogo';
-import UserBox from './Components/UserBox';
+import AppLogo from '../AppLogo';
+import UserBox from './components/UserBox';
 
 class Header extends React.Component {
     render() {
@@ -27,13 +27,13 @@ class Header extends React.Component {
                     transitionEnter={false}
                     transitionLeave={false}>
 
-                    <HeaderLogo/>
-               
+                    <AppLogo/>
+
                     <div className={cx(
                         "app-header__content",
                         {'header-mobile-open': enableMobileMenuSmall},
                     )}>
-                        
+
                         <div className="app-header-right">
                             <UserBox/>
                         </div>

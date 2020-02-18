@@ -11,7 +11,7 @@ import { IRootState } from 'app/reducers';
 import ReactPaginate from 'react-paginate';
 import { getCustomer, getStatistic } from '../../../../../../../actions/user-campaign';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ITEMS_PER_PAGE, ULTILS_TYPES, ACTIVE_PAGE } from '../../../../../../../constants/ultils';
+import { ITEMS_PER_PAGE, UTIL_TYPES, ACTIVE_PAGE } from '../../../../../../../constants/util';
 import CategoryDialog from './categories/categories';
 import { openModal, closeModal } from '../../../../../../../actions/modal';
 import { faKeybase } from '@fortawesome/free-brands-svg-icons';
@@ -43,11 +43,11 @@ class CustomerDialog extends React.Component<CustomerDialogProps, CustomerDialog
 
     activePage: ACTIVE_PAGE,
     pageSize: ITEMS_PER_PAGE,
-    category: ULTILS_TYPES.EMPTY,
-    nameCategory: ULTILS_TYPES.EMPTY,
+    category: UTIL_TYPES.EMPTY,
+    nameCategory: UTIL_TYPES.EMPTY,
 
-    textSearch: ULTILS_TYPES.EMPTY,
-    categories: ULTILS_TYPES.EMPTY
+    textSearch: UTIL_TYPES.EMPTY,
+    categories: UTIL_TYPES.EMPTY
   };
   //function submit
   handlerSaveForm = () => {
@@ -249,7 +249,4 @@ const mapDispatchToProps = { getCustomer, getStatistic, openModal, closeModal };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CustomerDialog);
+export default connect(mapStateToProps, mapDispatchToProps)(CustomerDialog);

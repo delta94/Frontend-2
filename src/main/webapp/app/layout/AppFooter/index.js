@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react';
-import MegaMenuFooter from './Components/FooterMegaMenu';
-import FooterDots from './Components/FooterDots';
+import MegaMenuFooter from './components/FooterMegaMenu';
+import FooterDots from './components/FooterDots';
 
 class AppFooter extends React.Component {
     render() {

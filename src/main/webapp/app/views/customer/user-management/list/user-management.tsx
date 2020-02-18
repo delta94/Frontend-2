@@ -6,7 +6,7 @@ import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { openModal, closeModal } from 'app/actions/modal';
 import './user-management.scss';
-import { ITEMS_PER_PAGE, ACTIVE_PAGE } from 'app/constants/pagination.constants';
+import { ITEMS_PER_PAGE, ACTIVE_PAGE } from 'app/constants/pagination';
 import {
   getUser,
   exportFile,
@@ -31,7 +31,7 @@ import SweetAlert from 'sweetalert-react';
 import Loader from 'react-loader-advanced';
 import CreateUser from '../create/create';
 import $ from 'jquery';
-import { ISearchAdvanced } from 'app/common/model/group-attribute-customer';
+import { ISearchAdvanced } from 'app/common/models/group-attribute-customer';
 import FieldData from '../../group-attribute-customer/group-modal-config/field-data/field-data';
 import { makeRandomId } from '../../group-attribute-customer/group-modal-config/group-modal-config';
 import { OPERATOR } from 'app/constants/field-data';

@@ -6,21 +6,21 @@ import {
   updateInfoCampaign,
   resetListCloneVersion
 } from 'app/actions/campaign-managament';
-import { img_node, const_shape } from 'app/common/model/campaign-managament.model';
+import { img_node, const_shape } from 'app/common/models/campaign-managament.model';
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Button, Table, Row, Badge, Col, Breadcrumb, Card, Tag, Layout, Popover, Modal } from 'antd';
 import { Container, Collapse } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { IRootState } from 'app/reducers';
-import CustomNode from 'app/views/GGeditor/node/node';
-import CustomEdges from 'app/views/GGeditor/egdes/egdes';
+import CustomNode from 'app/views/ggeditor/node/node';
+import CustomEdges from 'app/views/ggeditor/egdes/egdes';
 import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { FlowDiagramEditor, GroupProcess } from 'app/views/GGeditor/flow-diagram-editor';
-import 'app/views/GGeditor/flow-diagram-editor/index.scss';
+import { FlowDiagramEditor, GroupProcess } from 'app/views/ggeditor/flow-diagram-editor';
+import 'app/views/ggeditor/flow-diagram-editor/index.scss';
 import { DiagramWidget, DiagramEngine } from 'storm-react-diagrams';
 import './create-campaign.scss';
 const { Panel } = Collapse;
@@ -36,7 +36,7 @@ const code_node = {
   TIMER: 'TIMER',
   TIMER_EVENT: 'TIMER_EVENT'
 };
-interface ICreateCampaignProps extends StateProps, DispatchProps { }
+interface ICreateCampaignProps extends StateProps, DispatchProps {}
 
 interface ICreateCampaignState {
   infoVersion: {
@@ -74,13 +74,16 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
       nodes: listDiagram.nodes,
       edges: listDiagram.edges
     });
-    this.editor.setNodeInfo(listDiagram.nodes && listDiagram.nodes.map(event => {
-      return {
-        id: event.id,
-        isActive: true
-      }
-    }))
-    this.editor.setReadOnly(true)
+    this.editor.setNodeInfo(
+      listDiagram.nodes &&
+        listDiagram.nodes.map(event => {
+          return {
+            id: event.id,
+            isActive: true
+          };
+        })
+    );
+    this.editor.setReadOnly(true);
   }
   componentDidMount = async () => {
     const { getTemplateCampaign, list_template } = this.props;
@@ -156,13 +159,16 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
       nodes: data.nodes,
       edges: data.edges
     });
-    diagram.setNodeInfo(data.nodes && data.nodes.map(event => {
-      return {
-        id: event.id,
-        isActive: true
-      }
-    }))
-    diagram.setReadOnly(true)
+    diagram.setNodeInfo(
+      data.nodes &&
+        data.nodes.map(event => {
+          return {
+            id: event.id,
+            isActive: true
+          };
+        })
+    );
+    diagram.setReadOnly(true);
 
     return <DiagramWidget className="srd-flow-canvas" diagramEngine={diagram.getDiagramEngine()} smartRouting={false} />;
   };
@@ -191,7 +197,7 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
   renderTemplate(item, index) {
     return (
       <Collapse isOpen={item.collapse}>
-        <Row >
+        <Row>
           <Col span={24}>
             <Card style={{ background: '#FBFBFB' }}>
               <Col span={18}>{this.renderDiagramWidget(this.editor.getDiagramData())}</Col>
@@ -208,14 +214,14 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
                     des: ''
                   };
                   await this.props.updateInfoCampaign(data);
-                  let inforVersion = { ...this.state.infoVersion, type: 'template' }
+                  let inforVersion = { ...this.state.infoVersion, type: 'template' };
                   await this.props.saveCampaignAutoVersion(inforVersion);
                   await this.props.resetListCloneVersion();
                   await window.location.assign(`#/flow`);
                 }}
               >
                 Chọn Template
-            </Button>
+              </Button>
             </Card>
           </Col>
         </Row>
@@ -269,7 +275,7 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
                 };
                 await this.props.updateInfoCampaign(data);
                 await this.props.getDiagramCampaign([]);
-                let inforVersion = { ...this.state.infoVersion, type: 'create' }
+                let inforVersion = { ...this.state.infoVersion, type: 'create' };
                 await this.props.saveCampaignAutoVersion(inforVersion);
                 await this.props.resetData();
                 await this.props.resetListCloneVersion();

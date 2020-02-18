@@ -8,7 +8,7 @@ import { getListEvoucher, getDetailEvoucher } from '../../../../../../../actions
 import { getNavigationReward } from 'app/actions/navigation-info';
 import Loader from 'react-loader-advanced';
 import LoaderAnim from 'react-loaders';
-import { ULTILS_TYPES } from '../../../../../../../constants/ultils';
+import { UTIL_TYPES } from '../../../../../../../constants/util';
 import { Translate } from 'react-jhipster';
 
 export interface VocherProps extends StateProps, DispatchProps {}
@@ -20,7 +20,7 @@ export interface VocherState {
 class Vocher extends React.Component<VocherProps, VocherState> {
   state: VocherState = {
     value: [],
-    displayTable: ULTILS_TYPES.DISPLAY_VOUCHER
+    displayTable: UTIL_TYPES.DISPLAY_VOUCHER
   };
   // init list evoucher
   componentDidMount() {
@@ -34,17 +34,17 @@ class Vocher extends React.Component<VocherProps, VocherState> {
     });
     if (data !== undefined) {
       this.setState({
-        displayTable: ULTILS_TYPES.EMPTY
+        displayTable: UTIL_TYPES.EMPTY
       });
     } else {
       this.setState({
-        displayTable: ULTILS_TYPES.DISPLAY_VOUCHER
+        displayTable: UTIL_TYPES.DISPLAY_VOUCHER
       });
     }
     //get value from voucher to select - reward component
     // call api get detail voucher
     this.props.getDetailEvoucher(data.id);
-    this.props.getNavigationReward({ type: parseInt(ULTILS_TYPES.SELECT_REWARD), voucherId: data.id });
+    this.props.getNavigationReward({ type: parseInt(UTIL_TYPES.SELECT_REWARD), voucherId: data.id });
   };
 
   render() {
@@ -120,7 +120,4 @@ const mapDispatchToProps = { getListEvoucher, getDetailEvoucher, getNavigationRe
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Vocher);
+export default connect(mapStateToProps, mapDispatchToProps)(Vocher);

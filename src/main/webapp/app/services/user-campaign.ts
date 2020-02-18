@@ -1,9 +1,9 @@
-import { ICampaignTestMailLanding } from './../common/model/campaign.model';
+import { ICampaignTestMailLanding } from '../common/models/campaign.model';
 import axios from 'axios';
-import { IUser } from 'app/common/model/user.model';
-import { ICategory } from 'app/common/model/category.model';
+import { IUser } from 'app/common/models/user.model';
+import { ICategory } from 'app/common/models/category.model';
 import { toast } from 'react-toastify';
-import { IListNewCustomer } from 'app/common/model/campaign-new-customer.model';
+import { IListNewCustomer } from 'app/common/models/campaign-new-customer.model';
 import categories from 'app/views/campaign/user-campaign/create/navigation/select-customer/customer-dialog/categories/categories';
 
 const apiUrl = 'v1/campaigns';

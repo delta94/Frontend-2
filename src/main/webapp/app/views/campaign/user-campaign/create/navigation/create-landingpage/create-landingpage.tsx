@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import './create-landingpage.scss';
 
 import { Card, Collapse, Button, CardTitle, CardBody, Modal, ModalBody, ModalFooter, ModalHeader, Alert } from 'reactstrap';
-import Dropdown from '../../../../../../layout/DropDown/Dropdown';
+import Dropdown from '../../../../../../layout/DropDown';
 import CKEditor from 'ckeditor4-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
@@ -14,10 +14,10 @@ import { getContentTemplate, getContentTemplateAsType } from '../../../../../../
 import { openModal } from '../../../../../../actions/modal';
 import { getNavigationContentTemplates } from 'app/actions/navigation-info';
 import PreviewLanding from './preview-landing/preview-landing';
-import { IParamester } from 'app/common/model/campaign-navigation.model';
+import { IParamester } from 'app/common/models/campaign-navigation.model';
 import { Translate } from 'react-jhipster';
 import { FORM_LANDING, TEMPLATE_ID } from 'app/constants/common';
-import CkeditorFixed from 'app/layout/ckeditor/CkeditorFixed';
+import CKEditorFixed from 'app/layout/CKEditorFixed';
 import { SUBJECT } from '../../../../../../constants/common';
 
 // export interface I
@@ -205,7 +205,7 @@ class CreateLandingPage extends React.PureComponent<ICreateLandingPageProps, ICr
                           />
                         </div>
                       </div>
-                      <CkeditorFixed id="editorLanding" data={defaultValueContent} type={FORM_LANDING} />
+                      <CKEditorFixed id="editorLanding" data={defaultValueContent} type={FORM_LANDING} />
                     </CardBody>
                   </Card>
                 </Collapse>
@@ -239,7 +239,4 @@ const mapDispatchToProps = {
   openModal
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CreateLandingPage);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateLandingPage);
