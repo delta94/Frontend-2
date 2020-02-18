@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import './create-content.scss';
-import Dropdown from '../../../../../../layouts/DropDown';
+import Dropdown from '../../../../../../layout/DropDown';
 
 import { Card, Collapse, Button, Input, CardTitle, CardBody, Form } from 'reactstrap';
 import { connect } from 'react-redux';
@@ -13,7 +13,7 @@ import { IRootState } from '../../../../../../reducers/index';
 import { Translate, translate } from 'react-jhipster';
 import { postTestMailLandingService } from 'app/services/user-campaign';
 import { INTRO_MAIL, REWARD_MAIL, EMAIL_EWARD, EMAIL_INTRO } from 'app/constants/common';
-import CKEditorFixed from 'app/layouts/CKEditorFixed';
+import CKEditorFixed from 'app/layout/CKEditorFixed';
 
 export interface ICreateTestMailEntity {
   emailTo?: string;

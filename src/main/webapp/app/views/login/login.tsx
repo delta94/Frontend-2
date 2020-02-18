@@ -5,7 +5,7 @@ import { Col, Row, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { IRootState } from 'app/reducers';
 import { login } from 'app/actions/auth';
 import './login.scss';
-import { hasAnyAuthority } from 'app/common/routes/private-route';
+import { hasAnyAuthority } from 'app/common/components/PrivateRoute';
 import { AUTHORITIES, messages } from 'app/config/constants';
 import { openModal, closeModal } from 'app/actions/modal';
 import LoaderAnim from 'react-loaders';

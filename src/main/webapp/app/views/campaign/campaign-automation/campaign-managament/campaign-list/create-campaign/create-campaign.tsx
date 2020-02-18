@@ -13,14 +13,14 @@ import { Button, Table, Row, Badge, Col, Breadcrumb, Card, Tag, Layout, Popover,
 import { Container, Collapse } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { IRootState } from 'app/reducers';
-import CustomNode from 'app/views/GGeditor/node/node';
-import CustomEdges from 'app/views/GGeditor/egdes/egdes';
+import CustomNode from 'app/views/ggeditor/node/node';
+import CustomEdges from 'app/views/ggeditor/egdes/egdes';
 import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { FlowDiagramEditor, GroupProcess } from 'app/views/GGeditor/flow-diagram-editor';
-import 'app/views/GGeditor/flow-diagram-editor/index.scss';
+import { FlowDiagramEditor, GroupProcess } from 'app/views/ggeditor/flow-diagram-editor';
+import 'app/views/ggeditor/flow-diagram-editor/index.scss';
 import { DiagramWidget, DiagramEngine } from 'storm-react-diagrams';
 import './create-campaign.scss';
 const { Panel } = Collapse;

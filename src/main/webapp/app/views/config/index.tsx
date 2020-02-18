@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
-import ErrorBoundaryRoute from 'app/common/routes/error-boundary-route';
-import AppHeader from 'app/layouts/AppHeader/';
-import AppSidebar from 'app/layouts/AppSidebar/';
-import PrivateRoute from '../../common/routes/private-route';
+import ErrorBoundaryRoute from 'app/common/components/ErrorBoundaryRoute';
+import AppHeader from 'app/layout/AppHeader/';
+import AppSidebar from 'app/layout/AppSidebar/';
+import PrivateRoute from '../../common/components/PrivateRoute';
 import EmailManagement from './email/email';
 import EmailForm from './email/form/email-form';
 import EmailTemplateManagement from './email-template/email-template';

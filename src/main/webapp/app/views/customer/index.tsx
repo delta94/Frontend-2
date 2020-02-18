@@ -1,12 +1,12 @@
 import React, { Fragment } from 'react';
 import CampaignManagement from '../campaign/user-campaign';
-import ErrorBoundaryRoute from 'app/common/routes/error-boundary-route';
+import ErrorBoundaryRoute from 'app/common/components/ErrorBoundaryRoute';
 import UserManagement from './user-management';
-import AppHeader from 'app/layouts/AppHeader/';
-import AppSidebar from 'app/layouts/AppSidebar/';
+import AppHeader from 'app/layout/AppHeader/';
+import AppSidebar from 'app/layout/AppSidebar/';
 import TagManagament from './tag-mangament/tag-mangament';
 import PropertiesCustomer from './properties-customer';
-import PrivateRoute from '../../common/routes/private-route';
+import PrivateRoute from '../../common/components/PrivateRoute';
 import GroupAttributeCustomer from './group-attribute-customer/group-atrribute-customer';
 // import CampaginAuto froapp/views/campaign/campaign-automation/list/campaign-automationion';
 

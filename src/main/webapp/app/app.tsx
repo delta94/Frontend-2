@@ -11,7 +11,7 @@ import { setLocale } from 'app/actions/locale';
 import { getSession } from 'app/actions/auth';
 
 import ErrorBoundary from 'app/common/components/ErrorBoundary';
-import { hasAnyAuthority } from 'app/common/routes/private-route';
+import { hasAnyAuthority } from 'app/common/components/PrivateRoute';
 import { AUTHORITIES } from 'app/config/constants';
 import AppRoutes from 'app/routes';
 const baseHref = document
@@ -22,8 +22,8 @@ const baseHref = document
 import cx from 'classnames';
 import ResizeDetector from 'react-resize-detector';
 // Layout
-import AppHeader from 'app/layouts/AppHeader/';
-import AppSidebar from 'app/layouts/AppSidebar/';
+import AppHeader from 'app/layout/AppHeader/';
+import AppSidebar from 'app/layout/AppSidebar/';
 
 export interface IAppProps extends StateProps, DispatchProps {}
 export interface IAppState {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch } from 'react-router-dom';
 
-import ErrorBoundaryRoute from 'app/common/routes/error-boundary-route';
+import ErrorBoundaryRoute from 'app/common/components/ErrorBoundaryRoute';
 import Infomation from './infomation/infomation';
 import UserManagement from './list/user-management';
 import UserDetail from 'app/views/customer/user-management/import/detail/detail';

@@ -3,8 +3,8 @@ import { Switch } from 'react-router-dom';
 import ListProp from './list/properties-customer';
 import Delete from './delete/delete';
 import Edit from './edit/edit';
-import ErrorBoundaryRoute from 'app/common/routes/error-boundary-route';
-import PrivateRoute from '../../../common/routes/private-route';
+import ErrorBoundaryRoute from 'app/common/components/ErrorBoundaryRoute';
+import PrivateRoute from '../../../common/components/PrivateRoute';
 
 //todo rename cho router
 const Routes = ({ match }) => (

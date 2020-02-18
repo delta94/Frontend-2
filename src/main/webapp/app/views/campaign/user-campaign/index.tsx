@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react';
 import { Switch } from 'react-router-dom';
 import CampaignManagement from './list/campaign-management';
-import PrivateRoute from '../../../common/routes/private-route';
+import PrivateRoute from '../../../common/components/PrivateRoute';
 import CreateCampagin from './create/create';
-import AppHeader from 'app/layouts/AppHeader/';
-import AppSidebar from 'app/layouts/AppSidebar/';
-import ErrorBoundaryRoute from 'app/common/routes/error-boundary-route';
+import AppHeader from 'app/layout/AppHeader/';
+import AppSidebar from 'app/layout/AppSidebar/';
+import ErrorBoundaryRoute from 'app/common/components/ErrorBoundaryRoute';
 
 const Routes = ({ match }) => (
   <>

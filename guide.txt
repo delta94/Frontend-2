@@ -9,9 +9,9 @@ views => campaign => index.tsx => Fragment: khai báo
     <ErrorBoundaryRoute path={`${match.url}`} exact={true} component={CampaignAuto} />
     <ErrorBoundaryRoute path={`${match.url}/user-campaign`} exact={true} component={UserCampaign} />
 
-    <ErrorBoundaryRoute path={`${match.url}/campaign-managament`} exact={true} component={CampaginManagament} />
+    <ErrorBoundaryRoute path={`${match.url}/campaign-managament`} exact={true} component={CampaignManagement} />
 
-    <PrivateRoute path={`${match.url}`} exact={true} component={CampaginManagament} />
+    <PrivateRoute path={`${match.url}`} exact={true} component={CampaignManagement} />
     <PrivateRoute path={`${match.url}/user-campaign`} exact={true} component={UserCampaign} />
 </Fragment>
 
