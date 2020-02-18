@@ -102,18 +102,8 @@ module.exports = options => ({
         NODE_ENV: `'${options.env}'`,
         BUILD_TIMESTAMP: `'${new Date().getTime()}'`,
         // VERSION: `'${utils.parseVersion()}'`,
-        DEBUG_INFO_ENABLED: options.env === 'development',
-        // The root URL for API calls, ending with a '/' - for example: `"https://www.jhipster.tech:8081/myservice/"`.
-        // If this URL is left empty (""), then it will be relative to the current context.
-        // If you use an API serv
-        //er, in `prod` mode, you will need to enable CORS
-        // (see the `jhipster.cors` common JHipster property in the `application-*.yml` configurations)
-        // SERVER_API_URL: options.env === 'development' ? `'http://interview-test.topica.vn:8080/'` : `'http://interview.topica.vn:8080/'`
-        // SERVER_API_URL: `'http://127.0.0.1:8088/'`
-        SERVER_API_URL: `'http://171.244.40.91:8088/'`
-        // SERVER_API_URL: options.env === 'development' ? `'http://5d521fdf3432e70014e6b5ae.mockapi.io/'` : `'http://5d521fdf3432e70014e6b5ae.mockapi.io/'`
-        // SERVER_API_URL: `'http://192.168.1.63:8088/'`
-        // SERVER_API_URL: `''`
+        DEBUG_INFO_ENABLED: options.env !== 'production',
+        SERVER_API_URL: options.env === 'production' ? `'http://api.izziplatform.com/'` : `'http://171.244.40.91:8088/'`
       }
     }),
     new ForkTsCheckerWebpackPlugin({ tslint: true }),
