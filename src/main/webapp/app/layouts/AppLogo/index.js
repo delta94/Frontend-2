@@ -9,7 +9,7 @@ import {
     setEnableClosedSidebar,
     setEnableMobileMenu,
     setEnableMobileMenuSmall,
-} from 'app/actions/theme-option';
+} from 'app/actions/theme-options';
 
 class AppLogo extends React.Component {
     constructor(props) {

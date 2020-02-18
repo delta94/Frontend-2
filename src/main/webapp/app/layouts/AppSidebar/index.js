@@ -12,7 +12,7 @@ import AppLogo from '../AppLogo';
 
 import {
     setEnableMobileMenu
-} from 'app/actions/theme-option';
+} from 'app/actions/theme-options';
 
 class AppSidebar extends Component {
 
