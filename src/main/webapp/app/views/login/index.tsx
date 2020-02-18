@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import ErrorBoundaryRoute from 'app/common/error/error-boundary-route';
+import ErrorBoundaryRoute from 'app/common/routes/error-boundary-route';
 import Login from './login';
 import Logout from './logout';
 

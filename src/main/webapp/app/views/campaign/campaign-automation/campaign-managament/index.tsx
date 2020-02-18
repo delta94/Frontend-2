@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
-import ErrorBoundaryRoute from 'app/common/error/error-boundary-route';
+import ErrorBoundaryRoute from 'app/common/routes/error-boundary-route';
 import CampaginManagament from './campaign-managament';
-import PrivateRoute from '../../../../common/auth/private-route';
+import PrivateRoute from '../../../../common/routes/private-route';
 import CreateCampaign from './campaign-list/create-campaign/create-campaign';
 import VersionList from './campaign-list/version-list/version-list';
 

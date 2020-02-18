@@ -17,7 +17,7 @@ import {
   getFindCustomerWithConditionAction,
   getListCustomerWithGroupIdDataAction
 } from '../../../../actions/group-attribute-customer';
-import { ISearchAdvanced } from 'app/common/model/group-attribute-customer';
+import { ISearchAdvanced } from 'app/common/models/group-attribute-customer';
 import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import { openModal } from '../../../../actions/modal';
@@ -43,7 +43,7 @@ interface IAdvancedSearchesData {
 interface IComponentData {
   id: string;
   name?: string;
-   last_index: boolean;
+  last_index: boolean;
   default_data?: ISearchAdvanced;
 }
 
@@ -343,21 +343,20 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
     let list_field_render =
       list_field_data_cpn && list_field_data_cpn.length > 0
         ? list_field_data_cpn.map(item => {
-            if (item.id)
-            console.log(item)
-              return (
-                <FieldData
-                  type_modal={type_modal}
-                  key={item.id}
-                  id={item.id}
-                  last_index={item.last_index}
-                  logicalOperator={logicalOperator}
-                  default_data={item.default_data}
-                  updateValueFromState={this.updateValueFromState}
-                  deleteComponentById={this.deleteComponentById}
-                  updateRelationshipFromState={this.updateRelationshipFromState}
-                />
-              );
+            if (item.id) console.log(item);
+            return (
+              <FieldData
+                type_modal={type_modal}
+                key={item.id}
+                id={item.id}
+                last_index={item.last_index}
+                logicalOperator={logicalOperator}
+                default_data={item.default_data}
+                updateValueFromState={this.updateValueFromState}
+                deleteComponentById={this.deleteComponentById}
+                updateRelationshipFromState={this.updateRelationshipFromState}
+              />
+            );
           })
         : [];
 
@@ -564,7 +563,4 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(GroupModalConfig);
+export default connect(mapStateToProps, mapDispatchToProps)(GroupModalConfig);

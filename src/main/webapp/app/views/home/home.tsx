@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { Row, Col, Alert } from 'reactstrap';
 
 import { IRootState } from 'app/reducers';
-import { getSession } from 'app/actions/authentication';
+import { getSession } from 'app/actions/auth';
 
 export interface IHomeProp extends StateProps, DispatchProps {}
 
@@ -41,7 +41,4 @@ const mapDispatchToProps = { getSession };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

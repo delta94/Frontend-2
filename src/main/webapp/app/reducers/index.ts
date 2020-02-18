@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import { loadingBarReducer as loadingBar } from 'react-redux-loading-bar';
 
 import locale, { LocaleState } from './locale';
-import authentication, { AuthenticationState } from './authentication';
+import authentication, { AuthenticationState } from './auth';
 // import applicationProfile, { ApplicationProfileState } from './application-profile';
 import userManagement, { UserManagementState } from './user-management';
 import userCampaign, { UserCampaignState } from './user-campaign';
@@ -17,7 +17,7 @@ import propertiesState, { PropertiesDataState } from './properties-customer';
 import groupCustomerState, { GroupCustomerState } from './group-attribute-customer';
 import cjTagState, { CjTagState } from './cj-tag';
 import cjState, { CjState } from './cj';
-import emailConfigState, { EmailConfigState } from './email-config'
+import emailConfigState, { EmailConfigState } from './email-config';
 
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 

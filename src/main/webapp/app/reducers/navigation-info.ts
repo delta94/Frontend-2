@@ -1,6 +1,6 @@
-import { ULTILS_TYPES } from './../constants/ultils';
+import { UTIL_TYPES } from '../constants/util';
 import { NAVIGATION_INFO } from './../constants/navigation-info';
-import { ISaveDataCampain } from './../common/model/campaign-navigation.model';
+import { ISaveDataCampain } from '../common/models/campaign-navigation.model';
 import { FORM_LANDING, REWARD_MAIL, INTRO_MAIL } from 'app/constants/common';
 
 const initialState: ISaveDataCampain = {
@@ -10,7 +10,7 @@ const initialState: ISaveDataCampain = {
   toDate: '',
   description: '',
   customerCampaigns: [],
-  reward: { type: parseInt(ULTILS_TYPES.NO_SELECT_REWARD, 0), voucherId: null },
+  reward: { type: parseInt(UTIL_TYPES.NO_SELECT_REWARD, 0), voucherId: null },
   contentTemplates: [
     {
       subject: '',

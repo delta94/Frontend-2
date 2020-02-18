@@ -3,13 +3,13 @@ import { IRootState } from 'app/reducers';
 import { connect } from 'react-redux';
 import { getEmailTest, testCampaign } from 'app/actions/campaign-managament';
 import { Row, Col, Checkbox, Input, Button, Layout, Icon, Select, notification, Modal } from 'antd';
-import { code_node, img_node, const_shape } from 'app/common/model/campaign-managament.model';
+import { code_node, img_node, const_shape } from 'app/common/models/campaign-managament.model';
 const { Sider } = Layout;
 const { Option } = Select;
 const { confirm } = Modal;
 interface ISiderTestProps extends StateProps, DispatchProps {
-  toogle: Function,
-  isCloseSider: boolean
+  toogle: Function;
+  isCloseSider: boolean;
 }
 interface ISiderTestState {
   collapsed: boolean;
@@ -191,7 +191,12 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
       emailTest: isCheckEmail ? email : '',
       mobileTest: isCheckPhone ? phone : '',
       customer: customer[0],
-      nodeMetaData: nodeMetaData.length > 0 ? nodeMetaData : Object.keys(list_clone_version).length > 0 ? list_clone_version.flowDetail.nodeMetaData : [],
+      nodeMetaData:
+        nodeMetaData.length > 0
+          ? nodeMetaData
+          : Object.keys(list_clone_version).length > 0
+          ? list_clone_version.flowDetail.nodeMetaData
+          : [],
       graph
     };
     localStorage.setItem('isActive', 'true');
@@ -206,41 +211,39 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
             description: 'Hệ thống thực hiện test thành công, vui lòng kiểm tra email hoặc tin nhắn hoặc số điện thoại để xem kết quả'
           });
         },
-        onCancel() {
-        },
-        okText: "Xác nhận",
-        cancelText: "Hủy"
+        onCancel() {},
+        okText: 'Xác nhận',
+        cancelText: 'Hủy'
       });
-
     }
   };
   checkValidate(): boolean {
     let { isCheckCustomer, isCheckEmail, isCheckPhone, customer, email, phone } = this.state;
-    let count: number = 0
-    let result: boolean = true
+    let count: number = 0;
+    let result: boolean = true;
     let vnfont = /((09|03|07|08|05)+([0-9]{8})$)/g;
     if (!vnfont.test(String(phone)) && isCheckPhone) {
       count++;
-      this.setState({ error_phone: "* Vui lòng nhập đúng dịnh dạng số điện thoại" })
+      this.setState({ error_phone: '* Vui lòng nhập đúng dịnh dạng số điện thoại' });
     } else {
-      this.setState({ error_phone: "" })
+      this.setState({ error_phone: '' });
     }
     if (!email && isCheckEmail) {
-      count++
-      this.setState({ error_mail: "* Vui lòng chọn email" })
+      count++;
+      this.setState({ error_mail: '* Vui lòng chọn email' });
     } else {
-      this.setState({ error_mail: "" })
+      this.setState({ error_mail: '' });
     }
     if (Object.keys(customer).length === 0) {
-      count++
-      this.setState({ error_customer: "* Vui lòng chọn khách hàng" })
+      count++;
+      this.setState({ error_customer: '* Vui lòng chọn khách hàng' });
     } else {
-      this.setState({ error_customer: "" })
+      this.setState({ error_customer: '' });
     }
     if (count > 0) {
-      result = false
+      result = false;
     }
-    return result
+    return result;
   }
 
   render() {
@@ -255,22 +258,22 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
           </label>
           {collapsed ? (
             <Icon
-              style={{ fontSize: "20px" }}
+              style={{ fontSize: '20px' }}
               type="close-circle"
               onClick={() => {
-                this.props.toogle(false)
+                this.props.toogle(false);
               }}
             />
           ) : (
-              <Icon
-                style={{ fontSize: "20px" }}
-                type="close-circle"
-                onClick={() => {
-                  this.props.toogle(false)
-                }}
-                className="icon-collapse"
-              />
-            )}
+            <Icon
+              style={{ fontSize: '20px' }}
+              type="close-circle"
+              onClick={() => {
+                this.props.toogle(false);
+              }}
+              className="icon-collapse"
+            />
+          )}
         </div>
         <hr />
         <div className="logo" style={{ display: collapsed ? 'none' : 'block' }}>
@@ -291,7 +294,10 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
                   })}
               </Select>
             </Col>
-            <p className="error" style={{ color: "red", marginLeft: "4%" }}> {this.state.error_customer}</p>
+            <p className="error" style={{ color: 'red', marginLeft: '4%' }}>
+              {' '}
+              {this.state.error_customer}
+            </p>
           </Row>
           <Row style={{ marginBottom: '6%' }}>
             <Col span={24}>
@@ -313,7 +319,10 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
                   })}
               </Select>
             </Col>
-            <p className="error" style={{ color: "red", marginLeft: "4%" }}> {this.state.error_mail}</p>
+            <p className="error" style={{ color: 'red', marginLeft: '4%' }}>
+              {' '}
+              {this.state.error_mail}
+            </p>
           </Row>
           <Row style={{ marginBottom: '6%' }}>
             <Col span={24}>
@@ -326,7 +335,10 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
               {' '}
               <Input maxLength={11} style={{ width: '92%' }} onChange={event => this.handleChange(event, constantEvent.PHONE)} />
             </Col>
-            <p className="error" style={{ color: "red", marginLeft: "4%" }}> {this.state.error_phone}</p>
+            <p className="error" style={{ color: 'red', marginLeft: '4%' }}>
+              {' '}
+              {this.state.error_phone}
+            </p>
           </Row>
           <Button onClick={this.testProcess} className="btn-test" type="primary">
             Test

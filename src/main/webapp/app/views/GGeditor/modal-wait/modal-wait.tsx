@@ -5,7 +5,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { Button, Row, Col, Input, Select, InputNumber } from 'antd';
 import { getDiagramCampaign, validateCampaign } from 'app/actions/campaign-managament';
 import './modal-wait.scss';
-import { code_node } from 'app/common/model/campaign-managament.model';
+import { code_node } from 'app/common/models/campaign-managament.model';
 import { CHARACTER_NUMBER, CHARACTER_TIME } from '../modal-wait-for-event/constant-modal-wait';
 import { Translate, translate } from 'react-jhipster';
 
@@ -220,7 +220,9 @@ export class ModalTimeWait extends React.Component<IModalTimeWaitProps, IModalTi
           <Row>
             <Row>
               <Col span={3}>
-                <label className="text-event-wait" style={{ marginLeft: '10px' }}>#</label>
+                <label className="text-event-wait" style={{ marginLeft: '10px' }}>
+                  #
+                </label>
               </Col>
               <Col span={21}>
                 <Col span={12}>

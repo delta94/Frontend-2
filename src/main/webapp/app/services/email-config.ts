@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { authHeaders } from './header';
-import { IEmailSave } from 'app/common/model/email-config.model';
+import { IEmailSave } from 'app/common/models/email-config.model';
 const customEmailUrl = 'v1/custom-emails';
 const contentParamUrl = 'v1/content-param';
 const contentUrl = 'v1/contents';

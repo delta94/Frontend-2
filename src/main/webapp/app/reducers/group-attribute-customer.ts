@@ -1,10 +1,10 @@
 import { ITags } from './tag-management';
 import { IOpenModal } from './modal';
-import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
+import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-types';
 import { CUSTOMER_GROUP_ATTRIBUTE } from '../constants/group-atrribute-customer';
 import { ERROR } from '../constants/common';
-import { IListFieldData, IDataCustomer } from 'app/common/model/group-attribute-customer';
-import { IDataCustomerCondition, ISearchAdvanced } from '../common/model/group-attribute-customer';
+import { IListFieldData, IDataCustomer } from 'app/common/models/group-attribute-customer';
+import { IDataCustomerCondition, ISearchAdvanced } from '../common/models/group-attribute-customer';
 import { string } from 'prop-types';
 import { MODAL_ACTION } from '../constants/modal';
 

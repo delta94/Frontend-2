@@ -11,7 +11,7 @@ import 'react-dates/lib/css/_datepicker.css';
 import moment, { Moment } from 'moment';
 import { DateRangePicker } from 'react-dates';
 import Script from './scripts/script';
-import { ULTILS_TYPES } from '../../../../../constants/ultils';
+import { UTIL_TYPES } from '../../../../../constants/util';
 import { getNavigationFromDate, getNavigationToDate, getNavigationName, getNavigationDescription } from 'app/actions/navigation-info';
 import CalendarWeek from 'react-dates/lib/components/CalendarWeek';
 
@@ -41,14 +41,14 @@ export interface IinfoPropsState {
 export class Info extends React.Component<IinfoProps, IinfoPropsState> {
   state: IinfoPropsState = {
     // set style class table default
-    disableScreen: ULTILS_TYPES.EMPTY,
-    displayTable: ULTILS_TYPES.DISPLAY_TABLE,
-    showNameScripts: ULTILS_TYPES.EMPTY,
+    disableScreen: UTIL_TYPES.EMPTY,
+    displayTable: UTIL_TYPES.DISPLAY_TABLE,
+    showNameScripts: UTIL_TYPES.EMPTY,
 
     // set default value info
     valueName: '',
-    valueDay: ULTILS_TYPES.EMPTY,
-    valueDes: ULTILS_TYPES.EMPTY,
+    valueDay: UTIL_TYPES.EMPTY,
+    valueDes: UTIL_TYPES.EMPTY,
 
     // set default date & time
     startDate: moment(new Date()),
@@ -84,14 +84,14 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
   onClick = (event, id) => {
     if (event !== null) {
       this.setState({
-        displayTable: ULTILS_TYPES.EMPTY,
+        displayTable: UTIL_TYPES.EMPTY,
         showNameScripts: event
       });
 
       this.props.onClick(id);
     } else {
       this.setState({
-        displayTable: ULTILS_TYPES.DISPLAY_TABLE
+        displayTable: UTIL_TYPES.DISPLAY_TABLE
       });
     }
   };
@@ -133,7 +133,7 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
                       <Input
                         type="text"
                         value={valueName}
-                        placeholder={ULTILS_TYPES.PLACEHODER_NAME}
+                        placeholder={UTIL_TYPES.PLACEHODER_NAME}
                         onChange={this.onChangeName}
                         maxLength="160"
                       />
@@ -180,7 +180,7 @@ export class Info extends React.Component<IinfoProps, IinfoPropsState> {
                     <div style={{ display: showNameScripts && showNameScripts !== '' ? 'block' : 'none' }}>
                       <div className="chose-campain">
                         <label className="camp-title-click"> {showNameScripts}</label>
-                        <img className="image-tites" src={ULTILS_TYPES.LINK_IMAGE} />
+                        <img className="image-tites" src={UTIL_TYPES.LINK_IMAGE} />
                       </div>
                     </div>
                   </Col>
@@ -236,7 +236,4 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Info);
+export default connect(mapStateToProps, mapDispatchToProps)(Info);

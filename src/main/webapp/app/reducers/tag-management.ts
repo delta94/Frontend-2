@@ -1,6 +1,6 @@
 import { ITags } from './tag-management';
 import { IOpenModal } from './modal';
-import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
+import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-types';
 import { TAG_MANAGEMENT } from '../constants/tag-management';
 import { ERROR } from '../constants/common';
 import { MODAL_ACTION } from '../constants/modal';

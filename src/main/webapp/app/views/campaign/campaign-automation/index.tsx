@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react';
-import ErrorBoundaryRoute from 'app/common/error/error-boundary-route';
-import AppHeader from 'app/layout/AppHeader/';
-import AppSidebar from 'app/layout/AppSidebar/';
+import ErrorBoundaryRoute from 'app/common/routes/error-boundary-route';
+import AppHeader from 'app/layouts/AppHeader/';
+import AppSidebar from 'app/layouts/AppSidebar/';
 import CampaginAuto from './list/campaign-automation';
-import PrivateRoute from '../../../common/auth/private-route';
+import PrivateRoute from '../../../common/routes/private-route';
 
 const Routes = ({ match }) => (
   <Fragment>

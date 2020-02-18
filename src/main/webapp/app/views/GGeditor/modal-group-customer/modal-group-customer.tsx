@@ -23,7 +23,7 @@ import {
   getListCustomerGroupDataAction,
   postUpdateCustomerGroupAction
 } from 'app/actions/group-attribute-customer';
-import { ISearchAdvanced } from 'app/common/model/group-attribute-customer';
+import { ISearchAdvanced } from 'app/common/models/group-attribute-customer';
 import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import { openModal, closeModal } from 'app/actions/modal';
@@ -110,11 +110,10 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
   };
 
   strToDate(dtStr) {
-    let dateParts = dtStr.split("-");
-    let timeParts = dateParts[2].split(" ")[1].split(":");
-    dateParts[2] = dateParts[2].split(" ")[0];
+    let dateParts = dtStr.split('-');
+    let timeParts = dateParts[2].split(' ')[1].split(':');
+    dateParts[2] = dateParts[2].split(' ')[0];
     return new Date(+dateParts[0], dateParts[1] - 1, +dateParts[2], timeParts[0], timeParts[1], timeParts[2]);
-
   }
 
   componentDidMount() {
@@ -427,7 +426,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
           onOk: async () => {
             this.props.toggle(false, this.state.categoryName + ',' + this.state.dateTime, customerAdvancedSave, true);
           },
-          onCancel() { },
+          onCancel() {},
           okText: 'Xác nhận',
           cancelText: 'Hủy'
         });
@@ -451,8 +450,8 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
     return result;
   };
   save = () => {
-    debugger
-    const { totalElements,openModal } = this.props;
+    debugger;
+    const { totalElements, openModal } = this.props;
     if (totalElements > 0) {
       this.execFunctionRequest();
     } else {
@@ -479,27 +478,27 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
       modalState
     } = this.props;
 
-    console.log('ddddddddddssbgnfhdhdh',modalState)
+    console.log('ddddddddddssbgnfhdhdh', modalState);
 
     let { list_field_data_cpn, logicalOperator, advancedSearches, categoryName, pageIndex } = this.state;
     let list_field_render =
       list_field_data_cpn && list_field_data_cpn.length > 0
         ? list_field_data_cpn.map(item => {
-          if (item.id)
-            return (
-              <FieldData
-                type_modal={type_modal}
-                key={item.id}
-                id={item.id}
-                last_index={item.last_index}
-                logicalOperator={logicalOperator}
-                default_data={item.default_data}
-                updateValueFromState={this.updateValueFromState}
-                deleteComponentById={this.deleteComponentById}
-                updateRelationshipFromState={this.updateRelationshipFromState}
-              />
-            );
-        })
+            if (item.id)
+              return (
+                <FieldData
+                  type_modal={type_modal}
+                  key={item.id}
+                  id={item.id}
+                  last_index={item.last_index}
+                  logicalOperator={logicalOperator}
+                  default_data={item.default_data}
+                  updateValueFromState={this.updateValueFromState}
+                  deleteComponentById={this.deleteComponentById}
+                  updateRelationshipFromState={this.updateRelationshipFromState}
+                />
+              );
+          })
         : [];
 
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
@@ -547,7 +546,6 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
         ]}
       >
         <div className="group-modal-config">
-
           <SweetAlert
             title={modalState.title ? modalState.title : 'No title'}
             confirmButtonColor=""
@@ -681,12 +679,12 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
                         );
                       })
                     ) : (
-                        <tr>
-                          <td className="none-data" colSpan={100}>
-                            <Translate contentKey="group-attribute-customer.none-data-list-customer" />
-                          </td>
-                        </tr>
-                      )}
+                      <tr>
+                        <td className="none-data" colSpan={100}>
+                          <Translate contentKey="group-attribute-customer.none-data-list-customer" />
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </Table>
               </div>

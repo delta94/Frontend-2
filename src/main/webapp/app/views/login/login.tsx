@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { Redirect, RouteComponentProps } from 'react-router-dom';
 import { Col, Row, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { IRootState } from 'app/reducers';
-import { login } from 'app/actions/authentication';
+import { login } from 'app/actions/auth';
 import './login.scss';
-import { hasAnyAuthority } from 'app/common/auth/private-route';
+import { hasAnyAuthority } from 'app/common/routes/private-route';
 import { AUTHORITIES, messages } from 'app/config/constants';
 import { openModal, closeModal } from 'app/actions/modal';
 import LoaderAnim from 'react-loaders';
@@ -261,7 +261,4 @@ const mapDispatchToProps = { login, openModal, closeModal };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

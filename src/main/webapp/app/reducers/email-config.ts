@@ -1,6 +1,6 @@
 import { EMAIL_CONFIG } from '../constants/email-config';
-import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
-import { IEmailData, IEmail, IEmailTemplateData } from 'app/common/model/email-config.model';
+import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-types';
+import { IEmailData, IEmail, IEmailTemplateData } from 'app/common/models/email-config.model';
 import { IOpenModal } from './modal';
 import { ERROR } from '../constants/common';
 import { MODAL_ACTION } from '../constants/modal';

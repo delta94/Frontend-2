@@ -5,8 +5,18 @@ import { validateCampaign } from 'app/actions/campaign-managament';
 import { IRootState } from 'app/reducers';
 import { openModal, closeModal } from 'app/actions/modal';
 import './index.scss';
-import { FlowDiagramEditor, TrayItemWidget, ContactSourceStartNodeModel, EventSourceStartNodeModel, SmsProcessNodeModel, EmailProcessNodeModel, TimeWaitingDecisionNodeModel, EventWaitingDecisionNodeModel, ConditionDecisionNodeModel } from '../flow-diagram-editor';
-import { code_node } from 'app/common/model/campaign-managament.model';
+import {
+  FlowDiagramEditor,
+  TrayItemWidget,
+  ContactSourceStartNodeModel,
+  EventSourceStartNodeModel,
+  SmsProcessNodeModel,
+  EmailProcessNodeModel,
+  TimeWaitingDecisionNodeModel,
+  EventWaitingDecisionNodeModel,
+  ConditionDecisionNodeModel
+} from '../flow-diagram-editor';
+import { code_node } from 'app/common/models/campaign-managament.model';
 
 const { Panel } = Collapse;
 
@@ -38,26 +48,27 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
   getParam(type) {
     switch (type) {
       case code_node.SOURCE:
-        return ContactSourceStartNodeModel.TYPE
+        return ContactSourceStartNodeModel.TYPE;
       case code_node.EVENT:
-        return EventSourceStartNodeModel.TYPE
+        return EventSourceStartNodeModel.TYPE;
       case code_node.SEND_MAIL:
-        return EmailProcessNodeModel.TYPE
+        return EmailProcessNodeModel.TYPE;
       case code_node.SEND_SMS:
-        return SmsProcessNodeModel.TYPE
+        return SmsProcessNodeModel.TYPE;
       case code_node.TIMER:
-        return TimeWaitingDecisionNodeModel.TYPE
+        return TimeWaitingDecisionNodeModel.TYPE;
       case code_node.TIMER_EVENT:
-        return EventWaitingDecisionNodeModel.TYPE
+        return EventWaitingDecisionNodeModel.TYPE;
       case code_node.GATEWAY:
-        return ConditionDecisionNodeModel.TYPE
+        return ConditionDecisionNodeModel.TYPE;
     }
   }
 
   validate = () => {
     const { list_validate } = this.props;
-    let result = (
-      list_validate && list_validate.map((item, index) => {
+    let result =
+      list_validate &&
+      list_validate.map((item, index) => {
         return (
           <Row className="row" key={index}>
             <Col span={24}>
@@ -65,14 +76,21 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
               <div>
                 <label>{item.label}</label>
               </div>
-              {item.errors && item.errors.map(event => { return <div className="not-config">{event}<br/></div> })}
+              {item.errors &&
+                item.errors.map(event => {
+                  return (
+                    <div className="not-config">
+                      {event}
+                      <br />
+                    </div>
+                  );
+                })}
             </Col>
           </Row>
-        )
-      })
-    )
-    return result
-  }
+        );
+      });
+    return result;
+  };
 
   showComplete = () => {
     localStorage.setItem('isSave', 'true');
@@ -80,13 +98,11 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
   };
 
   render() {
-
     return (
       <Fragment>
         <Collapse className="validate-main" bordered={false} defaultActiveKey={['1']} expandIconPosition="right">
           <Panel header="" key="1">
-            {
-              this.validate().length > 0 ? this.validate() : this.showComplete()}
+            {this.validate().length > 0 ? this.validate() : this.showComplete()}
           </Panel>
         </Collapse>
       </Fragment>

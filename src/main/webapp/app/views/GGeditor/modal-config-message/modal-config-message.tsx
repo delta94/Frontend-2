@@ -8,7 +8,7 @@ import { Button, Row, Col, Input, Select } from 'antd';
 import { updateInfoCampaign } from 'app/actions/campaign-managament';
 import './modal-config-message.scss';
 import { translate, Translate } from 'react-jhipster';
-import { code_node } from 'app/common/model/campaign-managament.model';
+import { code_node } from 'app/common/models/campaign-managament.model';
 
 const { TextArea } = Input;
 const { Option } = Select;

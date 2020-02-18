@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { IRootState } from 'app/reducers';
-import { logout } from 'app/actions/authentication';
+import { logout } from 'app/actions/auth';
 import { Redirect } from 'react-router';
 
 export interface ILogoutProps extends StateProps, DispatchProps {
@@ -44,7 +44,4 @@ const mapDispatchToProps = { logout };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Logout);
+export default connect(mapStateToProps, mapDispatchToProps)(Logout);

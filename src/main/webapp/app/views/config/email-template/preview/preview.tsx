@@ -4,9 +4,9 @@ import './preview.scss';
 import { connect } from 'react-redux';
 import { Col, Row, Button, Container } from 'reactstrap';
 import { IRootState } from 'app/reducers';
-import { IContentParams } from 'app/common/model/email-config.model';
+import { IContentParams } from 'app/common/models/email-config.model';
 
-export interface IPreviewLandingProps extends StateProps, DispatchProps { }
+export interface IPreviewLandingProps extends StateProps, DispatchProps {}
 
 export interface IPreviewLandingProps {
   htmlDOM?: string;
@@ -18,7 +18,7 @@ export interface IPreviewLandingProps {
 interface IPreviewLandingState {
   styleForDOM?: string;
   scriptDOM?: string;
-  showMobile: boolean
+  showMobile: boolean;
 }
 
 class PreviewEmailLanding extends React.PureComponent<IPreviewLandingProps, IPreviewLandingState> {
@@ -31,7 +31,6 @@ class PreviewEmailLanding extends React.PureComponent<IPreviewLandingProps, IPre
     scriptDOM: 'function test(){alert("test")}',
     showMobile: false
   };
-
 
   escapeRegExp = string => {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -59,36 +58,34 @@ class PreviewEmailLanding extends React.PureComponent<IPreviewLandingProps, IPre
   }
 
   render() {
-    let { showMobile } = this.state
+    let { showMobile } = this.state;
     return (
       <Container>
         <Row>
-          <Col sm="12" md={{ size: 6, offset: 3 }} style={{ textAlign: "center" }}>
-            <Button color="none" style={{ fontSize: "24px" }} onClick={() => this.setState({ showMobile: false })}>
-              <i className="pe-7s-monitor"> </i></Button>
-            <Button color="none" style={{ fontSize: "24px" }} onClick={() => this.setState({ showMobile: true })}>
-              <i className="pe-7s-phone"> </i></Button>
+          <Col sm="12" md={{ size: 6, offset: 3 }} style={{ textAlign: 'center' }}>
+            <Button color="none" style={{ fontSize: '24px' }} onClick={() => this.setState({ showMobile: false })}>
+              <i className="pe-7s-monitor"> </i>
+            </Button>
+            <Button color="none" style={{ fontSize: '24px' }} onClick={() => this.setState({ showMobile: true })}>
+              <i className="pe-7s-phone"> </i>
+            </Button>
           </Col>
         </Row>
         <Row>
-          <Col sm={showMobile ? "12" : ""} xs={12} md={showMobile ? { size: 6, offset: 3 } : ''}>
+          <Col sm={showMobile ? '12' : ''} xs={12} md={showMobile ? { size: 6, offset: 3 } : ''}>
             <iframe id="fred" width="100%" height="500px" />
           </Col>
         </Row>
       </Container>
-    )
-
+    );
   }
 }
 
-const mapStateToProps = ({ }: IRootState) => ({
-});
+const mapStateToProps = ({}: IRootState) => ({});
 
-const mapDispatchToProps = {
-};
+const mapDispatchToProps = {};
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-)(PreviewEmailLanding);
+export default connect()(PreviewEmailLanding);

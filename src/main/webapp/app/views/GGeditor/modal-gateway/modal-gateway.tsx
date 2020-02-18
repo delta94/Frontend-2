@@ -9,12 +9,12 @@ import { Input, Card, Modal, Col, InputNumber, Select } from 'antd';
 // import TagModal from "../tag-modal/tag-modal";
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
 import FieldData from '../modal-group-customer/field-data/field-data';
-import { ISearchAdvanced } from 'app/common/model/group-attribute-customer';
+import { ISearchAdvanced } from 'app/common/models/group-attribute-customer';
 import { validateCampaign } from 'app/actions/campaign-managament';
 import LoaderAnim from 'react-loaders';
 import { openModal } from 'app/actions/modal';
 import { OPERATOR } from 'app/constants/field-data';
-import { code_node } from 'app/common/model/campaign-managament.model';
+import { code_node } from 'app/common/models/campaign-managament.model';
 
 interface IModalGateWayProps extends StateProps, DispatchProps {
   is_show: boolean;

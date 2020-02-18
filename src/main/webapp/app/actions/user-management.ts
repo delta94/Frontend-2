@@ -3,9 +3,9 @@ import { getFindCustomerWithCondition } from './../services/group-atrribute-cust
 import axios from 'axios';
 import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction, translate } from 'react-jhipster';
 
-import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
+import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-types';
 import { toast } from 'react-toastify';
-import { IUser } from 'app/common/model/user.model';
+import { IUser } from 'app/common/models/user.model';
 import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
 import {
   createUserService,
@@ -27,7 +27,7 @@ import {
   postSaveAdvancedSearch,
   deleteSaveAdvancedSearch
 } from 'app/services/user-management';
-import { IFileList } from 'app/common/model/sucess-file';
+import { IFileList } from 'app/common/models/file-list.model';
 import { warn } from 'fullcalendar';
 import { any } from 'prop-types';
 

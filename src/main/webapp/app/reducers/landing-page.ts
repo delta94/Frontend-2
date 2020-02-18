@@ -1,12 +1,12 @@
-import { ICategory } from '../common/model/category.model';
+import { ICategory } from '../common/models/category.model';
 import { IPostMail } from './user-campaign';
-import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-type.util';
-import { IUser } from 'app/common/model/user.model';
+import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-types';
+import { IUser } from 'app/common/models/user.model';
 import { USER_CAMPAIGN_ACTION_TYPES } from 'app/constants/user-campaign';
 import { LANDING_PAGE_ACTION_TYPES } from 'app/constants/landing-page';
-import { ICampaign } from 'app/common/model/campaign.model';
-import { ICampaignId, defaultValue } from 'app/common/model/campaign-id.model';
-import { ICampaignCustomer } from 'app/common/model/campaign-customer';
+import { ICampaign } from 'app/common/models/campaign.model';
+import { ICampaignId, defaultValue } from 'app/common/models/campaign-id.model';
+import { ICampaignCustomer } from 'app/common/models/campaign-customer.model';
 
 export interface IlistCampaignInfo {
   id?: string;

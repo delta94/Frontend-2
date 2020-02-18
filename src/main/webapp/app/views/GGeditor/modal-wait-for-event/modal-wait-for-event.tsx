@@ -6,7 +6,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter, Button as ButtonReacts } fr
 import { Button, Row, Col, Input, Select, InputNumber } from 'antd';
 import { updateInfoCampaign } from 'app/actions/campaign-managament';
 import './modal-wait-for-event.scss';
-import { code_node } from 'app/common/model/campaign-managament.model';
+import { code_node } from 'app/common/models/campaign-managament.model';
 import { CHARACTER_TIME, CHARACTER_NUMBER } from './constant-modal-wait';
 import { Translate, translate } from 'react-jhipster';
 

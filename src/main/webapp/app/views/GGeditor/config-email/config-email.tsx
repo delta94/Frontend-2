@@ -28,11 +28,11 @@ import { getContentTemplate, getContentTemplateAsType } from 'app/actions/user-c
 import { openModal } from 'app/actions/modal';
 import { getNavigationContentTemplates } from 'app/actions/navigation-info';
 import PreviewLanding from './preview/preview';
-import { IParamester } from 'app/common/model/campaign-navigation.model';
+import { IParamester } from 'app/common/models/campaign-navigation.model';
 import { Translate, translate } from 'react-jhipster';
 import { INTRO_MAIL, EMAIL_ALL } from 'app/constants/common';
 import { SUBJECT } from 'app/constants/common';
-import { code_node } from 'app/common/model/campaign-managament.model';
+import { code_node } from 'app/common/models/campaign-managament.model';
 
 // export interface I
 

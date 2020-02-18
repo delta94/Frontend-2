@@ -1,5 +1,5 @@
 import { CAMPAIGN_MANAGAMENT } from 'app/constants/campaign-managament';
-import { REQUEST, FAILURE, SUCCESS } from './action-type.util';
+import { REQUEST, FAILURE, SUCCESS } from './action-types';
 import {
   IListCloneVersion,
   IListVersion,
@@ -11,7 +11,7 @@ import {
   IListTemplateCampaign,
   ISaveCampaign,
   IListValidate
-} from 'app/common/model/campaign-managament.model';
+} from 'app/common/models/campaign-managament.model';
 
 interface IStatusCampagin {
   total: string;

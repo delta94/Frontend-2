@@ -3,8 +3,8 @@ import { IRootState } from 'app/reducers';
 import { Input, Icon, Checkbox, Row, Col, Select, Radio, DatePicker, Button } from 'antd';
 import './field-data.scss';
 import { OPERATOR, TYPE_FIELD } from '../../../../../constants/field-data';
-import { IListFieldData } from 'app/common/model/group-attribute-customer';
-import { ISearchAdvanced } from '../../../../../common/model/group-attribute-customer';
+import { IListFieldData } from 'app/common/models/group-attribute-customer';
+import { ISearchAdvanced } from '../../../../../common/models/group-attribute-customer';
 import { Moment } from 'moment';
 import moment from 'moment';
 import { INSERT_CUSTOMER_GROUP } from 'app/constants/group-atrribute-customer';
@@ -441,7 +441,4 @@ const mapDispatchToProps = {};
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(FieldData);
+export default connect(mapStateToProps, mapDispatchToProps)(FieldData);

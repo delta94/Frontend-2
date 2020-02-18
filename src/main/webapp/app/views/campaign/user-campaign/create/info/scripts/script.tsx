@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { getNavigationId, getNavigationName } from '../../../../../../actions/navigation-info';
 import { openModal, closeModal } from '../../../../../../actions/modal';
 import { getInformation, getStepCampaign, getContentPageParams } from '../../../../../../actions/user-campaign';
-import { ULTILS_TYPES } from '../../../../../../constants/ultils';
+import { UTIL_TYPES } from '../../../../../../constants/util';
 import './script.scss';
 import { WARNING } from '../../../../../../constants/common';
 import { translate } from 'react-jhipster';
@@ -31,9 +31,9 @@ export class ScriptsCampaign extends Component<IScriptsCampaignProps, IScriptsCa
     super(props);
   }
   state: IScriptsCampaignState = {
-    urlImage: ULTILS_TYPES.EMPTY,
-    nameScript: ULTILS_TYPES.EMPTY,
-    disableDocument: ULTILS_TYPES.EMPTY
+    urlImage: UTIL_TYPES.EMPTY,
+    nameScript: UTIL_TYPES.EMPTY,
+    disableDocument: UTIL_TYPES.EMPTY
   };
 
   componentDidMount() {
@@ -52,7 +52,7 @@ export class ScriptsCampaign extends Component<IScriptsCampaignProps, IScriptsCa
 
     if (value.startDate && value.endDate && cutName !== '' && cutDes !== '') {
       this.setState({
-        disableDocument: ULTILS_TYPES.DISABLE_DOCUMENT
+        disableDocument: UTIL_TYPES.DISABLE_DOCUMENT
       });
       this.props.getStepCampaign(id);
       this.props.onClick(name, id);
@@ -110,7 +110,4 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ScriptsCampaign);
+export default connect(mapStateToProps, mapDispatchToProps)(ScriptsCampaign);

@@ -8,7 +8,7 @@ import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import 'react-toastify/dist/ReactToastify.css';
 import ReactPaginate from 'react-paginate';
-import { IEmail } from 'app/common/model/email-config.model';
+import { IEmail } from 'app/common/models/email-config.model';
 import { getEmailsAction, deleteEmailAction, getEmailDetailAction } from 'app/actions/email-config';
 import './email.scss';
 

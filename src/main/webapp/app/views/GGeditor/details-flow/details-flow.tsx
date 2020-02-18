@@ -18,7 +18,7 @@ import {
   cloneVersionById,
   saveCampaignAutoVersion
 } from 'app/actions/campaign-managament';
-import { img_node, const_shape } from 'app/common/model/campaign-managament.model';
+import { img_node, const_shape } from 'app/common/models/campaign-managament.model';
 import LoaderAnim from 'react-loaders';
 import ModalInteractive from './modal-interactive/modal-interactive';
 import './details-flow.scss';
@@ -28,7 +28,7 @@ const { Panel } = Collapse;
 const { Option } = Select;
 const { Header } = Layout;
 const { confirm } = Modal;
-interface IFlowPageProps extends StateProps, DispatchProps { }
+interface IFlowPageProps extends StateProps, DispatchProps {}
 interface IFlowPageState {
   isOpenModal: boolean;
   active_page: number;
@@ -73,21 +73,24 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       nodes: listDiagram.nodes,
       edges: listDiagram.edges
     });
-    this.editor.setNodeExtraInfo(listDiagram.nodes.map(event => {
-      return {
-        id: event.id,
-        extraLabel: event.countAct === null ? "" : String(event.countAct),
-        extraIcon: ""
-      }
-    }))
-    this.editor.setNodeInfo(listDiagram.nodes.map(event => {
-      return {
-        id: event.id,
-        isActive: true
-      }
-    }))
-    this.editor.setReadOnly(true)
-
+    this.editor.setNodeExtraInfo(
+      listDiagram.nodes.map(event => {
+        return {
+          id: event.id,
+          extraLabel: event.countAct === null ? '' : String(event.countAct),
+          extraIcon: ''
+        };
+      })
+    );
+    this.editor.setNodeInfo(
+      listDiagram.nodes.map(event => {
+        return {
+          id: event.id,
+          isActive: true
+        };
+      })
+    );
+    this.editor.setReadOnly(true);
   }
 
   componentDidMount() {
@@ -112,21 +115,25 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     this.editor.setDiagramData({
       nodes: graph.nodes,
       edges: graph.edges
-    })
-    this.editor.setNodeExtraInfo(graph.nodes.map(event => {
-      return {
-        id: event.id,
-        extraLabel: event.countAct === null ? "" : String(event.countAct),
-        extraIcon: ""
-      }
-    }))
-    this.editor.setNodeInfo(graph.nodes.map(event => {
-      return {
-        id: event.id,
-        isActive: true
-      }
-    }))
-    this.editor.setReadOnly(true)
+    });
+    this.editor.setNodeExtraInfo(
+      graph.nodes.map(event => {
+        return {
+          id: event.id,
+          extraLabel: event.countAct === null ? '' : String(event.countAct),
+          extraIcon: ''
+        };
+      })
+    );
+    this.editor.setNodeInfo(
+      graph.nodes.map(event => {
+        return {
+          id: event.id,
+          isActive: true
+        };
+      })
+    );
+    this.editor.setReadOnly(true);
 
     await getDiagramCampaign(graph);
   };
@@ -167,9 +174,9 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       await this.cloneVersion();
     } else {
       Modal.warning({
-        title: translate("detail-flow.notification"),
-        content: translate("detail-flow.modal.content-version-stop"),
-        okText: translate("detail-flow.modal.accept")
+        title: translate('detail-flow.notification'),
+        content: translate('detail-flow.modal.content-version-stop'),
+        okText: translate('detail-flow.modal.accept')
       });
     }
   };
@@ -181,8 +188,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       idVersion: '',
       cjId: '',
       status: ''
-    }
-    await cloneVersionById(clone_version.cjId)
+    };
+    await cloneVersionById(clone_version.cjId);
     await saveCampaignAutoVersion(infoVersion);
     await window.location.assign(`#/flow`);
   };
@@ -201,22 +208,18 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       onOk: async () => {
         this.hide();
       },
-      onCancel() { },
+      onCancel() {},
       okText: 'Đồng ý',
       cancelText: 'Hủy bỏ'
     });
-  }
+  };
 
   //Content Popover Setting
   contentSetting() {
     return (
       <Row>
         <Row>
-          <Button
-            onClick={this.replicateCampaign}
-            type="link"
-            className="btn-multi"
-          >
+          <Button onClick={this.replicateCampaign} type="link" className="btn-multi">
             <FontAwesomeIcon icon={faCopy} /> &nbsp; <label>Nhân bản chiến dịch</label>
           </Button>
         </Row>
@@ -262,13 +265,13 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           data = translate('status.draft');
           break;
         case constant_version.FINISH:
-          data = translate("status.finish");
+          data = translate('status.finish');
           break;
         case constant_version.RUNNING:
-          data = translate("status.running");
+          data = translate('status.running');
           break;
         case constant_version.STOP:
-          data = translate("status.stop");
+          data = translate('status.stop');
         default:
           break;
       }
@@ -279,7 +282,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       <Loader message={spinner1} show={loading} priority={1} style={{ overflow: 'auto' }}>
         <ModalInteractive onClick={this.viewInteractive} isOpenModal={isOpenModal} />
         <Layout style={{ minHeight: '200vh' }}>
-          <Header className="header-flow" style={{ background: "#F9FAFB" }}>
+          <Header className="header-flow" style={{ background: '#F9FAFB' }}>
             <Row>
               <Col span={24} className="titleContent-detail">
                 <Breadcrumb separator=">">
@@ -307,7 +310,9 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
           <Row className="editorHd-details">
             <Col span={24} style={{ padding: '1%' }}>
               <Col span={4}>
-                <label><Translate contentKey="detail-flow.version" /> : </label>{' '}
+                <label>
+                  <Translate contentKey="detail-flow.version" /> :{' '}
+                </label>{' '}
                 <Select onChange={this.selectVersion} style={{ width: '25%' }} defaultValue={clone_version.version}>
                   {list_version &&
                     list_version.map((item, index) => {
@@ -319,10 +324,12 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                     })}
                 </Select>
               </Col>
-              <Col span={8} >
-                <label style={{ lineHeight: '2' }}><Translate contentKey="detail-flow.status" />  : {eventStatus(clone_version.status)}</label>
+              <Col span={8}>
+                <label style={{ lineHeight: '2' }}>
+                  <Translate contentKey="detail-flow.status" /> : {eventStatus(clone_version.status)}
+                </label>
               </Col>
-              <Col span={8} style={{ lineHeight: "29px", textAlign: "right", paddingRight: "1%" }}>
+              <Col span={8} style={{ lineHeight: '29px', textAlign: 'right', paddingRight: '1%' }}>
                 <Popover
                   content={this.contentSetting()}
                   visible={this.state.isOpen}
@@ -332,11 +339,11 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                   trigger="hover"
                 >
                   <img src={imgSetting} /> &nbsp;
-                  </Popover>
+                </Popover>
               </Col>
               <Col span={4} style={{ textAlign: 'right' }}>
                 <Button
-                  style={{ background: "#3866DD" }}
+                  style={{ background: '#3866DD' }}
                   onClick={() => {
                     this.createNewVersion();
                   }}
@@ -344,7 +351,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                 >
                   <Translate contentKey="detail-flow.create-version" />
                 </Button>
-                <Button onClick={this.stopVersion} type="primary" style={{ background: '#97A3B4', borderColor: 'unset', left: "5%" }}>
+                <Button onClick={this.stopVersion} type="primary" style={{ background: '#97A3B4', borderColor: 'unset', left: '5%' }}>
                   <Translate contentKey="detail-flow.stop-version" />
                 </Button>
               </Col>
@@ -360,7 +367,9 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
               <Collapse bordered={false} defaultActiveKey={['1']} expandIconPosition="right">
                 <Panel header="Lịch sử" key="1">
                   <CardBody className="card-body-details">
-                    <label>{countCustomerVersionProcess} <Translate contentKey="detail-flow.record" /></label>
+                    <label>
+                      {countCustomerVersionProcess} <Translate contentKey="detail-flow.record" />
+                    </label>
                     <Input
                       style={{ width: '20%', float: 'right', marginBottom: '1%' }}
                       type="text"
@@ -371,11 +380,21 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                     <Table responsive striped className="main-table-version">
                       <thead>
                         <th />
-                        <th><Translate contentKey="detail-flow.table.name" /></th>
-                        <th><Translate contentKey="detail-flow.table.last-name" /></th>
-                        <th><Translate contentKey="detail-flow.table.email" /></th>
-                        <th><Translate contentKey="detail-flow.table.phone" /></th>
-                        <th><Translate contentKey="detail-flow.table.status" /></th>
+                        <th>
+                          <Translate contentKey="detail-flow.table.name" />
+                        </th>
+                        <th>
+                          <Translate contentKey="detail-flow.table.last-name" />
+                        </th>
+                        <th>
+                          <Translate contentKey="detail-flow.table.email" />
+                        </th>
+                        <th>
+                          <Translate contentKey="detail-flow.table.phone" />
+                        </th>
+                        <th>
+                          <Translate contentKey="detail-flow.table.status" />
+                        </th>
                         <th />
                       </thead>
                       <tbody>
@@ -414,8 +433,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                           forcePage={this.state.active_page}
                         />
                       ) : (
-                          ''
-                        )}
+                        ''
+                      )}
                     </Row>
                   </CardBody>
                 </Panel>
