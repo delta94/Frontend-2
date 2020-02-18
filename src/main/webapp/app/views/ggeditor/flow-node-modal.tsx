@@ -10,7 +10,7 @@ import {
   SmsProcessNodeModel,
   TimeWaitingDecisionNodeModel,
   TrayItemWidget
-} from 'app/views/GGeditor/flow-diagram-editor';
+} from 'app/views/ggeditor/flow-diagram-editor';
 import { translate } from 'react-jhipster';
 
 const { Panel } = Collapse;

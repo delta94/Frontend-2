@@ -21,7 +21,7 @@ import {
   getListVersion
 } from 'app/actions/campaign-managament';
 import { IRootState } from 'app/reducers';
-import ConfigEmail from './config-email/config-email';
+import ConfigEmail from './modal-config-email/config-email';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faCopy, faTrashAlt, faUserEdit } from '@fortawesome/free-solid-svg-icons';
 import ModalGroupCustomer from './modal-group-customer/modal-group-customer';
@@ -51,7 +51,7 @@ import {
   toConfigData
 } from './flow-diagram-editor';
 import { DiagramWidget } from 'storm-react-diagrams';
-import { FlowNodeModal } from 'app/views/GGeditor/FlowNodeModal';
+import { FlowNodeModal } from 'app/views/ggeditor/flow-node-modal';
 
 const ButtonGroup = Button.Group;
 const { confirm } = Modal;
