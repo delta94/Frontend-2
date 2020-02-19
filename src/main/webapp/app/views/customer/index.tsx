@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import CampaignManagement from '../campaign/user-campaign';
 import ErrorBoundaryRoute from 'app/common/components/ErrorBoundaryRoute';
 import UserManagement from './user-management';
+import UserRestore from './user-restore';
 import AppHeader from 'app/layout/AppHeader/';
 import AppSidebar from 'app/layout/AppSidebar/';
 import TagManagament from './tag-mangament/tag-mangament';
@@ -23,6 +24,7 @@ const Routes = ({ match }) => (
           <ErrorBoundaryRoute path={`${match.url}/tag-management`} component={TagManagament} />
           <ErrorBoundaryRoute path={`${match.url}/user-properties`} component={PropertiesCustomer} />
           <ErrorBoundaryRoute path={`${match.url}/user-group`} component={GroupAttributeCustomer} />
+          <ErrorBoundaryRoute path={`${match.url}/user-restore`} component={UserRestore} />
 
           <PrivateRoute path={`${match.url}/user-management`} component={UserManagement} />
           {/* <PrivateRoute path={`${match.url}/campaign-auto`} component={CampaginAuto} /> */}
