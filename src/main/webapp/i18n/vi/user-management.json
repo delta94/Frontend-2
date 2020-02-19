@@ -18,7 +18,7 @@
       "total-element": "Danh sách khách hàng: <strong> {{ element }} </strong> bản ghi",
       "remove-customer":"Xóa",
       "choosed-customers":"<strong> {{ element }} </strong> khách hàng đã được chọn. ",
-      "choose-all-customers":"Chọn tất cả <strong> {{ element }} </strong> khách hàng trong danh sách này này",
+      "choose-all-customers":"Chọn tất cả <strong> {{ element }} </strong> khách hàng trong danh sách này",
       "line-error": "{{ number }} dòng không thành công đầu tiên ",
       "editLabel": "Cập nhật thông tin khách hàng",
       "info-cus": "Thông tin khách hàng",

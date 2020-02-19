@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Table,CustomInput, Row, Label, Col, Modal, ModalHeader, ModalFooter, ModalBody } from 'reactstrap';
+import { Button, Table, CustomInput, Row, Label, Col, Modal, ModalHeader, ModalFooter, ModalBody } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { openModal, closeModal } from 'app/actions/modal';
@@ -94,6 +94,8 @@ export interface IUserManagementState {
   isCheckDateCreate: boolean;
   listCheckedCustomer: string[];
   checkedAllCustomer: boolean;
+  modalRemoveCus: boolean;
+  acceptRemoveCus: boolean;
 }
 
 export class UserManagement extends React.Component<IUserManagementProps, IUserManagementState> {
@@ -134,7 +136,9 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     is_normal_find: true,
     isCheckDateCreate: false,
     listCheckedCustomer: [],
-    checkedAllCustomer: false
+    checkedAllCustomer: false,
+    modalRemoveCus: false,
+    acceptRemoveCus: true
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -656,6 +660,27 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
       listCheckedCustomer: listChecked
     });
   }
+  openModalRemoveCustomer = () => {
+    this.setState({
+      modalRemoveCus: !this.state.modalRemoveCus
+    });
+  }
+  handleRemoveCustomer = () => {
+    // call api remove customers
+    const { listCheckedCustomer } = this.state;
+    console.log(listCheckedCustomer);
+  }
+  validateRemoveCustomer = (event) => {
+    if (+(event.target.value) === this.state.listCheckedCustomer.length) {
+      this.setState({
+        acceptRemoveCus: false
+      })
+    } else {
+      this.setState({
+        acceptRemoveCus: true
+      })
+    }
+  }
 
   render() {
     const importImage = require('app/assets/utils/images/user-mangament/import.png');
@@ -676,10 +701,11 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
       count,
       open_list_save,
       listCheckedCustomer,
-      checkedAllCustomer
+      checkedAllCustomer,
+      modalRemoveCus,
+      acceptRemoveCus
     } = this.state;
     let dataUser;
-
     dataUser = this.dataFilter();
     let theader = listFields.map(event => {
       return { ...event, showValue: this.props.list_option };
@@ -925,13 +951,38 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
               <Button
                 className="btn float-right jh-create-entity"
                 outline
+                onClick={this.openModalRemoveCustomer}
+                disabled={listCheckedCustomer.length > 0 ? false : true}
               >
                 <Translate contentKey="userManagement.home.remove-customer" />
               </Button>
+              {/*modal confirm accept remove customers*/}
+              <div>
+                <Modal isOpen={modalRemoveCus} toggle={this.openModalRemoveCustomer} >
+                  <ModalBody>
+                    Bạn đang xóa {listCheckedCustomer.length} khách hàng. Vui lòng điền số lượng khách hàng muốn xóa.
+                    Bạn có 90 ngày để hồi phục khách hàng đã xóa.
+                    <br />
+                    <div className="wrraper-input">
+                      {acceptRemoveCus &&
+                        <div className="number-cus">{listCheckedCustomer.length}</div>
+                      }
+                      <Input className="input-confirm-remove" onChange={this.validateRemoveCustomer} />
+                    </div>
+                  </ModalBody>
+                  <ModalFooter className="footer-modal-cus">
+                    <Button outline onClick={this.openModalRemoveCustomer}>Thoát </Button>
+                    <Button outline onClick={this.handleRemoveCustomer} disabled={acceptRemoveCus} >Xóa</Button>
+                  </ModalFooter>
+                </Modal>
+              </div>
               {(listCheckedCustomer && checkedAllCustomer) &&
                 <div className="title-remove-all-customers" >
                   <Translate contentKey="userManagement.home.choosed-customers" interpolate={{ element: listCheckedCustomer.length }} />
-                  <Translate contentKey="userManagement.home.choose-all-customers" interpolate={{ element: this.props.totalElements }} />
+                  <span className="title-select-all">
+                    <Translate contentKey="userManagement.home.choose-all-customers"
+                      interpolate={{ element: this.props.totalElements }} />
+                  </span>
                 </div >}
               <Row />
               <div className="table-user">
