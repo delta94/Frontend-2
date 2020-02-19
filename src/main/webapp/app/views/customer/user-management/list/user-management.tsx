@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Table, Row, Label, Col, Modal, ModalHeader, ModalFooter, ModalBody } from 'reactstrap';
+import { Button, Table,CustomInput, Row, Label, Col, Modal, ModalHeader, ModalFooter, ModalBody } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { openModal, closeModal } from 'app/actions/modal';
@@ -54,7 +54,7 @@ interface IAdvancedSearchesData {
   advancedSearch?: ISearchAdvanced;
 }
 
-export interface IUserManagementProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
+export interface IUserManagementProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> { }
 
 export interface IUserManagementState {
   isDelete: boolean;
@@ -92,6 +92,8 @@ export interface IUserManagementState {
   count: number;
   is_normal_find: boolean;
   isCheckDateCreate: boolean;
+  listCheckedCustomer: string[];
+  checkedAllCustomer: boolean;
 }
 
 export class UserManagement extends React.Component<IUserManagementProps, IUserManagementState> {
@@ -130,7 +132,9 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     conditionSort: '',
     count: 0,
     is_normal_find: true,
-    isCheckDateCreate: false
+    isCheckDateCreate: false,
+    listCheckedCustomer: [],
+    checkedAllCustomer: false
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -279,7 +283,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
       listDataUser.forEach((item, index) => {
         if (item === code) {
           existValue = code;
-          listDataUser = listDataUser.filter(function(value) {
+          listDataUser = listDataUser.filter(function (value) {
             return value != code;
           });
         } else {
@@ -555,16 +559,16 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
             check: false,
             value:
               event.fields.length > 0 &&
-              event.fields.map(value => {
-                return value.value;
-              })
+                event.fields.map(value => {
+                  return value.value;
+                })
                 ? event.fields.map(value => {
-                    if (String(value.id) == String(item.id)) {
-                      return value.value;
-                    } else {
-                      return item.value;
-                    }
-                  })
+                  if (String(value.id) == String(item.id)) {
+                    return value.value;
+                  } else {
+                    return item.value;
+                  }
+                })
                 : item.value
           };
         });
@@ -578,16 +582,16 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
             ? lengthProps > event.fields.length
               ? dataProps
               : event.fields.map(item => {
-                  return {
-                    code: item.code,
-                    fieldValue: item.fieldValue,
-                    id: item.id,
-                    title: item.title,
-                    type: item.type,
-                    check: false,
-                    value: item.value
-                  };
-                })
+                return {
+                  code: item.code,
+                  fieldValue: item.fieldValue,
+                  id: item.id,
+                  title: item.title,
+                  type: item.type,
+                  check: false,
+                  value: item.value
+                };
+              })
             : listPropsUser,
         firstName: event.firstName,
         lastName: event.lastName,
@@ -602,7 +606,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
 
   sortData(arr, key) {
     let { count } = this.state;
-    let sortData = arr.sort(function(a, b) {
+    let sortData = arr.sort(function (a, b) {
       if (count % 2 === 0) {
         if (String(a[key]).toLowerCase() < String(b[key]).toLowerCase()) {
           return -1;
@@ -623,6 +627,35 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     });
     return sortData;
   }
+  handleCheckedAllCustomer = (checkedAll: boolean, dataUser: any[]) => {
+    let listChecked = [];
+    if (checkedAll === true) {
+      dataUser.forEach((user) => {
+        listChecked.push(user.id);
+      })
+    }
+    this.setState({
+      checkedAllCustomer: checkedAll,
+      listCheckedCustomer: listChecked
+    });
+
+  }
+  handleCheckedCustomer = (checkedId: string) => {
+    const { listCheckedCustomer } = this.state;
+    let listChecked = [];
+    if (listCheckedCustomer.filter((customerId) => (customerId === checkedId)).length > 0) {
+      listChecked = listCheckedCustomer.filter((customerId) => (customerId !== checkedId));
+      this.setState({
+        checkedAllCustomer: false
+      })
+    } else {
+      listChecked = JSON.parse(JSON.stringify(listCheckedCustomer));
+      listChecked.push(checkedId);
+    }
+    this.setState({
+      listCheckedCustomer: listChecked
+    });
+  }
 
   render() {
     const importImage = require('app/assets/utils/images/user-mangament/import.png');
@@ -641,7 +674,9 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
       modalState,
       conditionSort,
       count,
-      open_list_save
+      open_list_save,
+      listCheckedCustomer,
+      checkedAllCustomer
     } = this.state;
     let dataUser;
 
@@ -651,7 +686,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     });
 
     let dataHeader = theader
-      .sort(function(a, b) {
+      .sort(function (a, b) {
         if (a.title.toLowerCase() < b.title.toLowerCase()) {
           return -1;
         }
@@ -681,20 +716,20 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     let list_field_render =
       list_field_data_cpn && list_field_data_cpn.length > 0
         ? list_field_data_cpn.map(item => {
-            if (item.id)
-              return (
-                <FieldData
-                  key={item.id}
-                  id={item.id}
-                  last_index={item.last_index}
-                  logicalOperator={logicalOperator}
-                  default_data={item.default_data}
-                  updateValueFromState={this.updateValueFromState}
-                  deleteComponentById={this.deleteComponentById}
-                  updateRelationshipFromState={this.updateRelationshipFromState}
-                />
-              );
-          })
+          if (item.id)
+            return (
+              <FieldData
+                key={item.id}
+                id={item.id}
+                last_index={item.last_index}
+                logicalOperator={logicalOperator}
+                default_data={item.default_data}
+                updateValueFromState={this.updateValueFromState}
+                deleteComponentById={this.deleteComponentById}
+                updateRelationshipFromState={this.updateRelationshipFromState}
+              />
+            );
+        })
         : [];
     return (
       <Loader message={spinner1} show={loading} priority={1}>
@@ -887,13 +922,31 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                   <img src={filterImage} style={{ margin: ' 0px 5px 10px' }} />
                 </Button>
               </Dropdown>
+              <Button
+                className="btn float-right jh-create-entity"
+                outline
+              >
+                <Translate contentKey="userManagement.home.remove-customer" />
+              </Button>
+              {(listCheckedCustomer && checkedAllCustomer) &&
+                <div className="title-remove-all-customers" >
+                  <Translate contentKey="userManagement.home.choosed-customers" interpolate={{ element: listCheckedCustomer.length }} />
+                  <Translate contentKey="userManagement.home.choose-all-customers" interpolate={{ element: this.props.totalElements }} />
+                </div >}
               <Row />
               <div className="table-user">
                 <Table responsive striped id="table-reponse">
                   <thead>
                     <tr className="text-center">
                       <th style={{ width: '50px' }} className="hand">
-                        #
+                        <CustomInput
+                          checked={checkedAllCustomer}
+                          onClick={() => this.handleCheckedAllCustomer(!checkedAllCustomer, dataUser)}
+                          type="checkbox" id="check-all-customers"
+                        />
+                      </th>
+                      <th style={{ width: '50px' }} className="hand">
+                        STT
                       </th>
                       <th
                         style={{ width: '150px' }}
@@ -908,11 +961,11 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                           count % 2 === 0 ? (
                             <Icon type="sort-ascending" />
                           ) : (
-                            <Icon type="sort-descending" />
-                          )
+                              <Icon type="sort-descending" />
+                            )
                         ) : (
-                          ''
-                        )}
+                            ''
+                          )}
                       </th>
                       <th
                         style={{ width: '150px' }}
@@ -926,11 +979,11 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                           count % 2 === 0 ? (
                             <Icon type="sort-ascending" />
                           ) : (
-                            <Icon type="sort-descending" />
-                          )
+                              <Icon type="sort-descending" />
+                            )
                         ) : (
-                          ''
-                        )}
+                            ''
+                          )}
                       </th>
                       <th
                         style={{ width: '200px' }}
@@ -944,11 +997,11 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                           count % 2 === 0 ? (
                             <Icon type="sort-ascending" />
                           ) : (
-                            <Icon type="sort-descending" />
-                          )
+                              <Icon type="sort-descending" />
+                            )
                         ) : (
-                          ''
-                        )}
+                            ''
+                          )}
                       </th>
                       <th
                         style={{ width: '200px' }}
@@ -963,25 +1016,25 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                           count % 2 === 0 ? (
                             <Icon type="sort-ascending" />
                           ) : (
-                            <Icon type="sort-descending" />
-                          )
+                              <Icon type="sort-descending" />
+                            )
                         ) : (
-                          ''
-                        )}
+                            ''
+                          )}
                       </th>
                       {dataHeader
                         ? dataHeader.map((event, id) => {
-                            return (
-                              <th
-                                style={{ width: '100px' }}
-                                key={id}
-                                className={event.check === true ? '' : 'display-colum'}
-                                id={event.code}
-                              >
-                                {event.title}
-                              </th>
-                            );
-                          })
+                          return (
+                            <th
+                              style={{ width: '100px' }}
+                              key={id}
+                              className={event.check === true ? '' : 'display-colum'}
+                              id={event.code}
+                            >
+                              {event.title}
+                            </th>
+                          );
+                        })
                         : ''}
                       <th
                         className={this.state.isCheckDateCreate === true ? '' : 'display-colum'}
@@ -995,11 +1048,11 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                           count % 2 === 0 ? (
                             <Icon type="sort-ascending" />
                           ) : (
-                            <Icon type="sort-descending" />
-                          )
+                              <Icon type="sort-descending" />
+                            )
                         ) : (
-                          ''
-                        )}
+                            ''
+                          )}
                       </th>
                       <th style={{ width: '200px' }}>
                         <Translate contentKey="userManagement.card-tag" />
@@ -1012,68 +1065,75 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                   <tbody>
                     {dataUser
                       ? dataUser.map((item, index) => {
-                          return (
-                            <tr id={item.id} key={`user-${index}`}>
-                              <td>{this.state.activePage * this.state.itemsPerPage + index + 1}</td>
-                              <td>{item.firstName}</td>
-                              <td>{item.lastName}</td>
-                              <td>{item.email}</td>
-                              <td>{item.mobile}</td>
-                              {item.fields
-                                .sort(function(a, b) {
-                                  if (a.title.toLowerCase() < b.title.toLowerCase()) {
-                                    return -1;
-                                  }
-                                  if (a.title.toLowerCase() > b.title.toLowerCase()) {
-                                    return 1;
-                                  }
-                                  return 0;
-                                })
-                                .map((value, index) => {
+                        return (
+                          <tr id={item.id} key={`user-${index}`}>
+                            <td>
+                              <CustomInput
+                                checked={listCheckedCustomer.filter((customerId) => (customerId === item.id)).length > 0}
+                                onClick={() => this.handleCheckedCustomer(item.id)}
+                                type="checkbox" id={"check-customers" + (this.state.activePage * this.state.itemsPerPage + index + 1)}
+                              />
+                            </td>
+                            <td>{this.state.activePage * this.state.itemsPerPage + index + 1}</td>
+                            <td>{item.firstName}</td>
+                            <td>{item.lastName}</td>
+                            <td>{item.email}</td>
+                            <td>{item.mobile}</td>
+                            {item.fields
+                              .sort(function (a, b) {
+                                if (a.title.toLowerCase() < b.title.toLowerCase()) {
+                                  return -1;
+                                }
+                                if (a.title.toLowerCase() > b.title.toLowerCase()) {
+                                  return 1;
+                                }
+                                return 0;
+                              })
+                              .map((value, index) => {
+                                return (
+                                  <td className={value.check === true ? '' : 'display-colum'} key={index}>
+                                    {value.value}
+                                  </td>
+                                );
+                              })}
+                            <td className={this.state.isCheckDateCreate === true ? '' : 'display-colum'}>{item.createdDate}</td>
+                            <td className="tag">
+                              {item.tag &&
+                                item.tag.split(',').map((category, index) => {
                                   return (
-                                    <td className={value.check === true ? '' : 'display-colum'} key={index}>
-                                      {value.value}
-                                    </td>
+                                    <span className="badge badge-success" key={index}>
+                                      {' '}
+                                      {category}
+                                    </span>
                                   );
                                 })}
-                              <td className={this.state.isCheckDateCreate === true ? '' : 'display-colum'}>{item.createdDate}</td>
-                              <td className="tag">
-                                {item.tag &&
-                                  item.tag.split(',').map((category, index) => {
-                                    return (
-                                      <span className="badge badge-success" key={index}>
-                                        {' '}
-                                        {category}
-                                      </span>
-                                    );
-                                  })}
-                              </td>
-                              <td className="text-center">
-                                <div className="btn-group flex-btn-group-container">
-                                  <Button
-                                    className="buttonUpdate"
-                                    tag={Link}
-                                    to={`/app/views/customers/user-management/info/${item.id}`}
-                                    color="primary"
-                                    size="sm"
-                                  >
-                                    <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Thông tin</span>
-                                  </Button>
-                                </div>
-                              </td>
-                            </tr>
-                          );
-                        })
+                            </td>
+                            <td className="text-center">
+                              <div className="btn-group flex-btn-group-container">
+                                <Button
+                                  className="buttonUpdate"
+                                  tag={Link}
+                                  to={`/app/views/customers/user-management/info/${item.id}`}
+                                  color="primary"
+                                  size="sm"
+                                >
+                                  <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Thông tin</span>
+                                </Button>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })
                       : ''}
                     {users.length > 0 ? (
                       ''
                     ) : (
-                      <tr>
-                        <td colSpan={99}>
-                          <Translate contentKey="properties-management.no-record" />
-                        </td>{' '}
-                      </tr>
-                    )}
+                        <tr>
+                          <td colSpan={99}>
+                            <Translate contentKey="properties-management.no-record" />
+                          </td>{' '}
+                        </tr>
+                      )}
                   </tbody>
                 </Table>
               </div>
@@ -1094,8 +1154,8 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                     forcePage={activePage}
                   />
                 ) : (
-                  ''
-                )}
+                    ''
+                  )}
               </Row>
               <br />
             </div>
