@@ -17,6 +17,7 @@
       "no-record": "Không tìm thấy bản ghi phù hợp",
       "total-element": "Danh sách khách hàng: <strong> {{ element }} </strong> bản ghi",
       "remove-customer":"Xóa",
+      "warning-remove":"Bạn đang xóa <strong> {{ element }} </strong> khách hàng. Vui lòng điền số lượng khách hàng muốn xóa. Bạn có 90 ngày để hồi phục khách hàng đã xóa.",
       "choosed-customers":"<strong> {{ element }} </strong> khách hàng đã được chọn. ",
       "choose-all-customers":"Chọn tất cả <strong> {{ element }} </strong> khách hàng trong danh sách này",
       "line-error": "{{ number }} dòng không thành công đầu tiên ",

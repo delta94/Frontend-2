@@ -229,6 +229,7 @@ export const postSaveAdvancedSearchActionData = (data: any) => {
 
 // remove list customer by list id
 export const postDeleteCustomerBatch = (data: any) => {
+  debugger;
   return {
     type: USER_MANAGE_ACTION_TYPES.POST_REMOVE_LIST_CUSTOMER,
     payload: postDeleteCustomerBatchSevice(data)

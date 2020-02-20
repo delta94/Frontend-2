@@ -99,6 +99,7 @@ export interface IUserManagementState {
   checkedAllCustomer: boolean;
   modalRemoveCus: boolean;
   acceptRemoveCus: boolean;
+  removeAllCustomers: boolean;
 }
 
 export class UserManagement extends React.Component<IUserManagementProps, IUserManagementState> {
@@ -141,7 +142,8 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     listCheckedCustomer: [],
     checkedAllCustomer: false,
     modalRemoveCus: false,
-    acceptRemoveCus: true
+    acceptRemoveCus: true,
+    removeAllCustomers: false
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -223,8 +225,8 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
       categories: categorieIds.join(),
       activePage: 0,
       tagIds: categorieIds,
-      listCheckedCustomer:[],
-      checkedAllCustomer:false
+      listCheckedCustomer: [],
+      checkedAllCustomer: false
     });
     this.props.getUsers(0, itemsPerPage, categorieIds.join(), textSearch);
   };
@@ -238,8 +240,8 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
         textSearch,
         activePage: 0,
         is_normal_find: true,
-        listCheckedCustomer:[],
-        checkedAllCustomer:false
+        listCheckedCustomer: [],
+        checkedAllCustomer: false
       });
       this.props.getUsers(0, itemsPerPage, categories, textSearch);
     }
@@ -472,8 +474,8 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     this.setState({
       is_normal_find,
       advancedSearches,
-      listCheckedCustomer:[],
-      checkedAllCustomer:false
+      listCheckedCustomer: [],
+      checkedAllCustomer: false
     });
   };
 
@@ -675,59 +677,64 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
   openModalRemoveCustomer = () => {
     this.setState({
       acceptRemoveCus: true,
-      modalRemoveCus: !this.state.modalRemoveCus
+      modalRemoveCus: !this.state.modalRemoveCus,
+      removeAllCustomers: false
     });
   }
   handleRemoveCustomer = () => {
     // call api remove customers
-    const { listCheckedCustomer} = this.state;
+    const { listCheckedCustomer, removeAllCustomers } = this.state;
+    if (removeAllCustomers) { // remove all
+      this.handleRemoveAllCustomer();
+    } else {        // remove batch normal
       if (listCheckedCustomer.length > 0) {
-          // remove batch normal
-          this.props.postDeleteCustomerBatch(listCheckedCustomer);
-        this.openModalRemoveCustomer();
+        this.props.postDeleteCustomerBatch(listCheckedCustomer);
       }
+    }
+    this.openModalRemoveCustomer();
 
   }
-  handleRemoveAllCustomer=()=>{
+  handleRemoveAllCustomer = () => {
     // call api remove all customers
     const { listCheckedCustomer, logicalOperator, advancedSearchesData, tagIds, textSearch } = this.state;
     if ((advancedSearchesData || logicalOperator) && advancedSearchesData.length > 0) {
-      debugger;
-      // remove all advance-filter
-      // {
-      //   "advancedSearches": [
-      //     {
-      //      "fieldId": "email",
-      //   "fieldCode": "email",
-      //   "fieldType": "Text Input",
-      //   "fieldValue": "EQUAL",
-      //   "fieldTitle": "Email",
-      //   "operator": "CONTAIN",
-      //   "value": "CONTAIN"
-      //     }
-      //   ],
-      //   "logicalOperator": "string"
-      // }
-      // this.props.postDeleteCustomerAdvanceSearch();
+      // remove with params of advance search
+      const advancedSearchParams= [];
+      advancedSearchesData.forEach((data)=>{
+        advancedSearchParams.push(data.advancedSearch);
+      })
+      this.props.postDeleteCustomerAdvanceSearch({
+        advancedSearches:advancedSearchParams,
+        logicalOperator
+      });
     } else if (textSearch || tagIds.length > 0) {
-      debugger;
-      // remove all simple-filter
-      // {
-      //   "tagIds": [
-      //     "string"
-      //   ],
-      //   "textSearch": "string"
-      // }
+      // remove with params of normal search
+      this.props.postDeleteCustomerSimpleSearch(
+        {
+          tagIds,
+          textSearch
+        }
+      )
     } else {
-      // remove all batch normal
-      if (listCheckedCustomer.length > 0) {
-        debugger;
-      }
+      // remove all customer with no params
+      this.props.postDeleteCustomerSimpleSearch(
+        {
+          tagIds: [],
+          textSearch: ""
+        }
+      )
 
     }
   }
   validateRemoveCustomer = (event) => {
-    if (+(event.target.value) === this.state.listCheckedCustomer.length) {
+    const { removeAllCustomers } = this.state;
+    let condition = 0;
+    if (removeAllCustomers) {  // open with remove all
+      condition = this.props.totalElements;
+    } else {// open with remove normal
+      condition = this.state.listCheckedCustomer.length;
+    }
+    if (+(event.target.value) === condition) {
       // for disabled button
       this.setState({
         acceptRemoveCus: false
@@ -760,7 +767,8 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
       listCheckedCustomer,
       checkedAllCustomer,
       modalRemoveCus,
-      acceptRemoveCus
+      acceptRemoveCus,
+      removeAllCustomers
     } = this.state;
     let dataUser;
     dataUser = this.dataFilter();
@@ -1008,6 +1016,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
               <Button
                 className="btn float-right jh-create-entity"
                 outline
+                color="danger"
                 onClick={this.openModalRemoveCustomer}
                 disabled={listCheckedCustomer.length > 0 ? false : true}
               >
@@ -1017,26 +1026,31 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
               <div>
                 <Modal isOpen={modalRemoveCus} toggle={this.openModalRemoveCustomer} >
                   <ModalBody>
-                    Bạn đang xóa {listCheckedCustomer.length} khách hàng. Vui lòng điền số lượng khách hàng muốn xóa.
-                    Bạn có 90 ngày để hồi phục khách hàng đã xóa.
+                    <Translate contentKey="userManagement.home.warning-remove"
+                      interpolate={{ element: removeAllCustomers ? this.props.totalElements : listCheckedCustomer.length }} />
                     <br />
                     <div className="wrraper-input">
                       {acceptRemoveCus && // for disabled button = true
-                        <div className="number-cus">{listCheckedCustomer.length}</div>
+                        <div className="number-cus">{removeAllCustomers ? this.props.totalElements : listCheckedCustomer.length}</div>
                       }
                       <Input className="input-confirm-remove" onChange={this.validateRemoveCustomer} />
                     </div>
                   </ModalBody>
-                  <ModalFooter className="footer-modal-cus">
+                  <ModalFooter>
                     <Button outline onClick={this.openModalRemoveCustomer}>Thoát </Button>
-                    <Button outline onClick={this.handleRemoveCustomer} disabled={acceptRemoveCus} >Xóa</Button>
+                    <Button outline color="danger" onClick={this.handleRemoveCustomer} disabled={acceptRemoveCus} >Xóa</Button>
                   </ModalFooter>
                 </Modal>
               </div>
               {(listCheckedCustomer && checkedAllCustomer) &&
                 <div className="title-remove-all-customers" >
                   <Translate contentKey="userManagement.home.choosed-customers" interpolate={{ element: listCheckedCustomer.length }} />
-                  <span className="title-select-all">
+                  <span className="title-select-all"
+                    onClick={() => this.setState({
+                      modalRemoveCus: true,
+                      removeAllCustomers: true,
+                      acceptRemoveCus: true
+                    })}>
                     <Translate contentKey="userManagement.home.choose-all-customers"
                       interpolate={{ element: this.props.totalElements }} />
                   </span>
