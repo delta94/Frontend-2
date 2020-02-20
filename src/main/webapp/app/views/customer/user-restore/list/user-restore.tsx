@@ -19,7 +19,7 @@ import {
   getSaveAdvancedSearchActionData,
   deleteSaveAdvancedSearchActionData,
   postSaveAdvancedSearchActionData,
-  getListOptionFilter
+
 } from 'app/actions/user-management';
 import UserCategoryTag from './categories-tag/categories-tag';
 import { IRootState } from 'app/reducers';
@@ -28,7 +28,6 @@ import ReactPaginate from 'react-paginate';
 import LoaderAnim from 'react-loaders';
 import SweetAlert from 'sweetalert-react';
 import Loader from 'react-loader-advanced';
-import CreateUser from '../create/create';
 import $ from 'jquery';
 import { ISearchAdvanced } from 'app/common/models/group-attribute-customer';
 import FieldData from '../../group-attribute-customer/group-modal-config/field-data/field-data';
@@ -53,9 +52,9 @@ interface IAdvancedSearchesData {
   advancedSearch?: ISearchAdvanced;
 }
 
-export interface IUserManagementProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> { }
+export interface IUserRestoreProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> { }
 
-export interface IUserManagementState {
+export interface IUserRestoreState {
   isDelete: boolean;
   isConfirm: boolean;
   idUser: string;
@@ -79,7 +78,6 @@ export interface IUserManagementState {
   open_import?: boolean;
   open_create?: boolean;
   open_search?: boolean;
-  open_new_save?: boolean;
   open_save?: boolean;
   name?: string;
   modalState?: IModalData;
@@ -97,8 +95,8 @@ export interface IUserManagementState {
   acceptRemoveCus: boolean;
 }
 
-export class UserManagement extends React.Component<IUserManagementProps, IUserManagementState> {
-  state: IUserManagementState = {
+export class UserManagement extends React.Component<IUserRestoreProps, IUserRestoreState> {
+  state: IUserRestoreState = {
     activePage: ACTIVE_PAGE,
     itemsPerPage: ITEMS_PER_PAGE,
     isDelete: false,
@@ -118,7 +116,6 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     open_import: false,
     open_create: false,
     open_search: false,
-    open_new_save: false,
     name: '',
     modalState: {
       show: false,
@@ -211,18 +208,6 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     this.props.getUserCategories(name);
   };
 
-  handleChange = category => {
-    let categorieIds = category.map((event, index) => event.id);
-    const { itemsPerPage, textSearch } = this.state;
-    this.setState({
-      ...this.state,
-      categories: categorieIds.join(),
-      activePage: 0,
-      tagIds: categorieIds
-    });
-    this.props.getUsers(0, itemsPerPage, categorieIds.join(), textSearch);
-  };
-
   search = event => {
     if (event.key === 'Enter') {
       const textSearch = event.target.value;
@@ -237,80 +222,6 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     }
   };
 
-  rowName = () => {
-    let { listFields, list_option } = this.props;
-    let listData = listFields
-      .filter(el => el.title !== 'Tên' && el.title !== 'Email' && el.title !== 'Họ' && el.title !== 'Số điện thoại')
-      .map(event => {
-        let check = false;
-        list_option.map(item => {
-          if (String(item) === String(event.code)) {
-            check = true;
-          }
-        });
-        return { ...event, check: check };
-      });
-    let data = (
-      <Menu>
-        {listData.map((value, index) => {
-          return (
-            <Menu.Item key={index}>
-              <Checkbox defaultChecked={value.check} onChange={event => this.onChangeCheckBox(event, value.code)}>
-                {value.title}
-              </Checkbox>
-            </Menu.Item>
-          );
-        })}
-        <Menu.Item>
-          <Checkbox onChange={event => this.onChangeCheckBox(event, 'createdDate')}>
-            <Translate contentKey="userManagement.created-date" />
-          </Checkbox>
-        </Menu.Item>
-      </Menu>
-    );
-
-    return data;
-  };
-
-  onChangeCheckBox = (e, code) => {
-    let { listDataUser, isCheckDateCreate } = this.state;
-    let { list_option } = this.props;
-    let isCheck = e.target.checked;
-    let existValue;
-    if (listDataUser.length === 0) {
-      if (this.props.list_option.length > 0) {
-        listDataUser = this.props.list_option;
-      }
-    }
-    if (listDataUser.length > 0) {
-      listDataUser.forEach((item, index) => {
-        if (item === code) {
-          existValue = code;
-          listDataUser = listDataUser.filter(function (value) {
-            return value != code;
-          });
-        } else {
-          if (!existValue) {
-            listDataUser.push(code);
-            listDataUser = [...new Set(listDataUser)];
-          }
-        }
-      });
-    } else {
-      listDataUser.push(code);
-    }
-
-    if (code === 'createdDate') {
-      isCheckDateCreate = isCheck;
-    }
-
-    this.setState({ listDataUser, isCheckDateCreate });
-    if (isCheck) {
-      $(`th.${code}`).show();
-    }
-    this.props.getListOptionFilter(listDataUser);
-  };
-
   toObject(arr) {
     var rv = {};
     for (var i = 0; i < arr.length; ++i) rv[i] = arr[i];
@@ -320,17 +231,6 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
   toggleImport = () => {
     let { open_import } = this.state;
     this.setState({ open_import: !open_import });
-  };
-
-
-  saveSearchData = () => {
-    let { open_new_save } = this.state;
-    this.setState({ open_new_save: !open_new_save });
-  };
-
-  toggleSearchSaveModal = () => {
-    let { open_list_save } = this.state;
-    this.setState({ open_list_save: !open_list_save });
   };
 
   /**
@@ -357,36 +257,6 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
 
     if (advancedSearchesData.length === 1) logicalOperator = '';
     this.setState({ advancedSearchesData, advancedSearches, logicalOperator });
-  };
-
-  // Add new component to list_field_data_cpn
-  handleAddNewComponent = () => {
-    let { list_field_data_cpn, advancedSearchesData } = this.state;
-    let id = makeRandomId(16);
-    let newCpn = { id, name: 'new', last_index: true, default_data: {} };
-
-    // Check duplicate value
-    list_field_data_cpn.forEach(item => {
-      if (item.id === id) {
-        id = makeRandomId(16);
-      }
-    });
-
-    list_field_data_cpn.push(newCpn);
-
-    advancedSearchesData.push({
-      id,
-      advancedSearch: {
-        fieldId: '',
-        fieldCode: '',
-        fieldType: '',
-        fieldTitle: '',
-        value: '',
-        operator: ''
-      }
-    });
-
-    this.updateLastIndex(list_field_data_cpn);
   };
 
   // Delete component by Id
@@ -423,24 +293,6 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     this.setState({ logicalOperator });
   };
 
-  // Remove All value
-  removeDataInModal = () => {
-    let list_field_data_cpn = [];
-    let advancedSearches = [];
-    let advancedSearchesData = [];
-    let name = '';
-    this.setState({
-      list_field_data_cpn,
-      advancedSearchesData,
-      advancedSearches,
-      name
-    });
-  };
-
-  openAdvancedSearch = () => {
-    this.setState({ open_search: true });
-  };
-
   // GetData customer by condition
   getDataListCustomer = (page?: any) => {
     let { advancedSearches, logicalOperator, pageSize, is_normal_find } = this.state;
@@ -457,35 +309,6 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     });
 
     this.setState({ is_normal_find });
-  };
-
-  // Close Find search
-  closeSearchAdvanced = () => {
-    let { open_search } = this.state;
-    this.setState({ open_search: !open_search });
-    this.removeDataInModal();
-  };
-
-  // Save advanced search
-  saveAdvancedSearch = async () => {
-    let { name, advancedSearches, logicalOperator } = this.state;
-    await this.props.postSaveAdvancedSearchActionData({ name: name.trim(), customerAdvancedSave: { advancedSearches, logicalOperator } });
-    await this.getListAdvancedSearch();
-    this.saveSearchData();
-  };
-
-  // Get list advanced search
-  getListAdvancedSearch = () => {
-    this.props.getListSaveAdvancedSearchActionData();
-  };
-
-  // Delete advanced search
-  deleteAdvancedSearch = (id?: string) => {
-    this.props.deleteSaveAdvancedSearchActionData(id);
-  };
-  // Get advanced search
-  getAdvancedSearch = (id?: string) => {
-    this.props.getSaveAdvancedSearchActionData(id);
   };
 
   dataFilter() {
@@ -678,12 +501,10 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
 
   render() {
     const exportImage = require('app/assets/utils/images/user-mangament/export.png');
-    const filterImage = require('app/assets/utils/images/user-mangament/filter.png');
     const { users, loading, listFields, modalStateFilter, pageCount, list_option } = this.props;
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
     const {
       activePage,
-      open_new_save,
       open_create,
       open_search,
       logicalOperator,
@@ -769,139 +590,40 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
             type={modalStateFilter.type ? modalStateFilter.type : 'error'}
             onConfirm={() => this.props.closeModal()}
           />
-          {/* Add new */}
-          <Modal isOpen={open_new_save}>
-            <ModalHeader>
-              <Translate contentKey="userManagement.create-find-name" />
-            </ModalHeader>
-            <ModalBody>
-              <div className="input-search_group" style={{ paddingRight: '30px' }}>
-                <label className="input-search_label">
-                  <span>
-                    <Translate contentKey="userManagement.name-find" />
-                  </span>
-                </label>
-                <Input value={name} onChange={event => this.setState({ name: event.target.value })} />
-              </div>
-            </ModalBody>
-            <ModalFooter>
-              <Button color="none" style={{ float: 'right' }} onClick={() => this.setState({ open_new_save: false, name: '' })}>
-                <Translate contentKey="userManagement.cancel" />
-              </Button>
-              <Button
-                color="primary"
-                style={{ float: 'right' }}
-                onClick={() => this.saveAdvancedSearch()}
-                disabled={name && name.trim() !== '' ? false : true}
-              >
-                <Translate contentKey="userManagement.save" />
-              </Button>
-            </ModalFooter>
-          </Modal>
-          {/* Search save modal  */}
-          <SearchSaveModal
-            open_list_save={open_list_save}
-            toggleSearchSaveModal={this.toggleSearchSaveModal}
-            openAdvancedSearch={this.openAdvancedSearch}
-          />
           {/* Title */}
-          <div className="userManagement">
+          <div className="userRestore">
             <div id="title-common-header">
               <span id="text-title">
                 {' '}
-                <Translate contentKey="userManagement.home.title" />
+                <Translate contentKey="userRestore.home.title" />
               </span>
             </div>
-
             {/* Panel */}
             <div className="panel">
-              <Collapse isOpen={!open_search} navbar>
-                <div className="search-field">
-                  <div className="input-search_group" style={{ paddingRight: '30px' }}>
-                    <label className="input-search_label">
-                      <span>
-                        <Translate contentKey="userManagement.card-tag" />
-                      </span>
-                    </label>
-                    <UserCategoryTag handleChange={this.handleChange} />
-                  </div>
-                  <div className="input-search_group" style={{ paddingRight: '30px' }}>
-                    <label className="input-search_label">
-                      <Translate contentKey="userManagement.home.search-placer" />
-                    </label>
-                    <Input
-                      type="text"
-                      className="form-control"
-                      onKeyDown={this.search}
-                      placeholder={translate('userManagement.home.search-placer')}
-                    />
-                  </div>
+              <div>
+                <div style={{ color: "blue" }}> <Link to={`/app/views/customers/user-management`}>
+                <Icon type="arrow-left" style={{verticalAlign: "baseline"}} />  Quay lại Danh sách khách hàng trong danh sách này</Link> </div>
+                <br/>
+                <h4>Khôi phục khách hàng ?icon</h4>
+                <div style={{ color: "gray" }}>*Khách hàng đã xóa chỉ được khôi phục trong 90 ngày</div>
+                <br />
+                <div>
+                  <span style={{
+                    color: "black",
+                    fontWeight: 600
+                  }}>Tìm theo ngày  </span>
+                  <span><input type="date" /></span>
                 </div>
-              </Collapse>
-              <div className="field-search">
-                <div className="field-title">
-                  <p>
-                    <label className="field-title_text" onClick={this.closeSearchAdvanced}>
-                      <Icon type="setting" />
-                      <Translate contentKey="userManagement.advanced-search" />
-                      <Icon type={open_search ? 'caret-up' : 'caret-down'} />
-                    </label>
-                    <label
-                      className="field-title_text"
-                      style={{
-                        float: 'right'
-                      }}
-                      onClick={this.toggleSearchSaveModal}
-                    >
-                      <Translate contentKey="userManagement.saved-advanced-search" />
-                    </label>
-                  </p>
-                </div>
-                <Collapse isOpen={open_search} navbar>
-                  <div className="search-anvanced_customer">
-                    {list_field_render}
-
-                    <Button color="primary" onClick={this.handleAddNewComponent} style={{ marginRight: '20px' }}>
-                      <FontAwesomeIcon icon="plus" />
-                    </Button>
-                    <label className="title-advanced-search">
-                      <Translate contentKey="userManagement.add-more-condition-search" />
-                    </label>
-                  </div>
-                  <div className="search-anvanced_footer">
-                    <Button
-                      color="ghost"
-                      style={{
-                        marginLeft: '20px',
-                        float: 'right',
-                        backgroundColor: '#E5ECF4',
-                        border: '1px solid #CED4DA'
-                      }}
-                      onClick={this.saveSearchData}
-                    >
-                      <Translate contentKey="userManagement.save-search" />
-                    </Button>
-
-                    <Button color="primary" style={{ float: 'right' }} onClick={() => this.getDataListCustomer(0)}>
-                      <Translate contentKey="userManagement.find" />
-                    </Button>
-                  </div>
-                </Collapse>
               </div>
               <hr style={{ borderTop: 'dotted 1px' }} />
-              <Translate contentKey="userManagement.home.total-element" interpolate={{ element: this.props.totalElements }} />
-              <Dropdown overlay={this.rowName} trigger={['click']}>
-                <Button color="link" style={{ float: 'right' }}>
-                  <img src={filterImage} style={{ margin: ' 0px 5px 10px' }} />
-                </Button>
-              </Dropdown>
+              <Translate contentKey="userRestore.home.total-element" interpolate={{ element: this.props.totalElements }} />
               <Button
-                className="btn float-right jh-create-entity"
+                className="btn float-right jh-create-entity btn-restore"
                 outline
                 onClick={this.openModalRemoveCustomer}
                 disabled={listCheckedCustomer.length > 0 ? false : true}
               >
-                <Translate contentKey="userManagement.home.remove-customer" />
+                <Translate contentKey="userRestore.home.restore-customer" />
               </Button>
               {/*modal confirm accept remove customers*/}
               <div>
@@ -925,9 +647,9 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
               </div>
               {(listCheckedCustomer && checkedAllCustomer) &&
                 <div className="title-remove-all-customers" >
-                  <Translate contentKey="userManagement.home.choosed-customers" interpolate={{ element: listCheckedCustomer.length }} />
+                  <Translate contentKey="userRestore.home.choosed-customers" interpolate={{ element: listCheckedCustomer.length }} />
                   <span className="title-select-all">
-                    <Translate contentKey="userManagement.home.choose-all-customers"
+                    <Translate contentKey="userRestore.home.choose-all-customers"
                       interpolate={{ element: this.props.totalElements }} />
                   </span>
                 </div >}
@@ -953,7 +675,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                           this.setState({ conditionSort: 'firstName', count: count + 1 });
                         }}
                       >
-                        <Translate contentKey="userManagement.first-name" />{' '}
+                        <Translate contentKey="userRestore.first-name" />{' '}
                         {conditionSort === 'firstName' ? '' : <Icon type="caret-down" />}
                         {conditionSort === 'firstName' ? (
                           count % 2 === 0 ? (
@@ -972,7 +694,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                           this.setState({ conditionSort: 'lastName', count: count + 1 });
                         }}
                       >
-                        <Translate contentKey="userManagement.last-name" /> {conditionSort === 'lastName' ? '' : <Icon type="caret-down" />}
+                        <Translate contentKey="userRestore.last-name" /> {conditionSort === 'lastName' ? '' : <Icon type="caret-down" />}
                         {conditionSort === 'lastName' ? (
                           count % 2 === 0 ? (
                             <Icon type="sort-ascending" />
@@ -990,7 +712,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                           this.setState({ conditionSort: 'email', count: count + 1 });
                         }}
                       >
-                        <Translate contentKey="userManagement.email" /> {conditionSort === 'email' ? '' : <Icon type="caret-down" />}
+                        <Translate contentKey="userRestore.email" /> {conditionSort === 'email' ? '' : <Icon type="caret-down" />}
                         {conditionSort === 'email' ? (
                           count % 2 === 0 ? (
                             <Icon type="sort-ascending" />
@@ -1008,7 +730,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                           this.setState({ conditionSort: 'mobile', count: count + 1 });
                         }}
                       >
-                        <Translate contentKey="userManagement.phone-number" />{' '}
+                        <Translate contentKey="userRestore.phone-number" />{' '}
                         {conditionSort === 'mobile' ? '' : <Icon type="caret-down" />}
                         {conditionSort === 'mobile' ? (
                           count % 2 === 0 ? (
@@ -1041,7 +763,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                           this.setState({ conditionSort: 'createdDate', count: count + 1 });
                         }}
                       >
-                        <Translate contentKey="userManagement.created-date" />{' '}
+                        <Translate contentKey="userRestore.created-date" />{' '}
                         {conditionSort === 'createdDate' ? (
                           count % 2 === 0 ? (
                             <Icon type="sort-ascending" />
@@ -1053,10 +775,10 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                           )}
                       </th>
                       <th style={{ width: '200px' }}>
-                        <Translate contentKey="userManagement.card-tag" />
+                        <Translate contentKey="userRestore.card-tag" />
                       </th>
                       <th style={{ width: '150px' }} id="modified-date-sort" className="hand">
-                        <Translate contentKey="userManagement.feature" />
+                        <Translate contentKey="userRestore.feature" />
                       </th>
                     </tr>
                   </thead>
@@ -1159,7 +881,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
             </div>
           </div>
         </Fragment>
-      </Loader>
+      </Loader >
     );
   }
 }
@@ -1201,7 +923,6 @@ const mapDispatchToProps = {
   getSaveAdvancedSearchActionData,
   deleteSaveAdvancedSearchActionData,
   postSaveAdvancedSearchActionData,
-  getListOptionFilter
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

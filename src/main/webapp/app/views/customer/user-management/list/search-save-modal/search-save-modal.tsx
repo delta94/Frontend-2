@@ -61,6 +61,7 @@ export class SearchSaveModal extends React.Component<ISearchSaveModalProps, ISea
 
   //  Get advanced search
   getAdvancedSearch = async index => {
+    debugger;
     let { list_save_advanced } = this.props;
     await this.props.getSaveAdvancedSearchActionData(list_save_advanced[index].id);
     await this.props.toggleSearchSaveModal();

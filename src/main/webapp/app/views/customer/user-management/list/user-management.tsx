@@ -219,12 +219,14 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
       ...this.state,
       categories: categorieIds.join(),
       activePage: 0,
-      tagIds: categorieIds
+      tagIds: categorieIds,
+      listCheckedCustomer:[],
+      checkedAllCustomer:false
     });
     this.props.getUsers(0, itemsPerPage, categorieIds.join(), textSearch);
   };
 
-  search = event => {
+  searchByTextField = event => {
     if (event.key === 'Enter') {
       const textSearch = event.target.value;
       const { itemsPerPage, categories, is_normal_find } = this.state;
@@ -232,7 +234,9 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
         ...this.state,
         textSearch,
         activePage: 0,
-        is_normal_find: true
+        is_normal_find: true,
+        listCheckedCustomer:[],
+        checkedAllCustomer:false
       });
       this.props.getUsers(0, itemsPerPage, categories, textSearch);
     }
@@ -462,7 +466,12 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
       pageSize
     });
 
-    this.setState({ is_normal_find });
+    this.setState({
+      is_normal_find,
+      advancedSearches,
+      listCheckedCustomer:[],
+      checkedAllCustomer:false
+    });
   };
 
   // Close Find search
@@ -659,19 +668,43 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     this.setState({
       listCheckedCustomer: listChecked
     });
+    console.log(listChecked);
   }
   openModalRemoveCustomer = () => {
     this.setState({
+      acceptRemoveCus: true,
       modalRemoveCus: !this.state.modalRemoveCus
     });
   }
   handleRemoveCustomer = () => {
     // call api remove customers
-    const { listCheckedCustomer } = this.state;
-    console.log(listCheckedCustomer);
+    const { listCheckedCustomer} = this.state;
+      if (listCheckedCustomer.length > 0) {
+          // remove batch normal
+        debugger;
+      }
+
+  }
+  handleRemoveAllCustomer=()=>{
+    // call api remove all customers
+    const { listCheckedCustomer, logicalOperator, advancedSearchesData, tagIds, textSearch } = this.state;
+    if ((advancedSearchesData || logicalOperator) && advancedSearchesData.length > 0) {
+      debugger;
+      // remove all advance-filter
+    } else if (textSearch || tagIds.length > 0) {
+      debugger;
+      // remove all simple-filter
+    } else {
+      // remove all batch normal
+      if (listCheckedCustomer.length > 0) {
+        debugger;
+      }
+
+    }
   }
   validateRemoveCustomer = (event) => {
     if (+(event.target.value) === this.state.listCheckedCustomer.length) {
+      // for disabled button
       this.setState({
         acceptRemoveCus: false
       })
@@ -885,7 +918,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                     <Input
                       type="text"
                       className="form-control"
-                      onKeyDown={this.search}
+                      onKeyDown={this.searchByTextField}
                       placeholder={translate('userManagement.home.search-placer')}
                     />
                   </div>
@@ -964,7 +997,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                     Bạn có 90 ngày để hồi phục khách hàng đã xóa.
                     <br />
                     <div className="wrraper-input">
-                      {acceptRemoveCus &&
+                      {acceptRemoveCus && // for disabled button = true
                         <div className="number-cus">{listCheckedCustomer.length}</div>
                       }
                       <Input className="input-confirm-remove" onChange={this.validateRemoveCustomer} />
