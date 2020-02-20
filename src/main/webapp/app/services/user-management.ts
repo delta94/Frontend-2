@@ -161,10 +161,31 @@ export const getInfoUser = (id: any) => {
 
 const advancedSearchApi = 'v1/saved-advance-searches';
 
+
 // TODO: Save advanced search data
 export const postSaveAdvancedSearch = (data: any) => {
   const postSearchApi = `${advancedSearchApi}/insert`;
   return axios.post(postSearchApi, data, { headers: authHeaders });
+};
+
+// hanlde delete
+const configUrlDelete = 'http://171.244.40.91:8088/v2/customers';
+// handle delete customer by list id
+export const postDeleteCustomerBatchSevice = (data: any) => {
+  const configUrl = `${configUrlDelete}/delete/batch`;
+  return axios.post(configUrl, data, { headers: authHeaders });
+};
+
+// handle delete all customer by simple filter
+export const postDeleteCustomerSimpleFilterSevice = (data: any) => {
+  const configUrl = `${configUrlDelete}/delete/simple-filter`;
+  return axios.post(configUrl, data, { headers: authHeaders });
+};
+
+// handle delete all customer by advance filter
+export const postDeleteCustomerAdvanceFilterSevice = (data: any) => {
+  const configUrl = `${configUrlDelete}/delete/advance-filter`;
+  return axios.post(configUrl, data, { headers: authHeaders });
 };
 
 // TODO: Delete advanced search data

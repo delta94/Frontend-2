@@ -20,7 +20,10 @@ import {
   getSaveAdvancedSearchActionData,
   deleteSaveAdvancedSearchActionData,
   postSaveAdvancedSearchActionData,
-  getListOptionFilter
+  getListOptionFilter,
+  postDeleteCustomerBatch,
+  postDeleteCustomerAdvanceSearch,
+  postDeleteCustomerSimpleSearch
 } from 'app/actions/user-management';
 import UserCategoryTag from './categories-tag/categories-tag';
 import { IRootState } from 'app/reducers';
@@ -668,7 +671,6 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     this.setState({
       listCheckedCustomer: listChecked
     });
-    console.log(listChecked);
   }
   openModalRemoveCustomer = () => {
     this.setState({
@@ -681,7 +683,8 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     const { listCheckedCustomer} = this.state;
       if (listCheckedCustomer.length > 0) {
           // remove batch normal
-        debugger;
+          this.props.postDeleteCustomerBatch(listCheckedCustomer);
+        this.openModalRemoveCustomer();
       }
 
   }
@@ -691,9 +694,30 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     if ((advancedSearchesData || logicalOperator) && advancedSearchesData.length > 0) {
       debugger;
       // remove all advance-filter
+      // {
+      //   "advancedSearches": [
+      //     {
+      //      "fieldId": "email",
+      //   "fieldCode": "email",
+      //   "fieldType": "Text Input",
+      //   "fieldValue": "EQUAL",
+      //   "fieldTitle": "Email",
+      //   "operator": "CONTAIN",
+      //   "value": "CONTAIN"
+      //     }
+      //   ],
+      //   "logicalOperator": "string"
+      // }
+      // this.props.postDeleteCustomerAdvanceSearch();
     } else if (textSearch || tagIds.length > 0) {
       debugger;
       // remove all simple-filter
+      // {
+      //   "tagIds": [
+      //     "string"
+      //   ],
+      //   "textSearch": "string"
+      // }
     } else {
       // remove all batch normal
       if (listCheckedCustomer.length > 0) {
@@ -1288,7 +1312,10 @@ const mapDispatchToProps = {
   getSaveAdvancedSearchActionData,
   deleteSaveAdvancedSearchActionData,
   postSaveAdvancedSearchActionData,
-  getListOptionFilter
+  getListOptionFilter,
+  postDeleteCustomerBatch,
+  postDeleteCustomerAdvanceSearch,
+  postDeleteCustomerSimpleSearch
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

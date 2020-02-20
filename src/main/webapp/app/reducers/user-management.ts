@@ -166,6 +166,9 @@ export default (state: UserManagementState = initialState, action): UserManageme
     case REQUEST(USER_MANAGE_ACTION_TYPES.GET_LIST_ADVANCED_SEARCH):
     case REQUEST(USER_MANAGE_ACTION_TYPES.POST_SAVE_ADVANCED_SEARCH):
     case REQUEST(USER_MANAGE_ACTION_TYPES.DELETE_ADVANCED_SEARCH):
+    case REQUEST(USER_MANAGE_ACTION_TYPES.POST_REMOVE_LIST_CUSTOMER):
+    case REQUEST(USER_MANAGE_ACTION_TYPES.POST_REMOVE_LIST_CUSTOMER_SIMPLE_FILTER):
+    case REQUEST(USER_MANAGE_ACTION_TYPES.POST_REMOVE_LIST_CUSTOMER_ADVANCE_FILTER):
       return {
         ...state,
         errorMessage: null,
@@ -225,6 +228,37 @@ export default (state: UserManagementState = initialState, action): UserManageme
 
     // TODO: Delete Advanced search
     case FAILURE(USER_MANAGE_ACTION_TYPES.DELETE_ADVANCED_SEARCH):
+      return {
+        ...state,
+        loading: false
+      };
+    case FAILURE(USER_MANAGE_ACTION_TYPES.POST_REMOVE_LIST_CUSTOMER):
+      return {
+        ...state,
+        loading: false
+      };
+    case FAILURE(USER_MANAGE_ACTION_TYPES.POST_REMOVE_LIST_CUSTOMER_SIMPLE_FILTER):
+      return {
+        ...state,
+        loading: false
+      };
+    case FAILURE(USER_MANAGE_ACTION_TYPES.POST_REMOVE_LIST_CUSTOMER_ADVANCE_FILTER):
+      return {
+        ...state,
+        loading: false
+      };
+
+    case SUCCESS(USER_MANAGE_ACTION_TYPES.POST_REMOVE_LIST_CUSTOMER):
+      return {
+        ...state,
+        loading: false
+      };
+    case SUCCESS(USER_MANAGE_ACTION_TYPES.POST_REMOVE_LIST_CUSTOMER_SIMPLE_FILTER):
+      return {
+        ...state,
+        loading: false
+      };
+    case SUCCESS(USER_MANAGE_ACTION_TYPES.POST_REMOVE_LIST_CUSTOMER_ADVANCE_FILTER):
       return {
         ...state,
         loading: false

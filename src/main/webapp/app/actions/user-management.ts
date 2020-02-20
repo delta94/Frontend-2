@@ -25,7 +25,10 @@ import {
   mergeUserService,
   exportFileResultService,
   postSaveAdvancedSearch,
-  deleteSaveAdvancedSearch
+  deleteSaveAdvancedSearch,
+  postDeleteCustomerBatchSevice,
+  postDeleteCustomerSimpleFilterSevice,
+  postDeleteCustomerAdvanceFilterSevice
 } from 'app/services/user-management';
 import { IFileList } from 'app/common/models/file-list.model';
 import { warn } from 'fullcalendar';
@@ -221,6 +224,28 @@ export const postSaveAdvancedSearchActionData = (data: any) => {
   return {
     type: USER_MANAGE_ACTION_TYPES.POST_SAVE_ADVANCED_SEARCH,
     payload: postSaveAdvancedSearch(data)
+  };
+};
+
+// remove list customer by list id
+export const postDeleteCustomerBatch = (data: any) => {
+  return {
+    type: USER_MANAGE_ACTION_TYPES.POST_REMOVE_LIST_CUSTOMER,
+    payload: postDeleteCustomerBatchSevice(data)
+  };
+};
+// remove list all customer with simple filter
+export const postDeleteCustomerSimpleSearch = (data: any) => {
+  return {
+    type: USER_MANAGE_ACTION_TYPES.POST_REMOVE_LIST_CUSTOMER_SIMPLE_FILTER,
+    payload: postDeleteCustomerSimpleFilterSevice(data)
+  };
+};
+// remove list all customer with advance filter
+export const postDeleteCustomerAdvanceSearch = (data: any) => {
+  return {
+    type: USER_MANAGE_ACTION_TYPES.POST_REMOVE_LIST_CUSTOMER_ADVANCE_FILTER,
+    payload: postDeleteCustomerAdvanceFilterSevice(data)
   };
 };
 
