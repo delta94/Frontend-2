@@ -20,6 +20,7 @@
       "warning-remove":"Bạn đang xóa <strong> {{ element }} </strong> khách hàng. Vui lòng điền số lượng khách hàng muốn xóa. Bạn có 90 ngày để hồi phục khách hàng đã xóa.",
       "choosed-customers":"<strong> {{ element }} </strong> khách hàng đã được chọn. ",
       "choose-all-customers":"Chọn tất cả <strong> {{ element }} </strong> khách hàng trong danh sách này",
+      "unchoose-all-customers":"Bỏ chọn tất cả",
       "line-error": "{{ number }} dòng không thành công đầu tiên ",
       "editLabel": "Cập nhật thông tin khách hàng",
       "info-cus": "Thông tin khách hàng",

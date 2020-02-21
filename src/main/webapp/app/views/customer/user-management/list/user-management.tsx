@@ -98,7 +98,7 @@ export interface IUserManagementState {
   listCheckedCustomer: string[];
   checkedAllCustomer: boolean;
   modalRemoveCus: boolean;
-  acceptRemoveCus: boolean;
+  disableRemoveCus: boolean;
   removeAllCustomers: boolean;
 }
 
@@ -142,7 +142,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     listCheckedCustomer: [],
     checkedAllCustomer: false,
     modalRemoveCus: false,
-    acceptRemoveCus: true,
+    disableRemoveCus: true,
     removeAllCustomers: false
   };
 
@@ -654,7 +654,8 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     }
     this.setState({
       checkedAllCustomer: checkedAll,
-      listCheckedCustomer: listChecked
+      listCheckedCustomer: listChecked,
+      removeAllCustomers:false
     });
 
   }
@@ -671,60 +672,67 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
       listChecked.push(checkedId);
     }
     this.setState({
-      listCheckedCustomer: listChecked
+      listCheckedCustomer: listChecked,
+      removeAllCustomers:false
     });
   }
   openModalRemoveCustomer = () => {
     this.setState({
-      acceptRemoveCus: true,
-      modalRemoveCus: !this.state.modalRemoveCus,
-      removeAllCustomers: false
+      disableRemoveCus: true,
+      modalRemoveCus: !this.state.modalRemoveCus
     });
   }
-  handleRemoveCustomer = () => {
+  handleRemoveCustomer = async () => {
     // call api remove customers
-    const { listCheckedCustomer, removeAllCustomers } = this.state;
+    const { listCheckedCustomer, removeAllCustomers, activePage, itemsPerPage, categories, textSearch } = this.state;
     if (removeAllCustomers) { // remove all
       this.handleRemoveAllCustomer();
     } else {        // remove batch normal
       if (listCheckedCustomer.length > 0) {
-        this.props.postDeleteCustomerBatch(listCheckedCustomer);
+        await this.props.postDeleteCustomerBatch(listCheckedCustomer);
+        await this.props.getUsers(activePage, itemsPerPage, categories, textSearch);
+        this.setState({
+          listCheckedCustomer: []
+        })
       }
     }
     this.openModalRemoveCustomer();
 
   }
-  handleRemoveAllCustomer = () => {
+  handleRemoveAllCustomer = async () => {
     // call api remove all customers
-    const { listCheckedCustomer, logicalOperator, advancedSearchesData, tagIds, textSearch } = this.state;
+    const { listCheckedCustomer, logicalOperator,
+      advancedSearchesData, tagIds, activePage, itemsPerPage, categories, advancedSearches, pageSize,
+      textSearch } = this.state;
     if ((advancedSearchesData || logicalOperator) && advancedSearchesData.length > 0) {
       // remove with params of advance search
-      const advancedSearchParams= [];
-      advancedSearchesData.forEach((data)=>{
+      const advancedSearchParams = [];
+      advancedSearchesData.forEach((data) => {
         advancedSearchParams.push(data.advancedSearch);
       })
-      this.props.postDeleteCustomerAdvanceSearch({
-        advancedSearches:advancedSearchParams,
+      await this.props.postDeleteCustomerAdvanceSearch({
+        advancedSearches: advancedSearchParams,
         logicalOperator
+      });
+      await this.props.getFindUserInManagerWithActionData({
+        logicalOperator,
+        advancedSearches,
+        page: 0,
+        pageSize
       });
     } else if (textSearch || tagIds.length > 0) {
       // remove with params of normal search
-      this.props.postDeleteCustomerSimpleSearch(
-        {
-          tagIds,
-          textSearch
-        }
-      )
+      await this.props.postDeleteCustomerSimpleSearch({ tagIds, textSearch })
+      await this.props.getUsers(activePage, itemsPerPage, categories, textSearch);
+
     } else {
       // remove all customer with no params
-      this.props.postDeleteCustomerSimpleSearch(
-        {
-          tagIds: [],
-          textSearch: ""
-        }
-      )
-
+      await this.props.postDeleteCustomerSimpleSearch({ tagIds: [], textSearch: "" })
+      await this.props.getUsers(activePage, itemsPerPage, categories, textSearch);
     }
+    this.setState({
+      listCheckedCustomer: []
+    })
   }
   validateRemoveCustomer = (event) => {
     const { removeAllCustomers } = this.state;
@@ -737,11 +745,11 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     if (+(event.target.value) === condition) {
       // for disabled button
       this.setState({
-        acceptRemoveCus: false
+        disableRemoveCus: false
       })
     } else {
       this.setState({
-        acceptRemoveCus: true
+        disableRemoveCus: true
       })
     }
   }
@@ -767,7 +775,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
       listCheckedCustomer,
       checkedAllCustomer,
       modalRemoveCus,
-      acceptRemoveCus,
+      disableRemoveCus,
       removeAllCustomers
     } = this.state;
     let dataUser;
@@ -1030,7 +1038,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                       interpolate={{ element: removeAllCustomers ? this.props.totalElements : listCheckedCustomer.length }} />
                     <br />
                     <div className="wrraper-input">
-                      {acceptRemoveCus && // for disabled button = true
+                      {disableRemoveCus && // for disabled button = true
                         <div className="number-cus">{removeAllCustomers ? this.props.totalElements : listCheckedCustomer.length}</div>
                       }
                       <Input className="input-confirm-remove" onChange={this.validateRemoveCustomer} />
@@ -1038,22 +1046,32 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                   </ModalBody>
                   <ModalFooter>
                     <Button outline onClick={this.openModalRemoveCustomer}>Thoát </Button>
-                    <Button outline color="danger" onClick={this.handleRemoveCustomer} disabled={acceptRemoveCus} >Xóa</Button>
+                    <Button outline color="danger" onClick={this.handleRemoveCustomer} disabled={disableRemoveCus} >Xóa</Button>
                   </ModalFooter>
                 </Modal>
               </div>
               {(listCheckedCustomer && checkedAllCustomer) &&
                 <div className="title-remove-all-customers" >
-                  <Translate contentKey="userManagement.home.choosed-customers" interpolate={{ element: listCheckedCustomer.length }} />
-                  <span className="title-select-all"
-                    onClick={() => this.setState({
-                      modalRemoveCus: true,
-                      removeAllCustomers: true,
-                      acceptRemoveCus: true
-                    })}>
-                    <Translate contentKey="userManagement.home.choose-all-customers"
-                      interpolate={{ element: this.props.totalElements }} />
-                  </span>
+                  <Translate contentKey="userManagement.home.choosed-customers" interpolate={{ element: removeAllCustomers ? this.props.totalElements : listCheckedCustomer.length }} />
+                  {!removeAllCustomers &&
+                    <span className="title-select-all"
+                      onClick={() => this.setState({
+                        removeAllCustomers: true,
+                        disableRemoveCus: true
+                      })}>
+
+                      <Translate contentKey="userManagement.home.choose-all-customers"
+                        interpolate={{ element: this.props.totalElements }} />
+
+                    </span>
+                  }
+                  {removeAllCustomers &&
+                    <span className="title-select-all"
+                      onClick={() => { this.setState({ removeAllCustomers: false, listCheckedCustomer: [],checkedAllCustomer:false }) }}>
+                      <Translate contentKey="userManagement.home.unchoose-all-customers"
+                      />
+                    </span>
+                  }
                 </div >}
               <Row />
               <div className="table-user">
