@@ -4,7 +4,7 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import { Translate, translate } from 'react-jhipster';
 // service
 import { getUser, getFields, getListSaveAdvancedSearchActionData, getSaveAdvancedSearchActionData } from 'app/actions/user-management';
-import { getDeletedUsers, postDeleteCustomerBatch, postDeleteCustomerSimpleSearch } from 'app/actions/users-restore';
+import { getDeletedUsers, postRestoreCustomerBatchAction, postRestoreCustomerSimpleFilterAction } from 'app/actions/users-restore';
 import { openModal, closeModal } from 'app/actions/modal';
 import { getListFieldDataAction } from 'app/actions/group-attribute-customer';
 import { getFindUserInManagerWithActionData } from 'app/actions/user-management';
@@ -33,6 +33,7 @@ import { Menu, Dropdown, Icon, Checkbox, Input, Tooltip } from 'antd';
 // antdesign date
 import { DatePicker } from 'antd';
 import moment from 'moment';
+const dateFormat = 'DD/MM/YYYY';
 
 interface IComponentData {
   id: string;
@@ -136,8 +137,8 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
     removeAllCustomers: false,
     fromDate: moment()
       .subtract(90, 'days')
-      .format('DD/MM/YYYY'),
-    toDate: moment().format('DD/MM/YYYY'),
+      .format(dateFormat),
+    toDate: moment().format(dateFormat),
     sortList: []
   };
 
@@ -499,57 +500,74 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
       modalRemoveCus: !this.state.modalRemoveCus
     });
   };
-  handleRemoveCustomer = async () => {
-    // // call api remove customers
-    // const { listCheckedCustomer, removeAllCustomers, activePage, itemsPerPage, categories, textSearch } = this.state;
-    // if (removeAllCustomers) { // remove all
-    //   this.handleRemoveAllCustomer();
-    // } else {        // remove batch normal
-    //   if (listCheckedCustomer.length > 0) {
-    //     await this.props.postDeleteCustomerBatch(listCheckedCustomer);
-    //     await this.props.getUsers(activePage, itemsPerPage, categories, textSearch);
-    //     this.setState({
-    //       listCheckedCustomer: []
-    //     })
-    //   }
-    // }
-    // this.openModalRemoveCustomer();
+  handleRestoreCustomer = async () => {
+    //  call api restore customers
+    const {
+      listCheckedCustomer,
+      fromDate,
+      toDate,
+      removeAllCustomers,
+      sortList,
+      activePage,
+      itemsPerPage,
+      categories,
+      textSearch
+    } = this.state;
+    this.openModalRemoveCustomer();
+    if (removeAllCustomers) {
+      // remove all
+      this.handleRestoreAllCustomer();
+    } else {
+      // remove batch normal
+      if (listCheckedCustomer.length > 0) {
+        await this.props.postRestoreCustomerBatchAction(listCheckedCustomer);
+        await this.props.getDeletedUsers(fromDate, toDate, activePage, itemsPerPage, sortList, textSearch);
+        await this.setState({
+          listCheckedCustomer: []
+        });
+      }
+    }
   };
-  handleRemoveAllCustomer = async () => {
-    // // call api remove all customers
-    // const { listCheckedCustomer, logicalOperator,
-    //   advancedSearchesData, tagIds, activePage, itemsPerPage, categories, advancedSearches, pageSize,
-    //   textSearch } = this.state;
-    // if ((advancedSearchesData || logicalOperator) && advancedSearchesData.length > 0) {
-    //   // remove with params of advance search
-    //   const advancedSearchParams = [];
-    //   advancedSearchesData.forEach((data) => {
-    //     advancedSearchParams.push(data.advancedSearch);
-    //   })
-    //   await this.props.postDeleteCustomerAdvanceSearch({
-    //     advancedSearches: advancedSearchParams,
-    //     logicalOperator
-    //   });
-    //   await this.props.getFindUserInManagerWithActionData({
-    //     logicalOperator,
-    //     advancedSearches,
-    //     page: 0,
-    //     pageSize
-    //   });
-    // } else if (textSearch || tagIds.length > 0) {
-    //   // remove with params of normal search
-    //   await this.props.postDeleteCustomerSimpleSearch({ tagIds, textSearch })
-    //   await this.props.getUsers(activePage, itemsPerPage, categories, textSearch);
-    // } else {
-    //   // remove all customer with no params
-    //   await this.props.postDeleteCustomerSimpleSearch({ tagIds: [], textSearch: "" })
-    //   await this.props.getUsers(activePage, itemsPerPage, categories, textSearch);
-    // }
-    // this.setState({
-    //   listCheckedCustomer: []
-    // })
+  handleRestoreAllCustomer = async () => {
+    // call api remove all customers
+    const {
+      listCheckedCustomer,
+      fromDate,
+      toDate,
+      removeAllCustomers,
+      sortList,
+      activePage,
+      itemsPerPage,
+      categories,
+      textSearch
+    } = this.state;
+    if (textSearch) {
+      // remove with params of normal search
+      await this.props.postRestoreCustomerSimpleFilterAction({
+        fromDate: fromDate,
+        page: 0,
+        pageSize: 0,
+        sort: [],
+        textSearch: textSearch,
+        toDate: toDate
+      });
+    } else {
+      // remove all customer with no params
+      await this.props.postRestoreCustomerSimpleFilterAction({
+        fromDate: fromDate,
+        page: 0,
+        pageSize: 0,
+        sort: [],
+        textSearch: textSearch,
+        toDate: toDate
+      });
+    }
+    await this.props.getDeletedUsers(fromDate, toDate, activePage, itemsPerPage, sortList, textSearch);
+    await this.setState({
+      listCheckedCustomer: []
+    });
   };
-  validateRemoveCustomer = event => {
+  validateRestoreCustomer = event => {
     const { removeAllCustomers } = this.state;
     let condition = 0;
     if (removeAllCustomers) {
@@ -570,8 +588,20 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
       });
     }
   };
-  hanldeDateSearch = dates => {
-    console.log(dates);
+  hanldeDateSearch = range => {
+    if (range) {
+      this.setState({
+        fromDate: range[0].format(dateFormat),
+        toDate: range[1].format(dateFormat)
+      });
+    }
+  };
+  handleSearchCustomer = async () => {
+    const { textSearch, fromDate, toDate, activePage, itemsPerPage, sortList } = this.state;
+    await this.props.getDeletedUsers(fromDate, toDate, activePage, itemsPerPage, sortList, textSearch);
+    await this.setState({
+      listCheckedCustomer: []
+    });
   };
   render() {
     const exportImage = require('app/assets/utils/images/user-mangament/export.png');
@@ -598,7 +628,6 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
     } = this.state;
     // date format
     const { MonthPicker, RangePicker } = DatePicker;
-    const dateFormat = 'DD/MM/YYYY';
 
     let dataUser;
     dataUser = this.dataFilter();
@@ -661,7 +690,6 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
           <div className="userRestore">
             <div id="title-common-header">
               <span id="text-title">
-                {' '}
                 <Translate contentKey="userRestore.home.title" />
               </span>
             </div>
@@ -669,10 +697,9 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
             <div className="panel">
               <div>
                 <div style={{ color: 'blue' }}>
-                  {' '}
                   <Link to={`/app/views/customers/user-management`}>
                     <Icon type="arrow-left" style={{ verticalAlign: 'baseline' }} /> Quay lại Danh sách khách hàng trong danh sách này
-                  </Link>{' '}
+                  </Link>
                 </div>
                 <br />
                 <h4>
@@ -691,7 +718,7 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
                     <span className="label-search">Tìm theo ngày </span>
                     <span>
                       <RangePicker // 90 day ago
-                        onCalendarChange={this.hanldeDateSearch}
+                        onChange={this.hanldeDateSearch}
                         defaultValue={[moment(fromDate, dateFormat), moment(toDate, dateFormat)]}
                         format={dateFormat}
                       />
@@ -702,10 +729,16 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
                       &nbsp; Tìm theo tên &nbsp;{' '}
                     </span>
                     <span>
-                      <Input />
+                      <Input
+                        onChange={event => {
+                          this.setState({ textSearch: event.target.value });
+                        }}
+                      />
                     </span>
                   </div>
-                  <Button outline>Tìm kiếm</Button>
+                  <Button outline onClick={this.handleSearchCustomer}>
+                    Tìm kiếm
+                  </Button>
                 </div>
               </div>
               <hr style={{ borderTop: 'dotted 1px' }} />
@@ -729,17 +762,28 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
                     <br />
                     <div className="wrraper-input">
                       {disableRemoveCus && ( // for disabled button = true
-                        <div className="number-cus">{removeAllCustomers ? this.props.totalElements : listCheckedCustomer.length}</div>
+                        <div
+                          style={{
+                            zIndex: 1,
+                            position: 'absolute',
+                            left: '11px',
+                            fontSize: '20px',
+                            top: '11px',
+                            color: '#d4cdcd'
+                          }}
+                        >
+                          {removeAllCustomers ? this.props.totalElements : listCheckedCustomer.length}
+                        </div>
                       )}
-                      <Input className="input-confirm-remove" onChange={this.validateRemoveCustomer} />
+                      <Input style={{ fontSize: 20 }} onChange={this.validateRestoreCustomer} />
                     </div>
                   </ModalBody>
                   <ModalFooter>
                     <Button outline onClick={this.openModalRemoveCustomer}>
                       Thoát{' '}
                     </Button>
-                    <Button outline color="danger" onClick={this.handleRemoveCustomer} disabled={disableRemoveCus}>
-                      Xóa
+                    <Button outline color="danger" onClick={this.handleRestoreCustomer} disabled={disableRemoveCus}>
+                      Khôi phục
                     </Button>
                   </ModalFooter>
                 </Modal>
@@ -981,7 +1025,9 @@ const mapDispatchToProps = {
   getFindUserInManagerWithActionData,
   getListSaveAdvancedSearchActionData,
   getSaveAdvancedSearchActionData,
-  getDeletedUsers
+  getDeletedUsers,
+  postRestoreCustomerBatchAction,
+  postRestoreCustomerSimpleFilterAction
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

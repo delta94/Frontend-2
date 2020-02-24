@@ -684,6 +684,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
   handleRemoveCustomer = async () => {
     // call api remove customers
     const { listCheckedCustomer, removeAllCustomers, activePage, itemsPerPage, categories, textSearch } = this.state;
+    this.openModalRemoveCustomer();
     if (removeAllCustomers) {
       // remove all
       this.handleRemoveAllCustomer();
@@ -697,7 +698,6 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
         });
       }
     }
-    this.openModalRemoveCustomer();
   };
   handleRemoveAllCustomer = async () => {
     // call api remove all customers

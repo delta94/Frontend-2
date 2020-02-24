@@ -88,7 +88,6 @@ export default (state: UserRestoreState = initialState, action): UserRestoreStat
       };
 
     case SUCCESS(USER_RESTORE_ACTION_TYPES.GET_USERS_DELETED_LIST):
-      debugger;
       return {
         ...state,
         loading: false,

@@ -12,14 +12,14 @@ export const getDeletedUsers = (fromDate, toDate, page, pageSize, sort?: any[], 
   };
 };
 // remove list customer by list id
-export const postDeleteCustomerBatch = (data: any) => {
+export const postRestoreCustomerBatchAction = (data: any) => {
   return {
     type: USER_RESTORE_ACTION_TYPES.RESTORE_USERS_BY_IDS,
     payload: postRestoreCustomerBatchSevice(data)
   };
 };
 // remove list all customer with simple filter
-export const postDeleteCustomerSimpleSearch = (data: any) => {
+export const postRestoreCustomerSimpleFilterAction = (data: any) => {
   return {
     type: USER_RESTORE_ACTION_TYPES.RESTORE_ALL_USERS_WITH_FILTER,
     payload: postRestoreCustomerSimpleFilterSevice(data)
