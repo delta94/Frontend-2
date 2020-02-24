@@ -57,7 +57,7 @@ interface IAdvancedSearchesData {
   advancedSearch?: ISearchAdvanced;
 }
 
-export interface IUserManagementProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> { }
+export interface IUserManagementProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
 
 export interface IUserManagementState {
   isDelete: boolean;
@@ -296,7 +296,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
       listDataUser.forEach((item, index) => {
         if (item === code) {
           existValue = code;
-          listDataUser = listDataUser.filter(function (value) {
+          listDataUser = listDataUser.filter(function(value) {
             return value != code;
           });
         } else {
@@ -577,16 +577,16 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
             check: false,
             value:
               event.fields.length > 0 &&
-                event.fields.map(value => {
-                  return value.value;
-                })
+              event.fields.map(value => {
+                return value.value;
+              })
                 ? event.fields.map(value => {
-                  if (String(value.id) == String(item.id)) {
-                    return value.value;
-                  } else {
-                    return item.value;
-                  }
-                })
+                    if (String(value.id) == String(item.id)) {
+                      return value.value;
+                    } else {
+                      return item.value;
+                    }
+                  })
                 : item.value
           };
         });
@@ -600,16 +600,16 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
             ? lengthProps > event.fields.length
               ? dataProps
               : event.fields.map(item => {
-                return {
-                  code: item.code,
-                  fieldValue: item.fieldValue,
-                  id: item.id,
-                  title: item.title,
-                  type: item.type,
-                  check: false,
-                  value: item.value
-                };
-              })
+                  return {
+                    code: item.code,
+                    fieldValue: item.fieldValue,
+                    id: item.id,
+                    title: item.title,
+                    type: item.type,
+                    check: false,
+                    value: item.value
+                  };
+                })
             : listPropsUser,
         firstName: event.firstName,
         lastName: event.lastName,
@@ -624,7 +624,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
 
   sortData(arr, key) {
     let { count } = this.state;
-    let sortData = arr.sort(function (a, b) {
+    let sortData = arr.sort(function(a, b) {
       if (count % 2 === 0) {
         if (String(a[key]).toLowerCase() < String(b[key]).toLowerCase()) {
           return -1;
@@ -648,68 +648,77 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
   handleCheckedAllCustomer = (checkedAll: boolean, dataUser: any[]) => {
     let listChecked = [];
     if (checkedAll === true) {
-      dataUser.forEach((user) => {
+      dataUser.forEach(user => {
         listChecked.push(user.id);
-      })
+      });
     }
     this.setState({
       checkedAllCustomer: checkedAll,
       listCheckedCustomer: listChecked,
-      removeAllCustomers:false
+      removeAllCustomers: false
     });
-
-  }
+  };
   handleCheckedCustomer = (checkedId: string) => {
     const { listCheckedCustomer } = this.state;
     let listChecked = [];
-    if (listCheckedCustomer.filter((customerId) => (customerId === checkedId)).length > 0) {
-      listChecked = listCheckedCustomer.filter((customerId) => (customerId !== checkedId));
+    if (listCheckedCustomer.filter(customerId => customerId === checkedId).length > 0) {
+      listChecked = listCheckedCustomer.filter(customerId => customerId !== checkedId);
       this.setState({
         checkedAllCustomer: false
-      })
+      });
     } else {
       listChecked = JSON.parse(JSON.stringify(listCheckedCustomer));
       listChecked.push(checkedId);
     }
     this.setState({
       listCheckedCustomer: listChecked,
-      removeAllCustomers:false
+      removeAllCustomers: false
     });
-  }
+  };
   openModalRemoveCustomer = () => {
     this.setState({
       disableRemoveCus: true,
       modalRemoveCus: !this.state.modalRemoveCus
     });
-  }
+  };
   handleRemoveCustomer = async () => {
     // call api remove customers
     const { listCheckedCustomer, removeAllCustomers, activePage, itemsPerPage, categories, textSearch } = this.state;
-    if (removeAllCustomers) { // remove all
+    if (removeAllCustomers) {
+      // remove all
       this.handleRemoveAllCustomer();
-    } else {        // remove batch normal
+    } else {
+      // remove batch normal
       if (listCheckedCustomer.length > 0) {
         await this.props.postDeleteCustomerBatch(listCheckedCustomer);
         await this.props.getUsers(activePage, itemsPerPage, categories, textSearch);
         this.setState({
           listCheckedCustomer: []
-        })
+        });
       }
     }
     this.openModalRemoveCustomer();
-
-  }
+  };
   handleRemoveAllCustomer = async () => {
     // call api remove all customers
-    const { listCheckedCustomer, logicalOperator,
-      advancedSearchesData, tagIds, activePage, itemsPerPage, categories, advancedSearches, pageSize,
-      textSearch } = this.state;
+    const {
+      listCheckedCustomer,
+      logicalOperator,
+      advancedSearchesData,
+      tagIds,
+      activePage,
+      itemsPerPage,
+      categories,
+      advancedSearches,
+      pageSize,
+      textSearch
+    } = this.state;
     if ((advancedSearchesData || logicalOperator) && advancedSearchesData.length > 0) {
       // remove with params of advance search
       const advancedSearchParams = [];
-      advancedSearchesData.forEach((data) => {
+      advancedSearchesData.forEach(data => {
         advancedSearchParams.push(data.advancedSearch);
-      })
+      });
       await this.props.postDeleteCustomerAdvanceSearch({
         advancedSearches: advancedSearchParams,
         logicalOperator
@@ -722,37 +731,38 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
       });
     } else if (textSearch || tagIds.length > 0) {
       // remove with params of normal search
-      await this.props.postDeleteCustomerSimpleSearch({ tagIds, textSearch })
+      await this.props.postDeleteCustomerSimpleSearch({ tagIds, textSearch });
       await this.props.getUsers(activePage, itemsPerPage, categories, textSearch);
-
     } else {
       // remove all customer with no params
-      await this.props.postDeleteCustomerSimpleSearch({ tagIds: [], textSearch: "" })
+      await this.props.postDeleteCustomerSimpleSearch({ tagIds: [], textSearch: '' });
       await this.props.getUsers(activePage, itemsPerPage, categories, textSearch);
     }
     this.setState({
       listCheckedCustomer: []
-    })
-  }
-  validateRemoveCustomer = (event) => {
+    });
+  };
+  validateRemoveCustomer = event => {
     const { removeAllCustomers } = this.state;
     let condition = 0;
-    if (removeAllCustomers) {  // open with remove all
+    if (removeAllCustomers) {
+      // open with remove all
       condition = this.props.totalElements;
-    } else {// open with remove normal
+    } else {
+      // open with remove normal
       condition = this.state.listCheckedCustomer.length;
     }
-    if (+(event.target.value) === condition) {
+    if (+event.target.value === condition) {
       // for disabled button
       this.setState({
         disableRemoveCus: false
-      })
+      });
     } else {
       this.setState({
         disableRemoveCus: true
-      })
+      });
     }
-  }
+  };
 
   render() {
     const importImage = require('app/assets/utils/images/user-mangament/import.png');
@@ -785,7 +795,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     });
 
     let dataHeader = theader
-      .sort(function (a, b) {
+      .sort(function(a, b) {
         if (a.title.toLowerCase() < b.title.toLowerCase()) {
           return -1;
         }
@@ -815,20 +825,20 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
     let list_field_render =
       list_field_data_cpn && list_field_data_cpn.length > 0
         ? list_field_data_cpn.map(item => {
-          if (item.id)
-            return (
-              <FieldData
-                key={item.id}
-                id={item.id}
-                last_index={item.last_index}
-                logicalOperator={logicalOperator}
-                default_data={item.default_data}
-                updateValueFromState={this.updateValueFromState}
-                deleteComponentById={this.deleteComponentById}
-                updateRelationshipFromState={this.updateRelationshipFromState}
-              />
-            );
-        })
+            if (item.id)
+              return (
+                <FieldData
+                  key={item.id}
+                  id={item.id}
+                  last_index={item.last_index}
+                  logicalOperator={logicalOperator}
+                  default_data={item.default_data}
+                  updateValueFromState={this.updateValueFromState}
+                  deleteComponentById={this.deleteComponentById}
+                  updateRelationshipFromState={this.updateRelationshipFromState}
+                />
+              );
+          })
         : [];
     return (
       <Loader message={spinner1} show={loading} priority={1}>
@@ -1032,47 +1042,76 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
               </Button>
               {/*modal confirm accept remove customers*/}
               <div>
-                <Modal isOpen={modalRemoveCus} toggle={this.openModalRemoveCustomer} >
+                <Modal isOpen={modalRemoveCus} toggle={this.openModalRemoveCustomer}>
                   <ModalBody>
-                    <Translate contentKey="userManagement.home.warning-remove"
-                      interpolate={{ element: removeAllCustomers ? this.props.totalElements : listCheckedCustomer.length }} />
+                    <Translate
+                      contentKey="userManagement.home.warning-remove"
+                      interpolate={{ element: removeAllCustomers ? this.props.totalElements : listCheckedCustomer.length }}
+                    />
                     <br />
                     <div className="wrraper-input">
-                      {disableRemoveCus && // for disabled button = true
-                        <div className="number-cus">{removeAllCustomers ? this.props.totalElements : listCheckedCustomer.length}</div>
-                      }
-                      <Input className="input-confirm-remove" onChange={this.validateRemoveCustomer} />
+                      {disableRemoveCus && ( // for disabled button = true
+                        <div
+                          className="number-cus"
+                          style={{
+                            zIndex: 1,
+                            position: 'absolute',
+                            left: '11px',
+                            fontSize: '20px',
+                            top: '11px',
+                            color: '#d4cdcd'
+                          }}
+                        >
+                          {removeAllCustomers ? this.props.totalElements : listCheckedCustomer.length}
+                        </div>
+                      )}
+                      <Input style={{ fontSize: 20 }} onChange={this.validateRemoveCustomer} />
                     </div>
                   </ModalBody>
                   <ModalFooter>
-                    <Button outline onClick={this.openModalRemoveCustomer}>Thoát </Button>
-                    <Button outline color="danger" onClick={this.handleRemoveCustomer} disabled={disableRemoveCus} >Xóa</Button>
+                    <Button outline onClick={this.openModalRemoveCustomer}>
+                      Thoát{' '}
+                    </Button>
+                    <Button outline color="danger" onClick={this.handleRemoveCustomer} disabled={disableRemoveCus}>
+                      Xóa
+                    </Button>
                   </ModalFooter>
                 </Modal>
               </div>
-              {(listCheckedCustomer && checkedAllCustomer) &&
-                <div className="title-remove-all-customers" >
-                  <Translate contentKey="userManagement.home.choosed-customers" interpolate={{ element: removeAllCustomers ? this.props.totalElements : listCheckedCustomer.length }} />
-                  {!removeAllCustomers &&
-                    <span className="title-select-all"
-                      onClick={() => this.setState({
-                        removeAllCustomers: true,
-                        disableRemoveCus: true
-                      })}>
-
-                      <Translate contentKey="userManagement.home.choose-all-customers"
-                        interpolate={{ element: this.props.totalElements }} />
-
-                    </span>
-                  }
-                  {removeAllCustomers &&
-                    <span className="title-select-all"
-                      onClick={() => { this.setState({ removeAllCustomers: false, listCheckedCustomer: [],checkedAllCustomer:false }) }}>
-                      <Translate contentKey="userManagement.home.unchoose-all-customers"
+              {listCheckedCustomer && checkedAllCustomer && (
+                <div className="title-remove-all-customers">
+                  <Translate
+                    contentKey="userManagement.home.choosed-customers"
+                    interpolate={{ element: removeAllCustomers ? this.props.totalElements : listCheckedCustomer.length }}
+                  />
+                  {!removeAllCustomers && (
+                    <span
+                      className="title-select-all"
+                      onClick={() =>
+                        this.setState({
+                          removeAllCustomers: true,
+                          disableRemoveCus: true
+                        })
+                      }
+                    >
+                      <Translate
+                        contentKey="userManagement.home.choose-all-customers"
+                        interpolate={{ element: this.props.totalElements }}
                       />
                     </span>
-                  }
-                </div >}
+                  )}
+                  {removeAllCustomers && (
+                    <span
+                      className="title-select-all"
+                      onClick={() => {
+                        this.setState({ removeAllCustomers: false, listCheckedCustomer: [], checkedAllCustomer: false });
+                      }}
+                    >
+                      <Translate contentKey="userManagement.home.unchoose-all-customers" />
+                    </span>
+                  )}
+                </div>
+              )}
               <Row />
               <div className="table-user">
                 <Table responsive striped id="table-reponse">
@@ -1082,7 +1121,8 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                         <CustomInput
                           checked={checkedAllCustomer}
                           onClick={() => this.handleCheckedAllCustomer(!checkedAllCustomer, dataUser)}
-                          type="checkbox" id="check-all-customers"
+                          type="checkbox"
+                          id="check-all-customers"
                         />
                       </th>
                       <th style={{ width: '50px' }} className="hand">
@@ -1101,11 +1141,11 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                           count % 2 === 0 ? (
                             <Icon type="sort-ascending" />
                           ) : (
-                              <Icon type="sort-descending" />
-                            )
+                            <Icon type="sort-descending" />
+                          )
                         ) : (
-                            ''
-                          )}
+                          ''
+                        )}
                       </th>
                       <th
                         style={{ width: '150px' }}
@@ -1119,11 +1159,11 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                           count % 2 === 0 ? (
                             <Icon type="sort-ascending" />
                           ) : (
-                              <Icon type="sort-descending" />
-                            )
+                            <Icon type="sort-descending" />
+                          )
                         ) : (
-                            ''
-                          )}
+                          ''
+                        )}
                       </th>
                       <th
                         style={{ width: '200px' }}
@@ -1137,11 +1177,11 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                           count % 2 === 0 ? (
                             <Icon type="sort-ascending" />
                           ) : (
-                              <Icon type="sort-descending" />
-                            )
+                            <Icon type="sort-descending" />
+                          )
                         ) : (
-                            ''
-                          )}
+                          ''
+                        )}
                       </th>
                       <th
                         style={{ width: '200px' }}
@@ -1156,25 +1196,25 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                           count % 2 === 0 ? (
                             <Icon type="sort-ascending" />
                           ) : (
-                              <Icon type="sort-descending" />
-                            )
+                            <Icon type="sort-descending" />
+                          )
                         ) : (
-                            ''
-                          )}
+                          ''
+                        )}
                       </th>
                       {dataHeader
                         ? dataHeader.map((event, id) => {
-                          return (
-                            <th
-                              style={{ width: '100px' }}
-                              key={id}
-                              className={event.check === true ? '' : 'display-colum'}
-                              id={event.code}
-                            >
-                              {event.title}
-                            </th>
-                          );
-                        })
+                            return (
+                              <th
+                                style={{ width: '100px' }}
+                                key={id}
+                                className={event.check === true ? '' : 'display-colum'}
+                                id={event.code}
+                              >
+                                {event.title}
+                              </th>
+                            );
+                          })
                         : ''}
                       <th
                         className={this.state.isCheckDateCreate === true ? '' : 'display-colum'}
@@ -1188,11 +1228,11 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                           count % 2 === 0 ? (
                             <Icon type="sort-ascending" />
                           ) : (
-                              <Icon type="sort-descending" />
-                            )
+                            <Icon type="sort-descending" />
+                          )
                         ) : (
-                            ''
-                          )}
+                          ''
+                        )}
                       </th>
                       <th style={{ width: '200px' }}>
                         <Translate contentKey="userManagement.card-tag" />
@@ -1205,75 +1245,76 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                   <tbody>
                     {dataUser
                       ? dataUser.map((item, index) => {
-                        return (
-                          <tr id={item.id} key={`user-${index}`}>
-                            <td>
-                              <CustomInput
-                                checked={listCheckedCustomer.filter((customerId) => (customerId === item.id)).length > 0}
-                                onClick={() => this.handleCheckedCustomer(item.id)}
-                                type="checkbox" id={"check-customers" + (this.state.activePage * this.state.itemsPerPage + index + 1)}
-                              />
-                            </td>
-                            <td>{this.state.activePage * this.state.itemsPerPage + index + 1}</td>
-                            <td>{item.firstName}</td>
-                            <td>{item.lastName}</td>
-                            <td>{item.email}</td>
-                            <td>{item.mobile}</td>
-                            {item.fields
-                              .sort(function (a, b) {
-                                if (a.title.toLowerCase() < b.title.toLowerCase()) {
-                                  return -1;
-                                }
-                                if (a.title.toLowerCase() > b.title.toLowerCase()) {
-                                  return 1;
-                                }
-                                return 0;
-                              })
-                              .map((value, index) => {
-                                return (
-                                  <td className={value.check === true ? '' : 'display-colum'} key={index}>
-                                    {value.value}
-                                  </td>
-                                );
-                              })}
-                            <td className={this.state.isCheckDateCreate === true ? '' : 'display-colum'}>{item.createdDate}</td>
-                            <td className="tag">
-                              {item.tag &&
-                                item.tag.split(',').map((category, index) => {
+                          return (
+                            <tr id={item.id} key={`user-${index}`}>
+                              <td>
+                                <CustomInput
+                                  checked={listCheckedCustomer.filter(customerId => customerId === item.id).length > 0}
+                                  onClick={() => this.handleCheckedCustomer(item.id)}
+                                  type="checkbox"
+                                  id={'check-customers' + (this.state.activePage * this.state.itemsPerPage + index + 1)}
+                                />
+                              </td>
+                              <td>{this.state.activePage * this.state.itemsPerPage + index + 1}</td>
+                              <td>{item.firstName}</td>
+                              <td>{item.lastName}</td>
+                              <td>{item.email}</td>
+                              <td>{item.mobile}</td>
+                              {item.fields
+                                .sort(function(a, b) {
+                                  if (a.title.toLowerCase() < b.title.toLowerCase()) {
+                                    return -1;
+                                  }
+                                  if (a.title.toLowerCase() > b.title.toLowerCase()) {
+                                    return 1;
+                                  }
+                                  return 0;
+                                })
+                                .map((value, index) => {
                                   return (
-                                    <span className="badge badge-success" key={index}>
-                                      {' '}
-                                      {category}
-                                    </span>
+                                    <td className={value.check === true ? '' : 'display-colum'} key={index}>
+                                      {value.value}
+                                    </td>
                                   );
                                 })}
-                            </td>
-                            <td className="text-center">
-                              <div className="btn-group flex-btn-group-container">
-                                <Button
-                                  className="buttonUpdate"
-                                  tag={Link}
-                                  to={`/app/views/customers/user-management/info/${item.id}`}
-                                  color="primary"
-                                  size="sm"
-                                >
-                                  <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Thông tin</span>
-                                </Button>
-                              </div>
-                            </td>
-                          </tr>
-                        );
-                      })
+                              <td className={this.state.isCheckDateCreate === true ? '' : 'display-colum'}>{item.createdDate}</td>
+                              <td className="tag">
+                                {item.tag &&
+                                  item.tag.split(',').map((category, index) => {
+                                    return (
+                                      <span className="badge badge-success" key={index}>
+                                        {' '}
+                                        {category}
+                                      </span>
+                                    );
+                                  })}
+                              </td>
+                              <td className="text-center">
+                                <div className="btn-group flex-btn-group-container">
+                                  <Button
+                                    className="buttonUpdate"
+                                    tag={Link}
+                                    to={`/app/views/customers/user-management/info/${item.id}`}
+                                    color="primary"
+                                    size="sm"
+                                  >
+                                    <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Thông tin</span>
+                                  </Button>
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })
                       : ''}
                     {users.length > 0 ? (
                       ''
                     ) : (
-                        <tr>
-                          <td colSpan={99}>
-                            <Translate contentKey="properties-management.no-record" />
-                          </td>{' '}
-                        </tr>
-                      )}
+                      <tr>
+                        <td colSpan={99}>
+                          <Translate contentKey="properties-management.no-record" />
+                        </td>{' '}
+                      </tr>
+                    )}
                   </tbody>
                 </Table>
               </div>
@@ -1294,8 +1335,8 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                     forcePage={activePage}
                   />
                 ) : (
-                    ''
-                  )}
+                  ''
+                )}
               </Row>
               <br />
             </div>

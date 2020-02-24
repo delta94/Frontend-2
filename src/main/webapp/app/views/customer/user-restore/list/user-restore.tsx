@@ -3,20 +3,8 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Translate, translate } from 'react-jhipster';
 // service
-import {
-  getUser,
-  getUsers,
-  updateUser,
-  getUserCategories,
-  deleteUser,
-  getDetailUser,
-  getFields,
-  getListSaveAdvancedSearchActionData,
-  getSaveAdvancedSearchActionData,
-  deleteSaveAdvancedSearchActionData,
-  postSaveAdvancedSearchActionData,
-
-} from 'app/actions/user-management';
+import { getUser, getFields, getListSaveAdvancedSearchActionData, getSaveAdvancedSearchActionData } from 'app/actions/user-management';
+import { getDeletedUsers, postDeleteCustomerBatch, postDeleteCustomerSimpleSearch } from 'app/actions/users-restore';
 import { openModal, closeModal } from 'app/actions/modal';
 import { getListFieldDataAction } from 'app/actions/group-attribute-customer';
 import { getFindUserInManagerWithActionData } from 'app/actions/user-management';
@@ -38,15 +26,13 @@ import $ from 'jquery';
 import './user-restore.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 //reactstrap
-import { Button, Table, CustomInput, Row, Label,
-   Col, Modal, ModalHeader, ModalFooter, ModalBody } from 'reactstrap';
+import { Button, Table, CustomInput, Row, Label, Col, Modal, ModalHeader, ModalFooter, ModalBody } from 'reactstrap';
 
 //antdesign
-import { Menu, Dropdown, Icon, Checkbox, Input } from 'antd';
+import { Menu, Dropdown, Icon, Checkbox, Input, Tooltip } from 'antd';
 // antdesign date
 import { DatePicker } from 'antd';
 import moment from 'moment';
-
 
 interface IComponentData {
   id: string;
@@ -60,7 +46,7 @@ interface IAdvancedSearchesData {
   advancedSearch?: ISearchAdvanced;
 }
 
-export interface IUserRestoreProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> { }
+export interface IUserRestoreProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
 
 export interface IUserRestoreState {
   isDelete: boolean;
@@ -102,9 +88,12 @@ export interface IUserRestoreState {
   modalRemoveCus: boolean;
   disableRemoveCus: boolean;
   removeAllCustomers: boolean;
+  fromDate: string;
+  toDate: string;
+  sortList: any[];
 }
 
-export class UserManagement extends React.Component<IUserRestoreProps, IUserRestoreState> {
+export class UserRestore extends React.Component<IUserRestoreProps, IUserRestoreState> {
   state: IUserRestoreState = {
     activePage: ACTIVE_PAGE,
     itemsPerPage: ITEMS_PER_PAGE,
@@ -144,7 +133,12 @@ export class UserManagement extends React.Component<IUserRestoreProps, IUserRest
     checkedAllCustomer: false,
     modalRemoveCus: false,
     disableRemoveCus: true,
-    removeAllCustomers: false
+    removeAllCustomers: false,
+    fromDate: moment()
+      .subtract(90, 'days')
+      .format('DD/MM/YYYY'),
+    toDate: moment().format('DD/MM/YYYY'),
+    sortList: []
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -193,20 +187,20 @@ export class UserManagement extends React.Component<IUserRestoreProps, IUserRest
 
   //loading page
   componentDidMount = async () => {
-    const { activePage, itemsPerPage, textSearch, categories } = this.state;
-    let { users, getUsers, getFields } = this.props;
-    await getUsers(activePage, itemsPerPage, categories, textSearch);
+    const { activePage, itemsPerPage, textSearch, categories, fromDate, toDate, sortList } = this.state;
+    let { users, getFields, getDeletedUsers } = this.props;
+    await getDeletedUsers(fromDate, toDate, activePage, itemsPerPage, sortList, textSearch);
     await getFields();
     await this.props.getListFieldDataAction();
     await this.props.getListSaveAdvancedSearchActionData();
   };
 
   handlePagination = activePage => {
-    const { itemsPerPage, textSearch, categories, open_search, is_normal_find } = this.state;
+    const { itemsPerPage, textSearch, categories, fromDate, toDate, sortList, open_search, is_normal_find } = this.state;
     if (open_search && !is_normal_find) {
       this.getDataListCustomer(activePage.selected);
     } else {
-      this.props.getUsers(activePage.selected, itemsPerPage, categories, textSearch);
+      this.props.getDeletedUsers(fromDate, toDate, activePage, itemsPerPage, sortList, textSearch);
     }
 
     this.setState({
@@ -214,21 +208,18 @@ export class UserManagement extends React.Component<IUserRestoreProps, IUserRest
     });
   };
 
-  handleCreate = name => {
-    this.props.getUserCategories(name);
-  };
-
   search = event => {
     if (event.key === 'Enter') {
       const textSearch = event.target.value;
-      const { itemsPerPage, categories, is_normal_find } = this.state;
+      const { itemsPerPage, categories, is_normal_find, sortList, fromDate, toDate } = this.state;
       this.setState({
         ...this.state,
         textSearch,
         activePage: 0,
         is_normal_find: true
       });
-      this.props.getUsers(0, itemsPerPage, categories, textSearch);
+
+      this.props.getDeletedUsers(fromDate, toDate, 0, itemsPerPage, sortList, textSearch);
     }
   };
 
@@ -353,14 +344,16 @@ export class UserManagement extends React.Component<IUserRestoreProps, IUserRest
         merchantId: event.merchantId,
         mobile: event.mobile,
         tag: event.tag,
-        tags: event.tags
+        tags: event.tags,
+        modifiedDate: event.modifiedDate
       };
     });
     return dataUser;
   }
 
   dataTable() {
-    const { users, loading, modalState, listFields } = this.props;
+    // convert users to datatable
+    const { users, loading, listFields } = this.props;
     const { activePage } = this.state;
     let listPropUser = listFields.filter(
       el => el.title !== 'Tên' && el.title !== 'Email' && el.title !== 'Họ' && el.title !== 'Số điện thoại'
@@ -390,16 +383,16 @@ export class UserManagement extends React.Component<IUserRestoreProps, IUserRest
             check: false,
             value:
               event.fields.length > 0 &&
-                event.fields.map(value => {
-                  return value.value;
-                })
+              event.fields.map(value => {
+                return value.value;
+              })
                 ? event.fields.map(value => {
-                  if (String(value.id) == String(item.id)) {
-                    return value.value;
-                  } else {
-                    return item.value;
-                  }
-                })
+                    if (String(value.id) == String(item.id)) {
+                      return value.value;
+                    } else {
+                      return item.value;
+                    }
+                  })
                 : item.value
           };
         });
@@ -413,23 +406,24 @@ export class UserManagement extends React.Component<IUserRestoreProps, IUserRest
             ? lengthProps > event.fields.length
               ? dataProps
               : event.fields.map(item => {
-                return {
-                  code: item.code,
-                  fieldValue: item.fieldValue,
-                  id: item.id,
-                  title: item.title,
-                  type: item.type,
-                  check: false,
-                  value: item.value
-                };
-              })
+                  return {
+                    code: item.code,
+                    fieldValue: item.fieldValue,
+                    id: item.id,
+                    title: item.title,
+                    type: item.type,
+                    check: false,
+                    value: item.value
+                  };
+                })
             : listPropsUser,
         firstName: event.firstName,
         lastName: event.lastName,
         merchantId: event.merchantId,
         mobile: event.mobile,
         tag: event.tag,
-        tags: event.tags
+        tags: event.tags,
+        modifiedDate: event.modifiedDate
       };
     });
     return dataUser;
@@ -437,7 +431,7 @@ export class UserManagement extends React.Component<IUserRestoreProps, IUserRest
 
   sortData(arr, key) {
     let { count } = this.state;
-    let sortData = arr.sort(function (a, b) {
+    let sortData = arr.sort(function(a, b) {
       if (count % 2 === 0) {
         if (String(a[key]).toLowerCase() < String(b[key]).toLowerCase()) {
           return -1;
@@ -461,52 +455,50 @@ export class UserManagement extends React.Component<IUserRestoreProps, IUserRest
   handleCheckedAllCustomer = (checkedAll: boolean, dataUser: any[]) => {
     let listChecked = [];
     if (checkedAll === true) {
-      dataUser.forEach((user) => {
+      dataUser.forEach(user => {
         listChecked.push(user.id);
-      })
+      });
     }
     this.setState({
       checkedAllCustomer: checkedAll,
       listCheckedCustomer: listChecked,
-      removeAllCustomers:false
+      removeAllCustomers: false
     });
-
-  }
-  checkAllCustomerInDatabase=(dataUser: any[])=>{
+  };
+  checkAllCustomerInDatabase = (dataUser: any[]) => {
     let listChecked = [];
-    dataUser.forEach((user) => {
+    dataUser.forEach(user => {
       listChecked.push(user.id);
-    })
+    });
     this.setState({
       removeAllCustomers: true,
       disableRemoveCus: true,
       checkedAllCustomer: true,
-      listCheckedCustomer: listChecked,
-    })
-
-  }
+      listCheckedCustomer: listChecked
+    });
+  };
   handleCheckedCustomer = (checkedId: string) => {
     const { listCheckedCustomer } = this.state;
     let listChecked = [];
-    if (listCheckedCustomer.filter((customerId) => (customerId === checkedId)).length > 0) {
-      listChecked = listCheckedCustomer.filter((customerId) => (customerId !== checkedId));
+    if (listCheckedCustomer.filter(customerId => customerId === checkedId).length > 0) {
+      listChecked = listCheckedCustomer.filter(customerId => customerId !== checkedId);
       this.setState({
         checkedAllCustomer: false
-      })
+      });
     } else {
       listChecked = JSON.parse(JSON.stringify(listCheckedCustomer));
       listChecked.push(checkedId);
     }
     this.setState({
       listCheckedCustomer: listChecked,
-      removeAllCustomers:false
+      removeAllCustomers: false
     });
-  }
+  };
   openModalRemoveCustomer = () => {
     this.setState({
       modalRemoveCus: !this.state.modalRemoveCus
     });
-  }
+  };
   handleRemoveCustomer = async () => {
     // // call api remove customers
     // const { listCheckedCustomer, removeAllCustomers, activePage, itemsPerPage, categories, textSearch } = this.state;
@@ -522,8 +514,7 @@ export class UserManagement extends React.Component<IUserRestoreProps, IUserRest
     //   }
     // }
     // this.openModalRemoveCustomer();
-
-  }
+  };
   handleRemoveAllCustomer = async () => {
     // // call api remove all customers
     // const { listCheckedCustomer, logicalOperator,
@@ -549,7 +540,6 @@ export class UserManagement extends React.Component<IUserRestoreProps, IUserRest
     //   // remove with params of normal search
     //   await this.props.postDeleteCustomerSimpleSearch({ tagIds, textSearch })
     //   await this.props.getUsers(activePage, itemsPerPage, categories, textSearch);
-
     // } else {
     //   // remove all customer with no params
     //   await this.props.postDeleteCustomerSimpleSearch({ tagIds: [], textSearch: "" })
@@ -558,38 +548,34 @@ export class UserManagement extends React.Component<IUserRestoreProps, IUserRest
     // this.setState({
     //   listCheckedCustomer: []
     // })
-  }
-  validateRemoveCustomer = (event) => {
+  };
+  validateRemoveCustomer = event => {
     const { removeAllCustomers } = this.state;
     let condition = 0;
-    if (removeAllCustomers) {  // open with remove all
+    if (removeAllCustomers) {
+      // open with remove all
       condition = this.props.totalElements;
-    } else {// open with remove normal
+    } else {
+      // open with remove normal
       condition = this.state.listCheckedCustomer.length;
     }
-    if (+(event.target.value) === condition) {
+    if (+event.target.value === condition) {
       // for disabled button
       this.setState({
         disableRemoveCus: false
-      })
+      });
     } else {
       this.setState({
         disableRemoveCus: true
-      })
+      });
     }
-  }
-  formatDatePicker = (type:string)=>{
-    // 90 day ago
-    if(type === 'start'){
-      return moment().subtract(90,'days').format('DD/MM/YYYY');
-    }else{ // now
-      return moment().format('DD/MM/YYYY');
-    }
-  }
-
+  };
+  hanldeDateSearch = dates => {
+    console.log(dates);
+  };
   render() {
     const exportImage = require('app/assets/utils/images/user-mangament/export.png');
-    const { users, loading, listFields, modalStateFilter, pageCount, list_option } = this.props;
+    const { users, loading, listFields, pageCount, list_option, totalElements } = this.props;
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
     const {
       activePage,
@@ -606,14 +592,13 @@ export class UserManagement extends React.Component<IUserRestoreProps, IUserRest
       checkedAllCustomer,
       modalRemoveCus,
       disableRemoveCus,
-      removeAllCustomers
+      removeAllCustomers,
+      fromDate,
+      toDate
     } = this.state;
-
     // date format
     const { MonthPicker, RangePicker } = DatePicker;
     const dateFormat = 'DD/MM/YYYY';
-
-
 
     let dataUser;
     dataUser = this.dataFilter();
@@ -622,7 +607,7 @@ export class UserManagement extends React.Component<IUserRestoreProps, IUserRest
     });
 
     let dataHeader = theader
-      .sort(function (a, b) {
+      .sort(function(a, b) {
         if (a.title.toLowerCase() < b.title.toLowerCase()) {
           return -1;
         }
@@ -652,40 +637,26 @@ export class UserManagement extends React.Component<IUserRestoreProps, IUserRest
     let list_field_render =
       list_field_data_cpn && list_field_data_cpn.length > 0
         ? list_field_data_cpn.map(item => {
-          if (item.id)
-            return (
-              <FieldData
-                key={item.id}
-                id={item.id}
-                last_index={item.last_index}
-                logicalOperator={logicalOperator}
-                default_data={item.default_data}
-                updateValueFromState={this.updateValueFromState}
-                deleteComponentById={this.deleteComponentById}
-                updateRelationshipFromState={this.updateRelationshipFromState}
-              />
-            );
-        })
+            if (item.id)
+              return (
+                <FieldData
+                  key={item.id}
+                  id={item.id}
+                  last_index={item.last_index}
+                  logicalOperator={logicalOperator}
+                  default_data={item.default_data}
+                  updateValueFromState={this.updateValueFromState}
+                  deleteComponentById={this.deleteComponentById}
+                  updateRelationshipFromState={this.updateRelationshipFromState}
+                />
+              );
+          })
         : [];
+    console.log(dataUser);
+    console.log(totalElements);
     return (
       <Loader message={spinner1} show={loading} priority={1}>
         <Fragment>
-          <SweetAlert
-            title={modalState.title ? modalState.title : 'No title'}
-            confirmButtonColor=""
-            show={modalState.show ? modalState.show : false}
-            text={modalState.text ? modalState.text : 'No'}
-            type={modalState.type ? modalState.type : 'error'}
-            onConfirm={() => this.props.closeModal()}
-          />
-          <SweetAlert
-            title={modalStateFilter.title ? modalStateFilter.title : 'No title'}
-            confirmButtonColor=""
-            show={modalStateFilter.show ? modalStateFilter.show : false}
-            text={modalStateFilter.text ? modalStateFilter.text : 'No'}
-            type={modalStateFilter.type ? modalStateFilter.type : 'error'}
-            onConfirm={() => this.props.closeModal()}
-          />
           {/* Title */}
           <div className="userRestore">
             <div id="title-common-header">
@@ -697,30 +668,45 @@ export class UserManagement extends React.Component<IUserRestoreProps, IUserRest
             {/* Panel */}
             <div className="panel">
               <div>
-                <div style={{ color: "blue" }}> <Link to={`/app/views/customers/user-management`}>
-                  <Icon type="arrow-left" style={{ verticalAlign: "baseline" }} />  Quay lại Danh sách khách hàng trong danh sách này</Link> </div>
-                <br />
-                <h4>Khôi phục khách hàng&nbsp;
-                  <a title="Khách hàng đã xóa khỏi danh sách khách hàng được hiển thị
-tại mục này trong vòng 90 ngày (kể từ thời điểm xóa)" >
-                    < Icon type="question-circle" style={{ verticalAlign: "text-top" }} /></a></h4>
-                <div style={{ color: "gray" }}>*Khách hàng đã xóa chỉ được khôi phục trong 90 ngày</div>
-                <br />
-              <div style={{display:"flex", justifyContent:"flex-start"}}>
-              <div>
-                  <span className="label-search">Tìm theo ngày  </span>
-                  <span><RangePicker // 90 day ago
-                    defaultValue={[moment(this.formatDatePicker('start'), dateFormat), moment(this.formatDatePicker('end'), dateFormat)]}
-                    format={dateFormat}
-                  /></span>
+                <div style={{ color: 'blue' }}>
+                  {' '}
+                  <Link to={`/app/views/customers/user-management`}>
+                    <Icon type="arrow-left" style={{ verticalAlign: 'baseline' }} /> Quay lại Danh sách khách hàng trong danh sách này
+                  </Link>{' '}
                 </div>
-                <div style={{display:"flex"}}>
-                <span className="label-search" style={{alignSelf: "center"}} >&nbsp; Tìm theo tên &nbsp; </span>
-                  <span>
-                  <Input  />
+                <br />
+                <h4>
+                  Khôi phục khách hàng&nbsp;
+                  <Tooltip
+                    placement="rightTop"
+                    title="Khách hàng đã xóa khỏi danh sách khách hàng được hiển thị tại mục này trong vòng 90 ngày (kể từ thời điểm xóa)"
+                  >
+                    <Icon type="question-circle" style={{ verticalAlign: 'text-top' }} />
+                  </Tooltip>
+                </h4>
+                <div style={{ color: 'gray' }}>*Khách hàng đã xóa chỉ được khôi phục trong 90 ngày</div>
+                <br />
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <div>
+                    <span className="label-search">Tìm theo ngày </span>
+                    <span>
+                      <RangePicker // 90 day ago
+                        onCalendarChange={this.hanldeDateSearch}
+                        defaultValue={[moment(fromDate, dateFormat), moment(toDate, dateFormat)]}
+                        format={dateFormat}
+                      />
                     </span>
+                  </div>
+                  <div style={{ display: 'flex' }}>
+                    <span className="label-search" style={{ alignSelf: 'center' }}>
+                      &nbsp; Tìm theo tên &nbsp;{' '}
+                    </span>
+                    <span>
+                      <Input />
+                    </span>
+                  </div>
+                  <Button outline>Tìm kiếm</Button>
                 </div>
-              </div>
               </div>
               <hr style={{ borderTop: 'dotted 1px' }} />
               <Translate contentKey="userRestore.home.total-element" interpolate={{ element: this.props.totalElements }} />
@@ -734,43 +720,56 @@ tại mục này trong vòng 90 ngày (kể từ thời điểm xóa)" >
               </Button>
               {/*modal confirm accept remove customers*/}
               <div>
-                <Modal isOpen={modalRemoveCus} toggle={this.openModalRemoveCustomer} >
+                <Modal isOpen={modalRemoveCus} toggle={this.openModalRemoveCustomer}>
                   <ModalBody>
-                    <Translate contentKey="userRestore.home.title-confirm-restore"
-                      interpolate={{ element: removeAllCustomers ? this.props.totalElements : listCheckedCustomer.length }} />
+                    <Translate
+                      contentKey="userRestore.home.title-confirm-restore"
+                      interpolate={{ element: removeAllCustomers ? this.props.totalElements : listCheckedCustomer.length }}
+                    />
                     <br />
                     <div className="wrraper-input">
-                      {disableRemoveCus && // for disabled button = true
+                      {disableRemoveCus && ( // for disabled button = true
                         <div className="number-cus">{removeAllCustomers ? this.props.totalElements : listCheckedCustomer.length}</div>
-                      }
+                      )}
                       <Input className="input-confirm-remove" onChange={this.validateRemoveCustomer} />
                     </div>
                   </ModalBody>
                   <ModalFooter>
-                    <Button outline onClick={this.openModalRemoveCustomer}>Thoát </Button>
-                    <Button outline color="danger" onClick={this.handleRemoveCustomer} disabled={disableRemoveCus} >Xóa</Button>
+                    <Button outline onClick={this.openModalRemoveCustomer}>
+                      Thoát{' '}
+                    </Button>
+                    <Button outline color="danger" onClick={this.handleRemoveCustomer} disabled={disableRemoveCus}>
+                      Xóa
+                    </Button>
                   </ModalFooter>
                 </Modal>
               </div>
-              {(listCheckedCustomer.length >0) &&
-                <div className="title-remove-all-customers" >
-                  <Translate contentKey="userManagement.home.choosed-customers" interpolate={{ element: removeAllCustomers ? this.props.totalElements : listCheckedCustomer.length }} />
-                  {!removeAllCustomers &&
-                    <span className="title-select-all"
-                      onClick={() => this.checkAllCustomerInDatabase(dataUser)}>
-                      <Translate contentKey="userManagement.home.choose-all-customers"
-                        interpolate={{ element: this.props.totalElements }} />
-
-                    </span>
-                  }
-                  {removeAllCustomers &&
-                    <span className="title-select-all"
-                      onClick={() => { this.setState({ removeAllCustomers: false, listCheckedCustomer: [],checkedAllCustomer:false }) }}>
-                      <Translate contentKey="userManagement.home.unchoose-all-customers"
+              {listCheckedCustomer.length > 0 && (
+                <div className="title-remove-all-customers">
+                  <Translate
+                    contentKey="userManagement.home.choosed-customers"
+                    interpolate={{ element: removeAllCustomers ? this.props.totalElements : listCheckedCustomer.length }}
+                  />
+                  {!removeAllCustomers && (
+                    <span className="title-select-all" onClick={() => this.checkAllCustomerInDatabase(dataUser)}>
+                      <Translate
+                        contentKey="userManagement.home.choose-all-customers"
+                        interpolate={{ element: this.props.totalElements }}
                       />
                     </span>
-                  }
-                </div >}
+                  )}
+                  {removeAllCustomers && (
+                    <span
+                      className="title-select-all"
+                      onClick={() => {
+                        this.setState({ removeAllCustomers: false, listCheckedCustomer: [], checkedAllCustomer: false });
+                      }}
+                    >
+                      <Translate contentKey="userManagement.home.unchoose-all-customers" />
+                    </span>
+                  )}
+                </div>
+              )}
               <Row />
               <div className="table-user">
                 <Table responsive striped id="table-reponse">
@@ -780,7 +779,8 @@ tại mục này trong vòng 90 ngày (kể từ thời điểm xóa)" >
                         <CustomInput
                           checked={checkedAllCustomer}
                           onClick={() => this.handleCheckedAllCustomer(!checkedAllCustomer, dataUser)}
-                          type="checkbox" id="check-all-customers"
+                          type="checkbox"
+                          id="check-all-customers"
                         />
                       </th>
                       <th style={{ width: '50px' }} className="hand">
@@ -793,17 +793,16 @@ tại mục này trong vòng 90 ngày (kể từ thời điểm xóa)" >
                           this.setState({ conditionSort: 'firstName', count: count + 1 });
                         }}
                       >
-                        <Translate contentKey="userRestore.first-name" />{' '}
-                        {conditionSort === 'firstName' ? '' : <Icon type="caret-down" />}
+                        <Translate contentKey="userRestore.first-name" /> {conditionSort === 'firstName' ? '' : <Icon type="caret-down" />}
                         {conditionSort === 'firstName' ? (
                           count % 2 === 0 ? (
                             <Icon type="sort-ascending" />
                           ) : (
-                              <Icon type="sort-descending" />
-                            )
+                            <Icon type="sort-descending" />
+                          )
                         ) : (
-                            ''
-                          )}
+                          ''
+                        )}
                       </th>
                       <th
                         style={{ width: '150px' }}
@@ -817,11 +816,11 @@ tại mục này trong vòng 90 ngày (kể từ thời điểm xóa)" >
                           count % 2 === 0 ? (
                             <Icon type="sort-ascending" />
                           ) : (
-                              <Icon type="sort-descending" />
-                            )
+                            <Icon type="sort-descending" />
+                          )
                         ) : (
-                            ''
-                          )}
+                          ''
+                        )}
                       </th>
                       <th
                         style={{ width: '200px' }}
@@ -835,11 +834,11 @@ tại mục này trong vòng 90 ngày (kể từ thời điểm xóa)" >
                           count % 2 === 0 ? (
                             <Icon type="sort-ascending" />
                           ) : (
-                              <Icon type="sort-descending" />
-                            )
+                            <Icon type="sort-descending" />
+                          )
                         ) : (
-                            ''
-                          )}
+                          ''
+                        )}
                       </th>
                       <th
                         style={{ width: '200px' }}
@@ -848,31 +847,30 @@ tại mục này trong vòng 90 ngày (kể từ thời điểm xóa)" >
                           this.setState({ conditionSort: 'mobile', count: count + 1 });
                         }}
                       >
-                        <Translate contentKey="userRestore.phone-number" />{' '}
-                        {conditionSort === 'mobile' ? '' : <Icon type="caret-down" />}
+                        <Translate contentKey="userRestore.phone-number" /> {conditionSort === 'mobile' ? '' : <Icon type="caret-down" />}
                         {conditionSort === 'mobile' ? (
                           count % 2 === 0 ? (
                             <Icon type="sort-ascending" />
                           ) : (
-                              <Icon type="sort-descending" />
-                            )
+                            <Icon type="sort-descending" />
+                          )
                         ) : (
-                            ''
-                          )}
+                          ''
+                        )}
                       </th>
                       {dataHeader
                         ? dataHeader.map((event, id) => {
-                          return (
-                            <th
-                              style={{ width: '100px' }}
-                              key={id}
-                              className={event.check === true ? '' : 'display-colum'}
-                              id={event.code}
-                            >
-                              {event.title}
-                            </th>
-                          );
-                        })
+                            return (
+                              <th
+                                style={{ width: '100px' }}
+                                key={id}
+                                className={event.check === true ? '' : 'display-colum'}
+                                id={event.code}
+                              >
+                                {event.title}
+                              </th>
+                            );
+                          })
                         : ''}
                       <th
                         className={this.state.isCheckDateCreate === true ? '' : 'display-colum'}
@@ -886,48 +884,47 @@ tại mục này trong vòng 90 ngày (kể từ thời điểm xóa)" >
                           count % 2 === 0 ? (
                             <Icon type="sort-ascending" />
                           ) : (
-                              <Icon type="sort-descending" />
-                            )
+                            <Icon type="sort-descending" />
+                          )
                         ) : (
-                            ''
-                          )}
+                          ''
+                        )}
                       </th>
-                      <th>
-                        Thời gian xóa
-                      </th>
+                      <th>Thời gian xóa</th>
                     </tr>
                   </thead>
                   <tbody>
                     {dataUser
                       ? dataUser.map((item, index) => {
-                        return (
-                          <tr id={item.id} key={`user-${index}`}>
-                            <td>
-                              <CustomInput
-                                checked={listCheckedCustomer.filter((customerId) => (customerId === item.id)).length > 0}
-                                onClick={() => this.handleCheckedCustomer(item.id)}
-                                type="checkbox" id={"check-customers" + (this.state.activePage * this.state.itemsPerPage + index + 1)}
-                              />
-                            </td>
-                            <td>{this.state.activePage * this.state.itemsPerPage + index + 1}</td>
-                            <td>{item.firstName}</td>
-                            <td>{item.lastName}</td>
-                            <td>{item.email}</td>
-                            <td>{item.mobile}</td>
-                        <td>{}</td>
-                          </tr>
-                        );
-                      })
+                          return (
+                            <tr id={item.id} key={`user-${index}`}>
+                              <td>
+                                <CustomInput
+                                  checked={listCheckedCustomer.filter(customerId => customerId === item.id).length > 0}
+                                  onClick={() => this.handleCheckedCustomer(item.id)}
+                                  type="checkbox"
+                                  id={'check-customers' + (this.state.activePage * this.state.itemsPerPage + index + 1)}
+                                />
+                              </td>
+                              <td>{this.state.activePage * this.state.itemsPerPage + index + 1}</td>
+                              <td>{item.firstName}</td>
+                              <td>{item.lastName}</td>
+                              <td>{item.email}</td>
+                              <td>{item.mobile}</td>
+                              <td>{item.modifiedDate.slice(0, item.modifiedDate.indexOf('T'))}</td>
+                            </tr>
+                          );
+                        })
                       : ''}
                     {users.length > 0 ? (
                       ''
                     ) : (
-                        <tr>
-                          <td colSpan={99}>
-                            <Translate contentKey="properties-management.no-record" />
-                          </td>{' '}
-                        </tr>
-                      )}
+                      <tr>
+                        <td colSpan={99}>
+                          <Translate contentKey="properties-management.no-record" />
+                        </td>{' '}
+                      </tr>
+                    )}
                   </tbody>
                 </Table>
               </div>
@@ -948,46 +945,35 @@ tại mục này trong vòng 90 ngày (kể từ thời điểm xóa)" >
                     forcePage={activePage}
                   />
                 ) : (
-                    ''
-                  )}
+                  ''
+                )}
               </Row>
               <br />
             </div>
           </div>
         </Fragment>
-      </Loader >
+      </Loader>
     );
   }
 }
 
 const mapStateToProps = (storeState: IRootState) => ({
-  dowloadTemplate: storeState.userManagement.dowloadTemplate,
-  modalState: storeState.handleModal.data,
-  modalStateFilter: storeState.userManagement.dataModal,
-  users: storeState.userManagement.users,
-  totalItems: storeState.userManagement.totalItems,
   account: storeState.authentication.account,
-  isCreate: storeState.userManagement.isCreate,
-  totalElements: storeState.userManagement.totalElements,
-  loading: storeState.userManagement.loading,
-  listCategory: storeState.userManagement.listCategory,
-  pageCount: Math.ceil(storeState.userManagement.totalElements / ITEMS_PER_PAGE),
+  totalElements: storeState.userRestore.totalElements,
+  loading: storeState.userRestore.loading,
+  pageCount: Math.ceil(storeState.userRestore.totalElements / ITEMS_PER_PAGE),
   listFields: storeState.userManagement.listFields,
   list_field_data: storeState.groupCustomerState.list_field_data,
   list_save_advanced_search: storeState.userManagement.list_save_advanced_search,
   save_advanced_search: storeState.userManagement.save_advanced_search,
   isMerge: storeState.userManagement.isMerge,
   isDelete: storeState.userManagement.isDelete,
-  list_option: storeState.userManagement.list_option
+  list_option: storeState.userManagement.list_option,
+  users: storeState.userRestore.users
 });
 
 const mapDispatchToProps = {
-  getUsers,
-  updateUser,
-  getUserCategories,
-  deleteUser,
   getUser,
-  getDetailUser,
   openModal,
   closeModal,
   getFields,
@@ -995,11 +981,10 @@ const mapDispatchToProps = {
   getFindUserInManagerWithActionData,
   getListSaveAdvancedSearchActionData,
   getSaveAdvancedSearchActionData,
-  deleteSaveAdvancedSearchActionData,
-  postSaveAdvancedSearchActionData,
+  getDeletedUsers
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserManagement);
+export default connect(mapStateToProps, mapDispatchToProps)(UserRestore);
