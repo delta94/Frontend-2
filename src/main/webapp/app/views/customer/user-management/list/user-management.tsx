@@ -693,8 +693,11 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
       if (listCheckedCustomer.length > 0) {
         await this.props.postDeleteCustomerBatch(listCheckedCustomer);
         await this.props.getUsers(activePage, itemsPerPage, categories, textSearch);
-        this.setState({
-          listCheckedCustomer: []
+        await this.setState({
+          listCheckedCustomer: [],
+          removeAllCustomers: false,
+          checkedAllCustomer: false,
+          disableRemoveCus: true
         });
       }
     }
@@ -738,8 +741,11 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
       await this.props.postDeleteCustomerSimpleSearch({ tagIds: [], textSearch: '' });
       await this.props.getUsers(activePage, itemsPerPage, categories, textSearch);
     }
-    this.setState({
-      listCheckedCustomer: []
+    await this.setState({
+      listCheckedCustomer: [],
+      removeAllCustomers: false,
+      checkedAllCustomer: false,
+      disableRemoveCus: true
     });
   };
   validateRemoveCustomer = event => {
