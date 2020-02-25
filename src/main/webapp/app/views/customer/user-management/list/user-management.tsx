@@ -1,39 +1,49 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
+import { Button, Table, CustomInput, Row, Label, Col, Modal, ModalHeader, ModalFooter, ModalBody } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
-// service
-import { getUser, getFields, getListSaveAdvancedSearchActionData, getSaveAdvancedSearchActionData } from 'app/actions/user-management';
-import { getDeletedUsers, postRestoreCustomerBatchAction, postRestoreCustomerSimpleFilterAction } from 'app/actions/users-restore';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { openModal, closeModal } from 'app/actions/modal';
-import { getListFieldDataAction } from 'app/actions/group-attribute-customer';
-import { getFindUserInManagerWithActionData } from 'app/actions/user-management';
-import { IModalData } from 'app/reducers/user-management';
-import { IRootState } from 'app/reducers';
-import { ERROR } from 'app/constants/common';
-import { OPERATOR } from 'app/constants/field-data';
+import './user-management.scss';
 import { ITEMS_PER_PAGE, ACTIVE_PAGE } from 'app/constants/pagination';
-// components customer
-import FieldData from '../../group-attribute-customer/group-modal-config/field-data/field-data';
-import { makeRandomId } from '../../group-attribute-customer/group-modal-config/group-modal-config';
-import { ISearchAdvanced } from 'app/common/models/group-attribute-customer';
-// ui
+import {
+  getUser,
+  exportFile,
+  getUsers,
+  updateUser,
+  getUserCategories,
+  deleteUser,
+  getDetailUser,
+  getFields,
+  getListSaveAdvancedSearchActionData,
+  getSaveAdvancedSearchActionData,
+  deleteSaveAdvancedSearchActionData,
+  postSaveAdvancedSearchActionData,
+  getListOptionFilter,
+  postDeleteCustomerBatch,
+  postDeleteCustomerAdvanceSearch,
+  postDeleteCustomerSimpleSearch
+} from 'app/actions/user-management';
+import UserCategoryTag from './categories-tag/categories-tag';
+import { IRootState } from 'app/reducers';
+import { Menu, Dropdown, Icon, Checkbox, Input } from 'antd';
 import ReactPaginate from 'react-paginate';
 import LoaderAnim from 'react-loaders';
 import SweetAlert from 'sweetalert-react';
 import Loader from 'react-loader-advanced';
+import CreateUser from '../create/create';
 import $ from 'jquery';
-import './user-restore.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-//reactstrap
-import { Button, Table, CustomInput, Row, Label, Col, Modal, ModalHeader, ModalFooter, ModalBody } from 'reactstrap';
-
-//antdesign
-import { Menu, Dropdown, Icon, Checkbox, Input, Tooltip } from 'antd';
-// antdesign date
-import { DatePicker } from 'antd';
-import moment from 'moment';
-const dateFormat = 'DD/MM/YYYY';
+import { ISearchAdvanced } from 'app/common/models/group-attribute-customer';
+import FieldData from '../../group-attribute-customer/group-modal-config/field-data/field-data';
+import { makeRandomId } from '../../group-attribute-customer/group-modal-config/group-modal-config';
+import { OPERATOR } from 'app/constants/field-data';
+import { getListFieldDataAction } from 'app/actions/group-attribute-customer';
+import { getFindUserInManagerWithActionData } from 'app/actions/user-management';
+import { Collapse } from 'reactstrap';
+import { IModalData } from 'app/reducers/user-management';
+import { ERROR } from 'app/constants/common';
+import SearchSaveModal from './search-save-modal/search-save-modal';
 
 interface IComponentData {
   id: string;
@@ -47,9 +57,9 @@ interface IAdvancedSearchesData {
   advancedSearch?: ISearchAdvanced;
 }
 
-export interface IUserRestoreProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
+export interface IUserManagementProps extends StateProps, DispatchProps, RouteComponentProps<{ id: any }> {}
 
-export interface IUserRestoreState {
+export interface IUserManagementState {
   isDelete: boolean;
   isConfirm: boolean;
   idUser: string;
@@ -73,6 +83,7 @@ export interface IUserRestoreState {
   open_import?: boolean;
   open_create?: boolean;
   open_search?: boolean;
+  open_new_save?: boolean;
   open_save?: boolean;
   name?: string;
   modalState?: IModalData;
@@ -89,13 +100,10 @@ export interface IUserRestoreState {
   modalRemoveCus: boolean;
   disableRemoveCus: boolean;
   removeAllCustomers: boolean;
-  fromDate: string;
-  toDate: string;
-  sortList: any[];
 }
 
-export class UserRestore extends React.Component<IUserRestoreProps, IUserRestoreState> {
-  state: IUserRestoreState = {
+export class UserManagement extends React.Component<IUserManagementProps, IUserManagementState> {
+  state: IUserManagementState = {
     activePage: ACTIVE_PAGE,
     itemsPerPage: ITEMS_PER_PAGE,
     isDelete: false,
@@ -115,6 +123,7 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
     open_import: false,
     open_create: false,
     open_search: false,
+    open_new_save: false,
     name: '',
     modalState: {
       show: false,
@@ -134,12 +143,7 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
     checkedAllCustomer: false,
     modalRemoveCus: false,
     disableRemoveCus: true,
-    removeAllCustomers: false,
-    fromDate: moment()
-      .subtract(90, 'days')
-      .format(dateFormat),
-    toDate: moment().format(dateFormat),
-    sortList: []
+    removeAllCustomers: false
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -188,20 +192,20 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
 
   //loading page
   componentDidMount = async () => {
-    const { activePage, itemsPerPage, textSearch, categories, fromDate, toDate, sortList } = this.state;
-    let { users, getFields, getDeletedUsers } = this.props;
-    await getDeletedUsers(fromDate, toDate, activePage, itemsPerPage, sortList, textSearch);
+    const { activePage, itemsPerPage, textSearch, categories } = this.state;
+    let { users, getUsers, getFields } = this.props;
+    await getUsers(activePage, itemsPerPage, categories, textSearch);
     await getFields();
     await this.props.getListFieldDataAction();
     await this.props.getListSaveAdvancedSearchActionData();
   };
 
   handlePagination = activePage => {
-    const { itemsPerPage, textSearch, categories, fromDate, toDate, sortList, open_search, is_normal_find } = this.state;
+    const { itemsPerPage, textSearch, categories, open_search, is_normal_find } = this.state;
     if (open_search && !is_normal_find) {
       this.getDataListCustomer(activePage.selected);
     } else {
-      this.props.getDeletedUsers(fromDate, toDate, activePage, itemsPerPage, sortList, textSearch);
+      this.props.getUsers(activePage.selected, itemsPerPage, categories, textSearch);
     }
 
     this.setState({
@@ -209,19 +213,112 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
     });
   };
 
-  search = event => {
+  handleCreate = name => {
+    this.props.getUserCategories(name);
+  };
+
+  handleChange = category => {
+    let categorieIds = category.map((event, index) => event.id);
+    const { itemsPerPage, textSearch } = this.state;
+    this.setState({
+      ...this.state,
+      categories: categorieIds.join(),
+      activePage: 0,
+      tagIds: categorieIds,
+      listCheckedCustomer: [],
+      checkedAllCustomer: false
+    });
+    this.props.getUsers(0, itemsPerPage, categorieIds.join(), textSearch);
+  };
+
+  searchByTextField = event => {
     if (event.key === 'Enter') {
       const textSearch = event.target.value;
-      const { itemsPerPage, categories, is_normal_find, sortList, fromDate, toDate } = this.state;
+      const { itemsPerPage, categories, is_normal_find } = this.state;
       this.setState({
         ...this.state,
         textSearch,
         activePage: 0,
-        is_normal_find: true
+        is_normal_find: true,
+        listCheckedCustomer: [],
+        checkedAllCustomer: false
       });
-
-      this.props.getDeletedUsers(fromDate, toDate, 0, itemsPerPage, sortList, textSearch);
+      this.props.getUsers(0, itemsPerPage, categories, textSearch);
     }
+  };
+
+  rowName = () => {
+    let { listFields, list_option } = this.props;
+    let listData = listFields
+      .filter(el => el.title !== 'Tên' && el.title !== 'Email' && el.title !== 'Họ' && el.title !== 'Số điện thoại')
+      .map(event => {
+        let check = false;
+        list_option.map(item => {
+          if (String(item) === String(event.code)) {
+            check = true;
+          }
+        });
+        return { ...event, check: check };
+      });
+    let data = (
+      <Menu>
+        {listData.map((value, index) => {
+          return (
+            <Menu.Item key={index}>
+              <Checkbox defaultChecked={value.check} onChange={event => this.onChangeCheckBox(event, value.code)}>
+                {value.title}
+              </Checkbox>
+            </Menu.Item>
+          );
+        })}
+        <Menu.Item>
+          <Checkbox onChange={event => this.onChangeCheckBox(event, 'createdDate')}>
+            <Translate contentKey="userManagement.created-date" />
+          </Checkbox>
+        </Menu.Item>
+      </Menu>
+    );
+
+    return data;
+  };
+
+  onChangeCheckBox = (e, code) => {
+    let { listDataUser, isCheckDateCreate } = this.state;
+    let { list_option } = this.props;
+    let isCheck = e.target.checked;
+    let existValue;
+    if (listDataUser.length === 0) {
+      if (this.props.list_option.length > 0) {
+        listDataUser = this.props.list_option;
+      }
+    }
+    if (listDataUser.length > 0) {
+      listDataUser.forEach((item, index) => {
+        if (item === code) {
+          existValue = code;
+          listDataUser = listDataUser.filter(function(value) {
+            return value != code;
+          });
+        } else {
+          if (!existValue) {
+            listDataUser.push(code);
+            listDataUser = [...new Set(listDataUser)];
+          }
+        }
+      });
+    } else {
+      listDataUser.push(code);
+    }
+
+    if (code === 'createdDate') {
+      isCheckDateCreate = isCheck;
+    }
+
+    this.setState({ listDataUser, isCheckDateCreate });
+    if (isCheck) {
+      $(`th.${code}`).show();
+    }
+    this.props.getListOptionFilter(listDataUser);
   };
 
   toObject(arr) {
@@ -233,6 +330,22 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
   toggleImport = () => {
     let { open_import } = this.state;
     this.setState({ open_import: !open_import });
+  };
+
+  toggleCreate = async () => {
+    let { open_create } = this.state;
+    this.setState({ open_create: !open_create });
+    await this.props.getUsers(0, 10, '', '');
+  };
+
+  saveSearchData = () => {
+    let { open_new_save } = this.state;
+    this.setState({ open_new_save: !open_new_save });
+  };
+
+  toggleSearchSaveModal = () => {
+    let { open_list_save } = this.state;
+    this.setState({ open_list_save: !open_list_save });
   };
 
   /**
@@ -259,6 +372,36 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
 
     if (advancedSearchesData.length === 1) logicalOperator = '';
     this.setState({ advancedSearchesData, advancedSearches, logicalOperator });
+  };
+
+  // Add new component to list_field_data_cpn
+  handleAddNewComponent = () => {
+    let { list_field_data_cpn, advancedSearchesData } = this.state;
+    let id = makeRandomId(16);
+    let newCpn = { id, name: 'new', last_index: true, default_data: {} };
+
+    // Check duplicate value
+    list_field_data_cpn.forEach(item => {
+      if (item.id === id) {
+        id = makeRandomId(16);
+      }
+    });
+
+    list_field_data_cpn.push(newCpn);
+
+    advancedSearchesData.push({
+      id,
+      advancedSearch: {
+        fieldId: '',
+        fieldCode: '',
+        fieldType: '',
+        fieldTitle: '',
+        value: '',
+        operator: ''
+      }
+    });
+
+    this.updateLastIndex(list_field_data_cpn);
   };
 
   // Delete component by Id
@@ -295,6 +438,24 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
     this.setState({ logicalOperator });
   };
 
+  // Remove All value
+  removeDataInModal = () => {
+    let list_field_data_cpn = [];
+    let advancedSearches = [];
+    let advancedSearchesData = [];
+    let name = '';
+    this.setState({
+      list_field_data_cpn,
+      advancedSearchesData,
+      advancedSearches,
+      name
+    });
+  };
+
+  openAdvancedSearch = () => {
+    this.setState({ open_search: true });
+  };
+
   // GetData customer by condition
   getDataListCustomer = (page?: any) => {
     let { advancedSearches, logicalOperator, pageSize, is_normal_find } = this.state;
@@ -310,7 +471,41 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
       pageSize
     });
 
-    this.setState({ is_normal_find });
+    this.setState({
+      is_normal_find,
+      advancedSearches,
+      listCheckedCustomer: [],
+      checkedAllCustomer: false
+    });
+  };
+
+  // Close Find search
+  closeSearchAdvanced = () => {
+    let { open_search } = this.state;
+    this.setState({ open_search: !open_search });
+    this.removeDataInModal();
+  };
+
+  // Save advanced search
+  saveAdvancedSearch = async () => {
+    let { name, advancedSearches, logicalOperator } = this.state;
+    await this.props.postSaveAdvancedSearchActionData({ name: name.trim(), customerAdvancedSave: { advancedSearches, logicalOperator } });
+    await this.getListAdvancedSearch();
+    this.saveSearchData();
+  };
+
+  // Get list advanced search
+  getListAdvancedSearch = () => {
+    this.props.getListSaveAdvancedSearchActionData();
+  };
+
+  // Delete advanced search
+  deleteAdvancedSearch = (id?: string) => {
+    this.props.deleteSaveAdvancedSearchActionData(id);
+  };
+  // Get advanced search
+  getAdvancedSearch = (id?: string) => {
+    this.props.getSaveAdvancedSearchActionData(id);
   };
 
   dataFilter() {
@@ -345,16 +540,14 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
         merchantId: event.merchantId,
         mobile: event.mobile,
         tag: event.tag,
-        tags: event.tags,
-        modifiedDate: event.modifiedDate
+        tags: event.tags
       };
     });
     return dataUser;
   }
 
   dataTable() {
-    // convert users to datatable
-    const { users, loading, listFields } = this.props;
+    const { users, loading, modalState, listFields } = this.props;
     const { activePage } = this.state;
     let listPropUser = listFields.filter(
       el => el.title !== 'Tên' && el.title !== 'Email' && el.title !== 'Họ' && el.title !== 'Số điện thoại'
@@ -423,8 +616,7 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
         merchantId: event.merchantId,
         mobile: event.mobile,
         tag: event.tag,
-        tags: event.tags,
-        modifiedDate: event.modifiedDate
+        tags: event.tags
       };
     });
     return dataUser;
@@ -466,18 +658,6 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
       removeAllCustomers: false
     });
   };
-  checkAllCustomerInDatabase = (dataUser: any[]) => {
-    let listChecked = [];
-    dataUser.forEach(user => {
-      listChecked.push(user.id);
-    });
-    this.setState({
-      removeAllCustomers: true,
-      disableRemoveCus: true,
-      checkedAllCustomer: true,
-      listCheckedCustomer: listChecked
-    });
-  };
   handleCheckedCustomer = (checkedId: string) => {
     const { listCheckedCustomer } = this.state;
     let listChecked = [];
@@ -497,77 +677,72 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
   };
   openModalRemoveCustomer = () => {
     this.setState({
+      disableRemoveCus: true,
       modalRemoveCus: !this.state.modalRemoveCus
     });
   };
-  handleRestoreCustomer = async () => {
-    //  call api restore customers
-    const {
-      listCheckedCustomer,
-      fromDate,
-      toDate,
-      removeAllCustomers,
-      sortList,
-      activePage,
-      itemsPerPage,
-      categories,
-      textSearch
-    } = this.state;
+  handleRemoveCustomer = async () => {
+    // call api remove customers
+    const { listCheckedCustomer, removeAllCustomers, activePage, itemsPerPage, categories, textSearch } = this.state;
     this.openModalRemoveCustomer();
     if (removeAllCustomers) {
       // remove all
-      this.handleRestoreAllCustomer();
+      this.handleRemoveAllCustomer();
     } else {
       // remove batch normal
       if (listCheckedCustomer.length > 0) {
-        await this.props.postRestoreCustomerBatchAction(listCheckedCustomer);
-        await this.props.getDeletedUsers(fromDate, toDate, activePage, itemsPerPage, sortList, textSearch);
-        await this.setState({
+        await this.props.postDeleteCustomerBatch(listCheckedCustomer);
+        await this.props.getUsers(activePage, itemsPerPage, categories, textSearch);
+        this.setState({
           listCheckedCustomer: []
         });
       }
     }
   };
-  handleRestoreAllCustomer = async () => {
+  handleRemoveAllCustomer = async () => {
     // call api remove all customers
     const {
       listCheckedCustomer,
-      fromDate,
-      toDate,
-      removeAllCustomers,
-      sortList,
+      logicalOperator,
+      advancedSearchesData,
+      tagIds,
       activePage,
       itemsPerPage,
       categories,
+      advancedSearches,
+      pageSize,
       textSearch
     } = this.state;
-    if (textSearch) {
-      // remove with params of normal search
-      await this.props.postRestoreCustomerSimpleFilterAction({
-        fromDate: fromDate,
-        page: 0,
-        pageSize: 0,
-        sort: [],
-        textSearch: textSearch,
-        toDate: toDate
+    if ((advancedSearchesData || logicalOperator) && advancedSearchesData.length > 0) {
+      // remove with params of advance search
+      const advancedSearchParams = [];
+      advancedSearchesData.forEach(data => {
+        advancedSearchParams.push(data.advancedSearch);
       });
+      await this.props.postDeleteCustomerAdvanceSearch({
+        advancedSearches: advancedSearchParams,
+        logicalOperator
+      });
+      await this.props.getFindUserInManagerWithActionData({
+        logicalOperator,
+        advancedSearches,
+        page: 0,
+        pageSize
+      });
+    } else if (textSearch || tagIds.length > 0) {
+      // remove with params of normal search
+      await this.props.postDeleteCustomerSimpleSearch({ tagIds, textSearch });
+      await this.props.getUsers(activePage, itemsPerPage, categories, textSearch);
     } else {
       // remove all customer with no params
-      await this.props.postRestoreCustomerSimpleFilterAction({
-        fromDate: fromDate,
-        page: 0,
-        pageSize: 0,
-        sort: [],
-        textSearch: textSearch,
-        toDate: toDate
-      });
+      await this.props.postDeleteCustomerSimpleSearch({ tagIds: [], textSearch: '' });
+      await this.props.getUsers(activePage, itemsPerPage, categories, textSearch);
     }
-    await this.props.getDeletedUsers(fromDate, toDate, activePage, itemsPerPage, sortList, textSearch);
-    await this.setState({
+    this.setState({
       listCheckedCustomer: []
     });
   };
-  validateRestoreCustomer = event => {
+  validateRemoveCustomer = event => {
     const { removeAllCustomers } = this.state;
     let condition = 0;
     if (removeAllCustomers) {
@@ -588,27 +763,16 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
       });
     }
   };
-  hanldeDateSearch = range => {
-    if (range) {
-      this.setState({
-        fromDate: range[0].format(dateFormat),
-        toDate: range[1].format(dateFormat)
-      });
-    }
-  };
-  handleSearchCustomer = async () => {
-    const { textSearch, fromDate, toDate, activePage, itemsPerPage, sortList } = this.state;
-    await this.props.getDeletedUsers(fromDate, toDate, activePage, itemsPerPage, sortList, textSearch);
-    await this.setState({
-      listCheckedCustomer: []
-    });
-  };
+
   render() {
+    const importImage = require('app/assets/utils/images/user-mangament/import.png');
     const exportImage = require('app/assets/utils/images/user-mangament/export.png');
-    const { users, loading, listFields, pageCount, list_option, totalElements } = this.props;
+    const filterImage = require('app/assets/utils/images/user-mangament/filter.png');
+    const { users, loading, listFields, modalStateFilter, pageCount, list_option } = this.props;
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
     const {
       activePage,
+      open_new_save,
       open_create,
       open_search,
       logicalOperator,
@@ -622,13 +786,8 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
       checkedAllCustomer,
       modalRemoveCus,
       disableRemoveCus,
-      removeAllCustomers,
-      fromDate,
-      toDate
+      removeAllCustomers
     } = this.state;
-    // date format
-    const { MonthPicker, RangePicker } = DatePicker;
-
     let dataUser;
     dataUser = this.dataFilter();
     let theader = listFields.map(event => {
@@ -681,88 +840,219 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
               );
           })
         : [];
-    console.log(dataUser);
-    console.log(totalElements);
     return (
       <Loader message={spinner1} show={loading} priority={1}>
         <Fragment>
+          <SweetAlert
+            title={modalState.title ? modalState.title : 'No title'}
+            confirmButtonColor=""
+            show={modalState.show ? modalState.show : false}
+            text={modalState.text ? modalState.text : 'No'}
+            type={modalState.type ? modalState.type : 'error'}
+            onConfirm={() => this.props.closeModal()}
+          />
+          <SweetAlert
+            title={modalStateFilter.title ? modalStateFilter.title : 'No title'}
+            confirmButtonColor=""
+            show={modalStateFilter.show ? modalStateFilter.show : false}
+            text={modalStateFilter.text ? modalStateFilter.text : 'No'}
+            type={modalStateFilter.type ? modalStateFilter.type : 'error'}
+            onConfirm={() => this.props.closeModal()}
+          />
+          {/* Add new */}
+          <Modal isOpen={open_new_save}>
+            <ModalHeader>
+              <Translate contentKey="userManagement.create-find-name" />
+            </ModalHeader>
+            <ModalBody>
+              <div className="input-search_group" style={{ paddingRight: '30px' }}>
+                <label className="input-search_label">
+                  <span>
+                    <Translate contentKey="userManagement.name-find" />
+                  </span>
+                </label>
+                <Input value={name} onChange={event => this.setState({ name: event.target.value })} />
+              </div>
+            </ModalBody>
+            <ModalFooter>
+              <Button color="none" style={{ float: 'right' }} onClick={() => this.setState({ open_new_save: false, name: '' })}>
+                <Translate contentKey="userManagement.cancel" />
+              </Button>
+              <Button
+                color="primary"
+                style={{ float: 'right' }}
+                onClick={() => this.saveAdvancedSearch()}
+                disabled={name && name.trim() !== '' ? false : true}
+              >
+                <Translate contentKey="userManagement.save" />
+              </Button>
+            </ModalFooter>
+          </Modal>
+          {/* Search save modal  */}
+          <SearchSaveModal
+            open_list_save={open_list_save}
+            toggleSearchSaveModal={this.toggleSearchSaveModal}
+            openAdvancedSearch={this.openAdvancedSearch}
+          />
           {/* Title */}
-          <div className="userRestore">
+          <div className="userManagement">
             <div id="title-common-header">
               <span id="text-title">
-                <Translate contentKey="userRestore.home.title" />
+                {' '}
+                <Translate contentKey="userManagement.home.title" />
               </span>
+              <Button
+                className="btn float-right jh-create-entity"
+                outline
+                color="info"
+                onClick={async () => {
+                  let { advancedSearches, logicalOperator, textSearch, tagIds } = this.state;
+                  if (advancedSearches.length <= 1) {
+                    logicalOperator = '';
+                  }
+                  let data = {
+                    quickSearch: {
+                      textSearch: textSearch,
+                      tagIds: tagIds
+                    },
+                    isAdvanced: this.state.open_search ? 1 : 0,
+                    advancedSearch: {
+                      logicalOperator: logicalOperator,
+                      advancedSearches: advancedSearches
+                    }
+                  };
+                  await this.props.exportFile(data);
+                }}
+              >
+                <img src={exportImage} style={{ margin: ' 0px 5px 2px' }} />
+                <Translate contentKey="userManagement.home.export" />
+              </Button>
+              <Button
+                className="btn float-right jh-create-entity"
+                outline
+                color="info"
+                onClick={() => window.location.assign('/#/app/views/customers/user-management/new')}
+              >
+                <span>
+                  <img src={importImage} style={{ margin: ' 0px 5px 2px' }} />
+                </span>
+                <Translate contentKey="userManagement.home.import" />
+              </Button>
+              <span id="column-span">|</span>
+              <Button className=" float-right" color="primary" style={{ backGround: '#3866DD' }} onClick={this.toggleCreate}>
+                <FontAwesomeIcon icon="plus" />
+                <span id="btn-create">
+                  {' '}
+                  <Translate contentKey="userManagement.home.createLabel" />
+                </span>
+              </Button>
             </div>
+
             {/* Panel */}
             <div className="panel">
-              <div>
-                <div style={{ color: 'blue' }}>
-                  <Link to={`/app/views/customers/user-management`}>
-                    <Icon type="arrow-left" style={{ verticalAlign: 'baseline' }} /> Quay lại Danh sách khách hàng trong danh sách này
-                  </Link>
-                </div>
-                <br />
-                <h4>
-                  Khôi phục khách hàng&nbsp;
-                  <Tooltip
-                    placement="rightTop"
-                    title="Khách hàng đã xóa khỏi danh sách khách hàng được hiển thị tại mục này trong vòng 90 ngày (kể từ thời điểm xóa)"
-                  >
-                    <Icon type="question-circle" style={{ verticalAlign: 'text-top' }} />
-                  </Tooltip>
-                </h4>
-                <div style={{ color: 'gray' }}>*Khách hàng đã xóa chỉ được khôi phục trong 90 ngày</div>
-                <br />
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <div>
-                    <span className="label-search">Tìm theo ngày </span>
-                    <span>
-                      <RangePicker // 90 day ago
-                        onChange={this.hanldeDateSearch}
-                        defaultValue={[moment(fromDate, dateFormat), moment(toDate, dateFormat)]}
-                        format={dateFormat}
-                      />
-                    </span>
+              <CreateUser open_create={open_create} toggleCreate={this.toggleCreate} />
+              <Collapse isOpen={!open_search} navbar>
+                <div className="search-field">
+                  <div className="input-search_group" style={{ paddingRight: '30px' }}>
+                    <label className="input-search_label">
+                      <span>
+                        <Translate contentKey="userManagement.card-tag" />
+                      </span>
+                    </label>
+                    <UserCategoryTag handleChange={this.handleChange} />
                   </div>
-                  <div style={{ display: 'flex' }}>
-                    <span className="label-search" style={{ alignSelf: 'center' }}>
-                      &nbsp; Tìm theo tên &nbsp;{' '}
-                    </span>
-                    <span>
-                      <Input
-                        onChange={event => {
-                          this.setState({ textSearch: event.target.value });
-                        }}
-                      />
-                    </span>
+                  <div className="input-search_group" style={{ paddingRight: '30px' }}>
+                    <label className="input-search_label">
+                      <Translate contentKey="userManagement.home.search-placer" />
+                    </label>
+                    <Input
+                      type="text"
+                      className="form-control"
+                      onKeyDown={this.searchByTextField}
+                      placeholder={translate('userManagement.home.search-placer')}
+                    />
                   </div>
-                  <Button outline onClick={this.handleSearchCustomer}>
-                    Tìm kiếm
-                  </Button>
                 </div>
+              </Collapse>
+              <div className="field-search">
+                <div className="field-title">
+                  <p>
+                    <label className="field-title_text" onClick={this.closeSearchAdvanced}>
+                      <Icon type="setting" />
+                      <Translate contentKey="userManagement.advanced-search" />
+                      <Icon type={open_search ? 'caret-up' : 'caret-down'} />
+                    </label>
+                    <label
+                      className="field-title_text"
+                      style={{
+                        float: 'right'
+                      }}
+                      onClick={this.toggleSearchSaveModal}
+                    >
+                      <Translate contentKey="userManagement.saved-advanced-search" />
+                    </label>
+                  </p>
+                </div>
+                <Collapse isOpen={open_search} navbar>
+                  <div className="search-anvanced_customer">
+                    {list_field_render}
+
+                    <Button color="primary" onClick={this.handleAddNewComponent} style={{ marginRight: '20px' }}>
+                      <FontAwesomeIcon icon="plus" />
+                    </Button>
+                    <label className="title-advanced-search">
+                      <Translate contentKey="userManagement.add-more-condition-search" />
+                    </label>
+                  </div>
+                  <div className="search-anvanced_footer">
+                    <Button
+                      color="ghost"
+                      style={{
+                        marginLeft: '20px',
+                        float: 'right',
+                        backgroundColor: '#E5ECF4',
+                        border: '1px solid #CED4DA'
+                      }}
+                      onClick={this.saveSearchData}
+                    >
+                      <Translate contentKey="userManagement.save-search" />
+                    </Button>
+
+                    <Button color="primary" style={{ float: 'right' }} onClick={() => this.getDataListCustomer(0)}>
+                      <Translate contentKey="userManagement.find" />
+                    </Button>
+                  </div>
+                </Collapse>
               </div>
               <hr style={{ borderTop: 'dotted 1px' }} />
-              <Translate contentKey="userRestore.home.total-element" interpolate={{ element: this.props.totalElements }} />
+              <Translate contentKey="userManagement.home.total-element" interpolate={{ element: this.props.totalElements }} />
+              <Dropdown overlay={this.rowName} trigger={['click']}>
+                <Button color="link" style={{ float: 'right' }}>
+                  <img src={filterImage} style={{ margin: ' 0px 5px 10px' }} />
+                </Button>
+              </Dropdown>
               <Button
-                className="btn float-right jh-create-entity btn-restore"
+                className="btn float-right jh-create-entity"
                 outline
+                color="danger"
                 onClick={this.openModalRemoveCustomer}
                 disabled={listCheckedCustomer.length > 0 ? false : true}
               >
-                <Translate contentKey="userRestore.home.restore-customer" />
+                <Translate contentKey="userManagement.home.remove-customer" />
               </Button>
               {/*modal confirm accept remove customers*/}
               <div>
                 <Modal isOpen={modalRemoveCus} toggle={this.openModalRemoveCustomer}>
                   <ModalBody>
                     <Translate
-                      contentKey="userRestore.home.title-confirm-restore"
+                      contentKey="userManagement.home.warning-remove"
                       interpolate={{ element: removeAllCustomers ? this.props.totalElements : listCheckedCustomer.length }}
                     />
                     <br />
                     <div className="wrraper-input">
                       {disableRemoveCus && ( // for disabled button = true
                         <div
+                          className="number-cus"
                           style={{
                             zIndex: 1,
                             position: 'absolute',
@@ -775,27 +1065,35 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
                           {removeAllCustomers ? this.props.totalElements : listCheckedCustomer.length}
                         </div>
                       )}
-                      <Input style={{ fontSize: 20 }} onChange={this.validateRestoreCustomer} />
+                      <Input style={{ fontSize: 20 }} onChange={this.validateRemoveCustomer} />
                     </div>
                   </ModalBody>
                   <ModalFooter>
                     <Button outline onClick={this.openModalRemoveCustomer}>
                       Thoát{' '}
                     </Button>
-                    <Button outline color="danger" onClick={this.handleRestoreCustomer} disabled={disableRemoveCus}>
-                      Khôi phục
+                    <Button outline color="danger" onClick={this.handleRemoveCustomer} disabled={disableRemoveCus}>
+                      Xóa
                     </Button>
                   </ModalFooter>
                 </Modal>
               </div>
-              {listCheckedCustomer.length > 0 && (
+              {listCheckedCustomer && checkedAllCustomer && (
                 <div className="title-remove-all-customers">
                   <Translate
                     contentKey="userManagement.home.choosed-customers"
                     interpolate={{ element: removeAllCustomers ? this.props.totalElements : listCheckedCustomer.length }}
                   />
                   {!removeAllCustomers && (
-                    <span className="title-select-all" onClick={() => this.checkAllCustomerInDatabase(dataUser)}>
+                    <span
+                      className="title-select-all"
+                      onClick={() =>
+                        this.setState({
+                          removeAllCustomers: true,
+                          disableRemoveCus: true
+                        })
+                      }
+                    >
                       <Translate
                         contentKey="userManagement.home.choose-all-customers"
                         interpolate={{ element: this.props.totalElements }}
@@ -837,7 +1135,8 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
                           this.setState({ conditionSort: 'firstName', count: count + 1 });
                         }}
                       >
-                        <Translate contentKey="userRestore.first-name" /> {conditionSort === 'firstName' ? '' : <Icon type="caret-down" />}
+                        <Translate contentKey="userManagement.first-name" />{' '}
+                        {conditionSort === 'firstName' ? '' : <Icon type="caret-down" />}
                         {conditionSort === 'firstName' ? (
                           count % 2 === 0 ? (
                             <Icon type="sort-ascending" />
@@ -855,7 +1154,7 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
                           this.setState({ conditionSort: 'lastName', count: count + 1 });
                         }}
                       >
-                        <Translate contentKey="userRestore.last-name" /> {conditionSort === 'lastName' ? '' : <Icon type="caret-down" />}
+                        <Translate contentKey="userManagement.last-name" /> {conditionSort === 'lastName' ? '' : <Icon type="caret-down" />}
                         {conditionSort === 'lastName' ? (
                           count % 2 === 0 ? (
                             <Icon type="sort-ascending" />
@@ -873,7 +1172,7 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
                           this.setState({ conditionSort: 'email', count: count + 1 });
                         }}
                       >
-                        <Translate contentKey="userRestore.email" /> {conditionSort === 'email' ? '' : <Icon type="caret-down" />}
+                        <Translate contentKey="userManagement.email" /> {conditionSort === 'email' ? '' : <Icon type="caret-down" />}
                         {conditionSort === 'email' ? (
                           count % 2 === 0 ? (
                             <Icon type="sort-ascending" />
@@ -891,7 +1190,8 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
                           this.setState({ conditionSort: 'mobile', count: count + 1 });
                         }}
                       >
-                        <Translate contentKey="userRestore.phone-number" /> {conditionSort === 'mobile' ? '' : <Icon type="caret-down" />}
+                        <Translate contentKey="userManagement.phone-number" />{' '}
+                        {conditionSort === 'mobile' ? '' : <Icon type="caret-down" />}
                         {conditionSort === 'mobile' ? (
                           count % 2 === 0 ? (
                             <Icon type="sort-ascending" />
@@ -923,7 +1223,7 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
                           this.setState({ conditionSort: 'createdDate', count: count + 1 });
                         }}
                       >
-                        <Translate contentKey="userRestore.created-date" />{' '}
+                        <Translate contentKey="userManagement.created-date" />{' '}
                         {conditionSort === 'createdDate' ? (
                           count % 2 === 0 ? (
                             <Icon type="sort-ascending" />
@@ -934,7 +1234,12 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
                           ''
                         )}
                       </th>
-                      <th>Thời gian xóa</th>
+                      <th style={{ width: '200px' }}>
+                        <Translate contentKey="userManagement.card-tag" />
+                      </th>
+                      <th style={{ width: '150px' }} id="modified-date-sort" className="hand">
+                        <Translate contentKey="userManagement.feature" />
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -955,7 +1260,48 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
                               <td>{item.lastName}</td>
                               <td>{item.email}</td>
                               <td>{item.mobile}</td>
-                              <td>{item.modifiedDate.slice(0, item.modifiedDate.indexOf('T'))}</td>
+                              {item.fields
+                                .sort(function(a, b) {
+                                  if (a.title.toLowerCase() < b.title.toLowerCase()) {
+                                    return -1;
+                                  }
+                                  if (a.title.toLowerCase() > b.title.toLowerCase()) {
+                                    return 1;
+                                  }
+                                  return 0;
+                                })
+                                .map((value, index) => {
+                                  return (
+                                    <td className={value.check === true ? '' : 'display-colum'} key={index}>
+                                      {value.value}
+                                    </td>
+                                  );
+                                })}
+                              <td className={this.state.isCheckDateCreate === true ? '' : 'display-colum'}>{item.createdDate}</td>
+                              <td className="tag">
+                                {item.tag &&
+                                  item.tag.split(',').map((category, index) => {
+                                    return (
+                                      <span className="badge badge-success" key={index}>
+                                        {' '}
+                                        {category}
+                                      </span>
+                                    );
+                                  })}
+                              </td>
+                              <td className="text-center">
+                                <div className="btn-group flex-btn-group-container">
+                                  <Button
+                                    className="buttonUpdate"
+                                    tag={Link}
+                                    to={`/app/views/customers/user-management/info/${item.id}`}
+                                    color="primary"
+                                    size="sm"
+                                  >
+                                    <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Thông tin</span>
+                                  </Button>
+                                </div>
+                              </td>
                             </tr>
                           );
                         })
@@ -1002,22 +1348,34 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
 }
 
 const mapStateToProps = (storeState: IRootState) => ({
+  dowloadTemplate: storeState.userManagement.dowloadTemplate,
+  modalState: storeState.handleModal.data,
+  modalStateFilter: storeState.userManagement.dataModal,
+  users: storeState.userManagement.users,
+  totalItems: storeState.userManagement.totalItems,
   account: storeState.authentication.account,
-  totalElements: storeState.userRestore.totalElements,
-  loading: storeState.userRestore.loading,
-  pageCount: Math.ceil(storeState.userRestore.totalElements / ITEMS_PER_PAGE),
+  isCreate: storeState.userManagement.isCreate,
+  totalElements: storeState.userManagement.totalElements,
+  loading: storeState.userManagement.loading,
+  listCategory: storeState.userManagement.listCategory,
+  pageCount: Math.ceil(storeState.userManagement.totalElements / ITEMS_PER_PAGE),
   listFields: storeState.userManagement.listFields,
   list_field_data: storeState.groupCustomerState.list_field_data,
   list_save_advanced_search: storeState.userManagement.list_save_advanced_search,
   save_advanced_search: storeState.userManagement.save_advanced_search,
   isMerge: storeState.userManagement.isMerge,
   isDelete: storeState.userManagement.isDelete,
-  list_option: storeState.userManagement.list_option,
-  users: storeState.userRestore.users
+  list_option: storeState.userManagement.list_option
 });
 
 const mapDispatchToProps = {
+  exportFile,
+  getUsers,
+  updateUser,
+  getUserCategories,
+  deleteUser,
   getUser,
+  getDetailUser,
   openModal,
   closeModal,
   getFields,
@@ -1025,12 +1383,15 @@ const mapDispatchToProps = {
   getFindUserInManagerWithActionData,
   getListSaveAdvancedSearchActionData,
   getSaveAdvancedSearchActionData,
-  getDeletedUsers,
-  postRestoreCustomerBatchAction,
-  postRestoreCustomerSimpleFilterAction
+  deleteSaveAdvancedSearchActionData,
+  postSaveAdvancedSearchActionData,
+  getListOptionFilter,
+  postDeleteCustomerBatch,
+  postDeleteCustomerAdvanceSearch,
+  postDeleteCustomerSimpleSearch
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserRestore);
+export default connect(mapStateToProps, mapDispatchToProps)(UserManagement);
