@@ -11,12 +11,13 @@ export const getListDeletedCustomer = (fromDate, toDate, page, pageSize, sort?: 
 
 // handle restore customer by list id
 export const postRestoreCustomerBatchSevice = (data: any) => {
-  const configUrl = `${urlConfig}/restore/batch`;
+  debugger;
+  const configUrl = `${urlConfig}/customers/restore/batch`;
   return axios.post(configUrl, data, { headers: authHeaders });
 };
 
 // handle restore all customer by simple filter
 export const postRestoreCustomerSimpleFilterSevice = (data: any) => {
-  const configUrl = `${urlConfig}/delete/simple-filter`;
+  const configUrl = `${urlConfig}/customers/restore/simple-filter`;
   return axios.post(configUrl, data, { headers: authHeaders });
 };

@@ -198,12 +198,7 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
 
   handlePagination = activePage => {
     const { itemsPerPage, textSearch, categories, fromDate, toDate, sortList, open_search, is_normal_find } = this.state;
-    if (open_search && !is_normal_find) {
-      this.getDataListCustomer(activePage.selected);
-    } else {
-      this.props.getDeletedUsers(fromDate, toDate, activePage, itemsPerPage, sortList, textSearch);
-    }
-
+    this.props.getDeletedUsers(fromDate, toDate, activePage.selected, itemsPerPage, sortList, textSearch);
     this.setState({
       activePage: activePage.selected
     });
@@ -293,24 +288,6 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
   // Update logicalOperator
   updateRelationshipFromState = (logicalOperator: string) => {
     this.setState({ logicalOperator });
-  };
-
-  // GetData customer by condition
-  getDataListCustomer = (page?: any) => {
-    let { advancedSearches, logicalOperator, pageSize, is_normal_find } = this.state;
-    is_normal_find = false;
-    if (advancedSearches.length <= 1) {
-      logicalOperator = '';
-    }
-
-    this.props.getFindUserInManagerWithActionData({
-      logicalOperator,
-      advancedSearches,
-      page,
-      pageSize
-    });
-
-    this.setState({ is_normal_find });
   };
 
   dataFilter() {
@@ -523,7 +500,10 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
         await this.props.postRestoreCustomerBatchAction(listCheckedCustomer);
         await this.props.getDeletedUsers(fromDate, toDate, activePage, itemsPerPage, sortList, textSearch);
         await this.setState({
-          listCheckedCustomer: []
+          listCheckedCustomer: [],
+          removeAllCustomers: false,
+          checkedAllCustomer: false,
+          disableRemoveCus: true
         });
       }
     }
@@ -545,8 +525,6 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
       // remove with params of normal search
       await this.props.postRestoreCustomerSimpleFilterAction({
         fromDate: fromDate,
-        page: 0,
-        pageSize: 0,
         sort: [],
         textSearch: textSearch,
         toDate: toDate
@@ -555,8 +533,6 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
       // remove all customer with no params
       await this.props.postRestoreCustomerSimpleFilterAction({
         fromDate: fromDate,
-        page: 0,
-        pageSize: 0,
         sort: [],
         textSearch: textSearch,
         toDate: toDate
@@ -564,7 +540,10 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
     }
     await this.props.getDeletedUsers(fromDate, toDate, activePage, itemsPerPage, sortList, textSearch);
     await this.setState({
-      listCheckedCustomer: []
+      listCheckedCustomer: [],
+      removeAllCustomers: false,
+      checkedAllCustomer: false,
+      disableRemoveCus: true
     });
   };
   validateRestoreCustomer = event => {
@@ -628,7 +607,8 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
     } = this.state;
     // date format
     const { MonthPicker, RangePicker } = DatePicker;
-
+    console.log(listCheckedCustomer);
+    console.log(removeAllCustomers);
     let dataUser;
     dataUser = this.dataFilter();
     let theader = listFields.map(event => {
