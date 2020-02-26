@@ -15,13 +15,19 @@ export const getDeletedUsers = (fromDate, toDate, page, pageSize, sort?: any[], 
 export const postRestoreCustomerBatchAction = (data: any) => {
   return {
     type: USER_RESTORE_ACTION_TYPES.RESTORE_USERS_BY_IDS,
-    payload: postRestoreCustomerBatchSevice(data)
+    payload: postRestoreCustomerBatchSevice(data),
+    meta: {
+      successMessage: 'Đã khôi phục người dùng thành công !'
+    }
   };
 };
 // remove list all customer with simple filter
 export const postRestoreCustomerSimpleFilterAction = (data: any) => {
   return {
     type: USER_RESTORE_ACTION_TYPES.RESTORE_ALL_USERS_WITH_FILTER,
-    payload: postRestoreCustomerSimpleFilterSevice(data)
+    payload: postRestoreCustomerSimpleFilterSevice(data),
+    meta: {
+      successMessage: 'Đã khôi phục người dùng thành công !'
+    }
   };
 };

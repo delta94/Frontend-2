@@ -44,6 +44,13 @@ const initialState = {
   user: {} as IUserDetails,
   totalElements: 0,
   data: {} as IUserDetails,
+  isOpenModalImport: false,
+  dataModal: {
+    show: false,
+    title: '',
+    type: 'success',
+    text: ''
+  },
   list_save_advanced_search: [] as Array<{
     name?: string;
     id?: string;
@@ -66,16 +73,42 @@ export type UserRestoreState = Readonly<typeof initialState>;
 
 // Reducer
 export default (state: UserRestoreState = initialState, action): UserRestoreState => {
-  console.log('----------------------' + action.type);
   switch (action.type) {
+    case USER_MANAGE_ACTION_TYPES.OPEN_MODAL:
+      return {
+        ...initialState,
+        loading: false,
+        isOpenModalImport: true
+      };
+    case USER_MANAGE_ACTION_TYPES.CLOSE_MODAL:
+      return {
+        ...initialState,
+        loading: false,
+        isOpenModalImport: false
+      };
+    case MODAL_ACTION.CLOSE_MODAL:
+      return {
+        ...state,
+        dataModal: {
+          show: false,
+          title: '',
+          type: 'success',
+          text: ''
+        }
+      };
     case REQUEST(USER_RESTORE_ACTION_TYPES.GET_USERS_DELETED_LIST):
     case REQUEST(USER_RESTORE_ACTION_TYPES.RESTORE_USERS_BY_IDS):
     case REQUEST(USER_RESTORE_ACTION_TYPES.RESTORE_ALL_USERS_WITH_FILTER):
-      debugger;
       return {
         ...state,
         errorMessage: null,
-        loading: true
+        loading: true,
+        dataModal: {
+          show: true,
+          title: 'Thành công',
+          type: 'success',
+          text: 'Xóa tìm kiếm thành kiếm thành công'
+        }
       };
     case FAILURE(USER_RESTORE_ACTION_TYPES.GET_USERS_DELETED_LIST):
     case FAILURE(USER_RESTORE_ACTION_TYPES.RESTORE_USERS_BY_IDS):

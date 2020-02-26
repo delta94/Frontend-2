@@ -4,7 +4,6 @@ import axios from 'axios';
 import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction, translate } from 'react-jhipster';
 
 import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-types';
-import { toast } from 'react-toastify';
 import { IUser } from 'app/common/models/user.model';
 import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
 import {
@@ -231,21 +230,30 @@ export const postSaveAdvancedSearchActionData = (data: any) => {
 export const postDeleteCustomerBatch = (data: any) => {
   return {
     type: USER_MANAGE_ACTION_TYPES.POST_REMOVE_LIST_CUSTOMER,
-    payload: postDeleteCustomerBatchSevice(data)
+    payload: postDeleteCustomerBatchSevice(data),
+    meta: {
+      successMessage: 'Đã xóa người dùng thành công !'
+    }
   };
 };
 // remove list all customer with simple filter
 export const postDeleteCustomerSimpleSearch = (data: any) => {
   return {
     type: USER_MANAGE_ACTION_TYPES.POST_REMOVE_LIST_CUSTOMER_SIMPLE_FILTER,
-    payload: postDeleteCustomerSimpleFilterSevice(data)
+    payload: postDeleteCustomerSimpleFilterSevice(data),
+    meta: {
+      successMessage: 'Đã xóa người dùng thành công !'
+    }
   };
 };
 // remove list all customer with advance filter
 export const postDeleteCustomerAdvanceSearch = (data: any) => {
   return {
     type: USER_MANAGE_ACTION_TYPES.POST_REMOVE_LIST_CUSTOMER_ADVANCE_FILTER,
-    payload: postDeleteCustomerAdvanceFilterSevice(data)
+    payload: postDeleteCustomerAdvanceFilterSevice(data),
+    meta: {
+      successMessage: 'Đã xóa người dùng thành công !'
+    }
   };
 };
 
