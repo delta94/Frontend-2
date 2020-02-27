@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
-import { validateCampaign, getDiagramCampaign } from 'app/actions/campaign-managament';
+import { validateCampaign, getDiagramCampaign } from 'app/actions/campaign-management';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button as ButtonReacts } from 'reactstrap';
 import { Button, Row, Col, Input, Select, InputNumber } from 'antd';
-import { updateInfoCampaign } from 'app/actions/campaign-managament';
+import { updateInfoCampaign } from 'app/actions/campaign-management';
 import './modal-wait-for-event.scss';
-import { code_node } from 'app/common/models/campaign-managament.model';
+import { code_node } from 'app/common/models/campaign-management.model';
 import { CHARACTER_TIME, CHARACTER_NUMBER } from './constant-modal-wait';
 import { Translate, translate } from 'react-jhipster';
 
@@ -311,11 +311,11 @@ export class ModalWaitForEvent extends React.Component<IModalWaitForEventProps, 
     );
   }
 }
-const mapStateToProps = ({ campaignManagament }: IRootState) => ({
-  loading: campaignManagament.loading,
-  listFieldData: campaignManagament.listFieldData,
-  listDiagram: campaignManagament.listDiagram,
-  list_clone_version: campaignManagament.cloneInfoVersion
+const mapStateToProps = ({ campaignManagement }: IRootState) => ({
+  loading: campaignManagement.loading,
+  listFieldData: campaignManagement.listFieldData,
+  listDiagram: campaignManagement.listDiagram,
+  list_clone_version: campaignManagement.cloneInfoVersion
 });
 
 const mapDispatchToProps = {

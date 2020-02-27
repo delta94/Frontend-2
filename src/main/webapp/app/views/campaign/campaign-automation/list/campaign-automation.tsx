@@ -13,14 +13,14 @@ import { openModal, closeModal } from 'app/actions/modal';
 import { IRootState } from 'app/reducers';
 import {
   statusCampaign,
-  getListCampaginAuto,
+  getListCampaignAuto,
   cloneVersion,
   saveCampaignAutoVersion,
   getListCustomerVersionProcess,
   getDiagramCampaign,
   validateCampaign
-} from 'app/actions/campaign-managament';
-import { img_node, const_shape } from 'app/common/models/campaign-managament.model';
+} from 'app/actions/campaign-management';
+import { img_node, const_shape } from 'app/common/models/campaign-management.model';
 import './campaign-automation.scss';
 
 const { confirm } = Modal;
@@ -43,9 +43,9 @@ const code_node = {
   TIMER_EVENT: 'TIMER_EVENT'
 };
 
-export interface ICampaginAutoProps extends StateProps, DispatchProps {}
+export interface ICampaignAutoProps extends StateProps, DispatchProps {}
 
-export interface ICampaginAutoState {
+export interface ICampaignAutoState {
   infoVersion: {
     type: string;
     nameVersion: string;
@@ -59,8 +59,8 @@ export interface ICampaginAutoState {
   statusCampaign: string;
 }
 
-class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoState> {
-  state: ICampaginAutoState = {
+class CampaignAuto extends React.Component<ICampaignAutoProps, ICampaignAutoState> {
+  state: ICampaignAutoState = {
     hover: false,
     idTree: '',
     infoVersion: {
@@ -75,21 +75,21 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
   };
 
   componentDidMount = async () => {
-    const { statusCampaign, getListCampaginAuto } = this.props;
+    const { statusCampaign, getListCampaignAuto } = this.props;
     await statusCampaign();
-    await getListCampaginAuto('', 0, 5);
+    await getListCampaignAuto('', 0, 5);
   };
 
   movePage = () => {
-    location.assign('#/app/views/campaigns/campaign-managament');
+    location.assign('#/app/views/campaigns/campaign-management');
   };
 
   iconStatus = option => {
     let img;
-    const img_stop = require('app/assets/utils/images/campaign-managament/stop.png');
-    const img_running = require('app/assets/utils/images/campaign-managament/running.png');
-    const img_finish = require('app/assets/utils/images/campaign-managament/finish.png');
-    const img_draf = require('app/assets/utils/images/campaign-managament/draf.png');
+    const img_stop = require('app/assets/utils/images/campaign-management/stop.png');
+    const img_running = require('app/assets/utils/images/campaign-management/running.png');
+    const img_finish = require('app/assets/utils/images/campaign-management/finish.png');
+    const img_draf = require('app/assets/utils/images/campaign-management/draf.png');
     switch (option) {
       case constant_version.DRAFT:
         img = img_draf;
@@ -237,18 +237,18 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
   };
 
   setPageIndex = pageIndex => {
-    const { getListCampaginAuto } = this.props;
+    const { getListCampaignAuto } = this.props;
     this.setState({ activePage: parseInt(pageIndex) });
-    getListCampaginAuto(this.state.statusCampaign, parseInt(pageIndex), 5);
+    getListCampaignAuto(this.state.statusCampaign, parseInt(pageIndex), 5);
   };
 
   render() {
     let { getStatusCampaign, list_campaign_auto, loading, totalCampaign } = this.props;
-    const img = require('app/assets/utils/images/campaign-managament/count_campaign.png');
-    const img_campaign_running = require('app/assets/utils/images/campaign-managament/campaign_running.png');
-    const img_campaign_stop = require('app/assets/utils/images/campaign-managament/campaign_stop.png');
-    const img_finish = require('app/assets/utils/images/campaign-managament/campaign_finish.png');
-    const img_new = require('app/assets/utils/images/campaign-managament/campaign_new.png');
+    const img = require('app/assets/utils/images/campaign-management/count_campaign.png');
+    const img_campaign_running = require('app/assets/utils/images/campaign-management/campaign_running.png');
+    const img_campaign_stop = require('app/assets/utils/images/campaign-management/campaign_stop.png');
+    const img_finish = require('app/assets/utils/images/campaign-management/campaign_finish.png');
+    const img_new = require('app/assets/utils/images/campaign-management/campaign_new.png');
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
     const eventStatus = option => {
       let data;
@@ -293,7 +293,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
                 span={4}
                 style={{ width: '20%' }}
                 onClick={() => {
-                  this.props.getListCampaginAuto('', 0, 5), this.setState({ statusCampaign: '' });
+                  this.props.getListCampaignAuto('', 0, 5), this.setState({ statusCampaign: '' });
                 }}
               >
                 <div className="gutter-box top">
@@ -311,7 +311,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
                 span={4}
                 style={{ width: '20%' }}
                 onClick={() => {
-                  this.props.getListCampaginAuto(constant_version.RUNNING, 0, 5),
+                  this.props.getListCampaignAuto(constant_version.RUNNING, 0, 5),
                     this.setState({ statusCampaign: constant_version.RUNNING });
                 }}
               >
@@ -330,7 +330,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
                 span={4}
                 style={{ width: '20%' }}
                 onClick={() => {
-                  this.props.getListCampaginAuto(constant_version.STOP, 0, 5), this.setState({ statusCampaign: constant_version.STOP });
+                  this.props.getListCampaignAuto(constant_version.STOP, 0, 5), this.setState({ statusCampaign: constant_version.STOP });
                 }}
               >
                 <div className="gutter-box top">
@@ -348,7 +348,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
                 span={4}
                 style={{ width: '20%' }}
                 onClick={() => {
-                  this.props.getListCampaginAuto(constant_version.FINISH, 0, 5), this.setState({ statusCampaign: constant_version.FINISH });
+                  this.props.getListCampaignAuto(constant_version.FINISH, 0, 5), this.setState({ statusCampaign: constant_version.FINISH });
                 }}
               >
                 <div className="gutter-box top">
@@ -366,7 +366,7 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
                 span={4}
                 style={{ width: '20%' }}
                 onClick={() => {
-                  this.props.getListCampaginAuto(constant_version.DRAFT, 0, 5), this.setState({ statusCampaign: constant_version.DRAFT });
+                  this.props.getListCampaignAuto(constant_version.DRAFT, 0, 5), this.setState({ statusCampaign: constant_version.DRAFT });
                 }}
               >
                 <div className="gutter-box top">
@@ -473,19 +473,19 @@ class CampaginAuto extends React.Component<ICampaginAutoProps, ICampaginAutoStat
   }
 }
 
-const mapStateToProps = ({ campaignManagament }: IRootState) => ({
-  loading: campaignManagament.loading,
-  getStatusCampaign: campaignManagament.statusCampaign,
-  list_campaign_auto: campaignManagament.listCampaignAuto,
-  totalCampaign: campaignManagament.totalCampaign,
-  list_clone_version: campaignManagament.cloneInfoVersion
+const mapStateToProps = ({ campaignManagement }: IRootState) => ({
+  loading: campaignManagement.loading,
+  getStatusCampaign: campaignManagement.statusCampaign,
+  list_campaign_auto: campaignManagement.listCampaignAuto,
+  totalCampaign: campaignManagement.totalCampaign,
+  list_clone_version: campaignManagement.cloneInfoVersion
 });
 
 const mapDispatchToProps = {
   openModal,
   closeModal,
   statusCampaign,
-  getListCampaginAuto,
+  getListCampaignAuto,
   cloneVersion,
   saveCampaignAutoVersion,
   getDiagramCampaign,
@@ -496,4 +496,4 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(CampaginAuto);
+export default connect(mapStateToProps, mapDispatchToProps)(CampaignAuto);

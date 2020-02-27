@@ -5,11 +5,11 @@ import UserManagement from './user-management';
 import UserRestore from './user-restore';
 import AppHeader from 'app/layout/AppHeader/';
 import AppSidebar from 'app/layout/AppSidebar/';
-import TagManagament from './tag-mangament/tag-mangament';
+import TagManagement from './tag-management/tag-management';
 import PropertiesCustomer from './properties-customer';
 import PrivateRoute from '../../common/components/PrivateRoute';
 import GroupAttributeCustomer from './group-attribute-customer/group-atrribute-customer';
-// import CampaginAuto froapp/views/campaign/campaign-automation/list/campaign-automationion';
+// import CampaignAuto froapp/views/campaign/campaign-automation/list/campaign-automationion';
 
 const Routes = ({ match }) => (
   <Fragment>
@@ -18,18 +18,18 @@ const Routes = ({ match }) => (
       <AppSidebar />
       <div className="app-main__outer">
         <div className="app-main__inner">
-          {/* <ErrorBoundaryRoute path={`${match.url}/campaign-auto`} component={CampaginAuto} /> */}
+          {/* <ErrorBoundaryRoute path={`${match.url}/campaign-auto`} component={CampaignAuto} /> */}
           <ErrorBoundaryRoute path={`${match.url}/user-management`} component={UserManagement} />
           <ErrorBoundaryRoute path={`${match.url}/user-campaign`} component={CampaignManagement} />
-          <ErrorBoundaryRoute path={`${match.url}/tag-management`} component={TagManagament} />
+          <ErrorBoundaryRoute path={`${match.url}/tag-management`} component={TagManagement} />
           <ErrorBoundaryRoute path={`${match.url}/user-properties`} component={PropertiesCustomer} />
           <ErrorBoundaryRoute path={`${match.url}/user-group`} component={GroupAttributeCustomer} />
           <ErrorBoundaryRoute path={`${match.url}/user-restore`} component={UserRestore} />
 
           <PrivateRoute path={`${match.url}/user-management`} component={UserManagement} />
-          {/* <PrivateRoute path={`${match.url}/campaign-auto`} component={CampaginAuto} /> */}
+          {/* <PrivateRoute path={`${match.url}/campaign-auto`} component={CampaignAuto} /> */}
           <PrivateRoute path={`${match.url}/user-campaign`} component={CampaignManagement} />
-          <PrivateRoute path={`${match.url}/tag-management`} component={TagManagament} />
+          <PrivateRoute path={`${match.url}/tag-management`} component={TagManagement} />
           <PrivateRoute path={`${match.url}/user-properties`} component={PropertiesCustomer} />
           <PrivateRoute path={`${match.url}/user-group`} component={GroupAttributeCustomer} />
           {/* <PrivateRoute path={`${match.url}/user-management`} component={UserManagement} hasAnyAuthorities={['Admin']} /> */}

@@ -771,9 +771,9 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
   };
 
   render() {
-    const importImage = require('app/assets/utils/images/user-mangament/import.png');
-    const exportImage = require('app/assets/utils/images/user-mangament/export.png');
-    const filterImage = require('app/assets/utils/images/user-mangament/filter.png');
+    const importImage = require('app/assets/utils/images/user-management/import.png');
+    const exportImage = require('app/assets/utils/images/user-management/export.png');
+    const filterImage = require('app/assets/utils/images/user-management/filter.png');
     const { users, loading, listFields, modalStateFilter, pageCount, list_option } = this.props;
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
     const {

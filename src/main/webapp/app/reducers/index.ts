@@ -7,7 +7,7 @@ import authentication, { AuthenticationState } from './auth';
 import userManagement, { UserManagementState } from './user-management';
 import userRestore, { UserRestoreState } from './user-restore';
 import userCampaign, { UserCampaignState } from './user-campaign';
-import campaignManagament, { HandleCampaignManagament } from './campaign-managament';
+import campaignManagement, { HandleCampaignManagement } from './campaign-management';
 import landingPage, { LandingPageState } from './landing-page';
 import themeOptions, { ThemeOptionsState } from './theme-options';
 import navigationInfo, { NavigationInfo } from './navigation-info';
@@ -39,7 +39,7 @@ export interface IRootState {
   readonly tagDataState: TagDataState;
   readonly propertiesState: PropertiesDataState;
   readonly groupCustomerState: GroupCustomerState;
-  readonly campaignManagament: HandleCampaignManagament;
+  readonly campaignManagement: HandleCampaignManagement;
   readonly cjTagState: CjTagState;
   readonly cjState: CjState;
   readonly emailConfigState: EmailConfigState;
@@ -62,7 +62,7 @@ const rootReducer = combineReducers<IRootState>({
   tagDataState,
   propertiesState,
   groupCustomerState,
-  campaignManagament,
+  campaignManagement,
   cjTagState,
   cjState,
   emailConfigState,

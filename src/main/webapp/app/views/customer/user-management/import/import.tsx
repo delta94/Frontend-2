@@ -99,7 +99,7 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
   };
 
   toggle = () => {
-    const imageFileDown = require('app/assets/utils/images/user-mangament/image-down-files.png');
+    const imageFileDown = require('app/assets/utils/images/user-management/image-down-files.png');
     this.setState({
       modal: !this.state.modal,
       fileImport: '',
@@ -121,7 +121,7 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
 
   contentUploadFile = () => {
     let { image, file } = this.state;
-    const imageFileDown = require('app/assets/utils/images/user-mangament/image-down-files.png');
+    const imageFileDown = require('app/assets/utils/images/user-management/image-down-files.png');
     let data = (
       <Card className="main-card mb-3">
         <CardBody>
@@ -363,7 +363,7 @@ export class Import extends React.Component<IImportProps, IImportState, Route> {
   render() {
     const { loading, modalState } = this.props;
     let { current, fileImport } = this.state;
-    const imageFileDown = require('app/assets/utils/images/user-mangament/image-down-files.png');
+    const imageFileDown = require('app/assets/utils/images/user-management/image-down-files.png');
     return (
       <Container fluid>
         <SweetAlert

@@ -8,8 +8,8 @@ import { IRootState } from 'app/reducers';
 import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import { updateCjTagsAction, getCjTagsByCjIdAction } from 'app/actions/cj';
-import CjTagInsertModal from 'app/views/campaign/campaign-automation/campaign-managament/campaign-list/cj-tag-modal/insert-cj-tag-modal/cj-tag-insert-modal';
-import CjTagListModal from 'app/views/campaign/campaign-automation/campaign-managament/campaign-list/cj-tag-modal/list-cj-tag-modal/cj-tag-list-modal';
+import CjTagInsertModal from 'app/views/campaign/campaign-automation/campaign-management/campaign-list/cj-tag-modal/insert-cj-tag-modal/cj-tag-insert-modal';
+import CjTagListModal from 'app/views/campaign/campaign-automation/campaign-management/campaign-list/cj-tag-modal/list-cj-tag-modal/cj-tag-list-modal';
 import ReactPaginate from 'react-paginate';
 import {
   getListCampaignInfolderDataAction,
@@ -18,13 +18,13 @@ import {
   saveCampaignAutoVersion,
   getListCustomerVersionProcess,
   resetListCloneVersion
-} from 'app/actions/campaign-managament';
+} from 'app/actions/campaign-management';
 import './campaign-list.scss';
 import { Input, Icon, Row, Col, Tag, Button, Popover as PopverAnt } from 'antd';
 import CampaignTag from './campaign-tag/campaign-tag';
 import CjTagModal from './cj-tag-modal/cj-tag-modal';
 import { STATUS_CJ } from 'app/constants/cj';
-import { img_node, const_shape } from 'app/common/models/campaign-managament.model';
+import { img_node, const_shape } from 'app/common/models/campaign-management.model';
 import CJTagPopOver from './cj-popup/cj-popover';
 //TODO: step 0
 import ReactTable from 'react-table-6';
@@ -221,7 +221,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                   <Icon type="snippets" />
                   <Button
                     onClick={() => {
-                      window.location.assign(`/#/app/views/campaigns/campaign-managament/version/${item.cjVersionId}`);
+                      window.location.assign(`/#/app/views/campaigns/campaign-management/version/${item.cjVersionId}`);
                     }}
                     type="link"
                   >
@@ -245,10 +245,10 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
 
   //TODO: step 5
   renderStatusName(status: string) {
-    const img_stop = require('app/assets/utils/images/campaign-managament/stop.png');
-    const img_running = require('app/assets/utils/images/campaign-managament/running.png');
-    const img_finish = require('app/assets/utils/images/campaign-managament/finish.png');
-    const img_draf = require('app/assets/utils/images/campaign-managament/draf.png');
+    const img_stop = require('app/assets/utils/images/campaign-management/stop.png');
+    const img_running = require('app/assets/utils/images/campaign-management/running.png');
+    const img_finish = require('app/assets/utils/images/campaign-management/finish.png');
+    const img_draf = require('app/assets/utils/images/campaign-management/draf.png');
     let result;
     switch (status) {
       case STATUS_CJ.DRAFT:
@@ -543,7 +543,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
   };
 
   contentTag = item => {
-    const img_tag = require('app/assets/utils/images/campaign-managament/tag-list.png');
+    const img_tag = require('app/assets/utils/images/campaign-management/tag-list.png');
     let result = (
       <div id="cj-tag-popover-body">
         <div className="combobox-cj-tag">
@@ -593,12 +593,12 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
     let folderId = this.props.folder_id_choose;
     let totalPages = Math.ceil(total / 7);
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
-    const img_tag = require('app/assets/utils/images/campaign-managament/tag-list.png');
+    const img_tag = require('app/assets/utils/images/campaign-management/tag-list.png');
     const getStatusName = (status: string) => {
-      const img_stop = require('app/assets/utils/images/campaign-managament/stop.png');
-      const img_running = require('app/assets/utils/images/campaign-managament/running.png');
-      const img_finish = require('app/assets/utils/images/campaign-managament/finish.png');
-      const img_draf = require('app/assets/utils/images/campaign-managament/draf.png');
+      const img_stop = require('app/assets/utils/images/campaign-management/stop.png');
+      const img_running = require('app/assets/utils/images/campaign-management/running.png');
+      const img_finish = require('app/assets/utils/images/campaign-management/finish.png');
+      const img_draf = require('app/assets/utils/images/campaign-management/draf.png');
       let result;
       switch (status) {
         case STATUS_CJ.DRAFT:
@@ -697,7 +697,7 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
                     style={{ background: '#3866DD' }}
                     type="primary"
                     onClick={() => {
-                      window.location.assign('/#/app/views/campaigns/campaign-managament/new');
+                      window.location.assign('/#/app/views/campaigns/campaign-management/new');
                     }}
                   >
                     <Translate contentKey="campaign-auto.list.create-campaign" />
@@ -753,12 +753,12 @@ class CampaignList extends React.Component<ICampaignListProps, ICampaignListStat
   }
 }
 
-const mapStateToProps = ({ campaignManagament, cjState }: IRootState) => ({
-  loading: campaignManagament.loading,
-  campaign_list: campaignManagament.campaign.data,
-  total: campaignManagament.campaign.total,
+const mapStateToProps = ({ campaignManagement, cjState }: IRootState) => ({
+  loading: campaignManagement.loading,
+  campaign_list: campaignManagement.campaign.data,
+  total: campaignManagement.campaign.total,
   valueComboTag: cjState.cj_tags,
-  list_clone_version: campaignManagament.cloneInfoVersion
+  list_clone_version: campaignManagement.cloneInfoVersion
 });
 
 const mapDispatchToProps = {

@@ -72,9 +72,9 @@ class ModalIteractive extends React.Component<IModalIteractiveProps, IModalItera
     );
   }
 }
-const mapStateToProps = ({ campaignManagament }: IRootState) => ({
-  loading: campaignManagament.loading,
-  list_customer_interactive: campaignManagament.listCustomerInteractive
+const mapStateToProps = ({ campaignManagement }: IRootState) => ({
+  loading: campaignManagement.loading,
+  list_customer_interactive: campaignManagement.listCustomerInteractive
 });
 
 const mapDispatchToProps = {};

@@ -19,7 +19,7 @@ import {
   resetListCloneVersion,
   copyCJCampaign,
   getListVersion
-} from 'app/actions/campaign-managament';
+} from 'app/actions/campaign-management';
 import { IRootState } from 'app/reducers';
 import ConfigEmail from './modal-config-email/config-email';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -28,7 +28,7 @@ import ModalGroupCustomer from './modal-group-customer/modal-group-customer';
 import UpdateInfoCampaign from './modal-update-info/modal-update-info';
 const { Header } = Layout;
 import './style.scss';
-import { code_node, img_node, const_shape } from 'app/common/models/campaign-managament.model';
+import { code_node, img_node, const_shape } from 'app/common/models/campaign-management.model';
 import ConfigMessage from './modal-config-message/modal-config-message';
 import SiderTest from './sider/sider-test';
 import ModalWaitForEvent from './modal-wait-for-event/modal-wait-for-event';
@@ -774,7 +774,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
         onOk: async () => {
           await activeProcessCampaign(data);
           await cloneVersion(data);
-          await window.location.assign(`/#/app/views/campaigns/campaign-managament`);
+          await window.location.assign(`/#/app/views/campaigns/campaign-management`);
           notification['success']({
             message: 'thành công',
             description: 'Bạn vừa kích hoạt chiến dịch thành công.'
@@ -788,7 +788,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       if (data) {
         await activeProcessCampaign(data);
         await cloneVersion(data);
-        await window.location.assign(`/#/app/views/campaigns/campaign-managament`);
+        await window.location.assign(`/#/app/views/campaigns/campaign-management`);
         notification['success']({
           message: 'thành công',
           description: 'Bạn vừa kích hoạt chiến dịch thành công.'
@@ -946,13 +946,13 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                         </a>
                       </Breadcrumb.Item>
                       <Breadcrumb.Item>
-                        <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-managament')} href="javascript:void(0);">
+                        <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-management')} href="javascript:void(0);">
                           Danh sách chiến dịch
                         </a>
                       </Breadcrumb.Item>
                       <Breadcrumb.Item>
                         <a
-                          onClick={() => window.location.assign('/#/app/views/campaigns/campaign-managament/new')}
+                          onClick={() => window.location.assign('/#/app/views/campaigns/campaign-management/new')}
                           href="javascript:void(0);"
                         >
                           Tạo chiến dịch
@@ -1081,20 +1081,20 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     );
   }
 }
-const mapStateToProps = ({ campaignManagament, handleModal }: IRootState) => ({
-  loading: campaignManagament.loading,
-  list_tree_folder: campaignManagament.tree_folder,
-  idFolder: campaignManagament.listNode,
-  infoCampaign: campaignManagament.listInfoCampaing,
-  listDiagram: campaignManagament.listDiagram,
-  listFieldData: campaignManagament.listFieldData,
-  infoVersion: campaignManagament.infoVersion,
-  list_clone_version: campaignManagament.cloneInfoVersion,
-  id_active: campaignManagament.idActive,
+const mapStateToProps = ({ campaignManagement, handleModal }: IRootState) => ({
+  loading: campaignManagement.loading,
+  list_tree_folder: campaignManagement.tree_folder,
+  idFolder: campaignManagement.listNode,
+  infoCampaign: campaignManagement.listInfoCampaing,
+  listDiagram: campaignManagement.listDiagram,
+  listFieldData: campaignManagement.listFieldData,
+  infoVersion: campaignManagement.infoVersion,
+  list_clone_version: campaignManagement.cloneInfoVersion,
+  id_active: campaignManagement.idActive,
   modalState: handleModal.data,
-  list_validate: campaignManagament.list_validate,
-  list_version: campaignManagament.listVersion,
-  is_validate: campaignManagament.isCheckValidate
+  list_validate: campaignManagement.list_validate,
+  list_version: campaignManagement.listVersion,
+  is_validate: campaignManagement.isCheckValidate
 });
 
 const mapDispatchToProps = {

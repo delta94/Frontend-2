@@ -5,8 +5,8 @@ import {
   getTemplateCampaign,
   updateInfoCampaign,
   resetListCloneVersion
-} from 'app/actions/campaign-managament';
-import { img_node, const_shape } from 'app/common/models/campaign-managament.model';
+} from 'app/actions/campaign-management';
+import { img_node, const_shape } from 'app/common/models/campaign-management.model';
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Button, Table, Row, Badge, Col, Breadcrumb, Card, Tag, Layout, Popover, Modal } from 'antd';
@@ -252,12 +252,12 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
                 </a>
               </Breadcrumb.Item>
               <Breadcrumb.Item>
-                <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-managament')} href="javascript:void(0);">
-                  <Translate contentKey="campaign-auto.managament.list-campaign" />
+                <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-management')} href="javascript:void(0);">
+                  <Translate contentKey="campaign-auto.management.list-campaign" />
                 </a>
               </Breadcrumb.Item>
               <Breadcrumb.Item>
-                <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-managament/new')} href="javascript:void(0);">
+                <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-management/new')} href="javascript:void(0);">
                   <Translate contentKey="campaign-auto.create-campaign" />
                 </a>
               </Breadcrumb.Item>
@@ -318,11 +318,11 @@ class CreateCampaign extends React.Component<ICreateCampaignProps, ICreateCampai
   }
 }
 
-const mapStateToProps = ({ campaignManagament, cjState }: IRootState) => ({
-  loading: campaignManagament.loading,
-  list_template: campaignManagament.listTemplateCampaign,
-  listDiagram: campaignManagament.listDiagram,
-  list_clone_version: campaignManagament.cloneInfoVersion
+const mapStateToProps = ({ campaignManagement, cjState }: IRootState) => ({
+  loading: campaignManagement.loading,
+  list_template: campaignManagement.listTemplateCampaign,
+  listDiagram: campaignManagement.listDiagram,
+  list_clone_version: campaignManagement.cloneInfoVersion
 });
 
 const mapDispatchToProps = {

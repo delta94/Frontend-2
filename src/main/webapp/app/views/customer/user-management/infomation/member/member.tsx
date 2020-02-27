@@ -21,7 +21,7 @@ export class Member extends React.Component<IMemberProps, IMemberState> {
   state: IMemberState = {};
 
   render() {
-    const image = require('app/assets/utils/images/user-mangament/rank-bronze.png');
+    const image = require('app/assets/utils/images/user-management/rank-bronze.png');
     return (
       <Fragment>
         <Collapse defaultActiveKey="2" expandIconPosition="right" className="collapse-member">

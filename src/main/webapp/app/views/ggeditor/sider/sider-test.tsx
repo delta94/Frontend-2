@@ -1,9 +1,9 @@
 import React from 'react';
 import { IRootState } from 'app/reducers';
 import { connect } from 'react-redux';
-import { getEmailTest, testCampaign } from 'app/actions/campaign-managament';
+import { getEmailTest, testCampaign } from 'app/actions/campaign-management';
 import { Row, Col, Checkbox, Input, Button, Layout, Icon, Select, notification, Modal } from 'antd';
-import { code_node, img_node, const_shape } from 'app/common/models/campaign-managament.model';
+import { code_node, img_node, const_shape } from 'app/common/models/campaign-management.model';
 const { Sider } = Layout;
 const { Option } = Select;
 const { confirm } = Modal;
@@ -348,13 +348,13 @@ export class SiderTest extends React.Component<ISiderTestProps, ISiderTestState>
     );
   }
 }
-const mapStateToProps = ({ campaignManagament, groupCustomerState }: IRootState) => ({
+const mapStateToProps = ({ campaignManagement, groupCustomerState }: IRootState) => ({
   loading: groupCustomerState.list_customer_with_condition_index.loading,
   list_customer_with_condition: groupCustomerState.list_customer_with_condition,
-  listEmailTest: campaignManagament.listEmailTest,
-  listDiagram: campaignManagament.listDiagram,
-  listFieldData: campaignManagament.listFieldData,
-  list_clone_version: campaignManagament.cloneInfoVersion
+  listEmailTest: campaignManagement.listEmailTest,
+  listDiagram: campaignManagement.listDiagram,
+  listFieldData: campaignManagement.listFieldData,
+  list_clone_version: campaignManagement.cloneInfoVersion
 });
 
 const mapDispatchToProps = {

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Row } from 'reactstrap';
 
 import { Translate, translate } from 'react-jhipster';
-import './tag-mangament.scss';
+import './tag-management.scss';
 import { IRootState } from 'app/reducers';
 import LoaderAnim from 'react-loaders';
 import TagList from './tag-list/tag-list';

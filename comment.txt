@@ -10,9 +10,9 @@ const url = `${urlCJ}/${folderId}/cjs`;
 axios.get(url);
 
 3/ Đồng nhất khai báo action types
-CAMPAIGN_MANAGAMENT
+CAMPAIGN_MANAGEMENT
 =>
-CAMPAIGN_MANAGAMENT_ACTION_TYPES (like: AUTH_ACTION_TYPES)
+CAMPAIGN_MANAGEMENT_ACTION_TYPES (like: AUTH_ACTION_TYPES)
 
 export const PROPS_MANAGEMENT = {
   GET_LIST_PROPS: 'tagManagement/GET_LIST_PROPS',
@@ -28,7 +28,7 @@ className="app-main__outer" => cùng 01 class khai báo trên 5 file css khác n
 state = {
     isShow: false,
     value: 'Chọn giá trị',
-    classNameMenu: 'topica-dropdown-menu show'
+    classNameMenu: 'izzi-dropdown-menu show'
   };
 
  placeholder={'Chọn thẻ'}
