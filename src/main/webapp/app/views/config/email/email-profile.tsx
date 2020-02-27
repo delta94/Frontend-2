@@ -1,17 +1,32 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Input, Icon, Row, Checkbox, Modal, Menu, Dropdown as DropdownAnt } from 'antd';
+// service
+import {
+  createEmailsProfile,
+  deleteEmailsProfile,
+  getEmailsProfile,
+  reactiveEmailProfile,
+  setDefaultEmailProfile,
+  verifileEmailProfile
+} from '../../../actions/email-profile';
+import { IRootState } from 'app/reducers';
 import { Table, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Dropdown } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
-import { IRootState } from 'app/reducers';
 import LoaderAnim from 'react-loaders';
 import Loader from 'react-loader-advanced';
 import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import ReactPaginate from 'react-paginate';
 import { IEmail } from 'app/common/models/email-config.model';
 import { getEmailsAction, deleteEmailAction, getEmailDetailAction } from 'app/actions/email-config';
 import './email.scss';
+import ShowConfirm from './components/confirm-modal';
+
+//antd
 import { Button, Tooltip, Drawer } from 'antd';
+import { Input, Icon, Row, Checkbox, Modal, Menu, Dropdown as DropdownAnt } from 'antd';
+
+const { confirm } = Modal;
 
 interface IEmailSendManagementProps extends StateProps, DispatchProps {}
 interface IEmailSendManagementState {
@@ -27,7 +42,6 @@ interface ICheckboxItem extends IEmail {
   checked: boolean;
 }
 
-const { confirm } = Modal;
 const pageDefault: number = 0;
 const pageSizeDefault: number = 8;
 
@@ -42,22 +56,16 @@ class EmailSendManagement extends React.Component<IEmailSendManagementProps, IEm
   };
 
   componentDidMount() {
+    // get list email here
     let { activePage, itemsPerPage } = this.state;
-    this.props.getEmailsAction('', activePage, itemsPerPage);
+    // this.props.getEmailsProfile();
   }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.listCheckboxItem != this.state.listCheckboxItem) {
-      this.setState({ ...this.state });
-    }
-  }
-
+  // show verifile email drawer here
   showDrawer = () => {
     this.setState({
       visible: true
     });
   };
-
   onClose = () => {
     this.setState({
       visible: false
@@ -68,8 +76,63 @@ class EmailSendManagement extends React.Component<IEmailSendManagementProps, IEm
   //   location.assign('#/app/views/config/email-template');
   // };
 
+  hanldeSetEmailProfileDefault = () => {
+    confirm({
+      title: 'Thông báo',
+      content: 'Bạn có muốn đặt email này thành mặc định',
+      onOk() {
+        //call api here just one email set by default
+      },
+      onCancel() {}
+    });
+  };
+  hanldeVerifileEmail = () => {
+    // TODO
+    //call api here
+    Modal.info({
+      title: 'Thông báo',
+      content: (
+        <div>
+          <p>
+            Hệ thống đã gửi email xác nhận đến địa chỉ email của bạn. Vui lòng kiểm tra và xác nhận đường linh trong 24h
+            <b> Lưu ý</b>: Trong trường hợp không xác nhận được email, hãy kiểm tra thư mục spam, hoặc xem lại chính xác địa chỉ email muốn
+            xác thực.
+          </p>
+        </div>
+      ),
+      onOk() {}
+    });
+    this.setState({
+      visible: false
+    });
+  };
+  hanldeDeleteEmail = () => {
+    //TODO
+    confirm({
+      title: 'Thông báo',
+      content: 'Bạn có muốn thực sự muốn xóa email này',
+      onOk() {
+        //call api here
+        // this.props.deleteEmailsProfile()
+      },
+      onCancel() {}
+    });
+  };
+
+  ValidateEmail = mail => {
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
+      return true;
+    }
+    return false;
+  };
+  hanldeCreateEmail = () => {
+    // TODO
+    // this.props.createEmailsProfile()
+  };
+
   render() {
     let { total, totalPages, loading } = this.props;
+    const {} = this.state;
 
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
     return (
@@ -115,7 +178,9 @@ class EmailSendManagement extends React.Component<IEmailSendManagementProps, IEm
               <Input></Input>
               <label htmlFor="">Tên người gửi</label>
               <Input></Input>
-              <Button className="btn-confirm-email">Xác thực email này</Button>
+              <Button className="btn-confirm-email" onClick={this.hanldeVerifileEmail}>
+                Xác thực email này
+              </Button>
               <div className="email-note">
                 Vì cần xác thực email ?
                 <br />
@@ -132,32 +197,44 @@ class EmailSendManagement extends React.Component<IEmailSendManagementProps, IEm
                   <div>Cong ty abc</div>
                 </div>
                 <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5 group-icons">
-                  <Button icon="home" style={{ display: 'flex', alignSelf: 'center' }}>
+                  {/* <Button icon="home" style={{ display: 'flex', alignSelf: 'center' }} >
                     Mặc định
+                  </Button> */}
+                  <Button style={{ display: 'flex', alignSelf: 'center' }} onClick={this.hanldeSetEmailProfileDefault}>
+                    Đặt làm mặc định
                   </Button>
-                  <Button icon="check" style={{ display: 'flex', alignSelf: 'center', color: 'green' }}>
-                    Đã xác thực
-                  </Button>
-                </div>
-                <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2" style={{ fontSize: 30, alignSelf: 'center' }}>
-                  <Icon type="delete" />
-                </div>
-              </Row>
-              <Row className="wrraper-email-body">
-                <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5 title-email">
-                  <h3>TAi khoan email</h3>
-                  <div>Cong ty abc</div>
-                </div>
-                <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5 group-icons">
-                  <Button icon="home" style={{ display: 'flex', alignSelf: 'center' }}>
-                    Mặc định
-                  </Button>
-                  <Button icon="close" style={{ display: 'flex', alignSelf: 'center', color: 'red' }}>
+                  {
+                    // when verifiled
+                    //   <Button icon="check" className="verifiled-btn">
+                    //   Đã xác thực
+                    // </Button>
+                  }
+
+                  {
+                    // when no verifile
+                    /* <Button icon="close" className="verifile-btn" >
                     Chưa xác thực
-                  </Button>
+                  </Button> */
+                  }
+                  {
+                    // when send code verifile
+                    <div style={{ display: 'flex' }}>
+                      <Button className="verifile-btn" onClick={this.hanldeVerifileEmail}>
+                        Gửi lại mã xác thực
+                      </Button>
+                      <Tooltip
+                        placement="bottom"
+                        title="Vì sao cần xác thực email ?
+                      Xác thực giup chúng tôi xác nhận email của bạn có tồn tại,
+                      tăng độ tin cậy khi gửi email"
+                      >
+                        <Icon type="question-circle" style={{ padding: 5 }} />
+                      </Tooltip>
+                    </div>
+                  }
                 </div>
-                <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2" style={{ fontSize: 30, alignSelf: 'center' }}>
-                  <Icon type="delete" />
+                <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2 delete-btn">
+                  <Icon type="delete" onClick={this.hanldeDeleteEmail} />
                 </div>
               </Row>
             </Loader>
@@ -168,17 +245,20 @@ class EmailSendManagement extends React.Component<IEmailSendManagementProps, IEm
   }
 }
 
-const mapStateToProps = ({ emailConfigState }: IRootState) => ({
-  loading: emailConfigState.loading,
-  total: emailConfigState.emailData.totalElements,
-  emails: emailConfigState.emailData.content,
-  totalPages: emailConfigState.emailData.totalPages
+const mapStateToProps = ({ emailProfileState }: IRootState) => ({
+  loading: emailProfileState.loading,
+  total: emailProfileState.emailData.totalElements,
+  emails: emailProfileState.emailData.content,
+  totalPages: emailProfileState.emailData.totalPages
 });
 
 const mapDispatchToProps = {
-  getEmailsAction,
-  deleteEmailAction,
-  getEmailDetailAction
+  createEmailsProfile,
+  deleteEmailsProfile,
+  getEmailsProfile,
+  reactiveEmailProfile,
+  setDefaultEmailProfile,
+  verifileEmailProfile
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
