@@ -230,30 +230,21 @@ export const postSaveAdvancedSearchActionData = (data: any) => {
 export const postDeleteCustomerBatch = (data: any) => {
   return {
     type: USER_MANAGE_ACTION_TYPES.POST_REMOVE_LIST_CUSTOMER,
-    payload: postDeleteCustomerBatchSevice(data),
-    meta: {
-      successMessage: 'Đã xóa người dùng thành công !'
-    }
+    payload: postDeleteCustomerBatchSevice(data)
   };
 };
 // remove list all customer with simple filter
 export const postDeleteCustomerSimpleSearch = (data: any) => {
   return {
     type: USER_MANAGE_ACTION_TYPES.POST_REMOVE_LIST_CUSTOMER_SIMPLE_FILTER,
-    payload: postDeleteCustomerSimpleFilterSevice(data),
-    meta: {
-      successMessage: 'Đã xóa người dùng thành công !'
-    }
+    payload: postDeleteCustomerSimpleFilterSevice(data)
   };
 };
 // remove list all customer with advance filter
 export const postDeleteCustomerAdvanceSearch = (data: any) => {
   return {
     type: USER_MANAGE_ACTION_TYPES.POST_REMOVE_LIST_CUSTOMER_ADVANCE_FILTER,
-    payload: postDeleteCustomerAdvanceFilterSevice(data),
-    meta: {
-      successMessage: 'Đã xóa người dùng thành công !'
-    }
+    payload: postDeleteCustomerAdvanceFilterSevice(data)
   };
 };
 
