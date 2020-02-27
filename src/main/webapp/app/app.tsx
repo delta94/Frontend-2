@@ -3,7 +3,6 @@ import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Card } from 'reactstrap';
 import { HashRouter as Router } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
 import { hot } from 'react-hot-loader';
 import { Redirect } from 'react-router-dom';
 import { IRootState } from 'app/reducers';

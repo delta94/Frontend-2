@@ -35,6 +35,8 @@ import { DatePicker } from 'antd';
 import moment from 'moment';
 const dateFormat = 'DD/MM/YYYY';
 
+//date
+
 interface IComponentData {
   id: string;
   name?: string;
@@ -88,7 +90,7 @@ export interface IUserRestoreState {
   checkedAllCustomer: boolean;
   modalRemoveCus: boolean;
   disableRemoveCus: boolean;
-  removeAllCustomers: boolean;
+  restoreAllCustomers: boolean;
   fromDate: string;
   toDate: string;
   sortList: any[];
@@ -134,7 +136,7 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
     checkedAllCustomer: false,
     modalRemoveCus: false,
     disableRemoveCus: true,
-    removeAllCustomers: false,
+    restoreAllCustomers: false,
     fromDate: moment()
       .subtract(90, 'days')
       .format(dateFormat),
@@ -440,7 +442,7 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
     this.setState({
       checkedAllCustomer: checkedAll,
       listCheckedCustomer: listChecked,
-      removeAllCustomers: false
+      restoreAllCustomers: false
     });
   };
   checkAllCustomerInDatabase = (dataUser: any[]) => {
@@ -449,7 +451,7 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
       listChecked.push(user.id);
     });
     this.setState({
-      removeAllCustomers: true,
+      restoreAllCustomers: true,
       disableRemoveCus: true,
       checkedAllCustomer: true,
       listCheckedCustomer: listChecked
@@ -469,10 +471,10 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
     }
     this.setState({
       listCheckedCustomer: listChecked,
-      removeAllCustomers: false
+      restoreAllCustomers: false
     });
   };
-  openModalRemoveCustomer = () => {
+  openModalRestoreCustomer = () => {
     this.setState({
       modalRemoveCus: !this.state.modalRemoveCus
     });
@@ -483,15 +485,15 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
       listCheckedCustomer,
       fromDate,
       toDate,
-      removeAllCustomers,
+      restoreAllCustomers,
       sortList,
       activePage,
       itemsPerPage,
       categories,
       textSearch
     } = this.state;
-    this.openModalRemoveCustomer();
-    if (removeAllCustomers) {
+    this.openModalRestoreCustomer();
+    if (restoreAllCustomers) {
       // remove all
       this.handleRestoreAllCustomer();
     } else {
@@ -501,7 +503,7 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
         await this.props.getDeletedUsers(fromDate, toDate, activePage, itemsPerPage, sortList, textSearch);
         await this.setState({
           listCheckedCustomer: [],
-          removeAllCustomers: false,
+          restoreAllCustomers: false,
           checkedAllCustomer: false,
           disableRemoveCus: true
         });
@@ -514,7 +516,7 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
       listCheckedCustomer,
       fromDate,
       toDate,
-      removeAllCustomers,
+      restoreAllCustomers,
       sortList,
       activePage,
       itemsPerPage,
@@ -541,15 +543,15 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
     await this.props.getDeletedUsers(fromDate, toDate, activePage, itemsPerPage, sortList, textSearch);
     await this.setState({
       listCheckedCustomer: [],
-      removeAllCustomers: false,
+      restoreAllCustomers: false,
       checkedAllCustomer: false,
       disableRemoveCus: true
     });
   };
   validateRestoreCustomer = event => {
-    const { removeAllCustomers } = this.state;
+    const { restoreAllCustomers } = this.state;
     let condition = 0;
-    if (removeAllCustomers) {
+    if (restoreAllCustomers) {
       // open with remove all
       condition = this.props.totalElements;
     } else {
@@ -601,14 +603,14 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
       checkedAllCustomer,
       modalRemoveCus,
       disableRemoveCus,
-      removeAllCustomers,
+      restoreAllCustomers,
       fromDate,
       toDate
     } = this.state;
     // date format
     const { MonthPicker, RangePicker } = DatePicker;
     console.log(listCheckedCustomer);
-    console.log(removeAllCustomers);
+    console.log(restoreAllCustomers);
     let dataUser;
     dataUser = this.dataFilter();
     let theader = listFields.map(event => {
@@ -726,40 +728,33 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
               <Button
                 className="btn float-right jh-create-entity btn-restore"
                 outline
-                onClick={this.openModalRemoveCustomer}
+                onClick={this.openModalRestoreCustomer}
                 disabled={listCheckedCustomer.length > 0 ? false : true}
               >
                 <Translate contentKey="userRestore.home.restore-customer" />
               </Button>
               {/*modal confirm accept remove customers*/}
               <div>
-                <Modal isOpen={modalRemoveCus} toggle={this.openModalRemoveCustomer}>
+                <Modal isOpen={modalRemoveCus} toggle={this.openModalRestoreCustomer}>
+                  <ModalHeader toggle={this.openModalRestoreCustomer}>
+                    Bạn đang khôi phục {restoreAllCustomers ? this.props.totalElements : listCheckedCustomer.length} thành viên
+                  </ModalHeader>
                   <ModalBody>
                     <Translate
                       contentKey="userRestore.home.title-confirm-restore"
-                      interpolate={{ element: removeAllCustomers ? this.props.totalElements : listCheckedCustomer.length }}
+                      interpolate={{ element: restoreAllCustomers ? this.props.totalElements : listCheckedCustomer.length }}
                     />
                     <br />
                     <div className="wrraper-input">
-                      {disableRemoveCus && ( // for disabled button = true
-                        <div
-                          style={{
-                            zIndex: 1,
-                            position: 'absolute',
-                            left: '11px',
-                            fontSize: '20px',
-                            top: '11px',
-                            color: '#d4cdcd'
-                          }}
-                        >
-                          {removeAllCustomers ? this.props.totalElements : listCheckedCustomer.length}
-                        </div>
-                      )}
-                      <Input style={{ fontSize: 20 }} onChange={this.validateRestoreCustomer} />
+                      <Input
+                        style={{ fontSize: 20 }}
+                        placeholder={restoreAllCustomers ? this.props.totalElements.toString() : listCheckedCustomer.length.toString()}
+                        onChange={this.validateRestoreCustomer}
+                      />
                     </div>
                   </ModalBody>
                   <ModalFooter>
-                    <Button outline onClick={this.openModalRemoveCustomer}>
+                    <Button outline onClick={this.openModalRestoreCustomer}>
                       Thoát{' '}
                     </Button>
                     <Button outline color="danger" onClick={this.handleRestoreCustomer} disabled={disableRemoveCus}>
@@ -772,9 +767,9 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
                 <div className="title-remove-all-customers">
                   <Translate
                     contentKey="userManagement.home.choosed-customers"
-                    interpolate={{ element: removeAllCustomers ? this.props.totalElements : listCheckedCustomer.length }}
+                    interpolate={{ element: restoreAllCustomers ? this.props.totalElements : listCheckedCustomer.length }}
                   />
-                  {!removeAllCustomers && (
+                  {!restoreAllCustomers && (
                     <span className="title-select-all" onClick={() => this.checkAllCustomerInDatabase(dataUser)}>
                       <Translate
                         contentKey="userManagement.home.choose-all-customers"
@@ -782,11 +777,11 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
                       />
                     </span>
                   )}
-                  {removeAllCustomers && (
+                  {restoreAllCustomers && (
                     <span
                       className="title-select-all"
                       onClick={() => {
-                        this.setState({ removeAllCustomers: false, listCheckedCustomer: [], checkedAllCustomer: false });
+                        this.setState({ restoreAllCustomers: false, listCheckedCustomer: [], checkedAllCustomer: false });
                       }}
                     >
                       <Translate contentKey="userManagement.home.unchoose-all-customers" />
