@@ -1,6 +1,6 @@
 npm run webpack:prod
 
-NAV MENU : webapp/app/app.tsx
+NAV MENU : webapp/app/app.tsx => AppRoutes: \webapp\app\routes\index.tsx
 LOGIN : \webapp\app\views\login\login.tsx,
 ------------------------------------------------------- CUSTOMER MANAGEMET -----------------------------------------
 ROUTER CUSTOMER : webapp\app\views\customer\index.tsx,

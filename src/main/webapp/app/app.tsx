@@ -1,33 +1,28 @@
 import 'react-toastify/dist/ReactToastify.css';
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Card } from 'reactstrap';
 import { HashRouter as Router } from 'react-router-dom';
 import { hot } from 'react-hot-loader';
-import { Redirect } from 'react-router-dom';
 import { IRootState } from 'app/reducers';
 import { setLocale } from 'app/actions/locale';
 import { getSession } from 'app/actions/auth';
-
-import ErrorBoundary from 'app/common/components/ErrorBoundary';
-import { hasAnyAuthority } from 'app/common/components/PrivateRoute';
-import { AUTHORITIES } from 'app/config/constants';
 import AppRoutes from 'app/routes';
+import cx from 'classnames';
+import ResizeDetector from 'react-resize-detector';
+// Layout
+
 const baseHref = document
   .querySelector('base')
   .getAttribute('href')
   .replace(/\/$/, '');
 
-import cx from 'classnames';
-import ResizeDetector from 'react-resize-detector';
-// Layout
-import AppHeader from 'app/layout/AppHeader/';
-import AppSidebar from 'app/layout/AppSidebar/';
+export interface IAppProps extends StateProps, DispatchProps {
+}
 
-export interface IAppProps extends StateProps, DispatchProps {}
 export interface IAppState {
   closedSmallerSidebar: Boolean;
 }
+
 export class App extends React.Component<IAppProps, IAppState> {
   state: IAppState = {
     closedSmallerSidebar: false
@@ -97,7 +92,7 @@ export class App extends React.Component<IAppProps, IAppState> {
                   { 'body-tabs-shadow-btn': enablePageTabsAlt }
                 )}
               >
-                <AppRoutes />
+                <AppRoutes/>
               </div>
             </Fragment>
           )}
