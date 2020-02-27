@@ -4,7 +4,6 @@ import axios from 'axios';
 import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction, translate } from 'react-jhipster';
 
 import { REQUEST, SUCCESS, FAILURE } from 'app/reducers/action-types';
-import { toast } from 'react-toastify';
 import { IUser } from 'app/common/models/user.model';
 import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
 import {

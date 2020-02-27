@@ -64,3 +64,41 @@
     }
   }
 }
+.wrraper-email-body {
+  display: flex;
+  border: solid 2px gray;
+  margin-bottom: 10px;
+  text-align: center;
+  .group-icons {
+    display: flex;
+    justify-content: space-around;
+  }
+  .title-email {
+    text-align: left;
+  }
+}
+.email-note {
+  clear: both;
+  width: 100%;
+  background: #ded6d6;
+  padding: 10px;
+  border: solid 1px gray;
+}
+.btn-confirm-email {
+  float: right;
+  margin: 10px 0px;
+}
+.verifiled-btn {
+  display: flex;
+  align-self: center;
+  color: green;
+}
+.verifile-btn {
+  display: flex;
+  align-self: center;
+  color: red;
+}
+.delete-btn {
+  font-size: 30px;
+  align-self: center;
+}

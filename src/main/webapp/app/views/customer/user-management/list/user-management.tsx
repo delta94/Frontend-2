@@ -1049,6 +1049,9 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
               {/*modal confirm accept remove customers*/}
               <div>
                 <Modal isOpen={modalRemoveCus} toggle={this.openModalRemoveCustomer}>
+                  <ModalHeader toggle={this.openModalRemoveCustomer}>
+                    Bạn đang xóa{removeAllCustomers ? this.props.totalElements : listCheckedCustomer.length} thành viên
+                  </ModalHeader>
                   <ModalBody>
                     <Translate
                       contentKey="userManagement.home.warning-remove"
@@ -1056,22 +1059,11 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                     />
                     <br />
                     <div className="wrraper-input">
-                      {disableRemoveCus && ( // for disabled button = true
-                        <div
-                          className="number-cus"
-                          style={{
-                            zIndex: 1,
-                            position: 'absolute',
-                            left: '11px',
-                            fontSize: '20px',
-                            top: '11px',
-                            color: '#d4cdcd'
-                          }}
-                        >
-                          {removeAllCustomers ? this.props.totalElements : listCheckedCustomer.length}
-                        </div>
-                      )}
-                      <Input style={{ fontSize: 20 }} onChange={this.validateRemoveCustomer} />
+                      <Input
+                        style={{ fontSize: 20 }}
+                        placeholder={removeAllCustomers ? this.props.totalElements.toString() : listCheckedCustomer.length.toString()}
+                        onChange={this.validateRemoveCustomer}
+                      />
                     </div>
                   </ModalBody>
                   <ModalFooter>

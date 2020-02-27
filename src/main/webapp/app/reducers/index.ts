@@ -19,6 +19,7 @@ import groupCustomerState, { GroupCustomerState } from './group-attribute-custom
 import cjTagState, { CjTagState } from './cj-tag';
 import cjState, { CjState } from './cj';
 import emailConfigState, { EmailConfigState } from './email-config';
+import emailProfileState, { EmailProfileState } from './email-profile';
 
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
@@ -42,6 +43,7 @@ export interface IRootState {
   readonly cjTagState: CjTagState;
   readonly cjState: CjState;
   readonly emailConfigState: EmailConfigState;
+  readonly emailProfileState: EmailProfileState;
 }
 
 const rootReducer = combineReducers<IRootState>({
@@ -63,7 +65,8 @@ const rootReducer = combineReducers<IRootState>({
   campaignManagament,
   cjTagState,
   cjState,
-  emailConfigState
+  emailConfigState,
+  emailProfileState
 });
 
 export default rootReducer;
