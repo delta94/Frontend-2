@@ -20,7 +20,6 @@ import ReactPaginate from 'react-paginate';
 import { IEmail } from 'app/common/models/email-config.model';
 import { getEmailsAction, deleteEmailAction, getEmailDetailAction } from 'app/actions/email-config';
 import './email.scss';
-import ShowConfirm from './components/confirm-modal';
 
 //antd
 import { Button, Tooltip, Drawer } from 'antd';
