@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import ErrorBoundaryRoute from 'app/common/components/ErrorBoundaryRoute';
-import CampaignManagement from './campaign-managament';
+import CampaignManagement from './campaign-management';
 import PrivateRoute from '../../../../common/components/PrivateRoute';
 import CreateCampaign from './campaign-list/create-campaign/create-campaign';
 import VersionList from './campaign-list/version-list/version-list';

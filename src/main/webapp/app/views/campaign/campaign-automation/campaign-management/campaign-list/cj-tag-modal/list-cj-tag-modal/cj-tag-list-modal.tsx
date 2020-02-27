@@ -31,7 +31,7 @@ class CJTagListModal extends React.Component<ICjTagListModalProps, ICjTagListMod
     confirm({
       cancelButtonProps: { type: 'danger', ghost: true },
       zIndex: 1000000,
-      title: translate("campaign-auto.managament.delete"),
+      title: translate("campaign-auto.management.delete"),
       content: translate("campaign-auto.modal.content-delete") + ' ' + cjTag.name + ' ?',
       onOk: async () => {
         await deleteCjTagAction(cjTag.id);
@@ -39,7 +39,7 @@ class CJTagListModal extends React.Component<ICjTagListModalProps, ICjTagListMod
         await refreshListCjTag();
         closeModalCjTag();
       },
-      okText: translate("campaign-auto.managament.delete"),
+      okText: translate("campaign-auto.management.delete"),
       onCancel() { },
       cancelText: translate("campaign-auto.modal.cancel")
     });
@@ -67,7 +67,7 @@ class CJTagListModal extends React.Component<ICjTagListModalProps, ICjTagListMod
                   >
                     <FontAwesomeIcon icon="trash" />
                     <a key="list-loadmore-edit" style={{ paddingLeft: '5px' }}>
-                      <Translate contentKey="campaign-auto.managament.delete" />
+                      <Translate contentKey="campaign-auto.management.delete" />
                     </a>
                   </span>
                 ]}

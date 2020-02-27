@@ -21,7 +21,7 @@ import {
 import { Row, Col } from 'antd';
 import { Input, Button as ButtonAntd, Popover } from 'antd';
 import { connect } from 'react-redux';
-import { validateCampaign } from 'app/actions/campaign-managament';
+import { validateCampaign } from 'app/actions/campaign-management';
 import { getContentPageParams, postTestMailLanding } from 'app/actions/user-campaign';
 import { IRootState } from 'app/reducers';
 import { getContentTemplate, getContentTemplateAsType } from 'app/actions/user-campaign';
@@ -32,7 +32,7 @@ import { IParamester } from 'app/common/models/campaign-navigation.model';
 import { Translate, translate } from 'react-jhipster';
 import { INTRO_MAIL, EMAIL_ALL } from 'app/constants/common';
 import { SUBJECT } from 'app/constants/common';
-import { code_node } from 'app/common/models/campaign-managament.model';
+import { code_node } from 'app/common/models/campaign-management.model';
 
 // export interface I
 
@@ -467,15 +467,15 @@ class ConfigEmail extends React.PureComponent<IConfigEmailProps, IConfigEmailSta
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-const mapStateToProps = ({ userCampaign, navigationInfo, campaignManagament }: IRootState) => {
+const mapStateToProps = ({ userCampaign, navigationInfo, campaignManagement }: IRootState) => {
   return {
     listCampainContentParams: userCampaign.listCampainContentParams,
     postRequest: userCampaign.postRequest,
     listContentTemplateAsTypeEmailIntro: userCampaign.listContentTemplateAsTypeEmailIntro,
     navigationInfo,
-    listFieldData: campaignManagament.listFieldData,
-    list_diagram: campaignManagament.listDiagram,
-    list_clone_version: campaignManagament.cloneInfoVersion
+    listFieldData: campaignManagement.listFieldData,
+    list_diagram: campaignManagement.listDiagram,
+    list_clone_version: campaignManagement.cloneInfoVersion
   };
 };
 

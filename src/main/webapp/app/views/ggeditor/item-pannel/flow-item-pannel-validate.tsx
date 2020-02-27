@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Card, Row, Col, Collapse } from 'antd';
 import { connect } from 'react-redux';
-import { validateCampaign } from 'app/actions/campaign-managament';
+import { validateCampaign } from 'app/actions/campaign-management';
 import { IRootState } from 'app/reducers';
 import { openModal, closeModal } from 'app/actions/modal';
 import './index.scss';
@@ -16,7 +16,7 @@ import {
   EventWaitingDecisionNodeModel,
   ConditionDecisionNodeModel
 } from '../flow-diagram-editor';
-import { code_node } from 'app/common/models/campaign-managament.model';
+import { code_node } from 'app/common/models/campaign-management.model';
 
 const { Panel } = Collapse;
 
@@ -110,12 +110,12 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
   }
 }
 
-const mapStateToProps = ({ campaignManagament }: IRootState) => ({
-  loading: campaignManagament.loading,
-  listDiagram: campaignManagament.listDiagram,
-  listFieldData: campaignManagament.listFieldData,
-  list_clone_verion: campaignManagament.cloneInfoVersion,
-  list_validate: campaignManagament.list_validate
+const mapStateToProps = ({ campaignManagement }: IRootState) => ({
+  loading: campaignManagement.loading,
+  listDiagram: campaignManagement.listDiagram,
+  listFieldData: campaignManagement.listFieldData,
+  list_clone_verion: campaignManagement.cloneInfoVersion,
+  list_validate: campaignManagement.list_validate
 });
 
 const mapDispatchToProps = {

@@ -154,7 +154,7 @@ export class CreateGroup extends React.Component<ICreateGroupProps, ICreateGroup
         <Button className="btn btn-info float-right jh-create-entity" style={{ width: '101%', marginTop: 'auto' }} onClick={this.toggle}>
           <FontAwesomeIcon icon="plus" /> <Translate contentKey="properties-management.button-template" />
         </Button>
-        <div id="mangament-modal">
+        <div id="management-modal">
           <Modal isOpen={this.state.modal} className="content-group-properties">
             <ModalHeader toggle={this.toggle} className="create-group">
               <Translate contentKey="properties-management.add.properties" />

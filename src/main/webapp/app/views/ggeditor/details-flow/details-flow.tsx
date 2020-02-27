@@ -17,8 +17,8 @@ import {
   stopVersion,
   cloneVersionById,
   saveCampaignAutoVersion
-} from 'app/actions/campaign-managament';
-import { img_node, const_shape } from 'app/common/models/campaign-managament.model';
+} from 'app/actions/campaign-management';
+import { img_node, const_shape } from 'app/common/models/campaign-management.model';
 import LoaderAnim from 'react-loaders';
 import ModalInteractive from './modal-interactive/modal-interactive';
 import './details-flow.scss';
@@ -96,7 +96,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   componentDidMount() {
     let { clone_version } = this.props;
     if (clone_version && Object.keys(clone_version).length < 1) {
-      window.location.assign(`#/app/views/campaigns/campaign-managament`);
+      window.location.assign(`#/app/views/campaigns/campaign-management`);
     }
   }
 
@@ -297,8 +297,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
                     </a>
                   </Breadcrumb.Item>
                   <Breadcrumb.Item>
-                    <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-managament')} href="javascript:void(0);">
-                      <Translate contentKey="campaign-auto.managament.list-campaign" />
+                    <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-management')} href="javascript:void(0);">
+                      <Translate contentKey="campaign-auto.management.list-campaign" />
                     </a>
                   </Breadcrumb.Item>
 
@@ -446,16 +446,16 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     );
   }
 }
-const mapStateToProps = ({ campaignManagament }: IRootState) => ({
-  loading: campaignManagament.loading,
-  infoCampaign: campaignManagament.listInfoCampaing,
-  listDiagram: campaignManagament.listDiagram,
-  listFieldData: campaignManagament.listFieldData,
-  infoVersion: campaignManagament.infoVersion,
-  list_version: campaignManagament.listVersion,
-  clone_version: campaignManagament.cloneInfoVersion,
-  list_customer_version_process: campaignManagament.listCustomerVersionProcess,
-  countCustomerVersionProcess: campaignManagament.countCustomerVersionProcess
+const mapStateToProps = ({ campaignManagement }: IRootState) => ({
+  loading: campaignManagement.loading,
+  infoCampaign: campaignManagement.listInfoCampaing,
+  listDiagram: campaignManagement.listDiagram,
+  listFieldData: campaignManagement.listFieldData,
+  infoVersion: campaignManagement.infoVersion,
+  list_version: campaignManagement.listVersion,
+  clone_version: campaignManagement.cloneInfoVersion,
+  list_customer_version_process: campaignManagement.listCustomerVersionProcess,
+  countCustomerVersionProcess: campaignManagement.countCustomerVersionProcess
 });
 
 const mapDispatchToProps = {

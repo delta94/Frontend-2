@@ -9,22 +9,22 @@ import { faHome } from '@fortawesome/free-solid-svg-icons';
 import Loader from 'react-loader-advanced';
 import { openModal, closeModal } from 'app/actions/modal';
 import { IRootState } from 'app/reducers';
-import { getTreeFolder, insertTreeFolder } from 'app/actions/campaign-managament';
+import { getTreeFolder, insertTreeFolder } from 'app/actions/campaign-management';
 import TreeFolder from './tree-folder/tree-folder';
 import Campaign from './campaign-list/campaign-list';
-import './campaign-managament.scss';
+import './campaign-management.scss';
 
 const { confirm } = Modal;
 
-export interface ICampaginManagamentProps extends StateProps, DispatchProps {}
+export interface ICampaignManagementProps extends StateProps, DispatchProps {}
 
-export interface ICampaginManagamentState {
+export interface ICampaignManagementState {
   hover: boolean;
   idTree: string;
 }
 
-class CampaginManagament extends React.Component<ICampaginManagamentProps, ICampaginManagamentState> {
-  state: ICampaginManagamentState = {
+class CampaignManagement extends React.Component<ICampaignManagementProps, ICampaignManagementState> {
+  state: ICampaignManagementState = {
     hover: false,
     idTree: ''
   };
@@ -54,7 +54,7 @@ class CampaginManagament extends React.Component<ICampaginManagamentProps, ICamp
                     </a>
                   </Breadcrumb.Item>
 
-                  <label className="ant-breadcrumb-link"><Translate contentKey = "campaign-auto.managament.list-campaign" /></label>
+                  <label className="ant-breadcrumb-link"><Translate contentKey = "campaign-auto.management.list-campaign" /></label>
                 </Breadcrumb>
               </Row>
               <Campaign folder_id_choose={idTree} />
@@ -65,9 +65,9 @@ class CampaginManagament extends React.Component<ICampaginManagamentProps, ICamp
   }
 }
 
-const mapStateToProps = ({ campaignManagament }: IRootState) => ({
-  loading: campaignManagament.loading,
-  list_tree_folder: campaignManagament.tree_folder
+const mapStateToProps = ({ campaignManagement }: IRootState) => ({
+  loading: campaignManagement.loading,
+  list_tree_folder: campaignManagement.tree_folder
 });
 
 const mapDispatchToProps = { openModal, closeModal, getTreeFolder, insertTreeFolder };
@@ -75,4 +75,4 @@ const mapDispatchToProps = { openModal, closeModal, getTreeFolder, insertTreeFol
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(CampaginManagament);
+export default connect(mapStateToProps, mapDispatchToProps)(CampaignManagement);

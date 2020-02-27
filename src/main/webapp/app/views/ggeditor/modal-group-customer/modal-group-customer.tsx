@@ -716,7 +716,7 @@ class GroupModalConfig extends React.Component<IGroupModalConfigProps, IGroupMod
   }
 }
 
-const mapStateToProps = ({ handleModal, groupCustomerState, campaignManagament }: IRootState) => ({
+const mapStateToProps = ({ handleModal, groupCustomerState, campaignManagement }: IRootState) => ({
   loading: groupCustomerState.list_customer_with_condition_index.loading,
   totalElements: groupCustomerState.list_customer_with_condition_index.totalElements,
   list_field_data: groupCustomerState.list_field_data,
@@ -724,9 +724,9 @@ const mapStateToProps = ({ handleModal, groupCustomerState, campaignManagament }
   postRequest: groupCustomerState.postRequest,
   single_group_field: groupCustomerState.single_customer_field,
   list_group_customer: groupCustomerState.list_group_customer,
-  info_version: campaignManagament.infoVersion,
-  listFieldData: campaignManagament.listFieldData,
-  list_clone_version: campaignManagament.cloneInfoVersion,
+  info_version: campaignManagement.infoVersion,
+  listFieldData: campaignManagement.listFieldData,
+  list_clone_version: campaignManagement.cloneInfoVersion,
   modalState: handleModal.data
 });
 

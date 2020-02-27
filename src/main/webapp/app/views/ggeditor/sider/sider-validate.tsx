@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import { Row, Col, Popover, Input, Button, Layout, Menu, Breadcrumb, Icon, Select, Modal as ModalAntd } from 'antd';
-import { getDiagramCampaign, validateCampaign } from 'app/actions/campaign-managament';
+import { getDiagramCampaign, validateCampaign } from 'app/actions/campaign-management';
 const { Header, Content, Footer, Sider } = Layout;
 import FlowItemValidate from '../item-pannel/flow-item-pannel-validate';
 
@@ -53,10 +53,10 @@ export class SiderValidate extends React.Component<ISiderValidateProps, ISiderVa
     );
   }
 }
-const mapStateToProps = ({ campaignManagament }: IRootState) => ({
-  loading: campaignManagament.loading,
-  listDiagram: campaignManagament.listDiagram,
-  listFieldData: campaignManagament.listFieldData
+const mapStateToProps = ({ campaignManagement }: IRootState) => ({
+  loading: campaignManagement.loading,
+  listDiagram: campaignManagement.listDiagram,
+  listFieldData: campaignManagement.listFieldData
 });
 
 const mapDispatchToProps = {

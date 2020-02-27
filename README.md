@@ -23,9 +23,9 @@ MODAL DELETE PROPERTY : webapp\app\views\customer\properties-customer\delete\del
 CREATE GROUP PROPERTY : webapp\app\views\customer\properties-customer\create-group\create-group.tsx,
 CREATE SINGLE PROPERTY : webapp\app\views\customer\properties-customer\create\create.tsx,
 --------------------------------------------------------- TAG MANAGEMET -----------------------------------------
-LIST TAG : webapp\app\views\customer\tag-mangament\tag-list\tag-list.tsx,
-CREATE TAG : app\views\customer\tag-mangament\tag-add-new\tag-add-new.tsx
-TAG MODAL EDIT/CREATE/DELETE : webapp\app\views\customer\tag-mangament\tag-modal
+LIST TAG : webapp\app\views\customer\tag-management\tag-list\tag-list.tsx,
+CREATE TAG : app\views\customer\tag-management\tag-add-new\tag-add-new.tsx
+TAG MODAL EDIT/CREATE/DELETE : webapp\app\views\customer\tag-management\tag-modal
 --------------------------------------------------------- GROUP MANAGEMET -----------------------------------------
 LIST GROUP CUSTOMER : webapp\app\views\customer\group-attribute-customer\group-list-customer\group-list-customer.tsx
 LIST CUSTOMER : webapp\app\views\customer\group-attribute-customer\group-customer\group-customer.tsx,
@@ -43,9 +43,9 @@ INFO CAMPAIGN : webapp\app\views\campaign\user-campaign\create\info\info.tsx
 STEP CREATE CAMPAIGN : webapp\app\views\campaign\user-campaign\create\navigation\navigation.tsx
 --------------------------------------------------------- CAMPAIGN AUTO -----------------------------------------
 LIST CAMPAIGN AUTO : webapp\app\views\campaign\campaign-automation\list\campaign-automation.tsx
-LIST CAMPAIGN MANAGEMET : webapp\app\views\campaign\campaign-automation\campaign-managament\campaign-managament.tsx,
-COMPONENT TREE FOLDER : webapp\app\views\campaign\campaign-automation\campaign-managament\tree-folder\tree-folder.tsx
-LIST DETAIL FOLDER : webapp\app\views\campaign\campaign-automation\campaign-managament\campaign-list\campaign-list.tsx
-VERSION LIST : webapp\app\views\campaign\campaign-automation\campaign-managament\campaign-list\version-list\version-list.tsx
-TEMPLATE CAMPAIGN : webapp\app\views\campaign\campaign-automation\campaign-managament\campaign-list\create-campaign\create-campaign.tsx
-CJ TAG MODAL EDIT/INSERT/DELETE  : webapp\app\views\campaign\campaign-automation\campaign-managament\campaign-list\cj-tag-modal
+LIST CAMPAIGN MANAGEMET : webapp\app\views\campaign\campaign-automation\campaign-management\campaign-management.tsx,
+COMPONENT TREE FOLDER : webapp\app\views\campaign\campaign-automation\campaign-management\tree-folder\tree-folder.tsx
+LIST DETAIL FOLDER : webapp\app\views\campaign\campaign-automation\campaign-management\campaign-list\campaign-list.tsx
+VERSION LIST : webapp\app\views\campaign\campaign-automation\campaign-management\campaign-list\version-list\version-list.tsx
+TEMPLATE CAMPAIGN : webapp\app\views\campaign\campaign-automation\campaign-management\campaign-list\create-campaign\create-campaign.tsx
+CJ TAG MODAL EDIT/INSERT/DELETE  : webapp\app\views\campaign\campaign-automation\campaign-management\campaign-list\cj-tag-modal

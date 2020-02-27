@@ -28,7 +28,7 @@ className="app-main__outer" => cùng 01 class khai báo trên 5 file css khác n
 state = {
     isShow: false,
     value: 'Chọn giá trị',
-    classNameMenu: 'topica-dropdown-menu show'
+    classNameMenu: 'izzi-dropdown-menu show'
   };
 
  placeholder={'Chọn thẻ'}

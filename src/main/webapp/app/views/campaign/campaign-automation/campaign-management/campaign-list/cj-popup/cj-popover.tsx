@@ -124,7 +124,7 @@ class CJTagPopOver extends React.Component<ICjTagPopOverProps, TCjTagPopOverStat
   render() {
     let { dataPopup } = this.props;
     let { isOpenModalCjTagInsert, isOpenModalCjTagList, cjId, cjTagsDefault, isOpen } = this.state;
-    const img_tag = require('app/assets/utils/images/campaign-managament/tag-list.png');
+    const img_tag = require('app/assets/utils/images/campaign-management/tag-list.png');
 
     return (
       <span>

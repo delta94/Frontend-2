@@ -76,7 +76,7 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
           heartbeatTimeout: 60000
         }
       }
-    }, 
+    },
     {
       reload: false
     }),
@@ -88,7 +88,7 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
     ]),
     new WebpackNotifierPlugin({
       title: 'Izzi platform',
-      contentImage: path.join(__dirname, 'logo-topica.png')
+      contentImage: path.join(__dirname, 'logo-izzi.png')
     })
   ].filter(Boolean)
 });

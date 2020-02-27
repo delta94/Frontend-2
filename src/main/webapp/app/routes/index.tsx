@@ -8,8 +8,11 @@ const Admin = lazy(() => import('app/views/customer'));
 const Pages = lazy(() => import('app/views/pages'));
 const Login = lazy(() => import('app/views/login'));
 const Config = lazy(() => import('app/views/config'));
-const CampaignAuto = lazy(() => import('app/views/campaign'));
-const CampaignManagement = lazy(() => import('app/views/campaign/campaign-automation/campaign-managament'));
+// const Campaign = lazy(() => import('app/views/campaign'));
+const CampaignAuto = lazy(() => import('app/views/campaign/campaign-automation'));
+const UserCampaign = lazy(() => import('app/views/campaign/user-campaign'));
+const CampaignManagement = lazy(() => import('app/views/campaign/campaign-automation/campaign-management'));
+
 const GGEditor = lazy(() => import('app/views/ggeditor'));
 // const UserPages = lazy(() => import('app/DemoPages/UserPages'));
 // const Applications = lazy(() => import('app/DemoPages/Applications'));
@@ -19,7 +22,6 @@ const GGEditor = lazy(() => import('app/views/ggeditor'));
 // const Elements = lazy(() => import('app/DemoPages/Elements'));
 // const Components = lazy(() => import('app/DemoPages/Components'));
 // const Charts = lazy(() => import('app/DemoPages/Charts'));
-const UserCampaign = lazy(() => import('app/views/campaign/user-campaign'));
 // const Tables = lazy(() => import('app/DemoPages/Tables'));
 
 const AppRoutes = () => {
@@ -48,6 +50,10 @@ const AppRoutes = () => {
         <Route path="/app/views/config" component={Config}/>
       </Suspense>
 
+      {/*<Suspense fallback={loader}>*/}
+      {/*  <Route path="/app/views/campaigns" component={Campaign}/>*/}
+      {/*</Suspense>*/}
+
       {/* campaign */}
       <Suspense fallback={loader}>
         <Route path="/app/views/campaigns/campaign-auto" component={CampaignAuto}/>
@@ -55,7 +61,12 @@ const AppRoutes = () => {
 
       {/* campaign */}
       <Suspense fallback={loader}>
-        <Route path="/app/views/campaigns/campaign-managament" component={CampaignManagement}/>
+        <Route path="/app/views/campaigns/user-campaign" component={UserCampaign}/>
+      </Suspense>
+
+      {/* campaign */}
+      <Suspense fallback={loader}>
+        <Route path="/app/views/campaigns/campaign-management" component={CampaignManagement}/>
       </Suspense>
 
       {/* Admin */}
@@ -67,10 +78,6 @@ const AppRoutes = () => {
         <Route path="/pages" component={Pages}/>
       </Suspense>
 
-      {/* Forms */}
-      <Suspense fallback={loader}>
-        <Route path="/app/views/campaigns/user-campaign" component={UserCampaign}/>
-      </Suspense>
 
       {/* Charts */}
       <Suspense fallback={loader}>

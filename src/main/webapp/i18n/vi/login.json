@@ -17,12 +17,12 @@
     },
     "messages": {
       "error": {
-        "authentication": "Bạn phải dùng email Topica để đăng nhập vào hệ thống",
+        "authentication": "Bạn phải dùng email IZZI để đăng nhập vào hệ thống",
         "mail-error": "* Vui lòng nhập email",
         "code-error": "* Vui lòng nhập thương hiệu",
         "pass-error": "* Vui lòng nhập mật khẩu"
       },
-      "guide-user-login": "Vui lòng sử dụng email TOPICA"
+      "guide-user-login": "Vui lòng sử dụng email IZZI"
     },
     "password": {
       "forgot": "Bạn quên mật khẩu?"

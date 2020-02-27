@@ -10,11 +10,11 @@ import { Input, Card, Modal, Col, InputNumber, Select } from 'antd';
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
 import FieldData from '../modal-group-customer/field-data/field-data';
 import { ISearchAdvanced } from 'app/common/models/group-attribute-customer';
-import { validateCampaign } from 'app/actions/campaign-managament';
+import { validateCampaign } from 'app/actions/campaign-management';
 import LoaderAnim from 'react-loaders';
 import { openModal } from 'app/actions/modal';
 import { OPERATOR } from 'app/constants/field-data';
-import { code_node } from 'app/common/models/campaign-managament.model';
+import { code_node } from 'app/common/models/campaign-management.model';
 
 interface IModalGateWayProps extends StateProps, DispatchProps {
   is_show: boolean;
@@ -441,11 +441,11 @@ class ModalGateWay extends React.Component<IModalGateWayProps, IModalGateWayStat
   }
 }
 
-const mapStateToProps = ({ tagDataState, groupCustomerState, campaignManagament }: IRootState) => ({
+const mapStateToProps = ({ tagDataState, groupCustomerState, campaignManagement }: IRootState) => ({
   loading: groupCustomerState.list_customer_with_condition_index.loading,
-  info_version: campaignManagament.infoVersion,
-  listFieldData: campaignManagament.listFieldData,
-  list_clone_version: campaignManagament.cloneInfoVersion
+  info_version: campaignManagement.infoVersion,
+  listFieldData: campaignManagement.listFieldData,
+  list_clone_version: campaignManagement.cloneInfoVersion
 });
 
 const mapDispatchToProps = {

@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import $ from 'jquery';
-import { validateCampaign } from 'app/actions/campaign-managament';
+import { validateCampaign } from 'app/actions/campaign-management';
 import { Button, Row, Col, Input, Select } from 'antd';
-import { updateInfoCampaign } from 'app/actions/campaign-managament';
+import { updateInfoCampaign } from 'app/actions/campaign-management';
 import './modal-config-message.scss';
 import { translate, Translate } from 'react-jhipster';
-import { code_node } from 'app/common/models/campaign-managament.model';
+import { code_node } from 'app/common/models/campaign-management.model';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -215,10 +215,10 @@ export class ConfigMessage extends React.Component<IConfigMessageProps, IConfigM
     );
   }
 }
-const mapStateToProps = ({ campaignManagament }: IRootState) => ({
-  loading: campaignManagament.loading,
-  listFieldData: campaignManagament.listFieldData,
-  list_clone_version: campaignManagament.cloneInfoVersion
+const mapStateToProps = ({ campaignManagement }: IRootState) => ({
+  loading: campaignManagement.loading,
+  listFieldData: campaignManagement.listFieldData,
+  list_clone_version: campaignManagement.cloneInfoVersion
 });
 
 const mapDispatchToProps = {

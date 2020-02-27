@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { Button, Row, Col, Input } from 'antd';
-import { updateInfoCampaign } from 'app/actions/campaign-managament';
-import CampaignTag from 'app/views/campaign/campaign-automation/campaign-managament/campaign-list/campaign-tag/campaign-tag';
+import { updateInfoCampaign } from 'app/actions/campaign-management';
+import CampaignTag from 'app/views/campaign/campaign-automation/campaign-management/campaign-list/campaign-tag/campaign-tag';
 import './modal-update-info.scss';
 import { isThisSecond } from 'date-fns';
 import { Translate } from 'react-jhipster';
@@ -143,10 +143,10 @@ export class UpdateInfoCampaign extends React.Component<IUpdateInfoCampaignProps
     );
   }
 }
-const mapStateToProps = ({ campaignManagament }: IRootState) => ({
-  loading: campaignManagament.loading,
-  listInfoCampaing: campaignManagament.listInfoCampaing,
-  list_clone_version: campaignManagament.cloneInfoVersion
+const mapStateToProps = ({ campaignManagement }: IRootState) => ({
+  loading: campaignManagement.loading,
+  listInfoCampaing: campaignManagement.listInfoCampaing,
+  list_clone_version: campaignManagement.cloneInfoVersion
 });
 
 const mapDispatchToProps = {

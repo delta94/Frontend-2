@@ -16,7 +16,7 @@ class Loading extends React.Component<LoadingProps> {
       <div className="ModalLoading">
         <Modal isOpen={isOpen} id="create time title" className="ModalLoading" autoFocus={false}>
           <div>
-            <img src="http://interview-test.topica.vn/content/images/loading.svg" alt="" />
+            <img src="http://interview-test.izzi.vn/content/images/loading.svg" alt="" />
           </div>
         </Modal>
       </div>

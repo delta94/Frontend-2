@@ -39,7 +39,7 @@ class Dropdown extends PureComponent<IDropdownProps, IDropdownState> {
   state = {
     isShow: false,
     value: 'Chọn giá trị',
-    classNameMenu: 'topica-dropdown-menu show'
+    classNameMenu: 'izzi-dropdown-menu show'
   };
 
   timeNew = new Date().getTime();
@@ -67,7 +67,7 @@ class Dropdown extends PureComponent<IDropdownProps, IDropdownState> {
         // @ts-ignore:2339
         let match = event.target.className;
         if (match !== 'toggle-data') {
-          var dropdowns = document.getElementsByClassName('topica-dropdown-menu show');
+          var dropdowns = document.getElementsByClassName('izzi-dropdown-menu show');
           for (let i = 0; i < dropdowns.length; i++) {
             var openDropdown = dropdowns[i];
             if (openDropdown.classList.contains('show')) {
@@ -103,12 +103,12 @@ class Dropdown extends PureComponent<IDropdownProps, IDropdownState> {
 
     return (
       <div
-        className="topica-dropdown"
+        className="izzi-dropdown"
         style={{
           width: width ? width + 'px' : '150px'
         }}
         onClick={() => {
-          this.setState({ classNameMenu: 'topica-dropdown-menu show' });
+          this.setState({ classNameMenu: 'izzi-dropdown-menu show' });
         }}
       >
         <div
@@ -122,7 +122,7 @@ class Dropdown extends PureComponent<IDropdownProps, IDropdownState> {
             <FontAwesomeIcon icon={faAngleDown} size="1x" />
           </div>
         </div>
-        <div id={this.id} className={isShow ? 'topica-dropdown-menu show' : 'topica-dropdown-menu'}>
+        <div id={this.id} className={isShow ? 'izzi-dropdown-menu show' : 'izzi-dropdown-menu'}>
           {listArray &&
             listArray.map((item, index) => {
               return (
@@ -137,7 +137,7 @@ class Dropdown extends PureComponent<IDropdownProps, IDropdownState> {
                     color: value === item.name ? 'white' : 'black',
                     backgroundColor: value === item.name ? 'rgb(56, 102, 221)' : ''
                   }}
-                  className="topica-dropdown-item"
+                  className="izzi-dropdown-item"
                 >
                   <label>{item.name}</label>
                 </div>

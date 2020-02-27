@@ -6,7 +6,7 @@ import { Row, Col, Breadcrumb, Button, Modal, Checkbox } from 'antd';
 // import Checkbox from '@material-ui/core/Checkbox';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
-import { img_node, const_shape } from 'app/common/models/campaign-managament.model';
+import { img_node, const_shape } from 'app/common/models/campaign-management.model';
 import Loader from 'react-loader-advanced';
 import LoaderAnim from 'react-loaders';
 import {
@@ -20,7 +20,7 @@ import {
   cloneVersionById,
   copyCJCampaign,
   resetListCloneVersion
-} from 'app/actions/campaign-managament';
+} from 'app/actions/campaign-management';
 import './version-list.scss';
 import { Container, Card, Table } from 'reactstrap';
 import { RouteComponentProps } from 'react-router-dom';
@@ -88,7 +88,7 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
         })
         .filter(Boolean);
     if (campaign_list === undefined || data[0] === undefined) {
-      window.location.assign('/#/app/views/campaigns/campaign-managament');
+      window.location.assign('/#/app/views/campaigns/campaign-management');
     } else {
       this.setState({ infoVersion: data[0] });
       await getListVersion(data[0].cjId);
@@ -174,10 +174,10 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
 
   iconStatus = option => {
     let img;
-    const img_stop = require('app/assets/utils/images/campaign-managament/stop.png');
-    const img_running = require('app/assets/utils/images/campaign-managament/running.png');
-    const img_finish = require('app/assets/utils/images/campaign-managament/finish.png');
-    const img_draf = require('app/assets/utils/images/campaign-managament/draf.png');
+    const img_stop = require('app/assets/utils/images/campaign-management/stop.png');
+    const img_running = require('app/assets/utils/images/campaign-management/running.png');
+    const img_finish = require('app/assets/utils/images/campaign-management/finish.png');
+    const img_draf = require('app/assets/utils/images/campaign-management/draf.png');
     switch (option) {
       case constant_version.DRAFT:
         img = img_draf;
@@ -500,9 +500,9 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
 
   render() {
     let { infoVersion, listVersion, listCjId } = this.state;
-    const imgCopy = require('app/assets/utils/images/campaign-managament/copy-version.png');
-    const imgDelete = require('app/assets/utils/images/campaign-managament/delete-version.png');
-    const imgLine = require('app/assets/utils/images/campaign-managament/line-version.png');
+    const imgCopy = require('app/assets/utils/images/campaign-management/copy-version.png');
+    const imgDelete = require('app/assets/utils/images/campaign-management/delete-version.png');
+    const imgLine = require('app/assets/utils/images/campaign-management/line-version.png');
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
     const eventStatus = option => {
       let data;
@@ -540,12 +540,12 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
                 </a>
               </Breadcrumb.Item>
               <Breadcrumb.Item>
-                <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-managament')} href="javascript:void(0);">
-                  <Translate contentKey="campaign-auto.managament.list-campaign" />
+                <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-management')} href="javascript:void(0);">
+                  <Translate contentKey="campaign-auto.management.list-campaign" />
                 </a>
               </Breadcrumb.Item>
               <Breadcrumb.Item>
-                <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-managament')} href="javascript:void(0);">
+                <a onClick={() => window.location.assign('/#/app/views/campaigns/campaign-management')} href="javascript:void(0);">
                   {infoVersion.nameVersion}
                 </a>
               </Breadcrumb.Item>
@@ -643,11 +643,11 @@ export class VersionList extends React.Component<IVersionListProps, IVersionList
     );
   }
 }
-const mapStateToProps = ({ campaignManagament }: IRootState) => ({
-  campaign_list: campaignManagament.campaign.data,
-  list_version: campaignManagament.listVersion,
-  list_clone_version: campaignManagament.cloneInfoVersion,
-  loading: campaignManagament.loading
+const mapStateToProps = ({ campaignManagement }: IRootState) => ({
+  campaign_list: campaignManagement.campaign.data,
+  list_version: campaignManagement.listVersion,
+  list_clone_version: campaignManagement.cloneInfoVersion,
+  loading: campaignManagement.loading
 });
 
 const mapDispatchToProps = {

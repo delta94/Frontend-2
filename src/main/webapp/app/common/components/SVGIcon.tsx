@@ -2,7 +2,7 @@ import React from 'react';
 // import { Translate } from 'react-jhipster';
 // import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
 //
-// export const TopicaBreadcrumb = props => (
+// export const IZZIBreadcrumb = props => (
 //   <div>
 //     <Breadcrumb>
 //       <BreadcrumbItem>

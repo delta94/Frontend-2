@@ -16,15 +16,15 @@ import {
   moveTreeFolder,
   getListCampaignInfolderDataAction,
   getNode
-} from 'app/actions/campaign-managament';
+} from 'app/actions/campaign-management';
 import $ from 'jquery';
 import './tree-folder.scss';
 
 const { TreeNode } = Tree;
 const { confirm } = Modal;
-const img_edit = require('app/assets/utils/images/campaign-managament/edit.png')
-const img_create = require('app/assets/utils/images/campaign-managament/plus.png')
-const img_delete = require('app/assets/utils/images/campaign-managament/delete.png')
+const img_edit = require('app/assets/utils/images/campaign-management/edit.png')
+const img_create = require('app/assets/utils/images/campaign-management/plus.png')
+const img_delete = require('app/assets/utils/images/campaign-management/delete.png')
 export interface ITreeFolderProps extends StateProps, DispatchProps {
   onClick: Function;
 }
@@ -134,7 +134,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
         <ButtonReactstrap className="label-info"
           color="none" onClick={() => this.createFolder(rowInfo, 'create')}>
           {' '}
-          <img src={img_create} style={{ marginRight: "1em" }} /><Translate contentKey="campaign-auto.managament.create" />
+          <img src={img_create} style={{ marginRight: "1em" }} /><Translate contentKey="campaign-auto.management.create" />
         </ButtonReactstrap>
       </Row>
       <Row style={{ marginBottom: "5%" }}>
@@ -146,7 +146,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
           }}
         >
           {' '}
-          <img src={img_edit} style={{ marginRight: "1em" }} /> <Translate contentKey="campaign-auto.managament.change-name" />
+          <img src={img_edit} style={{ marginRight: "1em" }} /> <Translate contentKey="campaign-auto.management.change-name" />
         </ButtonReactstrap>
       </Row>
 
@@ -160,7 +160,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
           }}
         >
           {' '}
-          <img src={img_delete} style={{ marginRight: "20px" }} /><Translate contentKey="campaign-auto.managament.delete" />
+          <img src={img_delete} style={{ marginRight: "20px" }} /><Translate contentKey="campaign-auto.management.delete" />
         </ButtonReactstrap>
       </Row>
     </Row>
@@ -170,7 +170,7 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
     let content = (
       <Row>
         <Col span={6}>
-          <label style={{ lineHeight: '2' }}><Translate contentKey="campaign-auto.managament.folder-name" /> </label>
+          <label style={{ lineHeight: '2' }}><Translate contentKey="campaign-auto.management.folder-name" /> </label>
         </Col>
         <Col span={18}>
           {' '}
@@ -402,8 +402,8 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
 
 
   render() {
-    const img_folder = require('app/assets/utils/images/campaign-managament/folder.png');
-    const img_files = require('app/assets/utils/images/campaign-managament/files.png');
+    const img_folder = require('app/assets/utils/images/campaign-management/folder.png');
+    const img_files = require('app/assets/utils/images/campaign-management/files.png');
     let { level } = this.state;
     const loop = data =>
       data.map((item, index, arr) => {
@@ -533,9 +533,9 @@ class TreeFolder extends React.Component<ITreeFolderProps, ITreeFolderState> {
   }
 }
 
-const mapStateToProps = ({ campaignManagament }: IRootState) => ({
-  loading: campaignManagament.loading,
-  list_tree_folder: campaignManagament.tree_folder
+const mapStateToProps = ({ campaignManagement }: IRootState) => ({
+  loading: campaignManagement.loading,
+  list_tree_folder: campaignManagement.tree_folder
 });
 
 const mapDispatchToProps = {

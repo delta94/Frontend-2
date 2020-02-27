@@ -29,6 +29,8 @@ const rootEl = document.getElementById('root');
 
 const render = Component =>
   ReactDOM.render(
+    // If you are developing in React 16.6, what has been recommended is to wrap <React.StrictMode> around <App />
+    <React.StrictMode>
     <ErrorBoundary>
       <Provider store={store}>
         {/* <div> */}
@@ -38,7 +40,8 @@ const render = Component =>
         <Popup />
         {/* </div> */}
       </Provider>
-    </ErrorBoundary>,
+    </ErrorBoundary>
+    </React.StrictMode>,
     rootEl
   );
 

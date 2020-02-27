@@ -45,7 +45,7 @@ export const getStatusCampaignService = () => {
 };
 
 // call API get list campaign auto
-export const getListCampaginService = (status: string, page?: number, pageSize?: number) => {
+export const getListCampaignService = (status: string, page?: number, pageSize?: number) => {
   return axios.get(urlCampaign, { params: { status, page, pageSize } });
 };
 

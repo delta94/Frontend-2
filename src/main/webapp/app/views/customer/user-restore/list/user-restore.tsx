@@ -612,7 +612,7 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
     });
   };
   render() {
-    const exportImage = require('app/assets/utils/images/user-mangament/export.png');
+    const exportImage = require('app/assets/utils/images/user-management/export.png');
     const { users, loading, listFields, pageCount, list_option, totalElements } = this.props;
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
     const {

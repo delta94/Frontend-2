@@ -54,7 +54,7 @@ export const updateCampStatus = (data, id) => async dispatch => {
   dispatch(getCountCampaignByStatus());
 };
 
-//get step of campagin script
+//get step of campaign script
 export const getStepCampaign = id => {
   return {
     type: USER_CAMPAIGN_ACTION_TYPES.GET_STEP_CAMPAIGNS,
@@ -70,7 +70,7 @@ export const getCampaignInfoById = id => {
   };
 };
 
-//get type campagin script
+//get type campaign script
 export const getInformation = () => {
   return {
     type: USER_CAMPAIGN_ACTION_TYPES.INFORMATION_CAMPAIGN,

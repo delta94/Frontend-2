@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { Button, Row, Col, Input, Select, InputNumber } from 'antd';
-import { getDiagramCampaign, validateCampaign } from 'app/actions/campaign-managament';
+import { getDiagramCampaign, validateCampaign } from 'app/actions/campaign-management';
 import './modal-wait.scss';
-import { code_node } from 'app/common/models/campaign-managament.model';
+import { code_node } from 'app/common/models/campaign-management.model';
 import { CHARACTER_NUMBER, CHARACTER_TIME } from '../modal-wait-for-event/constant-modal-wait';
 import { Translate, translate } from 'react-jhipster';
 
@@ -272,11 +272,11 @@ export class ModalTimeWait extends React.Component<IModalTimeWaitProps, IModalTi
     );
   }
 }
-const mapStateToProps = ({ campaignManagament }: IRootState) => ({
-  loading: campaignManagament.loading,
-  listDiagram: campaignManagament.listDiagram,
-  listFieldData: campaignManagament.listFieldData,
-  list_clone_version: campaignManagament.cloneInfoVersion
+const mapStateToProps = ({ campaignManagement }: IRootState) => ({
+  loading: campaignManagement.loading,
+  listDiagram: campaignManagement.listDiagram,
+  listFieldData: campaignManagement.listFieldData,
+  list_clone_version: campaignManagement.cloneInfoVersion
 });
 
 const mapDispatchToProps = {

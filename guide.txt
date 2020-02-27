@@ -1,7 +1,7 @@
 1/ Thêm module: http://member-platform.labo.io/#/app/views/campaigns/campaign-auto
 B1: Khai báo route cha:
 app.tsx => AppRoutes: bổ sung khai báo
-<Route path="/app/views/campaigns/campaign-auto" component={CampaginAuto} />
+<Route path="/app/views/campaigns/campaign-auto" component={CampaignAuto} />
 
 B2: Khai báo route con:
 views => campaign => index.tsx => Fragment: khai báo
@@ -9,7 +9,7 @@ views => campaign => index.tsx => Fragment: khai báo
     <ErrorBoundaryRoute path={`${match.url}`} exact={true} component={CampaignAuto} />
     <ErrorBoundaryRoute path={`${match.url}/user-campaign`} exact={true} component={UserCampaign} />
 
-    <ErrorBoundaryRoute path={`${match.url}/campaign-managament`} exact={true} component={CampaignManagement} />
+    <ErrorBoundaryRoute path={`${match.url}/campaign-management`} exact={true} component={CampaignManagement} />
 
     <PrivateRoute path={`${match.url}`} exact={true} component={CampaignManagement} />
     <PrivateRoute path={`${match.url}/user-campaign`} exact={true} component={UserCampaign} />
@@ -24,7 +24,7 @@ reducers => campain-management.ts
 B5: Cập nhật State => View
 - render() {
       const { modalState } = this.props;
-      const img = require('app/assets/utils/images/campaign-managament/count_campaign.png');
+      const img = require('app/assets/utils/images/campaign-management/count_campaign.png');
       return ...
       }
 - Đa ngôn ngữ:
