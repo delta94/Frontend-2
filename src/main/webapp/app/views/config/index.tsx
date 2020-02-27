@@ -6,6 +6,7 @@ import PrivateRoute from '../../common/components/PrivateRoute';
 import EmailManagement from './email/email';
 import EmailForm from './email/form/email-form';
 import EmailTemplateManagement from './email-template/email-template';
+import EmailSendManagement from './email/email-profile';
 
 const Routes = ({ match }) => (
   <Fragment>
@@ -20,6 +21,7 @@ const Routes = ({ match }) => (
           <ErrorBoundaryRoute path={`${match.url}/emails/:id/copy`} exact={true} component={EmailForm} />
           <ErrorBoundaryRoute path={`${match.url}/email-template`} exact={true} component={EmailTemplateManagement} />
           <ErrorBoundaryRoute path={`${match.url}/emails/:idTemplate/copyTemplate`} exact={true} component={EmailForm} />
+          <ErrorBoundaryRoute path={`${match.url}/email-profile`} exact={true} component={EmailSendManagement} />
 
           <PrivateRoute path={`${match.url}/emails`} exact={true} component={EmailManagement} />
           <PrivateRoute path={`${match.url}/emails/add`} exact={true} component={EmailForm} />
@@ -27,6 +29,7 @@ const Routes = ({ match }) => (
           <PrivateRoute path={`${match.url}/emails/:id/copy`} exact={true} component={EmailForm} />
           <PrivateRoute path={`${match.url}/email-template`} exact={true} component={EmailTemplateManagement} />
           <PrivateRoute path={`${match.url}/emails/:idTemplate/copyTemplate`} exact={true} component={EmailForm} />
+          <PrivateRoute path={`${match.url}/email-profile`} exact={true} component={EmailSendManagement} />
         </div>
       </div>
     </div>

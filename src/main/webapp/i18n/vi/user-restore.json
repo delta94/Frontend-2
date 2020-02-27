@@ -1,7 +1,7 @@
 {
-  "userManagement": {
+  "userRestore": {
     "home": {
-      "title": "Danh sách khách hàng  ",
+      "title": "Danh sách khách hàng đã xóa ",
       "search-placer": "Tìm kiếm",
       "createLabel": "Tạo tài khoản mới",
       "createOrEditLabel": "TẠO MỚI DỮ LIỆU KHÁCH HÀNG",
@@ -13,13 +13,14 @@
       "email": "Email",
       "phone-number": "Số điện thoại",
       "type": "Phân loại",
+      "card-tag":"Thẻ",
       "reason-error": "Lý do không thành công",
       "no-record": "Không tìm thấy bản ghi phù hợp",
       "total-element": "Danh sách khách hàng: <strong> {{ element }} </strong> bản ghi",
-      "remove-customer":"Xóa",
-      "warning-remove":"Bạn đang xóa <strong> {{ element }} </strong> khách hàng. Vui lòng điền số lượng khách hàng muốn xóa. Bạn có 90 ngày để hồi phục khách hàng đã xóa.",
+      "restore-customer":"Khôi phục",
       "choosed-customers":"<strong> {{ element }} </strong> khách hàng đã được chọn. ",
       "choose-all-customers":"Chọn tất cả <strong> {{ element }} </strong> khách hàng trong danh sách này",
+      "title-confirm-restore":"Bạn đang khôi phục <strong>{{element}}</strong>. Vui lòng điền số lượng khách hàng muốn khôi phục.<br/> <strong>Lưu ý:</strong> Khách hàng đã khôi phục sẽ tự động tham gia các chiến dịch nếu đáp ứng được điều kiện của chiến dịch đó",
       "unchoose-all-customers":"Bỏ chọn tất cả",
       "line-error": "{{ number }} dòng không thành công đầu tiên ",
       "editLabel": "Cập nhật thông tin khách hàng",
@@ -90,7 +91,6 @@
     "createdDate": "Ngày tạo",
     "lastModifiedBy": "Người sửa",
     "lastModifiedDate": "Ngày sửa",
-    "card-tag": "Thẻ/ Tag",
     "header": "Danh sách nhóm khách hàng",
     "created-date": "Ngày khởi tạo",
     "find": "Tìm kiếm",

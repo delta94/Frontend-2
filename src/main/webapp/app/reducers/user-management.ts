@@ -8,6 +8,7 @@ import { USER_MANAGE_ACTION_TYPES } from 'app/constants/user-management';
 import { IFileList } from 'app/common/models/file-list.model';
 import { ICategory } from 'app/common/models/category.model';
 import { ISearchAdvanced } from 'app/common/models/group-attribute-customer';
+import { toast } from 'react-toastify';
 
 export interface IUserDetails {
   email?: string;
@@ -166,6 +167,9 @@ export default (state: UserManagementState = initialState, action): UserManageme
     case REQUEST(USER_MANAGE_ACTION_TYPES.GET_LIST_ADVANCED_SEARCH):
     case REQUEST(USER_MANAGE_ACTION_TYPES.POST_SAVE_ADVANCED_SEARCH):
     case REQUEST(USER_MANAGE_ACTION_TYPES.DELETE_ADVANCED_SEARCH):
+    case REQUEST(USER_MANAGE_ACTION_TYPES.POST_REMOVE_LIST_CUSTOMER):
+    case REQUEST(USER_MANAGE_ACTION_TYPES.POST_REMOVE_LIST_CUSTOMER_SIMPLE_FILTER):
+    case REQUEST(USER_MANAGE_ACTION_TYPES.POST_REMOVE_LIST_CUSTOMER_ADVANCE_FILTER):
       return {
         ...state,
         errorMessage: null,
@@ -218,13 +222,21 @@ export default (state: UserManagementState = initialState, action): UserManageme
         isCreate: false
       };
     case FAILURE(USER_MANAGE_ACTION_TYPES.POST_SAVE_ADVANCED_SEARCH):
+    // TODO: Delete Advanced search
+    case FAILURE(USER_MANAGE_ACTION_TYPES.DELETE_ADVANCED_SEARCH):
+    case FAILURE(USER_MANAGE_ACTION_TYPES.POST_REMOVE_LIST_CUSTOMER):
+    case FAILURE(USER_MANAGE_ACTION_TYPES.POST_REMOVE_LIST_CUSTOMER_SIMPLE_FILTER):
+    case FAILURE(USER_MANAGE_ACTION_TYPES.POST_REMOVE_LIST_CUSTOMER_ADVANCE_FILTER):
+      toast.error('Đã có lỗi xảy ra !');
       return {
         ...state,
         loading: false
       };
 
-    // TODO: Delete Advanced search
-    case FAILURE(USER_MANAGE_ACTION_TYPES.DELETE_ADVANCED_SEARCH):
+    case SUCCESS(USER_MANAGE_ACTION_TYPES.POST_REMOVE_LIST_CUSTOMER):
+    case SUCCESS(USER_MANAGE_ACTION_TYPES.POST_REMOVE_LIST_CUSTOMER_SIMPLE_FILTER):
+    case SUCCESS(USER_MANAGE_ACTION_TYPES.POST_REMOVE_LIST_CUSTOMER_ADVANCE_FILTER):
+      toast.success('Xóa người dùng thành công !');
       return {
         ...state,
         loading: false

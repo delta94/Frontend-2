@@ -400,7 +400,7 @@ thead th {
 }
 .title-remove-all-customers {
   text-align: center;
-  border: solid 2px gray;
+  border: solid 2px;
   padding: 10px 0px;
   margin: 20px 0px;
   .title-select-all {
@@ -415,15 +415,25 @@ thead th {
 
 .wrraper-input {
   position: relative;
+  font-size: 30px;
   .number-cus {
     z-index: 1;
     position: absolute;
-    left: 11px;
-    font-size: 20px;
-    top: 10px;
-    color: #d4cdcd;
+    left: 12px;
+    top: 3px;
+    color:#d4cdcd
   }
   .input-confirm-remove {
-    font-size: 20px;
+    width: 30%;
+    height: 50px;
+    font-size: 30px;
   }
+}
+.btn-restore{
+  margin-bottom: 10px;
+}
+.label-search{
+  vertical-align: sub;
+  color: black;
+  font-weight: 600;
 }

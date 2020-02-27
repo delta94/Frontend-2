@@ -5,6 +5,7 @@ import locale, { LocaleState } from './locale';
 import authentication, { AuthenticationState } from './auth';
 // import applicationProfile, { ApplicationProfileState } from './application-profile';
 import userManagement, { UserManagementState } from './user-management';
+import userRestore, { UserRestoreState } from './user-restore';
 import userCampaign, { UserCampaignState } from './user-campaign';
 import campaignManagament, { HandleCampaignManagament } from './campaign-managament';
 import landingPage, { LandingPageState } from './landing-page';
@@ -18,6 +19,7 @@ import groupCustomerState, { GroupCustomerState } from './group-attribute-custom
 import cjTagState, { CjTagState } from './cj-tag';
 import cjState, { CjState } from './cj';
 import emailConfigState, { EmailConfigState } from './email-config';
+import emailProfileState, { EmailProfileState } from './email-profile';
 
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
@@ -26,6 +28,7 @@ export interface IRootState {
   readonly locale: LocaleState;
   // readonly applicationProfile: ApplicationProfileState;
   readonly userManagement: UserManagementState;
+  readonly userRestore: UserRestoreState;
   readonly userCampaign: UserCampaignState;
   readonly themeOptions: ThemeOptionsState;
   readonly landingPage: LandingPageState;
@@ -40,6 +43,7 @@ export interface IRootState {
   readonly cjTagState: CjTagState;
   readonly cjState: CjState;
   readonly emailConfigState: EmailConfigState;
+  readonly emailProfileState: EmailProfileState;
 }
 
 const rootReducer = combineReducers<IRootState>({
@@ -47,6 +51,7 @@ const rootReducer = combineReducers<IRootState>({
   locale,
   // applicationProfile,
   userManagement,
+  userRestore,
   themeOptions,
   loadingBar,
   userCampaign,
@@ -60,7 +65,8 @@ const rootReducer = combineReducers<IRootState>({
   campaignManagament,
   cjTagState,
   cjState,
-  emailConfigState
+  emailConfigState,
+  emailProfileState
 });
 
 export default rootReducer;

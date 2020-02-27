@@ -8,6 +8,9 @@ export interface IUser {
   merchantId?: string;
   tag?: string;
   createdDate?: string;
+  createdDateOrder?: string;
+  deleted?: number;
+  modifiedDate?: string;
   fields?: [
     {
       id?: string;
