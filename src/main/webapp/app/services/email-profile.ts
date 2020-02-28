@@ -4,8 +4,8 @@ import { IEmailSave } from 'app/common/models/email-config.model';
 import { urlConfig } from '../constants/configUrl';
 import { emailProfileDto } from 'app/common/dtos/email-profile.dto';
 
-const getEmailsProfile = (textSearch?: string, page?: number, pageSize?: number) => {
-  return axios.get(`${urlConfig}/email-profiles`, { params: { textSearch, page, pageSize }, headers: authHeaders });
+const getEmailsProfile = () => {
+  return axios.get(`${urlConfig}/email-profiles`, { params: {}, headers: authHeaders });
 };
 const createEmail = (emailProfileDto: emailProfileDto) => {
   return axios.post(`${urlConfig}/email-profiles`, emailProfileDto, { headers: authHeaders });
@@ -20,7 +20,7 @@ const reactiveEmail = (id: string) => {
   return axios.post(`${urlConfig}/email-profiles/${id}/reactive`, {}, { headers: authHeaders });
 };
 const verifileEmail = (verifiedCode: string) => {
-  return axios.post(`${urlConfig}/email-profiles/${verifiedCode}`, {}, { headers: authHeaders });
+  return axios.get(`${urlConfig}/email-profiles/verify/${verifiedCode}`, { headers: authHeaders });
 };
 
 export const emailService = {

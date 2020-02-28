@@ -203,7 +203,7 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
     if (open_search && !is_normal_find) {
       this.getDataListCustomer(activePage.selected);
     } else {
-      this.props.getDeletedUsers(fromDate, toDate, activePage, itemsPerPage, sortList, textSearch);
+      this.props.getDeletedUsers(fromDate, toDate, activePage.selected, itemsPerPage, sortList, textSearch);
     }
 
     this.setState({

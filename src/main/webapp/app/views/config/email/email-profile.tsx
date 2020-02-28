@@ -24,6 +24,11 @@ import './email.scss';
 //antd
 import { Button, Tooltip, Drawer } from 'antd';
 import { Input, Icon, Row, Checkbox, Modal, Menu, Dropdown as DropdownAnt } from 'antd';
+import { Card, Avatar } from 'antd';
+import email from './email';
+import emailProfile from 'app/reducers/email-profile';
+
+const { Meta } = Card;
 
 const { confirm } = Modal;
 
@@ -35,6 +40,9 @@ interface IEmailSendManagementState {
   listCheckboxItem: ICheckboxItem[];
   isCheckAll: boolean;
   visible: boolean;
+  emailForm: string;
+  fromNameForm: string;
+  verifileCode: string;
 }
 
 interface ICheckboxItem extends IEmail {
@@ -51,13 +59,16 @@ class EmailSendManagement extends React.Component<IEmailSendManagementProps, IEm
     textSearch: '',
     listCheckboxItem: [],
     isCheckAll: false,
-    visible: false
+    visible: false,
+    emailForm: '',
+    fromNameForm: '',
+    verifileCode: ''
   };
 
   componentDidMount() {
     // get list email here
     let { activePage, itemsPerPage } = this.state;
-    // this.props.getEmailsProfile();
+    this.props.getEmailsProfile();
   }
   // show verifile email drawer here
   showDrawer = () => {
@@ -75,25 +86,78 @@ class EmailSendManagement extends React.Component<IEmailSendManagementProps, IEm
   //   location.assign('#/app/views/config/email-template');
   // };
 
-  hanldeSetEmailProfileDefault = () => {
+  componentWillReceiveProps(nextProps) {
+    // change verifile code call api send email
+    if (nextProps && nextProps.verifileCode && nextProps.verifileCode !== this.state.verifileCode) {
+      this.setState({
+        verifileCode: nextProps.verifileCode
+      });
+      this.props.verifileEmailProfile(nextProps.verifileCode);
+    }
+  }
+
+  hanldeSetEmailProfileDefault = (id: string) => {
+    const { setDefaultEmailProfile, getEmailsProfile } = this.props;
     confirm({
       title: 'Thông báo',
       content: 'Bạn có muốn đặt email này thành mặc định',
-      onOk() {
-        //call api here just one email set by default
+      async onOk() {
+        //call api here
+        try {
+          await setDefaultEmailProfile(id);
+          await getEmailsProfile();
+        } catch (error) {
+          console.log('error');
+        }
       },
       onCancel() {}
     });
   };
-  hanldeVerifileEmail = () => {
-    // TODO
+  hanldeReActiveEmail = (id: string) => {
     //call api here
+    this.showInfoSendCodeVerifile();
+    this.props.reactiveEmailProfile(id);
+    this.setState({
+      visible: false
+    });
+  };
+  hanldeDeleteEmail = (id: string) => {
+    const { deleteEmailsProfile, getEmailsProfile } = this.props;
+    //TODO
+    confirm({
+      title: 'Thông báo',
+      content: 'Bạn có muốn thực sự muốn xóa email này',
+      async onOk() {
+        //call api here
+        let check = true;
+        try {
+          await deleteEmailsProfile(id);
+        } catch (error) {
+          check = false;
+        }
+        if (check) {
+          await getEmailsProfile();
+        }
+      },
+      onCancel() {}
+    });
+  };
+
+  validateEmail = mail => {
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
+      return true;
+    }
+    return false;
+  };
+
+  showInfoSendCodeVerifile = () => {
     Modal.info({
       title: 'Thông báo',
       content: (
         <div>
           <p>
             Hệ thống đã gửi email xác nhận đến địa chỉ email của bạn. Vui lòng kiểm tra và xác nhận đường linh trong 24h
+            <br />
             <b> Lưu ý</b>: Trong trường hợp không xác nhận được email, hãy kiểm tra thư mục spam, hoặc xem lại chính xác địa chỉ email muốn
             xác thực.
           </p>
@@ -101,38 +165,40 @@ class EmailSendManagement extends React.Component<IEmailSendManagementProps, IEm
       ),
       onOk() {}
     });
-    this.setState({
-      visible: false
-    });
   };
-  hanldeDeleteEmail = () => {
-    //TODO
-    confirm({
-      title: 'Thông báo',
-      content: 'Bạn có muốn thực sự muốn xóa email này',
-      onOk() {
-        //call api here
-        // this.props.deleteEmailsProfile()
-      },
-      onCancel() {}
-    });
-  };
-
-  ValidateEmail = mail => {
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
-      return true;
-    }
-    return false;
-  };
-  hanldeCreateEmail = () => {
+  hanldeCreateEmail = async () => {
     // TODO
-    // this.props.createEmailsProfile()
+    const { emailForm, fromNameForm } = this.state;
+    if (this.validateEmail(emailForm) && fromNameForm) {
+      let check = true;
+      try {
+        await this.props.createEmailsProfile({
+          email: emailForm,
+          fromName: fromNameForm
+        });
+      } catch (error) {
+        check = false;
+      }
+      if (check) {
+        await this.props.getEmailsProfile();
+        await this.setState({
+          emailForm: '',
+          fromNameForm: ''
+        });
+        this.showInfoSendCodeVerifile();
+        this.onClose();
+      }
+    } else if (!this.validateEmail(emailForm)) {
+      toast.error('Bạn đã nhập sai định dạng email !');
+    } else {
+      toast.error('Đã có sự cố xảy ra  !');
+      this.onClose();
+    }
   };
 
   render() {
-    let { total, totalPages, loading } = this.props;
-    const {} = this.state;
-
+    let { totalPages, loading, emailProfileData, totalElements } = this.props;
+    const { emailForm, fromNameForm } = this.state;
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
     return (
       <Fragment>
@@ -162,7 +228,7 @@ class EmailSendManagement extends React.Component<IEmailSendManagementProps, IEm
               <hr style={{ borderTop: 'dotted 1px' }} />
             </div>
           </Row>
-          <div style={{ margin: '10px 0px' }}> 0 bản ghi</div>
+          <div style={{ margin: '10px 0px' }}> {totalElements} bản ghi</div>
           {/*drawer*/}
           <div>
             <Drawer
@@ -174,10 +240,22 @@ class EmailSendManagement extends React.Component<IEmailSendManagementProps, IEm
               bodyStyle={{ paddingBottom: 80 }}
             >
               <label htmlFor="">Địa chỉ gửi</label>
-              <Input></Input>
+              <Input
+                value={emailForm}
+                name="email"
+                onChange={event => {
+                  this.setState({ emailForm: event.target.value });
+                }}
+              ></Input>
               <label htmlFor="">Tên người gửi</label>
-              <Input></Input>
-              <Button className="btn-confirm-email" onClick={this.hanldeVerifileEmail}>
+              <Input
+                value={fromNameForm}
+                name="fromName"
+                onChange={event => {
+                  this.setState({ fromNameForm: event.target.value });
+                }}
+              ></Input>
+              <Button className="btn-confirm-email" disabled={!emailForm || !fromNameForm} onClick={this.hanldeCreateEmail}>
                 Xác thực email này
               </Button>
               <div className="email-note">
@@ -190,52 +268,64 @@ class EmailSendManagement extends React.Component<IEmailSendManagementProps, IEm
 
           <Row>
             <Loader message={spinner1} show={loading} priority={1}>
-              <Row className="wrraper-email-body">
-                <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5 title-email">
-                  <h3>TAi khoan email</h3>
-                  <div>Cong ty abc</div>
-                </div>
-                <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5 group-icons">
-                  {/* <Button icon="home" style={{ display: 'flex', alignSelf: 'center' }} >
-                    Mặc định
-                  </Button> */}
-                  <Button style={{ display: 'flex', alignSelf: 'center' }} onClick={this.hanldeSetEmailProfileDefault}>
-                    Đặt làm mặc định
-                  </Button>
-                  {
-                    // when verifiled
-                    //   <Button icon="check" className="verifiled-btn">
-                    //   Đã xác thực
-                    // </Button>
-                  }
+              {emailProfileData &&
+                emailProfileData.map(emaiProfile => (
+                  <Row className="wrraper-email-body" key={emaiProfile.id}>
+                    <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5 title-email">
+                      <h3>{emaiProfile.email}</h3>
+                      <div>{emaiProfile.fromName}</div>
+                    </div>
+                    <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5 group-icons">
+                      {emaiProfile.isDefault === 1 && emaiProfile.isActivated === 1 && (
+                        <Button icon="home" style={{ display: 'flex', alignSelf: 'center' }}>
+                          Mặc định
+                        </Button>
+                      )}
+                      {emaiProfile.isDefault !== 1 && emaiProfile.isActivated === 1 && (
+                        <Button
+                          style={{ display: 'flex', alignSelf: 'center' }}
+                          onClick={() => this.hanldeSetEmailProfileDefault(emaiProfile.id)}
+                        >
+                          Đặt làm mặc định
+                        </Button>
+                      )}
+                      {// when verifiled
+                      emaiProfile.isActivated === 1 && (
+                        <Button icon="check" className="verifiled-btn">
+                          Đã xác thực
+                        </Button>
+                      )}
 
-                  {
-                    // when no verifile
-                    /* <Button icon="close" className="verifile-btn" >
-                    Chưa xác thực
-                  </Button> */
-                  }
-                  {
-                    // when send code verifile
-                    <div style={{ display: 'flex' }}>
-                      <Button className="verifile-btn" onClick={this.hanldeVerifileEmail}>
-                        Gửi lại mã xác thực
-                      </Button>
-                      <Tooltip
-                        placement="bottom"
-                        title="Vì sao cần xác thực email ?
+                      {// when no verifile
+                      emaiProfile.isActivated !== 1 && (
+                        <Button icon="close" className="verifile-btn">
+                          Chưa xác thực
+                        </Button>
+                      )}
+                      {// when send code verifile
+                      emaiProfile.isActivated !== 1 && (
+                        <div style={{ display: 'flex' }}>
+                          <Button className="verifile-btn" onClick={() => this.hanldeReActiveEmail(emaiProfile.id)}>
+                            Gửi lại mã xác thực
+                          </Button>
+                          <Tooltip
+                            placement="bottom"
+                            title="Vì sao cần xác thực email ?
                       Xác thực giup chúng tôi xác nhận email của bạn có tồn tại,
                       tăng độ tin cậy khi gửi email"
-                      >
-                        <Icon type="question-circle" style={{ padding: 5 }} />
-                      </Tooltip>
+                          >
+                            <Icon type="question-circle" style={{ padding: 5 }} />
+                          </Tooltip>
+                        </div>
+                      )}
                     </div>
-                  }
-                </div>
-                <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2 delete-btn">
-                  <Icon type="delete" onClick={this.hanldeDeleteEmail} />
-                </div>
-              </Row>
+                    {emaiProfile.isDefault !== 1 && (
+                      <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2 delete-btn">
+                        <Icon type="delete" onClick={() => this.hanldeDeleteEmail(emaiProfile.id)} />
+                      </div>
+                    )}
+                  </Row>
+                ))}
             </Loader>
           </Row>
         </div>
@@ -246,9 +336,10 @@ class EmailSendManagement extends React.Component<IEmailSendManagementProps, IEm
 
 const mapStateToProps = ({ emailProfileState }: IRootState) => ({
   loading: emailProfileState.loading,
-  total: emailProfileState.emailData.totalElements,
-  emails: emailProfileState.emailData.content,
-  totalPages: emailProfileState.emailData.totalPages
+  emailProfileData: emailProfileState.emailProfileData.content,
+  totalElements: emailProfileState.emailProfileData.totalElements,
+  totalPages: emailProfileState.emailProfileData.totalPages,
+  verifileCode: emailProfileState.verifileCode
 });
 
 const mapDispatchToProps = {
