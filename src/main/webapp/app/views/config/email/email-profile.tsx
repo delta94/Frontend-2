@@ -24,7 +24,7 @@ import './email.scss';
 //antd
 import { Button, Tooltip, Drawer } from 'antd';
 import { Input, Icon, Row, Checkbox, Modal, Menu, Dropdown as DropdownAnt } from 'antd';
-import { Card, Avatar } from 'antd';
+import { Card, Avatar, List } from 'antd';
 import email from './email';
 import emailProfile from 'app/reducers/email-profile';
 
@@ -221,14 +221,14 @@ class EmailSendManagement extends React.Component<IEmailSendManagementProps, IEm
                   </h4>
                   <div>Email gửi cần được xác thực trước khi được sử đụng trong các chiến dịch</div>
                 </div>
-                <Button type="primary" onClick={this.showDrawer}>
+                <Button type="primary" onClick={this.showDrawer} style={{ alignSelf: 'flex-end' }}>
                   Tạo mới
                 </Button>
               </div>
               <hr style={{ borderTop: 'dotted 1px' }} />
             </div>
           </Row>
-          <div style={{ margin: '10px 0px' }}> {totalElements} bản ghi</div>
+          <div style={{ margin: '10px 0px' }}> &nbsp; {totalElements} bản ghi</div>
           {/*drawer*/}
           <div>
             <Drawer
@@ -268,14 +268,20 @@ class EmailSendManagement extends React.Component<IEmailSendManagementProps, IEm
 
           <Row>
             <Loader message={spinner1} show={loading} priority={1}>
-              {emailProfileData &&
-                emailProfileData.map(emaiProfile => (
-                  <Row className="wrraper-email-body" key={emaiProfile.id}>
-                    <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5 title-email">
-                      <h3>{emaiProfile.email}</h3>
-                      <div>{emaiProfile.fromName}</div>
-                    </div>
-                    <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5 group-icons">
+              <List
+                itemLayout="horizontal"
+                dataSource={emailProfileData && emailProfileData}
+                renderItem={emaiProfile => (
+                  <List.Item>
+                    <List.Item.Meta
+                      avatar={<i className="fas fa-envelope"></i>}
+                      title={<a href="https://ant.design">{emaiProfile.email}</a>}
+                      description={emaiProfile.fromName}
+                    />
+                    <div
+                      className="col-xs-5 col-sm-5 col-md-5 col-lg-5 group-icons"
+                      style={{ display: 'flex', justifyContent: 'space-around' }}
+                    >
                       {emaiProfile.isDefault === 1 && emaiProfile.isActivated === 1 && (
                         <Button icon="home" style={{ display: 'flex', alignSelf: 'center' }}>
                           Mặc định
@@ -319,13 +325,12 @@ class EmailSendManagement extends React.Component<IEmailSendManagementProps, IEm
                         </div>
                       )}
                     </div>
-                    {emaiProfile.isDefault !== 1 && (
-                      <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2 delete-btn">
-                        <Icon type="delete" onClick={() => this.hanldeDeleteEmail(emaiProfile.id)} />
-                      </div>
-                    )}
-                  </Row>
-                ))}
+                    <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2 delete-btn">
+                      {emaiProfile.isDefault !== 1 && <Icon type="delete" onClick={() => this.hanldeDeleteEmail(emaiProfile.id)} />}
+                    </div>
+                  </List.Item>
+                )}
+              />
             </Loader>
           </Row>
         </div>
