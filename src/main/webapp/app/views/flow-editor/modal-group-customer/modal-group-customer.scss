@@ -1,0 +1,96 @@
+.modal-config-ggeditor {
+  .react-datepicker-wrapper {
+    width: 100%;
+  }
+  .react-datepicker__navigation--next--with-time:not(.react-datepicker__navigation--next--with-today-button) {
+    right: 30%;
+  }
+  thead th {
+    color: #545cd8;
+  }
+  .table-striped {
+    margin-top: 0px !important;
+  }
+
+  .table-responsive {
+    display: block;
+    overflow-x: auto;
+  }
+  .table thead th,
+  .table td {
+    vertical-align: middle;
+  }
+  .table thead th {
+    border-bottom: 2px solid #e9ecef;
+  }
+  .table th,
+  .table td {
+    padding: 0.55rem;
+    border-top: 1px solid #e9ecef;
+  }
+  thead th,
+  tbody td,
+  tbody td .badge {
+    border-right: 1px solid #dedede;
+  }
+  td,
+  th {
+    border: 1px solid #dddddd;
+    text-align: center;
+  }
+  .ant-calendar-picker-clear,
+  .ant-calendar-picker-icon {
+    top: 35%;
+  }
+  .ant-modal-content {
+    width: 200%;
+    margin-left: -40%;
+  }
+  position: relative;
+
+  .list-title {
+    padding: 20px 0px;
+  }
+
+  .group-addition {
+    .ant-card-body {
+      padding: 0px;
+    }
+
+    .group-addition_content {
+      padding: 14px;
+    }
+
+    .group-addition_block-out {
+      padding-left: 20px;
+      line-height: 40px;
+      background: #eff9ff;
+      box-sizing: border-box;
+      border-radius: 3px 3px 0px 0px;
+    }
+
+    .navigation {
+      text-align: right;
+      position: relative;
+      height: 40px;
+
+      .pagination {
+        position: absolute;
+        right: 0px;
+      }
+    }
+  }
+}
+
+.input-search {
+  display: flex;
+  margin-bottom: 10px;
+  height: auto;
+
+  .input-search_label {
+    width: 90px !important;
+    line-height: 35px;
+    font-weight: 500;
+    height: 35px;
+  }
+}

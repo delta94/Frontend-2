@@ -1,0 +1,21 @@
+.modal-info-title {
+  .modal-title {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 16px;
+    text-transform: uppercase;
+
+    color: #595c82;
+  }
+  .modal-header,
+  .modal-footer {
+    background: #ffffff;
+    border-radius: 4.5px;
+  }
+  .rw-widget {
+    width: 95%;
+    float: right;
+  }
+}
