@@ -723,7 +723,7 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
                 </h4>
                 <div style={{ color: 'gray' }}>*Khách hàng đã xóa chỉ được khôi phục trong 90 ngày</div>
                 <br />
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                   <div>
                     <span className="label-search">Tìm theo ngày </span>
                     <span>
@@ -746,7 +746,7 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
                       />
                     </span>
                   </div>
-                  <Button outline onClick={this.handleSearchCustomer}>
+                  <Button outline onClick={this.handleSearchCustomer} style={{ marginLeft: 10 }}>
                     Tìm kiếm
                   </Button>
                 </div>
