@@ -27,6 +27,9 @@ import { Input, Icon, Row, Checkbox, Modal, Menu, Dropdown as DropdownAnt } from
 import { Card, Avatar, List } from 'antd';
 import email from './email';
 import emailProfile from 'app/reducers/email-profile';
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const { Meta } = Card;
 
@@ -144,7 +147,8 @@ class EmailSendManagement extends React.Component<IEmailSendManagementProps, IEm
   };
 
   validateEmail = mail => {
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
+    let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (re.test(mail)) {
       return true;
     }
     return false;
@@ -156,7 +160,7 @@ class EmailSendManagement extends React.Component<IEmailSendManagementProps, IEm
       content: (
         <div>
           <p>
-            Hệ thống đã gửi email xác nhận đến địa chỉ email của bạn. Vui lòng kiểm tra và xác nhận đường linh trong 24h
+            Hệ thống đã gửi email xác nhận đến địa chỉ email của bạn. Vui lòng kiểm tra và xác nhận đường link trong 24h
             <br />
             <b> Lưu ý</b>: Trong trường hợp không xác nhận được email, hãy kiểm tra thư mục spam, hoặc xem lại chính xác địa chỉ email muốn
             xác thực.
@@ -216,7 +220,7 @@ class EmailSendManagement extends React.Component<IEmailSendManagementProps, IEm
                     tính năng gửi email sẽ sử dụng 01 các địa chỉ email dưới đây
                     để gửi email tới thành viên"
                     >
-                      <Icon type="question-circle" style={{ verticalAlign: 'text-top' }} />
+                      <Icon type="question-circle" style={{ verticalAlign: 'text-top', fontSize: 15 }} />
                     </Tooltip>
                   </h4>
                   <div>Email gửi cần được xác thực trước khi được sử đụng trong các chiến dịch</div>
@@ -247,6 +251,8 @@ class EmailSendManagement extends React.Component<IEmailSendManagementProps, IEm
                   this.setState({ emailForm: event.target.value });
                 }}
               ></Input>
+              <br />
+              <br />
               <label htmlFor="">Tên người gửi</label>
               <Input
                 value={fromNameForm}
@@ -317,7 +323,7 @@ class EmailSendManagement extends React.Component<IEmailSendManagementProps, IEm
                           <Tooltip
                             placement="bottom"
                             title="Vì sao cần xác thực email ?
-                      Xác thực giup chúng tôi xác nhận email của bạn có tồn tại,
+                      Xác thực giúp chúng tôi xác nhận email của bạn có tồn tại,
                       tăng độ tin cậy khi gửi email"
                           >
                             <Icon type="question-circle" style={{ padding: 5 }} />
@@ -326,7 +332,11 @@ class EmailSendManagement extends React.Component<IEmailSendManagementProps, IEm
                       )}
                     </div>
                     <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2 delete-btn">
-                      {emaiProfile.isDefault !== 1 && <Icon type="delete" onClick={() => this.hanldeDeleteEmail(emaiProfile.id)} />}
+                      {emaiProfile.isDefault !== 1 && (
+                        <span onClick={() => this.hanldeDeleteEmail(emaiProfile.id)}>
+                          <FontAwesomeIcon icon={faTrashAlt} />
+                        </span>
+                      )}
                     </div>
                   </List.Item>
                 )}

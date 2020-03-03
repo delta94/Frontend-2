@@ -718,7 +718,7 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
                     placement="rightTop"
                     title="Khách hàng đã xóa khỏi danh sách khách hàng được hiển thị tại mục này trong vòng 90 ngày (kể từ thời điểm xóa)"
                   >
-                    <Icon type="question-circle" style={{ verticalAlign: 'text-top' }} />
+                    <Icon type="question-circle" style={{ verticalAlign: 'text-top', fontSize: 15 }} />
                   </Tooltip>
                 </h4>
                 <div style={{ color: 'gray' }}>*Khách hàng đã xóa chỉ được khôi phục trong 90 ngày</div>
@@ -755,6 +755,7 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
               <Translate contentKey="userRestore.home.total-element" interpolate={{ element: this.props.totalElements }} />
               <Button
                 className="btn float-right jh-create-entity btn-restore"
+                color="primary"
                 outline
                 onClick={this.openModalRestoreCustomer}
                 disabled={listCheckedCustomer.length > 0 ? false : true}
@@ -785,7 +786,7 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
                     <Button outline onClick={this.openModalRestoreCustomer}>
                       Thoát{' '}
                     </Button>
-                    <Button outline color="danger" onClick={this.handleRestoreCustomer} disabled={disableRemoveCus}>
+                    <Button outline color="primary" onClick={this.handleRestoreCustomer} disabled={disableRemoveCus}>
                       Khôi phục
                     </Button>
                   </ModalFooter>
