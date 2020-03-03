@@ -41,8 +41,11 @@ import {
   ProcessNodeModel,
   FlowDiagramEditor,
   GroupProcess,
+  DefaultGroupProcess,
+  DecisionGroupProcess,
+  NewBranchGroupProcess,
   TrayItemWidget,
-  toConfigData
+  toConfigData, createGroupProcessWidget, createGroupProcess
 } from './flow-diagram-editor';
 import { DiagramWidget } from 'storm-react-diagrams';
 import { FlowNodeModal } from './flow-node-modal';
@@ -119,7 +122,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       // console.log(node);
       // console.log(port);
       // console.log(data);
-      let groupProcess = GroupProcess.createGroupProcess(dataTransfer.type);
+      console.log(dataTransfer.type);
+      let groupProcess = createGroupProcess(dataTransfer.type);
       if (groupProcess && port) {
         await this.editor.addGroupProcess(groupProcess, port);
         await this.props.getDiagramCampaign(this.editor.getDiagramData());
@@ -167,7 +171,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
     let { port } = this.state;
     if (port && data) {
       let dataTransfer = JSON.parse(data);
-      let groupProcess = GroupProcess.createGroupProcess(dataTransfer.type);
+      let groupProcess = createGroupProcess(dataTransfer.type);
       if (groupProcess) {
         await this.editor.addGroupProcess(groupProcess, port);
         await this.props.getDiagramCampaign(this.editor.getDiagramData());
@@ -792,7 +796,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
 
   renderTrayItemWidget(type: string) {
     let className =
-      type === DecisionNodeModel.TYPE
+      type === DecisionGroupProcess.TYPE || type === NewBranchGroupProcess.TYPE
         ? 'tray-item-large'
         : null;
     return (
@@ -821,7 +825,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   renderTrayWidget() {
     let { collapsed } = this.state;
     return (
-      <Sider width={140} collapsed={collapsed}>
+      <Sider width={240} collapsed={collapsed}>
         <div className="header-sider">
           <label className="tool-bar" style={{ display: collapsed ? 'none' : 'contents' }}>
             CÔNG CỤ
@@ -849,9 +853,9 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             <Collapse bordered={false} defaultActiveKey={['1']} expandIconPosition="right">
               <Panel header="Hành động" key="1">
                 <Row className="row">
-                  <Col span={16}>
-                    {this.renderTrayItemWidget(ProcessNodeModel.TYPE)}
-                    {this.renderTrayItemLabelWidget(ProcessNodeModel.TYPE)}
+                  <Col span={8}>
+                    {this.renderTrayItemWidget(DefaultGroupProcess.TYPE)}
+                    {this.renderTrayItemLabelWidget(DefaultGroupProcess.TYPE)}
                   </Col>
                 </Row>
               </Panel>
@@ -859,9 +863,13 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             <Collapse bordered={false} defaultActiveKey={['2']} expandIconPosition="right">
               <Panel header="Điều kiện" key="2">
                 <Row className="row">
-                  <Col span={16}>
-                    {this.renderTrayItemWidget(DecisionNodeModel.TYPE)}
-                    {this.renderTrayItemLabelWidget(DecisionNodeModel.TYPE)}
+                  <Col span={12}>
+                    {this.renderTrayItemWidget(DecisionGroupProcess.TYPE)}
+                    {this.renderTrayItemLabelWidget(DecisionGroupProcess.TYPE)}
+                  </Col>
+                  <Col span={12}>
+                    {this.renderTrayItemWidget(NewBranchGroupProcess.TYPE)}
+                    {this.renderTrayItemLabelWidget(NewBranchGroupProcess.TYPE)}
                   </Col>
                 </Row>
               </Panel>

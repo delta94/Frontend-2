@@ -160,7 +160,7 @@ export class DecisionNodeModel extends FlowNodeModel {
   constructor(id?: string, label?: string) {
     super(DecisionNodeModel.TYPE, id, label);
     this.addPort(new FlowNodePortModel(FlowNodePortModel.LEFT, FlowNodePortModel.IN)); //in
-    this.addPort(new FlowNodePortModel(FlowNodePortModel.BOTTOM, FlowNodePortModel.OUT, translate('diagram.condition_result.nok'))); //out
+    this.addPort(new FlowNodePortModel(FlowNodePortModel.BOTTOM, FlowNodePortModel.OUT, translate('diagram.condition_result.nok'), true)); //out
     this.addPort(new FlowNodePortModel(FlowNodePortModel.RIGHT, FlowNodePortModel.OUT, translate('diagram.condition_result.ok'))); //out
   }
 

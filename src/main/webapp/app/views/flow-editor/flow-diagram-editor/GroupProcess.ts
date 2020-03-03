@@ -7,7 +7,6 @@ import {
 } from './FlowNodeModel';
 import { FlowNodePortModel } from './FlowNodePortModel';
 import { createNodeModel } from './FlowDiagramUtil';
-import { ConditionDecisionNodeModel } from 'app/views/ggeditor/flow-diagram-editor';
 
 const uuidv4 = require('uuid/v4');
 
@@ -55,7 +54,7 @@ export class GroupProcess {
   }
 
   isValid(): boolean {
-    return this.inPort && this.outPort && this.nodes && this.nodes.length > 0;
+    return this.nodes && this.nodes.length > 0;
   }
 
   init(mainNode: FlowNodeModel) {
@@ -64,25 +63,21 @@ export class GroupProcess {
 
     this.nodes.push(mainNode);
   }
-
-  static createGroupProcess(type: string): GroupProcess | null {
-    if (type && type === ProcessNodeModel.TYPE) return new DefaultGroupProcess(type);
-    else if (type && type === DecisionNodeModel.TYPE) return new DecisionGroupProcess(type);
-    return null;
-  }
 }
 
 export class DefaultGroupProcess extends GroupProcess {
-  constructor(type: string) {
-    super(type);
+  static TYPE: string = 'process';
+  constructor() {
+    super(DefaultGroupProcess.TYPE);
     let mainNode = createNodeModel(ProcessNodeModel.TYPE, uuidv4());
     this.init(mainNode);
   }
 }
 
 export class DecisionGroupProcess extends GroupProcess {
-  constructor(type: string) {
-    super(type);
+  static TYPE: string = 'decision';
+  constructor() {
+    super(DecisionGroupProcess.TYPE);
     let mainNode = createNodeModel(DecisionNodeModel.TYPE, uuidv4());
     this.init(mainNode);
   }
@@ -101,5 +96,19 @@ export class DecisionGroupProcess extends GroupProcess {
     this.nodes.push(mainNode, endNode);
 
     this.links.push(bottomEndLink);
+  }
+}
+
+export class NewBranchGroupProcess extends GroupProcess {
+  static TYPE: string = 'new_branch';
+  constructor() {
+    super(NewBranchGroupProcess.TYPE);
+    let mainNode = createNodeModel(EndNodeModel.TYPE, uuidv4());
+    this.init(mainNode);
+  }
+
+  init(mainNode: FlowNodeModel) {
+    this.inPort = mainNode.getDefaultInPort();
+    this.nodes.push(mainNode);
   }
 }

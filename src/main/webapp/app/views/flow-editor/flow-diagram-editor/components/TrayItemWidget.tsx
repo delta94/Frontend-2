@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { createFlowNodeWidget } from '../FlowNodeFactory';
+import { createGroupProcessWidget } from '../GroupProcessFactory';
 
 export interface TrayItemWidgetProps {
   model: any;
@@ -38,7 +38,7 @@ export class TrayItemWidget extends React.Component<TrayItemWidgetProps, TrayIte
         }}
         className={className ? className : 'tray-item'}
       >
-        {createFlowNodeWidget(model.type, null, false, false)}
+        {createGroupProcessWidget(model.type)}
       </div>
     );
   }

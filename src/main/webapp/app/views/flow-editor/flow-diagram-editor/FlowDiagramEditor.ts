@@ -205,6 +205,7 @@ export class FlowDiagramEditor {
               link.setSourcePort(sourcePort);
               link.setTargetPort(targetPort);
               model.addLink(link);
+
             }
           }
         }
@@ -223,10 +224,10 @@ export class FlowDiagramEditor {
     dropZoneVisible: boolean,
     eventHandlers: FlowNodeEventHandlers
   ): boolean {
-
+    console.log(groupProcess);
     if (groupProcess && groupProcess.isValid() && position) {
-
       for (let node of groupProcess.nodes) {
+        console.log(node);
         if (node) {
           if (node instanceof FlowNodeModel) {
             node.readOnly = readOnly;
@@ -243,28 +244,29 @@ export class FlowDiagramEditor {
       }
 
       //swap port
-      if (position.getLinks()) {
+      if (groupProcess.inPort && position.getLinks()) {
         for (let key in position.getLinks()) {
-          let outLink = position.getLinks()[key];
-          if (outLink) {
-            let targetPort = outLink.getTargetPort();
-            if (targetPort) {
-              outLink.remove();
-              let newOutLink = groupProcess.outPort.createLinkModel();
-              newOutLink.setSourcePort(groupProcess.outPort);
-              newOutLink.setTargetPort(targetPort);
-              model.addLink(newOutLink);
+          let currentInLink = position.getLinks()[key];
+          if (currentInLink) {
+            let sourcePort = currentInLink.getSourcePort();
+            if (sourcePort) {
+              currentInLink.remove();
+              let newInLink = sourcePort.createLinkModel();
+              newInLink.setSourcePort(sourcePort);
+              newInLink.setTargetPort(groupProcess.inPort);
+              model.addLink(newInLink);
             }
           }
         }
       }
 
-      //add new link
-      let inLink = position.createLinkModel();
-      inLink.setSourcePort(position);
-      inLink.setTargetPort(groupProcess.inPort);
-      model.addLink(inLink);
-
+      if(groupProcess.outPort){
+        //add new link
+        let newOutLink = groupProcess.outPort.createLinkModel();
+        newOutLink.setSourcePort(groupProcess.outPort);
+        newOutLink.setTargetPort(position);
+        model.addLink(newOutLink);
+      }
       return true;
     }
 

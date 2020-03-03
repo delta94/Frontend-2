@@ -28,6 +28,8 @@
       "fork": "Fork",
       "join": "Join",
 
+      "new_branch": "Rẽ nhánh",
+
       "end": "Kết thúc"
     }
   }
