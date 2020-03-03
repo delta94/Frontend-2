@@ -98,6 +98,22 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
     return null;
   }
 
+  getExtZoneTop(portName: string): number | null {
+    if (portName === FlowNodePortModel.TOP) return -0.8 * (this.props.height + this.props.dropZoneHeight * 0.25);
+    if (portName === FlowNodePortModel.LEFT) return (this.props.height - this.props.dropZoneHeight) / 2 - 1;
+    if (portName === FlowNodePortModel.RIGHT) return (this.props.height - this.props.dropZoneHeight) / 2 - 1;
+    if (portName === FlowNodePortModel.BOTTOM) return 0.8 * (this.props.height + this.props.dropZoneHeight * 0.25);
+    return null;
+  }
+
+  getExtZoneLeft(portName: string): number | null {
+    if (portName === FlowNodePortModel.TOP) return (this.props.width - this.props.dropZoneWidth) * 0.5;
+    if (portName === FlowNodePortModel.LEFT) return -0.8 * (this.props.width + this.props.dropZoneWidth * 0.25);
+    if (portName === FlowNodePortModel.RIGHT) return +0.8 * (this.props.width + this.props.dropZoneWidth * 0.25);
+    if (portName === FlowNodePortModel.BOTTOM) return (this.props.width - this.props.dropZoneWidth) * 0.5;
+    return null;
+  }
+
   renderPort(portName: string) {
     if (this.props.portVisible && this.props.node && this.props.node.getPort(portName)) {
       return (
@@ -209,70 +225,57 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
     }
   }
 
-  //
-  // renderExt(portName: string) {
-  //   let { node } = this.props;
-  //   if (node && node instanceof FlowNodeModel) {
-  //     let port = node.getOutPort(portName);
-  //     if (port && port instanceof  FlowNodePortModel && port.extAllowed) {
-  //       return (
-  //         <div
-  //           style={
-  //             node instanceof FlowNodeModel && node.readOnly
-  //               ? {
-  //                 position: 'absolute',
-  //                 zIndex: 10,
-  //                 top: this.getDropZoneTop(portName) - this.props.dropZoneHeight * 0.25 - 1,
-  //                 left: this.getDropZoneLeft(portName) - this.props.dropZoneWidth * 0.25,
-  //                 width: this.props.dropZoneWidth * 1.5,
-  //                 height: this.props.dropZoneHeight * 1.5
-  //               }
-  //               : {
-  //                 position: 'absolute',
-  //                 zIndex: 10,
-  //                 borderWidth: 2,
-  //                 borderRadius: 6,
-  //                 borderColor: node.dropZoneVisible ? '#D1D2DE' : 'transparent',
-  //                 borderStyle: 'dashed',
-  //                 top: this.getDropZoneTop(portName) - this.props.dropZoneHeight * 0.25 - 1,
-  //                 left: this.getDropZoneLeft(portName) - this.props.dropZoneWidth * 0.25,
-  //                 width: this.props.dropZoneWidth * 1.5,
-  //                 height: this.props.dropZoneHeight * 1.5
-  //               }
-  //           }
-  //         >
-  //           <div
-  //             onClick={async event => {
-  //               event.preventDefault();
-  //               if (node instanceof FlowNodeModel && node.readOnly) return;
-  //               if (
-  //                 this.props.node &&
-  //                 this.props.node instanceof FlowNodeModel &&
-  //                 this.props.node.eventHandlers &&
-  //                 this.props.node.eventHandlers.onAddClickEventHandler
-  //               ) {
-  //                 this.props.node.eventHandlers.onAddClickEventHandler(this.props.node, port, toNodeData(this.props.node));
-  //               }
-  //             }}
-  //             style={{
-  //               position: 'absolute',
-  //               zIndex: 10,
-  //               top: this.props.dropZoneHeight / 4 - 2,
-  //               left: this.props.dropZoneWidth / 4 - 2,
-  //               width: this.props.dropZoneWidth,
-  //               height: this.props.dropZoneHeight,
-  //               backgroundImage: `url(${AddIcon})`,
-  //               backgroundRepeat: 'no-repeat',
-  //               backgroundSize: 'cover'
-  //             }}
-  //           >
-  //             {' '}
-  //           </div>
-  //         </div>
-  //       );
-  //     }
-  //   }
-  // }
+  renderExtZone(portName: string) {
+    let { dropZoneVisible, node } = this.props;
+    if (dropZoneVisible && node && node instanceof FlowNodeModel) {
+      let port = node.getOutPort(portName);
+      if (port && port instanceof  FlowNodePortModel && port.extAllowed) {
+        return (
+          <div
+            style={
+              {
+                position: 'absolute',
+                zIndex: 10,
+                top: this.getExtZoneTop(portName),
+                left: this.getExtZoneLeft(portName),
+                width: this.props.dropZoneWidth * 0.5,
+                height: this.props.dropZoneHeight * 0.5
+              }
+            }
+          >
+            <div
+              onClick={async event => {
+                event.preventDefault();
+                if (node instanceof FlowNodeModel && node.readOnly) return;
+
+                if (
+                  this.props.node &&
+                  this.props.node instanceof FlowNodeModel &&
+                  this.props.node.eventHandlers &&
+                  this.props.node.eventHandlers.onExtClickEventHandler
+                ) {
+                  this.props.node.eventHandlers.onExtClickEventHandler(this.props.node, port, toNodeData(this.props.node));
+                }
+              }}
+              style={{
+                position: 'absolute',
+                zIndex: 10,
+                top: this.props.dropZoneHeight * 0.25,
+                left: this.props.dropZoneWidth * 0.25,
+                width: this.props.dropZoneWidth * 0.5,
+                height: this.props.dropZoneHeight * 0.5,
+                backgroundImage: `url(${AddIcon})`,
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 'cover'
+              }}
+            >
+              {' '}
+            </div>
+          </div>
+        );
+      }
+    }
+  }
 
 
 
@@ -429,6 +432,10 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
         {this.renderDropZone(FlowNodePortModel.LEFT)}
         {this.renderDropZone(FlowNodePortModel.RIGHT)}
         {this.renderDropZone(FlowNodePortModel.BOTTOM)}
+        {this.renderExtZone(FlowNodePortModel.TOP)}
+        {this.renderExtZone(FlowNodePortModel.LEFT)}
+        {this.renderExtZone(FlowNodePortModel.RIGHT)}
+        {this.renderExtZone(FlowNodePortModel.BOTTOM)}
         {this.renderExtraInfo()}
       </div>
     );

@@ -4,7 +4,8 @@ import { IRootState } from 'app/reducers';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { Button, Col, Collapse, Input, Row, Select } from 'antd';
 import {
-  DecisionNodeModel,
+  DecisionGroupProcess,
+  DecisionNodeModel, DefaultGroupProcess,
   ProcessNodeModel,
   TrayItemWidget
 } from './flow-diagram-editor';
@@ -56,9 +57,11 @@ export class FlowNodeModal extends React.Component<IFlowNodeModalProps, IFlowNod
           <Collapse bordered={false} defaultActiveKey={['1']} expandIconPosition="right">
             <Panel header="Hành động" key="1">
               <Row className="row">
-                <Col span={8}>
-                  {this.renderTrayItemWidget(ProcessNodeModel.TYPE)}
-                  {this.renderTrayItemLabelWidget(ProcessNodeModel.TYPE)}
+                <Col style={{width: '64px'}}>
+                  {this.renderTrayItemWidget(DefaultGroupProcess.TYPE)}
+                  <div style={{width: '100%', textAlign: 'center'}}>
+                    {this.renderTrayItemLabelWidget(DefaultGroupProcess.TYPE)}
+                  </div>
                 </Col>
               </Row>
             </Panel>
@@ -66,15 +69,18 @@ export class FlowNodeModal extends React.Component<IFlowNodeModalProps, IFlowNod
           <Collapse bordered={false} defaultActiveKey={['2']} expandIconPosition="right">
             <Panel header="Điều kiện" key="2">
               <Row className="row">
-                <Col span={8}>
-                  {this.renderTrayItemWidget(DecisionNodeModel.TYPE)}
-                  <br />
-                  {this.renderTrayItemLabelWidget(DecisionNodeModel.TYPE)}
+                <Col style={{width: '90px'}}>
+                  {this.renderTrayItemWidget(DecisionGroupProcess.TYPE)}
+                  <br/>
+                  <div style={{width: '100%', textAlign: 'center'}}>
+
+                    {this.renderTrayItemLabelWidget(DecisionGroupProcess.TYPE)}
+                  </div>
+
                 </Col>
               </Row>
             </Panel>
           </Collapse>
-          {/* // </Sider> */}
         </Fragment>
       </div>
     );

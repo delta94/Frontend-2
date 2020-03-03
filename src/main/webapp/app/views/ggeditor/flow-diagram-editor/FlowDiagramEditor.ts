@@ -254,14 +254,15 @@ export class FlowDiagramEditor {
         for (let key in position.getLinks()) {
           let outLink = position.getLinks()[key];
           if (outLink) {
-            let targetPort = outLink.getTargetPort();
-            if (targetPort) {
-              outLink.remove();
-              let newOutLink = groupProcess.outPort.createLinkModel();
-              newOutLink.setSourcePort(groupProcess.outPort);
-              newOutLink.setTargetPort(targetPort);
-              model.addLink(newOutLink);
-            }
+            outLink.setSourcePort(groupProcess.outPort);
+            // let targetPort = outLink.getTargetPort();
+            // if (targetPort) {
+            //   outLink.remove();
+            //   let newOutLink = groupProcess.outPort.createLinkModel();
+            //   newOutLink.setSourcePort(groupProcess.outPort);
+            //   newOutLink.setTargetPort(targetPort);
+            //   model.addLink(newOutLink);
+            // }
           }
         }
       }

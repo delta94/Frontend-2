@@ -141,6 +141,15 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       await this.showFlowNodeModal();
     };
 
+    const onExtClickEventHandler = async (node, port) => {
+      let groupProcess = createGroupProcess(NewBranchGroupProcess.TYPE);
+      if (groupProcess) {
+        await this.editor.addGroupProcess(groupProcess, port);
+        await this.props.getDiagramCampaign(this.editor.getDiagramData());
+        await this.forceUpdate();
+      }
+    };
+
     const onDeleteEventHandler = async (node, nodeData) => {
       await this.editor.deleteNode(node);
       await this.forceUpdate();
@@ -150,7 +159,8 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
       onDropEventHandler: onDropEventHandler,
       onClickEventHandler: onClickEventHandler,
       onAddClickEventHandler: onAddClickEventHandler,
-      onDeleteEventHandler: onDeleteEventHandler
+      onDeleteEventHandler: onDeleteEventHandler,
+      onExtClickEventHandler: onExtClickEventHandler
     });
 
     this.editor.setDiagramData({
@@ -825,7 +835,7 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
   renderTrayWidget() {
     let { collapsed } = this.state;
     return (
-      <Sider width={240} collapsed={collapsed}>
+      <Sider width={130} collapsed={collapsed}>
         <div className="header-sider">
           <label className="tool-bar" style={{ display: collapsed ? 'none' : 'contents' }}>
             CÔNG CỤ
@@ -853,9 +863,11 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             <Collapse bordered={false} defaultActiveKey={['1']} expandIconPosition="right">
               <Panel header="Hành động" key="1">
                 <Row className="row">
-                  <Col span={8}>
+                  <Col style={{width: '64px'}}>
                     {this.renderTrayItemWidget(DefaultGroupProcess.TYPE)}
-                    {this.renderTrayItemLabelWidget(DefaultGroupProcess.TYPE)}
+                    <div style={{width: '100%', textAlign: 'center'}}>
+                      {this.renderTrayItemLabelWidget(DefaultGroupProcess.TYPE)}
+                    </div>
                   </Col>
                 </Row>
               </Panel>
@@ -863,18 +875,16 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             <Collapse bordered={false} defaultActiveKey={['2']} expandIconPosition="right">
               <Panel header="Điều kiện" key="2">
                 <Row className="row">
-                  <Col span={12}>
+                  <Col style={{width: '90px'}}>
                     {this.renderTrayItemWidget(DecisionGroupProcess.TYPE)}
-                    {this.renderTrayItemLabelWidget(DecisionGroupProcess.TYPE)}
-                  </Col>
-                  <Col span={12}>
-                    {this.renderTrayItemWidget(NewBranchGroupProcess.TYPE)}
-                    {this.renderTrayItemLabelWidget(NewBranchGroupProcess.TYPE)}
+                    <div style={{width: '100%', textAlign: 'center'}}>
+                      {this.renderTrayItemLabelWidget(DecisionGroupProcess.TYPE)}
+                    </div>
+
                   </Col>
                 </Row>
               </Panel>
             </Collapse>
-            {/* // </Sider> */}
           </Fragment>
         </div>
       </Sider>

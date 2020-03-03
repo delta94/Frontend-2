@@ -3,4 +3,5 @@ export interface FlowNodeEventHandlers {
   onClickEventHandler?: Function;
   onAddClickEventHandler?: Function;
   onDeleteEventHandler?: Function;
+  onExtClickEventHandler?: Function;
 }

@@ -243,29 +243,36 @@ export class FlowDiagramEditor {
         model.addLink(link);
       }
 
-      //swap port
-      if (groupProcess.inPort && position.getLinks()) {
-        for (let key in position.getLinks()) {
-          let currentInLink = position.getLinks()[key];
-          if (currentInLink) {
-            let sourcePort = currentInLink.getSourcePort();
-            if (sourcePort) {
-              currentInLink.remove();
-              let newInLink = sourcePort.createLinkModel();
-              newInLink.setSourcePort(sourcePort);
-              newInLink.setTargetPort(groupProcess.inPort);
-              model.addLink(newInLink);
+
+      if(groupProcess.inPort && groupProcess.outPort){
+        //swap port
+        if (position.getLinks()) {
+          for (let key in position.getLinks()) {
+            let currentInLink = position.getLinks()[key];
+            if (currentInLink) {
+              currentInLink.setTargetPort(groupProcess.inPort);
+              // let sourcePort = currentInLink.getSourcePort();
+              // if (sourcePort) {
+              //   currentInLink.remove();
+              //   let newInLink = sourcePort.createLinkModel();
+              //   newInLink.setSourcePort(sourcePort);
+              //   newInLink.setTargetPort(groupProcess.inPort);
+              //   model.addLink(newInLink);
+              // }
             }
           }
         }
-      }
-
-      if(groupProcess.outPort){
         //add new link
         let newOutLink = groupProcess.outPort.createLinkModel();
         newOutLink.setSourcePort(groupProcess.outPort);
         newOutLink.setTargetPort(position);
         model.addLink(newOutLink);
+      } else if(groupProcess.inPort){
+        //add new link
+        let newInLink = position.createLinkModel();
+        newInLink.setSourcePort(position);
+        newInLink.setTargetPort(groupProcess.inPort);
+        model.addLink(newInLink);
       }
       return true;
     }
