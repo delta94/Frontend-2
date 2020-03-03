@@ -691,8 +691,6 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
               );
           })
         : [];
-    console.log(dataUser);
-    console.log(totalElements);
     return (
       <Loader message={spinner1} show={loading} priority={1}>
         <Fragment>
@@ -718,7 +716,7 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
                     placement="rightTop"
                     title="Khách hàng đã xóa khỏi danh sách khách hàng được hiển thị tại mục này trong vòng 90 ngày (kể từ thời điểm xóa)"
                   >
-                    <Icon type="question-circle" style={{ verticalAlign: 'text-top' }} />
+                    <Icon type="question-circle" style={{ verticalAlign: 'text-top', fontSize: 15 }} />
                   </Tooltip>
                 </h4>
                 <div style={{ color: 'gray' }}>*Khách hàng đã xóa chỉ được khôi phục trong 90 ngày</div>
@@ -755,6 +753,7 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
               <Translate contentKey="userRestore.home.total-element" interpolate={{ element: this.props.totalElements }} />
               <Button
                 className="btn float-right jh-create-entity btn-restore"
+                color="primary"
                 outline
                 onClick={this.openModalRestoreCustomer}
                 disabled={listCheckedCustomer.length > 0 ? false : true}
@@ -785,7 +784,7 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
                     <Button outline onClick={this.openModalRestoreCustomer}>
                       Thoát{' '}
                     </Button>
-                    <Button outline color="danger" onClick={this.handleRestoreCustomer} disabled={disableRemoveCus}>
+                    <Button outline color="primary" onClick={this.handleRestoreCustomer} disabled={disableRemoveCus}>
                       Khôi phục
                     </Button>
                   </ModalFooter>
@@ -822,7 +821,7 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
                 <Table responsive striped id="table-reponse">
                   <thead>
                     <tr className="text-center">
-                      <th style={{ width: '50px' }} className="hand">
+                      <th className="five-percen hand">
                         <CustomInput
                           checked={checkedAllCustomer}
                           onClick={() => this.handleCheckedAllCustomer(!checkedAllCustomer, dataUser)}
@@ -830,12 +829,9 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
                           id="check-all-customers"
                         />
                       </th>
-                      <th style={{ width: '50px' }} className="hand">
-                        STT
-                      </th>
+                      <th className="five-percen hand">STT</th>
                       <th
-                        style={{ width: '150px' }}
-                        className="hand"
+                        className="twenty-percen hand"
                         onClick={() => {
                           this.setState({ conditionSort: 'firstName', count: count + 1 });
                         }}
@@ -852,8 +848,7 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
                         )}
                       </th>
                       <th
-                        style={{ width: '150px' }}
-                        className="hand"
+                        style={{ width: '17%' }}
                         onClick={() => {
                           this.setState({ conditionSort: 'lastName', count: count + 1 });
                         }}
@@ -870,8 +865,7 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
                         )}
                       </th>
                       <th
-                        style={{ width: '200px' }}
-                        className="hand"
+                        className="twenty-percen hand"
                         onClick={() => {
                           this.setState({ conditionSort: 'email', count: count + 1 });
                         }}
@@ -888,8 +882,7 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
                         )}
                       </th>
                       <th
-                        style={{ width: '200px' }}
-                        className="hand"
+                        className="twenty-percen hand"
                         onClick={() => {
                           this.setState({ conditionSort: 'mobile', count: count + 1 });
                         }}
@@ -908,12 +901,7 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
                       {dataHeader
                         ? dataHeader.map((event, id) => {
                             return (
-                              <th
-                                style={{ width: '100px' }}
-                                key={id}
-                                className={event.check === true ? '' : 'display-colum'}
-                                id={event.code}
-                              >
+                              <th style={{ width: '20%' }} key={id} className={event.check === true ? '' : 'display-colum'} id={event.code}>
                                 {event.title}
                               </th>
                             );
@@ -921,7 +909,7 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
                         : ''}
                       <th
                         className={this.state.isCheckDateCreate === true ? '' : 'display-colum'}
-                        style={{ width: '200px' }}
+                        style={{ width: '20%' }}
                         onClick={() => {
                           this.setState({ conditionSort: 'createdDate', count: count + 1 });
                         }}
@@ -937,34 +925,31 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
                           ''
                         )}
                       </th>
-                      <th>Thời gian xóa</th>
+                      <th className="fifteen-percen hand">Thời gian xóa</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {dataUser
-                      ? dataUser.map((item, index) => {
-                          return (
-                            <tr id={item.id} key={`user-${index}`}>
-                              <td>
-                                <CustomInput
-                                  checked={listCheckedCustomer.filter(customerId => customerId === item.id).length > 0}
-                                  onClick={() => this.handleCheckedCustomer(item.id)}
-                                  type="checkbox"
-                                  id={'check-customers' + (this.state.activePage * this.state.itemsPerPage + index + 1)}
-                                />
-                              </td>
-                              <td>{this.state.activePage * this.state.itemsPerPage + index + 1}</td>
-                              <td>{item.firstName}</td>
-                              <td>{item.lastName}</td>
-                              <td>{item.email}</td>
-                              <td>{item.mobile}</td>
-                              <td>{item.modifiedDate.slice(0, item.modifiedDate.indexOf('T'))}</td>
-                            </tr>
-                          );
-                        })
-                      : ''}
-                    {users.length > 0 ? (
-                      ''
+                    {dataUser ? (
+                      dataUser.map((item, index) => {
+                        return (
+                          <tr id={item.id} key={`user-${index}`}>
+                            <td>
+                              <CustomInput
+                                checked={listCheckedCustomer.filter(customerId => customerId === item.id).length > 0}
+                                onClick={() => this.handleCheckedCustomer(item.id)}
+                                type="checkbox"
+                                id={'check-customers' + (this.state.activePage * this.state.itemsPerPage + index + 1)}
+                              />
+                            </td>
+                            <td>{this.state.activePage * this.state.itemsPerPage + index + 1}</td>
+                            <td>{item.firstName}</td>
+                            <td>{item.lastName}</td>
+                            <td>{item.email}</td>
+                            <td>{item.mobile}</td>
+                            <td>{item.modifiedDate.slice(0, item.modifiedDate.indexOf('T'))}</td>
+                          </tr>
+                        );
+                      })
                     ) : (
                       <tr>
                         <td colSpan={99}>

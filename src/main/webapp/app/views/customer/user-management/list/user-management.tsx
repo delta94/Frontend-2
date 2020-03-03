@@ -1050,7 +1050,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
               <div>
                 <Modal isOpen={modalRemoveCus} toggle={this.openModalRemoveCustomer}>
                   <ModalHeader toggle={this.openModalRemoveCustomer}>
-                    Bạn đang xóa{removeAllCustomers ? this.props.totalElements : listCheckedCustomer.length} thành viên
+                    Bạn đang xóa {removeAllCustomers ? this.props.totalElements : listCheckedCustomer.length} thành viên
                   </ModalHeader>
                   <ModalBody>
                     <Translate

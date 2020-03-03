@@ -91,15 +91,13 @@
 .verifiled-btn {
   display: flex;
   align-self: center;
-  color: green;
-}
-.verifile-btn {
-  display: flex;
-  align-self: center;
-  color: red;
+  align-items: center;
 }
 .delete-btn {
-  font-size: 30px;
+  font-size: 21px;
+  color: #9c9494;
+  margin-left: 5%;
   align-self: center;
   text-align: center;
+  cursor: pointer;
 }
