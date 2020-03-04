@@ -1,5 +1,9 @@
 {
   "diagram": {
+    "common": {
+      "label_new_diagram": "Tạo lưu đồ mới",
+      "button_save": "Lưu"
+    },
     "action_buttons": {
       "setting": "Cấu hình",
       "delete": "Xoá",
@@ -31,6 +35,13 @@
       "new_branch": "Rẽ nhánh",
 
       "end": "Kết thúc"
+    },
+    "modal": {
+      "title_tools": "Công cụ",
+      "title_config": "Cập nhật thông tin",
+      "label_name": "Tên",
+      "button_nok": "Đóng",
+      "button_ok": "Lưu"
     }
   }
 }

@@ -31,7 +31,7 @@ export function createFlowNodeWidget(type: string, node: NodeModel, portVisible:
         width={StartNodeModel.WIDTH}
         height={StartNodeModel.HEIGHT}
         portVisible={portVisible}
-        hasActionButton={true}
+        hasActionButton={false}
         canDelete={false}
         dropZoneVisible={dropZoneVisible}
       />

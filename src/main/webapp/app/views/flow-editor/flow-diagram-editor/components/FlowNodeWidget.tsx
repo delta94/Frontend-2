@@ -362,8 +362,8 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
         left: canDelete ? width / 2 - size - 1 : size / 2 + 3,
         icon: SettingIcon,
         onClick: async _ => {
-          if (node instanceof FlowNodeModel && node.eventHandlers && node.eventHandlers.onClickEventHandler) {
-            node.eventHandlers.onClickEventHandler(node, toNodeData(node));
+          if (node instanceof FlowNodeModel && node.eventHandlers && node.eventHandlers.onConfigClickEventHandler) {
+            node.eventHandlers.onConfigClickEventHandler(node, toNodeData(node));
           }
         }
       });

@@ -2,27 +2,23 @@ import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/reducers';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import { Button, Col, Collapse, Input, Row, Select } from 'antd';
-import {
-  DecisionGroupProcess,
-  DecisionNodeModel, DefaultGroupProcess,
-  ProcessNodeModel,
-  TrayItemWidget
-} from './flow-diagram-editor';
-import { translate } from 'react-jhipster';
+import { Button, Col, Collapse, Row } from 'antd';
+import { DecisionGroupProcess, DefaultGroupProcess, TrayItemWidget } from './flow-diagram-editor';
+import { Translate, translate } from 'react-jhipster';
 
 const { Panel } = Collapse;
 
-interface IFlowNodeModalProps extends StateProps, DispatchProps {
+interface IFlowNodeSelectionModalProps extends StateProps, DispatchProps {
   isOpenModal: boolean;
   toggleModal: Function;
   onClick: (event, data) => void;
 }
 
-interface IFlowNodeModalState {}
+interface IFlowNodeSelectionModalState {
+}
 
-export class FlowNodeModal extends React.Component<IFlowNodeModalProps, IFlowNodeModalState> {
-  state: IFlowNodeModalState = {};
+export class FlowNodeSelectionModal extends React.Component<IFlowNodeSelectionModalProps, IFlowNodeSelectionModalState> {
+  state: IFlowNodeSelectionModalState = {};
 
   toggle = async () => {
     let { toggleModal, isOpenModal } = this.props;
@@ -35,7 +31,7 @@ export class FlowNodeModal extends React.Component<IFlowNodeModalProps, IFlowNod
   };
 
   renderTrayItemWidget(type: string) {
-    return <TrayItemWidget model={{ type: type }} onClick={this.handleOnClick} isDrag={false} />;
+    return <TrayItemWidget model={{ type: type }} onClick={this.handleOnClick} isDrag={false}/>;
   }
 
   renderTrayItemLabelWidget(type: string) {
@@ -57,9 +53,9 @@ export class FlowNodeModal extends React.Component<IFlowNodeModalProps, IFlowNod
           <Collapse bordered={false} defaultActiveKey={['1']} expandIconPosition="right">
             <Panel header="Hành động" key="1">
               <Row className="row">
-                <Col style={{width: '64px'}}>
+                <Col style={{ width: '64px' }}>
                   {this.renderTrayItemWidget(DefaultGroupProcess.TYPE)}
-                  <div style={{width: '100%', textAlign: 'center'}}>
+                  <div style={{ width: '100%', textAlign: 'center' }}>
                     {this.renderTrayItemLabelWidget(DefaultGroupProcess.TYPE)}
                   </div>
                 </Col>
@@ -69,10 +65,10 @@ export class FlowNodeModal extends React.Component<IFlowNodeModalProps, IFlowNod
           <Collapse bordered={false} defaultActiveKey={['2']} expandIconPosition="right">
             <Panel header="Điều kiện" key="2">
               <Row className="row">
-                <Col style={{width: '90px'}}>
+                <Col style={{ width: '90px' }}>
                   {this.renderTrayItemWidget(DecisionGroupProcess.TYPE)}
                   <br/>
-                  <div style={{width: '100%', textAlign: 'center'}}>
+                  <div style={{ width: '100%', textAlign: 'center' }}>
 
                     {this.renderTrayItemLabelWidget(DecisionGroupProcess.TYPE)}
                   </div>
@@ -90,11 +86,11 @@ export class FlowNodeModal extends React.Component<IFlowNodeModalProps, IFlowNod
     let { isOpenModal } = this.props;
     return (
       <Modal isOpen={isOpenModal}>
-        <ModalHeader toggle={this.toggle}>Công cụ</ModalHeader>
+        <ModalHeader toggle={this.toggle}><Translate contentKey="diagram.modal.title_tools" /></ModalHeader>
         <ModalBody>{this.renderModalBody()}</ModalBody>
         <ModalFooter>
           <Button type="default" style={{ color: 'black' }} onClick={this.toggle}>
-            Hủy
+            <Translate contentKey="diagram.modal.button_nok" />
           </Button>
         </ModalFooter>
       </Modal>
@@ -109,4 +105,4 @@ const mapDispatchToProps = {};
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(FlowNodeModal);
+export default connect(mapStateToProps, mapDispatchToProps)(FlowNodeSelectionModal);

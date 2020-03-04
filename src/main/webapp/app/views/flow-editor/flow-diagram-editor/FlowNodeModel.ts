@@ -92,6 +92,16 @@ export class FlowNodeModel extends NodeModel {
     this._label = value;
   }
 
+  private _icon: string;
+
+  get icon(): string {
+    return this._icon;
+  }
+
+  set icon(value: string) {
+    this._icon = value;
+  }
+
   private _extraLabel: string;
 
   get extraLabel(): string {
