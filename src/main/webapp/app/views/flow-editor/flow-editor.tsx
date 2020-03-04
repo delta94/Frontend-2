@@ -368,8 +368,24 @@ export class FlowEditor extends React.Component<IFlowEditorProps, IFlowEditorSta
                         {infoCampaign.name ? infoCampaign.name : translate("diagram.common.label_new_diagram")}
                       </label>
 
-                      <Button onClick={() => {}} type="primary" style={{ float: 'right' }}>
+
+
+                      <Button onClick={() => {}} type="primary" style={{ float: 'right', marginLeft: '16px' }}>
                         <Translate contentKey="diagram.common.button_save" />
+                      </Button>
+
+                      <Button onClick={() => {
+                        this.editor.increaseZoomLevel(5);
+                        this.forceUpdate();
+                      }} type="ghost" style={{ float: 'right', marginLeft: '8px'  }}>
+                        +
+                      </Button>
+
+                      <Button onClick={() => {
+                        this.editor.decreaseZoomLevel(5);
+                        this.forceUpdate();
+                      }} type="ghost" style={{ float: 'right', marginLeft: '8px'  }}>
+                        -
                       </Button>
                     </Breadcrumb>
                   </Row>
@@ -382,7 +398,7 @@ export class FlowEditor extends React.Component<IFlowEditorProps, IFlowEditorSta
                 event.preventDefault();
               }}
             >
-              <DiagramWidget className="srd-flow-canvas" diagramEngine={this.editor.getDiagramEngine()} smartRouting={false} />
+              <DiagramWidget className="srd-flow-canvas" allowCanvasZoom={false} diagramEngine={this.editor.getDiagramEngine()} smartRouting={false} />
             </div>
           </Layout>
         </Layout>

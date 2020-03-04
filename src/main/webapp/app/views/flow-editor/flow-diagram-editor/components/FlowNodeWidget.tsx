@@ -16,6 +16,8 @@ export interface FlowNodeWidgetProps {
   type: string;
   icon: string;
   inactiveIcon: string;
+  iconBackground: string;
+  inactiveIconBackground: string;
   title: string;
   node: NodeModel;
   portVisible: boolean;
@@ -35,6 +37,8 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
     type: 'flow_node',
     icon: DefaultIcon,
     inactiveIcon: DefaultIcon,
+    iconBackground: DefaultIcon,
+    inactiveIconBackground: DefaultIcon,
     title: '',
     node: null,
     portVisible: true,
@@ -277,12 +281,11 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
     }
   }
 
-
-
   renderIcon() {
-    let { portVisible, node, inactiveIcon, icon } = this.props;
+    let { portVisible, node, inactiveIcon, icon, inactiveIconBackground, iconBackground } = this.props;
     let isActive = portVisible ? node && node instanceof FlowNodeModel && node.isActive : true;
     let hover = portVisible;
+    let customIcon = node && node instanceof FlowNodeModel ? node.icon : '';
     // let id = this.props.node ? this.props.node.getType() + '_' + this.props.node.getID() : this.props.type;
     const renderNoHover = () => {
       return (
@@ -292,15 +295,16 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
             zIndex: 1,
             width: this.props.width,
             height: this.props.height,
-            backgroundImage: `url(${isActive ? icon : inactiveIcon})`,
+            backgroundImage: `url(${isActive ? (customIcon && customIcon !== '' ? iconBackground : icon) : (customIcon && customIcon !== '' ? inactiveIconBackground : inactiveIcon)})`,
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover'
           }}
         >
-          {''}
+          {this.renderCustomIcon()}
         </div>
       );
     };
+
     const renderHover = () => {
       return (
         <div
@@ -309,11 +313,12 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
             zIndex: 1,
             width: this.props.width,
             height: this.props.height,
-            backgroundImage: `url(${hover ? inactiveIcon : icon})`,
+            backgroundImage: `url(${isActive ? (customIcon && customIcon !== '' ? iconBackground : icon) : (customIcon && customIcon !== '' ? inactiveIconBackground : inactiveIcon)})`,
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover'
           }}
         >
+          {this.renderCustomIcon()}
           {this.renderSettingActionButton()}
           {this.renderDeleteActionButton()}
         </div>
@@ -390,6 +395,21 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
     }
   }
 
+  renderCustomIcon() {
+    let {node, height, width } = this.props;
+    if (node && node instanceof FlowNodeModel) {
+      const size = 34;
+      return FlowNodeWidget.renderCustomIcon({
+        width: size,
+        height: size,
+        top: height / 2 - size / 2,
+        left: width / 2 - size / 2,
+        icon: node.icon,
+        iconSize: size
+      });
+    }
+  }
+
   renderExtraInfo() {
     let { portVisible, node, width } = this.props;
     if (portVisible && node && node instanceof FlowNodeModel && node.extraLabel) {
@@ -446,7 +466,7 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
       <div
         onClick={async event => {
           event.preventDefault();
-          props.onClick(event);
+          if(props.onClick) props.onClick(event);
         }}
         style={{
           position: 'absolute',
@@ -462,6 +482,22 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
       >
         {''}
       </div>
+    );
+  }
+
+  static renderCustomIcon(props: { width: number; height: number; top: number; left: number; icon: string; iconSize: number}) {
+    return (
+      <i style={{
+        position: 'absolute',
+        zIndex: 9,
+        top: props.top,
+        left: props.left,
+        width: props.width,
+        height: props.height,
+        fontSize: props.iconSize,
+        fontWeight: 'normal',
+        color: 'white'
+      }} className={props.icon}> </i>
     );
   }
 

@@ -131,7 +131,7 @@ export class FlowNodeConfigModal extends React.Component<IFlowNodeConfigModalPro
           <Button type="default" style={{ color: 'black' }} onClick={this.handleOnCancel}>
             <Translate contentKey="diagram.modal.button_nok" />
           </Button>
-          <Button type="primary" style={{ color: 'black' }} onClick={e => this.handleOnSubmit()}>
+          <Button type="primary" style={{ color: 'white', fontWeight: 'bolder' }} onClick={e => this.handleOnSubmit()}>
             <Translate contentKey="diagram.modal.button_ok" />
           </Button>
         </ModalFooter>

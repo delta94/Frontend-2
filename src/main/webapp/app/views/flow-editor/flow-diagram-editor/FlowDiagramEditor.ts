@@ -49,6 +49,8 @@ export class FlowDiagramEditor {
     this.diagramEngine.setDiagramModel(FlowDiagramEditor.createDiagramModel());
   }
 
+
+
   dropZoneVisible: boolean = false;
 
   public setDropZoneVisible(dropZoneVisible: boolean) {
@@ -135,6 +137,16 @@ export class FlowDiagramEditor {
       this.diagramEngine.recalculatePortsVisually();
       this.diagramEngine.repaintCanvas();
     }
+  }
+
+  public increaseZoomLevel(delta:number) {
+    let model = this.getActiveModel();
+    FlowDiagramEditor.increaseZoomLevel(model, delta);
+  }
+
+  public decreaseZoomLevel(delta:number) {
+    let model = this.getActiveModel();
+    FlowDiagramEditor.decreaseZoomLevel(model, delta);
   }
 
   private static createDiagramModel(): DiagramModel {
@@ -558,5 +570,13 @@ export class FlowDiagramEditor {
         }
       }
     }
+  }
+
+  private static increaseZoomLevel(model: DiagramModel, delta:number) {
+    if(model) model.setZoomLevel(model.getZoomLevel() + delta);
+  }
+
+  private static decreaseZoomLevel(model: DiagramModel, delta:number) {
+    if(model) model.setZoomLevel(model.getZoomLevel() - delta);
   }
 }

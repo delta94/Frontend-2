@@ -12,11 +12,15 @@ const DefaultIcon = require('./icons/default.png');
 
 const DecisionNodeIcon = require('./icons/decision.png');
 const InactiveDecisionNodeIcon = require('./icons/decision_disable.png');
+const DecisionNodeIconBackground = require('./icons/decision_no_icon.png');
+const InactiveDecisionNodeIconBackground = require('./icons/decision_no_icon_disable.png');
 const StartNodeIcon = require('./icons/start.png');
 const InactiveStartNodeIcon = require('./icons/start_disable.png');
 
 const ProcessNodeIcon = require('./icons/process.png');
 const InactiveProcessNodeIcon = require('./icons/process_disable.png');
+const ProcessNodeIconBackground = require('./icons/process_no_icon.png');
+const InactiveProcessNodeIconBackground = require('./icons/process_no_icon_disable.png');
 const EndNodeIcon = require('./icons/end.png');
 
 export function createFlowNodeWidget(type: string, node: NodeModel, portVisible: boolean, dropZoneVisible: boolean) {
@@ -44,6 +48,8 @@ export function createFlowNodeWidget(type: string, node: NodeModel, portVisible:
         type={type}
         icon={ProcessNodeIcon}
         inactiveIcon={ProcessNodeIcon}
+        iconBackground={ProcessNodeIconBackground}
+        inactiveIconBackground={ProcessNodeIconBackground}
         title={''}
         width={ProcessNodeModel.WIDTH}
         height={ProcessNodeModel.HEIGHT}
@@ -60,6 +66,8 @@ export function createFlowNodeWidget(type: string, node: NodeModel, portVisible:
         type={type}
         icon={DecisionNodeIcon}
         inactiveIcon={DecisionNodeIcon}
+        iconBackground={DecisionNodeIconBackground}
+        inactiveIconBackground={DecisionNodeIconBackground}
         title={''}
         width={DecisionNodeModel.WIDTH}
         height={DecisionNodeModel.HEIGHT}
