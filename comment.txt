@@ -53,41 +53,39 @@ You can probably remove jsonwebtoken //done
 You can probably remove mobx //done
 You can probably remove mobx-react //done
 You can probably remove node-sass //done
-You can probably remove react-addons-shallow-compare
-You can probably remove react-bootstrap-daterangepicker
-You can probably remove react-bootstrap-sweetalert
-You can probably remove react-bootstrap-table2-paginator
-You can probably remove react-chartist
-You can probably remove react-chat-elements
-You can probably remove react-dropdown
-You can probably remove react-filterable-table
-You can probably remove react-flag-icon-css
-You can probably remove react-froala-wysiwyg
-You can probably remove react-getscreen
-You can probably remove react-google-login
-You can probably remove react-google-maps
-You can probably remove react-icons
-You can probably remove react-js-pagination
-You can probably remove react-loadable
-You can probably remove react-map-gl
-You can probably remove react-multistep
-You can probably remove react-native-search-bar
-You can probably remove react-nouislider
-You can probably remove react-on-screen
-You can probably remove react-pagify
-You can probably remove react-progress-steps
-You can probably remove react-redux-form
-You can probably remove react-scripts
-You can probably remove react-scroll
-You can probably remove react-scrollspy
-You can probably remove react-sizeme
-You can probably remove react-syntax-highlighter
-You can probably remove react-widgets-globalize
-You can probably remove react-widgets-moment
-You can probably remove redux-form
-You can probably remove redux-logger
-You can probably remove slick-carousel
-You can probably remove svg-react-loader
-You can probably remove window-resize-listener-react
+You can probably remove react-addons-shallow-compare //done
+You can probably remove react-bootstrap-daterangepicker //done
+You can probably remove react-bootstrap-sweetalert // done danger
+You can probably remove react-bootstrap-table2-paginator // done
+You can probably remove react-chartist //done
+You can probably remove react-chat-elements //done
+You can probably remove react-dropdown //done
+You can probably remove react-filterable-table //done
+You can probably remove react-flag-icon-css //done
+You can probably remove react-froala-wysiwyg  //done
+You can probably remove react-getscreen //done
+You can probably remove react-google-login //done
+You can probably remove react-google-maps //done
+You can probably remove react-icons // done
+You can probably remove react-js-pagination //done
+You can probably remove react-loadable //done
+You can probably remove react-map-gl //done
+You can probably remove react-multistep //done
+You can probably remove react-native-search-bar //done
+You can probably remove react-nouislider //done
+You can probably remove react-on-screen //done
+
+
+You can probably remove react-pagify //done
+You can probably remove react-progress-steps //done
+You can probably remove react-scripts //done
+You can probably remove react-scroll //done
+You can probably remove react-scrollspy //done
+You can probably remove react-sizeme //done
+You can probably remove react-syntax-highlighter //done
+You can probably remove react-widgets-globalize //done
+You can probably remove react-widgets-moment //done
+You can probably remove svg-react-loader //done
+You can probably remove window-resize-listener-react //done
 
 Process finished with exit code 0
