@@ -14,6 +14,7 @@ const UserCampaign = lazy(() => import('app/views/campaign/user-campaign'));
 const CampaignManagement = lazy(() => import('app/views/campaign/campaign-automation/campaign-management'));
 
 const GGEditor = lazy(() => import('app/views/ggeditor'));
+const FlowEditor = lazy(() => import('app/views/flow-editor'));
 // const UserPages = lazy(() => import('app/DemoPages/UserPages'));
 // const Applications = lazy(() => import('app/DemoPages/Applications'));
 // const Dashboards = lazy(() => import('app/DemoPages/Dashboards'));
@@ -35,6 +36,11 @@ const AppRoutes = () => {
   </div>);
   return (
     <Fragment>
+      {/* Flow Editor */}
+      <Suspense fallback={loader}>
+        <Route path="/flow-editor" component={FlowEditor}/>
+      </Suspense>
+
       {/* Login */}
       <Suspense fallback={loader}>
         <Route path="/flow" component={GGEditor}/>

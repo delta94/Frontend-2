@@ -1,5 +1,49 @@
 npm run webpack:prod
 
+http://member-platform.labo.io/
+1/ Quản lý khách hàng: http://member-platform.labo.io/#/app/views/customers/user-management
+    1.1/ Thêm mới/xoá: popup
+    1.2/ Sửa thông tin khách hàng: http://member-platform.labo.io/#/app/views/customers/user-management/info/53d1bd86-7e59-4114-867b-05221b0028e3
+    1.3/ Import thông tin khách hàng: http://member-platform.labo.io/#/app/views/customers/user-management/new
+    1/4/ Xuất dữ liệu thông tin khách hàng: file
+    
+2/ Quản lý nhóm: http://member-platform.labo.io/#/app/views/customers/user-group
+    2.1/ Thêm mới/sửa/xoá: popup (hiện nhóm là bộ filter, khi thực hiện và khi cấu hình kết quả sẽ khác nhau)
+
+3/ Quản lý thuộc tính khách hàng (động): http://member-platform.labo.io/#/app/views/customers/user-properties
+    3.1/ Thêm mới/sửa/xoá: popup
+    3.1/ Thêm từ template: popup
+
+4/ Quản lý tag: http://member-platform.labo.io/#/app/views/customers/tag-management
+    4.1/ Thêm mới/sửa/xoá: popup => đùng làm thuộc tính cho khách hàng
+    
+    
+5/ Cấu hình email: http://member-platform.labo.io/#/app/views/config/emails
+    5.1/ Thêm mới: http://member-platform.labo.io/#/app/views/config/emails/add
+    5.2/ Thêm mới từ template: http://member-platform.labo.io/#/app/views/config/email-template
+    
+6/ Cấu hình email gửi: http://member-platform.labo.io/#/app/views/config/email-profile
+    6.1/ Thêm mới: popup
+
+7/ Dashboard chiến dịch tự động: http://member-platform.labo.io/#/app/views/campaigns/campaign-auto
+    7.1/ Xem chi tiết topo không sửa được (trạng thái khác bản nháp) : http://member-platform.labo.io/#/flow/details
+    7.2/ Xem chi tiết topo sửa được (trạng thái bản nháp): http://member-platform.labo.io/#/flow
+    
+    
+8/ Chiến dịch tự động: http://member-platform.labo.io/#/app/views/campaigns/campaign-management
+    8.1/ Tạo mới: http://member-platform.labo.io/#/app/views/campaigns/campaign-management/new
+        8.1.1/ Tạo không theo mẫu: click tạo mới => http://member-platform.labo.io/#/flow
+        8.1.2/ Tạo theo mẫu: click template => http://member-platform.labo.io/#/flow
+    8.2/ Xem chi tiết: http://member-platform.labo.io/#/flow/details
+    8.3/ Xem danh sách version: http://member-platform.labo.io/#/app/views/campaigns/campaign-management/version/f9427818-540c-4499-9c90-a42d95e94d9e
+    8.4/ Tạo mới/sửa/xoá thư mục: popup
+    8.5/ Chọn tag/tạo mới tag: popup
+
+9/ Chiến dịch khách hàng: http://member-platform.labo.io/#/app/views/campaigns/user-campaign
+    9.1/ Thêm mới chiến dịch: http://member-platform.labo.io/#/app/views/campaigns/user-campaign/new
+    9.2/ Xem thông tin: popup
+
+
 NAV MENU : webapp/app/app.tsx => AppRoutes: \webapp\app\routes\index.tsx
 LOGIN : \webapp\app\views\login\login.tsx,
 ------------------------------------------------------- CUSTOMER MANAGEMET -----------------------------------------
