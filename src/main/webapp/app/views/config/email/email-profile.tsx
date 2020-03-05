@@ -215,17 +215,16 @@ class EmailSendManagement extends React.Component<IEmailSendManagementProps, IEm
     let { totalPages, loading, emailProfileData, totalElements, authentication } = this.props;
     const { emailForm, fromNameForm } = this.state;
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
-    console.log(authentication);
     return (
       <Fragment>
-        <div className="email-management">
+        <div>
           <Row>
             <div className="email-title-header">
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div>
                   {' '}
-                  <h4>
-                    Cấu hình email gửi&nbsp;
+                  <div>
+                    <span>Cấu hình email gửi&nbsp;</span>
                     <Tooltip
                       placement="rightTop"
                       title="Địa chỉ email gửi từ hệ thống.Các chiến dịch sử dụng
@@ -234,8 +233,7 @@ class EmailSendManagement extends React.Component<IEmailSendManagementProps, IEm
                     >
                       <Icon type="question-circle" style={{ verticalAlign: 'text-top', fontSize: 15 }} />
                     </Tooltip>
-                  </h4>
-                  <div>Email gửi cần được xác thực trước khi được sử đụng trong các chiến dịch</div>
+                  </div>
                 </div>
                 <Button className="mb-2 mr-2" color="primary" onClick={this.showDrawer} style={{ alignSelf: 'flex-end' }}>
                   Thêm mới email
@@ -243,7 +241,10 @@ class EmailSendManagement extends React.Component<IEmailSendManagementProps, IEm
               </div>
             </div>
           </Row>
-          <div style={{ margin: '10px 0px' }}> &nbsp; {totalElements} bản ghi</div>
+          <div className="header-title">
+            <div style={{ margin: '10px 0px' }}> &nbsp; {totalElements} bản ghi</div>
+            <div style={{ paddingRight: '2%' }}>Email gửi cần được xác thực trước khi được sử đụng trong các chiến dịch &nbsp; </div>
+          </div>
           {/*drawer*/}
           <div>
             <Drawer
@@ -294,13 +295,13 @@ class EmailSendManagement extends React.Component<IEmailSendManagementProps, IEm
                 itemLayout="horizontal"
                 dataSource={emailProfileData && emailProfileData}
                 renderItem={emaiProfile => (
-                  <List.Item>
+                  <List.Item className="list-item">
                     <List.Item.Meta
                       avatar={<i className="fas fa-envelope"></i>}
                       title={<b>{emaiProfile.email}</b>}
                       description={emaiProfile.fromName}
                     />
-                    <div style={{ display: 'flex', width: '100%', justifyContent: 'flex-end', paddingRight: '4%' }}>
+                    <div style={{ display: 'flex', width: '100%', justifyContent: 'flex-end', paddingRight: '2%' }}>
                       <div className="group-icons" style={{ display: 'flex', justifyContent: 'space-around' }}>
                         {emaiProfile.isDefault === 1 && emaiProfile.isActivated === 1 && (
                           <Button
@@ -340,33 +341,31 @@ class EmailSendManagement extends React.Component<IEmailSendManagementProps, IEm
                         {// when send code verifile
                         emaiProfile.isActivated !== 1 && (
                           <div style={{ display: 'flex' }}>
-                            <Button
-                              outline
-                              className="verifiled-btn mb-2 mr-2"
-                              color="danger"
-                              onClick={() => this.hanldeReActiveEmail(emaiProfile.id)}
-                            >
-                              Gửi lại mã xác thực
-                            </Button>
                             <Tooltip
                               placement="bottom"
                               title="Vì sao cần xác thực email ?
                       Xác thực giúp chúng tôi xác nhận email của bạn có tồn tại,
                       tăng độ tin cậy khi gửi email"
                             >
-                              <Icon type="question-circle" style={{ padding: 5 }} />
+                              <Button
+                                outline
+                                className="verifiled-btn mb-2 mr-2"
+                                color="danger"
+                                onClick={() => this.hanldeReActiveEmail(emaiProfile.id)}
+                              >
+                                Gửi lại mã xác thực
+                              </Button>
                             </Tooltip>
                           </div>
                         )}
                       </div>
-
-                      {emaiProfile.isDefault !== 1 && (
-                        <div className="delete-btn">
+                      <div className="delete-btn">
+                        {emaiProfile.isDefault !== 1 && (
                           <span onClick={() => this.hanldeDeleteEmail(emaiProfile.id)}>
                             <FontAwesomeIcon icon={faTrashAlt} />
                           </span>
-                        </div>
-                      )}
+                        )}
+                      </div>
                     </div>
                   </List.Item>
                 )}
