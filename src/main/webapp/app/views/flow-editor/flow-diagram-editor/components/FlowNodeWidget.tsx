@@ -3,7 +3,8 @@ import { NodeModel, PortModel, PortWidget } from 'storm-react-diagrams';
 import { FlowNodeModel } from '../FlowNodeModel';
 import { FlowNodePortModel } from '../FlowNodePortModel';
 import { toNodeData } from '../FlowDiagramUtil';
-
+import SVG from 'react-inlinesvg';
+const S = require('string');
 const DefaultIcon = require('../icons/default.png');
 const DefaultExtraIcon = require('../icons/default_extra_icon.png');
 const AddIcon = require('../icons/add.png');
@@ -486,19 +487,27 @@ export class FlowNodeWidget extends React.Component<FlowNodeWidgetProps, FlowNod
   }
 
   static renderCustomIcon(props: { width: number; height: number; top: number; left: number; icon: string; iconSize: number}) {
-    return (
-      <i style={{
-        position: 'absolute',
-        zIndex: 9,
-        top: props.top,
-        left: props.left,
-        width: props.width,
-        height: props.height,
-        fontSize: props.iconSize,
-        fontWeight: 'normal',
-        color: 'white'
-      }} className={props.icon}> </i>
-    );
+    if(props.icon && props.icon !== ''){
+      return (
+        <SVG
+          uniquifyIDs={true}
+          preProcessor={code => code.replace(/fill=".*?"/g, 'fill="#FFFFFF"')}
+          style={{
+            position: 'absolute',
+            zIndex: 9,
+            top: props.top,
+            left: props.left,
+            width: props.width,
+            height: props.height,
+            fontSize: props.iconSize,
+            fontWeight: 'normal',
+            color: 'white'
+          }} src={require('../icons/svg/' + S(props.icon).chompLeft('lnr-').s + '.svg')}/>
+      );
+    } else {
+      return  ('');
+    }
+
   }
 
   static renderExtraInfo(props: {

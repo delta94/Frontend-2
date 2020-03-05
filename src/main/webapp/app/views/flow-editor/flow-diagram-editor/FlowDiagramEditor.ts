@@ -236,10 +236,8 @@ export class FlowDiagramEditor {
     dropZoneVisible: boolean,
     eventHandlers: FlowNodeEventHandlers
   ): boolean {
-    console.log(groupProcess);
     if (groupProcess && groupProcess.isValid() && position) {
       for (let node of groupProcess.nodes) {
-        console.log(node);
         if (node) {
           if (node instanceof FlowNodeModel) {
             node.readOnly = readOnly;

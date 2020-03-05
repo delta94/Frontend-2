@@ -44,7 +44,8 @@ import { DiagramWidget } from 'storm-react-diagrams';
 import { FlowNodeSelectionModal } from './flow-node-selection-modal';
 import { FlowNodeConfigModal } from './flow-node-config-modal';
 import { FlowNodeModel } from 'app/views/flow-editor/flow-diagram-editor/FlowNodeModel';
-
+import domtoimage from 'dom-to-image-improved';
+import { saveAs } from 'file-saver';
 const ButtonGroup = Button.Group;
 const { confirm } = Modal;
 
@@ -370,7 +371,9 @@ export class FlowEditor extends React.Component<IFlowEditorProps, IFlowEditorSta
 
 
 
-                      <Button onClick={() => {}} type="primary" style={{ float: 'right', marginLeft: '16px' }}>
+                      <Button onClick={() => {
+                        this.renderPdf();
+                      }} type="primary" style={{ float: 'right', marginLeft: '16px' }}>
                         <Translate contentKey="diagram.common.button_save" />
                       </Button>
 
@@ -393,6 +396,7 @@ export class FlowEditor extends React.Component<IFlowEditorProps, IFlowEditorSta
               </Row>
             </Header>
             <div
+              id={'flow-editor'}
               className="diagram-layer"
               onDragOver={event => {
                 event.preventDefault();
@@ -404,6 +408,13 @@ export class FlowEditor extends React.Component<IFlowEditorProps, IFlowEditorSta
         </Layout>
       </div>
     );
+  }
+
+  renderPdf(){
+    domtoimage.toBlob(document.getElementById('flow-editor'))
+      .then(function (blob) {
+        saveAs(blob, 'flow-diagram.png');
+      });
   }
 
   render() {
