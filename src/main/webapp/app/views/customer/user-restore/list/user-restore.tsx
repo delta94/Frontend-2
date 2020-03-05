@@ -697,30 +697,24 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
           {/* Title */}
           <div className="userRestore">
             <div id="title-common-header">
-              <span id="text-title">
-                <Translate contentKey="userRestore.home.title" />
-              </span>
+              <Tooltip
+                placement="rightTop"
+                title="Khách hàng đã xóa khỏi danh sách khách hàng được hiển thị tại mục này trong vòng 90 ngày (kể từ thời điểm xóa)"
+              >
+                <span id="text-title">
+                  <Translate contentKey="userRestore.home.title" />
+                </span>
+                <Icon type="question-circle" style={{ verticalAlign: 'text-top', fontSize: 15 }} />
+              </Tooltip>
+              <div style={{ color: 'blue', fontSize: 13, float: 'right' }}>
+                <Link to={`/app/views/customers/user-management`}>
+                  <Icon type="arrow-left" style={{ verticalAlign: 'baseline' }} /> Quay lại danh sách khách hàng
+                </Link>
+              </div>
             </div>
             {/* Panel */}
             <div className="panel">
               <div>
-                <div style={{ color: 'blue' }}>
-                  <Link to={`/app/views/customers/user-management`}>
-                    <Icon type="arrow-left" style={{ verticalAlign: 'baseline' }} /> Quay lại Danh sách khách hàng trong danh sách này
-                  </Link>
-                </div>
-                <br />
-                <h4>
-                  Khôi phục khách hàng&nbsp;
-                  <Tooltip
-                    placement="rightTop"
-                    title="Khách hàng đã xóa khỏi danh sách khách hàng được hiển thị tại mục này trong vòng 90 ngày (kể từ thời điểm xóa)"
-                  >
-                    <Icon type="question-circle" style={{ verticalAlign: 'text-top', fontSize: 15 }} />
-                  </Tooltip>
-                </h4>
-                <div style={{ color: 'gray' }}>*Khách hàng đã xóa chỉ được khôi phục trong 90 ngày</div>
-                <br />
                 <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                   <div>
                     <span className="label-search">Tìm theo ngày </span>
@@ -960,7 +954,8 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
                   </tbody>
                 </Table>
               </div>
-              <Row className="justify-content-center" style={{ float: 'right', marginTop: '1%' }}>
+              <Row style={{ alignItems: 'baseline', marginTop: '1%', display: 'flex', justifyContent: 'space-between' }}>
+                <div style={{ color: 'gray' }}>&nbsp; *Khách hàng đã xóa chỉ được khôi phục trong 90 ngày</div>
                 {this.props.totalElements >= 10 ? (
                   <ReactPaginate
                     previousLabel={'<'}
@@ -980,7 +975,6 @@ export class UserRestore extends React.Component<IUserRestoreProps, IUserRestore
                   ''
                 )}
               </Row>
-              <br />
             </div>
           </div>
         </Fragment>
