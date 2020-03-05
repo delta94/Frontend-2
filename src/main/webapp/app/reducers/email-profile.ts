@@ -24,6 +24,7 @@ export interface IEmailTemplateCategory {
 
 const initialState = {
   loading: false,
+  loadingForm: false,
   emailTemplateData: {} as IEmailTemplateData,
   emailProfileData: {} as IEmailProfileData,
   contentParams: [] as IContentParams[],
@@ -38,7 +39,6 @@ export type EmailProfileState = Readonly<typeof initialState>;
 export default (state: EmailProfileState = initialState, action): EmailProfileState => {
   switch (action.type) {
     case REQUEST(EMAIL_PROFILE.GET_EMAIL):
-    case REQUEST(EMAIL_PROFILE.CREATE_EMAIL):
     case REQUEST(EMAIL_PROFILE.DELETE_EMAIL):
     case REQUEST(EMAIL_PROFILE.SEND_CODE_ACTIVE_EMAIL):
     case REQUEST(EMAIL_PROFILE.SET_DEFAULT_EMAIL):
@@ -47,6 +47,11 @@ export default (state: EmailProfileState = initialState, action): EmailProfileSt
         ...state,
         loading: true
       };
+    case REQUEST(EMAIL_PROFILE.CREATE_EMAIL):
+      return {
+        ...state,
+        loadingForm: true
+      };
 
     case FAILURE(EMAIL_PROFILE.GET_EMAIL):
     case FAILURE(EMAIL_PROFILE.CREATE_EMAIL):
@@ -54,10 +59,10 @@ export default (state: EmailProfileState = initialState, action): EmailProfileSt
     case FAILURE(EMAIL_PROFILE.SEND_CODE_ACTIVE_EMAIL):
     case FAILURE(EMAIL_PROFILE.SET_DEFAULT_EMAIL):
     case FAILURE(EMAIL_PROFILE.VERIFILE_EMAIL):
-      toast.error(ERROR);
       return {
         ...state,
-        loading: false
+        loading: false,
+        loadingForm: false
       };
 
     case SUCCESS(EMAIL_PROFILE.GET_EMAIL):
@@ -72,6 +77,7 @@ export default (state: EmailProfileState = initialState, action): EmailProfileSt
       return {
         ...state,
         loading: false,
+        loadingForm: false,
         verifileCode: action.payload.data
       };
     case SUCCESS(EMAIL_PROFILE.DELETE_EMAIL):

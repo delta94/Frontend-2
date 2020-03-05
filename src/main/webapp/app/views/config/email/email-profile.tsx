@@ -195,13 +195,15 @@ class EmailSendManagement extends React.Component<IEmailSendManagementProps, IEm
         check = false;
       }
       if (check) {
-        await this.props.getEmailsProfile();
         await this.setState({
           emailForm: '',
-          fromNameForm: ''
+          fromNameForm: '',
+          visible: false
         });
-        this.showInfoSendCodeVerifile();
-        this.onClose();
+        await this.props.getEmailsProfile();
+        setTimeout(() => {
+          this.showInfoSendCodeVerifile();
+        }, 100);
       }
     } else if (!this.validateEmail(emailForm)) {
       toast.error('Bạn đã nhập sai định dạng email !');
@@ -212,7 +214,7 @@ class EmailSendManagement extends React.Component<IEmailSendManagementProps, IEm
   };
 
   render() {
-    let { totalPages, loading, emailProfileData, totalElements, authentication } = this.props;
+    let { totalPages, loading, emailProfileData, totalElements, authentication, loadingForm } = this.props;
     const { emailForm, fromNameForm } = this.state;
     const spinner1 = <LoaderAnim type="ball-pulse" active={true} />;
     return (
@@ -243,7 +245,9 @@ class EmailSendManagement extends React.Component<IEmailSendManagementProps, IEm
           </Row>
           <div className="header-title">
             <div style={{ margin: '10px 0px' }}> &nbsp; {totalElements} bản ghi</div>
-            <div style={{ paddingRight: '2%' }}>Email gửi cần được xác thực trước khi được sử đụng trong các chiến dịch &nbsp; </div>
+            <div style={{ paddingRight: '2%', fontStyle: 'italic' }}>
+              Email gửi cần được xác thực trước khi được sử đụng trong các chiến dịch &nbsp;{' '}
+            </div>
           </div>
           {/*drawer*/}
           <div>
@@ -255,38 +259,40 @@ class EmailSendManagement extends React.Component<IEmailSendManagementProps, IEm
               visible={this.state.visible}
               bodyStyle={{ paddingBottom: 80 }}
             >
-              <label htmlFor="">Địa chỉ gửi</label>
-              <Input
-                value={emailForm}
-                name="email"
-                onChange={event => {
-                  this.setState({ emailForm: event.target.value });
-                }}
-              ></Input>
-              <br />
-              <br />
-              <label htmlFor="">Tên người gửi</label>
-              <Input
-                value={fromNameForm}
-                name="fromName"
-                onChange={event => {
-                  this.setState({ fromNameForm: event.target.value });
-                }}
-              ></Input>
-              <Button
-                outline
-                className="btn-confirm-email mb-2 mr-2"
-                color="primary"
-                disabled={!emailForm || !fromNameForm}
-                onClick={this.hanldeCreateEmail}
-              >
-                Xác thực email này
-              </Button>
-              <div className="email-note">
-                Vì cần xác thực email ?
+              <Loader message={spinner1} show={loadingForm} priority={1}>
+                <label htmlFor="">Địa chỉ gửi</label>
+                <Input
+                  value={emailForm}
+                  name="email"
+                  onChange={event => {
+                    this.setState({ emailForm: event.target.value });
+                  }}
+                ></Input>
                 <br />
-                Xác thực giúp chúng tôi xác định email của bạn có tồn tại, tăng độ tin cậy khi gửi đi
-              </div>
+                <br />
+                <label htmlFor="">Tên người gửi</label>
+                <Input
+                  value={fromNameForm}
+                  name="fromName"
+                  onChange={event => {
+                    this.setState({ fromNameForm: event.target.value });
+                  }}
+                ></Input>
+                <Button
+                  outline
+                  className="btn-confirm-email mb-2 mr-2"
+                  color="primary"
+                  disabled={!emailForm || !fromNameForm}
+                  onClick={this.hanldeCreateEmail}
+                >
+                  Xác thực email này
+                </Button>
+                <div className="email-note">
+                  Vì cần xác thực email ?
+                  <br />
+                  Xác thực giúp chúng tôi xác định email của bạn có tồn tại, tăng độ tin cậy khi gửi đi
+                </div>
+              </Loader>
             </Drawer>
           </div>
           <Row>
@@ -380,6 +386,7 @@ class EmailSendManagement extends React.Component<IEmailSendManagementProps, IEm
 
 const mapStateToProps = ({ emailProfileState, authentication }: IRootState) => ({
   loading: emailProfileState.loading,
+  loadingForm: emailProfileState.loadingForm,
   emailProfileData: emailProfileState.emailProfileData.content,
   totalElements: emailProfileState.emailProfileData.totalElements,
   totalPages: emailProfileState.emailProfileData.totalPages,
