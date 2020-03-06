@@ -420,15 +420,18 @@ export class FlowEditor extends React.Component<IFlowEditorProps, IFlowEditorSta
   renderPdf(){
     this.editor.zoomToFit();
     this.forceUpdate();
-    domtoimage.toSvg(document.getElementById('flow-editor'), {scale: this.editor.getScaleRatio()*1.5})
-      .then(function (dataUrl) {
 
+    domtoimage.toBlob(document.getElementById('flow-editor'), {scale: this.editor.getScaleRatio()*1.5})
+      .then(function (blob) {
+        saveAs(blob, 'flow-diagram.png');
       });
 
-    // domtoimage.toBlob(document.getElementById('flow-editor'), {scale: this.editor.getScaleRatio()*1.5})
-    //   .then(function (blob) {
-    //     saveAs(blob, 'flow-diagram.pdf');
+    // domtoimage.toSvg(document.getElementById('flow-editor'), {scale: this.editor.getScaleRatio()*1.5})
+    //   .then(function (dataUrl) {
+    //
     //   });
+
+
   }
 
   render() {
