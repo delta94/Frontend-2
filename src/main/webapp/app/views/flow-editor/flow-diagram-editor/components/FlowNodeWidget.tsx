@@ -5,11 +5,11 @@ import { FlowNodePortModel } from '../FlowNodePortModel';
 import { toNodeData } from '../FlowDiagramUtil';
 import SVG from 'react-inlinesvg';
 const S = require('string');
-const DefaultIcon = require('../icons/default.png');
-const DefaultExtraIcon = require('../icons/default_extra_icon.png');
-const AddIcon = require('../icons/add.png');
-const SettingIcon = require('../icons/setting.png');
-const DeleteIcon = require('../icons/delete.png');
+const DefaultIcon = require('../icons/default.svg');
+const DefaultExtraIcon = require('../icons/default_extra_icon.svg');
+const AddIcon = require('../icons/add.svg');
+const SettingIcon = require('../icons/setting.svg');
+const DeleteIcon = require('../icons/delete.svg');
 
 export interface FlowNodeWidgetProps {
   width: number;

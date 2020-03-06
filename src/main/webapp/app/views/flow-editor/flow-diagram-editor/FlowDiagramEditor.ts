@@ -139,6 +139,18 @@ export class FlowDiagramEditor {
     }
   }
 
+  public zoomToFit() {
+    this.diagramEngine.zoomToFit()
+  }
+
+  public getScaleRatio(){
+    let model = this.getActiveModel();
+    if(model){
+      return 100/model.getZoomLevel();
+    }
+    return  1.0;
+  }
+
   public increaseZoomLevel(delta:number) {
     let model = this.getActiveModel();
     FlowDiagramEditor.increaseZoomLevel(model, delta);
