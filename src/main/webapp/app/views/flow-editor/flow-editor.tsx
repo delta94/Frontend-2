@@ -390,6 +390,13 @@ export class FlowEditor extends React.Component<IFlowEditorProps, IFlowEditorSta
                       }} type="ghost" style={{ float: 'right', marginLeft: '8px'  }}>
                         -
                       </Button>
+
+                      <Button onClick={() => {
+                        this.editor.zoomToFit();
+                        this.forceUpdate();
+                      }} type="ghost" style={{ float: 'right', marginLeft: '8px'  }}>
+                        [//]
+                      </Button>
                     </Breadcrumb>
                   </Row>
                 </Col>
@@ -411,10 +418,17 @@ export class FlowEditor extends React.Component<IFlowEditorProps, IFlowEditorSta
   }
 
   renderPdf(){
-    domtoimage.toBlob(document.getElementById('flow-editor'))
-      .then(function (blob) {
-        saveAs(blob, 'flow-diagram.png');
+    this.editor.zoomToFit();
+    this.forceUpdate();
+    domtoimage.toSvg(document.getElementById('flow-editor'), {scale: this.editor.getScaleRatio()*1.5})
+      .then(function (dataUrl) {
+
       });
+
+    // domtoimage.toBlob(document.getElementById('flow-editor'), {scale: this.editor.getScaleRatio()*1.5})
+    //   .then(function (blob) {
+    //     saveAs(blob, 'flow-diagram.pdf');
+    //   });
   }
 
   render() {

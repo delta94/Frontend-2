@@ -12,18 +12,8 @@ import {
   GroupProcess, NewBranchGroupProcess
 } from './GroupProcess';
 
-const DefaultIcon = require('./icons/default.png');
-
-const DecisionNodeIcon = require('./icons/decision.png');
-const InactiveDecisionNodeIcon = require('./icons/decision_disable.png');
-const StartNodeIcon = require('./icons/start.png');
-const InactiveStartNodeIcon = require('./icons/start_disable.png');
-
-const ProcessNodeIcon = require('./icons/process.png');
-const InactiveProcessNodeIcon = require('./icons/process_disable.png');
-const EndNodeIcon = require('./icons/end.png');
-
-const NewBranchNodeIcon = require('./icons/new_branch.png');
+const DecisionNodeIcon = require('./icons/decision.svg');
+const ProcessNodeIcon = require('./icons/process.svg');
 
 export function createGroupProcessWidget(type: string) {
   if (type && type === DefaultGroupProcess.TYPE)
@@ -55,22 +45,6 @@ export function createGroupProcessWidget(type: string) {
         portVisible={false}
         hasActionButton={true}
         canDelete={true}
-        dropZoneVisible={false}
-      />
-    );
-  else if (type && type === NewBranchGroupProcess.TYPE)
-    return (
-      <FlowNodeWidget
-        node={null}
-        type={type}
-        icon={NewBranchNodeIcon}
-        inactiveIcon={NewBranchNodeIcon}
-        title={''}
-        width={DecisionNodeModel.WIDTH}
-        height={DecisionNodeModel.HEIGHT}
-        portVisible={false}
-        hasActionButton={false}
-        canDelete={false}
         dropZoneVisible={false}
       />
     );

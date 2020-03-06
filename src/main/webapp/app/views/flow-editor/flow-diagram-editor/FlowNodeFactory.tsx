@@ -8,20 +8,13 @@ import {
 import * as React from 'react';
 import { FlowNodeWidget } from './components/FlowNodeWidget';
 
-const DefaultIcon = require('./icons/default.png');
+const DecisionNodeIcon = require('./icons/decision.svg');
+const DecisionNodeIconBackground = require('./icons/decision_no_icon.svg');
+const StartNodeIcon = require('./icons/start.svg');
 
-const DecisionNodeIcon = require('./icons/decision.png');
-const InactiveDecisionNodeIcon = require('./icons/decision_disable.png');
-const DecisionNodeIconBackground = require('./icons/decision_no_icon.png');
-const InactiveDecisionNodeIconBackground = require('./icons/decision_no_icon_disable.png');
-const StartNodeIcon = require('./icons/start.png');
-const InactiveStartNodeIcon = require('./icons/start_disable.png');
-
-const ProcessNodeIcon = require('./icons/process.png');
-const InactiveProcessNodeIcon = require('./icons/process_disable.png');
-const ProcessNodeIconBackground = require('./icons/process_no_icon.png');
-const InactiveProcessNodeIconBackground = require('./icons/process_no_icon_disable.png');
-const EndNodeIcon = require('./icons/end.png');
+const ProcessNodeIcon = require('./icons/process.svg');
+const ProcessNodeIconBackground = require('./icons/process_no_icon.svg');
+const EndNodeIcon = require('./icons/end.svg');
 
 export function createFlowNodeWidget(type: string, node: NodeModel, portVisible: boolean, dropZoneVisible: boolean) {
   if (type && type === StartNodeModel.TYPE)
