@@ -1,0 +1,8 @@
+{
+  "email-management": {
+    "title": "Quản lý email",
+    "button": {
+      "add-email-wizard": "Thêm mới email"
+    }
+  }
+}

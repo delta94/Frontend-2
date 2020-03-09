@@ -7,7 +7,7 @@ import LoaderAnim from 'react-loaders';
 const Admin = lazy(() => import('app/views/customer'));
 const Pages = lazy(() => import('app/views/pages'));
 const Login = lazy(() => import('app/views/login'));
-const Config = lazy(() => import('app/views/config'));
+const Config = lazy(() => import('app/views/email-management'));
 // const Campaign = lazy(() => import('app/views/campaign'));
 const CampaignAuto = lazy(() => import('app/views/campaign/campaign-automation'));
 const UserCampaign = lazy(() => import('app/views/campaign/user-campaign'));

@@ -7,6 +7,7 @@ import EmailManagement from './email/email';
 import EmailForm from './email/form/email-form';
 import EmailTemplateManagement from './email-template/email-template';
 import EmailSendManagement from './email/email-profile';
+import AddEmailWizard from './add-email-wizard';
 
 const Routes = ({ match }) => (
   <Fragment>
@@ -15,6 +16,7 @@ const Routes = ({ match }) => (
       <AppSidebar />
       <div className="app-main__outer">
         <div className="app-main__inner">
+          <ErrorBoundaryRoute path={`${match.url}/add-email-wizard`} exact={true} component={AddEmailWizard} />
           <ErrorBoundaryRoute path={`${match.url}/emails`} exact={true} component={EmailManagement} />
           <ErrorBoundaryRoute path={`${match.url}/emails/add`} exact={true} component={EmailForm} />
           <ErrorBoundaryRoute path={`${match.url}/emails/:id/edit`} exact={true} component={EmailForm} />
