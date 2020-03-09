@@ -1050,7 +1050,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
               <div>
                 <Modal isOpen={modalRemoveCus} toggle={this.openModalRemoveCustomer}>
                   <ModalHeader toggle={this.openModalRemoveCustomer}>
-                    Bạn đang xóa{removeAllCustomers ? this.props.totalElements : listCheckedCustomer.length} thành viên
+                    Bạn đang xóa {removeAllCustomers ? this.props.totalElements : listCheckedCustomer.length} thành viên
                   </ModalHeader>
                   <ModalBody>
                     <Translate
@@ -1115,7 +1115,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                 <Table responsive striped id="table-reponse">
                   <thead>
                     <tr className="text-center">
-                      <th style={{ width: '50px' }} className="hand">
+                      <th className="five-percen hand">
                         <CustomInput
                           checked={checkedAllCustomer}
                           onClick={() => this.handleCheckedAllCustomer(!checkedAllCustomer, dataUser)}
@@ -1123,12 +1123,9 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                           id="check-all-customers"
                         />
                       </th>
-                      <th style={{ width: '50px' }} className="hand">
-                        STT
-                      </th>
+                      <th className="five-percen hand">STT</th>
                       <th
-                        style={{ width: '150px' }}
-                        className="hand"
+                        className="fifteen-percen hand"
                         onClick={() => {
                           this.setState({ conditionSort: 'firstName', count: count + 1 });
                         }}
@@ -1146,8 +1143,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                         )}
                       </th>
                       <th
-                        style={{ width: '150px' }}
-                        className="hand"
+                        style={{ width: '17%' }}
                         onClick={() => {
                           this.setState({ conditionSort: 'lastName', count: count + 1 });
                         }}
@@ -1164,8 +1160,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                         )}
                       </th>
                       <th
-                        style={{ width: '200px' }}
-                        className="hand"
+                        className="fifteen-percen hand"
                         onClick={() => {
                           this.setState({ conditionSort: 'email', count: count + 1 });
                         }}
@@ -1182,8 +1177,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                         )}
                       </th>
                       <th
-                        style={{ width: '200px' }}
-                        className="hand"
+                        className="fifteen-percen hand"
                         onClick={() => {
                           this.setState({ conditionSort: 'mobile', count: count + 1 });
                         }}
@@ -1203,12 +1197,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                       {dataHeader
                         ? dataHeader.map((event, id) => {
                             return (
-                              <th
-                                style={{ width: '100px' }}
-                                key={id}
-                                className={event.check === true ? '' : 'display-colum'}
-                                id={event.code}
-                              >
+                              <th style={{ width: '20%' }} key={id} className={event.check === true ? '' : 'display-colum'} id={event.code}>
                                 {event.title}
                               </th>
                             );
@@ -1216,7 +1205,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                         : ''}
                       <th
                         className={this.state.isCheckDateCreate === true ? '' : 'display-colum'}
-                        style={{ width: '200px' }}
+                        style={{ width: '20%' }}
                         onClick={() => {
                           this.setState({ conditionSort: 'createdDate', count: count + 1 });
                         }}
@@ -1232,10 +1221,10 @@ export class UserManagement extends React.Component<IUserManagementProps, IUserM
                           ''
                         )}
                       </th>
-                      <th style={{ width: '200px' }}>
+                      <th style={{ width: '20%' }}>
                         <Translate contentKey="userManagement.card-tag" />
                       </th>
-                      <th style={{ width: '150px' }} id="modified-date-sort" className="hand">
+                      <th style={{ width: '15%' }} id="modified-date-sort" className="hand">
                         <Translate contentKey="userManagement.feature" />
                       </th>
                     </tr>
