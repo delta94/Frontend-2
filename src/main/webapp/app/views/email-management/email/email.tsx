@@ -123,6 +123,11 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
     location.assign('#/app/views/config/emails/add');
   };
 
+  createEmailWizard = () => {
+    location.assign('#/app/views/config/add-email-wizard');
+  };
+
+
   editEmail = async emailId => {
     await this.props.getEmailDetailAction(emailId);
     location.assign('#/app/views/config/emails/' + emailId + '/edit');
@@ -153,17 +158,21 @@ class EmailManagement extends React.Component<IEmailManagementProps, IEmailManag
         <div className="email-management">
           <Row>
             <div className="email-title-header">
-              <label>Quản lý email</label>
+              <label><Translate contentKey={'email-management.title'} /></label>
               <div className="dropdown-email">
-                <Dropdown>
-                  <UncontrolledDropdown>
-                    <DropdownToggle color="primary">Thêm mới email</DropdownToggle>
-                    <DropdownMenu right className="dropdown-menu-sm">
-                      <DropdownItem onClick={this.createEmailTemplate}>Thêm từ template</DropdownItem>
-                      <DropdownItem onClick={this.createEmail}>Thêm mới</DropdownItem>
-                    </DropdownMenu>
-                  </UncontrolledDropdown>
-                </Dropdown>
+                <Button color="primary" onClick={() => this.createEmailWizard()}>
+                  <Translate contentKey={'email-management.button.add-email-wizard'} />
+                </Button>
+
+                {/*<Dropdown>*/}
+                {/*  <UncontrolledDropdown>*/}
+                {/*    <DropdownToggle color="primary">Thêm mới email</DropdownToggle>*/}
+                {/*    <DropdownMenu right className="dropdown-menu-sm">*/}
+                {/*      <DropdownItem onClick={this.createEmailTemplate}>Thêm từ template</DropdownItem>*/}
+                {/*      <DropdownItem onClick={this.createEmail}>Thêm mới</DropdownItem>*/}
+                {/*    </DropdownMenu>*/}
+                {/*  </UncontrolledDropdown>*/}
+                {/*</Dropdown>*/}
               </div>
             </div>
           </Row>

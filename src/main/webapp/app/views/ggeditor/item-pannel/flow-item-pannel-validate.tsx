@@ -14,7 +14,7 @@ import {
   EmailProcessNodeModel,
   TimeWaitingDecisionNodeModel,
   EventWaitingDecisionNodeModel,
-  ConditionDecisionNodeModel
+  ConditionDecisionNodeModel,
 } from '../flow-diagram-editor';
 import { code_node } from 'app/common/models/campaign-management.model';
 
@@ -42,7 +42,17 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
   }
 
   renderTrayItemWidget(type: string) {
-    return <TrayItemWidget model={{ type: type }} isDrag={false} />;
+    let className =
+      type === TimeWaitingDecisionNodeModel.TYPE || type === EventWaitingDecisionNodeModel.TYPE || type === ConditionDecisionNodeModel.TYPE
+        ? 'tray-item-large'
+        : null;
+    return (
+      <TrayItemWidget
+        model={{ type: type }}
+        className={className}
+        isDrag={false}
+      />
+    );
   }
 
   getParam(type) {
@@ -70,17 +80,17 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
       list_validate &&
       list_validate.map((item, index) => {
         return (
-          <Row className="row" key={index}>
+          <Row className="row" key={index} style={{marginBottom: '16px'}}>
             <Col span={24}>
               {this.renderTrayItemWidget(this.getParam(item.nodeCode))}
-              <div>
-                <label>{item.label}</label>
-              </div>
+              {/*<div>*/}
+              {/*  <label>{item.label}</label>*/}
+              {/*</div>*/}
               {item.errors &&
                 item.errors.map(event => {
                   return (
-                    <div className="not-config">
-                      {event}
+                    <div className="not-config" style={{marginTop: '8px'}}>
+                      - {event}
                       <br />
                     </div>
                   );

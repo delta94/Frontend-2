@@ -52,6 +52,7 @@ import {
 } from './flow-diagram-editor';
 import { DiagramWidget } from 'storm-react-diagrams';
 import { FlowNodeModal } from 'app/views/ggeditor/flow-node-modal';
+import { DefaultGroupProcess } from 'app/views/flow-editor/flow-diagram-editor';
 
 const ButtonGroup = Button.Group;
 const { confirm } = Modal;
@@ -856,13 +857,17 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             <Collapse bordered={false} defaultActiveKey={['1']} expandIconPosition="right">
               <Panel header="Nguồn dữ liệu" key="1">
                 <Row className="row" style={{ margin: '0px' }}>
-                  <Col span={8}>
+                  <Col style={{width: '64px'}} span={1}>
                     {this.renderTrayItemWidget(ContactSourceStartNodeModel.TYPE)}
-                    {this.renderTrayItemLabelWidget(ContactSourceStartNodeModel.TYPE)}
+                    <div style={{width: '100%', textAlign: 'center'}}>
+                      {this.renderTrayItemLabelWidget(ContactSourceStartNodeModel.TYPE)}
+                    </div>
                   </Col>
-                  <Col span={8}>
+                  <Col style={{width: '64px', marginLeft: '32px'}} span={1}>
                     {this.renderTrayItemWidget(EventSourceStartNodeModel.TYPE)}
-                    {this.renderTrayItemLabelWidget(EventSourceStartNodeModel.TYPE)}
+                    <div style={{width: '100%', textAlign: 'center'}}>
+                      {this.renderTrayItemLabelWidget(EventSourceStartNodeModel.TYPE)}
+                    </div>
                   </Col>
                 </Row>
               </Panel>
@@ -870,13 +875,17 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             <Collapse bordered={false} defaultActiveKey={['2']} expandIconPosition="right">
               <Panel header="Hành động" key="2">
                 <Row className="row">
-                  <Col span={8}>
+                  <Col style={{width: '64px'}} span={1}>
                     {this.renderTrayItemWidget(SmsProcessNodeModel.TYPE)}
-                    {this.renderTrayItemLabelWidget(SmsProcessNodeModel.TYPE)}
+                    <div style={{width: '100%', textAlign: 'center'}}>
+                      {this.renderTrayItemLabelWidget(SmsProcessNodeModel.TYPE)}
+                    </div>
                   </Col>
-                  <Col span={8}>
+                  <Col style={{width: '64px', marginLeft: '32px'}} span={1}>
                     {this.renderTrayItemWidget(EmailProcessNodeModel.TYPE)}
-                    {this.renderTrayItemLabelWidget(EmailProcessNodeModel.TYPE)}
+                    <div style={{width: '100%', textAlign: 'center'}}>
+                      {this.renderTrayItemLabelWidget(EmailProcessNodeModel.TYPE)}
+                    </div>
                   </Col>
                 </Row>
               </Panel>
@@ -884,19 +893,25 @@ export class FlowPage extends React.Component<IFlowPageProps, IFlowPageState> {
             <Collapse bordered={false} defaultActiveKey={['3']} expandIconPosition="right">
               <Panel header="Điều kiện" key="3">
                 <Row className="row">
-                  <Col span={8}>
+                  <Col style={{width: '90px'}} span={1}>
                     {this.renderTrayItemWidget(ConditionDecisionNodeModel.TYPE)}
-                    {this.renderTrayItemLabelWidget(ConditionDecisionNodeModel.TYPE)}
+                    <div style={{width: '100%', textAlign: 'center'}}>
+                      {this.renderTrayItemLabelWidget(ConditionDecisionNodeModel.TYPE)}
+                    </div>
+                  </Col>
+                  <Col style={{width: '90px', marginLeft: '24px'}} span={1}>
+                    {this.renderTrayItemWidget(TimeWaitingDecisionNodeModel.TYPE)}
+                    <div style={{width: '100%', textAlign: 'center'}}>
+                      {this.renderTrayItemLabelWidget(TimeWaitingDecisionNodeModel.TYPE)}
+                    </div>
+                  </Col>
+                  <Col style={{width: '90px', marginLeft: '24px'}} span={1}>
+                    {this.renderTrayItemWidget(EventWaitingDecisionNodeModel.TYPE)}
+                    <div style={{width: '100%', textAlign: 'center'}}>
+                      {this.renderTrayItemLabelWidget(EventWaitingDecisionNodeModel.TYPE)}
+                    </div>
                   </Col>
 
-                  <Col span={8}>
-                    {this.renderTrayItemWidget(TimeWaitingDecisionNodeModel.TYPE)}
-                    {this.renderTrayItemLabelWidget(TimeWaitingDecisionNodeModel.TYPE)}
-                  </Col>
-                  <Col span={8}>
-                    {this.renderTrayItemWidget(EventWaitingDecisionNodeModel.TYPE)}
-                    {this.renderTrayItemLabelWidget(EventWaitingDecisionNodeModel.TYPE)}
-                  </Col>
                 </Row>
               </Panel>
             </Collapse>

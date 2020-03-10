@@ -23,6 +23,9 @@ import {
 import { img_node, const_shape } from 'app/common/models/campaign-management.model';
 import './campaign-automation.scss';
 
+const UpIcon = require('./icons/up.png');
+const DownIcon = require('./icons/down.png');
+
 const { confirm } = Modal;
 
 const constant_version = {
@@ -57,6 +60,7 @@ export interface ICampaignAutoState {
   idTree: string;
   activePage: number;
   statusCampaign: string;
+  orderByCampaignDirection: string;
 }
 
 class CampaignAuto extends React.Component<ICampaignAutoProps, ICampaignAutoState> {
@@ -71,7 +75,8 @@ class CampaignAuto extends React.Component<ICampaignAutoProps, ICampaignAutoStat
       status: ''
     },
     activePage: 0,
-    statusCampaign: ''
+    statusCampaign: '',
+    orderByCampaignDirection: 'up'
   };
 
   componentDidMount = async () => {
@@ -242,6 +247,13 @@ class CampaignAuto extends React.Component<ICampaignAutoProps, ICampaignAutoStat
     getListCampaignAuto(this.state.statusCampaign, parseInt(pageIndex), 5);
   };
 
+  handleOrderByCampaignClick = () => {
+    const { getListCampaignAuto } = this.props;
+    let { orderByCampaignDirection, activePage, statusCampaign} = this.state;
+    this.setState({ orderByCampaignDirection: orderByCampaignDirection === 'up' ? 'down' : 'up' });
+    getListCampaignAuto(statusCampaign, activePage, 5);
+  };
+
   render() {
     let { getStatusCampaign, list_campaign_auto, loading, totalCampaign } = this.props;
     const img = require('app/assets/utils/images/campaign-management/count_campaign.png');
@@ -271,6 +283,7 @@ class CampaignAuto extends React.Component<ICampaignAutoProps, ICampaignAutoStat
       return data;
     };
 
+    let {orderByCampaignDirection} = this.state;
     return (
       <Loader message={spinner1} show={loading} priority={1}>
         <Fragment>
@@ -392,7 +405,11 @@ class CampaignAuto extends React.Component<ICampaignAutoProps, ICampaignAutoStat
                     <Translate contentKey="campaign-auto.table.index" />
                   </th>
                   <th style={{ width: '25%' }}>
-                    <Translate contentKey="campaign-auto.table.campaign" />
+                    <a href={'#'} onClick={async event => {
+                      event.preventDefault();
+                      this.handleOrderByCampaignClick();
+                    }}><Translate contentKey="campaign-auto.table.campaign" /></a>
+                    <img style={{ marginLeft: '4px' }} alt={''} src={orderByCampaignDirection === 'down' ? DownIcon : UpIcon} />
                   </th>
                   <th>
                     <Translate contentKey="campaign-auto.table.status" />

@@ -12,9 +12,11 @@ export interface IEmailTemplateData {
 
 export interface IEmail {
   id: string;
+  type: string;
   name: string;
   subject: string;
   content: string;
+  jsonContent: string;
   createdBy: string;
   createdUser: string;
   modifiedDate: string;
@@ -37,7 +39,9 @@ export interface IContentParams {
 
 export interface IEmailSave {
   id?: string;
+  type?: string;
   name?: string;
   subject?: string;
   content?: string;
+  jsonContent?: string;
 }
