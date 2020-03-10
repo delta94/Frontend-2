@@ -14,7 +14,7 @@ import {
   EmailProcessNodeModel,
   TimeWaitingDecisionNodeModel,
   EventWaitingDecisionNodeModel,
-  ConditionDecisionNodeModel
+  ConditionDecisionNodeModel,
 } from '../flow-diagram-editor';
 import { code_node } from 'app/common/models/campaign-management.model';
 
@@ -42,7 +42,17 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
   }
 
   renderTrayItemWidget(type: string) {
-    return <TrayItemWidget model={{ type: type }} isDrag={false} />;
+    let className =
+      type === TimeWaitingDecisionNodeModel.TYPE || type === EventWaitingDecisionNodeModel.TYPE || type === ConditionDecisionNodeModel.TYPE
+        ? 'tray-item-large'
+        : null;
+    return (
+      <TrayItemWidget
+        model={{ type: type }}
+        className={className}
+        isDrag={false}
+      />
+    );
   }
 
   getParam(type) {
