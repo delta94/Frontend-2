@@ -46,6 +46,7 @@ export const getStatusCampaignService = () => {
 
 // call API get list campaign auto
 export const getListCampaignService = (status: string, page?: number, pageSize?: number) => {
+  //TODO: CJ tự động-DS CJ- Thêm chức năng chọn hiển thị CJ
   return axios.get(urlCampaign, { params: { status, page, pageSize } });
 };
 
