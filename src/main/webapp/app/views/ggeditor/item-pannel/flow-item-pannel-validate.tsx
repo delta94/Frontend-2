@@ -70,17 +70,17 @@ class FlowItemValidate extends React.Component<IFlowItemValidateProps, IFlowItem
       list_validate &&
       list_validate.map((item, index) => {
         return (
-          <Row className="row" key={index}>
+          <Row className="row" key={index} style={{marginBottom: '16px'}}>
             <Col span={24}>
               {this.renderTrayItemWidget(this.getParam(item.nodeCode))}
-              <div>
-                <label>{item.label}</label>
-              </div>
+              {/*<div>*/}
+              {/*  <label>{item.label}</label>*/}
+              {/*</div>*/}
               {item.errors &&
                 item.errors.map(event => {
                   return (
-                    <div className="not-config">
-                      {event}
+                    <div className="not-config" style={{marginTop: '8px'}}>
+                      - {event}
                       <br />
                     </div>
                   );
