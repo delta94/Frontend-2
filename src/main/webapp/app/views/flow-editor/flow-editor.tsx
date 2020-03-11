@@ -291,7 +291,7 @@ export class FlowEditor extends React.Component<IFlowEditorProps, IFlowEditorSta
   renderTrayWidget() {
     let { collapsed } = this.state;
     return (
-      <Sider width={130} collapsed={collapsed}>
+      <Sider width={146} collapsed={collapsed}>
         <div className="header-sider">
           <label className="tool-bar" style={{ display: collapsed ? 'none' : 'contents' }}>
             CÔNG CỤ
