@@ -22,6 +22,14 @@ export interface IEmail {
   modifiedDate: string;
 }
 
+export interface IEmailValidationMessage {
+  type?: string;
+  name?: string;
+  subject?: string;
+  content?: string;
+  jsonContent?: string;
+}
+
 export interface IEmailTemplate {
   id: string;
   name: string;

@@ -11,7 +11,8 @@ import {
   previewEmailTemplate,
   createEmailTemplate
 } from 'app/services/email-config';
-import { IEmailSave } from 'app/common/models/email-config.model';
+import { IEmail, IEmailSave } from 'app/common/models/email-config.model';
+import { SUCCESS } from 'app/reducers/action-types';
 
 export const getEmailsAction = (textSearch?: string, page?: number, pageSize?: number) => ({
   type: EMAIL_CONFIG.GET_EMAIL,
@@ -41,6 +42,16 @@ export const createEmailTemplateAction = (emailSave: IEmailSave) => ({
 export const editEmailAction = (id: string, emailSave: IEmailSave) => ({
   type: EMAIL_CONFIG.EDIT_EMAIL,
   payload: editEmail(id, emailSave)
+});
+
+export const updateEmailSettingAction = (emailDetail: IEmail) => ({
+  type: SUCCESS(EMAIL_CONFIG.UPDATE_EMAIL_DETAIL_SETTING),
+  payload: { data: emailDetail }
+});
+
+export const updateEmailContentAction = (emailDetail: IEmail) => ({
+  type: EMAIL_CONFIG.UPDATE_EMAIL_DETAIL_CONTENT,
+  payload: { data: emailDetail }
 });
 
 export const getEmailDetailAction = (id: string) => ({

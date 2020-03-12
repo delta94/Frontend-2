@@ -39,6 +39,7 @@ const initialState = {
 export type EmailConfigState = Readonly<typeof initialState>;
 
 export default (state: EmailConfigState = initialState, action): EmailConfigState => {
+  // console.log(action);
   switch (action.type) {
     case REQUEST(EMAIL_CONFIG.GET_EMAIL):
     case REQUEST(EMAIL_CONFIG.DELETE_EMAIL):
@@ -192,6 +193,24 @@ export default (state: EmailConfigState = initialState, action): EmailConfigStat
         ...state,
         loading: false,
         emailDetail: action.payload.data
+      };
+
+    case SUCCESS(EMAIL_CONFIG.UPDATE_EMAIL_DETAIL_SETTING):
+      return {
+        ...state,
+        loading: false,
+        emailDetail: action.payload.data
+      };
+    case SUCCESS(EMAIL_CONFIG.UPDATE_EMAIL_DETAIL_CONTENT):
+      return {
+        ...state,
+        loading: false,
+
+        emailDetail: {
+          ...state.emailDetail,
+          content: action.payload.data.content,
+          jsonContent: action.payload.data.jsonContent
+        }
       };
 
     case SUCCESS(EMAIL_CONFIG.GET_EMAIL_TEMP_CATEGORY):

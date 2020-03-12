@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import CKEditor from 'ckeditor4-react';
-import { Input, Button as Btn, Row, Popover, Tabs } from 'antd';
+import { Input, Button as Btn, Row, Popover, Tabs, Icon, Checkbox, Dropdown as DropdownAnt } from 'antd';
 import { Table, Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
@@ -17,12 +17,7 @@ import { getContentParamAction, createEmailAction, editEmailAction, createEmailT
 import './add-email-wizard.scss';
 import { RouteComponentProps } from 'react-router-dom';
 import EmailPreview from './email-preview';
-
-//TODO 1: START
-import TopolEmailEditor from './topol-react-email-editor';
-import './topol-react-email-editor/index.scss';
-import DemoTemplate from './topol-react-email-editor/demo.json';
-//TODO 1: END
+import EmailSetting from './email-setting';
 
 const cheerio = require('cheerio');
 
@@ -64,34 +59,6 @@ class AddEmailWizard extends React.Component<IAddEmailWizardProps, IAddEmailWiza
     openModal: false
   };
 
-  //TODO 2: START
-  editor: any;
-  onLoad = () => {
-    console.log('onLoad');
-    console.log(this.editor);
-  };
-
-  onLoadTemplate = () => {
-    this.editor.loadDesign(JSON.stringify(DemoTemplate));
-  };
-
-  saveDesign = () => {
-    this.editor.saveDesign(design => {
-      console.log('saveDesign', design);
-      alert('Design JSON has been logged in your developer console.');
-    });
-  };
-
-  togglePreview = () => {
-    this.editor.togglePreview();
-  };
-
-  onSave = (json, html) => {
-    console.log(json);
-    console.log(html);
-  };
-
-  //TODO 2: END
   async componentDidMount() {
     let emailId = this.props.match.params.id;
     let idTemplate = this.props.match.params.idTemplate;
@@ -353,47 +320,31 @@ class AddEmailWizard extends React.Component<IAddEmailWizardProps, IAddEmailWiza
               </Button>
             </ModalFooter>
           </Modal>
-          <div className="add-email-wizard-management">
-            <div className="add-email-wizard-title-header">
-              <Button color="back" onClick={this.back} style={{ color: 'blue', textDecoration: 'underline' }}>
-                Quay lại
-              </Button>
-              <div className="button-group">
-                <Button color="primary" onClick={this.saveEmail}>
-                  Lưu
-                </Button>
-                <Button color="primary" onClick={this.createEmailTemplate} style={{ marginLeft: '10px', marginRight: '10px' }}>
-                  Lưu thành Template
-                </Button>
+
+          <div className="email-management">
+            <Row>
+              <div className="email-title-header">
+                <label>
+                  <Translate contentKey={'email-management.add-email-wizard.title'} />
+                </label>
+                {/*<Button color="back" onClick={this.back} style={{ color: 'blue', textDecoration: 'underline' }}>*/}
+                {/*  Quay lại*/}
+                {/*</Button>*/}
+
+                <div className="dropdown-email">
+                  <Button color="primary" onClick={this.saveEmail}>
+                    Lưu
+                  </Button>
+                  <Button color="primary" onClick={this.createEmailTemplate} style={{ marginLeft: '10px', marginRight: '10px' }}>
+                    Lưu thành Template
+                  </Button>
+                </div>
               </div>
-            </div>
-            <div className="add-email-wizard-body">
-              <div className="email-input-group">
-                <label>Email Name</label>
-                <Input
-                  className="tab-info"
-                  id="email-name"
-                  type="text"
-                  placeholder=""
-                  value={emailsave.name}
-                  onChange={event => this.onChangeInput(event.target.value, 'name')}
-                  maxLength={160}
-                />
-              </div>
-              {messageErrorEmailName}
-              <div className="email-input-group">
-                <label>Email Subject</label>
-                <Input
-                  className="tab-info"
-                  id="email-subject"
-                  type="text"
-                  placeholder=""
-                  value={emailsave.subject}
-                  onChange={event => this.onChangeInput(event.target.value, 'subject')}
-                  maxLength={160}
-                />
-              </div>
-              {messageErrorEmailSubject}
+            </Row>
+            <Row>
+              <EmailSetting />
+            </Row>
+            <Row>
               <div className="email-content">
                 <div style={{ float: 'right' }}>
                   <Popover
@@ -414,57 +365,7 @@ class AddEmailWizard extends React.Component<IAddEmailWizardProps, IAddEmailWiza
                     <span style={{ paddingLeft: '10px' }}>Preview</span>
                   </label>
                 </div>
-                <div style={{ clear: 'both' }}></div>
                 <div style={{ marginTop: '10px' }}>
-                  {/*TODO 3: START*/}
-                  <button onClick={this.onLoadTemplate}>Load Demo Template</button>
-                  <TopolEmailEditor
-                    ref={editor => (this.editor = editor)}
-                    onLoad={this.onLoad}
-                    saveDesign={this.saveDesign}
-                    onSave={this.onSave}
-                    language={'vi'}
-                    light={true}
-                    templateId={1}
-                    authorize={{
-                      apiKey: '4QjRQJMtShNpVfZaOPvz6tAeVnpDrWyFGvT25iccj2OHjjikK9n1rYBfkhYQ',
-                      userId: 'thangtq'
-                    }}
-                    googleFonts={['Roboto', 'K2D', 'Mali']}
-                    mergeTags={[
-                      {
-                        name: 'Nhóm 1', // Group name
-                        items: [
-                          {
-                            value: '{{CUSTOMER_NAME}}', // Text to be inserted
-                            text: 'Tên khách hàng', // Shown text in the menu
-                            label: 'Họ tên đầy đủ của khách hàng' // Shown description title in the menu
-                          },
-                          {
-                            value: '{{CUSTOMER_NAME}}', // Text to be inserted
-                            text: 'Tên khách hàng', // Shown text in the menu
-                            label: 'Họ tên đầy đủ của khách hàng' // Shown description title in the menu
-                          }
-                        ]
-                      },
-                      {
-                        name: 'Nhóm 2', // Group name
-                        items: [
-                          {
-                            value: '{{CUSTOMER_NAME}}', // Text to be inserted
-                            text: 'Tên khách hàng', // Shown text in the menu
-                            label: 'Họ tên đầy đủ của khách hàng' // Shown description title in the menu
-                          },
-                          {
-                            value: '{{CUSTOMER_NAME}}', // Text to be inserted
-                            text: 'Tên khách hàng', // Shown text in the menu
-                            label: 'Họ tên đầy đủ của khách hàng' // Shown description title in the menu
-                          }
-                        ]
-                      }
-                    ]}
-                  />
-                  {/*TODO 3: END*/}
                   <CKEditor
                     id={'ckeditor'}
                     data={emailsave.content}
@@ -479,7 +380,7 @@ class AddEmailWizard extends React.Component<IAddEmailWizardProps, IAddEmailWiza
                   />
                 </div>
               </div>
-            </div>
+            </Row>
           </div>
         </Fragment>
       </Loader>
