@@ -45,7 +45,7 @@ import { DiagramWidget } from 'storm-react-diagrams';
 import { FlowNodeSelectionModal } from './flow-node-selection-modal';
 import { FlowNodeConfigModal } from './flow-node-config-modal';
 import { FlowNodeModel } from 'app/views/flow-editor/flow-diagram-editor/FlowNodeModel';
-import domtoimage from 'dom-to-image-improved';
+import domtoimage from 'dom-to-image-google-font-issue';
 import { saveAs } from 'file-saver';
 const ButtonGroup = Button.Group;
 const { confirm } = Modal;
