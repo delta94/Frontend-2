@@ -5,6 +5,7 @@
 
 body {
   margin: 0;
+  font-family: 'Montserrat', sans-serif;
 }
 
 #root {
@@ -17,6 +18,7 @@ body {
 .editor {
   display: flex;
   flex: 1;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .editor {
@@ -89,7 +91,6 @@ body {
     margin-right: 5%;
   }
   .ant-collapse-header {
-    font-family: Roboto;
     font-style: normal;
     font-weight: 500;
     font-size: 15px;
@@ -97,7 +98,6 @@ body {
     color: #343a40;
   }
   .title-sider-test {
-    font-family: Roboto;
     font-style: normal;
     font-weight: 500;
     font-size: 15px;
@@ -108,7 +108,6 @@ body {
     color: #343a40;
   }
   .text-sider-text {
-    font-family: Roboto;
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
@@ -119,7 +118,6 @@ body {
     margin-left: 5%;
   }
   .ant-breadcrumb-link {
-    font-family: Roboto;
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
@@ -128,7 +126,6 @@ body {
     color: #595c82;
   }
   #config-name {
-    font-family: Roboto;
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
@@ -136,7 +133,6 @@ body {
   }
 
   .ant-breadcrumb a {
-    font-family: Roboto;
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
@@ -168,7 +164,6 @@ body {
     transition: all 0.2s;
   }
   .tool-bar {
-    font-family: Roboto;
     font-style: normal;
     font-weight: bold;
     font-size: 14px;
@@ -211,7 +206,6 @@ body {
     border-color: #3866dd;
   }
   .btn-multi {
-    font-family: Roboto;
     font-style: normal;
     font-weight: 500;
     font-size: 14px;
@@ -228,7 +222,6 @@ body {
   }
 }
 .text-event-wait {
-  font-family: Roboto;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -236,7 +229,6 @@ body {
   color: #495057;
 }
 .title-event-wait {
-  font-family: Roboto;
   font-style: normal;
   font-weight: bold;
   font-size: 14px;
@@ -246,7 +238,6 @@ body {
   color: #595c82;
 }
 .label-message {
-  font-family: Roboto;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;

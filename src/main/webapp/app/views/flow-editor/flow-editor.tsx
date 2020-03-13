@@ -25,7 +25,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faCopy, faTrashAlt, faProjectDiagram } from '@fortawesome/free-solid-svg-icons';
 import { code_node, img_node, const_shape } from 'app/common/models/campaign-management.model';
 
-
 import './style.scss';
 import './flow-diagram-editor/index.scss';
 import {
@@ -38,7 +37,9 @@ import {
   DecisionGroupProcess,
   NewBranchGroupProcess,
   TrayItemWidget,
-  toConfigData, createGroupProcessWidget, createGroupProcess
+  toConfigData,
+  createGroupProcessWidget,
+  createGroupProcess
 } from './flow-diagram-editor';
 import { DiagramWidget } from 'storm-react-diagrams';
 import { FlowNodeSelectionModal } from './flow-node-selection-modal';
@@ -180,14 +181,14 @@ export class FlowEditor extends React.Component<IFlowEditorProps, IFlowEditorSta
     await this.setState({ isOpenFlowNodeSelectionModal: false, port: null });
   };
 
-  handleOnConfigModalSubmitClick = async (data:{name?: string; selectedIcon?: string;}) => {
-    let {node} = this.state;
-    if(node && node instanceof  FlowNodeModel){
+  handleOnConfigModalSubmitClick = async (data: { name?: string; selectedIcon?: string }) => {
+    let { node } = this.state;
+    if (node && node instanceof FlowNodeModel) {
       node.label = data.name;
       node.icon = data.selectedIcon;
-      this.editor.setNodeInfo([{id: node.id, label: node.label, isActive: node.isActive, icon: node.icon}]);
+      this.editor.setNodeInfo([{ id: node.id, label: node.label, isActive: node.isActive, icon: node.icon }]);
       this.forceUpdate();
-      this.setState({node : node});
+      this.setState({ node: node });
     }
   };
 
@@ -201,7 +202,6 @@ export class FlowEditor extends React.Component<IFlowEditorProps, IFlowEditorSta
     this.forceUpdate();
   };
 
-
   showFlowNodeSelectionModal = () => {
     let { isOpenFlowNodeSelectionModal } = this.state;
     this.setState({ isOpenFlowNodeSelectionModal: !isOpenFlowNodeSelectionModal });
@@ -211,7 +211,6 @@ export class FlowEditor extends React.Component<IFlowEditorProps, IFlowEditorSta
     let { isOpenFlowNodeConfigModal } = this.state;
     this.setState({ isOpenFlowNodeConfigModal: !isOpenFlowNodeConfigModal });
   };
-
 
   //close Popover Setting
   hide = () => {
@@ -224,8 +223,6 @@ export class FlowEditor extends React.Component<IFlowEditorProps, IFlowEditorSta
   handleVisibleChange = visible => {
     this.setState({ isOpen: visible });
   };
-
-
 
   getValueEdges = (sourceAnchor, source) => {
     let valueEdges: string;
@@ -248,7 +245,6 @@ export class FlowEditor extends React.Component<IFlowEditorProps, IFlowEditorSta
     return valueEdges;
   };
 
-
   //event save campaign
   saveCampaign = async () => {
     const { openModal } = this.props;
@@ -261,10 +257,7 @@ export class FlowEditor extends React.Component<IFlowEditorProps, IFlowEditorSta
   };
 
   renderTrayItemWidget(type: string) {
-    let className =
-      type === DecisionGroupProcess.TYPE || type === NewBranchGroupProcess.TYPE
-        ? 'tray-item-large'
-        : null;
+    let className = type === DecisionGroupProcess.TYPE || type === NewBranchGroupProcess.TYPE ? 'tray-item-large' : null;
     return (
       <TrayItemWidget
         model={{ type: type }}
@@ -291,7 +284,7 @@ export class FlowEditor extends React.Component<IFlowEditorProps, IFlowEditorSta
   renderTrayWidget() {
     let { collapsed } = this.state;
     return (
-      <Sider width={130} collapsed={collapsed}>
+      <Sider width={146} collapsed={collapsed}>
         <div className="header-sider">
           <label className="tool-bar" style={{ display: collapsed ? 'none' : 'contents' }}>
             CÔNG CỤ
@@ -319,11 +312,9 @@ export class FlowEditor extends React.Component<IFlowEditorProps, IFlowEditorSta
             <Collapse bordered={false} defaultActiveKey={['1']} expandIconPosition="right">
               <Panel header="Hành động" key="1">
                 <Row className="row">
-                  <Col style={{width: '64px'}}>
+                  <Col style={{ width: '64px' }}>
                     {this.renderTrayItemWidget(DefaultGroupProcess.TYPE)}
-                    <div style={{width: '100%', textAlign: 'center'}}>
-                      {this.renderTrayItemLabelWidget(DefaultGroupProcess.TYPE)}
-                    </div>
+                    <div style={{ width: '100%', textAlign: 'center' }}>{this.renderTrayItemLabelWidget(DefaultGroupProcess.TYPE)}</div>
                   </Col>
                 </Row>
               </Panel>
@@ -331,12 +322,9 @@ export class FlowEditor extends React.Component<IFlowEditorProps, IFlowEditorSta
             <Collapse bordered={false} defaultActiveKey={['2']} expandIconPosition="right">
               <Panel header="Điều kiện" key="2">
                 <Row className="row">
-                  <Col style={{width: '90px'}}>
+                  <Col style={{ width: '90px' }}>
                     {this.renderTrayItemWidget(DecisionGroupProcess.TYPE)}
-                    <div style={{width: '100%', textAlign: 'center'}}>
-                      {this.renderTrayItemLabelWidget(DecisionGroupProcess.TYPE)}
-                    </div>
-
+                    <div style={{ width: '100%', textAlign: 'center' }}>{this.renderTrayItemLabelWidget(DecisionGroupProcess.TYPE)}</div>
                   </Col>
                 </Row>
               </Panel>
@@ -366,35 +354,49 @@ export class FlowEditor extends React.Component<IFlowEditorProps, IFlowEditorSta
                         </a>
                       </Breadcrumb.Item>
                       <label className="ant-breadcrumb-link">
-                        {infoCampaign.name ? infoCampaign.name : translate("diagram.common.label_new_diagram")}
+                        {infoCampaign.name ? infoCampaign.name : translate('diagram.common.label_new_diagram')}
                       </label>
 
-
-
-                      <Button onClick={() => {
-                        this.renderPdf();
-                      }} type="primary" style={{ float: 'right', marginLeft: '16px' }}>
+                      <Button
+                        onClick={() => {
+                          this.renderPdf();
+                        }}
+                        type="primary"
+                        style={{ float: 'right', marginLeft: '16px' }}
+                      >
                         <Translate contentKey="diagram.common.button_save" />
                       </Button>
 
-                      <Button onClick={() => {
-                        this.editor.increaseZoomLevel(5);
-                        this.forceUpdate();
-                      }} type="ghost" style={{ float: 'right', marginLeft: '8px'  }}>
+                      <Button
+                        onClick={() => {
+                          this.editor.increaseZoomLevel(5);
+                          this.forceUpdate();
+                        }}
+                        type="ghost"
+                        style={{ float: 'right', marginLeft: '8px' }}
+                      >
                         +
                       </Button>
 
-                      <Button onClick={() => {
-                        this.editor.decreaseZoomLevel(5);
-                        this.forceUpdate();
-                      }} type="ghost" style={{ float: 'right', marginLeft: '8px'  }}>
+                      <Button
+                        onClick={() => {
+                          this.editor.decreaseZoomLevel(5);
+                          this.forceUpdate();
+                        }}
+                        type="ghost"
+                        style={{ float: 'right', marginLeft: '8px' }}
+                      >
                         -
                       </Button>
 
-                      <Button onClick={() => {
-                        this.editor.zoomToFit();
-                        this.forceUpdate();
-                      }} type="ghost" style={{ float: 'right', marginLeft: '8px'  }}>
+                      <Button
+                        onClick={() => {
+                          this.editor.zoomToFit();
+                          this.forceUpdate();
+                        }}
+                        type="ghost"
+                        style={{ float: 'right', marginLeft: '8px' }}
+                      >
                         [//]
                       </Button>
                     </Breadcrumb>
@@ -409,7 +411,12 @@ export class FlowEditor extends React.Component<IFlowEditorProps, IFlowEditorSta
                 event.preventDefault();
               }}
             >
-              <DiagramWidget className="srd-flow-canvas" allowCanvasZoom={false} diagramEngine={this.editor.getDiagramEngine()} smartRouting={false} />
+              <DiagramWidget
+                className="srd-flow-canvas"
+                allowCanvasZoom={false}
+                diagramEngine={this.editor.getDiagramEngine()}
+                smartRouting={false}
+              />
             </div>
           </Layout>
         </Layout>
@@ -417,31 +424,24 @@ export class FlowEditor extends React.Component<IFlowEditorProps, IFlowEditorSta
     );
   }
 
-  renderPdf(){
+  renderPdf() {
     this.editor.zoomToFit();
     this.forceUpdate();
 
-    domtoimage.toBlob(document.getElementById('flow-editor'), {scale: this.editor.getScaleRatio()*1.5})
-      .then(function (blob) {
-        saveAs(blob, 'flow-diagram.png');
-      });
+    domtoimage.toBlob(document.getElementById('flow-editor'), { scale: this.editor.getScaleRatio() * 1.5 }).then(function(blob) {
+      saveAs(blob, 'flow-diagram.png');
+    });
 
     // domtoimage.toSvg(document.getElementById('flow-editor'), {scale: this.editor.getScaleRatio()*1.5})
     //   .then(function (dataUrl) {
     //
     //   });
-
-
   }
 
   render() {
-    let {
-      isOpenFlowNodeSelectionModal,
-      isOpenFlowNodeConfigModal,
-      node,
-    } = this.state;
+    let { isOpenFlowNodeSelectionModal, isOpenFlowNodeConfigModal, node } = this.state;
     let { modalState } = this.props;
-    let configData = node && node instanceof  FlowNodeModel ? {name: node.label, selectedIcon: node.icon} : {name: '', selectedIcon: ''};
+    let configData = node && node instanceof FlowNodeModel ? { name: node.label, selectedIcon: node.icon } : { name: '', selectedIcon: '' };
 
     return (
       <Fragment>
@@ -453,8 +453,17 @@ export class FlowEditor extends React.Component<IFlowEditorProps, IFlowEditorSta
           type={modalState.type ? modalState.type : 'error'}
           onConfirm={() => this.props.closeModal()}
         />
-        <FlowNodeSelectionModal toggleModal={this.showFlowNodeSelectionModal} isOpenModal={isOpenFlowNodeSelectionModal} onClick={this.handleOnSelectionModalItemClick} />
-        <FlowNodeConfigModal toggleModal={this.showFlowNodeConfigModal} isOpenModal={isOpenFlowNodeConfigModal} onSubmit={this.handleOnConfigModalSubmitClick} data={configData} />
+        <FlowNodeSelectionModal
+          toggleModal={this.showFlowNodeSelectionModal}
+          isOpenModal={isOpenFlowNodeSelectionModal}
+          onClick={this.handleOnSelectionModalItemClick}
+        />
+        <FlowNodeConfigModal
+          toggleModal={this.showFlowNodeConfigModal}
+          isOpenModal={isOpenFlowNodeConfigModal}
+          onSubmit={this.handleOnConfigModalSubmitClick}
+          data={configData}
+        />
         {this.renderFlowDiagram()}
       </Fragment>
     );
