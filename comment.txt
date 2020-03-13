@@ -39,53 +39,58 @@ state = {
 
 
 Scanning project for unused dependencies, please wait...
-You can probably remove @fortawesome/fontawesome-free // done
-You can probably remove @fortawesome/fontawesome-free-solid //done
-You can probably remove @fullcalendar/core //done
-You can probably remove @fullcalendar/daygrid //done
-You can probably remove @fullcalendar/interaction //done
-You can probably remove @fullcalendar/react //done
-You can probably remove @fullcalendar/timegrid //done
-You can probably remove bootstrap-daterangepicker //done
-You can probably remove html-to-draftjs //done
-You can probably remove js-file-download //done
-You can probably remove jsonwebtoken //done
-You can probably remove mobx //done
-You can probably remove mobx-react //done
-You can probably remove node-sass //done
-You can probably remove react-addons-shallow-compare //done
-You can probably remove react-bootstrap-daterangepicker //done
-You can probably remove react-bootstrap-sweetalert // done danger
-You can probably remove react-bootstrap-table2-paginator // done
-You can probably remove react-chartist //done
-You can probably remove react-chat-elements //done
-You can probably remove react-dropdown //done
-You can probably remove react-filterable-table //done
-You can probably remove react-flag-icon-css //done
-You can probably remove react-froala-wysiwyg  //done
-You can probably remove react-getscreen //done
-You can probably remove react-google-login //done
-You can probably remove react-google-maps //done
-You can probably remove react-icons // done
-You can probably remove react-js-pagination //done
-You can probably remove react-loadable //done
-You can probably remove react-map-gl //done
-You can probably remove react-multistep //done
-You can probably remove react-native-search-bar //done
-You can probably remove react-nouislider //done
-You can probably remove react-on-screen //done
-
-
-You can probably remove react-pagify //done
-You can probably remove react-progress-steps //done
-You can probably remove react-scripts //done
-You can probably remove react-scroll //done
-You can probably remove react-scrollspy //done
-You can probably remove react-sizeme //done
-You can probably remove react-syntax-highlighter //done
-You can probably remove react-widgets-globalize //done
-You can probably remove react-widgets-moment //done
-You can probably remove svg-react-loader //done
-You can probably remove window-resize-listener-react //done
+You can probably remove @fortawesome/fontawesome-free
+You can probably remove @fortawesome/fontawesome-free-solid
+You can probably remove @fullcalendar/core
+You can probably remove @fullcalendar/daygrid
+You can probably remove @fullcalendar/interaction
+You can probably remove @fullcalendar/react
+You can probably remove @fullcalendar/timegrid
+You can probably remove @types/jquery
+You can probably remove animate-sass
+You can probably remove bootstrap-daterangepicker
+You can probably remove html-to-draftjs
+You can probably remove js-file-download
+You can probably remove jsonwebtoken
+You can probably remove loaders.css
+You can probably remove mobx
+You can probably remove mobx-react
+You can probably remove node-sass
+You can probably remove react-addons-shallow-compare
+You can probably remove react-bootstrap-daterangepicker
+You can probably remove react-bootstrap-sweetalert
+You can probably remove react-bootstrap-table2-paginator
+You can probably remove react-chartist
+You can probably remove react-chat-elements
+You can probably remove react-dropdown
+You can probably remove react-filterable-table
+You can probably remove react-flag-icon-css
+You can probably remove react-froala-wysiwyg
+You can probably remove react-getscreen
+You can probably remove react-google-login
+You can probably remove react-google-maps
+You can probably remove react-icons
+You can probably remove react-js-pagination
+You can probably remove react-loadable
+You can probably remove react-map-gl
+You can probably remove react-multistep
+You can probably remove react-native-search-bar
+You can probably remove react-nouislider
+You can probably remove react-on-screen
+You can probably remove react-pagify
+You can probably remove react-progress-steps
+You can probably remove react-redux-form
+You can probably remove react-scripts
+You can probably remove react-scroll
+You can probably remove react-scrollspy
+You can probably remove react-sizeme
+You can probably remove react-syntax-highlighter
+You can probably remove react-widgets-globalize
+You can probably remove react-widgets-moment
+You can probably remove redux-form
+You can probably remove redux-logger
+You can probably remove slick-carousel
+You can probably remove svg-react-loader
+You can probably remove window-resize-listener-react
 
 Process finished with exit code 0
