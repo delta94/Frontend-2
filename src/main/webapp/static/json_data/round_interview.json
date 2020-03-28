@@ -1,4 +1,0 @@
-[
-  { "id": 1, "interviewJobId": 1, "code": "PVCM", "description": "Phỏng vấn chuyên môn", "title": "" },
-  { "id": 2, "code": "PVVH", "interviewJobId": 1, "description": "Phỏng vấn văn hóa", "title": "" }
-]
