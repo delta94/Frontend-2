@@ -28,9 +28,6 @@ export class App extends React.Component<IAppProps, IAppState> {
     closedSmallerSidebar: false
   };
 
-  componentDidMount = async () => {
-    await this.props.getSession();
-  };
 
   render() {
     let {
@@ -45,37 +42,6 @@ export class App extends React.Component<IAppProps, IAppState> {
     let { closedSmallerSidebar } = this.state;
     return (
       <Router basename={baseHref}>
-        {/* <ResizeDetector
-          handleWidth
-          render={({ width }) => (
-            <Fragment>
-              <div
-                className={cx(
-                  'app-container app-theme-' + colorScheme,
-                  { 'fixed-header': enableFixedHeader },
-                  { 'fixed-sidebar': enableFixedSidebar || width < 1250 },
-                  { 'fixed-footer': enableFixedFooter },
-                  { 'closed-sidebar': enableClosedSidebar || width < 1250 },
-                  { 'closed-sidebar-mobile': closedSmallerSidebar || width < 1250 },
-                  { 'sidebar-mobile-open': enableMobileMenu },
-                  { 'body-tabs-shadow-btn': enablePageTabsAlt }
-                )}
-              >
-                <Fragment>
-                  <AppHeader />
-                  <div className="app-main">
-                    <AppSidebar />
-                    <div className="app-main__outer">
-                      <div className="app-main__inner">
-                        <AppRoutes />
-                      </div>
-                    </div>
-                  </div>
-                </Fragment>
-              </div>
-            </Fragment>
-          )}
-        /> */}
         <ResizeDetector
           handleWidth
           render={({ width }) => (

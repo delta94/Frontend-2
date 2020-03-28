@@ -20,8 +20,8 @@ const devTools = process.env.NODE_ENV === 'development' ? <DevTools /> : null;
 const store = initStore();
 registerLocale(store);
 
-const actions = bindActionCreators({ clearAuthentication }, store.dispatch);
-setupAxiosInterceptors(() => actions.clearAuthentication('login.error.unauthorized'));
+// const actions = bindActionCreators({ clearAuthentication }, store.dispatch);
+// setupAxiosInterceptors(() => actions.clearAuthentication('login.error.unauthorized'));
 
 loadIcons();
 

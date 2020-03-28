@@ -1,0 +1,41 @@
+{
+  "date": "2019-05-06",
+  "startTime": "8:00",
+  "endTime": "8:30",
+  "candidate": {
+    "candidateId": 1,
+    "candidateName": "Trần Hạo Nam"
+  },
+  "program": {
+    "programId": 1,
+    "programName": "FISE"
+  },
+  "job": {
+    "jobId": 1,
+    "jobCode": "FISE CSKH"
+  },
+  "linkCv": "https://docs.google.com",
+  "round": {
+    "roundId": 1,
+    "roundName": "PVCM"
+  },
+  "email": "Nam@gmail.com",
+  "phone": "09876567864",
+  "conveter": {
+    "conveterId": 1,
+    "conveterName": "TuanLQ"
+  },
+  "interviewers": [
+    {
+      "interviewerId": "1",
+      "interviewerName": "ThuyTTT13"
+    },
+    {
+      "interviewerId": "3",
+      "interviewerName": "KhanhND5"
+    }
+  ],
+  "linkPdg": "https://docs.google.com",
+  "skype": "https://skype.com",
+  "zoom": "504"
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "interviewerId": 2,
+    "interviewSessionHistoryId": 2,
+    "programCode": "PVVH-FCA",
+    "programName": "Phỏng vấn văn hóa FCA",
+    "date": "2019-05-27",
+    "startTime": "09:00",
+    "endTime": "10:00"
+  },
+  {
+    "interviewerId": 3,
+    "interviewSessionHistoryId": 3,
+    "programCode": "PVCM-Msc",
+    "programName": "Phỏng vấn chuyên môn Msc",
+    "date": "2019-05-28",
+    "startTime": "08:30",
+    "endTime": "09:30"
+  }
+]

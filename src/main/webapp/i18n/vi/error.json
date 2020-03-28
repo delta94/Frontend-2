@@ -1,0 +1,33 @@
+{
+  "error": {
+    "title": "Trang thông tin lỗi!",
+    "http": {
+      "400": "Bad request.",
+      "403": "Bạn không có quyền xem trang này.",
+      "404": "Trang không tồn tại.",
+      "405": "The HTTP verb you used is not supported for this URL.",
+      "500": "Internal server error."
+    },
+    "concurrencyFailure": "Another user modified this data at the same time as you. Your changes were rejected.",
+    "validation": "Validation error on the server.",
+    "schedule-manager": {
+      "get-statistic": "Lỗi get thống kê định mức",
+      "invalid-min-time-book-chedule": "Lỗi đặt lịch sớm hơn giờ quy định",
+      "invalid-book-schedule-past-time": "Lỗi đặt lịch thời gian quá khứ"
+    },
+    "url-not-found": "Lỗi đường dẫn không tìm thấy",
+    "unauthorized": "Bạn không có quyền thao tác dữ liệu",
+    "response": {
+      "10400": "Thời gian đặt lịch không cho phép",
+      "10404": "Lỗi không tồn tại người phỏng vấn",
+      "50000": "Lỗi hệ thống",
+      "10403": "Lỗi không có quyền truy cập"
+    },
+
+    "none-data": {
+      "name-campaign": "vui lòng nhập tên chiến dịch",
+      "name-description": "vui lòng nhập mô tả chiến dịch",
+      "time": "Thiếu trường thời gian"
+    }
+  }
+}

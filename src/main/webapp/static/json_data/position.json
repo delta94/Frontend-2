@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "title": "MTP-HR",
+    "code": "MTP-HR",
+    "interviewProgramId": 2,
+    "description": "description"
+  },
+  {
+    "id": 2,
+    "title": "FISE MKT",
+    "code": "FISE MKT",
+    "interviewProgramId": 1,
+    "description": "description"
+  },
+  {
+    "id": 3,
+    "title": "FISE HR",
+    "code": "FISE HR",
+    "interviewProgramId": 1,
+    "description": "description"
+  },
+  {
+    "id": 4,
+    "title": "FISE CSKH",
+    "code": "FISE CSKH",
+    "interviewProgramId": 1,
+    "description": "description"
+  },
+  {
+    "id": 5,
+    "title": "FISE QTDA",
+    "code": "FISE QTDA",
+    "interviewProgramId": 1,
+    "description": "description"
+  },
+  {
+    "id": 6,
+    "title": "FCA",
+    "code": "FCA",
+    "interviewProgramId": 2,
+    "description": "description"
+  },
+  {
+    "id": 7,
+    "title": "CTO",
+    "code": "CTO",
+    "interviewProgramId": 2,
+    "description": "description"
+  },
+  {
+    "id": 8,
+    "title": "MasterCode",
+    "code": "MasterCode",
+    "interviewProgramId": 2,
+    "description": "description"
+  }
+]

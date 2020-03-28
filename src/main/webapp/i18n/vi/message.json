@@ -1,0 +1,8 @@
+{
+  "messages": {
+    "get-event-success": "Tải danh sách lịch phỏng vấn thành công",
+    "candidate": {
+      "get-list-interview-sucess": "Tải danh sách ứng viên thành công"
+    }
+  }
+}

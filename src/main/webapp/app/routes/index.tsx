@@ -3,18 +3,7 @@ import React, { Fragment, lazy, Suspense } from 'react';
 
 import { ToastContainer } from 'react-toastify';
 import LoaderAnim from 'react-loaders';
-
-const Admin = lazy(() => import('app/views/customer'));
-const Pages = lazy(() => import('app/views/pages'));
-const Login = lazy(() => import('app/views/login'));
-const Config = lazy(() => import('app/views/email-management'));
-// const Campaign = lazy(() => import('app/views/campaign'));
-const CampaignAuto = lazy(() => import('app/views/campaign/campaign-automation'));
-const UserCampaign = lazy(() => import('app/views/campaign/user-campaign'));
-const CampaignManagement = lazy(() => import('app/views/campaign/campaign-automation/campaign-management'));
-
-const GGEditor = lazy(() => import('app/views/ggeditor'));
-const FlowEditor = lazy(() => import('app/views/flow-editor'));
+const Home = lazy(()=> import('app/view'))
 // const UserPages = lazy(() => import('app/DemoPages/UserPages'));
 // const Applications = lazy(() => import('app/DemoPages/Applications'));
 // const Dashboards = lazy(() => import('app/DemoPages/Dashboards'));
@@ -36,58 +25,10 @@ const AppRoutes = () => {
   </div>);
   return (
     <Fragment>
-      {/* Flow Editor */}
-      <Suspense fallback={loader}>
-        <Route path="/flow-editor" component={FlowEditor}/>
-      </Suspense>
-
-      {/* Login */}
-      <Suspense fallback={loader}>
-        <Route path="/flow" component={GGEditor}/>
-      </Suspense>
-
-      {/* Login */}
-      <Suspense fallback={loader}>
-        <Route path="/login" component={Login}/>
-      </Suspense>
-
-      {/* config email */}
-      <Suspense fallback={loader}>
-        <Route path="/app/views/config" component={Config}/>
-      </Suspense>
-
-      {/*<Suspense fallback={loader}>*/}
-      {/*  <Route path="/app/views/campaigns" component={Campaign}/>*/}
-      {/*</Suspense>*/}
-
-      {/* campaign */}
-      <Suspense fallback={loader}>
-        <Route path="/app/views/campaigns/campaign-auto" component={CampaignAuto}/>
-      </Suspense>
-
-      {/* campaign */}
-      <Suspense fallback={loader}>
-        <Route path="/app/views/campaigns/user-campaign" component={UserCampaign}/>
-      </Suspense>
-
-      {/* campaign */}
-      <Suspense fallback={loader}>
-        <Route path="/app/views/campaigns/campaign-management" component={CampaignManagement}/>
-      </Suspense>
-
-      {/* Admin */}
-      <Suspense fallback={loader}>
-        <Route path="/app/views/customers" component={Admin}/>
-      </Suspense>
-      {/* Pages */}
-      <Suspense fallback={loader}>
-        <Route path="/pages" component={Pages}/>
-      </Suspense>
-
 
       {/* Charts */}
       <Suspense fallback={loader}>
-        {/*<Route path="/charts" component={Charts} />*/}
+        <Route path="/home" component={Home} />
       </Suspense>
 
       {/* Tables */}
@@ -115,7 +56,7 @@ const AppRoutes = () => {
         {/*<Route path="/dashboards" component={Dashboards} />*/}
       </Suspense>
 
-      <Route exact path="/" render={() => <Redirect to="/login"/>}/>
+      <Route exact path="/" render={() => <Redirect to="/home"/>}/>
       <ToastContainer/>
     </Fragment>
   );

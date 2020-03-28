@@ -2,26 +2,17 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import cx from 'classnames';
 
-import TitleComponent1 from './PageTitleExamples/Variation1'
-import TitleComponent2 from './PageTitleExamples/Variation2'
-import TitleComponent3 from './PageTitleExamples/Variation3'
 
 class PageTitle extends Component {
-    randomize(myArray) {
-        return myArray[Math.floor(Math.random() * myArray.length)];
-    }
-
     render() {
         let {
             enablePageTitleIcon,
             enablePageTitleSubheading,
-
             heading,
             icon,
             subheading
         } = this.props;
 
-        var arr = [<TitleComponent1 />, <TitleComponent2 />, <TitleComponent3 />]
 
         return (
 
@@ -40,9 +31,12 @@ class PageTitle extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className="page-title-actions">
+                    <label> 123213213</label>
+                    <label> 123213213</label>
+                    <label> 123213213</label>
+                    {/* <div className="page-title-actions">
                         {this.randomize(arr)}
-                    </div>
+                    </div> */}
                 </div>
             </div>
         );

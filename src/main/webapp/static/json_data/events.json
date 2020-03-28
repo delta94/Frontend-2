@@ -1,0 +1,29 @@
+[
+  {
+    "interviewerId": 1,
+    "interviewSessionHistoryId": 1,
+    "programCode": "PVCM-22CEO",
+    "programName": "Phỏng vấn chuyên môn CEO",
+    "date": "2019-05-31",
+    "startTime": "08:30",
+    "endTime": "12:30"
+  },
+  {
+    "interviewerId": 2,
+    "interviewSessionHistoryId": 2,
+    "programCode": "PVVH-FCA",
+    "programName": "Phỏng vấn văn hóa FCA",
+    "date": "2019-06-013",
+    "startTime": "09:00",
+    "endTime": "09:30"
+  },
+  {
+    "interviewerId": 3,
+    "interviewSessionHistoryId": 3,
+    "programCode": "PVCM-Msc",
+    "programName": "Phỏng vấn chuyên môn Msc",
+    "date": "2019-06-14",
+    "startTime": "08:30",
+    "endTime": "09:30"
+  }
+]

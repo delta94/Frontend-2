@@ -1,0 +1,20 @@
+{
+  "trackingSchedule": {
+    "plan-interview": {
+      "home": {
+        "title": "Theo dõi lịch phỏng vấn"
+      }
+    },
+    "cancel-interview": {
+      "home": {
+        "title": "Hủy lịch phỏng vấn"
+      }
+    },
+    "candidate-interview": {
+      "home": {
+        "title": "Thông tin cá nhân"
+      }
+    },
+    "lastModifiedDate": "Ngày sửa"
+  }
+}
